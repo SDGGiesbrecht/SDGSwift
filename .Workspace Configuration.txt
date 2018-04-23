@@ -1,0 +1,60 @@
+((
+    .Workspace Configuration.txt
+
+    This source file is part of the SDGSwift open source project.
+    https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+
+    Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+
+    Soli Deo gloria.
+
+    Licensed under the Apache Licence, Version 2.0.
+    See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+    ))
+
+[_Import https://github.com/SDGGiesbrecht/SDG_]
+
+Current Version: 0.0.0
+
+Project Website: https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+Documentation URL: https://sdggiesbrecht.github.io/SDGSwift
+Repository URL: https://github.com/SDGGiesbrecht/SDGSwift
+
+Support iOS: False
+Support watchOS: False
+Support tvOS: False
+
+[_Begin Localizations_]
+🇨🇦EN
+[_End_]
+
+[_Begin Short Project Description_]
+[_🇨🇦EN_]
+SDGSwift enables the use the Swift compiler as a package dependency.
+[_End_]
+
+[_Begin Quotation_]
+השֹּׁלֵחַ אִמְרָתוֹ אָרֶץ עַד־מְהֵרָה יָרוּץ דְּבָרוֹ׃
+[_End_]
+
+[_Begin Quotation Translation_]
+[_🇨🇦EN_]
+He sends His command to the earth; His word runs swiftly.
+[_End_]
+
+Quotation Testament: תנ״ך
+Quotation Chapter: Psalm 147:15
+
+[_Begin Citation_]
+[_🇨🇦EN_]
+a psalmist
+[_End_]
+
+[_Begin Feature List_]
+[_🇨🇦EN_]
+<!-- [_Workaround: Needs features._] -->
+[_End_]
+
+Original Documentation Copyright Year: 2018
+([_Workaround: Needs a real key._])
+Encrypted Travis Deployment Key: ...
