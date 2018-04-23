@@ -20,7 +20,7 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwift
 
-let thisRepository = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
 
 class SDGSwiftTests : TestCase {
 
