@@ -43,7 +43,7 @@ public enum SwiftCompiler {
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validateVersion) {
                 return found
-            } else {
+            } else { // [_Exempt from Test Coverage_] Swift is necessarily available when tests are run.
                 throw SwiftCompiler.Error.unavailable
             }
         }

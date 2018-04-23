@@ -14,6 +14,7 @@
 
 import Foundation
 
+/// A local repository containing a Swift package.
 public struct PackageRepository {
 
     // MARK: - Initialization
