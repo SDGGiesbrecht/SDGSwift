@@ -29,7 +29,12 @@ public enum SwiftCompiler {
         // Swift
         "/usr/bin/swift",
         // Xcode
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift"
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
+        "/Library/Developer/Toolchains/swift\u{2D}\(version)\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version)\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        // Swift Version Manager
+        NSHomeDirectory() + "/.swiftenv/shims/swift",
+        NSHomeDirectory() + "/.swiftenv/versions/\(version)/usr/bin/swift"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
     private static var located: ExternalProcess?

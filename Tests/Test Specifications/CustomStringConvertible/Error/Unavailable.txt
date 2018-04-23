@@ -3,16 +3,28 @@ Swift 4.1 could not be located.
 Make sure it is installed it at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
+/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/shims/swift
+~/.swiftenv/versions/4.1/usr/bin/swift
 
 🇺🇸EN
 Swift 4.1 could not be located.
 Make sure it is installed it at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
+/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/shims/swift
+~/.swiftenv/versions/4.1/usr/bin/swift
 
 🇨🇦EN
 Swift 4.1 could not be located.
 Make sure it is installed it at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
+/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/shims/swift
+~/.swiftenv/versions/4.1/usr/bin/swift
 

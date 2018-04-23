@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLocalization
 import SDGExternalProcess
 
@@ -31,7 +33,7 @@ extension SwiftCompiler {
             switch self {
             case .unavailable:
                 var details: String = "\n"
-                details += SwiftCompiler.standardLocations.map({ $0.path }).joined(separator: "\n")
+                details += SwiftCompiler.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
