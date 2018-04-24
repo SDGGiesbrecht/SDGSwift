@@ -63,8 +63,28 @@ public enum SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    public static func build(_ package: PackageRepository, reportProgress: (String) -> Void) throws {
-        reportProgress("$ swift build")
-        try tool().run(["build"], in: package.location, reportProgress: reportProgress)
+    @discardableResult public static func build(_ package: PackageRepository, release: Bool = true, staticallyLinkStandardLibrary: Bool = true, reportProgress: (String) -> Void) throws -> String {
+        var arguments = ["build"]
+        if release {
+            arguments += ["\u{2D}\u{2D}configuration", "release"]
+        }
+        if staticallyLinkStandardLibrary {
+            arguments += ["\u{2D}\u{2D}static\u{2D}swift\u{2D}stdlib"]
+        }
+        return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
+    }
+
+    /// Runs a custom subcommand.
+    ///
+    /// - Parameters:
+    ///     - arguments: The arguments (leave “swift” off the beginning).
+    ///     - workingDirectory: Optional. A different working directory.
+    ///     - environment: Optional. A different set of environment variables.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String : String]? = nil, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        reportProgress("$ swift " + arguments.joined(separator: " "))
+        return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 }
