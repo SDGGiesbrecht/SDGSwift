@@ -93,15 +93,26 @@ public enum SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, release: Bool = true, staticallyLinkStandardLibrary: Bool = true, reportProgress: (String) -> Void) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = true, staticallyLinkStandardLibrary: Bool = true, reportProgress: (String) -> Void) throws -> String {
         var arguments = ["build"]
-        if release {
+        if releaseConfiguration {
             arguments += ["\u{2D}\u{2D}configuration", "release"]
         }
         if staticallyLinkStandardLibrary {
             arguments += ["\u{2D}\u{2D}static\u{2D}swift\u{2D}stdlib"]
         }
         return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
+    }
+
+    /// Resolves the package, fetching its dependencies.
+    ///
+    /// - Parameters:
+    ///     - package: The package to resolve.
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (String) -> Void) throws -> String {
+        return try runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
     }
 
     /// Runs a custom subcommand.

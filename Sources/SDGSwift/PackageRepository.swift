@@ -28,4 +28,26 @@ public struct PackageRepository {
 
     /// The location of the repository.
     public let location: URL
+
+    // MARK: - Workflow
+
+    /// Builds the package.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public func build(releaseConfiguration: Bool = true, staticallyLinkStandardLibrary: Bool = true, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
+    }
+
+    /// Resolves the package, fetching its dependencies.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public func resolve(reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try SwiftCompiler.resolve(self, reportProgress: reportProgress)
+    }
 }
