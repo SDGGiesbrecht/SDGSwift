@@ -1,5 +1,5 @@
 /*
- SDGSwiftTests.swift
+ SDGSwiftPackageManagerTests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -23,11 +23,9 @@ class SDGSwiftPackageManagerTests : TestCase {
 
     func testInitialization() {
         do {
-            // [_Warning: Move to sane location._]
-            let location = URL(fileURLWithPath: NSHomeDirectory() + "/Desktop/Experiment")
+            let location = FileManager.default.url(in: .temporary, at: "Initialized")
             try? FileManager.default.removeItem(at: location)
-            // [_Warning: Restore clean‐up._]
-            //defer { try? FileManager.default.removeItem(at: location) }
+            defer { try? FileManager.default.removeItem(at: location) }
 
             _ = try PackageRepository(initializingAt: location, type: .library)
         } catch {
