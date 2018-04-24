@@ -19,7 +19,7 @@ import SDGExternalProcess
 
 extension ExternalProcess {
 
-    convenience init?<S>(searching locations: S, commandName: String?, validate: (_ process: ExternalProcess) -> Bool) where S : Sequence, S.Element == URL {
+    internal convenience init?<S>(searching locations: S, commandName: String?, validate: (_ process: ExternalProcess) -> Bool) where S : Sequence, S.Element == URL {
         // [_Workaround: Belongs in SDGExternalProcess (SDGCornerstone 0.9.0)_]
 
         func checkLocation(_ location: URL, validate: (ExternalProcess) -> Bool) -> Bool {

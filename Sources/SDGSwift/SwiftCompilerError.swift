@@ -24,8 +24,12 @@ extension SwiftCompiler {
     /// An error encountered while using Swift.
     public enum Error : PresentableError {
 
+        // MARK: - Cases
+
         /// The required version of Swift is unavailable.
         case unavailable
+
+        // MARK: - PresentableError
 
         // [_Inherit Documentation: SDGCornerstone.PresentableError.presentableDescription()_]
         /// Returns a localized description of the error.

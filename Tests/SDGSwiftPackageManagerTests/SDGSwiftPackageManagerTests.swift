@@ -21,6 +21,10 @@ let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingL
 
 class SDGSwiftPackageManagerTests : TestCase {
 
+    func testManifestLoading() {
+        XCTAssert(try thisRepository.package().name == "SDGSwift")
+    }
+
     func testInitialization() {
         do {
             let location = FileManager.default.url(in: .temporary, at: "Initialized")
@@ -34,6 +38,7 @@ class SDGSwiftPackageManagerTests : TestCase {
     }
 
     static var allTests = [
-        ("testInitialization", testInitialization)
+        ("testInitialization", testInitialization),
+        ("testManifestLoading", testManifestLoading)
     ]
 }
