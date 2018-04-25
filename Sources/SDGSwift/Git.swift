@@ -70,7 +70,7 @@ public enum Git {
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func clone(_ package: Package, to location: URL, at version: Version? = nil, shallow: Bool = false, reportProgress: (String) -> Void) throws -> String {
         var command = [
             "clone",
