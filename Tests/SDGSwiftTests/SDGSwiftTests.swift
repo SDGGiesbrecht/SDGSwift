@@ -20,7 +20,7 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwift
 
-let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
+import TestUtilities
 
 class SDGSwiftTests : TestCase {
 
@@ -29,10 +29,8 @@ class SDGSwiftTests : TestCase {
     }
 
     func testSwiftCompiler() {
-        do {
-            try SwiftCompiler.build(thisRepository, reportProgress: { _ in })
-        } catch {
-            XCTFail("\(error)")
+        withDefaultMockRepository { mock in
+            try mock.build()
         }
     }
 

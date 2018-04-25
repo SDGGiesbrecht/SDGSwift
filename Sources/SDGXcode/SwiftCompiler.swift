@@ -1,5 +1,5 @@
 /*
- LinuxMain.swift
+ SwiftCompiler.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -11,14 +11,3 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
-
-import XCTest
-@testable import SDGSwiftTests
-@testable import SDGSwiftPackageManagerTests
-// Not SDGXcodeTests
-
-XCTMain([
-    testCase(SDGSwiftTests.allTests),
-    testCase(SDGSwiftPackageManagerTests.allTests)
-    // Not SDGXcodeTests
-])

@@ -1,5 +1,5 @@
 /*
- LinuxMain.swift
+ SDGXcodeTests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,13 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import XCTest
-@testable import SDGSwiftTests
-@testable import SDGSwiftPackageManagerTests
-// Not SDGXcodeTests
+import SDGXCTestUtilities
 
-XCTMain([
-    testCase(SDGSwiftTests.allTests),
-    testCase(SDGSwiftPackageManagerTests.allTests)
-    // Not SDGXcodeTests
-])
+import SDGSwift
+import SDGXcode
+
+class SDGXcodeTests : TestCase {
+
+    func testExample() {
+    }
+
+    static var allTests = [
+        ("testExample", testExample)
+    ]
+}

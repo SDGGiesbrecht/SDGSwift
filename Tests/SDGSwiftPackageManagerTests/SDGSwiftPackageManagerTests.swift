@@ -16,8 +16,7 @@ import SDGPersistence
 import SDGXCTestUtilities
 
 import SDGSwiftPackageManager
-
-let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
+import TestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 
