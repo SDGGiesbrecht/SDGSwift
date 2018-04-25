@@ -27,7 +27,10 @@ let package = Package(
         /// Utilities for working with the Swift package manager.
         ///
         /// This module uses the Swift API and provides more fine‐grained access to the details of a package’s structure than is available from the command line.
-        .library(name: "SDGSwiftPackageManager", targets: ["SDGSwiftPackageManager"])
+        .library(name: "SDGSwiftPackageManager", targets: ["SDGSwiftPackageManager"]),
+
+        /// Xcode‐related utilities for working with Swift packages.
+        .library(name: "SDGXcode", targets: ["SDGXcode"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 9, 0))),
