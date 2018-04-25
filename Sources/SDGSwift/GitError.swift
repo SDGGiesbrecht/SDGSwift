@@ -26,7 +26,7 @@ extension Git {
 
         // MARK: - Cases
 
-        /// The compatible version of Git is unavailable.
+        /// No compatible version of Git is available.
         case unavailable
 
         // MARK: - PresentableError
