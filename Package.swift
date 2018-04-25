@@ -43,6 +43,7 @@ let package = Package(
             "SDGSwiftLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),

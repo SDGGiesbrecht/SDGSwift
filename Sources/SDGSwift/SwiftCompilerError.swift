@@ -44,7 +44,7 @@ extension SwiftCompiler {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
                             StrictString("Swift \(SwiftCompiler.version) could not be located."),
-                            "Make sure it is installed it at one of the following paths or register it with the default shell so it can be located with “which”."
+                            "Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
                     }
                 }).resolved()

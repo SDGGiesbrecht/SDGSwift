@@ -1,5 +1,5 @@
 /*
- Xcode.swift
+ Git.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,21 +12,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGControlFlow
+import SDGCollections
 import SDGExternalProcess
 
-/// Xcode.
-public enum Xcode {
+/// Git.
+public enum Git {
 
     // MARK: - Locating
 
-    internal static let version = "9.3"
+    /// The range of compatible Git versions.
+    public static let compatibleVersionRange = Version(2, 4, 0).compatibleVersions
 
     internal static let standardLocations = [
-        // [_Warning: Fix these._]
-        // Xcode
-        "/usr/bin/xcodebuild",
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+        // Git
+        "/usr/bin/git"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
     private static var located: ExternalProcess?
@@ -34,15 +36,18 @@ public enum Xcode {
         return try cached(in: &located) {
 
             func validate(_ swift: ExternalProcess) -> Bool {
-                // Make sure version matches.
-                let output = try? swift.run(["\u{2D}version"])
-                return output?.contains(" " + version + "\n") == true
+                // Make sure version is compatible.
+                guard let output = try? swift.run(["\u{2D}\u{2D}version"]),
+                    let version = Version(firstIn: output) else {
+                    return false
+                }
+                return version ∈ compatibleVersionRange
             }
 
-            if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {
+            if let found = ExternalProcess(searching: standardLocations, commandName: "git", validate: validate) {
                 return found
-            } else { // [_Exempt from Test Coverage_] Xcode is necessarily available when tests are run.
-                throw Xcode.Error.unavailable
+            } else { // [_Exempt from Test Coverage_] Git is necessarily available when tests are run.
+                throw Git.Error.unavailable
             }
         }
     }
@@ -51,22 +56,24 @@ public enum Xcode {
 
     /// Returns the location of the Swift compiler.
     ///
-    /// - Throws: A `Xcode.Error`.
+    /// - Throws: A `SwiftCompiler.Error`.
     public static func location() throws -> URL {
         return try tool().executable
     }
 
     /// Runs a custom subcommand.
     ///
+    /// - Warning: Make sure the custom command is compatible with the entire range specified by `compatibleVersionRange`.
+    ///
     /// - Parameters:
-    ///     - arguments: The arguments (leave “xcodebuild” off the beginning).
+    ///     - arguments: The arguments (leave “git” off the beginning).
     ///     - workingDirectory: Optional. A different working directory.
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///
-    /// - Throws: Either a `Xcode.Error` or an `ExternalProcess.Error`.
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = { _ in }) throws -> String {
-        reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
+        reportProgress("$ git " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 }
