@@ -43,7 +43,7 @@ extension PackageRepository {
     /// Returns the package structure.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
-    public func package() throws -> Package {
+    public func package() throws -> PackageModel.Package {
         return try PackageBuilder(manifest: try manifest(), path: AbsolutePath(location.path), diagnostics: DiagnosticsEngine(), isRootPackage: true).construct()
     }
 }
