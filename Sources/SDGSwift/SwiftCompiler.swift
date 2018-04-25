@@ -23,18 +23,18 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let version = "4.1"
+    internal static let version = Version(4, 1, 0)
 
     internal static let standardLocations = [
         // Swift
         "/usr/bin/swift",
         // Xcode
         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
-        "/Library/Developer/Toolchains/swift\u{2D}\(version)\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version)\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
         // Swift Version Manager
         NSHomeDirectory() + "/.swiftenv/shims/swift",
-        NSHomeDirectory() + "/.swiftenv/versions/\(version)/usr/bin/swift"
+        NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
     private static func compilerLocation(for swift: URL) -> URL {
@@ -66,7 +66,7 @@ public enum SwiftCompiler {
 
                 // Make sure version matches.
                 let output = try? swift.run(["\u{2D}\u{2D}version"])
-                return output?.contains(" " + version + " ") == true
+                return output?.contains(" " + version.string(droppingEmptyPatch: true) + " ") == true
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validate) {

@@ -15,15 +15,16 @@
 import SDGControlFlow
 import SDGExternalProcess
 
+import SDGSwift
+
 /// Xcode.
 public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let version = "9.3"
+    internal static let version = Version(9, 3, 0)
 
     internal static let standardLocations = [
-        // [_Warning: Fix these._]
         // Xcode
         "/usr/bin/xcodebuild",
         "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
@@ -36,7 +37,7 @@ public enum Xcode {
             func validate(_ swift: ExternalProcess) -> Bool {
                 // Make sure version matches.
                 let output = try? swift.run(["\u{2D}version"])
-                return output?.contains(" " + version + "\n") == true
+                return output?.contains(" " + version.string(droppingEmptyPatch: true) + "\n") == true
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {

@@ -1,0 +1,18 @@
+🇬🇧EN
+Xcode 9.3.0 could not be located.
+Make sure it (xcodebuild) is installed at one of the following paths or register it with the default shell so it can be located with “which”.
+/usr/bin/xcodebuild
+/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
+
+🇺🇸EN
+Xcode 9.3.0 could not be located.
+Make sure it (xcodebuild) is installed at one of the following paths or register it with the default shell so it can be located with “which”.
+/usr/bin/xcodebuild
+/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
+
+🇨🇦EN
+Xcode 9.3.0 could not be located.
+Make sure it (xcodebuild) is installed at one of the following paths or register it with the default shell so it can be located with “which”.
+/usr/bin/xcodebuild
+/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
+

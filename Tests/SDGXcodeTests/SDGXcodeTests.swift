@@ -12,10 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwift
 import SDGXcode
+import SDGSwiftLocalizations
 
 class SDGXcodeTests : TestCase {
 
@@ -27,7 +29,12 @@ class SDGXcodeTests : TestCase {
         }
     }
 
+    func testXcodeError() {
+        testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+    }
+
     static var allTests = [
+        ("testXcodeError", testXcodeError),
         ("testXcode", testXcode)
     ]
 }

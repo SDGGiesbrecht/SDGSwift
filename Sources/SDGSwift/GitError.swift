@@ -37,13 +37,13 @@ extension Git {
             switch self {
             case .unavailable:
                 var details: String = "\n"
-                details += SwiftCompiler.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+                details += Git.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
-                            StrictString("No compatible version of Git could not be located. (\(Git.compatibleVersionRange.inInequalityNotation({StrictString($0.string)}))"),
+                            StrictString("No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string())} )))"),
                             "Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
                     }

@@ -59,9 +59,16 @@ public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hasha
 
     // MARK: - String Representations
 
-    /// The version’s string representation.
-    public var string: String {
-        return "\(major).\(minor).\(patch)"
+    /// Returns the version’s string representation.
+    ///
+    /// - Parameters:
+    ///     - droppingEmptyPatch: Optional. Set to `true` to have the patch number left off if it is zero. (i.e. “1.0” instead of “1.0.0”, but still “1.0.1” regardless.)
+    public func string(droppingEmptyPatch: Bool = false) -> String {
+        var result = "\(major).\(minor)"
+        if ¬droppingEmptyPatch ∨ patch ≠ 0 {
+            result += ".\(patch)"
+        }
+        return result
     }
 
     /// Creates a version from its string representation.
@@ -166,6 +173,6 @@ public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hasha
     // [_Inherit Documentation: SDGCornerstone.Hashable.hashValue_]
     /// The hash value.
     public var hashValue: Int {
-        return string.hashValue
+        return string().hashValue
     }
 }

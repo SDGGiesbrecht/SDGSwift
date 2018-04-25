@@ -24,6 +24,10 @@ import TestUtilities
 
 class SDGSwiftTests : TestCase {
 
+    func testGitError() {
+        testCustomStringConvertibleConformance(of: Git.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testLocalizations() {
         XCTAssert(_InterfaceLocalization.codeSet() ⊆ InterfaceLocalization.codeSet())
     }
@@ -32,7 +36,10 @@ class SDGSwiftTests : TestCase {
         withDefaultMockRepository { mock in
             try mock.resolve()
             try mock.build()
-            try mock.test()
+            if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                // When run from within Xcode, Xcode interferes with the child test process.
+                try mock.test()
+            }
         }
     }
 
@@ -41,6 +48,7 @@ class SDGSwiftTests : TestCase {
     }
 
     static var allTests = [
+        ("testGitError", testGitError),
         ("testLocalizations", testLocalizations),
         ("testSwiftCompiler", testSwiftCompiler),
         ("testSwiftCompilerError", testSwiftCompilerError)

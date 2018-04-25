@@ -1,5 +1,5 @@
 🇬🇧EN
-Swift 4.1 could not be located.
+Swift 4.1.0 could not be located.
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
@@ -9,7 +9,7 @@ Make sure it is installed at one of the following paths or register it with the 
 ~/.swiftenv/versions/4.1/usr/bin/swift
 
 🇺🇸EN
-Swift 4.1 could not be located.
+Swift 4.1.0 could not be located.
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
@@ -19,7 +19,7 @@ Make sure it is installed at one of the following paths or register it with the 
 ~/.swiftenv/versions/4.1/usr/bin/swift
 
 🇨🇦EN
-Swift 4.1 could not be located.
+Swift 4.1.0 could not be located.
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/swift
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
