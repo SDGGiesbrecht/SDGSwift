@@ -104,6 +104,17 @@ public enum SwiftCompiler {
         return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
     }
 
+    /// Tests the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void) throws -> String {
+        return try runCustomSubcommand(["test"], in: package.location, reportProgress: reportProgress)
+    }
+
     /// Resolves the package, fetching its dependencies.
     ///
     /// - Parameters:

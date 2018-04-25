@@ -41,6 +41,16 @@ public struct PackageRepository {
         return try SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
     }
 
+    /// Tests the package.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public func test(reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try SwiftCompiler.test(self, reportProgress: reportProgress)
+    }
+
     /// Resolves the package, fetching its dependencies.
     ///
     /// - Parameters:

@@ -30,7 +30,9 @@ class SDGSwiftTests : TestCase {
 
     func testSwiftCompiler() {
         withDefaultMockRepository { mock in
+            try mock.resolve()
             try mock.build()
+            try mock.test()
         }
     }
 
