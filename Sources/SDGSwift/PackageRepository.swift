@@ -34,7 +34,7 @@ public struct PackageRepository {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public init(cloning package: Package, to location: URL, at version: Version? = nil, shallow: Bool = false, reportProgress: (String) -> Void) throws {
+    public init(cloning package: Package, to location: URL, at version: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void) throws {
         self.init(at: location)
         try Git.clone(package, to: location, at: version, shallow: shallow, reportProgress: reportProgress)
     }
