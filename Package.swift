@@ -34,7 +34,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 9, 0))),
-        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(/* Do not export 0 versions. */ Version(0, 2, 0)))
+        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(/* Exported! */ Version(0, 2, 0)))
     ],
     targets: [
 
