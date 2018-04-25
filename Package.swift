@@ -48,7 +48,12 @@ let package = Package(
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
         .target(name: "SDGXcode", dependencies: [
-            "SDGSwift"
+            "SDGSwift",
+            "SDGSwiftLocalizations",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // Internal

@@ -19,10 +19,15 @@ import SDGXcode
 
 class SDGXcodeTests : TestCase {
 
-    func testExample() {
+    func testXcode() {
+        do {
+            try Xcode.runCustomSubcommand(["\u{2D}version"])
+        } catch {
+            XCTFail("Could not locate Xcode.")
+        }
     }
 
     static var allTests = [
-        ("testExample", testExample)
+        ("testXcode", testXcode)
     ]
 }
