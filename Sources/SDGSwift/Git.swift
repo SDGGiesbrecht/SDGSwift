@@ -61,6 +61,32 @@ public enum Git {
         return try tool().executable
     }
 
+    /// Creates a local repository by cloning the remote package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to clone.
+    ///     - location: The location to create the clone.
+    ///     - version: Optional. A specific version to check out.
+    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func clone(_ package: Package, to location: URL, at version: Version? = nil, shallow: Bool = false, reportProgress: (String) -> Void) throws -> String {
+        var command = [
+            "clone",
+            package.url.absoluteString,
+            location.path
+        ]
+        if let checkout = version {
+            command += ["\u{2D}\u{2D}branch", checkout.string()]
+            command += ["\u{2D}\u{2D}config", "advice.detachedHead=false"]
+        }
+        if shallow {
+            command += ["\u{2D}\u{2D}depth", "1"]
+        }
+        return try runCustomSubcommand(command, reportProgress: reportProgress)
+    }
+
     /// Runs a custom subcommand.
     ///
     /// - Warning: Make sure the custom command is compatible with the entire range specified by `compatibleVersionRange`.
