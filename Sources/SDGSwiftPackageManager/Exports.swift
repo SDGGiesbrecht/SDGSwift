@@ -14,6 +14,8 @@
 
 @_exported import struct Foundation.URL
 
+@_exported import SDGText // StrictString, etc.
+
 @_exported import class PackageModel.Manifest
 @_exported import class PackageModel.Package
 

@@ -18,16 +18,28 @@ import PackageLoading
 import Workspace
 
 import SDGSwift
+import SDGSwiftLocalizations
 
 extension PackageRepository {
 
     // MARK: - Initialization
 
     /// Creates a new package by initializing it at the specified URL.
+    ///
+    /// - Throws: A `Git.Error`, an `ExternalProcess.Error`, or a package manager error.
     public init(initializingAt location: URL, type: InitPackage.PackageType) throws {
         self.init(at: location)
         let initializer = try InitPackage(destinationPath: AbsolutePath(location.path), packageType: type)
         try initializer.writePackageStructure()
+        try Git.initialize(self)
+        try Git.commitChanges(in: self, description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+                return "Initialised."
+            case .englishUnitedStates, .englishCanada:
+                return "Initialized."
+            }
+        }).resolved())
     }
 
     // MARK: - Properties
@@ -45,5 +57,17 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func package() throws -> PackageModel.Package {
         return try PackageBuilder(manifest: try manifest(), path: AbsolutePath(location.path), diagnostics: DiagnosticsEngine(), isRootPackage: true).construct()
+    }
+
+    /// Checks for uncommitted changes or additions.
+    ///
+    /// - Parameters:
+    ///     - exclusionPatterns: Patterns describing paths or files to ignore.
+    ///
+    /// - Returns: The report provided by Git. (An empty string if there are no changes.)
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func uncommittedChanges(excluding exclusionPatterns: [String] = []) throws -> String {
+        return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
     }
 }

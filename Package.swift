@@ -49,6 +49,7 @@ let package = Package(
             ]),
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
+            "SDGSwiftLocalizations",
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
         .target(name: "SDGXcode", dependencies: [
@@ -83,6 +84,7 @@ let package = Package(
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
             "SDGSwiftPackageManager",
             "TestUtilities",
+            .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),

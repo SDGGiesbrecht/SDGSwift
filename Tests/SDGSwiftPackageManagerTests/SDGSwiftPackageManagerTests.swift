@@ -20,6 +20,14 @@ import TestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 
+    func testChangeDetection() {
+        withDefaultMockRepository() { mock in
+            try "...".save(to: mock.location.appendingPathComponent("File.md"))
+            XCTAssertNotEqual(try mock.uncommittedChanges(), "", "Change unnoticed.")
+            XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]), "", "No change should have been detected.")
+        }
+    }
+
     func testManifestLoading() {
         XCTAssert(try thisRepository.package().name == "SDGSwift")
     }
@@ -37,6 +45,7 @@ class SDGSwiftPackageManagerTests : TestCase {
     }
 
     static var allTests = [
+        ("testChangeDetection", testChangeDetection),
         ("testInitialization", testInitialization),
         ("testManifestLoading", testManifestLoading)
     ]
