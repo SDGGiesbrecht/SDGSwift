@@ -98,7 +98,11 @@ public enum Git {
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func versions(of package: Package) throws -> Set<Version> {
-        let output = try runCustomSubcommand(["ls\u{2D}remote", "\u{2D}\u{2D}tags", package.url.absoluteString])
+        let output = try runCustomSubcommand([
+            "ls\u{2D}remote",
+            "\u{2D}\u{2D}tags",
+            package.url.absoluteString
+            ])
 
         var versions: Set<Version> = []
         for line in output.lines {
@@ -111,6 +115,17 @@ public enum Git {
             }
         }
         return versions
+    }
+
+    /// Retrieves the latest commit identifier in the master branch of the package.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public static func latestCommitIdentifier(in package: Package) throws -> String {
+        return try runCustomSubcommand([
+            "ls\u{2D}remote",
+            package.url.absoluteString,
+            "master"
+            ]).truncated(before: "\u{9}")
     }
 
     /// Runs a custom subcommand.
