@@ -32,6 +32,10 @@ class SDGSwiftTests : TestCase {
         XCTAssert(_InterfaceLocalization.codeSet() ⊆ InterfaceLocalization.codeSet())
     }
 
+    func testPackage() {
+        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+    }
+
     func testSwiftCompiler() {
         withDefaultMockRepository { mock in
             try mock.resolve()
