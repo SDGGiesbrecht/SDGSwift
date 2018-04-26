@@ -75,4 +75,14 @@ public struct PackageRepository {
     @discardableResult public func resolve(reportProgress: (String) -> Void = { _ in }) throws -> String {
         return try SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
+
+    /// Checks for uncommitted changes or additions.
+    ///
+    /// - Parameters:
+    ///     - exclusionPatterns: Patterns describing paths or files to ignore.
+    ///
+    /// - Returns: The report provided by Git. (An empty string if there are no changes.)
+    public func uncommittedChanges(excluding exclusionPatterns: [String] = []) throws -> String {
+        return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
+    }
 }

@@ -128,6 +128,25 @@ public enum Git {
             ]).truncated(before: "\u{9}")
     }
 
+    /// Checks for uncommitted changes or additions in the repository.
+    ///
+    /// - Parameters:
+    ///     - exclusionPatterns: Patterns describing paths or files to ignore.
+    ///
+    /// - Returns: The report provided by Git. (An empty string if there are no changes.)
+    public static func uncommittedChanges(in repository: PackageRepository, excluding exclusionPatterns: [String] = []) throws -> String {
+        _ = try runCustomSubcommand([
+            "add",
+            ".",
+            "\u{2D}\u{2D}intent\u{2D}to\u{2D}add",
+            ], in: repository.location)
+        return try runCustomSubcommand([
+            "diff",
+            "\u{2D}\u{2D}",
+            ".",
+            ] + exclusionPatterns.map({ ":(exclude)\($0)" }), in: repository.location)
+    }
+
     /// Runs a custom subcommand.
     ///
     /// - Warning: Make sure the custom command is compatible with the entire range specified by `compatibleVersionRange`.
