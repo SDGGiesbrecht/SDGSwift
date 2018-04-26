@@ -94,6 +94,25 @@ public enum Git {
         return try runCustomSubcommand(command, reportProgress: reportProgress)
     }
 
+    /// Retrieves the list of available versions of the package.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public static func versions(of package: Package) throws -> Set<Version> {
+        let output = try runCustomSubcommand(["ls\u{2D}remote", "\u{2D}\u{2D}tags", package.url.absoluteString])
+
+        var versions: Set<Version> = []
+        for line in output.lines {
+            let lineText = line.line
+            if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
+                let tag = String(lineText[tagPrefix.range.upperBound...])
+                if let version = Version(tag) {
+                    versions.insert(version)
+                }
+            }
+        }
+        return versions
+    }
+
     /// Runs a custom subcommand.
     ///
     /// - Warning: Make sure the custom command is compatible with the entire range specified by `compatibleVersionRange`.
