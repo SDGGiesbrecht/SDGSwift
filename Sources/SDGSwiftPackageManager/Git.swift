@@ -7,21 +7,31 @@ extension Git {
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func initialize(_ repository: PackageRepository) throws {
-        _ = try runCustomSubcommand(["init"], in: repository.location)
+        try runCustomSubcommand(["init"], in: repository.location)
     }
 
     /// Commits existing changes.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func commitChanges(in repository: PackageRepository, description: StrictString) throws {
-        _ = try runCustomSubcommand([
+        try runCustomSubcommand([
             "add",
             "."
             ], in: repository.location)
-        _ = try runCustomSubcommand([
+        try runCustomSubcommand([
             "commit",
             "\u{2D}\u{2D}message",
             String(description)
+            ], in: repository.location)
+    }
+
+    /// Tags a version.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public static func tag(version: Version, in repository: PackageRepository) throws {
+        try runCustomSubcommand([
+            "tag",
+            version.string()
             ], in: repository.location)
     }
 

@@ -79,4 +79,11 @@ extension PackageRepository {
     public func commitChanges(description: StrictString) throws {
         try Git.commitChanges(in: self, description: description)
     }
+
+    /// Tags a version.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func tag(version: SDGSwift.Version) throws {
+        try Git.tag(version: version, in: self)
+    }
 }
