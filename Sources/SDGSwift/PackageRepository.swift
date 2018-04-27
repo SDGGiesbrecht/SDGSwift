@@ -44,6 +44,13 @@ public struct PackageRepository {
     /// The location of the repository.
     public let location: URL
 
+    private static let releaseProductsDirectory = ".build/release"
+
+    /// The directory to which release products are built.
+    public func releaseProductsDirectory() -> URL {
+        return location.appendingPathComponent(PackageRepository.releaseProductsDirectory).resolvingSymlinksInPath()
+    }
+
     // MARK: - Workflow
 
     /// Builds the package.
