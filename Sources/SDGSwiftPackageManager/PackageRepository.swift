@@ -86,4 +86,11 @@ extension PackageRepository {
     public func tag(version: SDGSwift.Version) throws {
         try Git.tag(version: version, in: self)
     }
+
+    /// Returns the list of files ignored by source control.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func ignoredFiles() throws -> [URL] {
+        return try Git.ignoredFiles(in: self)
+    }
 }

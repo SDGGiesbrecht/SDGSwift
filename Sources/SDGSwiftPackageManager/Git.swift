@@ -55,4 +55,24 @@ extension Git {
             ".",
             ] + exclusionPatterns.map({ ":(exclude)\($0)" }), in: repository.location)
     }
+
+    /// Returns the list of files ignored by source control.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public static func ignoredFiles(in repository: PackageRepository) throws -> [URL] {
+        let ignoredSummary = try runCustomSubcommand([
+            "status",
+            "\u{2D}\u{2D}ignored"
+            ], in: repository.location)
+
+        var result: [URL] = []
+        if let headerRange = ignoredSummary.scalars.firstMatch(for: "Ignored files:".scalars)?.range {
+            let remainder = String(ignoredSummary[headerRange.upperBound...])
+            for line in remainder.lines.lazy.dropFirst(3).lazy.map({ $0.line }) where ¬line.isEmpty {
+                let relativePath = String(StrictString(line.dropFirst()))
+                result.append(repository.location.appendingPathComponent(relativePath))
+            }
+        }
+        return result
+    }
 }

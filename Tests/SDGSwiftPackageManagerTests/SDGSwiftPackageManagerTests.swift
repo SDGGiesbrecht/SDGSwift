@@ -28,8 +28,8 @@ class SDGSwiftPackageManagerTests : TestCase {
         }
     }
 
-    func testManifestLoading() {
-        XCTAssert(try thisRepository.package().name == "SDGSwift")
+    func testIgnoredFileDetection() {
+        XCTAssert(try thisRepository.ignoredFiles().contains(where: { $0.lastPathComponent == ".build" }))
     }
 
     func testInitialization() {
@@ -44,8 +44,13 @@ class SDGSwiftPackageManagerTests : TestCase {
         }
     }
 
+    func testManifestLoading() {
+        XCTAssert(try thisRepository.package().name == "SDGSwift")
+    }
+
     static var allTests = [
         ("testChangeDetection", testChangeDetection),
+        ("testIgnoredFileDetection", testIgnoredFileDetection),
         ("testInitialization", testInitialization),
         ("testManifestLoading", testManifestLoading)
     ]
