@@ -13,6 +13,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGLogic
+
 /// A remote Swift package.
 public struct Package {
 
@@ -40,5 +44,39 @@ public struct Package {
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public func latestCommitIdentifier() throws -> String {
         return try Git.latestCommitIdentifier(in: self)
+    }
+
+    // MARK: - Workflow
+
+    /// Retrieves the package, builds it, and copies its products to the specified destination.
+    ///
+    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
+    public func build(_ version: Build, to destination: URL, reportProgress: (String) -> Void = { _ in }) throws {
+        let temporaryCloneLocation = FileManager.default.url(in: .temporary, at: "Package Clones/" + url.lastPathComponent)
+
+        reportProgress("")
+
+        let temporaryRepository = try PackageRepository(cloning: self, to: temporaryCloneLocation, at: version, shallow: true, reportProgress: reportProgress)
+        defer { try? FileManager.default.removeItem(at: temporaryCloneLocation) }
+
+        reportProgress("")
+
+        try temporaryRepository.build(reportProgress: reportProgress)
+        let products = temporaryRepository.releaseProductsDirectory()
+
+        let intermediateDirectory = FileManager.default.url(in: .temporary, at: UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: intermediateDirectory) }
+        for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+            let filename = component.lastPathComponent
+
+            if filename ≠ "ModuleCache",
+                ¬filename.hasSuffix(".build"),
+                ¬filename.hasSuffix(".swiftdoc"),
+                ¬filename.hasSuffix(".swiftmodule") {
+
+                try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
+            }
+        }
+        try FileManager.default.move(intermediateDirectory, to: destination)
     }
 }
