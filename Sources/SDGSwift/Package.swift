@@ -120,12 +120,8 @@ public struct Package {
         for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
 
             reportProgress("")
-            // [_Warning: Remove quotation marks._]
-            // [_Warning: Remove path._]
-            reportProgress("$ \u{22}" + executable.path/*.lastPathComponent*/ + "\u{22} " + arguments.joined(separator: " "))
-            let result = try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress) // [_Warning: Remove trailing newline._]
-            reportProgress("")
-            return result
+            reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
+            return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
         }
         throw Package.Error.noSuchExecutable(requested: executableNames)
     }
