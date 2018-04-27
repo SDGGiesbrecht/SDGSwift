@@ -16,6 +16,10 @@
 import Foundation
 
 import SDGLogic
+import SDGCollections
+import SDGText
+
+import SDGExternalProcess
 
 /// A remote Swift package.
 public struct Package {
@@ -78,5 +82,51 @@ public struct Package {
             }
         }
         try FileManager.default.move(intermediateDirectory, to: destination)
+    }
+
+    private func developmentCache(for cache: URL) -> URL {
+        return cache.appendingPathComponent("Development")
+    }
+
+    private func cacheDirectory(in cache: URL, for version: Build) throws -> URL {
+        switch version {
+        case .version(let specific):
+            return cache.appendingPathComponent(specific.string())
+        case .development:
+            return developmentCache(for: cache).appendingPathComponent(try latestCommitIdentifier())
+        }
+    }
+
+    /// Retrieves, builds and runs a command line tool defined by a Swift package.
+    ///
+    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
+    @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache")
+        let cache = try self.cacheDirectory(in: cacheRoot, for: version)
+
+        if ¬FileManager.default.fileExists(atPath: cache.path) {
+
+            switch version {
+            case .development:
+                // Clean up older builds.
+                try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
+            case .version:
+                break
+            }
+
+            try build(version, to: cache, reportProgress: reportProgress)
+        }
+
+        for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
+
+            reportProgress("")
+            // [_Warning: Remove quotation marks._]
+            // [_Warning: Remove path._]
+            reportProgress("$ \u{22}" + executable.path/*.lastPathComponent*/ + "\u{22} " + arguments.joined(separator: " "))
+            let result = try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress) // [_Warning: Remove trailing newline._]
+            reportProgress("")
+            return result
+        }
+        throw Package.Error.noSuchExecutable(requested: executableNames)
     }
 }

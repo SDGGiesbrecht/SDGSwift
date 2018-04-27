@@ -13,3 +13,5 @@
  */
 
 @_exported import struct Foundation.URL
+
+@_exported import SDGText // StrictString, etc.
