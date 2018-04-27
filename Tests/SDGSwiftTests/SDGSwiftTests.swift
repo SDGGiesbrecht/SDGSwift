@@ -24,6 +24,11 @@ import TestUtilities
 
 class SDGSwiftTests : TestCase {
 
+    func testBuild() {
+        XCTAssertEqual(Build.development, Build.development)
+        XCTAssertNotEqual(Build.version(Version(1, 0, 0)), Build.development)
+    }
+
     func testGitError() {
         testCustomStringConvertibleConformance(of: Git.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
@@ -51,10 +56,17 @@ class SDGSwiftTests : TestCase {
         testCustomStringConvertibleConformance(of: SwiftCompiler.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testVersion() {
+        XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+    }
+
     static var allTests = [
+        ("testBuild", testBuild),
         ("testGitError", testGitError),
         ("testLocalizations", testLocalizations),
+        ("testPackage", testPackage),
         ("testSwiftCompiler", testSwiftCompiler),
-        ("testSwiftCompilerError", testSwiftCompilerError)
+        ("testSwiftCompilerError", testSwiftCompilerError),
+        ("testVersion", testVersion)
     ]
 }
