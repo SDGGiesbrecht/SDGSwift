@@ -70,4 +70,13 @@ extension PackageRepository {
     public func uncommittedChanges(excluding exclusionPatterns: [String] = []) throws -> String {
         return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
     }
+
+    // MARK: - Workflow
+
+    /// Commits existing changes.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func commitChanges(description: StrictString) throws {
+        try Git.commitChanges(in: self, description: description)
+    }
 }

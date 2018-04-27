@@ -20,7 +20,7 @@ extension Git {
             ], in: repository.location)
         _ = try runCustomSubcommand([
             "commit",
-            "\u{2D}\u{2D}m",
+            "\u{2D}\u{2D}message",
             String(description)
             ], in: repository.location)
     }
