@@ -60,12 +60,12 @@ extension Git {
         _ = try runCustomSubcommand([
             "add",
             ".",
-            "\u{2D}\u{2D}intent\u{2D}to\u{2D}add",
+            "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
             ], in: repository.location)
         return try runCustomSubcommand([
             "diff",
             "\u{2D}\u{2D}",
-            ".",
+            "."
             ] + exclusionPatterns.map({ ":(exclude)\($0)" }), in: repository.location)
     }
 
