@@ -42,6 +42,12 @@ class SDGSwiftTests : TestCase {
     }
 
     func testSwiftCompiler() {
+        do {
+            try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
+        } catch {
+            XCTFail("\(error)")
+        }
+
         withDefaultMockRepository { mock in
             try mock.resolve()
             try mock.build()
