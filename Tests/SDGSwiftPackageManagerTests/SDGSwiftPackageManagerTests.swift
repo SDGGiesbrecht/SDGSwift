@@ -21,7 +21,7 @@ import TestUtilities
 class SDGSwiftPackageManagerTests : TestCase {
 
     func testChangeDetection() {
-        withDefaultMockRepository() { mock in
+        withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
             XCTAssertNotEqual(try mock.uncommittedChanges(), "", "Change unnoticed.")
             XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]), "", "No change should have been detected.")
