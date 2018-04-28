@@ -17,7 +17,10 @@ public enum Build : Equatable {
 
     // MARK: - Cases
 
+    /// A versioned release.
     case version(Version)
+
+    /// The current state of development.
     case development
 
     // MARK: - Equatable
