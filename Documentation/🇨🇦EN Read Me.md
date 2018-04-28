@@ -26,7 +26,8 @@ SDGSwift enables the use the Swift compiler as a package dependency.
 
 ## Features
 
-<!-- [_Workaround: Needs features._] -->
+- Compiler operations such as building and testing.
+- Package Manager operations such as fetching and manifest loading.
 
 (For a list of related projects, see [here](🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
