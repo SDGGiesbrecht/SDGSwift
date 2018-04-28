@@ -1,15 +1,15 @@
 🇬🇧EN
-No compatible version of Git could be located. (2.3.0 ≤ x < 3.0.0)
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/git
 
 🇺🇸EN
-No compatible version of Git could be located. (2.3.0 ≤ x < 3.0.0)
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/git
 
 🇨🇦EN
-No compatible version of Git could be located. (2.3.0 ≤ x < 3.0.0)
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
 Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”.
 /usr/bin/git
 

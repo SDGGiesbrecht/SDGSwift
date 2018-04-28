@@ -16,7 +16,7 @@ import SDGXCTestUtilities
 
 import SDGSwift
 
-class SDGReadMeExampleTests : TestCase {
+class ReadMeExampleTests : TestCase {
 
     func testReadMe() {
         let temporaryDirectory = FileManager.default.url(in: .temporary, at: "Example")

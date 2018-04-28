@@ -24,7 +24,6 @@ extension SwiftCompiler {
         return ManifestResources(
             swiftCompiler: try _compilerLocation(),
             librariesDirectory: try _packageManagerLibraries())
-        // [_Warning: Check these relative paths with various install locations._]
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {

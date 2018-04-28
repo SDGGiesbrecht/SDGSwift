@@ -15,7 +15,7 @@
 import XCTest
 @testable import SDGSwiftTests
 @testable import SDGSwiftPackageManagerTests
-@testable import DocumentationExampleTests
+@testable import SDGSwiftDocumentationExampleTests
 // Not SDGXcodeTests
 
 XCTMain([
