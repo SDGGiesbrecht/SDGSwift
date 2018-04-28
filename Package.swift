@@ -96,6 +96,10 @@ let package = Package(
             "TestUtilities",
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            ]),
+        .testTarget(name: "SDGSwiftDocumentationExampleTests", dependencies: [
+            "SDGSwift",
+            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
     ]
 )

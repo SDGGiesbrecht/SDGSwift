@@ -15,10 +15,12 @@
 import XCTest
 @testable import SDGSwiftTests
 @testable import SDGSwiftPackageManagerTests
+@testable import DocumentationExampleTests
 // Not SDGXcodeTests
 
 XCTMain([
     testCase(SDGSwiftTests.allTests),
-    testCase(SDGSwiftPackageManagerTests.allTests)
+    testCase(SDGSwiftPackageManagerTests.allTests),
+    testCase(ReadMeExampleTests.allTests)
     // Not SDGXcodeTests
 ])
