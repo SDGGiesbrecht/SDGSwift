@@ -27,7 +27,7 @@ class ReadMeExampleTests : TestCase {
         // [_Define Example: Read‐Me 🇨🇦EN_]
         do {
             let package = Package(url: URL(string: "https://github.com/apple/example-package-dealer")!)
-            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory, reportProgress: { print($0) })
+            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory)
         } catch {
             XCTFail("\(error)")
         }
