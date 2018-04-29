@@ -126,6 +126,17 @@ public enum SwiftCompiler {
         return try runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
     }
 
+    /// Regenerates the package’s test lists.
+    ///
+    /// - Parameters:
+    ///     - package: The package for which to regenerate the test list.
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], reportProgress: reportProgress)
+    }
+
     /// Runs a custom subcommand.
     ///
     /// - Parameters:

@@ -51,6 +51,9 @@ class SDGSwiftTests : TestCase {
         withDefaultMockRepository { mock in
             try mock.resolve()
             try mock.build()
+            #if canImport(ObjectiveC)
+            try mock.regenerateTestLists()
+            #endif
             if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
                 // When run from within Xcode, Xcode interferes with the child test process.
                 try mock.test()

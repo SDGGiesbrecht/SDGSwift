@@ -82,4 +82,14 @@ public struct PackageRepository {
     @discardableResult public func resolve(reportProgress: (String) -> Void = { _ in }) throws -> String {
         return try SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
+
+    /// Regenerates the package’s test lists.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    @discardableResult public func regenerateTestLists(reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
+    }
 }
