@@ -134,7 +134,7 @@ public enum SwiftCompiler {
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (String) -> Void = { _ in }) throws -> String {
-        return try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], reportProgress: reportProgress)
+        return try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
     }
 
     /// Runs a custom subcommand.
