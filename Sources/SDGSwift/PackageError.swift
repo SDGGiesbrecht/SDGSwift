@@ -1,5 +1,5 @@
 /*
- SwiftCompilerError.swift
+ PackageError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,22 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
 import SDGLocalization
-import SDGExternalProcess
 
 import SDGSwiftLocalizations
 
-extension SwiftCompiler {
+extension Package {
 
-    /// An error encountered while using Swift.
+    /// An error that occurs while trying to use a remote package.
     public enum Error : PresentableError {
 
         // MARK: - Cases
 
-        /// The required version of Swift is unavailable.
-        case unavailable
+        /// The package did not produce an executable with any of the requested names.
+        case noSuchExecutable(requested: Set<StrictString>)
 
         // MARK: - PresentableError
 
@@ -35,17 +32,14 @@ extension SwiftCompiler {
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {
-            case .unavailable:
-                var details: String = "\n"
-                details += SwiftCompiler.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+            case .noSuchExecutable(requested: let requested):
+                var details: StrictString = "\n"
+                details += StrictString(requested.sorted().joined(separator: "\n".scalars))
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return ([
-                            StrictString("Swift \(SwiftCompiler.version.string()) could not be located."),
-                            "Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”."
-                            ] as [StrictString]).joined(separator: "\n") + StrictString(details)
+                        return "The package did not produce an executable with any of the requested names:" + StrictString(details)
                     }
                 }).resolved()
             }

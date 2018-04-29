@@ -1,5 +1,5 @@
 /*
- InterfaceLocalization.swift
+ APILocalization.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -14,22 +14,17 @@
 
 import SDGLocalization
 
-public enum InterfaceLocalization : String, InputLocalization {
+public enum APILocalization : String, InputLocalization {
 
     // MARK: - Cases
 
-    case englishUnitedKingdom = "en\u{2D}GB"
-    case englishUnitedStates = "en\u{2D}US"
     case englishCanada = "en\u{2D}CA"
 
-    public static let cases: [InterfaceLocalization] = [
-
-        .englishUnitedKingdom,
-        .englishUnitedStates,
+    public static let cases: [APILocalization] = [
         .englishCanada
     ]
 
     // MARK: - Localization
 
-    public static let fallbackLocalization: InterfaceLocalization = .englishUnitedKingdom
+    public static let fallbackLocalization: APILocalization = .englishCanada
 }

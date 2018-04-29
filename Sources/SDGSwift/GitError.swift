@@ -1,5 +1,5 @@
 /*
- SwiftCompilerError.swift
+ GitError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -19,14 +19,14 @@ import SDGExternalProcess
 
 import SDGSwiftLocalizations
 
-extension SwiftCompiler {
+extension Git {
 
-    /// An error encountered while using Swift.
+    /// An error encountered while using Git.
     public enum Error : PresentableError {
 
         // MARK: - Cases
 
-        /// The required version of Swift is unavailable.
+        /// No compatible version of Git is available.
         case unavailable
 
         // MARK: - PresentableError
@@ -37,13 +37,13 @@ extension SwiftCompiler {
             switch self {
             case .unavailable:
                 var details: String = "\n"
-                details += SwiftCompiler.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+                details += Git.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
-                            StrictString("Swift \(SwiftCompiler.version.string()) could not be located."),
+                            StrictString("No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))"),
                             "Make sure it is installed at one of the following paths or register it with the default shell so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
                     }

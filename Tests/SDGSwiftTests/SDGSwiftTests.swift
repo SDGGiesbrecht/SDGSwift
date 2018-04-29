@@ -20,19 +20,41 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwift
 
-let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
+import TestUtilities
 
 class SDGSwiftTests : TestCase {
+
+    func testBuild() {
+        XCTAssertEqual(Build.development, Build.development)
+        XCTAssertNotEqual(Build.version(Version(1, 0, 0)), Build.development)
+    }
+
+    func testGitError() {
+        testCustomStringConvertibleConformance(of: Git.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+    }
 
     func testLocalizations() {
         XCTAssert(_InterfaceLocalization.codeSet() ⊆ InterfaceLocalization.codeSet())
     }
 
+    func testPackage() {
+        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+    }
+
     func testSwiftCompiler() {
         do {
-            try SwiftCompiler.build(thisRepository, reportProgress: { _ in })
+            try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
         } catch {
             XCTFail("\(error)")
+        }
+
+        withDefaultMockRepository { mock in
+            try mock.resolve()
+            try mock.build()
+            if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                // When run from within Xcode, Xcode interferes with the child test process.
+                try mock.test()
+            }
         }
     }
 
@@ -40,9 +62,17 @@ class SDGSwiftTests : TestCase {
         testCustomStringConvertibleConformance(of: SwiftCompiler.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testVersion() {
+        XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+    }
+
     static var allTests = [
+        ("testBuild", testBuild),
+        ("testGitError", testGitError),
         ("testLocalizations", testLocalizations),
+        ("testPackage", testPackage),
         ("testSwiftCompiler", testSwiftCompiler),
-        ("testSwiftCompilerError", testSwiftCompilerError)
+        ("testSwiftCompilerError", testSwiftCompilerError),
+        ("testVersion", testVersion)
     ]
 }

@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift)
+APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode)
 
 # SDGSwift
 
@@ -26,7 +26,8 @@ SDGSwift enables the use the Swift compiler as a package dependency.
 
 ## Features
 
-<!-- [_Workaround: Needs features._] -->
+- Compiler operations such as building and testing.
+- Package Manager operations such as fetching and manifest loading.
 
 (For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
@@ -45,6 +46,8 @@ let package = Package(
     targets: [
         .target(name: "MyTarget", dependencies: [
             .productItem(name: "SDGSwift", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGXcode", package: "SDGSwift"),
         ])
     ]
 )
@@ -54,6 +57,19 @@ let package = Package(
 
 ```swift
 import SDGSwift
+import SDGSwiftPackageManager
+import SDGXcode
+```
+
+## Example Usage
+
+```swift
+do {
+    let package = Package(url: URL(string: "https://github.com/apple/example-package-dealer")!)
+    try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory)
+} catch {
+    XCTFail("\(error)")
+}
 ```
 
 ## About
