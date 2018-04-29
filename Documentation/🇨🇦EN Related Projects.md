@@ -18,6 +18,10 @@
 
 Workspace automates management of Swift projects.
 
+### [SDGSwift](https://github.com/SDGGiesbrecht/SDGSwift)
+
+SDGSwift enables the use the Swift compiler as a package dependency.
+
 ### [SDGCommandLine](https://github.com/SDGGiesbrecht/SDGCommandLine)
 
 SDGCommandLine provides tools for implementing a command line interface.
