@@ -104,6 +104,11 @@ public enum SwiftCompiler {
         return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
     }
 
+    /// Returns whether the log contains warnings.
+    public static func warningsOccurred(during log: String) -> Bool {
+        return log.contains("warning:")
+    }
+
     /// Tests the package.
     ///
     /// - Parameters:
