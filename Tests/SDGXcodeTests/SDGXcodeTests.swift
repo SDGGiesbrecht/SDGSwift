@@ -70,10 +70,4 @@ class SDGXcodeTests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
     }
-
-
-    static var allTests = [
-        ("testXcode", testXcode),
-        ("testXcodeError", testXcodeError)
-    ]
 }

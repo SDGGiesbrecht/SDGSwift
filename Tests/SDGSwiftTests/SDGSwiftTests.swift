@@ -20,7 +20,7 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwift
 
-import TestUtilities
+import SDGSwiftTestUtilities
 
 class SDGSwiftTests : TestCase {
 
@@ -68,14 +68,4 @@ class SDGSwiftTests : TestCase {
     func testVersion() {
         XCTAssertNil(Version(firstIn: "Blah blah blah..."))
     }
-
-    static var allTests = [
-        ("testBuild", testBuild),
-        ("testGitError", testGitError),
-        ("testLocalizations", testLocalizations),
-        ("testPackage", testPackage),
-        ("testSwiftCompiler", testSwiftCompiler),
-        ("testSwiftCompilerError", testSwiftCompilerError),
-        ("testVersion", testVersion)
-    ]
 }
