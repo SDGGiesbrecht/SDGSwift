@@ -68,15 +68,15 @@ let package = Package(
             ]),
 
         // Tests
-        .target(name: "TestUtilities", dependencies: [
+        .target(name: "SDGSwiftTestUtilities", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",
             .productItem(name: "SDGPersistence", package: "SDGCornerstone")
-        ], path: "Tests/TestUtilities"),
+        ], path: "Tests/SDGSwiftTestUtilities"),
         .testTarget(name: "SDGSwiftTests", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwift",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
@@ -84,7 +84,7 @@ let package = Package(
             ]),
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
             "SDGSwiftPackageManager",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
@@ -93,7 +93,7 @@ let package = Package(
             "SDGXcode",
             "SDGSwift",
             "SDGSwiftLocalizations",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),

@@ -19,6 +19,8 @@ import SDGSwift
 import SDGXcode
 import SDGSwiftLocalizations
 
+import SDGSwiftTestUtilities
+
 class SDGXcodeTests : TestCase {
 
     func testXcode() {
@@ -33,8 +35,16 @@ class SDGXcodeTests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testXcodeProjectDetection() {
+        withDefaultMockRepository { mock in
+            try mock.generateXcodeProject()
+            XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
+        }
+    }
+
     static var allTests = [
+        ("testXcode", testXcode),
         ("testXcodeError", testXcodeError),
-        ("testXcode", testXcode)
+        ("testXcodeProjectDetection", testXcodeProjectDetection)
     ]
 }

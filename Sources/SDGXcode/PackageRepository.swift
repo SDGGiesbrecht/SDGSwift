@@ -12,9 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGSwift
 
 extension PackageRepository {
+
+    /// Returns the package’s Xcode project.
+    public func xcodeProject() throws -> URL? {
+        let files = try FileManager.default.contentsOfDirectory(at: location, includingPropertiesForKeys: [], options: [])
+
+        for file in files where file.pathExtension == "xcodeproj" {
+            return file
+        }
+        return nil
+    }
 
     /// Generates or refreshes the package’s Xcode project.
     ///
