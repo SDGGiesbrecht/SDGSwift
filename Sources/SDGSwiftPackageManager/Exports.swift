@@ -18,6 +18,7 @@
 
 @_exported import class PackageModel.Manifest
 @_exported import class PackageModel.Package
+@_exported import class Workspace.Workspace
 
 @_exported import struct SDGSwift.Package
 @_exported import struct SDGSwift.PackageRepository
