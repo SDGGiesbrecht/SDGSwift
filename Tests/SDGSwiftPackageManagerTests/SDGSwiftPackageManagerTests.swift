@@ -48,10 +48,15 @@ class SDGSwiftPackageManagerTests : TestCase {
         XCTAssert(try thisRepository.package().name == "SDGSwift")
     }
 
+    func testPackageGraphLoading() {
+        XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
+    }
+
     static var allTests = [
         ("testChangeDetection", testChangeDetection),
         ("testIgnoredFileDetection", testIgnoredFileDetection),
         ("testInitialization", testInitialization),
-        ("testManifestLoading", testManifestLoading)
+        ("testManifestLoading", testManifestLoading),
+        ("testPackageGraphLoading", testPackageGraphLoading)
     ]
 }

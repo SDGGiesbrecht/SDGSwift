@@ -15,6 +15,7 @@
 import Basic
 import PackageModel
 import PackageLoading
+import PackageGraph
 import Workspace
 
 import SDGSwift
@@ -82,6 +83,13 @@ extension PackageRepository {
             manifestLoader: try SwiftCompiler.manifestLoader(),
             delegate: SwiftCompiler.workspaceDelegate()
         )
+    }
+
+    /// Returns the package graph.
+    ///
+    /// - Throws: A `SwiftCompiler.Error`.
+    public func packageGraph() throws -> PackageGraph {
+        return try packageWorkspace().loadPackageGraph(root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]), diagnostics: DiagnosticsEngine())
     }
 
     /// Checks for uncommitted changes or additions.
