@@ -18,14 +18,15 @@ extension SDGXcodeTests {
     static let __allTests = [
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testXcode", testXcode),
-        ("testXcodeError", testXcodeError),
+        ("testXcodeError", testXcodeError)
     ]
 }
 
 #if !os(macOS)
+// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGXcodeTests.__allTests),
+        testCase(SDGXcodeTests.__allTests)
     ]
 }
 #endif

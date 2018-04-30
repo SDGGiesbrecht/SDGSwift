@@ -55,4 +55,11 @@ extension PackageRepository {
     @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
         return try Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
+
+    /// Tests the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        return try Xcode.test(self, on: sdk)
+    }
 }

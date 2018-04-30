@@ -139,6 +139,26 @@ public enum Xcode {
         return ¬warnings.isEmpty
     }
 
+    /// Tests the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+        var command = ["test"]
+
+        switch sdk {
+        case .iOS(simulator: true):
+            command += ["\u{2D}destination", "name=iPhone 8"]
+        case .tvOS(simulator: true):
+            command += ["\u{2D}destination", "name=Apple TV 4K"]
+        default:
+            command += ["\u{2D}sdk", sdk.commandLineName]
+        }
+
+        command += ["\u{2D}scheme", try scheme(for: package)]
+
+        return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
+    }
+
     /// Returns the main package scheme.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.

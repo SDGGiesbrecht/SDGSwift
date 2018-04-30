@@ -17,14 +17,15 @@ import XCTest
 extension ReadMeExampleTests {
     static let __allTests = [
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
-        ("testReadMe", testReadMe),
+        ("testReadMe", testReadMe)
     ]
 }
 
 #if !os(macOS)
+// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(ReadMeExampleTests.__allTests),
+        testCase(ReadMeExampleTests.__allTests)
     ]
 }
 #endif

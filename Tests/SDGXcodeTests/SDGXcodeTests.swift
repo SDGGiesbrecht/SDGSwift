@@ -45,19 +45,32 @@ class SDGXcodeTests : TestCase {
                 .iOS(simulator: true),
                 .watchOS,
                 .tvOS(simulator: false),
-                .tvOS(simulator: true),
+                .tvOS(simulator: true)
             ]
             for sdk in sdks {
                 do {
-                    var log = ""
                     try mock.build(for: sdk) { outputLine in
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
                             XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
-                            print(abbreviated, to: &log)
                         }
                     }
+                } catch {
+                    XCTFail("\(error)")
+                }
+            }
 
-                    compare(log, against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent(sdk.commandLineName), overwriteSpecificationInsteadOfFailing: false)
+            let testSDKs: [Xcode.SDK] = [
+                .macOS
+                // .iOS(simulator: true), // Unavailable in CI.
+                // .tvOS(simulator: true), // Unavailable in CI.
+            ]
+            for sdk in testSDKs {
+                do {
+                    try mock.test(on: sdk) { outputLine in
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                            XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                        }
+                    }
                 } catch {
                     XCTFail("\(error)")
                 }

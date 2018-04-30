@@ -21,14 +21,15 @@ extension SDGSwiftPackageManagerTests {
         ("testInitialization", testInitialization),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testManifestLoading", testManifestLoading),
-        ("testPackageGraphLoading", testPackageGraphLoading),
+        ("testPackageGraphLoading", testPackageGraphLoading)
     ]
 }
 
 #if !os(macOS)
+// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGSwiftPackageManagerTests.__allTests),
+        testCase(SDGSwiftPackageManagerTests.__allTests)
     ]
 }
 #endif

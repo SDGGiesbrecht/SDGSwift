@@ -23,14 +23,15 @@ extension SDGSwiftTests {
         ("testPackage", testPackage),
         ("testSwiftCompiler", testSwiftCompiler),
         ("testSwiftCompilerError", testSwiftCompilerError),
-        ("testVersion", testVersion),
+        ("testVersion", testVersion)
     ]
 }
 
 #if !os(macOS)
+// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGSwiftTests.__allTests),
+        testCase(SDGSwiftTests.__allTests)
     ]
 }
 #endif
