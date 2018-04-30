@@ -1,0 +1,20 @@
+$ xcodebuild build -sdk watchos -scheme Mock-Package
+Build settings from command line:
+    SDKROOT = watchos4.3
+=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
+Check dependencies
+Mock will not be code signed because its settings don't specify a development team.
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Mock_Info.plist
+CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Mock.swift
+MergeSwiftModule [...]/Mock.swiftmodule
+Ditto [...]/Mock-Swift.h
+Ld [...]/Mock normal armv7k
+ld: warning: directory not found for option '-F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks'
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/module.modulemap
+Touch [...]/Mock.framework
+** BUILD SUCCEEDED **

@@ -12,6 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGExternalProcess
+
+import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
@@ -29,22 +33,47 @@ class SDGXcodeTests : TestCase {
         } catch {
             XCTFail("Could not locate Xcode.")
         }
+
+        withDefaultMockRepository { mock in
+            try mock.generateXcodeProject()
+            XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
+            XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
+
+            let sdks: [Xcode.SDK] = [
+                .macOS,
+                .iOS(simulator: false),
+                .iOS(simulator: true),
+                .watchOS,
+                .tvOS(simulator: false),
+                .tvOS(simulator: true),
+            ]
+            for sdk in sdks {
+                do {
+                    var log = ""
+                    try mock.build(for: sdk) { outputLine in
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                            XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                            print(abbreviated, to: &log)
+                        }
+                    }
+
+                    compare(log, against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent(sdk.commandLineName), overwriteSpecificationInsteadOfFailing: false)
+                } catch {
+                    XCTFail("\(error)")
+                }
+            }
+        }
     }
 
     func testXcodeError() {
         testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testXcodeProjectDetection() {
-        withDefaultMockRepository { mock in
-            try mock.generateXcodeProject()
-            XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-        }
-    }
 
     static var allTests = [
         ("testXcode", testXcode),
-        ("testXcodeError", testXcodeError),
-        ("testXcodeProjectDetection", testXcodeProjectDetection)
+        ("testXcodeError", testXcodeError)
     ]
 }

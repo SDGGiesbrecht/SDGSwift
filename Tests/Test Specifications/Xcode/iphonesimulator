@@ -1,0 +1,21 @@
+$ xcodebuild build -sdk iphonesimulator -scheme Mock-Package
+Build settings from command line:
+    SDKROOT = iphonesimulator11.3
+=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
+Check dependencies
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Mock_Info.plist
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Mock.swift
+MergeSwiftModule [...]/Mock.swiftmodule
+Ditto [...]/Mock-Swift.h
+Ld [...]/Mock normal x86_64
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/module.modulemap
+Touch [...]/Mock.framework
+CodeSign [...]/Mock.framework
+    
+Signing Identity:     "-"
+** BUILD SUCCEEDED **
