@@ -29,6 +29,7 @@ import SDGSwiftTestUtilities
 class SDGXcodeTests : TestCase {
 
     func testXcode() {
+        #if !os(Linux)
         do {
             try Xcode.runCustomSubcommand(["\u{2D}version"])
         } catch {
@@ -89,6 +90,7 @@ class SDGXcodeTests : TestCase {
                 }
             }
         }
+        #endif
     }
 
     func testXcodeError() {
