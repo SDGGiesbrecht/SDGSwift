@@ -1,6 +1,3 @@
-	 Executed  test, with  failures ( unexpected) in . (.) seconds
-	 Executed  test, with  failures ( unexpected) in . (.) seconds
-	 Executed  test, with  failures ( unexpected) in . (.) seconds
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
