@@ -1,0 +1,20 @@
+    SDKROOT = appletvsimulator11.3
+$ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
+** BUILD SUCCEEDED **
+=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
+Build settings from command line:
+Check dependencies
+CodeSign [...]/Mock.framework
+CompileSwift [...]/Mock.swift
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+Create product structure
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/module.modulemap
+Ld [...]/Mock normal x86_64
+MergeSwiftModule [...]/Mock.swiftmodule
+ProcessInfoPlistFile [...]/Mock_Info.plist
+Signing Identity:     "-"
+Touch [...]/Mock.framework
+Write auxiliary files

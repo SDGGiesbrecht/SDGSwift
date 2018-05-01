@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import SDGExternalProcess
 
 import SDGPersistenceTestUtilities
@@ -48,12 +49,17 @@ class SDGXcodeTests : TestCase {
                 .tvOS(simulator: true)
             ]
             for sdk in sdks {
+                print("Testing build for \(sdk.commandLineName)...")
                 do {
+                    var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.build(for: sdk) { outputLine in
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
                             XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                            log.insert(abbreviated)
                         }
                     }
+
+                    compare(log.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
                 } catch {
                     XCTFail("\(error)")
                 }
@@ -65,12 +71,18 @@ class SDGXcodeTests : TestCase {
                 // .tvOS(simulator: true), // Unavailable in CI.
             ]
             for sdk in testSDKs {
+                print("Testing testing on \(sdk.commandLineName)...")
                 do {
+                    var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.test(on: sdk) { outputLine in
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
                             XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                            log.insert(abbreviated)
                         }
                     }
+
+                    let filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
+                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
                 } catch {
                     XCTFail("\(error)")
                 }

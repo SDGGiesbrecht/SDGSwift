@@ -63,6 +63,7 @@ public enum Xcode {
     private static let ignorableCommands: [String] = [
         "builtin\u{2D}copy",
         "builtin\u{2D}infoPlistUtility",
+        "builtin-swiftStdLibTool",
         "cd",
         "clang",
         "codesign",
@@ -78,6 +79,8 @@ public enum Xcode {
     private static let abbreviableCommands: [String] = [
         "CodeSign",
         "CompileSwift",
+        "Copying",
+        "CopySwiftLibs",
         "Ditto",
         "Ld",
         "MergeSwiftModule",
@@ -85,11 +88,17 @@ public enum Xcode {
         "Touch"
     ]
 
+    private static let otherIgnored: [String] = [
+        "Writing diagnostic log for test session to:",
+        "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
+        "Beginning test session",
+    ]
+
     /// Abbreviates Xcode output to make it more readable.
     ///
     /// This function is intended for use in `reportProgress` to keep the log concise and manageable.
     public static func abbreviate(output: String) -> String? {
-        if output.isEmpty {
+        if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
             return nil
         }
 
@@ -113,6 +122,12 @@ public enum Xcode {
                     abbreviatedPath = "[...]/" + command
                 }
                 return indentation + abbreviatedPath + " [...]/" + file
+            }
+        }
+
+        for ignored in otherIgnored {
+            if output.contains(ignored) {
+                return nil
             }
         }
 

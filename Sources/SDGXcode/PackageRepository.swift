@@ -60,6 +60,6 @@ extension PackageRepository {
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
-        return try Xcode.test(self, on: sdk)
+        return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 }

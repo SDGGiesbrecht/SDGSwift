@@ -1,0 +1,18 @@
+    SDKROOT = macosx10.13
+$ xcodebuild build -sdk macosx -scheme Mock-Package
+** BUILD SUCCEEDED **
+=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
+Build settings from command line:
+Check dependencies
+CompileSwift [...]/Mock.swift
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+Create product structure
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/module.modulemap
+Ld [...]/Mock normal x86_64
+MergeSwiftModule [...]/Mock.swiftmodule
+ProcessInfoPlistFile [...]/Mock_Info.plist
+Touch [...]/Mock.framework
+Write auxiliary files
