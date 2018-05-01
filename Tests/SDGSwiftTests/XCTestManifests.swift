@@ -27,8 +27,8 @@ extension SDGSwiftTests {
     ]
 }
 
-#if !os(macOS)
-// MARK: - #if !os(macOS)
+#if !canImport(ObjectiveC)
+// MARK: - #if !canImport(ObjectiveC)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
         testCase(SDGSwiftTests.__allTests)
