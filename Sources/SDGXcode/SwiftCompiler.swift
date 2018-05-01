@@ -23,7 +23,7 @@ extension SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func generateXcodeProject(for package: PackageRepository, reportProgress: (String) -> Void) throws -> String {
+    @discardableResult public static func generateXcodeProject(for package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try runCustomSubcommand([
             "package", "generate\u{2D}xcodeproj",
             "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"

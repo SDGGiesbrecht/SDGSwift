@@ -45,21 +45,21 @@ extension PackageRepository {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func generateXcodeProject(reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public func generateXcodeProject(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
 
     /// Builds the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
 
     /// Tests the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 }

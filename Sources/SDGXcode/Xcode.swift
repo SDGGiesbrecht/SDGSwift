@@ -137,7 +137,7 @@ public enum Xcode {
     /// Builds the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try runCustomSubcommand([
             "build",
             "\u{2D}sdk", sdk.commandLineName,
@@ -157,7 +157,7 @@ public enum Xcode {
     /// Tests the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         var command = ["test"]
 
         switch sdk {
@@ -204,7 +204,7 @@ public enum Xcode {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
