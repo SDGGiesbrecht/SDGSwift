@@ -1,0 +1,47 @@
+    SDKROOT = macosx.
+$ xcodebuild test -sdk macosx -scheme Mock-Package
+** TEST SUCCEEDED **
+=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
+=== BUILD TARGET MockTests OF PROJECT Mock WITH CONFIGURATION Debug ===
+Build settings from command line:
+Check dependencies
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftAppKit.dylib
+Copying [...]/libswiftCore.dylib
+Copying [...]/libswiftCoreData.dylib
+Copying [...]/libswiftCoreFoundation.dylib
+Copying [...]/libswiftCoreGraphics.dylib
+Copying [...]/libswiftCoreImage.dylib
+Copying [...]/libswiftDarwin.dylib
+Copying [...]/libswiftDispatch.dylib
+Copying [...]/libswiftFoundation.dylib
+Copying [...]/libswiftIOKit.dylib
+Copying [...]/libswiftMetal.dylib
+Copying [...]/libswiftObjectiveC.dylib
+Copying [...]/libswiftQuartzCore.dylib
+Copying [...]/libswiftRemoteMirror.dylib
+Copying [...]/libswiftXCTest.dylib
+Copying [...]/libswiftXPC.dylib
+Copying [...]/libswiftos.dylib
+Create product structure
+Ditto [...]/MockTests-Swift.h
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Generating coverage data...
+Ld [...]/MockTests normal x_
+MergeSwiftModule [...]/MockTests.swiftmodule
+ProcessInfoPlistFile [...]/MockTests_Info.plist
+Requested Swift ABI version based on scanned binaries: 
+Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
+Test Case '-[MockTests.MockTests testExample]' started.
+Test Suite 'All tests' passed at -- ::..
+Test Suite 'All tests' started at -- ::.
+Test Suite 'MockTests' passed at -- ::..
+Test Suite 'MockTests' started at -- ::.
+Test Suite 'MockTests.xctest' passed at -- ::..
+Test Suite 'MockTests.xctest' started at -- ::.
+Touch [...]/MockTests.xctest
+Write auxiliary files

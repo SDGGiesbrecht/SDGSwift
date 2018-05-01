@@ -16,7 +16,7 @@ import SDGPersistence
 import SDGXCTestUtilities
 
 import SDGSwiftPackageManager
-import TestUtilities
+import SDGSwiftTestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 
@@ -48,10 +48,7 @@ class SDGSwiftPackageManagerTests : TestCase {
         XCTAssert(try thisRepository.package().name == "SDGSwift")
     }
 
-    static var allTests = [
-        ("testChangeDetection", testChangeDetection),
-        ("testIgnoredFileDetection", testIgnoredFileDetection),
-        ("testInitialization", testInitialization),
-        ("testManifestLoading", testManifestLoading)
-    ]
+    func testPackageGraphLoading() {
+        XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
+    }
 }

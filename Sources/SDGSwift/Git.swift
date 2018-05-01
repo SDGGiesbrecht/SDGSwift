@@ -71,7 +71,7 @@ public enum Git {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func clone(_ package: Package, to location: URL, at version: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void) throws -> String {
+    @discardableResult public static func clone(_ package: Package, to location: URL, at version: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
 
         var command = [
             "clone",
@@ -139,7 +139,7 @@ public enum Git {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ git " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }

@@ -1,5 +1,5 @@
 /*
- Exports.swift
+ DefaultWorkspaceDelegate.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,13 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@_exported import struct Foundation.URL
+import Workspace
 
-@_exported import SDGText // StrictString, etc.
+class DefaultWorkspaceDelegate : WorkspaceDelegate {
 
-@_exported import class PackageModel.Manifest
-@_exported import class PackageModel.Package
-@_exported import class Workspace.Workspace
-
-@_exported import struct SDGSwift.Package
-@_exported import struct SDGSwift.PackageRepository
+}

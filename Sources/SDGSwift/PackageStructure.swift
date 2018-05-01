@@ -54,7 +54,7 @@ public struct Package {
     /// Retrieves the package, builds it, and copies its products to the specified destination.
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    public func build(_ version: Build, to destination: URL, reportProgress: (String) -> Void = { _ in }) throws {
+    public func build(_ version: Build, to destination: URL, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         let temporaryCloneLocation = FileManager.default.url(in: .temporary, at: "Package Clones/" + url.lastPathComponent)
 
         reportProgress("")
@@ -99,7 +99,7 @@ public struct Package {
     /// Retrieves, builds and runs a command line tool defined by a Swift package.
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = { _ in }) throws -> String {
+    @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache")
         let cache = try self.cacheDirectory(in: cacheRoot, for: version)
 

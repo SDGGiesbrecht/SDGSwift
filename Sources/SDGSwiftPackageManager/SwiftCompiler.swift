@@ -15,6 +15,7 @@
 import SDGSwift
 
 import PackageLoading
+import Workspace
 
 extension SwiftCompiler {
 
@@ -28,5 +29,9 @@ extension SwiftCompiler {
 
     internal static func manifestLoader() throws -> ManifestLoader {
         return ManifestLoader(resources: try manifestResources())
+    }
+
+    internal static func workspaceDelegate() -> WorkspaceDelegate {
+        return DefaultWorkspaceDelegate()
     }
 }

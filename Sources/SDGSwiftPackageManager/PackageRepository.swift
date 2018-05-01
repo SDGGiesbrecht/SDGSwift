@@ -15,6 +15,7 @@
 import Basic
 import PackageModel
 import PackageLoading
+import PackageGraph
 import Workspace
 
 import SDGSwift
@@ -44,6 +45,18 @@ extension PackageRepository {
 
     // MARK: - Properties
 
+    private var dataDirectory: URL {
+        return location.appendingPathComponent(".build")
+    }
+
+    private var editablesDirectory: URL {
+        return location.appendingPathComponent("Packages")
+    }
+
+    private var pinsFile: URL {
+        return location.appendingPathComponent("Package.resolved")
+    }
+
     /// Returns the package manifest.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
@@ -57,6 +70,26 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func package() throws -> PackageModel.Package {
         return try PackageBuilder(manifest: try manifest(), path: AbsolutePath(location.path), diagnostics: DiagnosticsEngine(), isRootPackage: true).construct()
+    }
+
+    /// Returns the package workspace.
+    ///
+    /// - Throws: A `SwiftCompiler.Error`.
+    public func packageWorkspace() throws -> Workspace {
+        return Workspace(
+            dataPath: AbsolutePath(dataDirectory.path),
+            editablesPath: AbsolutePath(editablesDirectory.path),
+            pinsFile: AbsolutePath(pinsFile.path),
+            manifestLoader: try SwiftCompiler.manifestLoader(),
+            delegate: SwiftCompiler.workspaceDelegate()
+        )
+    }
+
+    /// Returns the package graph.
+    ///
+    /// - Throws: A `SwiftCompiler.Error`.
+    public func packageGraph() throws -> PackageGraph {
+        return try packageWorkspace().loadPackageGraph(root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]), diagnostics: DiagnosticsEngine())
     }
 
     /// Checks for uncommitted changes or additions.

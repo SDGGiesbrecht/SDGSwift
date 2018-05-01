@@ -33,7 +33,7 @@ let package = Package(
         .library(name: "SDGXcode", targets: ["SDGXcode"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 9, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 9, 2))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(/* Exported! */ Version(0, 2, 0)))
     ],
     targets: [
@@ -58,6 +58,8 @@ let package = Package(
             "SDGSwiftLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
@@ -68,15 +70,15 @@ let package = Package(
             ]),
 
         // Tests
-        .target(name: "TestUtilities", dependencies: [
+        .target(name: "SDGSwiftTestUtilities", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",
             .productItem(name: "SDGPersistence", package: "SDGCornerstone")
-        ], path: "Tests/TestUtilities"),
+        ], path: "Tests/SDGSwiftTestUtilities"),
         .testTarget(name: "SDGSwiftTests", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwift",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
@@ -84,7 +86,7 @@ let package = Package(
             ]),
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
             "SDGSwiftPackageManager",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
@@ -93,7 +95,10 @@ let package = Package(
             "SDGXcode",
             "SDGSwift",
             "SDGSwiftLocalizations",
-            "TestUtilities",
+            "SDGSwiftTestUtilities",
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),

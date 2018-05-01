@@ -33,8 +33,4 @@ class ReadMeExampleTests : TestCase {
         }
         // [_End_]
     }
-
-    static var allTests = [
-        ("testReadMe", testReadMe)
-    ]
 }

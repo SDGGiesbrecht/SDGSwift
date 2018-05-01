@@ -20,7 +20,7 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwift
 
-import TestUtilities
+import SDGSwiftTestUtilities
 
 class SDGSwiftTests : TestCase {
 
@@ -51,6 +51,9 @@ class SDGSwiftTests : TestCase {
         withDefaultMockRepository { mock in
             try mock.resolve()
             try mock.build()
+            #if canImport(ObjectiveC)
+            try mock.regenerateTestLists()
+            #endif
             if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
                 // When run from within Xcode, Xcode interferes with the child test process.
                 try mock.test()
@@ -65,14 +68,4 @@ class SDGSwiftTests : TestCase {
     func testVersion() {
         XCTAssertNil(Version(firstIn: "Blah blah blah..."))
     }
-
-    static var allTests = [
-        ("testBuild", testBuild),
-        ("testGitError", testGitError),
-        ("testLocalizations", testLocalizations),
-        ("testPackage", testPackage),
-        ("testSwiftCompiler", testSwiftCompiler),
-        ("testSwiftCompilerError", testSwiftCompilerError),
-        ("testVersion", testVersion)
-    ]
 }

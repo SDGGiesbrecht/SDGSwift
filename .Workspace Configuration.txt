@@ -30,7 +30,7 @@ Support tvOS: False
 
 [_Begin Short Project Description_]
 [_🇨🇦EN_]
-SDGSwift enables the use the Swift compiler as a package dependency.
+SDGSwift enables use of the Swift compiler as a package dependency.
 [_End_]
 
 [_Begin Quotation_]

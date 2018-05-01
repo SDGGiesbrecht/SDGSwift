@@ -13,14 +13,17 @@
  */
 
 import XCTest
-@testable import SDGSwiftTests
-@testable import SDGSwiftPackageManagerTests
-@testable import SDGSwiftDocumentationExampleTests
-// Not SDGXcodeTests
 
-XCTMain([
-    testCase(SDGSwiftTests.allTests),
-    testCase(SDGSwiftPackageManagerTests.allTests),
-    testCase(ReadMeExampleTests.allTests)
-    // Not SDGXcodeTests
-])
+import SDGSwiftDocumentationExampleTests
+import SDGSwiftPackageManagerTests
+import SDGSwiftTests
+import SDGXcodeTests
+import SDGXCTestUtilities
+
+var tests = [XCTestCaseEntry]()
+tests += SDGSwiftDocumentationExampleTests.__allTests()
+tests += SDGSwiftPackageManagerTests.__allTests()
+tests += SDGSwiftTests.__allTests()
+tests += SDGXcodeTests.__allTests()
+
+XCTMain(tests)
