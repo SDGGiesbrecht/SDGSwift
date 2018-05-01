@@ -38,7 +38,13 @@ extension FileManager {
                 throw FileManager.unknownFileReadingError
             }
 
-            let isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
+            let isDirectory: Bool
+            #if os(Linux)
+            var objCBool: ObjCBool = false
+            isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool.boolValue
+            #else
+            isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
+            #endif
 
             if ¬isDirectory { // Skip directories.
                 result.append(url)
