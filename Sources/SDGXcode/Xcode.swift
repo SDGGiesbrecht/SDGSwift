@@ -63,7 +63,7 @@ public enum Xcode {
     private static let ignorableCommands: [String] = [
         "builtin\u{2D}copy",
         "builtin\u{2D}infoPlistUtility",
-        "builtin-swiftStdLibTool",
+        "builtin\u{2d}swiftStdLibTool",
         "cd",
         "clang",
         "codesign",
@@ -91,7 +91,7 @@ public enum Xcode {
     private static let otherIgnored: [String] = [
         "Writing diagnostic log for test session to:",
         "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
-        "Beginning test session",
+        "Beginning test session"
     ]
 
     /// Abbreviates Xcode output to make it more readable.

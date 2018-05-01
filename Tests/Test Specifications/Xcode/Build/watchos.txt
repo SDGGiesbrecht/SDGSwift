@@ -17,4 +17,3 @@ Mock will not be code signed because its settings don't specify a development te
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Touch [...]/Mock.framework
 Write auxiliary files
-ld: warning: directory not found for option '-F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks'
