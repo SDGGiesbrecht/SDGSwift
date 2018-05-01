@@ -25,5 +25,6 @@ tests += SDGSwiftDocumentationExampleTests.__allTests()
 tests += SDGSwiftPackageManagerTests.__allTests()
 tests += SDGSwiftTests.__allTests()
 tests += SDGXcodeTests.__allTests()
+tests += SDGXCTestUtilities.__allTests()
 
 XCTMain(tests)
