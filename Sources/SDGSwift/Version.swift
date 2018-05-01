@@ -12,13 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
 import SDGSwiftLocalizations
 
 /// A semantic version.
-public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hashable {
+public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hashable, TextualPlaygroundDisplay {
 
     // MARK: - Initialization
 
@@ -135,6 +136,14 @@ public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hasha
     ///     - followingValue: Another value.
     public static func < (lhs: Version, rhs: Version) -> Bool {
         return (lhs.major, lhs.minor, lhs.patch) < (rhs.major, rhs.minor, rhs.patch)
+    }
+
+    // MARK: - CustomStringConvertible
+
+    // [_Inherit Documentation: SDGCornerstone.CustomStringConvertible.description_]
+    /// A textual representation of the instance.
+    public var description: String {
+        return string()
     }
 
     // MARK: - Equatable

@@ -14,8 +14,10 @@
 
 import Foundation
 
+import SDGControlFlow
+
 /// A local repository containing a Swift package.
-public struct PackageRepository {
+public struct PackageRepository : TransparentWrapper {
 
     // MARK: - Initialization
 
@@ -91,5 +93,13 @@ public struct PackageRepository {
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public func regenerateTestLists(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
+    }
+
+    // MARK: - TransparentWrapper
+
+    // [_Inherit Documentation: SDGCornerstone.TransparentWrapper.wrapped_]
+    /// The wrapped instance.
+    public var wrappedInstance: Any {
+        return location.path
     }
 }

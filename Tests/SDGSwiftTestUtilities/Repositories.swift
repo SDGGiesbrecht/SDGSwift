@@ -21,7 +21,8 @@ import SDGSwiftPackageManager
 public let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
 
 public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) {
-    let mock = FileManager.default.url(in: .temporary, at: "Mock")
+    let mock = URL(fileURLWithPath: "/tmp/Mock") // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    try? FileManager.default.removeItem(at: mock)
     defer { try? FileManager.default.removeItem(at: mock) }
 
     do {
