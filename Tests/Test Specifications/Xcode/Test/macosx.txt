@@ -1,10 +1,12 @@
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
+.
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
 === BUILD TARGET MockTests OF PROJECT Mock WITH CONFIGURATION Debug ===
 Build settings from command line:
 Check dependencies
+CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
@@ -27,13 +29,20 @@ Copying [...]/libswiftXCTest.dylib
 Copying [...]/libswiftXPC.dylib
 Copying [...]/libswiftos.dylib
 Create product structure
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
 Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
+Ditto [...]/module.modulemap
 Generating coverage data...
+Ld [...]/Mock normal x_
 Ld [...]/MockTests normal x_
+MergeSwiftModule [...]/Mock.swiftmodule
 MergeSwiftModule [...]/MockTests.swiftmodule
 ProcessInfoPlistFile [...]/MockTests_Info.plist
+ProcessInfoPlistFile [...]/Mock_Info.plist
 Requested Swift ABI version based on scanned binaries: 
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
@@ -43,5 +52,6 @@ Test Suite 'MockTests' passed at -- ::..
 Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
+Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 Write auxiliary files

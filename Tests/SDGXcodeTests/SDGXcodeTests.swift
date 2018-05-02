@@ -51,6 +51,11 @@ class SDGXcodeTests : TestCase {
             ]
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
+
+                if let derived = try? mock.derivedData(for: sdk) {
+                    try? FileManager.default.removeItem(at: derived)
+                }
+
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.build(for: sdk) { outputLine in
@@ -74,6 +79,11 @@ class SDGXcodeTests : TestCase {
             ]
             for sdk in testSDKs {
                 print("Testing testing on \(sdk.commandLineName)...")
+
+                if let derived = try? mock.derivedData(for: sdk) {
+                    try? FileManager.default.removeItem(at: derived)
+                }
+
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.test(on: sdk) { outputLine in
@@ -89,6 +99,8 @@ class SDGXcodeTests : TestCase {
                 } catch {
                     XCTFail("\(error)")
                 }
+
+                XCTAssertNotNil(try Xcode.codeCoverageReport(for: mock, on: sdk))
             }
         }
         #endif

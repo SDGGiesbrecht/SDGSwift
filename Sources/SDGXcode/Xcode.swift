@@ -172,24 +172,8 @@ public enum Xcode {
         return ¬warnings.isEmpty
     }
 
-    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
-        return try runCustomSubcommand([
-            "\u{2D}showBuildSettings",
-            "\u{2D}scheme", try scheme(for: package),
-            "\u{2D}sdk", sdk.commandLineName
-            ], in: package.location)
-    }
-
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        let settings = try buildSettings(for: package, on: sdk)
-        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
-            throw Xcode.Error.noBuildDirectory
-        }
-        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
-    }
-
     private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        return try buildDirectory(for: package, on: sdk).appendingPathComponent("Logs/Test")
+        return try derivedData(for: package, on: sdk).appendingPathComponent("Logs/Test")
     }
 
     /// Tests the package.
@@ -218,6 +202,19 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK) throws -> URL? {
+        let directory = try coverageDirectory(for: package, on: sdk)
+        guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovreport" }) else { // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
+            return nil
+        }
+        return instance
+    }
+
     /// Returns the main package scheme.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
@@ -237,6 +234,29 @@ public enum Xcode {
             return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
         }
         throw Xcode.Error.noPackageScheme
+    }
+
+    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
+        return try runCustomSubcommand([
+            "\u{2D}showBuildSettings",
+            "\u{2D}scheme", try scheme(for: package),
+            "\u{2D}sdk", sdk.commandLineName
+            ], in: package.location)
+    }
+
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        let settings = try buildSettings(for: package, on: sdk)
+        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+            throw Xcode.Error.noBuildDirectory
+        }
+        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+    }
+
+    /// The derived data directory for the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public static func derivedData(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        return try buildDirectory(for: package, on: sdk).deletingLastPathComponent()
     }
 
     /// Runs a custom subcommand of xcodebuild.

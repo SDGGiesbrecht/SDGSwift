@@ -62,4 +62,11 @@ extension PackageRepository {
     @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
+
+    /// The derived data directory for the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public func derivedData(for sdk: Xcode.SDK) throws -> URL {
+        return try Xcode.derivedData(for: self, on: sdk)
+    }
 }
