@@ -73,7 +73,9 @@ extension Xcode {
             case .noBuildDirectory:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    case .englishUnitedKingdom:
+                        return "‘BUILD_DIR’ could not be found in the project build settings."
+                    case .englishUnitedStates, .englishCanada:
                         return "“BUILD_DIR” could not be found in the project build settings."
                     }
                 }).resolved()
