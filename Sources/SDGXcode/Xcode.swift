@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGExternalProcess
@@ -207,12 +208,121 @@ public enum Xcode {
     /// - Returns: The report, or `nil` if there is no code coverage information.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK) throws -> URL? {
+    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
-        guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovreport" }) else { // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
+        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
         }
-        return instance
+
+        let fileURLs: [URL] = try runCustomCoverageSubcommand([
+            "view",
+            "\u{2D}\u{2D}file\u{2D}list",
+            archive.path
+            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in
+                if file.is(in: package.dataDirectory) ∨ file.is(in: package.editablesDirectory) {
+                    // Belongs to a dependency.
+                    return false
+                }
+                return true
+            })
+
+        var files: [FileTestCoverage] = []
+        for fileURL in fileURLs {
+            try autoreleasepool {
+                var report = try runCustomCoverageSubcommand([
+                    "view",
+                    "\u{2D}\u{2D}file", fileURL.path,
+                    archive.path
+                    ])
+
+                let source = try String(from: fileURL)
+                let sourceLines = source.lines
+                func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
+                    let line = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars)
+                    return source.index(line, offsetBy: column)
+                }
+
+                var regions: [CoverageRegion] = []
+                while ¬report.isEmpty {
+                    let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
+                    var line = String(report[lineRange])
+                    report.removeSubrange(lineRange)
+                    if line.contains("*") {
+                        continue
+                    }
+
+                    while line.hasSuffix("\n") {
+                        line.removeLast()
+                    }
+
+                    let base: String
+                    let hasSubranges: Bool
+                    if ¬line.hasSuffix("[") {
+                        base = String(line.dropLast())
+                        hasSubranges = true
+                    } else {
+                        base = line
+                        hasSubranges = false
+                    }
+                    let components = base.components(separatedBy: ":") as [String]
+                    guard let lineString = components.first,
+                        let lineNumber = Int(lineString),
+                        let columnString = components.last,
+                        let count = Int(columnString) else {
+                            throw Xcode.Error.corruptTestCoverageReport
+                    }
+                    regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: 0) ..< toIndex(line: lineNumber + 1, column: 0), count: count))
+
+                    if hasSubranges {
+                        guard let subrange = report.prefix(through: "]\n")?.range else {
+                            throw Xcode.Error.corruptTestCoverageReport
+                        }
+                        var substring = String(report[subrange])
+                        report.removeSubrange(subrange)
+                        while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")") {
+                            let regionString = nested.contents.contents
+                            substring.removeSubrange(nested.container.range)
+
+                            let components = regionString.components(separatedBy: ",") as [String]
+                            guard components.count == 3,
+                                let start = Int(components[0]),
+                                let length = Int(components[1]),
+                                let count = Int(components[2]) else {
+                                throw Xcode.Error.corruptTestCoverageReport
+                            }
+                            regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
+                        }
+                    }
+                }
+
+                // Combine to one coherent list.
+                regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
+                    if ignoreCoveredRegions ∧ next.count ≠ 0 {
+                        return // Drop
+                    }
+
+                    guard var last = regions.last else {
+                        regions.append(next)
+                        return
+                    }
+                    if last.region.upperBound > next.region.lowerBound {
+                        regions.removeLast()
+                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
+                        regions.append(replacement)
+                    }
+
+                    last = regions.last!
+                    if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {
+                        regions.removeLast()
+                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
+                        regions.append(replacement)
+                    }
+                }
+
+                files.append(FileTestCoverage(file: fileURL, regions: regions))
+            }
+        }
+        return TestCoverageReport(files: files)
     }
 
     /// Returns the main package scheme.

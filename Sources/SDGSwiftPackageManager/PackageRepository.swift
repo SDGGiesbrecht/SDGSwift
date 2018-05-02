@@ -45,14 +45,6 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    private var dataDirectory: URL {
-        return location.appendingPathComponent(".build")
-    }
-
-    private var editablesDirectory: URL {
-        return location.appendingPathComponent("Packages")
-    }
-
     private var pinsFile: URL {
         return location.appendingPathComponent("Package.resolved")
     }

@@ -42,12 +42,13 @@ class SDGXcodeTests : TestCase {
             XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
 
             let sdks: [Xcode.SDK] = [
-                .macOS,
+                .macOS, // [_Warning: Restore._]
+                /*
                 .iOS(simulator: false),
                 .iOS(simulator: true),
                 .watchOS,
                 .tvOS(simulator: false),
-                .tvOS(simulator: true)
+                .tvOS(simulator: true)*/
             ]
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
@@ -100,7 +101,7 @@ class SDGXcodeTests : TestCase {
                     XCTFail("\(error)")
                 }
 
-                XCTAssertNotNil(try Xcode.codeCoverageReport(for: mock, on: sdk))
+                XCTAssertNotNil(try mock.codeCoverageReport(on: sdk))
             }
         }
         #endif
@@ -121,5 +122,6 @@ class SDGXcodeTests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
     }
 }

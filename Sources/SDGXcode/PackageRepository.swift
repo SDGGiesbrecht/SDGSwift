@@ -63,6 +63,15 @@ extension PackageRepository {
         return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
+        return try Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions)
+    }
+
     /// The derived data directory for the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
