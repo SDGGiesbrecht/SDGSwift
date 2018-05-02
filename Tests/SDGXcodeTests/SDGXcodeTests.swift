@@ -94,9 +94,20 @@ class SDGXcodeTests : TestCase {
         #endif
     }
 
+    func testXcodeCoverage() {
+        #if !os(Linux)
+        do {
+            try Xcode.runCustomCoverageSubcommand(["help"])
+        } catch {
+            XCTFail("\(error)")
+        }
+        #endif
+    }
+
     func testXcodeError() {
         testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
     }
 }

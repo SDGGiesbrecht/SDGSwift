@@ -18,6 +18,7 @@ extension SDGXcodeTests {
     static let __allTests = [
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testXcode", testXcode),
+        ("testXcodeCoverage", testXcodeCoverage),
         ("testXcodeError", testXcodeError)
     ]
 }

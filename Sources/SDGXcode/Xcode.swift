@@ -172,6 +172,22 @@ public enum Xcode {
         return ¬warnings.isEmpty
     }
 
+    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
+        return try runCustomSubcommand([
+            "\u{2D}showBuildSettings",
+            "\u{2D}scheme", try scheme(for: package),
+            "\u{2D}sdk", sdk.commandLineName
+            ], in: package.location)
+    }
+
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        let settings = try buildSettings(for: package, on: sdk)
+        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+            throw Xcode.Error.noBuildDirectory
+        }
+        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+    }
+
     /// Tests the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.

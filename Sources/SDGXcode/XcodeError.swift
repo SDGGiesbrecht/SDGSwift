@@ -34,6 +34,9 @@ extension Xcode {
         /// The Xcode project has no package scheme.
         case noPackageScheme
 
+        /// The build directory could not be found in the project build settings.
+        case noBuildDirectory
+
         // MARK: - PresentableError
 
         // [_Inherit Documentation: SDGCornerstone.PresentableError.presentableDescription()_]
@@ -65,6 +68,13 @@ extension Xcode {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The Xcode project has no package scheme."
+                    }
+                }).resolved()
+            case .noBuildDirectory:
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "“BUILD_DIR” could not be found in the project build settings."
                     }
                 }).resolved()
             }
