@@ -17,10 +17,10 @@ import PackageGraph
 import Workspace
 
 extension WorkspaceDelegate {
-    func packageGraphWillLoad(currentGraph: PackageGraph, dependencies: AnySequence<ManagedDependency>, missingURLs: Set<String>) {}
-    func fetchingWillBegin(repository: String) {}
-    func fetchingDidFinish(repository: String, diagnostic: Diagnostic?) {}
-    func cloning(repository: String) {}
-    func removing(repository: String) {}
-    func managedDependenciesDidUpdate(_ dependencies: AnySequence<ManagedDependency>) {}
+    internal func packageGraphWillLoad(currentGraph: PackageGraph, dependencies: AnySequence<ManagedDependency>, missingURLs: Set<String>) {}
+    internal func fetchingWillBegin(repository: String) {}
+    internal func fetchingDidFinish(repository: String, diagnostic: Diagnostic?) {}
+    internal func cloning(repository: String) {}
+    internal func removing(repository: String) {}
+    internal func managedDependenciesDidUpdate(_ dependencies: AnySequence<ManagedDependency>) {}
 }

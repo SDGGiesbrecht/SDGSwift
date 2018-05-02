@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 import SDGText
@@ -21,7 +22,7 @@ import SDGText
 import SDGExternalProcess
 
 /// A remote Swift package.
-public struct Package {
+public struct Package : TransparentWrapper {
 
     // MARK: - Initialization
 
@@ -123,5 +124,13 @@ public struct Package {
             return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
         }
         throw Package.Error.noSuchExecutable(requested: executableNames)
+    }
+
+    // MARK: - TransparentWrapper
+
+    // [_Inherit Documentation: SDGCornerstone.TransparentWrapper.wrapped_]
+    /// The wrapped instance.
+    public var wrappedInstance: Any {
+        return url
     }
 }
