@@ -188,10 +188,20 @@ public enum Xcode {
         return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
     }
 
+    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        return try buildDirectory(for: package, on: sdk).appendingPathComponent("Logs/Test")
+    }
+
     /// Tests the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+
+        if let coverage = try? coverageDirectory(for: package, on: sdk) {
+            // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
+            try? FileManager.default.removeItem(at: coverage)
+        }
+
         var command = ["test"]
 
         switch sdk {
