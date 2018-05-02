@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
@@ -33,13 +35,22 @@ public enum Xcode {
         "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
+    private static func coverageToolLocation(for xcode: URL) -> URL {
+        return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
+    }
+
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
-            func validate(_ swift: ExternalProcess) -> Bool {
+            func validate(_ xcode: ExternalProcess) -> Bool {
+                // Make sure necessary relative tools are available. (Otherwise it is a shim of some sort.)
+                if ¬FileManager.default.fileExists(atPath: coverageToolLocation(for: xcode.executable).path) {
+                    return false
+                }
+
                 // Make sure version matches.
-                let output = try? swift.run(["\u{2D}version"])
+                let output = try? xcode.run(["\u{2D}version"])
                 return output?.contains(" " + version.string(droppingEmptyPatch: true) + "\n") == true
             }
 
@@ -48,6 +59,13 @@ public enum Xcode {
             } else { // [_Exempt from Test Coverage_] Xcode is necessarily available when tests are run.
                 throw Xcode.Error.unavailable
             }
+        }
+    }
+
+    private static var locatedCoverage: ExternalProcess?
+    private static func coverageTool() throws -> ExternalProcess {
+        return try cached(in: &locatedCoverage) {
+            return ExternalProcess(at: coverageToolLocation(for: try tool().executable))
         }
     }
 
@@ -195,7 +213,7 @@ public enum Xcode {
         throw Xcode.Error.noPackageScheme
     }
 
-    /// Runs a custom subcommand.
+    /// Runs a custom subcommand of xcodebuild.
     ///
     /// - Parameters:
     ///     - arguments: The arguments (leave “xcodebuild” off the beginning).
@@ -207,5 +225,19 @@ public enum Xcode {
     @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+    }
+
+    /// Runs a custom subcommand of xccov.
+    ///
+    /// - Parameters:
+    ///     - arguments: The arguments (leave “xccov” off the beginning).
+    ///     - workingDirectory: Optional. A different working directory.
+    ///     - environment: Optional. A different set of environment variables.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+        reportProgress("$ xccov " + arguments.joined(separator: " "))
+        return try coverageTool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 }
