@@ -203,6 +203,8 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
+    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}"]
+
     /// Returns the code coverage report for the package.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
@@ -329,8 +331,8 @@ public enum Xcode {
                 // Remove false positives
                 regions = regions.filter { region in
 
-                    if region.region.isEmpty {
-                        // Empty range.
+                    if ¬source.scalars[region.region].contains(where: { $0 ∉ Xcode.charactersIrrelevantToCoverage }) {
+                        // Region has no effect.
                         return false
                     }
 
