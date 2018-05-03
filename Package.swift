@@ -29,6 +29,9 @@ let package = Package(
         /// This module uses the Swift API and provides more fine‐grained access to the details of a package’s structure than is available from the command line.
         .library(name: "SDGSwiftPackageManager", targets: ["SDGSwiftPackageManager"]),
 
+        /// Utilities for working with Swift source code.
+        .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
+
         /// Xcode‐related utilities for working with Swift packages.
         .library(name: "SDGXcode", targets: ["SDGXcode"])
     ],
@@ -53,6 +56,7 @@ let package = Package(
             "SDGSwiftLocalizations",
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
+        .target(name: "SDGSwiftSource", dependencies: []),
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
@@ -90,6 +94,10 @@ let package = Package(
             "SDGSwiftTestUtilities",
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
+            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            ]),
+        .testTarget(name: "SDGSwiftSourceTests", dependencies: [
+            "SDGSwiftSource",
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGXcodeTests", dependencies: [
