@@ -14,6 +14,7 @@
 
 import Foundation
 
+/// A test coverage report for a single file.
 public struct FileTestCoverage {
 
     internal init(file: URL, regions: [CoverageRegion]) {
