@@ -14,6 +14,7 @@
 
 import SDGLogic
 import SDGCollections
+import SDGPersistence
 import SDGExternalProcess
 
 import SDGPersistenceTestUtilities
@@ -51,6 +52,11 @@ class SDGXcodeTests : TestCase {
             ]
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
+
+                if let derived = try? mock.derivedData(for: sdk) {
+                    try? FileManager.default.removeItem(at: derived)
+                }
+
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.build(for: sdk) { outputLine in
@@ -74,6 +80,11 @@ class SDGXcodeTests : TestCase {
             ]
             for sdk in testSDKs {
                 print("Testing testing on \(sdk.commandLineName)...")
+
+                if let derived = try? mock.derivedData(for: sdk) {
+                    try? FileManager.default.removeItem(at: derived)
+                }
+
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.test(on: sdk) { outputLine in
@@ -85,7 +96,7 @@ class SDGXcodeTests : TestCase {
 
                     var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
                     filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
-                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: true)
+                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
                 } catch {
                     XCTFail("\(error)")
                 }
@@ -94,9 +105,46 @@ class SDGXcodeTests : TestCase {
         #endif
     }
 
+    func testXcodeCoverage() {
+        #if !os(Linux)
+        do {
+            try Xcode.runCustomCoverageSubcommand(["help"])
+        } catch {
+            XCTFail("\(error)")
+        }
+
+        withDefaultMockRepository { mock in
+            let source = try String(file: Resources.source, origin: nil)
+            try source.save(to: mock.location.appendingPathComponent("Sources/Mock/Mock.swift"))
+
+            let tests = try String(file: Resources.tests, origin: nil)
+            try tests.save(to: mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift"))
+
+            try mock.generateXcodeProject()
+            try mock.test(on: .macOS)
+            guard let coverageReport = try mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true) else {
+                XCTFail("No test coverage report found.")
+                return
+            }
+            guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
+                XCTFail("File missing from coverage report.")
+                return
+            }
+            var specification = source
+            for range in file.regions.reversed() {
+                specification.insert("!", at: range.region.upperBound)
+                specification.insert("¡", at: range.region.lowerBound)
+            }
+            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
+        }
+        #endif
+    }
+
     func testXcodeError() {
         testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
     }
 }

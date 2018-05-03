@@ -12,8 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGControlFlow
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGExternalProcess
@@ -33,13 +36,22 @@ public enum Xcode {
         "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
+    private static func coverageToolLocation(for xcode: URL) -> URL {
+        return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
+    }
+
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
-            func validate(_ swift: ExternalProcess) -> Bool {
+            func validate(_ xcode: ExternalProcess) -> Bool {
+                // Make sure necessary relative tools are available. (Otherwise it is a shim of some sort.)
+                if ¬FileManager.default.fileExists(atPath: coverageToolLocation(for: xcode.executable).path) {
+                    return false
+                }
+
                 // Make sure version matches.
-                let output = try? swift.run(["\u{2D}version"])
+                let output = try? xcode.run(["\u{2D}version"])
                 return output?.contains(" " + version.string(droppingEmptyPatch: true) + "\n") == true
             }
 
@@ -48,6 +60,13 @@ public enum Xcode {
             } else { // [_Exempt from Test Coverage_] Xcode is necessarily available when tests are run.
                 throw Xcode.Error.unavailable
             }
+        }
+    }
+
+    private static var locatedCoverage: ExternalProcess?
+    private static func coverageTool() throws -> ExternalProcess {
+        return try cached(in: &locatedCoverage) {
+            return ExternalProcess(at: coverageToolLocation(for: try tool().executable))
         }
     }
 
@@ -154,10 +173,20 @@ public enum Xcode {
         return ¬warnings.isEmpty
     }
 
+    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        return try derivedData(for: package, on: sdk).appendingPathComponent("Logs/Test")
+    }
+
     /// Tests the package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+
+        if let coverage = try? coverageDirectory(for: package, on: sdk) {
+            // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
+            try? FileManager.default.removeItem(at: coverage)
+        }
+
         var command = ["test"]
 
         switch sdk {
@@ -172,6 +201,149 @@ public enum Xcode {
         command += ["\u{2D}scheme", try scheme(for: package)]
 
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
+    }
+
+    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}"]
+
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
+        let directory = try coverageDirectory(for: package, on: sdk)
+        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
+            return nil
+        }
+
+        let fileURLs: [URL] = try runCustomCoverageSubcommand([
+            "view",
+            "\u{2D}\u{2D}file\u{2D}list",
+            archive.path
+            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in
+                if file.is(in: package.dataDirectory) ∨ file.is(in: package.editablesDirectory) {
+                    // Belongs to a dependency.
+                    return false
+                }
+                return true
+            })
+
+        var files: [FileTestCoverage] = []
+        for fileURL in fileURLs {
+            try autoreleasepool {
+                var report = try runCustomCoverageSubcommand([
+                    "view",
+                    "\u{2D}\u{2D}file", fileURL.path,
+                    archive.path
+                    ])
+
+                let source = try String(from: fileURL)
+                let sourceLines = source.lines
+                func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
+                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
+                    let utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column)
+                    return utf8Index.samePosition(in: source.scalars)
+                }
+
+                var regions: [CoverageRegion] = []
+                while ¬report.isEmpty {
+                    let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
+                    var line = String(report[lineRange])
+                    report.removeSubrange(lineRange)
+                    if line.contains("*") {
+                        continue
+                    }
+
+                    while line.hasSuffix("\n") {
+                        line.removeLast()
+                    }
+
+                    let base: String
+                    let hasSubranges: Bool
+                    if line.hasSuffix("[") {
+                        base = String(line.dropLast())
+                        hasSubranges = true
+                    } else {
+                        base = line
+                        hasSubranges = false
+                    }
+                    let components = base.components(separatedBy: ":") as [String]
+                    guard let lineString = components.first,
+                        let lineNumber = Int(lineString.replacingOccurrences(of: " ", with: "")),
+                        let columnString = components.last,
+                        let count = Int(columnString.replacingOccurrences(of: " ", with: "")) else {
+                            throw Xcode.Error.corruptTestCoverageReport
+                    }
+                    regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: 0) ..< toIndex(line: lineNumber + 1, column: 0), count: count))
+
+                    if hasSubranges {
+                        guard let subrange = report.prefix(through: "]\n")?.range else {
+                            throw Xcode.Error.corruptTestCoverageReport
+                        }
+                        var substring = String(report[subrange])
+                        report.removeSubrange(subrange)
+                        while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")") {
+                            let regionString = nested.contents.contents
+                            substring.removeSubrange(nested.container.range)
+
+                            let components = regionString.components(separatedBy: ",") as [String]
+                            guard components.count == 3,
+                                let start = Int(components[0].replacingOccurrences(of: " ", with: "")),
+                                let length = Int(components[1].replacingOccurrences(of: " ", with: "")),
+                                let count = Int(components[2].replacingOccurrences(of: " ", with: "")) else {
+                                    throw Xcode.Error.corruptTestCoverageReport
+                            }
+                            regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
+                        }
+                    }
+                }
+
+                // Combine to one coherent list.
+                regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
+                    if ignoreCoveredRegions ∧ next.count ≠ 0 {
+                        return // Drop
+                    }
+
+                    guard var last = regions.last else {
+                        // First one; just append.
+                        regions.append(next)
+                        return
+                    }
+                    if last.region.upperBound > next.region.lowerBound {
+                        // Fix overlap.
+                        regions.removeLast()
+                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
+                        regions.append(replacement)
+                    }
+
+                    last = regions.last!
+                    if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {
+                        // Join contiguous regions.
+                        regions.removeLast()
+                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
+                        regions.append(replacement)
+                    } else {
+                        // Unrelated to anything else, so just append.
+                        regions.append(next)
+                    }
+                }
+
+                // Remove false positives
+                regions = regions.filter { region in
+
+                    if ¬source.scalars[region.region].contains(where: { $0 ∉ Xcode.charactersIrrelevantToCoverage }) {
+                        // Region has no effect.
+                        return false
+                    }
+
+                    // Otherwise keep.
+                    return true
+                }
+
+                files.append(FileTestCoverage(file: fileURL, regions: regions))
+            }
+        }
+        return TestCoverageReport(files: files)
     }
 
     /// Returns the main package scheme.
@@ -195,7 +367,30 @@ public enum Xcode {
         throw Xcode.Error.noPackageScheme
     }
 
-    /// Runs a custom subcommand.
+    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
+        return try runCustomSubcommand([
+            "\u{2D}showBuildSettings",
+            "\u{2D}scheme", try scheme(for: package),
+            "\u{2D}sdk", sdk.commandLineName
+            ], in: package.location)
+    }
+
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        let settings = try buildSettings(for: package, on: sdk)
+        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+            throw Xcode.Error.noBuildDirectory
+        }
+        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+    }
+
+    /// The derived data directory for the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public static func derivedData(for package: PackageRepository, on sdk: SDK) throws -> URL {
+        return try buildDirectory(for: package, on: sdk).deletingLastPathComponent()
+    }
+
+    /// Runs a custom subcommand of xcodebuild.
     ///
     /// - Parameters:
     ///     - arguments: The arguments (leave “xcodebuild” off the beginning).
@@ -207,5 +402,19 @@ public enum Xcode {
     @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+    }
+
+    /// Runs a custom subcommand of xccov.
+    ///
+    /// - Parameters:
+    ///     - arguments: The arguments (leave “xccov” off the beginning).
+    ///     - workingDirectory: Optional. A different working directory.
+    ///     - environment: Optional. A different set of environment variables.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+        reportProgress("$ xccov " + arguments.joined(separator: " "))
+        return try coverageTool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 }

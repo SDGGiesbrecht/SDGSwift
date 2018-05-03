@@ -62,4 +62,20 @@ extension PackageRepository {
     @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
+
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
+        return try Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions)
+    }
+
+    /// The derived data directory for the package.
+    ///
+    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    public func derivedData(for sdk: Xcode.SDK) throws -> URL {
+        return try Xcode.derivedData(for: self, on: sdk)
+    }
 }

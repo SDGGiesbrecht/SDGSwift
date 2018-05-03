@@ -58,6 +58,7 @@ let package = Package(
             "SDGSwiftLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
@@ -98,6 +99,7 @@ let package = Package(
             "SDGSwiftTestUtilities",
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
