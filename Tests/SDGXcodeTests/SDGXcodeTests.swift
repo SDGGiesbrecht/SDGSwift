@@ -135,7 +135,7 @@ class SDGXcodeTests : TestCase {
                 specification.insert("!", at: range.region.upperBound)
                 specification.insert("¡", at: range.region.lowerBound)
             }
-            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: true) // [_Warning: Still overwriting._]
+            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
         }
         #endif
     }
