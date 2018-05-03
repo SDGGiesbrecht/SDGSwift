@@ -238,8 +238,9 @@ public enum Xcode {
                 let source = try String(from: fileURL)
                 let sourceLines = source.lines
                 func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
-                    let line = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars)
-                    return source.index(line, offsetBy: column)
+                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
+                    let utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column)
+                    return utf8Index.samePosition(in: source.scalars)
                 }
 
                 var regions: [CoverageRegion] = []
@@ -302,10 +303,12 @@ public enum Xcode {
                     }
 
                     guard var last = regions.last else {
+                        // First one; just append.
                         regions.append(next)
                         return
                     }
                     if last.region.upperBound > next.region.lowerBound {
+                        // Fix overlap.
                         regions.removeLast()
                         let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
                         regions.append(replacement)
@@ -313,9 +316,13 @@ public enum Xcode {
 
                     last = regions.last!
                     if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {
+                        // Join contiguous regions.
                         regions.removeLast()
                         let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
                         regions.append(replacement)
+                    } else {
+                        // Unrelated to anything else, so just append.
+                        regions.append(next)
                     }
                 }
 
