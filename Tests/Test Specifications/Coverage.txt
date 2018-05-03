@@ -31,7 +31,7 @@ func branching() -> Bool {
 !
 var 😀 = false
 func withSupplementalPlaneCharacters() -> Bool {
-    if 😀 {¡!
+    if 😀 {
 ¡        return true
 ! ¡   }
 !    return false

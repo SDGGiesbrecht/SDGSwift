@@ -326,6 +326,18 @@ public enum Xcode {
                     }
                 }
 
+                // Remove false positives
+                regions = regions.filter { region in
+
+                    if region.region.isEmpty {
+                        // Empty range.
+                        return false
+                    }
+
+                    // Otherwise keep.
+                    return true
+                }
+
                 files.append(FileTestCoverage(file: fileURL, regions: regions))
             }
         }
