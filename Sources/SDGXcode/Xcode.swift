@@ -257,7 +257,7 @@ public enum Xcode {
 
                     let base: String
                     let hasSubranges: Bool
-                    if ¬line.hasSuffix("[") {
+                    if line.hasSuffix("[") {
                         base = String(line.dropLast())
                         hasSubranges = true
                     } else {
@@ -266,9 +266,9 @@ public enum Xcode {
                     }
                     let components = base.components(separatedBy: ":") as [String]
                     guard let lineString = components.first,
-                        let lineNumber = Int(lineString),
+                        let lineNumber = Int(lineString.replacingOccurrences(of: " ", with: "")),
                         let columnString = components.last,
-                        let count = Int(columnString) else {
+                        let count = Int(columnString.replacingOccurrences(of: " ", with: "")) else {
                             throw Xcode.Error.corruptTestCoverageReport
                     }
                     regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: 0) ..< toIndex(line: lineNumber + 1, column: 0), count: count))
@@ -285,10 +285,10 @@ public enum Xcode {
 
                             let components = regionString.components(separatedBy: ",") as [String]
                             guard components.count == 3,
-                                let start = Int(components[0]),
-                                let length = Int(components[1]),
-                                let count = Int(components[2]) else {
-                                throw Xcode.Error.corruptTestCoverageReport
+                                let start = Int(components[0].replacingOccurrences(of: " ", with: "")),
+                                let length = Int(components[1].replacingOccurrences(of: " ", with: "")),
+                                let count = Int(components[2].replacingOccurrences(of: " ", with: "")) else {
+                                    throw Xcode.Error.corruptTestCoverageReport
                             }
                             regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
                         }

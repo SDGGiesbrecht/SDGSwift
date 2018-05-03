@@ -14,6 +14,7 @@
 
 import SDGLogic
 import SDGCollections
+import SDGPersistence
 import SDGExternalProcess
 
 import SDGPersistenceTestUtilities
@@ -42,13 +43,12 @@ class SDGXcodeTests : TestCase {
             XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
 
             let sdks: [Xcode.SDK] = [
-                .macOS, // [_Warning: Restore._]
-                /*
+                .macOS,
                 .iOS(simulator: false),
                 .iOS(simulator: true),
                 .watchOS,
                 .tvOS(simulator: false),
-                .tvOS(simulator: true)*/
+                .tvOS(simulator: true)
             ]
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
@@ -100,8 +100,6 @@ class SDGXcodeTests : TestCase {
                 } catch {
                     XCTFail("\(error)")
                 }
-
-                XCTAssertNotNil(try mock.codeCoverageReport(on: sdk))
             }
         }
         #endif
@@ -113,6 +111,31 @@ class SDGXcodeTests : TestCase {
             try Xcode.runCustomCoverageSubcommand(["help"])
         } catch {
             XCTFail("\(error)")
+        }
+
+        withDefaultMockRepository { mock in
+            let source = try String(file: Resources.source, origin: nil)
+            try source.save(to: mock.location.appendingPathComponent("Sources/Mock/Mock.swift"))
+
+            let tests = try String(file: Resources.tests, origin: nil)
+            try tests.save(to: mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift"))
+
+            try mock.generateXcodeProject()
+            try mock.test(on: .macOS)
+            guard let coverageReport = try mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true) else {
+                XCTFail("No test coverage report found.")
+                return
+            }
+            guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
+                XCTFail("File missing from coverage report.")
+                return
+            }
+            var specification = source
+            for range in file.regions.reversed() {
+                specification.insert("!", at: range.region.upperBound)
+                specification.insert("¡", at: range.region.lowerBound)
+            }
+            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: true) // [_Warning: Still overwriting._]
         }
         #endif
     }
