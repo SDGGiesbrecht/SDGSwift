@@ -1,7 +1,6 @@
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
-.
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
 === BUILD TARGET MockTests OF PROJECT Mock WITH CONFIGURATION Debug ===
 Build settings from command line:
