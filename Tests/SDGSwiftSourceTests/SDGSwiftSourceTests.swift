@@ -20,7 +20,7 @@ class SDGSwiftSourceTests : TestCase {
 
     func testExample() {
         do {
-            _ = try test()
+            _ = try SourceKit.test()
         } catch {
             XCTFail("\(error)")
         }

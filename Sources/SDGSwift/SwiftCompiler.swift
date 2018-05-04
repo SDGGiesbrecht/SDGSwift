@@ -70,7 +70,6 @@ public enum SwiftCompiler {
         return try cached(in: &located) {
 
             func validate(_ swift: ExternalProcess) -> Bool {
-                print(sourceKitLocation(for: swift.executable).path)
                 // Make sure necessary relative libraries are available. (Otherwise it is a shim of some sort.)
                 if ¬FileManager.default.fileExists(atPath: compilerLocation(for: swift.executable).path)
                     ∨ ¬FileManager.default.fileExists(atPath: packageManagerLibraries(for: swift.executable).path)
