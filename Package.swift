@@ -58,7 +58,9 @@ let package = Package(
             ]),
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone")
+            "SDGSwiftLocalizations",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
