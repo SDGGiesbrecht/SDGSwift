@@ -19,5 +19,10 @@ import SDGSwiftSource
 class SDGSwiftSourceTests : TestCase {
 
     func testExample() {
+        do {
+            _ = try test()
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }

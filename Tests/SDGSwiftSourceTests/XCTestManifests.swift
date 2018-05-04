@@ -16,7 +16,7 @@ import XCTest
 
 extension SDGSwiftSourceTests {
     static let __allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }
 

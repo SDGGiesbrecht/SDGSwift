@@ -56,7 +56,10 @@ let package = Package(
             "SDGSwiftLocalizations",
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
-        .target(name: "SDGSwiftSource", dependencies: []),
+        .target(name: "SDGSwiftSource", dependencies: [
+            "SDGSwift",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone")
+            ]),
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
