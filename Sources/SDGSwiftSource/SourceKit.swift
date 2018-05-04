@@ -31,8 +31,10 @@ internal enum SourceKit {
     internal /* [_Warning: Private_] */ static func library() throws -> UnsafeMutableRawPointer {
         return try cached(in: &located) {
             guard let library = dlopen(try SwiftCompiler._sourceKitLocation().path, RTLD_LAZY) else {
-                struct SourceKitError : Error {} // [_Warning: Expand this_]
-                throw SourceKitError()
+                struct SourceKitError : Error { // [_Warning: Expand this_]
+                    let description: String?
+                }
+                throw SourceKitError(description: String(validatingUTF8: dlerror()))
             }
             return library
         }

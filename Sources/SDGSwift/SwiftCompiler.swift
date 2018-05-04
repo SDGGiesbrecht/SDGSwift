@@ -57,12 +57,12 @@ public enum SwiftCompiler {
         #if os(macOS)
         return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/sourcekitd.framework/sourcekitd")
         #else
-        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/libsourceskitdInProc.so")
+        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/libsourcekitdInProc.so")
         #endif
     }
     /// :nodoc:
     public static func _sourceKitLocation() throws -> URL {
-        return compilerLocation(for: try location())
+        return sourceKitLocation(for: try location())
     }
 
     private static var located: ExternalProcess?
