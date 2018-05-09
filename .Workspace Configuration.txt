@@ -14,7 +14,7 @@
 
 [_Import https://github.com/SDGGiesbrecht/SDG_]
 
-Current Version: 0.1.1
+Current Version: 0.1.2
 
 Project Website: https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
 Documentation URL: https://sdggiesbrecht.github.io/SDGSwift
