@@ -81,10 +81,11 @@ public enum SourceKit {
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        print(String(describing: try SourceKit.query(withRequest: try Object([
+        let variant = try SourceKit.query(withRequest: try Object([
             try UID("key.request"): try Object(UID("source.request.indexsource")),
             try UID("key.sourcefile"): try Object(#file),
             try UID("key.compilerargs"): try Object([Object(#file)])
-            ]))))
+            ]))
+        print(String(describing: variant?.untyped()))
     }
 }
