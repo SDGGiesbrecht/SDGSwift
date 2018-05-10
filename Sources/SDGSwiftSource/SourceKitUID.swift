@@ -16,7 +16,7 @@ import SDGSourceKitShims
 
 extension SourceKit {
 
-    internal struct UID : ExpressibleByStringLiteral, Hashable {
+    internal struct UID : Hashable {
 
         // MARK: - Initialization
 
@@ -40,12 +40,6 @@ extension SourceKit {
 
         internal static func == (precedingValue: UID, followingValue: UID) -> Bool {
             return precedingValue.rawValue == followingValue.rawValue
-        }
-
-        // MARK: - ExpressibleByStringLiteral
-
-        internal init(stringLiteral: String) {
-            try! self.init(stringLiteral)
         }
 
         // MARK: - Hashable

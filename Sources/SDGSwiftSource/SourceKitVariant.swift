@@ -100,19 +100,16 @@ extension SourceKit {
             }
         }
 
-        // MARK: - Usage
-
-        internal func untyped() -> Any {
-            // [_Warning: Temporary._]
+        internal func asAny() -> Any {
             switch self {
             case .dictionary(let dictionary):
                 var result: [String: Any] = [:]
                 for (key, value) in dictionary {
-                    result[key] = value.untyped()
+                    result[key] = value.asAny()
                 }
                 return result
             case .array(let array):
-                return array.map { $0.untyped() }
+                return array.map { $0.asAny() }
             case .integer(let integer):
                 return integer
             case .string(let string):

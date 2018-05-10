@@ -20,7 +20,7 @@ class SDGSwiftSourceTests : TestCase {
 
     func testExample() {
         do {
-            try SourceKit.test()
+            print(try File(from: URL(fileURLWithPath: #file)))
         } catch {
             XCTFail("\(error)")
         }
