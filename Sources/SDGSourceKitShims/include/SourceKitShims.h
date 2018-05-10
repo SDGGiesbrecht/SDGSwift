@@ -2,6 +2,7 @@
 
 // Based on https://github.com/apple/swift/blob/master/tools/SourceKit/tools/sourcekitd/include/sourcekitd/sourcekitd.h
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 
