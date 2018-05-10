@@ -59,10 +59,6 @@ public enum SourceKit {
 
     // Object
 
-    private static func sourcekitd_request_release(_ object: sourcekitd_object_t) throws {
-        (try load(symbol: "sourcekitd_request_release") as (@convention(c) (sourcekitd_object_t) -> Void))(object)
-    }
-
     private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<sourcekitd_uid_t?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
         return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<sourcekitd_uid_t?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
     }
