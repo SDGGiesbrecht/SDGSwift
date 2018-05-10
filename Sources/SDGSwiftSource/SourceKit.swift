@@ -57,13 +57,6 @@ public enum SourceKit {
 
     // MARK: - Symbols
 
-    // UID
-
-    private typealias sourcekitd_uid_t = UnsafeMutableRawPointer
-    private static func sourcekitd_uid_get_from_cstr(_ string: UnsafePointer<Int8>) throws -> sourcekitd_uid_t? {
-        return (try load(symbol: "sourcekitd_uid_get_from_cstr") as (@convention(c) (UnsafePointer<Int8>) -> sourcekitd_uid_t?))(string)
-    }
-
     // Object
 
     private typealias sourcekitd_object_t = UnsafeMutableRawPointer
@@ -71,16 +64,16 @@ public enum SourceKit {
         (try load(symbol: "sourcekitd_request_release") as (@convention(c) (sourcekitd_object_t) -> Void))(object)
     }
 
-    private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<sourcekitd_uid_t?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<sourcekitd_uid_t?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
+    private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<SourceKit.UID?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
+        return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<SourceKit.UID?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
     }
 
     private static func sourcekitd_request_array_create(_ objects: UnsafePointer<sourcekitd_object_t?>?, count: Int) throws -> sourcekitd_object_t? {
         return (try load(symbol: "sourcekitd_request_array_create") as (@convention(c) (UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(objects, count)
     }
 
-    private static func sourcekitd_request_uid_create(_ uid: sourcekitd_uid_t) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_uid_create") as (@convention(c) (sourcekitd_uid_t) -> sourcekitd_object_t?))(uid)
+    private static func sourcekitd_request_uid_create(_ uid: SourceKit.UID) throws -> sourcekitd_object_t? {
+        return (try load(symbol: "sourcekitd_request_uid_create") as (@convention(c) (SourceKit.UID) -> sourcekitd_object_t?))(uid)
     }
 
     private static func sourcekitd_request_string_create(_ string: UnsafePointer<Int8>) throws -> sourcekitd_object_t? {
@@ -110,12 +103,12 @@ public enum SourceKit {
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        let keys: [sourcekitd_uid_t?] = [
-            try sourcekitd_uid_get_from_cstr("key.request"),
-            try sourcekitd_uid_get_from_cstr("key.sourcetext")
+        let keys: [SourceKit.UID?] = [
+            try SourceKit.UID("key.request"),
+            try SourceKit.UID("key.sourcetext")
         ]
         let values: [sourcekitd_object_t?] = [
-            try sourcekitd_request_uid_create(sourcekitd_uid_get_from_cstr("source.request.indexsource")!),
+            try sourcekitd_request_uid_create(SourceKit.UID("source.request.indexsource")),
             try sourcekitd_request_string_create("print(\"Hello, world!\")")
         ]
         let request = try sourcekitd_request_dictionary_create(keys, values, keys.count)
