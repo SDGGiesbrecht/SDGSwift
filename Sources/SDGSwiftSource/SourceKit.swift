@@ -59,21 +59,16 @@ public enum SourceKit {
 
     // Object
 
-    private typealias sourcekitd_object_t = UnsafeMutableRawPointer
     private static func sourcekitd_request_release(_ object: sourcekitd_object_t) throws {
         (try load(symbol: "sourcekitd_request_release") as (@convention(c) (sourcekitd_object_t) -> Void))(object)
     }
 
-    private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<SourceKit.UID?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<SourceKit.UID?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
+    private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<sourcekitd_uid_t?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
+        return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<sourcekitd_uid_t?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
     }
 
     private static func sourcekitd_request_array_create(_ objects: UnsafePointer<sourcekitd_object_t?>?, count: Int) throws -> sourcekitd_object_t? {
         return (try load(symbol: "sourcekitd_request_array_create") as (@convention(c) (UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(objects, count)
-    }
-
-    private static func sourcekitd_request_uid_create(_ uid: SourceKit.UID) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_uid_create") as (@convention(c) (SourceKit.UID) -> sourcekitd_object_t?))(uid)
     }
 
     private static func sourcekitd_request_string_create(_ string: UnsafePointer<Int8>) throws -> sourcekitd_object_t? {
@@ -103,12 +98,12 @@ public enum SourceKit {
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        let keys: [SourceKit.UID?] = [
-            try SourceKit.UID("key.request"),
-            try SourceKit.UID("key.sourcetext")
+        let keys: [sourcekitd_uid_t?] = [
+            try SourceKit.UID("key.request").rawValue,
+            try SourceKit.UID("key.sourcetext").rawValue
         ]
         let values: [sourcekitd_object_t?] = [
-            try sourcekitd_request_uid_create(SourceKit.UID("source.request.indexsource")),
+            try SourceKit.Object(SourceKit.UID("source.request.indexsource")).rawValue,
             try sourcekitd_request_string_create("print(\"Hello, world!\")")
         ]
         let request = try sourcekitd_request_dictionary_create(keys, values, keys.count)

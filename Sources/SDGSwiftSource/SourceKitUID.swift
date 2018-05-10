@@ -1,11 +1,17 @@
 
 extension SourceKit {
-    internal typealias UID /* sourcekitd_uid_t */ = UnsafeMutableRawPointer
-}
 
-extension SourceKit.UID {
+    internal typealias sourcekitd_uid_t = UnsafeMutableRawPointer
+    internal struct UID {
 
-    init(_ string: UnsafePointer<Int8>) throws {
-        self = (try SourceKit.load(symbol: "sourcekitd_uid_get_from_cstr") as (@convention(c) (UnsafePointer<Int8>) -> SourceKit.UID?))(string)!
+        // MARK: - Initialization
+
+        internal init(_ string: UnsafePointer<Int8>) throws {
+            rawValue = (try SourceKit.load(symbol: "sourcekitd_uid_get_from_cstr") as (@convention(c) (UnsafePointer<Int8>) -> sourcekitd_uid_t?))(string)!
+        }
+
+        // MARK: - Properties
+
+        internal let rawValue: sourcekitd_uid_t
     }
 }
