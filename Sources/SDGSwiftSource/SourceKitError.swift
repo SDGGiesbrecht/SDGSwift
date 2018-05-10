@@ -28,6 +28,9 @@ extension SourceKit {
         /// The dynamic linker encountered an error.
         case dynamicLinkerError(description: String?)
 
+        /// SourceKit responded with an error message.
+        case sourceKitError(description: String)
+
         // MARK: - Initialization
 
         internal static func currentDynamicLinkerError() -> SourceKit.Error {
@@ -51,6 +54,8 @@ extension SourceKit {
                         }
                     }).resolved()
                 }
+            case .sourceKitError(description: let description):
+                return StrictString(description)
             }
         }
     }

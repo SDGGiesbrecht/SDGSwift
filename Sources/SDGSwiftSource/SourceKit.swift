@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 import SDGControlFlow
 
 import SDGSwift
@@ -55,31 +56,36 @@ public enum SourceKit {
         return try uninitializedLoad(symbol: name)
     }
 
-    // MARK: - Symbols
-
-    // Response
-
-    private static func sourcekitd_response_is_error(_ object: sourcekitd_response_t) throws -> Bool {
-        return (try load(symbol: "sourcekitd_response_is_error") as (@convention(c) (sourcekitd_response_t) -> Bool))(object)
-    }
-
-    private static func sourcekitd_response_error_get_description(_ error: sourcekitd_response_t) throws -> UnsafePointer<Int8>? {
-        return (try load(symbol: "sourcekitd_response_error_get_description") as (@convention(c) (sourcekitd_response_t) -> UnsafePointer<Int8>?))(error)
-    }
-
     // MARK: - Usage
+
+    internal typealias sourcekitd_response_t = UnsafeMutableRawPointer
+    internal static func query(withRequest request: Object) throws {
+        let response = (try load(symbol: "sourcekitd_send_request_sync") as (@convention(c) (sourcekitd_object_t) -> sourcekitd_response_t?))(request.rawValue)!
+        defer {
+            if let dispose = try? load(symbol: "sourcekitd_response_dispose") as (@convention(c) (sourcekitd_response_t) -> Void) {
+                dispose(response)
+            } else {
+                if BuildConfiguration.current == .debug {
+                    print("Memory leak! Failed to link “sourcekitd_response_dispose”.")
+                }
+            }
+        }
+
+        guard ¬(try load(symbol: "sourcekitd_response_is_error") as (@convention(c) (sourcekitd_response_t) -> Bool))(response) else {
+            let cString = (try load(symbol: "sourcekitd_response_error_get_description") as (@convention(c) (sourcekitd_response_t) -> UnsafePointer<Int8>?))(response)!
+            throw SourceKit.Error.sourceKitError(description: String(cString: cString))
+        }
+
+        // [_Warning: Dropping response._]
+        print("Response received.")
+    }
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        let response = try Response(toRequest: try Object([
+        try SourceKit.query(withRequest: try Object([
             try UID("key.request"): try Object(UID("source.request.indexsource")),
-            try UID("key.sourcetext"): try Object("print(\"Hello, world!\")")
+            try UID("key.sourcefile"): try Object(#file),
+            try UID("key.compilerargs"): try Object([Object(#file)])
             ]))
-        if try sourcekitd_response_is_error(response.rawValue) {
-            let description = try sourcekitd_response_error_get_description(response.rawValue)!
-            print(String(validatingUTF8: description)!)
-        } else {
-            print("No error.")
-        }
     }
 }
