@@ -59,11 +59,12 @@ public enum SourceKit {
     // MARK: - Usage
 
     internal typealias sourcekitd_response_t = UnsafeMutableRawPointer
-    internal static func query(withRequest request: Object) throws {
+    internal static func query(withRequest request: Object) throws -> Variant? {
         let response = (try load(symbol: "sourcekitd_send_request_sync") as (@convention(c) (sourcekitd_object_t) -> sourcekitd_response_t?))(request.rawValue)!
         defer {
             if let dispose = try? load(symbol: "sourcekitd_response_dispose") as (@convention(c) (sourcekitd_response_t) -> Void) {
-                dispose(response)
+                // [_Warning: Leak!_]
+                //dispose(response)
             } else {
                 if BuildConfiguration.current == .debug {
                     print("Memory leak! Failed to link “sourcekitd_response_dispose”.")
@@ -76,16 +77,15 @@ public enum SourceKit {
             throw SourceKit.Error.sourceKitError(description: String(cString: cString))
         }
 
-        // [_Warning: Dropping response._]
-        print("Response received.")
+        return try Variant((try load(symbol: "sourcekitd_response_get_value") as (@convention(c) (sourcekitd_response_t) -> sourcekitd_variant_t))(response))
     }
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        try SourceKit.query(withRequest: try Object([
+        print(String(describing: try SourceKit.query(withRequest: try Object([
             try UID("key.request"): try Object(UID("source.request.indexsource")),
             try UID("key.sourcefile"): try Object(#file),
             try UID("key.compilerargs"): try Object([Object(#file)])
-            ]))
+            ]))))
     }
 }

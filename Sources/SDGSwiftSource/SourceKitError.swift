@@ -31,6 +31,9 @@ extension SourceKit {
         /// SourceKit responded with an error message.
         case sourceKitError(description: String)
 
+        /// SourceKit responded with an unknown type variant.
+        case unknownTypeVariant(identifier: Int)
+
         // MARK: - Initialization
 
         internal static func currentDynamicLinkerError() -> SourceKit.Error {
@@ -56,6 +59,13 @@ extension SourceKit {
                 }
             case .sourceKitError(description: let description):
                 return StrictString(description)
+            case .unknownTypeVariant(identifier: let identifier):
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("SourceKit responded with an unknown type variant identifier: \(identifier.inDigits())")
+                    }
+                }).resolved()
             }
         }
     }
