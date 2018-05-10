@@ -35,7 +35,8 @@ public enum SourceKit {
     }
 
     private static var loaded: [String: Any] = [:]
-    private static func load<Symbol>(symbol name: String) throws -> Symbol {
+    private static func uninitializedLoad<Symbol>(symbol name: String) throws -> Symbol {
+        // This loads symbols from https://github.com/apple/swift/blob/master/tools/SourceKit/tools/sourcekitd/include/sourcekitd/sourcekitd.h
         let loadedSymbol = try cached(in: &loaded[name]) {
             guard let loaded = dlsym(try library(), name) else {
                 throw SourceKit.Error.currentDynamicLinkerError()
@@ -45,17 +46,16 @@ public enum SourceKit {
         return loadedSymbol as! Symbol
     }
 
-    // MARK: - Symbols
-
-    // Spread these out into their own types.
-
-    // From https://github.com/apple/swift/blob/master/tools/SourceKit/tools/sourcekitd/include/sourcekitd/sourcekitd.h
-
-    // SourceKit
-
-    private static func sourcekitd_initialize() throws {
-        (try load(symbol: "sourcekitd_initialize") as (@convention(c) () -> Void))()
+    private static var initialized: Bool = false
+    internal static func load<Symbol>(symbol name: String) throws -> Symbol {
+        if ¬initialized {
+            (try uninitializedLoad(symbol: "sourcekitd_initialize") as (@convention(c) () -> Void))()
+            initialized = true
+        }
+        return try uninitializedLoad(symbol: name)
     }
+
+    // MARK: - Symbols
 
     // UID
 
@@ -110,14 +110,13 @@ public enum SourceKit {
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        _ = try SourceKit.sourcekitd_initialize()
         let keys: [sourcekitd_uid_t?] = [
             try sourcekitd_uid_get_from_cstr("key.request"),
-            try sourcekitd_uid_get_from_cstr("key.sourcetext"),
+            try sourcekitd_uid_get_from_cstr("key.sourcetext")
         ]
         let values: [sourcekitd_object_t?] = [
             try sourcekitd_request_uid_create(sourcekitd_uid_get_from_cstr("source.request.indexsource")!),
-            try sourcekitd_request_string_create("print(\"Hello, world!\")"),
+            try sourcekitd_request_string_create("print(\"Hello, world!\")")
         ]
         let request = try sourcekitd_request_dictionary_create(keys, values, keys.count)
         let result = try sourcekitd_send_request_sync(request!)!
