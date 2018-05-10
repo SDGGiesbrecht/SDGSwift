@@ -2,7 +2,7 @@
 extension SourceKit {
 
     internal typealias sourcekitd_uid_t = UnsafeMutableRawPointer
-    internal struct UID {
+    internal struct UID : ExpressibleByStringLiteral, Hashable {
 
         // MARK: - Initialization
 
@@ -13,5 +13,26 @@ extension SourceKit {
         // MARK: - Properties
 
         internal let rawValue: sourcekitd_uid_t
+        private func string() throws -> String {
+            return String(cString: (try SourceKit.load(symbol: "sourcekitd_uid_get_string_ptr") as (@convention(c) (sourcekitd_uid_t) -> (UnsafePointer<Int8>?)))(rawValue)!)
+        }
+
+        // MARK: - Equatable
+
+        internal static func == (precedingValue: UID, followingValue: UID) -> Bool {
+            return precedingValue.rawValue == followingValue.rawValue
+        }
+
+        // MARK: - ExpressibleByStringLiteral
+
+        internal init(stringLiteral: String) {
+            try! self.init(stringLiteral)
+        }
+
+        // MARK: - Hashable
+
+        internal var hashValue: Int {
+            return rawValue.hashValue
+        }
     }
 }

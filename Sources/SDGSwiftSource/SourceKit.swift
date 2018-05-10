@@ -59,16 +59,8 @@ public enum SourceKit {
 
     // Object
 
-    private static func sourcekitd_request_dictionary_create(_ keys: UnsafePointer<sourcekitd_uid_t?>?, _ values: UnsafePointer<sourcekitd_object_t?>?, _ count: Int) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<sourcekitd_uid_t?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, count)
-    }
-
     private static func sourcekitd_request_array_create(_ objects: UnsafePointer<sourcekitd_object_t?>?, count: Int) throws -> sourcekitd_object_t? {
         return (try load(symbol: "sourcekitd_request_array_create") as (@convention(c) (UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(objects, count)
-    }
-
-    private static func sourcekitd_request_string_create(_ string: UnsafePointer<Int8>) throws -> sourcekitd_object_t? {
-        return (try load(symbol: "sourcekitd_request_string_create") as (@convention(c) (UnsafePointer<Int8>) -> sourcekitd_object_t?))(string)
     }
 
     // Response
@@ -94,16 +86,12 @@ public enum SourceKit {
 
     public static func test() throws {
         // [_Warning: Temporary._]
-        let keys: [sourcekitd_uid_t?] = [
-            try SourceKit.UID("key.request").rawValue,
-            try SourceKit.UID("key.sourcetext").rawValue
+        let literal: [UID: Object] = [
+            try UID("key.request"): try Object(UID("source.request.indexsource")),
+            try UID("key.sourcetext"): try Object("print(\"Hello, world!\")")
         ]
-        let values: [sourcekitd_object_t?] = [
-            try SourceKit.Object(SourceKit.UID("source.request.indexsource")).rawValue,
-            try sourcekitd_request_string_create("print(\"Hello, world!\")")
-        ]
-        let request = try sourcekitd_request_dictionary_create(keys, values, keys.count)
-        let result = try sourcekitd_send_request_sync(request!)!
+        let request = try Object(literal)
+        let result = try sourcekitd_send_request_sync(request.rawValue)!
         if try sourcekitd_response_is_error(result) {
             let description = try sourcekitd_response_error_get_description(result)!
             print(String(validatingUTF8: description)!)
