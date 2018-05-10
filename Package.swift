@@ -59,6 +59,7 @@ let package = Package(
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
+            "SDGSourceKitShims",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
@@ -79,6 +80,7 @@ let package = Package(
         .target(name: "SDGSwiftLocalizations", dependencies: [
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
+        .target(name: "SDGSourceKitShims"),
 
         // Tests
         .target(name: "SDGSwiftTestUtilities", dependencies: [

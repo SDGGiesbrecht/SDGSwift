@@ -18,6 +18,7 @@ import SDGLogic
 import SDGControlFlow
 
 import SDGSwift
+import SDGSourceKitShims
 
 /// SourceKit.
 public enum SourceKit {
@@ -37,7 +38,6 @@ public enum SourceKit {
 
     private static var loaded: [String: Any] = [:]
     private static func uninitializedLoad<Symbol>(symbol name: String) throws -> Symbol {
-        // This loads symbols from https://github.com/apple/swift/blob/master/tools/SourceKit/tools/sourcekitd/include/sourcekitd/sourcekitd.h
         let loadedSymbol = try cached(in: &loaded[name]) {
             guard let loaded = dlsym(try library(), name) else {
                 throw SourceKit.Error.currentDynamicLinkerError()
@@ -58,7 +58,6 @@ public enum SourceKit {
 
     // MARK: - Usage
 
-    internal typealias sourcekitd_response_t = UnsafeMutableRawPointer
     internal static func query(withRequest request: Object) throws -> Variant? {
         let response = (try load(symbol: "sourcekitd_send_request_sync") as (@convention(c) (sourcekitd_object_t) -> sourcekitd_response_t?))(request.rawValue)!
         defer {

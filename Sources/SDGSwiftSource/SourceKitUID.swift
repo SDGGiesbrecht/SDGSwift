@@ -1,7 +1,8 @@
 
+import SDGSourceKitShims
+
 extension SourceKit {
 
-    internal typealias sourcekitd_uid_t = UnsafeMutableRawPointer
     internal struct UID : ExpressibleByStringLiteral, Hashable {
 
         // MARK: - Initialization

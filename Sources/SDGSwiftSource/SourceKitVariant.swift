@@ -1,7 +1,8 @@
 
+import SDGSourceKitShims
+
 extension SourceKit {
 
-    internal typealias sourcekitd_variant_t = UnsafeMutableRawPointer
     internal enum Variant {
 
         // MARK: - Initialization

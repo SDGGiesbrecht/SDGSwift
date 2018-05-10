@@ -1,9 +1,10 @@
 
 import SDGControlFlow
 
+import SDGSourceKitShims
+
 extension SourceKit {
 
-    internal typealias sourcekitd_object_t = UnsafeMutableRawPointer
     internal final class Object {
 
         // MARK: - Initialization
@@ -17,10 +18,7 @@ extension SourceKit {
         }
 
         internal init(_ array: [Object]) throws {
-            var elements: [sourcekitd_uid_t?] = []
-            for element in array {
-                elements.append(element.rawValue)
-            }
+            let elements: [sourcekitd_object_t?] = array.map { $0.rawValue }
             rawValue = (try load(symbol: "sourcekitd_request_array_create") as (@convention(c) (UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(elements, elements.count)!
         }
 
