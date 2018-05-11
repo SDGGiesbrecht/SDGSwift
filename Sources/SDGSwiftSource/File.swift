@@ -15,7 +15,7 @@
 import Foundation
 
 /// A Swift file.
-public struct File {
+public final class File: SyntaxElement {
 
     // MARK: - Initialization
 
@@ -23,20 +23,21 @@ public struct File {
     ///
     /// Throws: A `SourceKit.Error`.
     public init(from location: URL) throws {
-        self = try SourceKit.parse(file: location)
-    }
+        self.location = location
+        let variant = try SourceKit.parse(file: location)
+        let source = try String(from: location)
+        try super.init(substructureInformation: variant, in: source)
 
-    internal init(variant: SourceKit.Variant) throws {
-        let dictionary: [String: SourceKit.Variant]
-        switch variant {
-        case .dictionary(let contents):
-            dictionary = contents
-        default:
-            throw SourceKit.Error.unknownResponse(contents: variant.asAny())
-        }
+        let dictionary = try variant.asDictionary()
+
         print(dictionary.keys)
         print(dictionary["key.substructure"]?.asAny())
         print(dictionary["key.offset"]?.asAny())
         print(dictionary["key.length"]?.asAny())
     }
+
+    // MARK: - Properties
+
+    /// The location of the file.
+    public var location: URL
 }

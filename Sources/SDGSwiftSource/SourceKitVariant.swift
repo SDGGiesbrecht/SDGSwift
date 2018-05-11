@@ -100,6 +100,31 @@ extension SourceKit {
             }
         }
 
+        internal func asDictionary() throws -> [String: Variant] {
+            switch self {
+            case .dictionary(let result):
+                return result
+            default:
+                throw SourceKit.Error.unknownResponse(contents: self.asAny())
+            }
+        }
+        internal func value(for key: String) throws -> Variant {
+            if let result = try asDictionary()[key] {
+                return result
+            } else {
+                throw SourceKit.Error.unknownResponse(contents: Optional<Variant>.none as Any)
+            }
+        }
+
+        internal func asInteger() throws -> Int {
+            switch self {
+            case .integer(let result):
+                return result
+            default:
+                throw SourceKit.Error.unknownResponse(contents: self.asAny())
+            }
+        }
+
         internal func asAny() -> Any {
             switch self {
             case .dictionary(let dictionary):

@@ -79,7 +79,7 @@ public enum SourceKit {
         return try Variant((try load(symbol: "sourcekitd_response_get_value") as (@convention(c) (sourcekitd_response_t) -> sourcekitd_variant_t))(response))
     }
 
-    internal static func parse(file: URL) throws -> File {
+    internal static func parse(file: URL) throws -> SourceKit.Variant {
         let response = try SourceKit.query(withRequest: try Object([
             try UID("key.request"): try Object(UID("source.request.editor.open")),
             try UID("key.name"): try Object(file.path),
@@ -88,6 +88,6 @@ public enum SourceKit {
         guard let variant = response else {
             throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any)
         }
-        return try File(variant: variant)
+        return variant
     }
 }
