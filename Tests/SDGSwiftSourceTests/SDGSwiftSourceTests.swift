@@ -12,15 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftSource
 
 class SDGSwiftSourceTests : TestCase {
 
-    func testExample() {
+    func testParsing() {
         do {
-            print(try File(from: URL(fileURLWithPath: #file)))
+            let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
+            let beforeDirectory = sourceDirectory.appendingPathComponent("Before")
+            for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
+                let file = try File(from: url)
+                // [_Warning: Needs to test (a) unidentifier regions, and (b) that there are none in the sample file._]
+            }
         } catch {
             XCTFail("\(error)")
         }
