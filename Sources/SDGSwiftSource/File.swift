@@ -34,22 +34,9 @@ public struct File {
         default:
             throw SourceKit.Error.unknownResponse(contents: variant.asAny())
         }
-
-        let entities: [SourceKit.Variant]
-        if let entitiesVariant = dictionary["key.entities"] {
-            switch entitiesVariant {
-            case .array(let array):
-                entities = array
-            default:
-                throw SourceKit.Error.unknownResponse(contents: entitiesVariant.asAny())
-            }
-        } else {
-            entities = []
-        }
-
-        // [_Warning: Not finished._]
-
-        print("Entities:")
-        print(entities.map({ $0.asAny() }))
+        print(dictionary.keys)
+        print(dictionary["key.substructure"]?.asAny())
+        print(dictionary["key.offset"]?.asAny())
+        print(dictionary["key.length"]?.asAny())
     }
 }

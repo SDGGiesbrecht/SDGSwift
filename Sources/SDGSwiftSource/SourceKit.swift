@@ -81,9 +81,9 @@ public enum SourceKit {
 
     internal static func parse(file: URL) throws -> File {
         let response = try SourceKit.query(withRequest: try Object([
-            try UID("key.request"): try Object(UID("source.request.indexsource")),
-            try UID("key.sourcefile"): try Object(file.path),
-            try UID("key.compilerargs"): try Object([Object(file.path)])
+            try UID("key.request"): try Object(UID("source.request.editor.open")),
+            try UID("key.name"): try Object(file.path),
+            try UID("key.sourcefile"): try Object(file.path)
             ]))
         guard let variant = response else {
             throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any)
