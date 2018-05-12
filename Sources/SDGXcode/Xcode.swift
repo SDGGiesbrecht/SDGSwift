@@ -239,6 +239,17 @@ public enum Xcode {
 
                 let source = try String(from: fileURL)
                 let sourceLines = source.lines
+                func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
+                    let digitsOnly = string.replacingOccurrences(of: " ", with: "")
+                    if let integer = Int(digitsOnly) {
+                        return integer
+                    }
+                    if ¬digitsOnly.scalars.contains(where: { $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }) {
+                        // It is an integer; it is just to large.
+                        return Int.max
+                    }
+                    return nil
+                }
                 func toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
                     let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
                     let utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
@@ -269,9 +280,9 @@ public enum Xcode {
                     }
                     let components = base.components(separatedBy: ":") as [String]
                     guard let lineString = components.first,
-                        let lineNumber = Int(lineString.replacingOccurrences(of: " ", with: "")),
+                        let lineNumber = toIntegerIgnoringWhitespace(lineString),
                         let columnString = components.last,
-                        let count = Int(columnString.replacingOccurrences(of: " ", with: "")) else {
+                        let count = toIntegerIgnoringWhitespace(columnString) else {
                             throw Xcode.Error.corruptTestCoverageReport
                     }
                     regions.append(CoverageRegion(region: toIndex(line: lineNumber) ..< toIndex(line: lineNumber + 1), count: count))
@@ -288,9 +299,9 @@ public enum Xcode {
 
                             let components = regionString.components(separatedBy: ",") as [String]
                             guard components.count == 3,
-                                let start = Int(components[0].replacingOccurrences(of: " ", with: "")),
-                                let length = Int(components[1].replacingOccurrences(of: " ", with: "")),
-                                let count = Int(components[2].replacingOccurrences(of: " ", with: "")) else {
+                                let start = toIntegerIgnoringWhitespace(components[0]),
+                                let length = toIntegerIgnoringWhitespace(components[1]),
+                                let count = toIntegerIgnoringWhitespace(components[2]) else {
                                     throw Xcode.Error.corruptTestCoverageReport
                             }
                             regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
