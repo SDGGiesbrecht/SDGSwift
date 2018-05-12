@@ -33,9 +33,9 @@ extension SourceKit {
         internal init?(_ rawValue: sourcekitd_variant_t) throws {
             let type = (try SourceKit.load(symbol: "sourcekitd_variant_get_type") as (@convention(c) (sourcekitd_variant_t) -> sourcekitd_variant_type_t))(rawValue)
             switch type {
-            case SOURCEKITD_VARIANT_TYPE_NULL:
+            case SOURCEKITD_VARIANT_TYPE_NULL :
                 return nil
-            case SOURCEKITD_VARIANT_TYPE_DICTIONARY:
+            case SOURCEKITD_VARIANT_TYPE_DICTIONARY :
                 typealias Context = (dictionary: [String: Variant], error: Swift.Error?)
                 var context: Context = (dictionary: [:], error: nil)
                 let iterator: sourcekitd_variant_dictionary_applier_f_t = { key, value, contextPointer in
@@ -59,7 +59,7 @@ extension SourceKit {
                     throw context.error!
                 }
                 self = .dictionary(context.dictionary)
-            case SOURCEKITD_VARIANT_TYPE_ARRAY:
+            case SOURCEKITD_VARIANT_TYPE_ARRAY :
                 typealias Context = (array: [Variant], error: Swift.Error?)
                 var context: Context = (array: [], error: nil)
                 let iterator: sourcekitd_variant_array_applier_f_t = { _, value, contextPointer in
@@ -83,16 +83,16 @@ extension SourceKit {
                     throw context.error!
                 }
                 self = .array(context.array)
-            case SOURCEKITD_VARIANT_TYPE_INT64:
+            case SOURCEKITD_VARIANT_TYPE_INT64 :
                 let integer = (try SourceKit.load(symbol: "sourcekitd_variant_int64_get_value") as (@convention(c) (sourcekitd_variant_t) -> Int64))(rawValue)
                 self = .integer(Int(integer))
-            case SOURCEKITD_VARIANT_TYPE_STRING:
+            case SOURCEKITD_VARIANT_TYPE_STRING :
                 let string = (try SourceKit.load(symbol: "sourcekitd_variant_string_get_ptr") as (@convention(c) (sourcekitd_variant_t) -> UnsafePointer<Int8>?))(rawValue)
                 self = .string(String(cString: string!))
-            case SOURCEKITD_VARIANT_TYPE_UID:
+            case SOURCEKITD_VARIANT_TYPE_UID :
                 let uid = (try SourceKit.load(symbol: "sourcekitd_variant_uid_get_value") as (@convention(c) (sourcekitd_variant_t) -> sourcekitd_uid_t?))(rawValue)
                 self = .string(try UID(uid!).string())
-            case SOURCEKITD_VARIANT_TYPE_BOOL:
+            case SOURCEKITD_VARIANT_TYPE_BOOL :
                 let boolean = (try SourceKit.load(symbol: "sourcekitd_variant_bool_get_value") as (@convention(c) (sourcekitd_variant_t) -> Bool))(rawValue)
                 self = .boolean(boolean)
             default:
@@ -112,7 +112,7 @@ extension SourceKit {
             if let result = try asDictionary()[key] {
                 return result
             } else {
-                throw SourceKit.Error.unknownResponse(contents: Optional<Variant>.none as Any)
+                throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any)
             }
         }
 

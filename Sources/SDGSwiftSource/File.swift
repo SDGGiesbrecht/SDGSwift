@@ -15,7 +15,7 @@
 import Foundation
 
 /// A Swift file.
-public final class File: ContainerSyntaxElement {
+public final class File : ContainerSyntaxElement {
 
     // MARK: - Initialization
 
@@ -27,13 +27,6 @@ public final class File: ContainerSyntaxElement {
         let variant = try SourceKit.parse(file: location)
         let source = try String(from: location)
         try super.init(substructureInformation: variant, in: source)
-
-        // [_Warning: Temporary._]
-        let dictionary = try variant.asDictionary()
-        print(dictionary.keys)
-        print(dictionary["key.substructure"]?.asAny())
-        print(dictionary["key.offset"]?.asAny())
-        print(dictionary["key.length"]?.asAny())
     }
 
     // MARK: - Properties
