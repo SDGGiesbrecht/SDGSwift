@@ -15,6 +15,8 @@
 import SDGControlFlow
 
 /// An element of Swift syntax.
+///
+/// - Warning: Do not subclass `SyntaxElement` directly. Subclass either `ContainerSyntaxElement` or `AtomicSyntaxElement` instead.
 open class SyntaxElement {
 
     // MARK: - Initialization
