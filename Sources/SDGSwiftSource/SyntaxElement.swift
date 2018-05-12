@@ -19,6 +19,7 @@ open class SyntaxElement {
 
     // MARK: - Initialization
 
+    /// Creates a syntax element with the specified range.
     public init(range: Range<String.ScalarView.Index>) {
         self.range = range
     }
