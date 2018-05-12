@@ -239,7 +239,7 @@ public enum Xcode {
 
                 let source = try String(from: fileURL)
                 let sourceLines = source.lines
-                func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
+                func toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
                     let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
                     let utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
                     return utf8Index.samePosition(in: source.scalars)
@@ -274,7 +274,7 @@ public enum Xcode {
                         let count = Int(columnString.replacingOccurrences(of: " ", with: "")) else {
                             throw Xcode.Error.corruptTestCoverageReport
                     }
-                    regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: 0) ..< toIndex(line: lineNumber + 1, column: 0), count: count))
+                    regions.append(CoverageRegion(region: toIndex(line: lineNumber) ..< toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
