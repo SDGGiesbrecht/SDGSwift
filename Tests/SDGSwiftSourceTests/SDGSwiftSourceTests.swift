@@ -26,6 +26,9 @@ class SDGSwiftSourceTests : TestCase {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
                 let file = try File(from: url)
                 // [_Warning: Needs to test (a) unidentifier regions, and (b) that there are none in the sample file._]
+                for element in file.makeDeepIterator() {
+                    print(element)
+                }
             }
         } catch {
             XCTFail("\(error)")

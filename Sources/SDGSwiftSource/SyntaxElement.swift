@@ -41,4 +41,11 @@ open class SyntaxElement {
     // [_Define Documentation: SyntaxElement.range_]
     /// The range of the element.
     public final var range: Range<String.ScalarView.Index>
+
+    // MARK: - Sequence
+
+    /// Returns a deep iterator over the element and its children.
+    public func makeDeepIterator() -> SyntaxElement.DeepIterator {
+        return DeepIterator(rootElement: self)
+    }
 }
