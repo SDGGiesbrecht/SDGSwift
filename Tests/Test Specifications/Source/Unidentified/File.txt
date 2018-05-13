@@ -14,7 +14,7 @@
 ̲
 ̲i̲m̲p̲o̲r̲t̲ ̲F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲
-̲s̲t̲r̲u̲c̲t̲ ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{̲
+̲s̲t̲r̲u̲c̲t̲ ̲Structure ̲{̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 ̲

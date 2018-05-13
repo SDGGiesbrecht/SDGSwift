@@ -24,6 +24,8 @@ open class SyntaxElement {
     internal static func parse(substructureInformation: SourceKit.Variant, in source: String) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
+        case "source.lang.swift.decl.struct":
+            return try TypeDeclaration(substructureInformation: substructureInformation, in: source)
         default:
             if BuildConfiguration.current == .debug {
                 print("Unidentified substructure kind: \(kind)")
@@ -39,21 +41,25 @@ open class SyntaxElement {
         self.range = range
     }
 
-    internal init(substructureInformation: SourceKit.Variant, in file: String) throws {
-        let offset = try substructureInformation.value(for: "key.offset").asInteger()
-        let length = try substructureInformation.value(for: "key.length").asInteger()
+    internal static func range(from substructureInformation: SourceKit.Variant, for key: String, in source: String) throws -> Range<String.ScalarView.Index> {
+        let offset = try substructureInformation.value(for: key + "offset").asInteger()
+        let length = try substructureInformation.value(for: key + "length").asInteger()
 
-        let start = file.utf8.index(file.utf8.startIndex, offsetBy: offset)
-        let end = file.utf8.index(start, offsetBy: length)
+        let start = source.utf8.index(source.utf8.startIndex, offsetBy: offset)
+        let end = source.utf8.index(start, offsetBy: length)
         // It is assumed that SourceKit reports valid scalar boundaries.
-        range = start ..< end
+        return start ..< end
+    }
+
+    internal init(substructureInformation: SourceKit.Variant, in source: String) throws {
+        range = try SyntaxElement.range(from: substructureInformation, for: "key.", in: source)
     }
 
     // MARK: - Properties
 
     // [_Define Documentation: SyntaxElement.range_]
     /// The range of the element.
-    public final var range: Range<String.ScalarView.Index>
+    public var range: Range<String.ScalarView.Index>
 
     // MARK: - Sequence
 

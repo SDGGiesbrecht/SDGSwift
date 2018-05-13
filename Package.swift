@@ -30,7 +30,8 @@ let package = Package(
         .library(name: "SDGSwiftPackageManager", targets: ["SDGSwiftPackageManager"]),
 
         /// Utilities for working with Swift source code.
-        .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
+        // [_Workaround: SDGSwiftSource is still not ready to publish._]
+        //.library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
         /// Xcode‐related utilities for working with Swift packages.
         .library(name: "SDGXcode", targets: ["SDGXcode"])

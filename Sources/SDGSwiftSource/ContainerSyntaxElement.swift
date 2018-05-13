@@ -25,46 +25,20 @@ open class ContainerSyntaxElement : SyntaxElement {
     ///
     /// - Precondition: The child elements must not overlap or extend outside the parent range.
     public init(range: Range<String.ScalarView.Index>, children: [SyntaxElement]) {
-        _children = ContainerSyntaxElement.normalize(children, for: range)
         super.init(range: range)
+        self.children = children
     }
 
-    internal override init(substructureInformation: SourceKit.Variant, in file: String) throws {
-        try super.init(substructureInformation: substructureInformation, in: file)
+    internal init(substructureInformation: SourceKit.Variant, in source: String, knownChildren: [SyntaxElement] = []) throws {
+        try super.init(substructureInformation: substructureInformation, in: source)
         guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
-            children = []
+            children = knownChildren
             return
         }
-        children = try substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, in: file) }
+        children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, in: source) }
     }
 
     // MARK: - Properties
-
-    private static func normalize(_ children: [SyntaxElement], for parentRange: Range<String.ScalarView.Index>) -> [SyntaxElement] {
-        let sorted = children.sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
-        var inserts: [SyntaxElement] = []
-        for index in sorted.indices {
-            let next = sorted.index(after: index)
-            if next ≠ sorted.endIndex {
-                if sorted[index].range.upperBound ≠ sorted[next].range.lowerBound {
-                    inserts.append(UnidentifiedSyntaxElement(range: sorted[index].range.upperBound ..< sorted[next].range.lowerBound))
-                }
-            }
-        }
-        if ¬parentRange.isEmpty {
-            if sorted.isEmpty {
-                inserts.append(UnidentifiedSyntaxElement(range: parentRange))
-            } else {
-                if parentRange.lowerBound ≠ sorted.first!.range.lowerBound {
-                    inserts.append(UnidentifiedSyntaxElement(range: parentRange.lowerBound ..< sorted.first!.range.lowerBound))
-                }
-                if sorted.last!.range.upperBound ≠ parentRange.upperBound {
-                    inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< parentRange.upperBound))
-                }
-            }
-        }
-        return sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
-    }
 
     private var _children: [SyntaxElement] = []
     /// The child elements.
@@ -77,7 +51,29 @@ open class ContainerSyntaxElement : SyntaxElement {
             return _children
         }
         set {
-            _children = ContainerSyntaxElement.normalize(newValue, for: range)
+            let sorted = newValue.sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
+            var inserts: [SyntaxElement] = []
+            for index in sorted.indices {
+                let next = sorted.index(after: index)
+                if next ≠ sorted.endIndex {
+                    if sorted[index].range.upperBound ≠ sorted[next].range.lowerBound {
+                        inserts.append(UnidentifiedSyntaxElement(range: sorted[index].range.upperBound ..< sorted[next].range.lowerBound))
+                    }
+                }
+            }
+            if ¬range.isEmpty {
+                if sorted.isEmpty {
+                    inserts.append(UnidentifiedSyntaxElement(range: range))
+                } else {
+                    if range.lowerBound ≠ sorted.first!.range.lowerBound {
+                        inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
+                    }
+                    if sorted.last!.range.upperBound ≠ range.upperBound {
+                        inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
+                    }
+                }
+            }
+            _children = sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
         }
     }
 }

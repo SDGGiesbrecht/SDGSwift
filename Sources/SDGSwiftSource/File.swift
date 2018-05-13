@@ -15,7 +15,7 @@
 import Foundation
 
 /// A Swift file.
-public final class File : ContainerSyntaxElement {
+public class File : ContainerSyntaxElement {
 
     // MARK: - Initialization
 

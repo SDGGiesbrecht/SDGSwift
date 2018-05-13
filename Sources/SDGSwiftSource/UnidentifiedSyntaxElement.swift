@@ -17,6 +17,6 @@
 /// This may occur if the source code is invalid.
 ///
 /// If the parser returns this for valid source, it should be considered a bug in the parser. Please report it: https://github.com/SDGGiesbrecht/SDGSwift/issues
-public final class UnidentifiedSyntaxElement : AtomicSyntaxElement {
+public class UnidentifiedSyntaxElement : AtomicSyntaxElement {
 
 }

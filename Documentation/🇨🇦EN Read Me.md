@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGSwiftSource](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftSource) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode)
+APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode)
 
 # SDGSwift
 
@@ -47,7 +47,6 @@ let package = Package(
         .target(name: "MyTarget", dependencies: [
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftSource", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
         ])
     ]
@@ -59,7 +58,6 @@ let package = Package(
 ```swift
 import SDGSwift
 import SDGSwiftPackageManager
-import SDGSwiftSource
 import SDGXcode
 ```
 

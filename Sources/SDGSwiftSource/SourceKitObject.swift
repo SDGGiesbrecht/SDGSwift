@@ -18,7 +18,7 @@ import SDGSourceKitShims
 
 extension SourceKit {
 
-    internal final class Object {
+    internal class Object {
 
         // MARK: - Initialization
 
