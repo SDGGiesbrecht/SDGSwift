@@ -30,7 +30,6 @@ extension SourceKit {
 
         // MARK: - Properties
 
-        // [_Warning: Rearrange to store String instead._]
         internal let rawValue: sourcekitd_uid_t
         internal func string() throws -> String {
             return String(cString: (try SourceKit.load(symbol: "sourcekitd_uid_get_string_ptr") as (@convention(c) (sourcekitd_uid_t) -> (UnsafePointer<Int8>?)))(rawValue)!)

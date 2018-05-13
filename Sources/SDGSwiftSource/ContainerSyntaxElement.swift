@@ -30,9 +30,8 @@ open class ContainerSyntaxElement : SyntaxElement {
     }
 
     internal override init(substructureInformation: SourceKit.Variant, in file: String) throws {
-        _children = [] // [_Warning: Substructure not parsed yet._]
         try super.init(substructureInformation: substructureInformation, in: file)
-        children = _children // [_Forced normalization should not be necessary here._]
+        children = [] // [_Warning: Substructure not parsed yet._]
     }
 
     // MARK: - Properties
@@ -63,7 +62,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         return sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
     }
 
-    private var _children: [SyntaxElement]
+    private var _children: [SyntaxElement] = []
     /// The child elements.
     ///
     /// The specified children will be automatically sorted and any gaps will be filled in with instances of `UnidentifiedSyntaxElement`.
