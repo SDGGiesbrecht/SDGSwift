@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 /// An element of Swift syntax which contains child elements.
@@ -47,13 +48,17 @@ open class ContainerSyntaxElement : SyntaxElement {
     private func resolve(tokens: [SourceKit.PrimitiveToken], source: String) {
         var resolvedTokens: [SyntaxElement] = []
         for child in children where child is UnidentifiedSyntaxElement {
-            // [_Warning: Remove._]
-            print(type(of: self))
-            print(String(source.scalars[child.range]))
             let containedTokens = tokens.tokens(in: child.range)
             for token in containedTokens {
-                // [_Warning: Remove._]
-                print(token.kind)
+                switch token.kind {
+                case "source.lang.swift.syntaxtype.keyword":
+                    resolvedTokens.append(Keyword(range: token.range))
+                default:
+                    if BuildConfiguration.current == .debug {
+                        print("Unidentified token kind: \(token.kind)")
+                    }
+                    resolvedTokens.append(UnidentifiedSyntaxElement(range: token.range))
+                }
             }
         }
 
