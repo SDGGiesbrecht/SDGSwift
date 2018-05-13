@@ -30,7 +30,6 @@ class SDGSwiftSourceTests : TestCase {
 
                 let underline: Unicode.Scalar = "\u{332}"
 
-                // [_Warning: Needs to test (a) unidentifier regions, and (b) that there are none in the sample file._]
                 var unidentified = source
                 for element in file.makeDeepIterator().reversed() where element is UnidentifiedSyntaxElement {
                     var index = source.scalars.index(before: element.range.upperBound)
