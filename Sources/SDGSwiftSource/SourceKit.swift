@@ -62,8 +62,7 @@ public enum SourceKit {
         let response = (try load(symbol: "sourcekitd_send_request_sync") as (@convention(c) (sourcekitd_object_t) -> sourcekitd_response_t?))(request.rawValue)!
         defer {
             if let dispose = try? load(symbol: "sourcekitd_response_dispose") as (@convention(c) (sourcekitd_response_t) -> Void) {
-                // [_Warning: Leak!_]
-                //dispose(response)
+                dispose(response)
             } else {
                 if BuildConfiguration.current == .debug {
                     print("Memory leak! Failed to link “sourcekitd_response_dispose”.")
