@@ -21,19 +21,19 @@ open class SyntaxElement {
 
     // MARK: - Parsing
 
-    internal static func parse(substructureInformation: SourceKit.Variant, in source: String) throws -> SyntaxElement {
+    internal static func parse(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
         case "source.lang.swift.decl.function.method.instance":
-            return try FunctionDeclaration(substructureInformation: substructureInformation, in: source)
+            return try FunctionDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.struct":
-            return try TypeDeclaration(substructureInformation: substructureInformation, in: source)
+            return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.instance":
-            return try VariableDeclaration(substructureInformation: substructureInformation, in: source)
+            return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
-            return try Parameter(substructureInformation: substructureInformation, in: source)
+            return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
-            return try Heading(substructureInformation: substructureInformation, in: source)
+            return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
             if BuildConfiguration.current == .debug {
                 print("Unidentified substructure kind: \(kind)")

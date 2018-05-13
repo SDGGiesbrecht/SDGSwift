@@ -29,13 +29,13 @@ open class ContainerSyntaxElement : SyntaxElement {
         self.children = children
     }
 
-    internal init(substructureInformation: SourceKit.Variant, in source: String, knownChildren: [SyntaxElement] = []) throws {
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws {
         try super.init(substructureInformation: substructureInformation, in: source)
         guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
             children = knownChildren
             return
         }
-        children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, in: source) }
+        children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
     }
 
     // MARK: - Properties

@@ -15,9 +15,9 @@
 /// A type declaration.
 public class TypeDeclaration : ContainerSyntaxElement {
 
-    internal init(substructureInformation: SourceKit.Variant, in source: String) throws {
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source))
-        try super.init(substructureInformation: substructureInformation, in: source, knownChildren: [name])
+        try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
     }
 
     // MARK: - Properties

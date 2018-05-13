@@ -26,7 +26,12 @@ public class File : ContainerSyntaxElement {
         self.location = location
         let variant = try SourceKit.parse(file: location)
         let source = try String(from: location)
-        try super.init(substructureInformation: variant, in: source)
+
+        let tokens = try variant.value(for: "key.syntaxmap").asArray().map { entry in
+            return SourceKit.PrimitiveToken(range: try SyntaxElement.range(from: entry, for: "key.", in: source), kind: try entry.value(for: "key.kind").asString())
+        }
+
+        try super.init(substructureInformation: variant, source: source, tokens: tokens)
     }
 
     // MARK: - Properties
