@@ -28,6 +28,8 @@ open class SyntaxElement {
             return try FunctionDeclaration(substructureInformation: substructureInformation, in: source)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, in: source)
+        case "source.lang.swift.decl.var.instance":
+            return try VariableDeclaration(substructureInformation: substructureInformation, in: source)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, in: source)
         case "source.lang.swift.syntaxtype.comment.mark":

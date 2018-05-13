@@ -24,7 +24,7 @@
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 ̲
-̲ ̲ ̲ ̲ ̲v̲a̲r̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲:̲ ̲B̲o̲o̲l̲
+̲ ̲ ̲ ̲ ̲v̲a̲r̲ ̲property:̲ ̲B̲o̲o̲l̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲M̲e̲t̲h̲o̲d̲s̲
 ̲
