@@ -12,14 +12,14 @@
 ̲ ̲S̲e̲e̲ ̲h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
 ̲ ̲*̲/̲
 ̲
-̲import ̲F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
+̲import ̲Foundation
 ̲
 ̲struct ̲Structure ̲{̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 ̲
 ̲ ̲ ̲ ̲ ̲init(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.̲property ̲=̲ ̲property
 ̲ ̲ ̲ ̲ ̲}̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲

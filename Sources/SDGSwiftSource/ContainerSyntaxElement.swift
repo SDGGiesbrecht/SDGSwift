@@ -51,6 +51,8 @@ open class ContainerSyntaxElement : SyntaxElement {
             let containedTokens = tokens.tokens(in: child.range)
             for token in containedTokens {
                 switch token.kind {
+                case "source.lang.swift.syntaxtype.identifier":
+                    resolvedTokens.append(Identifier(range: token.range))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
                 default:
