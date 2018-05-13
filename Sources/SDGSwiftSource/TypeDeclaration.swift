@@ -18,9 +18,6 @@ public class TypeDeclaration : ContainerSyntaxElement {
     internal init(substructureInformation: SourceKit.Variant, in source: String) throws {
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source))
         try super.init(substructureInformation: substructureInformation, in: source, knownChildren: [name])
-
-        // [_Warning: Temporary._]
-        print(try substructureInformation.asDictionary().keys)
     }
 
     // MARK: - Properties

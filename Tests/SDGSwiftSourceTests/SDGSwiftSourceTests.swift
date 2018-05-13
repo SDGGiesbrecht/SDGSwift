@@ -30,6 +30,7 @@ class SDGSwiftSourceTests : TestCase {
 
                 let underline: Unicode.Scalar = "\u{332}"
 
+                // Unidentified
                 var unidentified = source
                 for element in file.makeDeepIterator().reversed() where element is UnidentifiedSyntaxElement {
                     var index = element.range.upperBound
@@ -39,7 +40,7 @@ class SDGSwiftSourceTests : TestCase {
                     }
                 }
                 compare(unidentified, against: sourceDirectory.appendingPathComponent("Unidentified").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
-                XCTAssert(¬unidentified.scalars.contains(underline), "There are unidentified syntax elements in “\(url.lastPathComponent)”")
+                XCTAssert(¬unidentified.scalars.contains(underline), "There are unidentified syntax elements in “\(url.lastPathComponent)”.")
             }
         } catch {
             XCTFail("\(error)")

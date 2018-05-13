@@ -24,8 +24,12 @@ open class SyntaxElement {
     internal static func parse(substructureInformation: SourceKit.Variant, in source: String) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
+        case "source.lang.swift.decl.function.method.instance":
+            return try FunctionDeclaration(substructureInformation: substructureInformation, in: source)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, in: source)
+        case "source.lang.swift.syntaxtype.comment.mark":
+            return try Heading(substructureInformation: substructureInformation, in: source)
         default:
             if BuildConfiguration.current == .debug {
                 print("Unidentified substructure kind: \(kind)")
