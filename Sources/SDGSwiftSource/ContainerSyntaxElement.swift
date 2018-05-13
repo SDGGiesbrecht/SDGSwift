@@ -31,7 +31,12 @@ open class ContainerSyntaxElement : SyntaxElement {
 
     internal override init(substructureInformation: SourceKit.Variant, in file: String) throws {
         try super.init(substructureInformation: substructureInformation, in: file)
-        children = [] // [_Warning: Substructure not parsed yet._]
+        guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
+            children = []
+            return
+        }
+        children = try substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, in: file) }
+        print(children)
     }
 
     // MARK: - Properties
@@ -52,7 +57,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                 inserts.append(UnidentifiedSyntaxElement(range: parentRange))
             } else {
                 if parentRange.lowerBound ≠ sorted.first!.range.lowerBound {
-                    inserts.append(UnidentifiedSyntaxElement(range: parentRange.lowerBound ..< sorted.first!.range.upperBound))
+                    inserts.append(UnidentifiedSyntaxElement(range: parentRange.lowerBound ..< sorted.first!.range.lowerBound))
                 }
                 if sorted.last!.range.upperBound ≠ parentRange.upperBound {
                     inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< parentRange.upperBound))

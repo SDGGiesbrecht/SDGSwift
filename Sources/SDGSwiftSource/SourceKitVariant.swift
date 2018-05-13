@@ -116,9 +116,27 @@ extension SourceKit {
             }
         }
 
+        internal func asArray() throws -> [Variant] {
+            switch self {
+            case .array(let result):
+                return result
+            default:
+                throw SourceKit.Error.unknownResponse(contents: self.asAny())
+            }
+        }
+
         internal func asInteger() throws -> Int {
             switch self {
             case .integer(let result):
+                return result
+            default:
+                throw SourceKit.Error.unknownResponse(contents: self.asAny())
+            }
+        }
+
+        internal func asString() throws -> String {
+            switch self {
+            case .string(let result):
                 return result
             default:
                 throw SourceKit.Error.unknownResponse(contents: self.asAny())

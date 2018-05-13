@@ -19,6 +19,19 @@ import SDGControlFlow
 /// - Warning: Do not subclass `SyntaxElement` directly. Subclass either `ContainerSyntaxElement` or `AtomicSyntaxElement` instead.
 open class SyntaxElement {
 
+    // MARK: - Parsing
+
+    internal static func parse(substructureInformation: SourceKit.Variant, in source: String) throws -> SyntaxElement {
+        let kind = try substructureInformation.value(for: "key.kind").asString()
+        switch kind {
+        default:
+            if BuildConfiguration.current == .debug {
+                print("Unidentified substructure kind: \(kind)")
+            }
+            return try UnidentifiedSyntaxElement(substructureInformation: substructureInformation, in: source)
+        }
+    }
+
     // MARK: - Initialization
 
     /// Creates a syntax element with the specified range.

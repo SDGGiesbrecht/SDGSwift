@@ -32,7 +32,7 @@ class SDGSwiftSourceTests : TestCase {
 
                 var unidentified = source
                 for element in file.makeDeepIterator().reversed() where element is UnidentifiedSyntaxElement {
-                    var index = source.scalars.index(before: element.range.upperBound)
+                    var index = element.range.upperBound
                     while index ≠ element.range.lowerBound {
                         unidentified.scalars.insert(underline, at: index)
                         index = source.scalars.index(before: index)
