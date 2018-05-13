@@ -36,6 +36,29 @@ open class ContainerSyntaxElement : SyntaxElement {
             return
         }
         children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
+        resolve(tokens: tokens, source: source)
+    }
+
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
+        super.init(range: range)
+        resolve(tokens: tokens, source: source)
+    }
+
+    private func resolve(tokens: [SourceKit.PrimitiveToken], source: String) {
+        var resolvedTokens: [SyntaxElement] = []
+        for child in children where child is UnidentifiedSyntaxElement {
+            // [_Warning: Remove._]
+            print(type(of: self))
+            print(String(source.scalars[child.range]))
+            let containedTokens = tokens.tokens(in: child.range)
+            for token in containedTokens {
+                // [_Warning: Remove._]
+                print(token.kind)
+            }
+        }
+
+        let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+        children = structure + resolvedTokens
     }
 
     // MARK: - Properties

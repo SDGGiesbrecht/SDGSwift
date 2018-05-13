@@ -63,6 +63,7 @@ let package = Package(
             "SDGSourceKitShims",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
         .target(name: "SDGXcode", dependencies: [

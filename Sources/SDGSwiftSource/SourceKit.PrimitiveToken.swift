@@ -12,10 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
 extension SourceKit {
 
     internal struct PrimitiveToken {
         internal var range: Range<String.ScalarView.Index>
         internal var kind: String
+    }
+}
+
+extension Array where Element == SourceKit.PrimitiveToken {
+
+    func tokens(in range: Range<String.ScalarView.Index>) -> [SourceKit.PrimitiveToken] {
+        var result: [SourceKit.PrimitiveToken] = []
+        var iterator = makeIterator()
+        while let next = iterator.next(),
+            next.range.upperBound ≤ range.upperBound {
+                if range.lowerBound ≤ next.range.lowerBound {
+                    result.append(next)
+                }
+        }
+        return result
     }
 }
