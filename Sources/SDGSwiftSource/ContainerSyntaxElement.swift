@@ -36,7 +36,6 @@ open class ContainerSyntaxElement : SyntaxElement {
             return
         }
         children = try substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, in: file) }
-        print(children)
     }
 
     // MARK: - Properties
