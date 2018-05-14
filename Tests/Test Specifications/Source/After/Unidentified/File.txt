@@ -1,25 +1,25 @@
-/̲*̲
-̲ ̲F̲i̲l̲e̲.̲s̲w̲i̲f̲t̲
+/*
+ File.swift
+
+ This source file is part of the SDGSwift open source project.
+ https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+
+ Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 ̲
-̲ ̲T̲h̲i̲s̲ ̲s̲o̲u̲r̲c̲e̲ ̲f̲i̲l̲e̲ ̲i̲s̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲o̲p̲e̲n̲ ̲s̲o̲u̲r̲c̲e̲ ̲p̲r̲o̲j̲e̲c̲t̲.̲
-̲ ̲https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
-̲
-̲ ̲C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲©̲2̲0̲1̲8̲ ̲J̲e̲r̲e̲m̲y̲ ̲D̲a̲v̲i̲d̲ ̲G̲i̲e̲s̲b̲r̲e̲c̲h̲t̲ ̲a̲n̲d̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲p̲r̲o̲j̲e̲c̲t̲ ̲c̲o̲n̲t̲r̲i̲b̲u̲t̲o̲r̲s̲.̲
-̲
-̲ ̲S̲o̲l̲i̲ ̲D̲e̲o̲ ̲g̲l̲o̲r̲i̲a̲.̲
-̲
-̲ ̲L̲i̲c̲e̲n̲s̲e̲d̲ ̲u̲n̲d̲e̲r̲ ̲t̲h̲e̲ ̲A̲p̲a̲c̲h̲e̲ ̲L̲i̲c̲e̲n̲c̲e̲,̲ ̲V̲e̲r̲s̲i̲o̲n̲ ̲2̲.̲0̲.̲
-̲ ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
-̲ ̲*̲/̲
-̲
-̲/̲/̲ ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲l̲i̲n̲e̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲ ̲I̲t̲ ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲U̲R̲L̲:̲ ̲http://example.com
-̲
-̲/̲*̲
-̲ ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲m̲u̲l̲t̲i̲l̲i̲n̲e̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
-̲ ̲/̲*̲
-̲ ̲ ̲I̲t̲ ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲n̲e̲s̲t̲e̲d̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
-̲ ̲ ̲*̲/̲
-̲ ̲*̲/̲
+̲// This is a line comment. It contains a URL: http://example.com
+
+̲/*
+ This is a multiline comment.
+ /*
+  It contains a nested comment.
+  */
+ */
 ̲
 ̲import ̲Foundation
 ̲
