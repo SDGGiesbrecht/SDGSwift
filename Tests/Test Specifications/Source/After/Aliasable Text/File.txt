@@ -27,7 +27,7 @@ struct Structure {
 
     // MARK: - Initialization
 
-    init(property: Bool) {
+    init(property: B̲o̲o̲l̲) {
         self.p̲r̲o̲p̲e̲r̲t̲y̲ = p̲r̲o̲p̲e̲r̲t̲y̲
     }
 

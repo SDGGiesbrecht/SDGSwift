@@ -12,15 +12,32 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 /// A parameter.
 public class Parameter : ContainerSyntaxElement {
 
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
+
+        if let typeName = try? substructureInformation.value(for: "key.typename").asString() {
+            for child in children where child is UnidentifiedSyntaxElement {
+                if let match = source.scalars.firstMatch(for: typeName.scalars, in: child.range) {
+
+                    let type = Identifier(range: match.range, isDefinition: false)
+                    let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+                    children = structure + [type]
+                    break
+                }
+            }
+        }
     }
 
     // MARK: - Properties
 
-    let name: Identifier
+    /// The name of the parameter.
+    public let name: Identifier
+    /// The type of the parameter.
+    public private(set) var type: Identifier?
 }
