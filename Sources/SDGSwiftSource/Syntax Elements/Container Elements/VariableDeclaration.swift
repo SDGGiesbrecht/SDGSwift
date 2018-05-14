@@ -20,37 +20,10 @@ public class VariableDeclaration : ContainerSyntaxElement {
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
-
-        for child in children where child is UnidentifiedSyntaxElement {
-            if let match = source.scalars.firstMatch(for: "var".scalars, in: child.range) {
-
-                let type = Keyword(range: match.range)
-                let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
-                children = structure + [type]
-                mutability = type
-                break
-            }
-        }
-
-        if let typeName = try? substructureInformation.value(for: "key.typename").asString() {
-            for child in children where child is UnidentifiedSyntaxElement {
-                if let match = source.scalars.firstMatch(for: typeName.scalars, in: child.range) {
-
-                    let type = Identifier(range: match.range, isDefinition: false)
-                    let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
-                    children = structure + [type]
-                    break
-                }
-            }
-        }
     }
 
     // MARK: - Properties
 
-    /// The variable’s mutability. (i.e. `let` or `var`)
-    public private(set) var mutability: Keyword?
     /// The name of the variable.
     public let name: Identifier
-    /// The type of the variable.
-    public private(set) var type: Identifier?
 }
