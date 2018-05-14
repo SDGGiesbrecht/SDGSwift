@@ -33,12 +33,12 @@ open class ContainerSyntaxElement : SyntaxElement {
 
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws {
         try super.init(substructureInformation: substructureInformation, in: source)
+        defer { resolve(tokens: tokens, source: source) }
         guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
             children = knownChildren
             return
         }
         children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
-        resolve(tokens: tokens, source: source)
     }
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) {
