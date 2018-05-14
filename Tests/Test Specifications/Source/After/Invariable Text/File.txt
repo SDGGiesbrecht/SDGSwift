@@ -28,7 +28,7 @@ s̲t̲r̲u̲c̲t̲ Structure {̲
     /̲/̲ M̲A̲R̲K̲:̲ -̲ Initialization
 
     i̲n̲i̲t̲(̲property:̲ Bool)̲ {̲
-        s̲e̲l̲f̲.̲property ̲=̲ ̲property
+        s̲e̲l̲f̲.̲property =̲ property
     }̲
 
     /̲/̲ M̲A̲R̲K̲:̲ -̲ Properties

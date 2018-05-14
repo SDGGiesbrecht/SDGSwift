@@ -28,7 +28,7 @@
 ̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 ̲
 ̲ ̲ ̲ ̲ ̲init(p̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool) ̲{
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.property = property
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.property ̲= ̲property
 ̲ ̲ ̲ ̲ ̲}
 ̲
 ̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
