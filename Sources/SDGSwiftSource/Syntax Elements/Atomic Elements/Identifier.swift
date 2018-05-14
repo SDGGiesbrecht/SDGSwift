@@ -187,7 +187,7 @@ public class Identifier : AtomicSyntaxElement {
 
     // MARK: - Properties
 
-    public private(set) var isDefinition: Bool
+    public internal(set) var isDefinition: Bool
 
     // [_Inherit Documentation: SyntaxElement.textFreedom_]
     /// How much freedom the user has in choosing the text of the element.
