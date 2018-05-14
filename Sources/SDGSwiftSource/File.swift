@@ -62,11 +62,12 @@ public class File : ContainerSyntaxElement {
         // Catch missed comments. (SourceKit ignores empty line comments.)
         parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
 
-        // Catch braces.
+        // Catch punctuation.
         parseUnidentified(for: "{") { Punctuation(range: $0) }
         parseUnidentified(for: "}") { Punctuation(range: $0) }
         parseUnidentified(for: "(") { Punctuation(range: $0) }
         parseUnidentified(for: ")") { Punctuation(range: $0) }
+        parseUnidentified(for: ":") { Punctuation(range: $0) }
 
         // Fill in whitespace.
         parseUnidentified() { unidentified in
