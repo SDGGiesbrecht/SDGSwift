@@ -31,6 +31,18 @@ public class VariableDeclaration : ContainerSyntaxElement {
                 break
             }
         }
+
+        if let typeName = try? substructureInformation.value(for: "key.typename").asString() {
+            for child in children where child is UnidentifiedSyntaxElement {
+                if let match = source.scalars.firstMatch(for: typeName.scalars, in: child.range) {
+
+                    let type = Identifier(range: match.range, isDefinition: false)
+                    let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+                    children = structure + [type]
+                    break
+                }
+            }
+        }
     }
 
     // MARK: - Properties
@@ -39,4 +51,6 @@ public class VariableDeclaration : ContainerSyntaxElement {
     public private(set) var mutability: Keyword?
     /// The name of the variable.
     public let name: Identifier
+    /// The type of the variable.
+    public private(set) var type: Identifier?
 }

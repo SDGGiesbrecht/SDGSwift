@@ -33,7 +33,7 @@
 ̲
 ̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 ̲
-̲ ̲ ̲ ̲ ̲var ̲p̲r̲o̲p̲e̲r̲t̲y̲: Bool
+̲ ̲ ̲ ̲ ̲var ̲p̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool
 ̲
 ̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲M̲e̲t̲h̲o̲d̲s̲
 ̲

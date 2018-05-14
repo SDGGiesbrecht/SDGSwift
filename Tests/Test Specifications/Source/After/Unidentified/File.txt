@@ -33,7 +33,7 @@ struct Structure {
 
     // MARK: - Properties
 
-    var property: ̲B̲o̲o̲l̲
+    var property: Bool
 
     // MARK: - Methods
 
