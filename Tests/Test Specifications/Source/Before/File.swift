@@ -12,6 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// This is a line comment. It contains a URL: http://example.com
+
+/*
+ This is a multiline comment.
+ /*
+  It contains a nested comment.
+  */
+ */
+
 import Foundation
 
 struct Structure {
