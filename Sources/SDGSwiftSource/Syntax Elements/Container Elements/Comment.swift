@@ -13,6 +13,7 @@
  */
 
 import SDGMathematics
+import SDGCollections
 
 /// A comment.
 public class Comment : ContainerSyntaxElement {
@@ -39,12 +40,12 @@ public class Comment : ContainerSyntaxElement {
         } else {
             // Multiline (possibly nested)
             for child in children where child is UnidentifiedSyntaxElement {
-                /*for match in commentSource.scalars.matches(for: AlternativePatterns([
+                for match in source.scalars.matches(for: AlternativePatterns([
                     LiteralPattern("/*".scalars),
                     LiteralPattern("*/".scalars)
                     ]), in: child.range) {
                         resolvedNesting.append(CommentToken(range: match.range))
-                }*/
+                }
             }
         }
 
