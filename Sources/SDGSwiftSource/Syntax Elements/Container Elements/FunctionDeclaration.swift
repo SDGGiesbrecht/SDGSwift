@@ -31,6 +31,7 @@ public class FunctionDeclaration : ContainerSyntaxElement {
         }
 
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
+        print(substructureInformation.asAny()) // [_Warning: Temporary._]
 
         for child in children where child is UnidentifiedSyntaxElement {
             if let match = source.scalars.firstMatch(for: "func".scalars, in: child.range) {
