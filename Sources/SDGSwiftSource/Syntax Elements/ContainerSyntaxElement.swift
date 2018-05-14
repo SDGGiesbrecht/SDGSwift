@@ -77,6 +77,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.typeidentifier":
+                    resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
                     if BuildConfiguration.current == .debug {
                         print("Unidentified token kind: \(token.kind)")
