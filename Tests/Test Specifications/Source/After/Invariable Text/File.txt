@@ -21,19 +21,19 @@
 ̲ ̲ ̲*̲/̲
 ̲ ̲*̲/̲
 ̲
-̲i̲m̲p̲o̲r̲t̲ ̲F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
+̲i̲m̲p̲o̲r̲t̲ ̲Foundation
 ̲
-̲s̲t̲r̲u̲c̲t̲ ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{̲
+̲s̲t̲r̲u̲c̲t̲ ̲Structure ̲{̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 ̲
-̲ ̲ ̲ ̲ ̲i̲n̲i̲t̲(̲p̲r̲o̲p̲e̲r̲t̲y̲:̲ ̲B̲o̲o̲l̲)̲ ̲{̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲s̲e̲l̲f̲.̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲
+̲ ̲ ̲ ̲ ̲i̲n̲i̲t̲(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{̲
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲s̲e̲l̲f̲.̲property ̲=̲ ̲property
 ̲ ̲ ̲ ̲ ̲}̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 ̲
-̲ ̲ ̲ ̲ ̲v̲a̲r̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲:̲ ̲B̲o̲o̲l̲
+̲ ̲ ̲ ̲ ̲v̲a̲r̲ ̲property:̲ ̲B̲o̲o̲l̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲M̲e̲t̲h̲o̲d̲s̲
 ̲

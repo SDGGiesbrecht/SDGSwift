@@ -21,14 +21,14 @@
   */
  */
 
-import Foundation
+import F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 
 struct Structure {
 
     // MARK: - Initialization
 
     init(property: Bool) {
-        self.property = property
+        self.p̲r̲o̲p̲e̲r̲t̲y̲ = p̲r̲o̲p̲e̲r̲t̲y̲
     }
 
     // MARK: - Properties
