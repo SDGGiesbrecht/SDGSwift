@@ -28,7 +28,7 @@ struct Structure {
     // MARK: - Initialization
 
     init(property: Bool) {
-        self.̲property ̲=̲ ̲property
+        self.property ̲=̲ ̲property
     }
 
     // MARK: - Properties
