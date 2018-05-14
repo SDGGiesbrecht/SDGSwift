@@ -1,5 +1,5 @@
 /*
- Identifier.swift
+ CommentURL.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -15,4 +15,9 @@
 /// A URL in a comment.
 public class CommentURL : AtomicSyntaxElement {
 
+    // [_Inherit Documentation: SyntaxElement.textFreedom_]
+    /// How much freedom the user has in choosing the text of the element.
+    public override var textFreedom: TextFreedom {
+        return .invariable
+    }
 }

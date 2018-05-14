@@ -1,5 +1,5 @@
 /*
- Keyword.swift
+ Comment.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A keyword.
-public class Keyword : AtomicSyntaxElement {
+/// A comment.
+public class Comment : ContainerSyntaxElement {
 
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
+        super.init(range: range, source: source, tokens: tokens)
+    }
 }

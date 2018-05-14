@@ -12,7 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 /// An element of Swift syntax which cannot be broken up any further.
+///
+/// Subclassing Requirements:
+///   - `var textFreedom: TextFreedom { get }`
 open class AtomicSyntaxElement : SyntaxElement {
 
+    // [_Define Documentation: SyntaxElement.textFreedom_]
+    /// How much freedom the user has in choosing the text of the element.
+    public var textFreedom: TextFreedom {
+        primitiveMethod()
+    }
 }

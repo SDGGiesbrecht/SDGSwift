@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLocalization
 
 /// An element of Swift syntax.
 ///
@@ -69,7 +70,7 @@ open class SyntaxElement {
     /// The range of the element.
     public var range: Range<String.ScalarView.Index>
 
-    // MARK: - Sequence
+    // MARK: - Iteration
 
     /// Returns a deep iterator over the element and its children.
     public func makeDeepIterator() -> SyntaxElement.DeepIterator {
