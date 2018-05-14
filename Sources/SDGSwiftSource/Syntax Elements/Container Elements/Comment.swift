@@ -12,10 +12,51 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
 /// A comment.
 public class Comment : ContainerSyntaxElement {
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
         super.init(range: range, source: source, tokens: tokens)
+
+        let singeLineToken = "//"
+        let commentSource = String(source.scalars[range])
+        guard commentSource.scalars.count ≥ singeLineToken.scalars.count else {
+            return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage._]
+        }
+
+        // Find tokens.
+        var resolvedNesting: [SyntaxElement] = []
+        if source.scalars[range].hasPrefix(singeLineToken.scalars) {
+            // Single line
+            guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
+                unidentified.range.lowerBound == range.lowerBound,
+                String(source.scalars[unidentified.range]).scalars.count ≥ singeLineToken.scalars.count else {
+                return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage._]
+            }
+            resolvedNesting.append(CommentToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singeLineToken.scalars.count)))
+        } else {
+            // Multiline (possibly nested)
+            for child in children where child is UnidentifiedSyntaxElement {
+                /*for match in commentSource.scalars.matches(for: AlternativePatterns([
+                    LiteralPattern("/*".scalars),
+                    LiteralPattern("*/".scalars)
+                    ]), in: child.range) {
+                        resolvedNesting.append(CommentToken(range: match.range))
+                }*/
+            }
+        }
+
+        let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+        children = structure + resolvedNesting
+
+        // The rest is text.
+        var text: [SyntaxElement] = []
+        for child in children where child is UnidentifiedSyntaxElement {
+            text.append(CommentText(range: child.range))
+        }
+        let other = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+        children = other + text
     }
 }
