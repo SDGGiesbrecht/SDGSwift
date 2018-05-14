@@ -33,7 +33,6 @@ public class File : ContainerSyntaxElement {
         let tokens = try variant.value(for: "key.syntaxmap").asArray().map { entry in
             return SourceKit.PrimitiveToken(range: try SyntaxElement.range(from: entry, for: "key.", in: source), kind: try entry.value(for: "key.kind").asString())
         }
-        print(tokens.map({ ($0.kind, String(source.scalars[$0.range])) })) // [_Warning: Temporary._]
 
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
 
