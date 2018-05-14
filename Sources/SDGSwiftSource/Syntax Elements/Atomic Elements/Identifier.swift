@@ -21,7 +21,8 @@ public class Identifier : AtomicSyntaxElement {
 
     // MARK: - Static Properties
 
-    private static let allowedIdentifierStarters: CharacterSet = {
+    /// The characters an identifier is allowed to start with.
+    public static let identifierStarterCharacters: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
         var result = CharacterSet(charactersIn: "A" ... "Z")
 
@@ -91,7 +92,10 @@ public class Identifier : AtomicSyntaxElement {
         return result
     }()
 
-    private static let allowedIdentifierCharacters: CharacterSet = {
+    /// The characters an identifier is allowed to contain.
+    ///
+    /// Some of these characters are not allowed at the start. See `identifierStarterCharacters`.
+    private static let identifierCharacters: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
         var result = CharacterSet(charactersIn: "0" ... "9")
 
@@ -100,12 +104,15 @@ public class Identifier : AtomicSyntaxElement {
         result.insert(charactersIn: Unicode.Scalar(0x20D0)! ... Unicode.Scalar(0x20FF)!)
         result.insert(charactersIn: Unicode.Scalar(0xFE20)! ... Unicode.Scalar(0xFE2F)!)
 
-        result.formUnion(allowedIdentifierStarters)
+        result.formUnion(identifierStarterCharacters)
 
         return result
     }()
 
-    private static let operatorHeadCharactersIncludingDot: CharacterSet = {
+    /// The characters an operator is allowed to start with.
+    ///
+    /// The dot (U+002E) is unusual. It can start an operator, but it cannot be one in isolation.
+    public static let operatorStarterCharactersIncludingDot: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID418
         var result: CharacterSet = ["/", "=", "\u{2D}", "+", "!", "*", "%", "<", ">", "&", "|", "^", "~", "?"]
 
@@ -151,7 +158,25 @@ public class Identifier : AtomicSyntaxElement {
         return result
     }()
 
-    internal static let identifierOrOperatorCharacters: CharacterSet = allowedIdentifierCharacters ∪ operatorHeadCharactersIncludingDot
+    /// The characters an operator is allowed to contain.
+    ///
+    /// The dot (U+002E) is unusual. It can be part of an operator, but it cannot be one in isolation.
+    private static let operatorCharactersIncludingDot: CharacterSet = {
+        // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
+
+        var result: CharacterSet = []
+
+        result.insert(charactersIn: Unicode.Scalar(0x300)! ... Unicode.Scalar(0x36F)!)
+        result.insert(charactersIn: Unicode.Scalar(0x1DC0)! ... Unicode.Scalar(0x1DFF)!)
+        result.insert(charactersIn: Unicode.Scalar(0x20D0)! ... Unicode.Scalar(0x20FF)!)
+        result.insert(charactersIn: Unicode.Scalar(0xFE00)! ... Unicode.Scalar(0xFE0F)!)
+        result.insert(charactersIn: Unicode.Scalar(0xFE20)! ... Unicode.Scalar(0xFE2F)!)
+        result.insert(charactersIn: Unicode.Scalar(0xE0100)! ... Unicode.Scalar(0xE01EF)!)
+
+        result.formUnion(operatorStarterCharactersIncludingDot)
+
+        return result
+    }()
 
     // MARK: - Initialization
 
