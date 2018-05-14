@@ -65,6 +65,8 @@ public class File : ContainerSyntaxElement {
         // Catch braces.
         parseUnidentified(for: "{") { Punctuation(range: $0) }
         parseUnidentified(for: "}") { Punctuation(range: $0) }
+        parseUnidentified(for: "(") { Punctuation(range: $0) }
+        parseUnidentified(for: ")") { Punctuation(range: $0) }
 
         // Fill in whitespace.
         parseUnidentified() { unidentified in

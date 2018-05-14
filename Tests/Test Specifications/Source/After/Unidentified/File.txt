@@ -27,7 +27,7 @@ struct Structure {
 
     // MARK: - Initialization
 
-    init(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{
+    init(property:̲ ̲B̲o̲o̲l̲) {
         self.̲property ̲=̲ ̲property
     }
 
@@ -37,7 +37,7 @@ struct Structure {
 
     // MARK: - Methods
 
-    f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲)̲ ̲{
+    f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲() {
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲t̲r̲u̲e̲
 ̲ ̲ ̲ ̲ ̲}
 }
