@@ -11,34 +11,33 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
-̲
-̲// This is a line comment. It contains a URL: http://example.com
 
-̲/*
+// This is a line comment. It contains a URL: http://example.com
+
+/*
  This is a multiline comment.
  /*
   It contains a nested comment.
   */
  */
-̲
-̲import ̲Foundation
-̲
-̲struct ̲Structure ̲{̲
+
+import Foundation
+
+struct Structure ̲{̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
-̲
-̲ ̲ ̲ ̲ ̲init(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{̲
+
+    init(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.̲property ̲=̲ ̲property
 ̲ ̲ ̲ ̲ ̲}̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
-̲
-̲ ̲ ̲ ̲ ̲v̲a̲r̲ ̲property:̲ ̲B̲o̲o̲l̲
+
+    v̲a̲r̲ ̲property:̲ ̲B̲o̲o̲l̲
 ̲
 ̲ ̲ ̲ ̲ ̲/̲/̲ ̲M̲A̲R̲K̲:̲ ̲-̲ ̲M̲e̲t̲h̲o̲d̲s̲
-̲
-̲ ̲ ̲ ̲ ̲f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲)̲ ̲{̲
+
+    f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲)̲ ̲{̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲t̲r̲u̲e̲
 ̲ ̲ ̲ ̲ ̲}̲
 ̲}̲
-̲

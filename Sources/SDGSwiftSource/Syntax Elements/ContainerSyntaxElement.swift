@@ -126,6 +126,9 @@ open class ContainerSyntaxElement : SyntaxElement {
                 }
             }
             _children = sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
+            for child in _children {
+                child.parent = self
+            }
         }
     }
 }

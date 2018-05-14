@@ -70,6 +70,9 @@ open class SyntaxElement {
     /// The range of the element.
     public var range: Range<String.ScalarView.Index>
 
+    /// The parent syntax element.
+    public internal(set) weak var parent: SyntaxElement?
+
     // MARK: - Iteration
 
     /// Returns a deep iterator over the element and its children.

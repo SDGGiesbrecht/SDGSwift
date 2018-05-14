@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+
 /// A Swift file.
 public class File : ContainerSyntaxElement {
 
@@ -32,6 +34,17 @@ public class File : ContainerSyntaxElement {
         }
 
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
+
+        // Fill in whitespace.
+        for element in makeDeepIterator() {
+            if let unidentified = element as? UnidentifiedSyntaxElement,
+                let whitespace = Whitespace(unidentified: unidentified, in: source),
+                let parent = element.parent as? ContainerSyntaxElement {
+
+                let replacement = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
+                parent.children = replacement + [whitespace]
+            }
+        }
     }
 
     // MARK: - Properties
