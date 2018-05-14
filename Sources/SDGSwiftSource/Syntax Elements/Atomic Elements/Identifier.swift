@@ -1,5 +1,5 @@
 /*
- Keyword.swift
+ Identifier.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,14 +12,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A keyword.
-public class Keyword : AtomicSyntaxElement {
+/// An identifier.
+public class Identifier : AtomicSyntaxElement {
+
+    // MARK: - Initialization
+
+    internal init(range: Range<String.ScalarView.Index>, isDefinition: Bool) {
+        self.isDefinition = isDefinition
+        super.init(range: range)
+    }
 
     // MARK: - Properties
+
+    public private(set) var isDefinition: Bool
 
     // [_Inherit Documentation: SyntaxElement.textFreedom_]
     /// How much freedom the user has in choosing the text of the element.
     public override var textFreedom: TextFreedom {
-        return .invariable
+        return isDefinition ? .arbitrary : .aliasable
     }
 }

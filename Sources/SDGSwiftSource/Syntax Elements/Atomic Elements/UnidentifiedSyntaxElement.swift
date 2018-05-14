@@ -19,6 +19,8 @@
 /// If the parser returns this for valid source, it should be considered a bug in the parser. Please report it: https://github.com/SDGGiesbrecht/SDGSwift/issues
 public class UnidentifiedSyntaxElement : AtomicSyntaxElement {
 
+    // MARK: - Properties
+
     // [_Inherit Documentation: SyntaxElement.textFreedom_]
     /// How much freedom the user has in choosing the text of the element.
     public override var textFreedom: TextFreedom {

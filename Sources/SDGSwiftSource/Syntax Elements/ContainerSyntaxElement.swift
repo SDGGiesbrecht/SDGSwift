@@ -74,7 +74,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.comment.url":
                     resolvedTokens.append(CommentURL(range: token.range))
                 case "source.lang.swift.syntaxtype.identifier":
-                    resolvedTokens.append(Identifier(range: token.range))
+                    resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
                 default:
