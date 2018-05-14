@@ -23,8 +23,9 @@ extension SourceKit {
 }
 
 extension Array where Element == SourceKit.PrimitiveToken {
+    // MARK: - where Element == SourceKit.PrimitiveToken
 
-    func tokens(in range: Range<String.ScalarView.Index>) -> [SourceKit.PrimitiveToken] {
+    internal func tokens(in range: Range<String.ScalarView.Index>) -> [SourceKit.PrimitiveToken] {
         var result: [SourceKit.PrimitiveToken] = []
         var iterator = makeIterator()
         while let next = iterator.next(),

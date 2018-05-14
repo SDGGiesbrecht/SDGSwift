@@ -49,7 +49,7 @@ public class File : ContainerSyntaxElement {
         }
 
         func parseUnidentified(for literal: String, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
-            return parseUnidentified() { unidentified in
+            return parseUnidentified { unidentified in
                 let matches = source.scalars.matches(for: literal.scalars, in: unidentified.range)
                 if matches.isEmpty {
                     return nil
@@ -72,7 +72,7 @@ public class File : ContainerSyntaxElement {
         parseUnidentified(for: "=") { Punctuation(range: $0) }
 
         // Fill in whitespace.
-        parseUnidentified() { unidentified in
+        parseUnidentified { unidentified in
             if let whitespace = Whitespace(unidentified: unidentified, in: source) {
                 return [whitespace]
             } else { // [_Exempt from Test Coverage._] The tests require that everying is accounted for by this point.
@@ -81,7 +81,7 @@ public class File : ContainerSyntaxElement {
         }
 
         if BuildConfiguration.current == .debug {
-            parseUnidentified() { unidenified in
+            parseUnidentified { unidenified in
                 print("Unidentified element.")
                 print("Parent: \(String(describing: unidenified.parent))")
                 print("Source: “\(String(source.scalars[unidenified.range]))”")
