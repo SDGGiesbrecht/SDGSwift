@@ -30,12 +30,24 @@ public class FunctionDeclaration : ContainerSyntaxElement {
             name = Identifier(range: nameRange, isDefinition: true)
         }
 
-
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
+
+        for child in children where child is UnidentifiedSyntaxElement {
+            if let match = source.scalars.firstMatch(for: "func".scalars, in: child.range) {
+
+                let type = Keyword(range: match.range)
+                let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+                children = structure + [type]
+                keyword = type
+                break
+            }
+        }
     }
 
     // MARK: - Properties
 
+    /// The keyword.
+    public private(set) var keyword: Keyword?
     /// The name of the function (not including parameters).
     public let name: AtomicSyntaxElement
 }

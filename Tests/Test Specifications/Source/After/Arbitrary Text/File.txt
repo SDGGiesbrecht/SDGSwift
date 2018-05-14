@@ -37,7 +37,7 @@
 ̲
 ̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲M̲e̲t̲h̲o̲d̲s̲
 ̲
-̲ ̲ ̲ ̲ ̲func p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲() ̲{
+̲ ̲ ̲ ̲ ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲() ̲{
         property = true
     }
 ̲}

@@ -37,7 +37,7 @@ struct Structure {
 
     // MARK: - Methods
 
-    f̲u̲n̲c̲ ̲performAction() {
+    func performAction() {
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲= ̲t̲r̲u̲e̲
 ̲ ̲ ̲ ̲ ̲}
 }
