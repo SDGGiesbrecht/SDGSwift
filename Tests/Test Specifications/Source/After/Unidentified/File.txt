@@ -38,6 +38,6 @@ struct Structure {
     // MARK: - Methods
 
     func performAction() {
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲= ̲t̲r̲u̲e̲
-̲ ̲ ̲ ̲ ̲}
+        property = true
+    }
 }
