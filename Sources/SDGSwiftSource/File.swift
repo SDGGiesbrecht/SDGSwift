@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGControlFlow
 import SDGLogic
 
 /// A Swift file.
@@ -35,14 +36,48 @@ public class File : ContainerSyntaxElement {
 
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
 
-        // Fill in whitespace.
-        for element in makeDeepIterator() {
-            if let unidentified = element as? UnidentifiedSyntaxElement,
-                let whitespace = Whitespace(unidentified: unidentified, in: source),
-                let parent = element.parent as? ContainerSyntaxElement {
+        func parseUnidentified(_ parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {
+            for element in makeDeepIterator() {
+                if let unidentified = element as? UnidentifiedSyntaxElement {
+                    if let replacement = parse(unidentified),
+                        let parent = element.parent as? ContainerSyntaxElement {
+                        let otherChildren = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
+                        parent.children = otherChildren + replacement
+                    }
+                }
+            }
+        }
 
-                let replacement = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
-                parent.children = replacement + [whitespace]
+        func parseUnidentified(for literal: String, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
+            return parseUnidentified() { unidentified in
+                let matches = source.scalars.matches(for: literal.scalars, in: unidentified.range)
+                if matches.isEmpty {
+                    return nil
+                } else {
+                    return matches.map { create($0.range) }
+                }
+            }
+        }
+
+        // Catch braces.
+        parseUnidentified(for: "{") { ScopeToken(range: $0) }
+        parseUnidentified(for: "}") { ScopeToken(range: $0) }
+
+        // Fill in whitespace.
+        parseUnidentified() { unidentified in
+            if let whitespace = Whitespace(unidentified: unidentified, in: source) {
+                return [whitespace]
+            } else {
+                return nil
+            }
+        }
+
+        if BuildConfiguration.current == .debug {
+            parseUnidentified() { unidenified in
+                print("Unidentified element.")
+                print("Parent: \(String(describing: unidenified.parent))")
+                print("Source: “\(String(source.scalars[unidenified.range]))”")
+                return nil
             }
         }
     }

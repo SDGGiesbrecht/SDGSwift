@@ -23,13 +23,13 @@
 ̲
 ̲import ̲Foundation
 ̲
-̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
+̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 
     // MARK: - Initialization
 ̲
 ̲ ̲ ̲ ̲ ̲init(p̲r̲o̲p̲e̲r̲t̲y̲: Bool) {
-        self.property = property
-    }
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.property = property
+̲ ̲ ̲ ̲ ̲}
 
     // MARK: - Properties
 ̲
@@ -40,5 +40,5 @@
 ̲ ̲ ̲ ̲ ̲func performAction() {
         property = true
     }
-}
+̲}
 ̲
