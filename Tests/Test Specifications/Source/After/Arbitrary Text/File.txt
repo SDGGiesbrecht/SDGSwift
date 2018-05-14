@@ -25,17 +25,17 @@
 ̲
 ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 ̲
-̲ ̲ ̲ ̲ ̲// ̲MARK: - Initialization
+̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 ̲
 ̲ ̲ ̲ ̲ ̲init(p̲r̲o̲p̲e̲r̲t̲y̲: Bool) {
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.property = property
 ̲ ̲ ̲ ̲ ̲}
 ̲
-̲ ̲ ̲ ̲ ̲// ̲MARK: - Properties
+̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 ̲
 ̲ ̲ ̲ ̲ ̲var p̲r̲o̲p̲e̲r̲t̲y̲: Bool
 ̲
-̲ ̲ ̲ ̲ ̲// ̲MARK: - Methods
+̲ ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲M̲e̲t̲h̲o̲d̲s̲
 ̲
 ̲ ̲ ̲ ̲ ̲func performAction() {
         property = true

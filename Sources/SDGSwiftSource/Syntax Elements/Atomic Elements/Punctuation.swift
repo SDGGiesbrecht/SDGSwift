@@ -1,5 +1,5 @@
 /*
- ScopeToken.swift
+ Punctuation.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A start or end token of a closure.
-public class ScopeToken : AtomicSyntaxElement {
+/// A punctuation mark (with syntactic significance).
+public class Punctuation : AtomicSyntaxElement {
 
     // MARK: - Properties
 

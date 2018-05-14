@@ -25,17 +25,17 @@ import Foundation
 
 struct Structure {
 
-    // M̲A̲R̲K̲:̲ ̲-̲ ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
+    // MARK: - Initialization
 
     init(̲property:̲ ̲B̲o̲o̲l̲)̲ ̲{
         self.̲property ̲=̲ ̲property
     }
 
-    // M̲A̲R̲K̲:̲ ̲-̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
+    // MARK: - Properties
 
     v̲a̲r̲ ̲property:̲ ̲B̲o̲o̲l̲
 
-    // M̲A̲R̲K̲:̲ ̲-̲ ̲M̲e̲t̲h̲o̲d̲s̲
+    // MARK: - Methods
 
     f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲)̲ ̲{
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲t̲r̲u̲e̲

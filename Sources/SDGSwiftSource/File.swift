@@ -63,8 +63,8 @@ public class File : ContainerSyntaxElement {
         parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
 
         // Catch braces.
-        parseUnidentified(for: "{") { ScopeToken(range: $0) }
-        parseUnidentified(for: "}") { ScopeToken(range: $0) }
+        parseUnidentified(for: "{") { Punctuation(range: $0) }
+        parseUnidentified(for: "}") { Punctuation(range: $0) }
 
         // Fill in whitespace.
         parseUnidentified() { unidentified in
