@@ -60,7 +60,7 @@ public class File : ContainerSyntaxElement {
             }
         }
 
-        // Catch missed comments. (SourceKit ignores empty line comments.)
+        // Catch comment tokens before headings.
         parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
 
         // Catch punctuation.
