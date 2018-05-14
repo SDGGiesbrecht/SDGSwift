@@ -37,7 +37,7 @@ s̲t̲r̲u̲c̲t̲ Structure {̲
 
     /̲/̲ M̲A̲R̲K̲:̲ -̲ Methods
 
-    f̲u̲n̲c̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲)̲ {̲
+    f̲u̲n̲c̲ ̲performAction(̲)̲ {̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲=̲ ̲t̲r̲u̲e̲
 ̲ ̲ ̲ ̲ ̲}̲
 }̲
