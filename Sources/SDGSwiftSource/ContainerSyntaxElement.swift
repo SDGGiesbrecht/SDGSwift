@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 /// An element of Swift syntax which contains child elements.
 open class ContainerSyntaxElement : SyntaxElement {
@@ -40,17 +41,38 @@ open class ContainerSyntaxElement : SyntaxElement {
         resolve(tokens: tokens, source: source)
     }
 
-    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) {
         super.init(range: range)
+        children = knownChildren
         resolve(tokens: tokens, source: source)
     }
 
     private func resolve(tokens: [SourceKit.PrimitiveToken], source: String) {
         var resolvedTokens: [SyntaxElement] = []
         for child in children where child is UnidentifiedSyntaxElement {
-            let containedTokens = tokens.tokens(in: child.range)
-            for token in containedTokens {
+            var relevantTokens = tokens.tokens(in: child.range)
+            while let token = relevantTokens.first {
+                relevantTokens.removeFirst()
+
                 switch token.kind {
+                case "source.lang.swift.syntaxtype.comment":
+                    // Group them to nest URLs, etc.
+                    var endIndex = token.range.upperBound
+                    var childTokens: [SourceKit.PrimitiveToken] = []
+                    while let next = relevantTokens.first,
+                        next.range.lowerBound == endIndex, // contiguous
+                        next.kind ∈ ["source.lang.swift.syntaxtype.comment", "source.lang.swift.syntaxtype.comment.url"] as Set<String> {
+
+                            relevantTokens.removeFirst() // Consume it.
+                            endIndex = next.range.upperBound
+                            if next.kind ≠ "source.lang.swift.syntaxtype.comment" {
+                                // Nest special regions.
+                                childTokens.append(next)
+                            }
+                    }
+                    resolvedTokens.append(Comment(range: token.range.lowerBound ..< endIndex, source: source, tokens: childTokens))
+                case "source.lang.swift.syntaxtype.comment.url":
+                    resolvedTokens.append(CommentURL(range: token.range))
                 case "source.lang.swift.syntaxtype.identifier":
                     resolvedTokens.append(Identifier(range: token.range))
                 case "source.lang.swift.syntaxtype.keyword":
