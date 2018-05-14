@@ -59,6 +59,9 @@ public class File : ContainerSyntaxElement {
             }
         }
 
+        // Catch missed comments. (SourceKit ignores empty line comments.)
+        parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
+
         // Catch braces.
         parseUnidentified(for: "{") { ScopeToken(range: $0) }
         parseUnidentified(for: "}") { ScopeToken(range: $0) }
