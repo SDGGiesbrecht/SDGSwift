@@ -28,7 +28,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let version = Version(9, 3, 0)
+    internal static let versions = Version(9, 3, 0) /* Travis CI */ ... Version(9, 3, 1) /* Current */
 
     internal static let standardLocations = [
         // Xcode
@@ -51,8 +51,13 @@ public enum Xcode {
                 }
 
                 // Make sure version matches.
-                let output = try? xcode.run(["\u{2D}version"])
-                return output?.contains(" " + version.string(droppingEmptyPatch: true) + "\n") == true
+                if let output = try? xcode.run(["\u{2D}version"]),
+                    let version = Version(firstIn: output),
+                    version ∈ versions {
+                    return true
+                } else {
+                    return false
+                }
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {
