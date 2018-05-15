@@ -71,7 +71,7 @@ public struct Package : TransparentWrapper {
         // [_Workaround: Swift links with absolute paths on macOS. (Swift 4.1)_]
         for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
             for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                try? Shell.default.run(command: [
+                _ = try? Shell.default.run(command: [
                     "install_name_tool",
                     "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
                     ])
