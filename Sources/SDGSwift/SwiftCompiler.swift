@@ -109,7 +109,7 @@ public enum SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = true, staticallyLinkStandardLibrary: Bool = true, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         var arguments = ["build"]
         if releaseConfiguration {
             arguments += ["\u{2D}\u{2D}configuration", "release"]

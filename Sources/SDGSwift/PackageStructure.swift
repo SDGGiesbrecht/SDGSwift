@@ -65,7 +65,7 @@ public struct Package : TransparentWrapper {
 
         reportProgress("")
 
-        try temporaryRepository.build(reportProgress: reportProgress)
+        try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
         let products = temporaryRepository.releaseProductsDirectory()
 
         let intermediateDirectory = FileManager.default.url(in: .temporary, at: UUID().uuidString)
