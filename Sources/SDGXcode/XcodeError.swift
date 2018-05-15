@@ -54,7 +54,7 @@ extension Xcode {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
-                            StrictString("Xcode \(Xcode.version.string()) could not be located."),
+                            StrictString("Xcode \(Xcode.versions.lowerBound.string()) could not be located."),
                             "Make sure it (xcodebuild) is installed at one of the following paths or register it with the default shell so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
                     }
