@@ -39,7 +39,7 @@ public class Comment : ContainerSyntaxElement {
         let singeLineToken = "//"
         let commentSource = String(source.scalars[range])
         guard commentSource.scalars.count ≥ singeLineToken.scalars.count else {
-            return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage._]
+            return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
         }
 
         // Find tokens.
@@ -49,7 +49,7 @@ public class Comment : ContainerSyntaxElement {
             guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
                 unidentified.range.lowerBound == range.lowerBound,
                 String(source.scalars[unidentified.range]).scalars.count ≥ singeLineToken.scalars.count else {
-                return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage._]
+                return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
             }
             resolvedNesting.append(CommentToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singeLineToken.scalars.count)))
         } else {
