@@ -55,7 +55,7 @@ public enum Xcode {
                     let version = Version(firstIn: output),
                     version ∈ versions {
                     return true
-                } else {
+                } else { // [_Exempt from Test Coverage_] Would require Xcode to be absent.
                     return false
                 }
             }
