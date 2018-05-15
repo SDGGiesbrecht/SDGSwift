@@ -67,6 +67,17 @@ public struct Package : TransparentWrapper {
 
         try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
         let products = temporaryRepository.releaseProductsDirectory()
+        #if os(macOS)
+        // [_Workaround: Swift links with absolute paths on macOS. (Swift 4.1)_]
+        for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
+            for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+                try? Shell.default.run(command: [
+                    "install_name_tool",
+                    "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
+                    ])
+            }
+        }
+        #endif
 
         let intermediateDirectory = FileManager.default.url(in: .temporary, at: UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: intermediateDirectory) }
@@ -81,18 +92,7 @@ public struct Package : TransparentWrapper {
                 try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
             }
         }
-        #if os(macOS)
-        // [_Workaround: Swift links with absolute paths on macOS. (Swift 4.1)_]
-        for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
-            for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                print(component)
-                /*_ = try? Shell.default.run(command: [
-                    "install_name_tool",
-                    "\u{2D}", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), component.lastPathComponent
-                    ])*/
-            }
-        }
-        #endif
+
         try FileManager.default.move(intermediateDirectory, to: destination)
     }
 
