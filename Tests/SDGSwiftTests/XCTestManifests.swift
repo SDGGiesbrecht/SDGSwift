@@ -37,7 +37,7 @@ extension SDGSwiftRegressionTests {
 // MARK: - #if !canImport(ObjectiveC)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGSwiftTests.__allTests),
+        testCase(SDGSwiftAPITests.__allTests),
         testCase(SDGSwiftRegressionTests.__allTests)
     ]
 }
