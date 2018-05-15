@@ -25,10 +25,12 @@ class SDGSwiftRegressionTests : TestCase {
     func testDynamicLinking() {
         // Untracked.
 
+        #if os(macOS) // Never was an issue on Linux.
         let moved = FileManager.default.url(in: .temporary, at: "Moved")
         defer { try? FileManager.default.removeItem(at: moved) }
         withMockDynamicLinkedExecutable { mock in
             XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
         }
+        #endif
     }
 }
