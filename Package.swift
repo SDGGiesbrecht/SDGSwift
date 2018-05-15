@@ -89,7 +89,8 @@ let package = Package(
         .target(name: "SDGSwiftTestUtilities", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",
-            .productItem(name: "SDGPersistence", package: "SDGCornerstone")
+            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
         ], path: "Tests/SDGSwiftTestUtilities"),
         .testTarget(name: "SDGSwiftTests", dependencies: [
             "SDGSwiftLocalizations",
