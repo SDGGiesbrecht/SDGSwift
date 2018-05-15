@@ -41,7 +41,7 @@ Simply add `SDGSwift` as a dependency in `Package.swift`:
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .upToNextMinor(from: Version(0, 1, 5))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .upToNextMinor(from: Version(0, 1, 6))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [
