@@ -1,0 +1,3 @@
+import LibraryB
+
+print(libraryB())

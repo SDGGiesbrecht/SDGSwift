@@ -65,8 +65,19 @@ public struct Package : TransparentWrapper {
 
         reportProgress("")
 
-        try temporaryRepository.build(reportProgress: reportProgress)
+        try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
         let products = temporaryRepository.releaseProductsDirectory()
+        #if os(macOS)
+        // [_Workaround: Swift links with absolute paths on macOS. (Swift 4.1)_]
+        for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
+            for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+                _ = try? Shell.default.run(command: [
+                    "install_name_tool",
+                    "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
+                    ])
+            }
+        }
+        #endif
 
         let intermediateDirectory = FileManager.default.url(in: .temporary, at: UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: intermediateDirectory) }
@@ -81,6 +92,7 @@ public struct Package : TransparentWrapper {
                 try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
             }
         }
+
         try FileManager.default.move(intermediateDirectory, to: destination)
     }
 
@@ -101,7 +113,7 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache")
+        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache") // [_Exempt from Test Coverage_]
         let cache = try self.cacheDirectory(in: cacheRoot, for: version)
 
         if ¬FileManager.default.fileExists(atPath: cache.path) {
