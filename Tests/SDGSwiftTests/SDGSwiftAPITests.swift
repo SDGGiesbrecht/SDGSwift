@@ -1,5 +1,5 @@
 /*
- SDGSwiftTests.swift
+ SDGSwiftAPITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -22,7 +22,7 @@ import SDGSwift
 
 import SDGSwiftTestUtilities
 
-class SDGSwiftTests : TestCase {
+class SDGSwiftAPITests : TestCase {
 
     func testBuild() {
         XCTAssertEqual(Build.development, Build.development)

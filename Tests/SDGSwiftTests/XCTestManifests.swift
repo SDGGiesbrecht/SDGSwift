@@ -14,7 +14,7 @@
 
 import XCTest
 
-extension SDGSwiftTests {
+extension SDGSwiftAPITests {
     static let __allTests = [
         ("testBuild", testBuild),
         ("testGitError", testGitError),
@@ -27,11 +27,18 @@ extension SDGSwiftTests {
     ]
 }
 
+extension SDGSwiftRegressionTests {
+    static let __allTests = [
+        ("testDynamicLinking", testDynamicLinking)
+    ]
+}
+
 #if !canImport(ObjectiveC)
 // MARK: - #if !canImport(ObjectiveC)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGSwiftTests.__allTests)
+        testCase(SDGSwiftAPITests.__allTests),
+        testCase(SDGSwiftRegressionTests.__allTests)
     ]
 }
 #endif
