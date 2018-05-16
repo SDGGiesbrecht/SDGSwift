@@ -67,7 +67,7 @@ class SDGSwiftSourceTests : TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testSourceKitError() {
         testCustomStringConvertibleConformance(of: SourceKit.Error.dynamicLinkerError(description: "[linker’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "Dynamic Linker Error", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: SourceKit.Error.sourceKitError(description: "[SourceKit’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "SourceKit Error", overwriteSpecificationInsteadOfFailing: false)

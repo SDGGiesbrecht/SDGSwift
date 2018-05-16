@@ -56,7 +56,7 @@ class SDGSwiftAPITests : TestCase {
 
     func testPackageRepository() {
         testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
-        
+
         withDefaultMockRepository { mock in
             try mock.tag(version: Version(10, 0, 0))
         }
@@ -89,7 +89,7 @@ class SDGSwiftAPITests : TestCase {
 
     func testVersion() {
         testCustomStringConvertibleConformance(of: Version(1, 2, 3), localizations: InterfaceLocalization.self, uniqueTestName: "1.2.3", overwriteSpecificationInsteadOfFailing: false)
-        
+
         XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
         XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
         XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
