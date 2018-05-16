@@ -46,6 +46,7 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testPackage() {
+        testCustomStringConvertibleConformance(of: Package(url: URL(string: "https://domain.tld/Package")!), localizations: InterfaceLocalization.self, uniqueTestName: "Mock Package", overwriteSpecificationInsteadOfFailing: false)
         XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
     }
 
@@ -66,7 +67,7 @@ class SDGSwiftAPITests : TestCase {
 
         withDefaultMockRepository { mock in
             try mock.resolve()
-            try mock.build()
+            try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
             #if canImport(ObjectiveC)
             try mock.regenerateTestLists()
             #endif
@@ -75,6 +76,7 @@ class SDGSwiftAPITests : TestCase {
                 try mock.test()
             }
         }
+        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
     }
 
     func testSwiftCompilerError() {

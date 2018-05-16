@@ -85,6 +85,7 @@ public enum SwiftCompiler {
             if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validate) {
                 return found
             } else { // [_Exempt from Test Coverage_] Swift is necessarily available when tests are run.
+                // [_Exempt from Test Coverage_]
                 throw SwiftCompiler.Error.unavailable
             }
         }
@@ -132,7 +133,7 @@ public enum SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // [_Exempt from Test Coverage_] Xcode hijacks this.
         return try runCustomSubcommand(["test"], in: package.location, reportProgress: reportProgress)
     }
 
@@ -160,6 +161,7 @@ public enum SwiftCompiler {
         // [_Workaround: Until swift does a better job on its own. (Swift 4.2)_]
         for file in try FileManager.default.deepFileEnumeration(in: package.location) {
             if file.is(in: package.location.appendingPathComponent(".build")) ∨ file.is(in: package.location.appendingPathComponent("Packages")) {
+                // [_Exempt from Test Coverage_]
                 // Belongs to a different package.
                 continue
             }
