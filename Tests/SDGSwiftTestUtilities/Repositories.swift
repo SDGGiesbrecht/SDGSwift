@@ -59,7 +59,7 @@ public func withMockDynamicLinkedExecutable(file: StaticString = #file, line: UI
             try Shell.default.run(command: ["git", "init"], in: mock.location)
             try Shell.default.run(command: ["git", "add", "."], in: mock.location)
             try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."], in: mock.location)
-            try Shell.default.run(command: ["git", "tag", "1.0.0"])
+            try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location)
             return mock
         }
 
