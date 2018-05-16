@@ -1,2 +1,2 @@
 
-void somethingToCompile() {}
+void somethingToCompile() {} // [_Exempt from Test Coverage_]

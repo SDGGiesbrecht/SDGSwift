@@ -14,6 +14,7 @@
 
 import SDGCollections
 import SDGLocalization
+import SDGLogicTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
@@ -25,8 +26,15 @@ import SDGSwiftTestUtilities
 class SDGSwiftAPITests : TestCase {
 
     func testBuild() {
-        XCTAssertEqual(Build.development, Build.development)
-        XCTAssertNotEqual(Build.version(Version(1, 0, 0)), Build.development)
+        testEquatableConformance(differingInstances: (Build.development, Build.version(Version(1, 0, 0))))
+        testEquatableConformance(differingInstances: (Build.version(Version(1, 0, 0)), Build.version(Version(2, 0, 0))))
+        testEquatableConformance(differingInstances: (Build.version(Version(1, 0, 0)), Build.development))
+        testCustomStringConvertibleConformance(of: Build.version(Version(1, 0, 0)), localizations: InterfaceLocalization.self, uniqueTestName: "1.0.0", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Build.development, localizations: InterfaceLocalization.self, uniqueTestName: "Development", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testGit() {
+        XCTAssertNotNil(try? Git.location())
     }
 
     func testGitError() {
@@ -39,6 +47,14 @@ class SDGSwiftAPITests : TestCase {
 
     func testPackage() {
         XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+    }
+
+    func testPackageError() {
+        testCustomStringConvertibleConformance(of: Package.Error.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testPackageRepository() {
+        testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSwiftCompiler() {

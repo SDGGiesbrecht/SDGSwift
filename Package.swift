@@ -98,6 +98,7 @@ let package = Package(
             "SDGSwiftTestUtilities",
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
