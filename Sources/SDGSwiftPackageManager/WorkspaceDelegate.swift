@@ -17,7 +17,7 @@ import PackageGraph
 import Workspace
 
 extension WorkspaceDelegate {
-    internal func packageGraphWillLoad(currentGraph: PackageGraph, dependencies: AnySequence<ManagedDependency>, missingURLs: Set<String>) {}
+    internal func packageGraphWillLoad(currentGraph: PackageGraph, dependencies: AnySequence<ManagedDependency>, missingURLs: Set<String>) {} // [_Exempt from Test Coverage_]
     internal func fetchingWillBegin(repository: String) {}
     internal func fetchingDidFinish(repository: String, diagnostic: Diagnostic?) {}
     internal func cloning(repository: String) {}

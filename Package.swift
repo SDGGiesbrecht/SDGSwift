@@ -104,15 +104,18 @@ let package = Package(
             ]),
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
             "SDGSwiftPackageManager",
+            "SDGSwiftLocalizations",
             "SDGSwiftTestUtilities",
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftSourceTests", dependencies: [
+            "SDGSwiftLocalizations",
             "SDGSwiftSource",
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGXcodeTests", dependencies: [

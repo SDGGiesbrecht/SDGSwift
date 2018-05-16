@@ -75,13 +75,14 @@ public class File : ContainerSyntaxElement {
         parseUnidentified { unidentified in
             if let whitespace = Whitespace(unidentified: unidentified, in: source) {
                 return [whitespace]
-            } else { // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
+            } else {
+                // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
                 return nil
             }
         }
 
         if BuildConfiguration.current == .debug {
-            parseUnidentified { unidenified in
+            parseUnidentified { unidenified in // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
                 print("Unidentified element.")
                 print("Parent: \(String(describing: unidenified.parent))")
                 print("Source: “\(String(source.scalars[unidenified.range]))”")

@@ -33,7 +33,7 @@ extension PackageRepository {
         let initializer = try InitPackage(destinationPath: AbsolutePath(location.path), packageType: type)
         try initializer.writePackageStructure()
         try Git.initialize(self)
-        try Git.commitChanges(in: self, description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        try commitChanges(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom:
                 return "Initialised."

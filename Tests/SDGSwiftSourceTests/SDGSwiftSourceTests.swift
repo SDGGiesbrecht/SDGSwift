@@ -14,8 +14,10 @@
 
 import SDGLogic
 import SDGPersistenceTestUtilities
+import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
+import SDGSwiftLocalizations
 import SDGSwiftSource
 
 class SDGSwiftSourceTests : TestCase {
@@ -64,5 +66,12 @@ class SDGSwiftSourceTests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+    
+    func testSourceKitError() {
+        testCustomStringConvertibleConformance(of: SourceKit.Error.dynamicLinkerError(description: "[linker’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "Dynamic Linker Error", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.sourceKitError(description: "[SourceKit’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "SourceKit Error", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.unknownTypeVariant(identifier: 100), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown Type Variant", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.unknownResponse(contents: "[response]"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown Response", overwriteSpecificationInsteadOfFailing: false)
     }
 }

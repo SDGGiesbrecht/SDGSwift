@@ -30,11 +30,6 @@ extension SourceKit {
             rawValue = (try load(symbol: "sourcekitd_request_string_create") as (@convention(c) (UnsafePointer<Int8>) -> sourcekitd_object_t?))(string)!
         }
 
-        internal init(_ array: [Object]) throws {
-            let elements: [sourcekitd_object_t?] = array.map { $0.rawValue }
-            rawValue = (try load(symbol: "sourcekitd_request_array_create") as (@convention(c) (UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(elements, elements.count)!
-        }
-
         internal init(_ dictionary: [UID: Object]) throws {
             var keys: [sourcekitd_uid_t?] = []
             var values: [sourcekitd_object_t?] = []
