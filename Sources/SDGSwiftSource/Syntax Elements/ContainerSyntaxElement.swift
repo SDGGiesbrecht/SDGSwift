@@ -116,7 +116,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     }
                 }
             }
-            
+
             if sorted.isEmpty {
                 inserts.append(UnidentifiedSyntaxElement(range: range))
             } else if ¬range.isEmpty {

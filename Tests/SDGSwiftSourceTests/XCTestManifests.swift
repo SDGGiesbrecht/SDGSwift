@@ -16,7 +16,20 @@ import XCTest
 
 extension SDGSwiftSourceAPITests {
     static let __allTests = [
-        ("testParsing", testParsing)
+        ("testContainerSyntaxElement", testContainerSyntaxElement),
+        ("testIdentifier", testIdentifier),
+        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
+        ("testParsing", testParsing),
+        ("testSourceKitError", testSourceKitError),
+        ("testUnidentifiedSyntaxElement", testUnidentifiedSyntaxElement)
+    ]
+}
+
+extension SDGSwiftSourceInternalTests {
+    static let __allTests = [
+        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
+        ("testSourceKitUID", testSourceKitUID),
+        ("testSourceKitVariant", testSourceKitVariant)
     ]
 }
 
@@ -24,7 +37,8 @@ extension SDGSwiftSourceAPITests {
 // MARK: - #if !canImport(ObjectiveC)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(SDGSwiftSourceTests.__allTests)
+        testCase(SDGSwiftSourceAPITests.__allTests),
+        testCase(SDGSwiftSourceInternalTests.__allTests)
     ]
 }
 #endif

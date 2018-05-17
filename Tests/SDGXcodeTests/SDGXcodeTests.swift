@@ -103,7 +103,7 @@ class SDGXcodeTests : TestCase {
                 }
             }
         }
-        
+
         XCTAssert(¬Xcode.warningsOccurred(during: ""))
         #endif
     }
