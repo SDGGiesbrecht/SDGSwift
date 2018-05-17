@@ -95,7 +95,7 @@ public class Identifier : AtomicSyntaxElement {
     /// The characters an identifier is allowed to contain.
     ///
     /// Some of these characters are not allowed at the start. See `identifierStarterCharacters`.
-    private static let identifierCharacters: CharacterSet = {
+    public static let identifierCharacters: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
         var result = CharacterSet(charactersIn: "0" ... "9")
 
@@ -161,7 +161,7 @@ public class Identifier : AtomicSyntaxElement {
     /// The characters an operator is allowed to contain.
     ///
     /// The dot (U+002E) is unusual. It can be part of an operator, but it cannot be one in isolation.
-    private static let operatorCharactersIncludingDot: CharacterSet = {
+    public static let operatorCharactersIncludingDot: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
 
         var result: CharacterSet = []

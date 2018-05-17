@@ -1,0 +1,12 @@
+🇬🇧EN
+The package did not produce an executable with any of the requested names:
+tool
+
+🇺🇸EN
+The package did not produce an executable with any of the requested names:
+tool
+
+🇨🇦EN
+The package did not produce an executable with any of the requested names:
+tool
+

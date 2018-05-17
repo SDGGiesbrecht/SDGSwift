@@ -30,6 +30,7 @@ class SDGSwiftRegressionTests : TestCase {
         defer { try? FileManager.default.removeItem(at: moved) }
         withMockDynamicLinkedExecutable { mock in
             XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
+            XCTAssertEqual(try Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
         }
         #endif
     }

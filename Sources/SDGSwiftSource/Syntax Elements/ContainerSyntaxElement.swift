@@ -31,7 +31,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         self.children = children
     }
 
-    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws {
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         try super.init(substructureInformation: substructureInformation, in: source)
         defer { resolve(tokens: tokens, source: source) }
         guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
@@ -41,7 +41,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
     }
 
-    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) {
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         super.init(range: range)
         children = knownChildren
         resolve(tokens: tokens, source: source)
@@ -80,6 +80,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
+                    // [_Exempt from Test Coverage_]
                     if BuildConfiguration.current == .debug {
                         print("Unidentified token kind: \(token.kind)")
                     }
@@ -115,16 +116,15 @@ open class ContainerSyntaxElement : SyntaxElement {
                     }
                 }
             }
-            if ¬range.isEmpty {
-                if sorted.isEmpty {
-                    inserts.append(UnidentifiedSyntaxElement(range: range))
-                } else {
-                    if range.lowerBound ≠ sorted.first!.range.lowerBound {
-                        inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
-                    }
-                    if sorted.last!.range.upperBound ≠ range.upperBound {
-                        inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
-                    }
+
+            if sorted.isEmpty {
+                inserts.append(UnidentifiedSyntaxElement(range: range))
+            } else if ¬range.isEmpty {
+                if range.lowerBound ≠ sorted.first!.range.lowerBound {
+                    inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
+                }
+                if sorted.last!.range.upperBound ≠ range.upperBound {
+                    inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
                 }
             }
             _children = sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })

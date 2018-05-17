@@ -17,10 +17,13 @@ import XCTest
 extension SDGSwiftAPITests {
     static let __allTests = [
         ("testBuild", testBuild),
+        ("testGit", testGit),
         ("testGitError", testGitError),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testLocalizations", testLocalizations),
         ("testPackage", testPackage),
+        ("testPackageError", testPackageError),
+        ("testPackageRepository", testPackageRepository),
         ("testSwiftCompiler", testSwiftCompiler),
         ("testSwiftCompilerError", testSwiftCompilerError),
         ("testVersion", testVersion)
@@ -29,7 +32,8 @@ extension SDGSwiftAPITests {
 
 extension SDGSwiftRegressionTests {
     static let __allTests = [
-        ("testDynamicLinking", testDynamicLinking)
+        ("testDynamicLinking", testDynamicLinking),
+        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
     ]
 }
 

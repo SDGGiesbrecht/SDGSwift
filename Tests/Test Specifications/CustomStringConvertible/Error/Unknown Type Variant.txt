@@ -1,0 +1,9 @@
+🇬🇧EN
+SourceKit responded with an unknown type variant identifier: 100
+
+🇺🇸EN
+SourceKit responded with an unknown type variant identifier: 100
+
+🇨🇦EN
+SourceKit responded with an unknown type variant identifier: 100
+

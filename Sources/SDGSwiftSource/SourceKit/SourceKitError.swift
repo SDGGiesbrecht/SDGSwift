@@ -39,7 +39,7 @@ extension SourceKit {
 
         // MARK: - Initialization
 
-        internal static func currentDynamicLinkerError() -> SourceKit.Error {
+        internal static func currentDynamicLinkerError() -> SourceKit.Error { // [_Exempt from Test Coverage_]
             return .dynamicLinkerError(description: String(validatingUTF8: dlerror()))
         }
 

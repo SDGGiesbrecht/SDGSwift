@@ -14,6 +14,7 @@
 
 import SDGCollections
 import SDGLocalization
+import SDGLogicTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
@@ -25,8 +26,15 @@ import SDGSwiftTestUtilities
 class SDGSwiftAPITests : TestCase {
 
     func testBuild() {
-        XCTAssertEqual(Build.development, Build.development)
-        XCTAssertNotEqual(Build.version(Version(1, 0, 0)), Build.development)
+        testEquatableConformance(differingInstances: (Build.development, Build.version(Version(1, 0, 0))))
+        testEquatableConformance(differingInstances: (Build.version(Version(1, 0, 0)), Build.version(Version(2, 0, 0))))
+        testEquatableConformance(differingInstances: (Build.version(Version(1, 0, 0)), Build.development))
+        testCustomStringConvertibleConformance(of: Build.version(Version(1, 0, 0)), localizations: InterfaceLocalization.self, uniqueTestName: "1.0.0", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Build.development, localizations: InterfaceLocalization.self, uniqueTestName: "Development", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testGit() {
+        XCTAssertNotNil(try? Git.location())
     }
 
     func testGitError() {
@@ -38,7 +46,20 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testPackage() {
+        testCustomStringConvertibleConformance(of: Package(url: URL(string: "https://domain.tld/Package")!), localizations: InterfaceLocalization.self, uniqueTestName: "Mock Package", overwriteSpecificationInsteadOfFailing: false)
         XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+    }
+
+    func testPackageError() {
+        testCustomStringConvertibleConformance(of: Package.Error.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testPackageRepository() {
+        testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
+
+        withDefaultMockRepository { mock in
+            try mock.tag(version: Version(10, 0, 0))
+        }
     }
 
     func testSwiftCompiler() {
@@ -50,7 +71,7 @@ class SDGSwiftAPITests : TestCase {
 
         withDefaultMockRepository { mock in
             try mock.resolve()
-            try mock.build()
+            try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
             #if canImport(ObjectiveC)
             try mock.regenerateTestLists()
             #endif
@@ -59,6 +80,7 @@ class SDGSwiftAPITests : TestCase {
                 try mock.test()
             }
         }
+        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
     }
 
     func testSwiftCompilerError() {
@@ -66,6 +88,18 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testVersion() {
+        testCustomStringConvertibleConformance(of: Version(1, 2, 3), localizations: InterfaceLocalization.self, uniqueTestName: "1.2.3", overwriteSpecificationInsteadOfFailing: false)
+
+        XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
+        XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
+        XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
+        XCTAssertNil(Version("Blah blah blah..."))
         XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+        XCTAssertNil(Version("1.0.0.0"))
+        XCTAssertNil(Version("1.0.A"))
+        XCTAssertNil(Version("1.A"))
+        XCTAssertNil(Version("A"))
+        XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
+        XCTAssertEqual(Version(1, 0, 0), "1.0.0")
     }
 }

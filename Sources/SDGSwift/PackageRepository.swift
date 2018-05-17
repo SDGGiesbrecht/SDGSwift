@@ -81,7 +81,7 @@ public struct PackageRepository : TransparentWrapper {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public func test(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // [_Exempt from Test Coverage_] Xcode hijacks this.
         return try SwiftCompiler.test(self, reportProgress: reportProgress)
     }
 

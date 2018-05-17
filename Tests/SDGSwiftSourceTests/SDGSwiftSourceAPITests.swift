@@ -1,5 +1,5 @@
 /*
- SDGSwiftSourceTests.swift
+ SDGSwiftSourceAPITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -13,12 +13,24 @@
  */
 
 import SDGLogic
+import SDGCollections
 import SDGPersistenceTestUtilities
+import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
+import SDGSwiftLocalizations
 import SDGSwiftSource
 
-class SDGSwiftSourceTests : TestCase {
+class SDGSwiftSourceAPITests : TestCase {
+
+    func testContainerSyntaxElement() {
+        XCTAssert(¬ContainerSyntaxElement(range: "".bounds, children: []).children.isEmpty)
+    }
+
+    func testIdentifier() {
+        XCTAssert(Identifier.identifierCharacters ∋ "α")
+        XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
+    }
 
     func testParsing() {
         do {
@@ -64,5 +76,17 @@ class SDGSwiftSourceTests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+
+    func testSourceKitError() {
+        testCustomStringConvertibleConformance(of: SourceKit.Error.dynamicLinkerError(description: "[linker’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "Dynamic Linker Error", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.dynamicLinkerError(description: nil), localizations: InterfaceLocalization.self, uniqueTestName: "Dynamic Linker Error (Unknown)", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.sourceKitError(description: "[SourceKit’s description]"), localizations: InterfaceLocalization.self, uniqueTestName: "SourceKit Error", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.unknownTypeVariant(identifier: 100), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown Type Variant", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SourceKit.Error.unknownResponse(contents: "[response]"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown Response", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testUnidentifiedSyntaxElement() {
+        XCTAssertEqual(UnidentifiedSyntaxElement(range: "".scalars.bounds).textFreedom, .invariable)
     }
 }

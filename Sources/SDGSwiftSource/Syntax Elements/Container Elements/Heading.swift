@@ -25,6 +25,7 @@ public class Heading : ContainerSyntaxElement {
         var parsedChildren: [SyntaxElement] = []
 
         if let match = source.scalars.firstMatch(for: "MARK:".scalars, in: location ..< range.upperBound) {
+            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
 
             let mark = Keyword(range: match.range)
             location = match.range.upperBound
@@ -34,6 +35,7 @@ public class Heading : ContainerSyntaxElement {
 
         if let match = source.scalars.firstMatch(for: "\u{2D}".scalars, in: location ..< range.upperBound),
             ¬source.scalars[location ..< match.range.lowerBound].contains(where: { $0 ∉ Whitespace.whitespaceCharacters }) {
+            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
 
             let divider = Punctuation(range: match.range)
             location = match.range.upperBound
@@ -42,6 +44,7 @@ public class Heading : ContainerSyntaxElement {
         }
 
         if let match = source.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ Whitespace.whitespaceCharacters }), in: location ..< range.upperBound) {
+            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
 
             let text = HeadingText(range: match.range.lowerBound ..< range.upperBound)
             parsedChildren.append(text)
