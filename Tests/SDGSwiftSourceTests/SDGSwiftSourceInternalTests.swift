@@ -28,8 +28,8 @@ class SDGSwiftSourceInternalTests : TestCase {
     }
 
     func testSourceKitVariant() {
-        XCTAssertNotNil(SourceKit.Variant.dictionary([:]).asAny() as? [String: Any])
-        XCTAssertNotNil(SourceKit.Variant.array([]).asAny() as? [Any])
+        XCTAssertNotNil(SourceKit.Variant.dictionary(["": .string("")]).asAny() as? [String: Any])
+        XCTAssertNotNil(SourceKit.Variant.array([.string("")]).asAny() as? [Any])
         XCTAssertNotNil(SourceKit.Variant.integer(0).asAny() as? Int)
         XCTAssertNotNil(SourceKit.Variant.string("").asAny() as? String)
         XCTAssertNotNil(SourceKit.Variant.boolean(false).asAny() as? Bool)
