@@ -46,7 +46,7 @@ public enum Git {
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "git", validate: validate) {
                 return found
-            } else {
+            } else { // [_Exempt from Test Coverage_]
                 // [_Exempt from Test Coverage_] Git is necessarily available when tests are run.
                 throw Git.Error.unavailable
             }
