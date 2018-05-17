@@ -37,6 +37,7 @@ public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #
             try test(repository)
         }
     } catch {
+        // [_Exempt from Test Coverage_]
         XCTFail("\(error)", file: file, line: line)
     }
 }
@@ -69,6 +70,7 @@ public func withMockDynamicLinkedExecutable(file: StaticString = #file, line: UI
 
         try test(tool)
     } catch {
+        // [_Exempt from Test Coverage_]
         XCTFail("\(error)", file: file, line: line)
     }
 }

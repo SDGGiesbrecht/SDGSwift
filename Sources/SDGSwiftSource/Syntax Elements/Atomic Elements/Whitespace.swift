@@ -36,7 +36,7 @@ public class Whitespace : AtomicSyntaxElement {
 
     internal convenience init?(unidentified: UnidentifiedSyntaxElement, in source: String) {
         if ¬source.scalars[unidentified.range].contains(where: { $0 ∉ Whitespace.whitespaceCharacters }) {
-            self.init(range: unidentified.range)
+            self.init(range: unidentified.range) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         } else {
             return nil
         }

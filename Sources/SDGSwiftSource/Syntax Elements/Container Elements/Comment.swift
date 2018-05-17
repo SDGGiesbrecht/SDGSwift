@@ -45,9 +45,10 @@ public class Comment : ContainerSyntaxElement {
         // Find tokens.
         var resolvedNesting: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singeLineToken.scalars) {
+            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
             // Single line
             guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
-                unidentified.range.lowerBound == range.lowerBound,
+                unidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
                 String(source.scalars[unidentified.range]).scalars.count ≥ singeLineToken.scalars.count else {
                 return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
             }
@@ -55,7 +56,7 @@ public class Comment : ContainerSyntaxElement {
         } else {
             // Multiline (possibly nested)
             for child in children where child is UnidentifiedSyntaxElement {
-                for match in source.scalars.matches(for: AlternativePatterns([
+                for match in source.scalars.matches(for: AlternativePatterns([// [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
                     LiteralPattern("/*".scalars),
                     LiteralPattern("*/".scalars)
                     ]), in: child.range) {
@@ -70,7 +71,7 @@ public class Comment : ContainerSyntaxElement {
         // The rest is text.
         var text: [SyntaxElement] = []
         for child in children where child is UnidentifiedSyntaxElement {
-            text.append(CommentText(range: child.range))
+            text.append(CommentText(range: child.range)) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         }
         let other = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = other + text

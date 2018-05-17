@@ -14,7 +14,7 @@
 
 import XCTest
 
-extension SDGSwiftSourceTests {
+extension SDGSwiftSourceAPITests {
     static let __allTests = [
         ("testParsing", testParsing)
     ]

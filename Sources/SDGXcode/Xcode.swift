@@ -198,9 +198,9 @@ public enum Xcode {
 
         switch sdk {
         case .iOS(simulator: true):
-            command += ["\u{2D}destination", "name=iPhone 8"]
+            command += ["\u{2D}destination", "name=iPhone 8"] // [_Exempt from Test Coverage_] Tested separately.
         case .tvOS(simulator: true):
-            command += ["\u{2D}destination", "name=Apple TV 4K"]
+            command += ["\u{2D}destination", "name=Apple TV 4K"] // [_Exempt from Test Coverage_] Tested separately.
         default:
             command += ["\u{2D}sdk", sdk.commandLineName]
         }
@@ -219,7 +219,8 @@ public enum Xcode {
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
-        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
+        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // [_Exempt from Test Coverage_]
+            // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
         }
 
@@ -229,6 +230,7 @@ public enum Xcode {
             archive.path
             ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in
                 if file.is(in: package.dataDirectory) ∨ file.is(in: package.editablesDirectory) {
+                    // [_Exempt from Test Coverage_]
                     // Belongs to a dependency.
                     return false
                 }
@@ -251,7 +253,7 @@ public enum Xcode {
                     if let integer = Int(digitsOnly) {
                         return integer
                     }
-                    if ¬digitsOnly.scalars.contains(where: { $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }) {
+                    if ¬digitsOnly.scalars.contains(where: { $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }) { // [_Exempt from Test Coverage_]
                         // It is an integer; it is just to large.
                         return Int.max
                     }
@@ -290,12 +292,14 @@ public enum Xcode {
                         let lineNumber = toIntegerIgnoringWhitespace(lineString),
                         let columnString = components.last,
                         let count = toIntegerIgnoringWhitespace(columnString) else {
+                            // [_Exempt from Test Coverage_]
                             throw Xcode.Error.corruptTestCoverageReport
                     }
                     regions.append(CoverageRegion(region: toIndex(line: lineNumber) ..< toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
+                            // [_Exempt from Test Coverage_]
                             throw Xcode.Error.corruptTestCoverageReport
                         }
                         var substring = String(report[subrange])
@@ -309,6 +313,7 @@ public enum Xcode {
                                 let start = toIntegerIgnoringWhitespace(components[0]),
                                 let length = toIntegerIgnoringWhitespace(components[1]),
                                 let count = toIntegerIgnoringWhitespace(components[2]) else {
+                                    // [_Exempt from Test Coverage_]
                                     throw Xcode.Error.corruptTestCoverageReport
                             }
                             regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
@@ -327,7 +332,7 @@ public enum Xcode {
                         regions.append(next)
                         return
                     }
-                    if last.region.upperBound > next.region.lowerBound {
+                    if last.region.upperBound > next.region.lowerBound { // [_Exempt from Test Coverage_]
                         // Fix overlap.
                         regions.removeLast()
                         let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
@@ -369,12 +374,14 @@ public enum Xcode {
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func scheme(for package: PackageRepository) throws -> String {
         if try package.xcodeProject() == nil {
+            // [_Exempt from Test Coverage_]
             throw Xcode.Error.noXcodeProject
         }
 
         let information = try runCustomSubcommand(["\u{2D}list"], in: package.location)
 
         guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
+            // [_Exempt from Test Coverage_]
             throw Xcode.Error.noPackageScheme
         }
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
@@ -382,6 +389,7 @@ public enum Xcode {
         for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
             return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
         }
+        // [_Exempt from Test Coverage_]
         throw Xcode.Error.noPackageScheme
     }
 
@@ -395,7 +403,8 @@ public enum Xcode {
 
     private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
         let settings = try buildSettings(for: package, on: sdk)
-        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_]
+            // [_Exempt from Test Coverage_] Unreachable without corrupt project.
             throw Xcode.Error.noBuildDirectory
         }
         return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()

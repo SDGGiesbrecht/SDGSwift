@@ -36,6 +36,7 @@ open class SyntaxElement {
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
+            // [_Exempt from Test Coverage_]
             if BuildConfiguration.current == .debug {
                 print("Unidentified substructure kind: \(kind)")
             }
@@ -46,7 +47,7 @@ open class SyntaxElement {
     // MARK: - Initialization
 
     /// Creates a syntax element with the specified range.
-    public init(range: Range<String.ScalarView.Index>) {
+    public init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         self.range = range
     }
 
@@ -60,7 +61,7 @@ open class SyntaxElement {
         return start ..< end
     }
 
-    internal init(substructureInformation: SourceKit.Variant, in source: String) throws {
+    internal init(substructureInformation: SourceKit.Variant, in source: String) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         range = try SyntaxElement.range(from: substructureInformation, for: "key.", in: source)
     }
 

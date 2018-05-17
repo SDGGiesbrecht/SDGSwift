@@ -21,8 +21,12 @@ import SDGXCTestUtilities
 import SDGSwiftLocalizations
 import SDGSwiftSource
 
-class SDGSwiftSourceTests : TestCase {
+class SDGSwiftSourceAPITests : TestCase {
 
+    func testContainerSyntaxElement() {
+        XCTAssert(¬ContainerSyntaxElement(range: "".bounds, children: []).children.isEmpty)
+    }
+    
     func testIdentifier() {
         XCTAssert(Identifier.identifierCharacters ∋ "α")
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")

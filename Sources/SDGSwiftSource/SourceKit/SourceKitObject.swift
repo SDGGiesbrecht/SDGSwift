@@ -42,10 +42,10 @@ extension SourceKit {
 
         deinit {
             if let release = (try? load(symbol: "sourcekitd_request_release") as (@convention(c) (sourcekitd_object_t) -> Void)) {
-                release(rawValue)
+                release(rawValue) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3
             } else {
                 if BuildConfiguration.current == .debug {
-                    print("Memory leak! Failed to link “sourcekitd_request_release”.")
+                    print("Memory leak! Failed to link “sourcekitd_request_release”.") // [_Exempt from Test Coverage_]
                 }
             }
         }
