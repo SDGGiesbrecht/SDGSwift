@@ -55,14 +55,16 @@ public enum Xcode {
                     let version = Version(firstIn: output),
                     version ∈ versions {
                     return true
-                } else { // [_Exempt from Test Coverage_] Would require Xcode to be absent.
+                } else { // [_Exempt from Test Coverage_]
+                    // [_Exempt from Test Coverage_] Would require Xcode to be absent.
                     return false
                 }
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {
                 return found
-            } else { // [_Exempt from Test Coverage_] Xcode is necessarily available when tests are run.
+            } else { // [_Exempt from Test Coverage_]
+                 // [_Exempt from Test Coverage_] Xcode is necessarily available when tests are run.
                 throw Xcode.Error.unavailable
             }
         }

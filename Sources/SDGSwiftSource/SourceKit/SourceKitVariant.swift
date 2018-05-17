@@ -34,7 +34,7 @@ extension SourceKit {
             let type = (try SourceKit.load(symbol: "sourcekitd_variant_get_type") as (@convention(c) (sourcekitd_variant_t) -> sourcekitd_variant_type_t))(rawValue)
             switch type {
             case SOURCEKITD_VARIANT_TYPE_NULL :
-                return nil
+                return nil // [_Exempt from Test Coverage_] Not an expected response.
             case SOURCEKITD_VARIANT_TYPE_DICTIONARY :
                 typealias Context = (dictionary: [String: Variant], error: Swift.Error?)
                 var context: Context = (dictionary: [:], error: nil)
@@ -46,7 +46,7 @@ extension SourceKit {
                         context.pointee.dictionary[try uid.string()] = value
                         return true
                     } catch let thrown {
-                        context.pointee.error = thrown
+                        context.pointee.error = thrown // [_Exempt from Test Coverage_]
                         return false
                     }
                 }
@@ -56,7 +56,7 @@ extension SourceKit {
                     return apply(rawValue, iterator, contextPointer)
                 }
                 if ¬succeeded {
-                    throw context.error!
+                    throw context.error! // [_Exempt from Test Coverage_]
                 }
                 self = .dictionary(context.dictionary)
             case SOURCEKITD_VARIANT_TYPE_ARRAY :
@@ -70,7 +70,7 @@ extension SourceKit {
                         }
                         return true
                     } catch let thrown {
-                        context.pointee.error = thrown
+                        context.pointee.error = thrown // [_Exempt from Test Coverage_]
                         return false
                     }
                 }
@@ -80,7 +80,7 @@ extension SourceKit {
                     return apply(rawValue, iterator, contextPointer)
                 }
                 if ¬succeeded {
-                    throw context.error!
+                    throw context.error! // [_Exempt from Test Coverage_]
                 }
                 self = .array(context.array)
             case SOURCEKITD_VARIANT_TYPE_INT64 :
@@ -93,9 +93,11 @@ extension SourceKit {
                 let uid = (try SourceKit.load(symbol: "sourcekitd_variant_uid_get_value") as (@convention(c) (sourcekitd_variant_t) -> sourcekitd_uid_t?))(rawValue)
                 self = .string(try UID(uid!).string())
             case SOURCEKITD_VARIANT_TYPE_BOOL :
+                 // [_Exempt from Test Coverage_] Not an expected response.
                 let boolean = (try SourceKit.load(symbol: "sourcekitd_variant_bool_get_value") as (@convention(c) (sourcekitd_variant_t) -> Bool))(rawValue)
                 self = .boolean(boolean)
             default:
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownTypeVariant(identifier: Int(type.rawValue))
             }
         }
@@ -105,6 +107,7 @@ extension SourceKit {
             case .dictionary(let result):
                 return result
             default:
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownResponse(contents: self.asAny())
             }
         }
@@ -112,6 +115,7 @@ extension SourceKit {
             if let result = try asDictionary()[key] {
                 return result
             } else {
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any)
             }
         }
@@ -121,6 +125,7 @@ extension SourceKit {
             case .array(let result):
                 return result
             default:
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownResponse(contents: self.asAny())
             }
         }
@@ -130,6 +135,7 @@ extension SourceKit {
             case .integer(let result):
                 return result
             default:
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownResponse(contents: self.asAny())
             }
         }
@@ -139,6 +145,7 @@ extension SourceKit {
             case .string(let result):
                 return result
             default:
+                // [_Exempt from Test Coverage_]
                 throw SourceKit.Error.unknownResponse(contents: self.asAny())
             }
         }

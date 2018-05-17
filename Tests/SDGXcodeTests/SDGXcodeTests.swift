@@ -36,6 +36,7 @@ class SDGXcodeTests : TestCase {
         } catch {
             XCTFail("Could not locate Xcode.")
         }
+        XCTAssertNotNil(try? Xcode.location())
 
         withDefaultMockRepository { mock in
             try mock.generateXcodeProject()

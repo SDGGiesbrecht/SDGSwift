@@ -96,6 +96,9 @@ class SDGSwiftAPITests : TestCase {
         XCTAssertNil(Version("Blah blah blah..."))
         XCTAssertNil(Version(firstIn: "Blah blah blah..."))
         XCTAssertNil(Version("1.0.0.0"))
+        XCTAssertNil(Version("1.0.A"))
+        XCTAssertNil(Version("1.A"))
+        XCTAssertNil(Version("A"))
         XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
         XCTAssertEqual(Version(1, 0, 0), "1.0.0")
     }
