@@ -36,3 +36,16 @@ func withSupplementalPlaneCharacters() -> Bool {
     }
     return false
 }
+
+func acceptClosure(_ closure: () -> Void) {
+    closure()
+}
+func useClosure() {
+    acceptClosure({
+        if `switch` {
+            return
+        } else {
+            return
+        }
+    })
+}

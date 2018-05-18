@@ -21,6 +21,7 @@ import SDGCollections
 import SDGText
 import SDGExternalProcess
 
+import SDGSwiftLocalizations
 import SDGSwift
 
 /// Xcode.
@@ -87,10 +88,12 @@ public enum Xcode {
     }
 
     private static let ignorableCommands: [String] = [
+        "/bin/sh",
         "builtin\u{2D}copy",
         "builtin\u{2D}infoPlistUtility",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
+        "chmod",
         "clang",
         "codesign",
         "ditto",
@@ -104,6 +107,7 @@ public enum Xcode {
     ]
     private static let abbreviableCommands: [String] = [
         "CodeSign",
+        "CompileC",
         "CompileSwift",
         "Copying",
         "CopySwiftLibs",
@@ -210,14 +214,14 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
-    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}"]
+    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}", "(", ")"]
 
     /// Returns the code coverage report for the package.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false) throws -> TestCoverageReport? {
+    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
         guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // [_Exempt from Test Coverage_]
             // [_Exempt from Test Coverage_] Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
@@ -235,11 +239,19 @@ public enum Xcode {
                     return false
                 }
                 return true
-            })
+            }).sorted()
 
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {
             try autoreleasepool {
+
+                print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Parsing report for “\(fileURL.path(relativeTo: package.location))”...")
+                    }
+                }).resolved())
+
                 var report = try runCustomCoverageSubcommand([
                     "view",
                     "\u{2D}\u{2D}file", fileURL.path,
