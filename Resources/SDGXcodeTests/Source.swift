@@ -37,7 +37,7 @@ func withSupplementalPlaneCharacters() -> Bool {
     return false
 }
 
-func acceptClosure(_ closure: () -> ()) {
+func acceptClosure(_ closure: () -> Void) {
     closure()
 }
 func useClosure() {
