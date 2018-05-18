@@ -211,7 +211,7 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
-    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}"]
+    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}", "(", ")"]
 
     /// Returns the code coverage report for the package.
     ///

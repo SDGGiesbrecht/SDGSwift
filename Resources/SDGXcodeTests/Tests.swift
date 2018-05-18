@@ -22,8 +22,10 @@ class CoverageTests : XCTestCase {
 
         `switch` = false
         _ = branching()
+        useClosure()
         `switch` = true
         _ = branching()
+        useClosure()
 
         _ = withSupplementalPlaneCharacters()
     }
