@@ -245,7 +245,7 @@ public enum Xcode {
                 print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Parsing coverage data for “\(fileURL.path(relativeTo: package.location))”...")
+                        return StrictString("Parsing coverage data for “\(fileURL.lastPathComponent)”...")
                     }
                 }).resolved())
 
