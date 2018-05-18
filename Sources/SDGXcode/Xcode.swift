@@ -88,10 +88,12 @@ public enum Xcode {
     }
 
     private static let ignorableCommands: [String] = [
+        "/bin/sh",
         "builtin\u{2D}copy",
         "builtin\u{2D}infoPlistUtility",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
+        "chmod",
         "clang",
         "codesign",
         "ditto",
@@ -105,6 +107,7 @@ public enum Xcode {
     ]
     private static let abbreviableCommands: [String] = [
         "CodeSign",
+        "CompileC",
         "CompileSwift",
         "Copying",
         "CopySwiftLibs",
