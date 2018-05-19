@@ -18,6 +18,8 @@
 ̲ ̲ ̲ ̲ ̲name: ̲"P̲a̲c̲k̲a̲g̲e̲",
     products: [
         /// A library.
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲///
+        /// It does stuff.
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", targets: ["L̲i̲b̲r̲a̲r̲y̲"])
     ],
     dependencies: [
@@ -25,7 +27,11 @@
     ],
     targets: [
 
-        /// A library.
+        /**
+         A library.
+
+         It does stuff.
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"L̲i̲b̲r̲a̲r̲y̲", dependencies: [
             "T̲a̲r̲g̲e̲t̲"
             ]),

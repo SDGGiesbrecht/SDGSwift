@@ -18,6 +18,8 @@ let package = P̲a̲c̲k̲a̲g̲e̲(
     n̲a̲m̲e̲: "Package",
     p̲r̲o̲d̲u̲c̲t̲s̲: [
         /// A library.
+        ///
+        /// It does stuff.
         .l̲i̲b̲r̲a̲r̲y̲(n̲a̲m̲e̲: "Library", t̲a̲r̲g̲e̲t̲s̲: ["Library"])
     ],
     d̲e̲p̲e̲n̲d̲e̲n̲c̲i̲e̲s̲: [
@@ -25,7 +27,11 @@ let package = P̲a̲c̲k̲a̲g̲e̲(
     ],
     t̲a̲r̲g̲e̲t̲s̲: [
 
-        /// A library.
+        /**
+         A library.
+
+         It does stuff.
+         */
         .t̲a̲r̲g̲e̲t̲(n̲a̲m̲e̲: "Library", d̲e̲p̲e̲n̲d̲e̲n̲c̲i̲e̲s̲: [
             "Target"
             ]),

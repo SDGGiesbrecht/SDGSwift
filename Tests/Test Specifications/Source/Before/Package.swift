@@ -18,6 +18,8 @@ let package = Package(
     name: "Package",
     products: [
         /// A library.
+        ///
+        /// It does stuff.
         .library(name: "Library", targets: ["Library"])
     ],
     dependencies: [
@@ -25,7 +27,11 @@ let package = Package(
     ],
     targets: [
 
-        /// A library.
+        /**
+         A library.
+
+         It does stuff.
+         */
         .target(name: "Library", dependencies: [
             "Target"
             ]),
