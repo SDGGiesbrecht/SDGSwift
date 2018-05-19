@@ -16,16 +16,16 @@ import ̲PackageDescription
 
 let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
  ̲ ̲ ̲ ̲name: ̲"P̲a̲c̲k̲a̲g̲e̲",
- ̲ ̲ ̲ ̲products: [
+ ̲ ̲ ̲ ̲products: ̲[
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// A library.
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// It does stuff.
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", targets: ["L̲i̲b̲r̲a̲r̲y̲"])
     ],
- ̲ ̲ ̲ ̲dependencies: [
+ ̲ ̲ ̲ ̲dependencies: ̲[
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: ̲"h̲t̲t̲p̲s̲:̲/̲/̲d̲o̲m̲a̲i̲n̲.̲t̲l̲d̲/̲P̲a̲c̲k̲a̲g̲e̲", from: ̲Version(1, 0, 0))
     ],
- ̲ ̲ ̲ ̲targets: [
+ ̲ ̲ ̲ ̲targets: ̲[
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/**
          A library.

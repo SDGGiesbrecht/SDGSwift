@@ -34,6 +34,10 @@ open class SyntaxElement {
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.argument":
+            return try Argument(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.array":
+            return try ArrayLiteral(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.call":
             return try Expression(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
