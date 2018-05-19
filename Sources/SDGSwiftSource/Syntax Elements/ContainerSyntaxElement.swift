@@ -38,7 +38,27 @@ open class ContainerSyntaxElement : SyntaxElement {
             children = knownChildren
             return
         }
-        children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
+
+        var substructureElements: [SyntaxElement] = []
+        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) {
+            if let last = substructureElements.last,
+                next.range.overlaps(last.range),
+                next.range ⊆ last.range,
+                let lastContainer = last as? ContainerSyntaxElement {
+                // “next” is really a subelement of “last”
+
+                substructureElements.removeLast()
+                var lastChildren = lastContainer.children.filter { ¬$0.range.overlaps(next.range) }
+                lastChildren.append(next)
+                lastContainer.children = lastChildren
+                substructureElements.append(lastContainer)
+
+            } else {
+                substructureElements.append(next)
+            }
+        }
+
+        children = knownChildren + substructureElements
     }
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
@@ -77,6 +97,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.string":
+                    resolvedTokens.append(StringLiteral(range: token.range, source: source))
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
