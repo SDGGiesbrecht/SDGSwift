@@ -31,7 +31,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(Identifier.identifierCharacters ∋ "α")
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
     }
-    
+
     func testTemporary() {
         // [_Warning: Temporary._]
         do {

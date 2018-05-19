@@ -38,7 +38,6 @@ open class ContainerSyntaxElement : SyntaxElement {
             children = knownChildren
             return
         }
-        //print(try substructure.asArray().map({ (try $0.value(for: "key.kind").asString(), try $0.value(for: "key.offset").asInteger(), try $0.value(for: "key.length").asInteger()) }))
         children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
     }
 

@@ -24,7 +24,7 @@ let package = Package(
         .package(url: "https://domain.tld/Package", from: Version(1, 0, 0)),
     ],
     targets: [
-        
+
         /// A library.
         .target(name: "Library", dependencies: [
             "Target"
