@@ -40,6 +40,8 @@ open class SyntaxElement {
             return try ArrayLiteral(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.call":
             return try Expression(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.tuple":
+            return try Tuple(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
