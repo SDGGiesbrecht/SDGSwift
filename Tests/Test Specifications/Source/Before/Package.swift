@@ -18,10 +18,10 @@ let package = Package(
     name: "Package",
     products: [
         /// A library.
-        .library(name: "Library", targets: ["Library"]),
+        .library(name: "Library", targets: ["Library"])
     ],
     dependencies: [
-        .package(url: "https://domain.tld/Package", from: Version(1, 0, 0)),
+        .package(url: "https://domain.tld/Package", from: Version(1, 0, 0))
     ],
     targets: [
 
