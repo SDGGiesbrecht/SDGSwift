@@ -21,7 +21,7 @@ let package = Package(
         .library(name: "Library",̲ ̲targets: ̲[̲"Library"]̲)
 ̲ ̲ ̲ ̲ ̲]̲,̲
 ̲ ̲ ̲ ̲ ̲dependencies: ̲[̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: "https://domain.tld/Package",̲ ̲from: Version(1̲,̲ ̲0̲,̲ ̲0̲))
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: "https://domain.tld/Package",̲ ̲from: Version(1,̲ ̲0,̲ ̲0))
 ̲ ̲ ̲ ̲ ̲]̲,̲
 ̲ ̲ ̲ ̲ ̲targets: ̲[̲
 ̲

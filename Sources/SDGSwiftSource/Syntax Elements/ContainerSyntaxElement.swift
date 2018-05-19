@@ -97,6 +97,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.number":
+                    resolvedTokens.append(Number(range: token.range))
                 case "source.lang.swift.syntaxtype.string":
                     resolvedTokens.append(StringLiteral(range: token.range, source: source))
                 case "source.lang.swift.syntaxtype.typeidentifier":
