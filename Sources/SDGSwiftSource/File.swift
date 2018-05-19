@@ -62,6 +62,10 @@ public class File : ContainerSyntaxElement {
         // Catch comment tokens before headings.
         parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
 
+        // Catch newlines.
+        parseUnidentified(for: "\r\n") { Newline(range: $0) }
+        parseUnidentified(for: "\n") { Newline(range: $0) }
+
         // Catch punctuation.
         parseUnidentified(for: "{") { Punctuation(range: $0) }
         parseUnidentified(for: "}") { Punctuation(range: $0) }

@@ -1,5 +1,6 @@
 
 import SDGMathematics
+import SDGCollections
 
 /// Documentation.
 public class Documentation : ContainerSyntaxElement {
@@ -7,24 +8,24 @@ public class Documentation : ContainerSyntaxElement {
     internal init(range: Range<String.ScalarView.Index>, source: String) {
         super.init(range: range, source: source, tokens: [])
 
-        let singeLineToken = "///"
+        let singleLineToken = "///"
         let startToken = "/**"
         let endToken = "*/"
         let commentSource = String(source.scalars[range])
-        guard commentSource.scalars.count ≥ singeLineToken.scalars.count else {
+        guard commentSource.scalars.count ≥ singleLineToken.scalars.count else {
             return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
         }
 
         // Find tokens.
         var tokens: [SyntaxElement] = []
-        if source.scalars[range].hasPrefix(singeLineToken.scalars) {
+        if source.scalars[range].hasPrefix(singleLineToken.scalars) {
             // Single line
-            guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
-                unidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
-                String(source.scalars[unidentified.range]).scalars.count ≥ singeLineToken.scalars.count else {
-                    return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
+            for child in children where child is UnidentifiedSyntaxElement {
+                let childSource = source.scalars[child.range]
+                for match in childSource.matches(for: singleLineToken.scalars) {
+                    tokens.append(DocumentationToken(range: match.range))
+                }
             }
-            tokens.append(DocumentationToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singeLineToken.scalars.count)))
         } else {
             // Multiline
             guard let firstUnidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),

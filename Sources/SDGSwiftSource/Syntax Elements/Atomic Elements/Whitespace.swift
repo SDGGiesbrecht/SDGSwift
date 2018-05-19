@@ -20,12 +20,10 @@ public class Whitespace : AtomicSyntaxElement {
 
     // MARK: - Static Properties
 
-    /// The whitespace and newline characters recognized by the Swift compiler.
+    /// The whitespace characters recognized by the Swift compiler.
     public static let whitespaceCharacters: Set<Unicode.Scalar> = [
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID410
         "\u{20}", // space
-        "\u{A}", // “line feed”
-        "\u{D}", // “carriage return”
         "\u{9}", // “horizontal tabulation”
         "\u{B}", // “vertical tabulation”
         "\u{C}", // “form feed”

@@ -11,33 +11,34 @@
  Licensed under the Apache Licence, Version 2.0.
  See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
  *̲/̲
+̲
+̲/̲/̲ This is a line comment. It contains a URL: h̲t̲t̲p̲:̲/̲/̲e̲x̲a̲m̲p̲l̲e̲.̲c̲o̲m̲
 
-/̲/̲ This is a line comment. It contains a URL: h̲t̲t̲p̲:̲/̲/̲e̲x̲a̲m̲p̲l̲e̲.̲c̲o̲m̲
-
-/̲*̲
+̲/̲*̲
  This is a multiline comment.
  /̲*̲
   It contains a nested comment.
   *̲/̲
  *̲/̲
-
-i̲m̲p̲o̲r̲t̲ Foundation
-
-s̲t̲r̲u̲c̲t̲ Structure {̲
-
-    /̲/̲ M̲A̲R̲K̲:̲ -̲ Initialization
-
-    i̲n̲i̲t̲(̲property:̲ Bool)̲ {̲
-        s̲e̲l̲f̲.̲property =̲ property
-    }̲
-
-    /̲/̲ M̲A̲R̲K̲:̲ -̲ Properties
-
-    v̲a̲r̲ property:̲ Bool
-
-    /̲/̲ M̲A̲R̲K̲:̲ -̲ Methods
-
-    f̲u̲n̲c̲ performAction(̲)̲ {̲
-        property =̲ t̲r̲u̲e̲
-    }̲
-}̲
+̲
+̲i̲m̲p̲o̲r̲t̲ Foundation
+̲
+̲s̲t̲r̲u̲c̲t̲ Structure {̲
+̲
+̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Initialization
+̲
+̲    i̲n̲i̲t̲(̲property:̲ Bool)̲ {̲
+̲        s̲e̲l̲f̲.̲property =̲ property
+̲    }̲
+̲
+̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Properties
+̲
+̲    v̲a̲r̲ property:̲ Bool
+̲
+̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Methods
+̲
+̲    f̲u̲n̲c̲ performAction(̲)̲ {̲
+̲        property =̲ t̲r̲u̲e̲
+̲    }̲
+̲}̲
+̲

@@ -11,35 +11,36 @@
  Licensed under the Apache Licence, Version 2.0.
  See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
  *̲/̲
-
-i̲m̲p̲o̲r̲t̲ PackageDescription
-
-l̲e̲t̲ package =̲ Package(̲
-    name:̲ "̲Package"̲,̲
-̲ ̲ ̲ ̲ ̲products:̲ ̲[̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/̲/̲/̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
-        /̲/̲/̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/̲/̲/̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
-        .̲library(̲name:̲ "̲Library"̲,̲ ̲targets:̲ ̲[̲"̲Library"̲]̲)̲
-̲ ̲ ̲ ̲ ̲]̲,̲
-̲ ̲ ̲ ̲ ̲dependencies:̲ ̲[̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.̲package(̲url:̲ "̲https://domain.tld/Package"̲,̲ ̲from:̲ Version(̲1̲,̲ ̲0̲,̲ ̲0̲)̲)̲
-̲ ̲ ̲ ̲ ̲]̲,̲
-̲ ̲ ̲ ̲ ̲targets:̲ ̲[̲
 ̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/̲*̲*̲
+̲i̲m̲p̲o̲r̲t̲ PackageDescription
+̲
+̲l̲e̲t̲ package =̲ Package(̲
+̲    name:̲ "̲Package"̲,̲
+̲    products:̲ ̲[̲
+̲        /̲/̲/̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
+̲        /̲/̲/̲
+̲        /̲/̲/̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
+̲        .̲library(̲name:̲ "̲Library"̲,̲ ̲targets:̲ ̲[̲"̲Library"̲]̲)̲
+̲ ̲ ̲ ̲ ̲]̲,̲
+̲    dependencies:̲ ̲[̲
+̲        .̲package(̲url:̲ "̲https://domain.tld/Package"̲,̲ ̲from:̲ Version(̲1̲,̲ ̲0̲,̲ ̲0̲)̲)̲
+̲ ̲ ̲ ̲ ̲]̲,̲
+̲    targets:̲ ̲[̲
+̲
+̲        /̲*̲*̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
 ̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
-         *̲/̲
-        .̲target(̲name:̲ "̲Library"̲,̲ ̲dependencies:̲ ̲[̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"̲Target"̲
+̲         *̲/̲
+̲        .̲target(̲name:̲ "̲Library"̲,̲ ̲dependencies:̲ ̲[̲
+̲            "̲Target"̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]̲)̲,̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/̲/̲/̲ ̲A̲ ̲t̲a̲r̲g̲e̲t̲.̲
-        .̲target(̲name:̲ "̲Target"̲,̲ ̲dependencies:̲ ̲[̲]̲)̲,̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.̲testTarget(̲name:̲ "̲Tests"̲,̲ ̲dependencies:̲ ̲[̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"̲Library"̲,̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"̲Target"̲
+̲        /̲/̲/̲ ̲A̲ ̲t̲a̲r̲g̲e̲t̲.̲
+̲        .̲target(̲name:̲ "̲Target"̲,̲ ̲dependencies:̲ ̲[̲]̲)̲,̲
+̲        .̲testTarget(̲name:̲ "̲Tests"̲,̲ ̲dependencies:̲ ̲[̲
+̲            "̲Library"̲,̲
+̲            "̲Target"̲
 ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]̲)̲
 ̲ ̲ ̲ ̲ ̲]̲
 ̲)̲
+̲

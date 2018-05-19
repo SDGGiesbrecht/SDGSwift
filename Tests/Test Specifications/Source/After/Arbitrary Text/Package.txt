@@ -11,36 +11,35 @@
 ̲ ̲L̲i̲c̲e̲n̲s̲e̲d̲ ̲u̲n̲d̲e̲r̲ ̲t̲h̲e̲ ̲A̲p̲a̲c̲h̲e̲ ̲L̲i̲c̲e̲n̲c̲e̲,̲ ̲V̲e̲r̲s̲i̲o̲n̲ ̲2̲.̲0̲.̲
 ̲ ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
 ̲ ̲*/
-̲
-̲import ̲PackageDescription
-̲
-̲let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
-̲ ̲ ̲ ̲ ̲name: ̲"P̲a̲c̲k̲a̲g̲e̲",
-    products: [
-        /// A library.
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲///
-        /// It does stuff.
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", targets: ["L̲i̲b̲r̲a̲r̲y̲"])
-    ],
-    dependencies: [
-        .package(url: ̲"h̲t̲t̲p̲s̲:̲/̲/̲d̲o̲m̲a̲i̲n̲.̲t̲l̲d̲/̲P̲a̲c̲k̲a̲g̲e̲", from: ̲Version(1, 0, 0))
-    ],
-    targets: [
 
-        /**
+import ̲PackageDescription
+
+let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
+ ̲ ̲ ̲ ̲name: ̲"P̲a̲c̲k̲a̲g̲e̲",
+ ̲ ̲ ̲ ̲products: [
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// A library.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// It does stuff.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", targets: ["L̲i̲b̲r̲a̲r̲y̲"])
+    ],
+ ̲ ̲ ̲ ̲dependencies: [
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: ̲"h̲t̲t̲p̲s̲:̲/̲/̲d̲o̲m̲a̲i̲n̲.̲t̲l̲d̲/̲P̲a̲c̲k̲a̲g̲e̲", from: ̲Version(1, 0, 0))
+    ],
+ ̲ ̲ ̲ ̲targets: [
+
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/**
          A library.
 
          It does stuff.
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"L̲i̲b̲r̲a̲r̲y̲", dependencies: [
-            "T̲a̲r̲g̲e̲t̲"
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"L̲i̲b̲r̲a̲r̲y̲", dependencies: [
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"T̲a̲r̲g̲e̲t̲"
             ]),
-        /// A target.
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"T̲a̲r̲g̲e̲t̲", dependencies: []),
-        .testTarget(name: ̲"T̲e̲s̲t̲s̲", dependencies: [
-            "L̲i̲b̲r̲a̲r̲y̲",
-            "T̲a̲r̲g̲e̲t̲"
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// A target.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"T̲a̲r̲g̲e̲t̲", dependencies: []),
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.testTarget(name: ̲"T̲e̲s̲t̲s̲", dependencies: [
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"L̲i̲b̲r̲a̲r̲y̲",
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"T̲a̲r̲g̲e̲t̲"
             ])
     ]
 )
-̲
