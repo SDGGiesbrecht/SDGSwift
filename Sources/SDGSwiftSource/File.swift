@@ -72,6 +72,7 @@ public class File : ContainerSyntaxElement {
         parseUnidentified(for: "(") { Punctuation(range: $0) }
         parseUnidentified(for: ")") { Punctuation(range: $0) }
         parseUnidentified(for: ":") { Punctuation(range: $0) }
+        parseUnidentified(for: ",") { Punctuation(range: $0) }
         parseUnidentified(for: ".") { Punctuation(range: $0) }
         parseUnidentified(for: "=") { Punctuation(range: $0) }
 

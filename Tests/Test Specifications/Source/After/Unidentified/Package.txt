@@ -15,16 +15,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "Package",̲
+    name: "Package",
     products: [̲
         /// ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.
         ///
         /// ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.
-        .library(name: "Library",̲ ̲targets: [̲"Library"]̲)
- ̲ ̲ ̲ ̲]̲,̲
+        .library(name: "Library", targets: [̲"Library"]̲)
+ ̲ ̲ ̲ ̲]̲,
     dependencies: [̲
-        .package(url: "https://domain.tld/Package",̲ ̲from: Version(1,̲ ̲0,̲ ̲0))
- ̲ ̲ ̲ ̲]̲,̲
+        .package(url: "https://domain.tld/Package", from: Version(1, 0, 0))
+ ̲ ̲ ̲ ̲]̲,
     targets: [̲
 
         /**
@@ -32,13 +32,13 @@ let package = Package(
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.
          */
-        .target(name: "Library",̲ ̲dependencies: [̲
+        .target(name: "Library", dependencies: [̲
             "Target"
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]̲),̲
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]̲),
         /// ̲A̲ ̲t̲a̲r̲g̲e̲t̲.
-        .target(name: "Target",̲ ̲dependencies: [̲]̲),̲
-        .testTarget(name: "Tests",̲ ̲dependencies: [̲
-            "Library",̲
+        .target(name: "Target", dependencies: [̲]̲),
+        .testTarget(name: "Tests", dependencies: [̲
+            "Library",
             "Target"
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]̲)
  ̲ ̲ ̲ ̲]̲
