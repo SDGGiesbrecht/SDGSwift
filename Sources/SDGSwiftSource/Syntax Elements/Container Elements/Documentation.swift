@@ -59,7 +59,7 @@ public class Documentation : ContainerSyntaxElement {
                 if let newline = source.scalars[element.range].firstMatch(for: ConditionalPattern({ $0 ∈ Newline.newlineCharacters })) {
                     contents.append(DocumentationText(range: element.range.lowerBound ..< newline.range.lowerBound))
                 } else {
-                    DocumentationText(range: element.range)
+                    contents.append(DocumentationText(range: element.range))
                 }
             }
         }
