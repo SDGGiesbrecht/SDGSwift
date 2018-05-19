@@ -66,5 +66,7 @@ public class Documentation : ContainerSyntaxElement {
 
         structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + contents
+
+        // [_Warning: Need to handle Markdown syntax._]
     }
 }
