@@ -1,5 +1,5 @@
 /*
- File.swift
+ Structure.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -21,23 +21,23 @@
   */
  */
 
-import F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
+import Foundation
 
 struct Structure {
 
     // MARK: - Initialization
 
-    init(property: B̲o̲o̲l̲) {
-        self.p̲r̲o̲p̲e̲r̲t̲y̲ = p̲r̲o̲p̲e̲r̲t̲y̲
+    init(property: Bool) {
+        self.property = property
     }
 
     // MARK: - Properties
 
-    var property: B̲o̲o̲l̲
+    var property: Bool
 
     // MARK: - Methods
 
     func performAction() {
-        p̲r̲o̲p̲e̲r̲t̲y̲ = true
+        property = true
     }
 }

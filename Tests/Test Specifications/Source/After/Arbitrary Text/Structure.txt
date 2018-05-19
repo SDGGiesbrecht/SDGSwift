@@ -1,5 +1,5 @@
 /*
-̲ ̲F̲i̲l̲e̲.̲s̲w̲i̲f̲t̲
+̲ ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲.̲s̲w̲i̲f̲t̲
 ̲
 ̲ ̲T̲h̲i̲s̲ ̲s̲o̲u̲r̲c̲e̲ ̲f̲i̲l̲e̲ ̲i̲s̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲o̲p̲e̲n̲ ̲s̲o̲u̲r̲c̲e̲ ̲p̲r̲o̲j̲e̲c̲t̲.̲
 ̲ ̲https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
