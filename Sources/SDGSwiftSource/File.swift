@@ -63,8 +63,8 @@ public class File : ContainerSyntaxElement {
         parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
 
         // Catch newlines.
-        parseUnidentified(for: "\r\n") { Newline(range: $0) }
-        parseUnidentified(for: "\n") { Newline(range: $0) }
+        parseUnidentified(for: "\u{D}\u{A}" /* CR + LF */) { Newline(range: $0) }
+        parseUnidentified(for: "\u{A}" /* LF */) { Newline(range: $0) }
 
         // Catch punctuation.
         parseUnidentified(for: "{") { Punctuation(range: $0) }

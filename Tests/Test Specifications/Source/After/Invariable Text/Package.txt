@@ -17,9 +17,9 @@
 ̲l̲e̲t̲ package =̲ Package(̲
 ̲    name:̲ "̲Package"̲,̲
 ̲    products:̲ [̲
-̲        /̲/̲/̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
+̲        /̲/̲/̲ A library.
 ̲        /̲/̲/̲
-̲        /̲/̲/̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
+̲        /̲/̲/̲ It does stuff.
 ̲        .̲library(̲name:̲ "̲Library"̲,̲ targets:̲ [̲"̲Library"̲]̲)̲
 ̲    ]̲,̲
 ̲    dependencies:̲ [̲
@@ -28,14 +28,14 @@
 ̲    targets:̲ [̲
 ̲
 ̲        /̲*̲*̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
-̲
-̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
-̲         *̲/̲
+         A library.
+
+         It does stuff.
+         *̲/̲
 ̲        .̲target(̲name:̲ "̲Library"̲,̲ dependencies:̲ [̲
 ̲            "̲Target"̲
 ̲            ]̲)̲,̲
-̲        /̲/̲/̲ ̲A̲ ̲t̲a̲r̲g̲e̲t̲.̲
+̲        /̲/̲/̲ A target.
 ̲        .̲target(̲name:̲ "̲Target"̲,̲ dependencies:̲ [̲]̲)̲,̲
 ̲        .̲testTarget(̲name:̲ "̲Tests"̲,̲ dependencies:̲ [̲
 ̲            "̲Library"̲,̲

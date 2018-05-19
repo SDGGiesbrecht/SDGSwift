@@ -17,9 +17,9 @@ import ̲PackageDescription
 let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
  ̲ ̲ ̲ ̲name: ̲"P̲a̲c̲k̲a̲g̲e̲",
  ̲ ̲ ̲ ̲products: ̲[
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// A library.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// It does stuff.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", ̲targets: ̲["L̲i̲b̲r̲a̲r̲y̲"])
  ̲ ̲ ̲ ̲],
  ̲ ̲ ̲ ̲dependencies: ̲[
@@ -28,14 +28,14 @@ let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
  ̲ ̲ ̲ ̲targets: ̲[
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/**
-         A library.
-
-         It does stuff.
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
+̲
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
+̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"L̲i̲b̲r̲a̲r̲y̲", ̲dependencies: ̲[
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"T̲a̲r̲g̲e̲t̲"
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]),
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// A target.
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲/// ̲A̲ ̲t̲a̲r̲g̲e̲t̲.̲
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"T̲a̲r̲g̲e̲t̲", ̲dependencies: ̲[]),
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.testTarget(name: ̲"T̲e̲s̲t̲s̲", ̲dependencies: ̲[
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"L̲i̲b̲r̲a̲r̲y̲",
