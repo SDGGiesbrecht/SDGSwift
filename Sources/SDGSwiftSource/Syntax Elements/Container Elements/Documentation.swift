@@ -61,6 +61,8 @@ public class Documentation : ContainerSyntaxElement {
         // Find newlines.
         parseNewlines(in: source)
 
+        // [_Warning: Needs to handle Markdown._]
+
         /// The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }
     }
