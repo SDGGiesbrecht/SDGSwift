@@ -18,8 +18,8 @@ import SDGCollections
 /// Documentation.
 public class Documentation : ContainerSyntaxElement {
 
-    internal init(range: Range<String.ScalarView.Index>, source: String) {
-        super.init(range: range, source: source, tokens: [])
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
+        super.init(range: range, source: source, tokens: tokens)
 
         let singleLineToken = "///"
         let startToken = "/**"

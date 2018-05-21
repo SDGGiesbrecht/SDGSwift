@@ -29,15 +29,15 @@
 ̲    /̲/̲/̲ }
 ̲    /̲/̲/̲ ```
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ - W̲a̲r̲n̲i̲n̲g̲:̲ ̲T̲here is something to watch out for.̲
+̲    /̲/̲/̲ - W̲a̲r̲n̲i̲n̲g̲: There is something to watch out for.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ - P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:̲
+̲    /̲/̲/̲ - P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:
 ̲    /̲/̲/̲     - parameterOne: The first parameter.
 ̲    /̲/̲/̲     - parameterTwo: The second parameter.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ - R̲e̲t̲u̲r̲n̲s̲:̲ ̲A̲ Boolean value.̲
+̲    /̲/̲/̲ - R̲e̲t̲u̲r̲n̲s̲: A Boolean value.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ - T̲h̲r̲o̲w̲s̲:̲ ̲A̲n error.̲
+̲    /̲/̲/̲ - T̲h̲r̲o̲w̲s̲: An error.
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ performAction(̲on parameterOne:̲ String,̲ with parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ ̲-̲>̲ ̲Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲

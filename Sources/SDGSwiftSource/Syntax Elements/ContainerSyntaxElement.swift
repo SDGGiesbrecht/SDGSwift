@@ -95,20 +95,23 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.comment.url":
                     resolvedTokens.append(CommentURL(range: token.range))
                 case "source.lang.swift.syntaxtype.doccomment":
-                    if source.scalars[token.range].hasPrefix("///".scalars) {
-                        // Group them to nest contents.
-                        var endIndex = token.range.upperBound
-                        while let next = relevantTokens.first,
-                            next.kind == "source.lang.swift.syntaxtype.doccomment",
-                            source.scalars[next.range].hasPrefix("///".scalars) {
+                    // Group them to nest callouts, etc.
+                    var endIndex = token.range.upperBound
+                    var childTokens: [SourceKit.PrimitiveToken] = []
+                    while let next = relevantTokens.first,
+                        next.range.lowerBound == endIndex, // contiguous
+                        next.kind ∈ ["source.lang.swift.syntaxtype.doccomment", "source.lang.swift.syntaxtype.doccomment.field"] as Set<String> {
 
-                                relevantTokens.removeFirst() // Consume it.
-                                endIndex = next.range.upperBound
-                        }
-                        resolvedTokens.append(Documentation(range: token.range.lowerBound ..< endIndex, source: source))
-                    } else {
-                        resolvedTokens.append(Documentation(range: token.range, source: source))
+                            relevantTokens.removeFirst() // Consume it.
+                            endIndex = next.range.upperBound
+                            if next.kind ≠ "source.lang.swift.syntaxtype.doccomment" {
+                                // Nest special regions.
+                                childTokens.append(next)
+                            }
                     }
+                    resolvedTokens.append(Documentation(range: token.range.lowerBound ..< endIndex, source: source, tokens: childTokens))
+                case "source.lang.swift.syntaxtype.doccomment.field":
+                    resolvedTokens.append(Keyword(range: token.range))
                 case "source.lang.swift.syntaxtype.identifier":
                     resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
