@@ -1,5 +1,5 @@
 /*
- DocumentationText.swift
+ Extension.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,14 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// Documentation text.
-public class DocumentationText : AtomicSyntaxElement {
+/// An extension.
+public class Extension: ContainerSyntaxElement {
 
-    // MARK: - Properties
-
-    // [_Inherit Documentation: SyntaxElement.textFreedom_]
-    /// How much freedom the user has in choosing the text of the element.
-    public override var textFreedom: TextFreedom {
-        return .arbitrary
-    }
 }

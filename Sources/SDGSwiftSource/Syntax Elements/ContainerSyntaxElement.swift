@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 /// An element of Swift syntax which contains child elements.
@@ -151,7 +152,16 @@ open class ContainerSyntaxElement : SyntaxElement {
                 let next = sorted.index(after: index)
                 if next ≠ sorted.endIndex {
                     if sorted[index].range.upperBound ≠ sorted[next].range.lowerBound {
-                        inserts.append(UnidentifiedSyntaxElement(range: sorted[index].range.upperBound ..< sorted[next].range.lowerBound))
+                        let lowerBound = sorted[index].range.upperBound
+                        let upperBound = sorted[next].range.lowerBound
+                        if lowerBound ≤ upperBound {
+                            inserts.append(UnidentifiedSyntaxElement(range: lowerBound ..< upperBound))
+                        } else {
+                            if BuildConfiguration.current == .debug {
+                                print("Overlapping children:")
+                                print([type(of: sorted[index]), type(of: next)])
+                            }
+                        }
                     }
                 }
             }
