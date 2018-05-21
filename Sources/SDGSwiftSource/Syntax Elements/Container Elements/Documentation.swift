@@ -29,13 +29,10 @@ public class Documentation : ContainerSyntaxElement {
             return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
         }
 
-        var multiline: Bool
-
         // Find tokens.
         var tokens: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singleLineToken.scalars) {
             // Single line
-            multiline = false
             for child in children where child is UnidentifiedSyntaxElement {
                 let childSource = source.scalars[child.range]
                 for match in childSource.matches(for: singleLineToken.scalars) {
@@ -44,7 +41,6 @@ public class Documentation : ContainerSyntaxElement {
             }
         } else {
             // Multiline
-            multiline = true
             guard let firstUnidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
                 firstUnidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
                 String(source.scalars[firstUnidentified.range]).scalars.count ≥ startToken.scalars.count else {
@@ -59,27 +55,18 @@ public class Documentation : ContainerSyntaxElement {
             tokens.append(DocumentationToken(range: source.scalars.index(range.upperBound, offsetBy: −endToken.scalars.count) ..< range.upperBound))
         }
 
-        var structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+        let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + tokens
 
-        var contents: [SyntaxElement] = []
-        if multiline {
-            for element in children where element is UnidentifiedSyntaxElement {
-                contents.append(DocumentationText(range: element.range))
-            }
-        } else {
-            for element in children where element is UnidentifiedSyntaxElement {
-                if let newline = source.scalars[element.range].firstMatch(for: ConditionalPattern({ $0 ∈ Newline.newlineCharacters })) {
-                    contents.append(DocumentationText(range: element.range.lowerBound ..< newline.range.lowerBound))
-                } else {
-                    contents.append(DocumentationText(range: element.range))
-                }
-            }
+        // Find newlines.
+        parseNewlines(in: source)
+
+        /// The rest is text.
+        var text: [SyntaxElement] = []
+        for child in children where child is UnidentifiedSyntaxElement {
+            text.append(CommentText(range: child.range)) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         }
-
-        structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
-        children = structure + contents
-
-        // [_Warning: Need to handle Markdown syntax._]
+        let other = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
+        children = other + text
     }
 }

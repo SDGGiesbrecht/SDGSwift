@@ -36,47 +36,23 @@ public class File : ContainerSyntaxElement {
 
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
 
-        func parseUnidentified(_ parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {
-            for element in makeDeepIterator() {
-                if let unidentified = element as? UnidentifiedSyntaxElement {
-                    if let replacement = parse(unidentified),
-                        let parent = element.parent as? ContainerSyntaxElement {
-                        let otherChildren = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
-                        parent.children = otherChildren + replacement
-                    }
-                }
-            }
-        }
-
-        func parseUnidentified(for literal: String, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
-            return parseUnidentified { unidentified in
-                let matches = source.scalars.matches(for: literal.scalars, in: unidentified.range)
-                if matches.isEmpty {
-                    return nil
-                } else {
-                    return matches.map { create($0.range) }
-                }
-            }
-        }
-
         // Catch comment tokens before headings.
-        parseUnidentified(for: "//") { Comment(range: $0, source: source, tokens: []) }
+        parseUnidentified(in: source, for: "//") { Comment(range: $0, source: source, tokens: []) }
 
         // Catch newlines.
-        parseUnidentified(for: "\u{D}\u{A}" /* CR + LF */) { Newline(range: $0) }
-        parseUnidentified(for: "\u{A}" /* LF */) { Newline(range: $0) }
+        parseNewlines(in: source)
 
         // Catch punctuation.
-        parseUnidentified(for: "{") { Punctuation(range: $0) }
-        parseUnidentified(for: "}") { Punctuation(range: $0) }
-        parseUnidentified(for: "(") { Punctuation(range: $0) }
-        parseUnidentified(for: ")") { Punctuation(range: $0) }
-        parseUnidentified(for: "[") { Punctuation(range: $0) }
-        parseUnidentified(for: "]") { Punctuation(range: $0) }
-        parseUnidentified(for: ":") { Punctuation(range: $0) }
-        parseUnidentified(for: ",") { Punctuation(range: $0) }
-        parseUnidentified(for: ".") { Punctuation(range: $0) }
-        parseUnidentified(for: "=") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "{") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "}") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "(") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ":") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ",") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ".") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "=") { Punctuation(range: $0) }
 
         // Fill in whitespace.
         parseUnidentified { unidentified in

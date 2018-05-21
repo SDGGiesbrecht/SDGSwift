@@ -68,6 +68,9 @@ public class Comment : ContainerSyntaxElement {
         let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + resolvedNesting
 
+        // Find newlines.
+        parseNewlines(in: source)
+
         // The rest is text.
         var text: [SyntaxElement] = []
         for child in children where child is UnidentifiedSyntaxElement {
