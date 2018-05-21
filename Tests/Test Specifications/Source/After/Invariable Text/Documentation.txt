@@ -13,7 +13,7 @@
  *̲/̲
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Structure {̲
-̲    
+̲
 ̲    /̲/̲/̲ Performs an action using the specified parameters.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ This is a list:
