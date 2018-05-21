@@ -49,6 +49,7 @@ public class File : ContainerSyntaxElement {
         parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "\u{2D}>") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: ":") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: ",") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: ".") { Punctuation(range: $0) }

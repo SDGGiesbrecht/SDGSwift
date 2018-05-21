@@ -89,6 +89,8 @@ class SDGSwiftSourceAPITests : TestCase {
                 compare(specification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false) { element in
                     (element as? AtomicSyntaxElement)?.textFreedom == .invariable
                 }
+
+                // [_Warning: Test syntax colouring classes._]
             }
         } catch {
             XCTFail("\(error)")
