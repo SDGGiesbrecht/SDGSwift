@@ -38,7 +38,7 @@ extension Structure {
     /// - Returns: A Boolean value.
     ///
     /// - Throws: An error.
-    p̲u̲b̲l̲i̲c̲ func performAction(on parameterOne: String, with parameterTwo: String) throws ̲-̲>̲ ̲Bool {
+    public func performAction(on parameterOne: String, with parameterTwo: String) throws ̲-̲>̲ ̲Bool {
         return false
     }
 }
