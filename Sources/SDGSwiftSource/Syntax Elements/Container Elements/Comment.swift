@@ -72,11 +72,6 @@ public class Comment : ContainerSyntaxElement {
         parseNewlines(in: source)
 
         // The rest is text.
-        var text: [SyntaxElement] = []
-        for child in children where child is UnidentifiedSyntaxElement {
-            text.append(CommentText(range: child.range)) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
-        }
-        let other = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
-        children = other + text
+        parseUnidentified { [CommentText(range: $0.range)] }
     }
 }
