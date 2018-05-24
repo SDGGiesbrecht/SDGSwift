@@ -79,7 +79,7 @@ public class Documentation : ContainerSyntaxElement {
                 }
                 return delimiters
             }
-        }/*
+        }
         // Heading
         parseSingleLineElements(LiteralPattern("###".scalars))
         parseSingleLineElements(LiteralPattern("##".scalars))
@@ -87,7 +87,7 @@ public class Documentation : ContainerSyntaxElement {
         // List element (or callout)
         parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
         parseSingleLineElements(LiteralPattern("*".scalars))
-        parseSingleLineElements(LiteralPattern("+".scalars))*/
+        parseSingleLineElements(LiteralPattern("+".scalars))
         // [_Warning: Needs to handle Markdown._]
 
         /// The rest is text.
