@@ -21,7 +21,7 @@ import SDGCollections
 /// Documentation.
 public class Documentation : ContainerSyntaxElement {
 
-    static let tokensAndWhitespace = Whitespace.whitespaceCharacters ∪ Set<UnicodeScalar>(["/", "*"])
+    static let tokensAndWhitespace = (Whitespace.whitespaceCharacters ∪ Newline.newlineCharacters) ∪ Set<UnicodeScalar>(["/", "*"])
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
         super.init(range: range, source: source, tokens: tokens)
@@ -67,23 +67,26 @@ public class Documentation : ContainerSyntaxElement {
         parseNewlines(in: source)
 
         // Find single line elements.
-        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>) {
+        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, underlineSyntax: Bool = false) {
 
             parseUnidentified() { unidentified in
                 var delimiters: [Punctuation] = []
                 for match in source.scalars[unidentified.range].matches(for: delimiter) {
                     let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
                     if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
-                        delimiters.append(Punctuation(range: match.range))
+                        if ¬underlineSyntax ∨ ¬source.scalars[match.range.upperBound ..< line.upperBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+                            delimiters.append(Punctuation(range: match.range))
+                        }
+
                     }
                 }
                 return delimiters
             }
         }
         // Heading
-        parseSingleLineElements(LiteralPattern("###".scalars))
-        parseSingleLineElements(LiteralPattern("##".scalars))
-        parseSingleLineElements(LiteralPattern("##".scalars))
+        parseSingleLineElements(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3))
+        //parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars)), underlineSyntax: true)
+        //parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars)), underlineSyntax: true)
         // List element (or callout)
         parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
         parseSingleLineElements(LiteralPattern("*".scalars))
