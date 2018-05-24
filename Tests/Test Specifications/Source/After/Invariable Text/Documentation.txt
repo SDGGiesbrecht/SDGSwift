@@ -16,9 +16,25 @@
 ̲
 ̲    /̲/̲/̲ Performs an action using the specified parameters.
 ̲    /̲/̲/̲
+̲    /̲/̲/̲ This is a second paragraph.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ # Primary Heading.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ ## Secondary Heading.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ ### Tertiary Heading.
+̲    /̲/̲/̲
 ̲    /̲/̲/̲ This is a list:
 ̲    /̲/̲/̲ - First entry.
 ̲    /̲/̲/̲ - Second entry.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ This is also list:
+̲    /̲/̲/̲ * First entry.
+̲    /̲/̲/̲ * Second entry.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ And this is a list too:
+̲    /̲/̲/̲ + First entry.
+̲    /̲/̲/̲ + Second entry.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There is something significant about `parameterOne`.
 ̲    /̲/̲/̲

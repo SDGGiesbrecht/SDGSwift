@@ -12,11 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGLogic
 import SDGMathematics
 import SDGCollections
 
 /// Documentation.
 public class Documentation : ContainerSyntaxElement {
+
+    static let tokensAndWhitespace = Whitespace.whitespaceCharacters ∪ Set<UnicodeScalar>(["/", "*"])
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken]) {
         super.init(range: range, source: source, tokens: tokens)
@@ -61,6 +66,28 @@ public class Documentation : ContainerSyntaxElement {
         // Find newlines.
         parseNewlines(in: source)
 
+        // Find single line elements.
+        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>) {
+
+            parseUnidentified() { unidentified in
+                var delimiters: [Punctuation] = []
+                for match in source.scalars[unidentified.range].matches(for: delimiter) {
+                    let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
+                    if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+                        delimiters.append(Punctuation(range: match.range))
+                    }
+                }
+                return delimiters
+            }
+        }/*
+        // Heading
+        parseSingleLineElements(LiteralPattern("###".scalars))
+        parseSingleLineElements(LiteralPattern("##".scalars))
+        parseSingleLineElements(LiteralPattern("##".scalars))
+        // List element (or callout)
+        parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
+        parseSingleLineElements(LiteralPattern("*".scalars))
+        parseSingleLineElements(LiteralPattern("+".scalars))*/
         // [_Warning: Needs to handle Markdown._]
 
         /// The rest is text.
