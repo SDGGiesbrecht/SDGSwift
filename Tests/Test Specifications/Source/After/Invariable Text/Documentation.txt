@@ -56,7 +56,7 @@
 ̲    /̲/̲/̲ 1̲.̲ First entry.
 ̲    /̲/̲/̲ 2̲.̲ Second entry.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ There is something significant about `̲parameterOne`̲.
+̲    /̲/̲/̲ There is something significant about `̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲`̲.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
 ̲    /̲/̲/̲ // This is an example.

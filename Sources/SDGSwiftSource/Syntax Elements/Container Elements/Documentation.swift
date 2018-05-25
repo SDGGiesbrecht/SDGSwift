@@ -169,9 +169,6 @@ public class Documentation : DocumentationContainerElement {
         parseAsterism("\u{2D}")
         parseAsterism("_")
 
-        // Nestable
-        parseChildren(in: source)
-
         // List element
         parseSingleLineElement(LiteralPattern("\u{2D}".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
         parseSingleLineElement(LiteralPattern("*".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
@@ -181,13 +178,7 @@ public class Documentation : DocumentationContainerElement {
             LiteralPattern(".".scalars)
             ])) { DocumentationListElement(bullet: $0, end: $1, in: source) }
 
-        // Inline code
-        parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }
-        // Emphasis/Bold
-        parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
-
-        // The rest is text.
-        parseUnidentified { [DocumentationText(range: $0.range)] }
+        // Nestable
+        parseChildren(in: source)
     }
 }
