@@ -24,6 +24,12 @@ extension Structure {
     ///
     /// ### Tertiary Heading.
     ///
+    /// Another Primary Heading
+    /// =======================
+    ///
+    /// Another Secondary Heading
+    /// -------------------------
+    ///
     /// This is a list:
     /// - First entry.
     /// - Second entry.

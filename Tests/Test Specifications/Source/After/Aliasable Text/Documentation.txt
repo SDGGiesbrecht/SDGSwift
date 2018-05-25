@@ -24,6 +24,12 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     ///
     /// ### Tertiary Heading.
     ///
+    /// Another Primary Heading
+    /// =======================
+    ///
+    /// Another Secondary Heading
+    /// -------------------------
+    ///
     /// This is a list:
     /// - First entry.
     /// - Second entry.
