@@ -104,7 +104,7 @@ public class Documentation : ContainerSyntaxElement {
         }
 
         // Heading
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("# ".scalars), count: 1 ... 3))
+        parseSingleLineElements(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3))
         parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), entireLine: true)
         parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), entireLine: true)
 
