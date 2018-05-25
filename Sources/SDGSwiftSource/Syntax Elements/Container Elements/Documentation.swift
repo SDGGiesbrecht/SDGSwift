@@ -91,10 +91,14 @@ public class Documentation : ContainerSyntaxElement {
             parseUnidentified() { unidentified in
                 var elements: [SyntaxElement] = []
                 for match in source.scalars[unidentified.range].matches(for: delimiter) {
-                    var end = match.range.upperBound
-                    source.scalars.advance(&end, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
-                    end.decrease(to: unidentified.range.upperBound)
-                    elements.append(create(Punctuation(range: match.range), end))
+                    let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
+                    if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+
+                        var end = match.range.upperBound
+                        source.scalars.advance(&end, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                        end.decrease(to: unidentified.range.upperBound)
+                        elements.append(create(Punctuation(range: match.range), end))
+                    }
                 }
                 return elements
             }
@@ -130,13 +134,22 @@ public class Documentation : ContainerSyntaxElement {
 
         // Asterism
         func parseAsterism(_ scalar: Unicode.Scalar) {
-            /*parseSingleLineElements(CompositePattern([
-                LiteralPattern([scalar]),
-                RepetitionPattern(CompositePattern([
-                    RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters })),
-                    LiteralPattern([scalar])
-                    ]), count: 2 ..< Int.max)
-                ]), entireLine: true)*/
+            parseUnidentified { unidentified in
+                var asterisms: [SyntaxElement] = []
+                for match in source.scalars[unidentified.range].matches(for: CompositePattern([
+                    LiteralPattern([scalar]),
+                    RepetitionPattern(CompositePattern([
+                        RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters })),
+                        LiteralPattern([scalar])
+                        ]), count: 2 ..< Int.max)
+                    ])) {
+                        let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
+                        if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) ∧ ¬source.scalars[match.range.upperBound ..< line.upperBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+                            asterisms.append(DocumentationAsterism(range: match.range))
+                        }
+                }
+                return asterisms
+            }
         }
         parseAsterism("*")
         parseAsterism("\u{2D}")

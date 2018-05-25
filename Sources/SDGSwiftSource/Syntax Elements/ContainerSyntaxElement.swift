@@ -194,6 +194,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         for element in makeDeepIterator() {
             if let unidentified = element as? UnidentifiedSyntaxElement {
                 if let replacement = parse(unidentified),
+                    ¬replacement.isEmpty,
                     let parent = element.parent as? ContainerSyntaxElement {
                     let otherChildren = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
                     parent.children = otherChildren + replacement
