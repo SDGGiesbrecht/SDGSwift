@@ -118,7 +118,12 @@ public class Documentation : ContainerSyntaxElement {
         /// Code blocks
         parseUnidentified { unidentified in
             if let fence = source.scalars.firstMatch(for: "```".scalars, in: unidentified.range) {
-                return [Punctuation(range: fence.range), Keyword(range: fence.range.upperBound ..< unidentified.range.upperBound)]
+                let language = fence.range.upperBound ..< unidentified.range.upperBound
+                if language.isEmpty {
+                    return [Punctuation(range: fence.range)]
+                } else {
+                    return [Punctuation(range: fence.range), Keyword(range: language)]
+                }
             } else {
                 return nil
             }
