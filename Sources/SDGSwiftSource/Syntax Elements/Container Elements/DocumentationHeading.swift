@@ -3,13 +3,13 @@ import SDGLogic
 import SDGCollections
 
 /// A heading in symbol documentation.
-public class DocumentationHeading : DocumentationSubelement {
+public class DocumentationHeading : DocumentationContainerElement {
 
     internal init(numberSigns: Punctuation, end: String.ScalarView.Index, in source: String) {
         self.numberSigns = numberSigns
         underline = nil
         super.init(range: numberSigns.range.lowerBound ..< end, children: [numberSigns])
-        parseUnidentified { [DocumentationText(range: $0.range)] }
+        parseChildren(in: source)
     }
 
     internal init(start: String.ScalarView.Index, underline: Punctuation, in source: String) {

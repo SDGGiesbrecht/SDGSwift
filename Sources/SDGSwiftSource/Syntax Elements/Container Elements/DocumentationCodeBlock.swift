@@ -3,7 +3,7 @@ import SDGLogic
 import SDGCollections
 
 /// A code block in symbol documentation.
-public class DocumentationCodeBlock : DocumentationSubelement {
+public class DocumentationCodeBlock : DocumentationContainerElement {
 
     internal init(startFence: Punctuation, endFence: Punctuation, in source: String) {
         self.startFence = startFence

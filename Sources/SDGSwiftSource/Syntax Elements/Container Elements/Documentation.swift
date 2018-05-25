@@ -19,7 +19,7 @@ import SDGMathematics
 import SDGCollections
 
 /// Symbol documentation.
-public class Documentation : ContainerSyntaxElement {
+public class Documentation : DocumentationContainerElement {
 
     static let tokensAndWhitespace = (Whitespace.whitespaceCharacters ∪ Newline.newlineCharacters) ∪ Set<UnicodeScalar>(["/", "*"])
 
@@ -64,9 +64,6 @@ public class Documentation : ContainerSyntaxElement {
         children = structure + tokens
 
         // From https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html#//apple_ref/doc/uid/TP40016497-CH2-SW1
-
-        // Newlines
-        parseNewlines(in: source)
 
         // Code blocks
         func nextFence(after index: String.ScalarView.Index) -> Range<String.ScalarView.Index>? {
@@ -155,14 +152,17 @@ public class Documentation : ContainerSyntaxElement {
         parseAsterism("\u{2D}")
         parseAsterism("_")
 
+        // Nestable
+        parseChildren(in: source)
+
         // List element (or callout)
-        //parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
-        //parseSingleLineElements(LiteralPattern("*".scalars))
-        //parseSingleLineElements(LiteralPattern("+".scalars))
-        /*parseSingleLineElements(CompositePattern([
+        parseSingleLineElement(LiteralPattern("\u{2D}".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
+        parseSingleLineElement(LiteralPattern("*".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
+        parseSingleLineElement(LiteralPattern("+".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
+        parseSingleLineElement(CompositePattern([
             RepetitionPattern(ConditionalPattern({ $0 ∈ Set<Unicode.Scalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }), count: 1 ..< Int.max),
             LiteralPattern(". ".scalars)
-            ]))*/
+            ])) { DocumentationListElement(bullet: $0, end: $1, in: source) }
 
         // Inline code
         parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }

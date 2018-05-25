@@ -1,6 +1,6 @@
 
-/// A subelement of symbol documentation.
-public class DocumentationSubelement : ContainerSyntaxElement {
+/// A container element related to symbol documentation.
+public class DocumentationContainerElement : ContainerSyntaxElement {
 
     internal func parseIndents(in source: String) {
         parseNewlines(in: source)
