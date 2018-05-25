@@ -1,7 +1,7 @@
 
 import SDGCollections
 
-/// A parameter in symbol documentation.
+/// An isolated parameter in symbol documentation.
 public class DocumentationParameter : DocumentationCallout {
 
     internal init(bullet: Punctuation, callout: Keyword, colon: Punctuation, end: String.ScalarView.Index, in source: String) {
@@ -12,7 +12,7 @@ public class DocumentationParameter : DocumentationCallout {
             // Invalid syntax anyway.
             range = callout.range.upperBound ..< colon.range.lowerBound
         }
-        let parameter = Identifier(range: range, isDefinition: false)
+        let parameter = Identifier(range: range, isDefinition: false, isParameterDocumentation: true)
         self.parameter = parameter
         super.init(bullet: bullet, callout: callout, colon: colon, end: end, in: source, knownChildren: [parameter])
     }

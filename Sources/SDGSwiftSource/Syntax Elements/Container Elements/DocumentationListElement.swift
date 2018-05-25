@@ -15,9 +15,9 @@
 /// A list element in symbol documentation.
 public class DocumentationListElement : DocumentationContainerElement {
 
-    internal init(bullet: Punctuation, end: String.ScalarView.Index, in source: String) {
+    internal init(bullet: Punctuation, end: String.ScalarView.Index, in source: String, knownChildren: [SyntaxElement] = []) {
         self.bullet = bullet
-        super.init(range: bullet.range.lowerBound ..< end, children: [bullet])
+        super.init(range: bullet.range.lowerBound ..< end, children: [bullet] + knownChildren)
         parseChildren(in: source)
     }
 

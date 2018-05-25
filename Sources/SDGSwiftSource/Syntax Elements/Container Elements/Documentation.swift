@@ -38,12 +38,7 @@ public class Documentation : DocumentationContainerElement {
         var tokens: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singleLineToken.scalars) {
             // Single line
-            for child in children where child is UnidentifiedSyntaxElement {
-                let childSource = source.scalars[child.range]
-                for match in childSource.matches(for: singleLineToken.scalars) {
-                    tokens.append(DocumentationToken(range: match.range))
-                }
-            }
+            parseIndents(in: source)
         } else {
             // Multiline
             guard let firstUnidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
@@ -188,5 +183,46 @@ public class Documentation : DocumentationContainerElement {
 
         // Nestable
         parseChildren(in: source)
+
+        // Fix grouped parameters.
+        for index in children.indices {
+            let child = children[index]
+            if let parameterList = child as? DocumentationCallout,
+                String(source.scalars[parameterList.callout.range]).lowercased() == "parameters" {
+
+                var entries: [DocumentationListElement] = []
+                var interveningNewline = false
+                for followingIndex in index + 1 ..< children.endIndex {
+                    let following = children[followingIndex]
+                    print(String(source.scalars[following.range]))
+                    print(type(of: following))
+                    if following is Newline {
+                        if interveningNewline {
+                            break // Separated by two lines.
+                        } else {
+                            interveningNewline = true
+                        }
+                    } else if let listElement = following as? DocumentationListElement {
+                        entries.append(listElement)
+                    } else if following is Whitespace ∨ following is DocumentationToken {
+                        continue // Ignore.
+                    } else {
+                        break // Something else intervenes.
+                    }
+                }
+                print("Result:")
+                print(String(source.scalars[parameterList.range]))
+                for entry in entries {
+                    print(String(source.scalars[entry.range]))
+                }
+
+                let list = DocumentationParameterList(callout: parameterList, parameters: entries, in: source)
+
+                let adjusted = children.filter { ¬$0.range.overlaps(list.range) }
+                children = adjusted + [list]
+
+                break // Can only be one.
+            }
+        }
     }
 }

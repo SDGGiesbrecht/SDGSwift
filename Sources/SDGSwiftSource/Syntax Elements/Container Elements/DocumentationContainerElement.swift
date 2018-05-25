@@ -51,6 +51,12 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
         // [_Warning: Need to handle links._]
 
         // The rest is text.
-        parseUnidentified { [DocumentationText(range: $0.range)] }
+        parseUnidentified { unidentified in
+            if source.scalars[unidentified.range].contains(where: { $0 ∉ Whitespace.whitespaceCharacters }) {
+                return [DocumentationText(range: unidentified.range)]
+            } else {
+                return [Whitespace(range: unidentified.range)]
+            }
+        }
     }
 }
