@@ -29,10 +29,7 @@ public class File : Exerpt {
         self.location = location
         let variant = try SourceKit.parse(file: location)
         let source = try String(from: location)
-
-        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
-        try super.init(substructureInformation: variant, source: source, tokens: tokens)
-        postProcess(source: source)
+        try super.init(variant: variant, source: source)
     }
 
     // MARK: - Properties

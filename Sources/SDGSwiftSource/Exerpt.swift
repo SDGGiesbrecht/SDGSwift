@@ -32,17 +32,19 @@ public class Exerpt : ContainerSyntaxElement {
         postProcess(source: source)
     }
 
-    internal static func tokens(fromVariant variant: SourceKit.Variant, source: String) throws -> [SourceKit.PrimitiveToken] {
+    internal init(variant: SourceKit.Variant, source: String) throws {
+        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
+        try super.init(substructureInformation: variant, source: source, tokens: tokens)
+        postProcess(source: source)
+    }
+
+    private static func tokens(fromVariant variant: SourceKit.Variant, source: String) throws -> [SourceKit.PrimitiveToken] {
         return try variant.value(for: "key.syntaxmap").asArray().map { entry in
             return SourceKit.PrimitiveToken(range: try SyntaxElement.range(from: entry, for: "key.", in: source), kind: try entry.value(for: "key.kind").asString())
         }
     }
 
-    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
-        try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens)
-    }
-
-    internal func postProcess(source: String) {
+    private func postProcess(source: String) {
 
         // [_Warning: This needs to parse exerpts._]
 
