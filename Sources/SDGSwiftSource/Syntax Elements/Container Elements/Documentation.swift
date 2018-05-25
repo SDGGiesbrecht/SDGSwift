@@ -86,7 +86,7 @@ public class Documentation : ContainerSyntaxElement {
 
         // Heading
         // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/Headings.html#//apple_ref/doc/uid/TP40016497-CH8-SW1
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3))
+        parseSingleLineElements(RepetitionPattern(LiteralPattern("# ".scalars), count: 1 ... 3))
         parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), entireLine: true)
         parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), entireLine: true)
 
@@ -95,7 +95,10 @@ public class Documentation : ContainerSyntaxElement {
         func parseAsterism(_ scalar: Unicode.Scalar) {
             parseSingleLineElements(CompositePattern([
                 LiteralPattern([scalar]),
-                RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters ∪ [scalar]}), count: 3 ..< Int.max)
+                RepetitionPattern(CompositePattern([
+                    RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters })),
+                    LiteralPattern([scalar])
+                    ]), count: 2 ..< Int.max)
                 ]), entireLine: true)
         }
         parseAsterism("*")
@@ -104,9 +107,9 @@ public class Documentation : ContainerSyntaxElement {
 
         // List element (or callout)
         // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/BulletedLists.html#//apple_ref/doc/uid/TP40016497-CH9-SW1
-        parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
-        parseSingleLineElements(LiteralPattern("*".scalars))
-        parseSingleLineElements(LiteralPattern("+".scalars))
+        parseSingleLineElements(LiteralPattern("\u{2D} ".scalars))
+        parseSingleLineElements(LiteralPattern("* ".scalars))
+        parseSingleLineElements(LiteralPattern("+ ".scalars))
 
         // Newlines
         parseNewlines(in: source)

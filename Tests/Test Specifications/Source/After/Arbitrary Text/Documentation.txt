@@ -18,11 +18,11 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲g̲r̲a̲p̲h̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲# ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲# P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲## ̲S̲e̲c̲o̲n̲d̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲#̲#̲ ̲S̲e̲c̲o̲n̲d̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲### ̲T̲e̲r̲t̲i̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲#̲#̲#̲ ̲T̲e̲r̲t̲i̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲A̲n̲o̲t̲h̲e̲r̲ ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲/// ̲=======================
@@ -38,19 +38,19 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲---
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲_̲_̲_̲
+ ̲ ̲ ̲ ̲/// ̲___
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲l̲i̲s̲t̲:̲
- ̲ ̲ ̲ ̲/// ̲- ̲F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
- ̲ ̲ ̲ ̲/// ̲- ̲S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲- F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲- S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲l̲s̲o̲ ̲l̲i̲s̲t̲:̲
- ̲ ̲ ̲ ̲/// ̲* ̲F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
- ̲ ̲ ̲ ̲/// ̲* ̲S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲* F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲* S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲t̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲l̲i̲s̲t̲ ̲t̲o̲o̲:̲
- ̲ ̲ ̲ ̲/// ̲+ ̲F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
- ̲ ̲ ̲ ̲/// ̲+ ̲S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲+ F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
+ ̲ ̲ ̲ ̲/// ̲+ S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲s̲i̲g̲n̲i̲f̲i̲c̲a̲n̲t̲ ̲a̲b̲o̲u̲t̲ ̲`̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲`̲.̲
  ̲ ̲ ̲ ̲///
@@ -61,15 +61,15 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲}̲
  ̲ ̲ ̲ ̲/// ̲`̲`̲`̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Warning:̲ ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲t̲o̲ ̲w̲a̲t̲c̲h̲ ̲o̲u̲t̲ ̲f̲o̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- Warning:̲ ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲t̲o̲ ̲w̲a̲t̲c̲h̲ ̲o̲u̲t̲ ̲f̲o̲r̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Parameters:̲
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- Parameters:̲
+ ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Returns:̲ ̲A̲ ̲B̲o̲o̲l̲e̲a̲n̲ ̲v̲a̲l̲u̲e̲.̲
+ ̲ ̲ ̲ ̲/// ̲- Returns:̲ ̲A̲ ̲B̲o̲o̲l̲e̲a̲n̲ ̲v̲a̲l̲u̲e̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Throws:̲ ̲A̲n̲ ̲e̲r̲r̲o̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- Throws:̲ ̲A̲n̲ ̲e̲r̲r̲o̲r̲.̲
  ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲ ̲parameterOne: ̲String, ̲w̲i̲t̲h̲ ̲parameterTwo: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
