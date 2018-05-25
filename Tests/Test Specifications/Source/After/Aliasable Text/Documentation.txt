@@ -86,8 +86,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
 
     /// ...
     ///
-    /// - Parameter parameterOne: The first parameter.
-    /// - Parameter parameterTwo: The second parameter.
+    /// - Parameter p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: The first parameter.
+    /// - Parameter p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: The second parameter.
     public func withSeparateParameters(parameterOne: S̲t̲r̲i̲n̲g̲, parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }

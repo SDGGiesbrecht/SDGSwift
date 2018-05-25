@@ -15,11 +15,11 @@
 /// A list element in symbol documentation.
 public class DocumentationCallout : DocumentationContainerElement {
 
-    internal init(bullet: Punctuation, callout: Keyword, colon: Punctuation, end: String.ScalarView.Index, in source: String) {
+    internal init(bullet: Punctuation, callout: Keyword, colon: Punctuation, end: String.ScalarView.Index, in source: String, knownChildren: [SyntaxElement] = []) {
         self.bullet = bullet
         self.callout = callout
         self.colon = colon
-        super.init(range: bullet.range.lowerBound ..< end, children: [bullet, callout, colon])
+        super.init(range: bullet.range.lowerBound ..< end, children: [bullet, callout, colon] + knownChildren)
         parseChildren(in: source)
     }
 

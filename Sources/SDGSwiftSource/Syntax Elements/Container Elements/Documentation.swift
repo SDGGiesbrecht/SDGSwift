@@ -75,8 +75,15 @@ public class Documentation : DocumentationContainerElement {
                 let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
                 var lineEnd = keyword.range.upperBound
                 source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+
                 // [_Warning: Need to handle parameter callouts separately._]
-                let callout = DocumentationCallout(bullet: Punctuation(range: bullet.range), callout: keyword, colon: Punctuation(range: colon.range), end: lineEnd, in: source)
+                let callout: SyntaxElement
+                let name = String(source.scalars[keyword.range]).lowercased()
+                if name == "parameter" {
+                    callout = DocumentationParameter(bullet: Punctuation(range: bullet.range), callout: keyword, colon: Punctuation(range: colon.range), end: lineEnd, in: source)
+                } else {
+                    callout = DocumentationCallout(bullet: Punctuation(range: bullet.range), callout: keyword, colon: Punctuation(range: colon.range), end: lineEnd, in: source)
+                }
 
                 let adjusted = children.filter { ¬$0.range.overlaps(callout.range) }
                 children = adjusted + [callout]

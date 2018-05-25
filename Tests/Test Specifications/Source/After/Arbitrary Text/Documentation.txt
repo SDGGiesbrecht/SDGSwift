@@ -86,8 +86,8 @@ extension ̲Structure ̲{
 
  ̲ ̲ ̲ ̲/// ̲.̲.̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
- ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲parameterOne: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲parameterTwo: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲public ̲func ̲w̲i̲t̲h̲S̲e̲p̲a̲r̲a̲t̲e̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲(p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
