@@ -56,15 +56,15 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲1. ̲F̲i̲r̲s̲t̲ ̲e̲n̲t̲r̲y̲.̲
  ̲ ̲ ̲ ̲/// ̲2. ̲S̲e̲c̲o̲n̲d̲ ̲e̲n̲t̲r̲y̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲s̲i̲g̲n̲i̲f̲i̲c̲a̲n̲t̲ ̲a̲b̲o̲u̲t̲ ̲`p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲`.̲
+ ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲s̲i̲g̲n̲i̲f̲i̲c̲a̲n̲t̲ ̲a̲b̲o̲u̲t̲ ̲`parameterOne`.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲`l̲e̲t̲ ̲x̲ ̲=̲ ̲1̲` ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲k̲e̲y̲w̲o̲r̲d̲.̲
+ ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲`let x = 1` ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲k̲e̲y̲w̲o̲r̲d̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲```swift
- ̲ ̲ ̲ ̲/// ̲/̲/̲ ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲n̲ ̲e̲x̲a̲m̲p̲l̲e̲.̲
- ̲ ̲ ̲ ̲/// ̲i̲f̲ ̲t̲r̲y̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲o̲n̲:̲ ̲"̲1̲"̲,̲ ̲w̲i̲t̲h̲:̲ ̲"̲2̲"̲)̲ ̲{̲
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲p̲r̲i̲n̲t̲(̲"̲I̲t̲ ̲w̲o̲r̲k̲e̲d̲.̲"̲)̲
- ̲ ̲ ̲ ̲/// ̲}̲
+ ̲ ̲ ̲ ̲/// ̲// This is an example.
+ ̲ ̲ ̲ ̲/// if try performAction(on: "1", with: "2") ̲{
+ ̲ ̲ ̲ ̲///     print("It worked.")
+ ̲ ̲ ̲ ̲/// ̲}
  ̲ ̲ ̲ ̲/// ̲```
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲

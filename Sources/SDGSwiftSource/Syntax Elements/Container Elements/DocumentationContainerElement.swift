@@ -19,15 +19,15 @@ import SDGCollections
 public class DocumentationContainerElement : ContainerSyntaxElement {
 
     internal func parseIndents(in source: String) {
-        parseNewlines(in: source)
-        parseUnidentified(in: source, for: "///") { DocumentationToken(range: $0) }
+        parseNewlines(in: source, deepSearch: false)
+        parseUnidentified(in: source, for: "///", deepSearch: false) { DocumentationToken(range: $0) }
     }
 
     internal func parseChildren(in source: String) {
         parseIndents(in: source)
 
         func parseInlineStyle(token: String, create: (_ start: Punctuation, _ end: Punctuation) -> SyntaxElement) {
-            parseUnidentified { unidentified in
+            parseUnidentified(deepSearch: false) { unidentified in
                 let matches = source.scalars.matches(for: LiteralPattern(token.scalars), in: unidentified.range)
                 let pairs = stride(from: 0, to: matches.endIndex.rounded(.down, toMultipleOf: 2), by: 2).map { (matches[$0], matches[$0 + 1]) }
                 var result: [SyntaxElement] = []
@@ -50,7 +50,7 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
         parseInlineStyle(token: "_") { DocumentationEmphasis(startToken: $0, endToken: $1, in: source) }
 
         // Links
-        parseUnidentified { unidentified in
+        parseUnidentified(deepSearch: false) { unidentified in
             var links: [DocumentationLink] = []
             for match in source.scalars.matches(for: CompositePattern([
                 LiteralPattern("[".scalars),
@@ -66,7 +66,7 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
         }
 
         // The rest is text.
-        parseUnidentified { unidentified in
+        parseUnidentified(deepSearch: false) { unidentified in
             if source.scalars[unidentified.range].contains(where: { $0 ∉ Whitespace.whitespaceCharacters }) {
                 return [DocumentationText(range: unidentified.range)]
             } else {

@@ -43,6 +43,7 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
     }
 
     func parseContents(source: String) throws {
+        print("Parsing contents...")
         var contentElements: [SyntaxElement] = []
         var interveningElements: [SyntaxElement] = []
         var contentSource = ""

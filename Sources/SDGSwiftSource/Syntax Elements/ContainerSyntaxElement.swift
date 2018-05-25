@@ -190,8 +190,14 @@ open class ContainerSyntaxElement : SyntaxElement {
 
     // MARK: - Parsing
 
-    internal func parseUnidentified(_ parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {
-        for element in makeDeepIterator() {
+    internal func parseUnidentified(deepSearch: Bool, parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {
+        let elements: [SyntaxElement]
+        if deepSearch {
+            elements = Array(makeDeepIterator())
+        } else {
+            elements = children
+        }
+        for element in elements {
             if let unidentified = element as? UnidentifiedSyntaxElement {
                 if let replacement = parse(unidentified),
                     ¬replacement.isEmpty,
@@ -203,8 +209,8 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
     }
 
-    internal func parseUnidentified(in source: String, for literal: String, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
-        return parseUnidentified { unidentified in
+    internal func parseUnidentified(in source: String, for literal: String, deepSearch: Bool, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
+        return parseUnidentified(deepSearch: deepSearch) { unidentified in
             let matches = source.scalars.matches(for: literal.scalars, in: unidentified.range)
             if matches.isEmpty {
                 return nil
@@ -214,8 +220,8 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
     }
 
-    internal func parseNewlines(in source: String) {
-        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */) { Newline(range: $0) }
-        parseUnidentified(in: source, for: "\u{A}" /* LF */) { Newline(range: $0) }
+    internal func parseNewlines(in source: String, deepSearch: Bool) {
+        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) }
+        parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
     }
 }

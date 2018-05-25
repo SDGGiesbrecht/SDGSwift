@@ -29,13 +29,13 @@ public class Exerpt : ContainerSyntaxElement {
         let variant = try SourceKit.parse(source: source)
         let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
-        postProcess(source: source)
+        try postProcess(source: source)
     }
 
     internal init(variant: SourceKit.Variant, source: String) throws {
         let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
-        postProcess(source: source)
+        try postProcess(source: source)
     }
 
     private static func tokens(fromVariant variant: SourceKit.Variant, source: String) throws -> [SourceKit.PrimitiveToken] {
@@ -44,31 +44,62 @@ public class Exerpt : ContainerSyntaxElement {
         }
     }
 
-    private func postProcess(source: String) {
+    private func postProcess(source: String) throws {
 
-        // [_Warning: This needs to parse exerpts._]
+        /*
+        // Parse documentation code blocks.
+        func nextBlock() -> DocumentationCodeBlock? {
+            let block = makeDeepIterator().first(where: { element in
+                print("Element:")
+                print(type(of: element))
+                if let block = element as? DocumentationCodeBlock {
+                    print(block.children.map({ type(of: $0) }))
+                }
+                if let block = element as? DocumentationCodeBlock,
+                    block.children.contains(where: { $0 is UnidentifiedSyntaxElement }) {
+                    print("Needs work.")
+                    return true
+                } else {
+                    print("Irrelevant.")
+                    return false
+                }
+            })
+            print("Found:")
+            print(type(of: block))
+            print(block)
+            if let found = block {
+                print("Returning.")
+                return found as? DocumentationCodeBlock
+            } else {
+                print("Aborting.")
+                return nil
+            }
+        }
+        while let block = nextBlock() {
+            try block.parseContents(source: source)
+        }*/
 
         // Catch comment tokens before headings.
-        parseUnidentified(in: source, for: "//") { Comment(range: $0, source: source, tokens: []) }
+        parseUnidentified(in: source, for: "//", deepSearch: true) { Comment(range: $0, source: source, tokens: []) }
 
         // Catch newlines.
-        parseNewlines(in: source)
+        parseNewlines(in: source, deepSearch: true)
 
         // Catch punctuation.
-        parseUnidentified(in: source, for: "{") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "}") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "(") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "\u{2D}>") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ":") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ",") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ".") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "=") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "{", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "}", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "(", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ")", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "[", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "]", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "\u{2D}>", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ":", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ",", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ".", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "=", deepSearch: true) { Punctuation(range: $0) }
 
         // Fill in whitespace.
-        parseUnidentified { unidentified in
+        parseUnidentified(deepSearch: true) { unidentified in
             if let whitespace = Whitespace(unidentified: unidentified, in: source) {
                 return [whitespace]
             } else { // [_Exempt from Test Coverage_]
@@ -78,11 +109,10 @@ public class Exerpt : ContainerSyntaxElement {
         }
 
         if BuildConfiguration.current == .debug {
-            parseUnidentified { unidenified in // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
+            for unidentified in makeDeepIterator() where unidentified is UnidentifiedSyntaxElement {// [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
                 print("Unidentified element.")
-                print("Parent: \(String(describing: unidenified.parent))")
-                print("Source: “\(String(source.scalars[unidenified.range]))”")
-                return nil
+                print("Parent: \(String(describing: unidentified.parent))")
+                print("Source: “\(String(source.scalars[unidentified.range]))”")
             }
         }
     }

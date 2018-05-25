@@ -69,9 +69,9 @@ public class Comment : ContainerSyntaxElement {
         children = structure + resolvedNesting
 
         // Find newlines.
-        parseNewlines(in: source)
+        parseNewlines(in: source, deepSearch: false)
 
         // The rest is text.
-        parseUnidentified { [CommentText(range: $0.range)] }
+        parseUnidentified(deepSearch: false) { [CommentText(range: $0.range)] }
     }
 }

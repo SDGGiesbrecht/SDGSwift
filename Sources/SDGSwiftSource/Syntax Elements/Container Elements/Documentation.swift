@@ -104,7 +104,7 @@ public class Documentation : DocumentationContainerElement {
         // Headings
         func parseSingleLineElement(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, create: (_ delimiter: Punctuation, _ end: String.ScalarView.Index) -> SyntaxElement) {
 
-            parseUnidentified() { unidentified in
+            parseUnidentified(deepSearch: false) { unidentified in
                 var elements: [SyntaxElement] = []
                 for match in source.scalars[unidentified.range].matches(for: delimiter) {
                     let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
@@ -150,7 +150,7 @@ public class Documentation : DocumentationContainerElement {
 
         // Asterism
         func parseAsterism(_ scalar: Unicode.Scalar) {
-            parseUnidentified { unidentified in
+            parseUnidentified(deepSearch: false) { unidentified in
                 var asterisms: [SyntaxElement] = []
                 for match in source.scalars[unidentified.range].matches(for: CompositePattern([
                     LiteralPattern([scalar]),
