@@ -58,6 +58,8 @@ extension Structure {
     ///
     /// There is something significant about `parameterOne`.
     ///
+    /// And `let x = 1` contains a keyword.
+    ///
     /// ```swift
     /// // This is an example.
     /// if try performAction(on: "1", with: "2") {

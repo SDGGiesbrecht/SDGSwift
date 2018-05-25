@@ -58,6 +58,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     ///
     /// There is something significant about `parameterOne`.
     ///
+    /// And `let x = 1` contains a keyword.
+    ///
     /// ```swift
     /// // This is an example.
     /// if try performAction(on: "1", with: "2") {
