@@ -75,6 +75,7 @@ public class Documentation : DocumentationContainerElement {
                 let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
                 var lineEnd = keyword.range.upperBound
                 source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                // [_Warning: Need to handle parameter callouts separately._]
                 let callout = DocumentationCallout(bullet: Punctuation(range: bullet.range), callout: keyword, colon: Punctuation(range: colon.range), end: lineEnd, in: source)
 
                 let adjusted = children.filter { ¬$0.range.overlaps(callout.range) }
