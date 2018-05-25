@@ -13,7 +13,10 @@ public class DocumentationLink : DocumentationContainerElement {
         let endToken = Punctuation(range: source.scalars.index(before: end) ..< end)
         self.endToken = endToken
 
-        super.init(range: start ..< end, children: [startToken, medialToken, endToken])
+        let url = DocumentationLinkURL(range: medialToken.range.upperBound ..< endToken.range.lowerBound)
+        self.url = url
+
+        super.init(range: start ..< end, children: [startToken, medialToken, url, endToken])
         parseChildren(in: source)
     }
 
@@ -24,6 +27,9 @@ public class DocumentationLink : DocumentationContainerElement {
 
     /// The token marking the end of the link text and the start of the URL.
     public let medialToken: Punctuation
+
+    /// The target URL.
+    public let url: DocumentationLinkURL
 
     /// The end token.
     public let endToken: Punctuation

@@ -194,8 +194,6 @@ public class Documentation : DocumentationContainerElement {
                 var interveningNewline = false
                 for followingIndex in index + 1 ..< children.endIndex {
                     let following = children[followingIndex]
-                    print(String(source.scalars[following.range]))
-                    print(type(of: following))
                     if following is Newline {
                         if interveningNewline {
                             break // Separated by two lines.
@@ -210,11 +208,6 @@ public class Documentation : DocumentationContainerElement {
                     } else {
                         break // Something else intervenes.
                     }
-                }
-                print("Result:")
-                print(String(source.scalars[parameterList.range]))
-                for entry in entries {
-                    print(String(source.scalars[entry.range]))
                 }
 
                 let list = DocumentationParameterList(callout: parameterList, parameters: entries, in: source)
