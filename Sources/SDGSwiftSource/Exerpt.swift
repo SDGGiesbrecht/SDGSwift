@@ -34,6 +34,8 @@ public class Exerpt : ContainerSyntaxElement {
 
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
 
+        // [_Warning: This needs to parse exerpts._]
+
         // Catch comment tokens before headings.
         parseUnidentified(in: source, for: "//") { Comment(range: $0, source: source, tokens: []) }
 

@@ -42,12 +42,12 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
         parseInlineStyle(token: "`") { DocumentationCodeBlock(startFence: $0, endFence: $1, in: source) }
 
         // Strong
-        parseUnidentified(in: source, for: "**") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "__") { Punctuation(range: $0) }
+        parseInlineStyle(token: "**") { DocumentationStrongText(startToken: $0, endToken: $1, in: source) }
+        parseInlineStyle(token: "__") { DocumentationStrongText(startToken: $0, endToken: $1, in: source) }
 
         // Emphasis
-        parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
+        parseInlineStyle(token: "*") { DocumentationEmphasis(startToken: $0, endToken: $1, in: source) }
+        parseInlineStyle(token: "_") { DocumentationEmphasis(startToken: $0, endToken: $1, in: source) }
 
         // Links
         parseUnidentified { unidentified in

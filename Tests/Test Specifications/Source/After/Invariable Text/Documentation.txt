@@ -56,9 +56,9 @@
 ̲    /̲/̲/̲ 1̲.̲ First entry.
 ̲    /̲/̲/̲ 2̲.̲ Second entry.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ There is something significant about `̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲`̲.
+̲    /̲/̲/̲ There is something significant about `̲parameterOne`̲.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ And `̲l̲e̲t̲ ̲x̲ ̲=̲ ̲1̲`̲ contains a keyword.
+̲    /̲/̲/̲ And `̲let x = 1`̲ contains a keyword.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
 ̲    /̲/̲/̲ // This is an example.
