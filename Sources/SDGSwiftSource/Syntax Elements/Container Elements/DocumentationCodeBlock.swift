@@ -21,23 +21,41 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
     internal init(startFence: Punctuation, endFence: Punctuation, in source: String) {
         self.startFence = startFence
         self.endFence = endFence
-        var children: [SyntaxElement] = [startFence, endFence]
+        var tokens: [SyntaxElement] = [startFence, endFence]
 
-        var languageEnd = startFence.range.upperBound
-        source.scalars.advance(&languageEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
-        languageEnd.decrease(to: endFence.range.lowerBound)
-        if languageEnd ≠ startFence.range.upperBound {
-            let language = Keyword(range: startFence.range.upperBound ..< languageEnd)
-            self.language = language
-            children.append(language)
+        if String(source.scalars[startFence.range]) == "```" {
+            var languageEnd = startFence.range.upperBound
+            source.scalars.advance(&languageEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+            languageEnd.decrease(to: endFence.range.lowerBound)
+            if languageEnd ≠ startFence.range.upperBound {
+                let language = Keyword(range: startFence.range.upperBound ..< languageEnd)
+                self.language = language
+                tokens.append(language)
+            } else {
+                self.language = nil
+            }
         } else {
             self.language = nil
         }
 
-        super.init(range: startFence.range.lowerBound ..< endFence.range.upperBound, children: children)
+        super.init(range: startFence.range.lowerBound ..< endFence.range.upperBound, children: tokens)
         parseIndents(in: source)
+    }
 
-        // [_Warning: Need to parse contents._]
+    func parseContents(source: String) throws {
+        var contentElements: [SyntaxElement] = []
+        var interveningElements: [SyntaxElement] = []
+        var contentSource = ""
+        for child in children where child is UnidentifiedSyntaxElement ∨ child is Newline {
+            if child is UnidentifiedSyntaxElement ∨ child is Newline {
+                contentElements.append(child)
+                contentSource.append(String(source.scalars[child.range]))
+            } else {
+                interveningElements.append(child)
+            }
+        }
+        let exerpt = try Exerpt(from: contentSource)
+        print(exerpt.makeDeepIterator().map({ type(of: $0) }))
     }
 
     // MARK: - Properties
