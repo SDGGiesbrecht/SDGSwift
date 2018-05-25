@@ -110,6 +110,10 @@ public class Documentation : ContainerSyntaxElement {
         parseSingleLineElements(LiteralPattern("\u{2D} ".scalars))
         parseSingleLineElements(LiteralPattern("* ".scalars))
         parseSingleLineElements(LiteralPattern("+ ".scalars))
+        parseSingleLineElements(CompositePattern([
+            RepetitionPattern(ConditionalPattern({ $0 ∈ Set<Unicode.Scalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }), count: 1 ..< Int.max),
+            LiteralPattern(". ".scalars)
+            ]))
 
         // Newlines
         parseNewlines(in: source)

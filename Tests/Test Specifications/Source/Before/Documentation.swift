@@ -52,6 +52,10 @@ extension Structure {
     /// + First entry.
     /// + Second entry.
     ///
+    /// And this is an ordered List:
+    /// 1. First entry.
+    /// 2. Second entry.
+    ///
     /// There is something significant about `parameterOne`.
     ///
     /// ```swift
