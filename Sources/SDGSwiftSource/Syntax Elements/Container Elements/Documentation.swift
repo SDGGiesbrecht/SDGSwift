@@ -155,13 +155,13 @@ public class Documentation : DocumentationContainerElement {
         // Nestable
         parseChildren(in: source)
 
-        // List element (or callout)
+        // List element
         parseSingleLineElement(LiteralPattern("\u{2D}".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
         parseSingleLineElement(LiteralPattern("*".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
         parseSingleLineElement(LiteralPattern("+".scalars)) { DocumentationListElement(bullet: $0, end: $1, in: source) }
         parseSingleLineElement(CompositePattern([
             RepetitionPattern(ConditionalPattern({ $0 ∈ Set<Unicode.Scalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }), count: 1 ..< Int.max),
-            LiteralPattern(". ".scalars)
+            LiteralPattern(".".scalars)
             ])) { DocumentationListElement(bullet: $0, end: $1, in: source) }
 
         // Inline code

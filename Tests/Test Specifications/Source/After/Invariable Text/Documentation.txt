@@ -53,8 +53,8 @@
 ̲    /̲/̲/̲ +̲ Second entry.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ And this is an ordered List:
-̲    /̲/̲/̲ 1̲.̲ ̲First entry.
-̲    /̲/̲/̲ 2̲.̲ ̲Second entry.
+̲    /̲/̲/̲ 1̲.̲ First entry.
+̲    /̲/̲/̲ 2̲.̲ Second entry.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There is something significant about `̲parameterOne`̲.
 ̲    /̲/̲/̲
