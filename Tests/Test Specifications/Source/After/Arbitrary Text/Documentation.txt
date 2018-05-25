@@ -69,7 +69,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲a̲r̲e̲ ̲a̲l̲s̲o̲ ̲[̲l̲i̲n̲k̲s̲]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲)̲.̲
+ ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲a̲r̲e̲ ̲a̲l̲s̲o̲ ̲[l̲i̲n̲k̲s̲](s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲).̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Warning: ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲t̲o̲ ̲w̲a̲t̲c̲h̲ ̲o̲u̲t̲ ̲f̲o̲r̲.̲
  ̲ ̲ ̲ ̲///

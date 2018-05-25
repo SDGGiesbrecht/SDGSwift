@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 
 /// A container element related to symbol documentation.
@@ -48,7 +49,21 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
         parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
 
-        // [_Warning: Need to handle links._]
+        // Links
+        parseUnidentified { unidentified in
+            var links: [DocumentationLink] = []
+            for match in source.scalars.matches(for: CompositePattern([
+                LiteralPattern("[".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "]" })),
+                LiteralPattern("](".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ ")" })),
+                LiteralPattern(")".scalars)
+                ]), in: unidentified.range) {
+                    let medialToken = source.scalars.firstMatch(for: "](".scalars, in: match.range)!.range
+                    links.append(DocumentationLink(start: match.range.lowerBound, medialToken: medialToken, end: match.range.upperBound, in: source))
+            }
+            return links
+        }
 
         // The rest is text.
         parseUnidentified { unidentified in

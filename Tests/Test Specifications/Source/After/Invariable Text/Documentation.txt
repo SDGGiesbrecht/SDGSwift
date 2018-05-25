@@ -69,7 +69,7 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ There are also [links](somewhere.com).
+̲    /̲/̲/̲ There are also [̲links]̲(̲somewhere.com)̲.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ W̲a̲r̲n̲i̲n̲g̲:̲ There is something to watch out for.
 ̲    /̲/̲/̲
