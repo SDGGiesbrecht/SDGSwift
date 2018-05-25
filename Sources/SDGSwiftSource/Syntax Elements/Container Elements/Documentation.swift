@@ -129,6 +129,12 @@ public class Documentation : ContainerSyntaxElement {
             }
         }
 
+        /// Inline code
+        parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }
+        /// Emphasis/Bold
+        parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
+
         /// The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }
     }
