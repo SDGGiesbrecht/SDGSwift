@@ -63,7 +63,7 @@ public class Documentation : ContainerSyntaxElement {
         let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + tokens
 
-        // Find newlines.
+        // Newlines
         parseNewlines(in: source)
 
         // Find single line elements.
@@ -115,8 +115,14 @@ public class Documentation : ContainerSyntaxElement {
             LiteralPattern(". ".scalars)
             ]))
 
-        // Newlines
-        parseNewlines(in: source)
+        /// Code blocks
+        parseUnidentified { unidentified in
+            if let fence = source.scalars.firstMatch(for: "```".scalars, in: unidentified.range) {
+                return [Punctuation(range: fence.range), Keyword(range: fence.range.upperBound ..< unidentified.range.upperBound)]
+            } else {
+                return nil
+            }
+        }
 
         /// The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }

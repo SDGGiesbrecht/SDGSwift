@@ -58,13 +58,13 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There is something significant about `parameterOne`.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ ```swift
+̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
 ̲    /̲/̲/̲ // This is an example.
 ̲    /̲/̲/̲ if try performAction(on: "1", with: "2") {
 ̲    /̲/̲/̲     print("It worked.")
 ̲    /̲/̲/̲ }
-̲    /̲/̲/̲ ```
-̲    /̲/̲/̲
+̲    /̲/̲/̲ `̲`̲`̲
+    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ ̲W̲a̲r̲n̲i̲n̲g̲: There is something to watch out for.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ ̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:

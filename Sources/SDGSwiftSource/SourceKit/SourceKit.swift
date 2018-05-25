@@ -89,4 +89,16 @@ public enum SourceKit {
         }
         return variant
     }
+
+    internal static func parse(source: String) throws -> SourceKit.Variant {
+        let response = try SourceKit.query(withRequest: try Object([
+            try UID("key.request"): try Object(UID("source.request.editor.open")),
+            try UID("key.name"): try Object(source),
+            try UID("key.sourcetext"): try Object(source)
+            ]))
+        guard let variant = response else {
+            throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any) // [_Exempt from Test Coverage_]
+        }
+        return variant
+    }
 }
