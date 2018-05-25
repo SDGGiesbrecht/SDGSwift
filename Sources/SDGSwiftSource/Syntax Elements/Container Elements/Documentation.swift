@@ -71,7 +71,6 @@ public class Documentation : DocumentationContainerElement {
                 var lineEnd = keyword.range.upperBound
                 source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
 
-                // [_Warning: Need to handle parameter callouts separately._]
                 let callout: SyntaxElement
                 let name = String(source.scalars[keyword.range]).lowercased()
                 if name == "parameter" {
