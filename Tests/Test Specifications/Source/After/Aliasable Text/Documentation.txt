@@ -67,6 +67,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// }
     /// ```
     ///
+    /// Here are **strong** and *emphasized*.
+    ///
     /// - Warning: There is something to watch out for.
     ///
     /// - Parameters:

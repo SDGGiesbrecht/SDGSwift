@@ -67,6 +67,8 @@ extension Structure {
     /// }
     /// ```
     ///
+    /// Here are **strong** and *emphasized*.
+    ///
     /// - Warning: There is something to watch out for.
     ///
     /// - Parameters:
