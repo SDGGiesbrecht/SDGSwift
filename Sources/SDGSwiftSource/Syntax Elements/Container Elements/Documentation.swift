@@ -18,7 +18,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-/// Documentation.
+/// Symbol documentation.
 public class Documentation : ContainerSyntaxElement {
 
     static let tokensAndWhitespace = (Whitespace.whitespaceCharacters ∪ Newline.newlineCharacters) ∪ Set<UnicodeScalar>(["/", "*"])

@@ -2,8 +2,8 @@
 import SDGLogic
 import SDGCollections
 
-/// A code block in a documentation comment.
-public class DocumentationCodeBlock : ContainerSyntaxElement {
+/// A code block in symbol documentation.
+public class DocumentationCodeBlock : DocumentationSubelement {
 
     internal init(startFence: Punctuation, endFence: Punctuation, in source: String) {
         self.startFence = startFence
@@ -21,12 +21,8 @@ public class DocumentationCodeBlock : ContainerSyntaxElement {
             self.language = nil
         }
 
-
         super.init(range: startFence.range.lowerBound ..< endFence.range.upperBound, children: children)
-
-        parseNewlines(in: source)
-
-        parseUnidentified(in: source, for: "///") { DocumentationToken(range: $0) }
+        parseIndents(in: source)
     }
 
     // MARK: - Properties
