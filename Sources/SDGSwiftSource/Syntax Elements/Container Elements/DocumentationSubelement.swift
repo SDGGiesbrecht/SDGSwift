@@ -26,7 +26,12 @@ public class DocumentationContainerElement : ContainerSyntaxElement {
 
         // Inline code
         parseInlineStyle(token: "`") { DocumentationCodeBlock(startFence: $0, endFence: $1, in: source) }
-        // Emphasis/Bold
+
+        // Strong
+        parseUnidentified(in: source, for: "**") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "__") { Punctuation(range: $0) }
+
+        // Emphasis
         parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
 
