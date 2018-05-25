@@ -28,11 +28,11 @@ public class DocumentationCodeBlock : DocumentationSubelement {
     // MARK: - Properties
 
     /// The start fence.
-    let startFence: Punctuation
+    public let startFence: Punctuation
 
     /// The end fence.
-    let endFence: Punctuation
+    public let endFence: Punctuation
 
     /// The language specifier.
-    let language: Keyword?
+    public let language: Keyword?
 }

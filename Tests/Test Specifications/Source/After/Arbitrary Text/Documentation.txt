@@ -18,11 +18,11 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲g̲r̲a̲p̲h̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲# ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲# ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲## ̲S̲e̲c̲o̲n̲d̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲## ̲S̲e̲c̲o̲n̲d̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲### ̲T̲e̲r̲t̲i̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲.̲
+ ̲ ̲ ̲ ̲/// ̲### ̲T̲e̲r̲t̲i̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲A̲n̲o̲t̲h̲e̲r̲ ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲/// ̲=======================

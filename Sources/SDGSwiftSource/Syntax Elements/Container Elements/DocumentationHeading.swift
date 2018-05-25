@@ -22,8 +22,8 @@ public class DocumentationHeading : DocumentationSubelement {
     // MARK: - Properties
 
     /// The number signs.
-    let numberSigns: Punctuation?
+    public let numberSigns: Punctuation?
 
     /// The underline.
-    let underline: Punctuation?
+    public let underline: Punctuation?
 }

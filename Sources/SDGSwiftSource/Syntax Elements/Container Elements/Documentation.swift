@@ -85,51 +85,71 @@ public class Documentation : ContainerSyntaxElement {
                 children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)]
         }
 
-        // Find single line elements.
-        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, entireLine: Bool = false) {
+        // Headings
+        func parseSingleLineElement(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, create: (_ delimiter: Punctuation, _ end: String.ScalarView.Index) -> SyntaxElement) {
 
             parseUnidentified() { unidentified in
-                var delimiters: [Punctuation] = []
+                var elements: [SyntaxElement] = []
                 for match in source.scalars[unidentified.range].matches(for: delimiter) {
-                    let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
-                    if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
-                        if ¬entireLine ∨ ¬source.scalars[match.range.upperBound ..< line.upperBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
-                            delimiters.append(Punctuation(range: match.range))
+                    var end = match.range.upperBound
+                    source.scalars.advance(&end, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                    end.decrease(to: unidentified.range.upperBound)
+                    elements.append(create(Punctuation(range: match.range), end))
+                }
+                return elements
+            }
+        }
+        parseSingleLineElement(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3)) { DocumentationHeading(numberSigns: $0, end: $1, in: source) }
+
+        func parseUnderlineElement(_ delimiter: Unicode.Scalar, create: (_ start: String.ScalarView.Index, _ delimiter: Punctuation) -> SyntaxElement) {
+
+            func nextUnderline() -> (Range<String.ScalarView.Index>, String.ScalarView.Index)? {
+                for child in children where child is UnidentifiedSyntaxElement {
+                    if let underline = source.scalars.firstMatch(for: RepetitionPattern(LiteralPattern([delimiter]), count: 1 ..< Int.max), in: child.range),
+                        source.scalars[underline.range.upperBound...].hasPrefix(ConditionalPattern({ $0 ∈ Newline.newlineCharacters })) {
+                        let line = underline.range.lines(in: source.lines)
+                        if line.lowerBound ≠ source.lines.startIndex {
+                            var previousLine = source.lines.index(before: line.lowerBound).samePosition(in: source.scalars)
+                            previousLine.increase(to: range.lowerBound)
+                            if source.scalars[previousLine ..< underline.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+                                return (underline.range, previousLine)
+                            }
                         }
 
                     }
                 }
-                return delimiters
+                return nil
+            }
+            while let underline = nextUnderline() {
+                let adjusted = children.filter { ¬$0.range.overlaps(underline.1 ..< underline.0.upperBound) }
+                children = adjusted + [create(underline.1, Punctuation(range: underline.0))]
             }
         }
-
-        // Heading
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3))
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), entireLine: true)
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), entireLine: true)
+        parseUnderlineElement("=") { DocumentationHeading(start: $0, underline: $1, in: source) }
+        parseUnderlineElement("\u{2D}") { DocumentationHeading(start: $0, underline: $1, in: source) }
 
         // Asterism
         func parseAsterism(_ scalar: Unicode.Scalar) {
-            parseSingleLineElements(CompositePattern([
+            /*parseSingleLineElements(CompositePattern([
                 LiteralPattern([scalar]),
                 RepetitionPattern(CompositePattern([
                     RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters })),
                     LiteralPattern([scalar])
                     ]), count: 2 ..< Int.max)
-                ]), entireLine: true)
+                ]), entireLine: true)*/
         }
         parseAsterism("*")
         parseAsterism("\u{2D}")
         parseAsterism("_")
 
         // List element (or callout)
-        parseSingleLineElements(LiteralPattern("\u{2D} ".scalars))
-        parseSingleLineElements(LiteralPattern("* ".scalars))
-        parseSingleLineElements(LiteralPattern("+ ".scalars))
-        parseSingleLineElements(CompositePattern([
+        //parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
+        //parseSingleLineElements(LiteralPattern("*".scalars))
+        //parseSingleLineElements(LiteralPattern("+".scalars))
+        /*parseSingleLineElements(CompositePattern([
             RepetitionPattern(ConditionalPattern({ $0 ∈ Set<Unicode.Scalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }), count: 1 ..< Int.max),
             LiteralPattern(". ".scalars)
-            ]))
+            ]))*/
 
         // Inline code
         parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }

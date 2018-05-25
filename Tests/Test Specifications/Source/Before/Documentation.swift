@@ -18,11 +18,11 @@ extension Structure {
     ///
     /// This is a second paragraph.
     ///
-    /// # Primary Heading.
+    /// # Primary Heading
     ///
-    /// ## Secondary Heading.
+    /// ## Secondary Heading
     ///
-    /// ### Tertiary Heading.
+    /// ### Tertiary Heading
     ///
     /// Another Primary Heading
     /// =======================
