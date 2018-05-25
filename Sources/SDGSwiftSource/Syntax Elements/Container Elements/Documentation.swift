@@ -67,14 +67,14 @@ public class Documentation : ContainerSyntaxElement {
         parseNewlines(in: source)
 
         // Find single line elements.
-        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, underlineSyntax: Bool = false) {
+        func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, entireLine: Bool = false) {
 
             parseUnidentified() { unidentified in
                 var delimiters: [Punctuation] = []
                 for match in source.scalars[unidentified.range].matches(for: delimiter) {
                     let line = match.range.lines(in: source.lines).sameRange(in: source.scalars)
                     if ¬source.scalars[line.lowerBound ..< match.range.lowerBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
-                        if ¬underlineSyntax ∨ ¬source.scalars[match.range.upperBound ..< line.upperBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
+                        if ¬entireLine ∨ ¬source.scalars[match.range.upperBound ..< line.upperBound].contains(where: { $0 ∉ Documentation.tokensAndWhitespace }) {
                             delimiters.append(Punctuation(range: match.range))
                         }
 
@@ -83,15 +83,33 @@ public class Documentation : ContainerSyntaxElement {
                 return delimiters
             }
         }
+
         // Heading
+        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/Headings.html#//apple_ref/doc/uid/TP40016497-CH8-SW1
         parseSingleLineElements(RepetitionPattern(LiteralPattern("#".scalars), count: 1 ... 3))
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), underlineSyntax: true)
-        parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), underlineSyntax: true)
+        parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), entireLine: true)
+        parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), entireLine: true)
+
+        // Asterism
+        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/HorizontalRules.html#//apple_ref/doc/uid/TP40016497-CH13-SW1
+        func parseAsterism(_ scalar: Unicode.Scalar) {
+            parseSingleLineElements(CompositePattern([
+                LiteralPattern([scalar]),
+                RepetitionPattern(ConditionalPattern({ $0 ∈ Whitespace.whitespaceCharacters ∪ [scalar]}), count: 3 ..< Int.max)
+                ]), entireLine: true)
+        }
+        parseAsterism("*")
+        parseAsterism("\u{2D}")
+        parseAsterism("_")
+
         // List element (or callout)
+        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/BulletedLists.html#//apple_ref/doc/uid/TP40016497-CH9-SW1
         parseSingleLineElements(LiteralPattern("\u{2D}".scalars))
         parseSingleLineElements(LiteralPattern("*".scalars))
         parseSingleLineElements(LiteralPattern("+".scalars))
-        // [_Warning: Needs to handle Markdown._]
+
+        // Newlines
+        parseNewlines(in: source)
 
         /// The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }

@@ -30,6 +30,16 @@ extension Structure {
     /// Another Secondary Heading
     /// -------------------------
     ///
+    /// Asterisms:
+    ///
+    /// ***
+    ///
+    /// * * *
+    ///
+    /// ---
+    ///
+    /// ___
+    ///
     /// This is a list:
     /// - First entry.
     /// - Second entry.
