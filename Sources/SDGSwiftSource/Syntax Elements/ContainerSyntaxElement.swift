@@ -101,7 +101,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     var endIndex = token.range.upperBound
                     var childTokens: [SourceKit.PrimitiveToken] = []
                     while let next = relevantTokens.first,
-                        next.range.lowerBound == endIndex, // contiguous
+                        ¬source.scalars[endIndex ..< next.range.lowerBound].contains(where: { $0 ∉ Whitespace.whitespaceCharacters ∧ $0 ∉ Newline.newlineCharacters }), // contiguous
                         next.kind ∈ ["source.lang.swift.syntaxtype.doccomment", "source.lang.swift.syntaxtype.doccomment.field"] as Set<String> {
 
                             relevantTokens.removeFirst() // Consume it.

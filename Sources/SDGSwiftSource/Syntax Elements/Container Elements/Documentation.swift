@@ -68,6 +68,23 @@ public class Documentation : ContainerSyntaxElement {
         // Newlines
         parseNewlines(in: source)
 
+        // Code blocks
+        func nextFence(after index: String.ScalarView.Index) -> Range<String.ScalarView.Index>? {
+            for child in children where child is UnidentifiedSyntaxElement {
+                if let fence = source.scalars.firstMatch(for: "```".scalars, in: child.range.clamped(to: index ..< range.upperBound)) {
+                    return fence.range
+                }
+            }
+            return nil
+        }
+        while let startFence = nextFence(after: range.lowerBound),
+            let endFence = nextFence(after: startFence.upperBound) {
+                let adjusted = children.filter { child in
+                    ¬child.range.overlaps(startFence.lowerBound ..< endFence.upperBound)
+                }
+                children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)]
+        }
+
         // Find single line elements.
         func parseSingleLineElements(_ delimiter: SDGCollections.Pattern<Unicode.Scalar>, entireLine: Bool = false) {
 
@@ -114,31 +131,11 @@ public class Documentation : ContainerSyntaxElement {
             LiteralPattern(". ".scalars)
             ]))
 
-        // Code blocks
-        parseUnidentified { unidentified in
-            if let fence = source.scalars.firstMatch(for: "```".scalars, in: unidentified.range) {
-                let language = fence.range.upperBound ..< unidentified.range.upperBound
-                if language.isEmpty {
-                    return [Punctuation(range: fence.range)]
-                } else {
-                    return [Punctuation(range: fence.range), Keyword(range: language)]
-                }
-            } else {
-                return nil
-            }
-        }
-
         // Inline code
         parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }
         // Emphasis/Bold
         parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
-
-        // Links
-        parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "(") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
 
         // The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }
