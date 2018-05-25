@@ -69,6 +69,8 @@ extension Structure {
     ///
     /// Here are **strong** and *emphasized*.
     ///
+    /// There are also [links](somewhere.com).
+    ///
     /// - Warning: There is something to watch out for.
     ///
     /// - Parameters:
@@ -79,6 +81,14 @@ extension Structure {
     ///
     /// - Throws: An error.
     public func performAction(on parameterOne: String, with parameterTwo: String) throws -> Bool {
+        return false
+    }
+
+    /// ...
+    ///
+    /// - Parameter parameterOne: The first parameter.
+    /// - Parameter parameterTwo: The second parameter.
+    public func withSeparateParameters(parameterOne: String, parameterTwo: String) throws -> Bool {
         return false
     }
 }

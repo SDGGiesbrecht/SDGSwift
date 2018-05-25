@@ -69,6 +69,8 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲
  ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲a̲r̲e̲ ̲a̲l̲s̲o̲ ̲[̲l̲i̲n̲k̲s̲]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲)̲.̲
+ ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Warning: ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲t̲o̲ ̲w̲a̲t̲c̲h̲ ̲o̲u̲t̲ ̲f̲o̲r̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Parameters:
@@ -79,6 +81,14 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Throws: ̲A̲n̲ ̲e̲r̲r̲o̲r̲.̲
  ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲ ̲parameterOne: ̲String, ̲w̲i̲t̲h̲ ̲parameterTwo: ̲String) ̲throws ̲-> ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲/// ̲.̲.̲.̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲public ̲func ̲w̲i̲t̲h̲S̲e̲p̲a̲r̲a̲t̲e̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲(p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
 }
