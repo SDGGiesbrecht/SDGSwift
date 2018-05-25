@@ -65,6 +65,23 @@ public class Documentation : DocumentationContainerElement {
 
         // From https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html#//apple_ref/doc/uid/TP40016497-CH2-SW1
 
+        // Callouts
+        while let keyword = children.first(where: { $0 is Keyword }) as? Keyword {
+            if let bullet = source.scalars.lastMatch(for: AlternativePatterns([
+                LiteralPattern("\u{2D}".scalars),
+                LiteralPattern("*".scalars),
+                LiteralPattern("+".scalars)
+                ]), in: range.lowerBound ..< keyword.range.lowerBound),
+                let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
+                var lineEnd = keyword.range.upperBound
+                source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                let callout = DocumentationCallout(bullet: Punctuation(range: bullet.range), callout: keyword, colon: Punctuation(range: colon.range), end: lineEnd, in: source)
+
+                let adjusted = children.filter { ¬$0.range.overlaps(callout.range) }
+                children = adjusted + [callout]
+            }
+        }
+
         // Code blocks
         func nextFence(after index: String.ScalarView.Index) -> Range<String.ScalarView.Index>? {
             for child in children where child is UnidentifiedSyntaxElement {

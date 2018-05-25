@@ -11,5 +11,5 @@ public class DocumentationListElement : DocumentationContainerElement {
     // MARK: - Properties
 
     /// The bullet.
-    public let bullet: Punctuation?
+    public let bullet: Punctuation
 }
