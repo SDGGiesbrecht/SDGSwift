@@ -63,6 +63,8 @@ public class Documentation : ContainerSyntaxElement {
         let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + tokens
 
+        // From https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html#//apple_ref/doc/uid/TP40016497-CH2-SW1
+
         // Newlines
         parseNewlines(in: source)
 
@@ -85,13 +87,11 @@ public class Documentation : ContainerSyntaxElement {
         }
 
         // Heading
-        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/Headings.html#//apple_ref/doc/uid/TP40016497-CH8-SW1
         parseSingleLineElements(RepetitionPattern(LiteralPattern("# ".scalars), count: 1 ... 3))
         parseSingleLineElements(RepetitionPattern(LiteralPattern("=".scalars), count: 1 ..< Int.max), entireLine: true)
         parseSingleLineElements(RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 1 ..< Int.max), entireLine: true)
 
         // Asterism
-        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/HorizontalRules.html#//apple_ref/doc/uid/TP40016497-CH13-SW1
         func parseAsterism(_ scalar: Unicode.Scalar) {
             parseSingleLineElements(CompositePattern([
                 LiteralPattern([scalar]),
@@ -106,7 +106,6 @@ public class Documentation : ContainerSyntaxElement {
         parseAsterism("_")
 
         // List element (or callout)
-        // https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/BulletedLists.html#//apple_ref/doc/uid/TP40016497-CH9-SW1
         parseSingleLineElements(LiteralPattern("\u{2D} ".scalars))
         parseSingleLineElements(LiteralPattern("* ".scalars))
         parseSingleLineElements(LiteralPattern("+ ".scalars))
@@ -115,7 +114,7 @@ public class Documentation : ContainerSyntaxElement {
             LiteralPattern(". ".scalars)
             ]))
 
-        /// Code blocks
+        // Code blocks
         parseUnidentified { unidentified in
             if let fence = source.scalars.firstMatch(for: "```".scalars, in: unidentified.range) {
                 let language = fence.range.upperBound ..< unidentified.range.upperBound
@@ -129,13 +128,19 @@ public class Documentation : ContainerSyntaxElement {
             }
         }
 
-        /// Inline code
+        // Inline code
         parseUnidentified(in: source, for: "`") { Punctuation(range: $0) }
-        /// Emphasis/Bold
+        // Emphasis/Bold
         parseUnidentified(in: source, for: "*") { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "_") { Punctuation(range: $0) }
 
-        /// The rest is text.
+        // Links
+        parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "(") { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
+
+        // The rest is text.
         parseUnidentified { [DocumentationText(range: $0.range)] }
     }
 }
