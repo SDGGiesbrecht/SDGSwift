@@ -27,12 +27,22 @@ public class Exerpt : ContainerSyntaxElement {
     /// Throws: A `SourceKit.Error`.
     public init(from source: String) throws {
         let variant = try SourceKit.parse(source: source)
+        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
+        try super.init(substructureInformation: variant, source: source, tokens: tokens)
+        postProcess(source: source)
+    }
 
-        let tokens = try variant.value(for: "key.syntaxmap").asArray().map { entry in
+    internal static func tokens(fromVariant variant: SourceKit.Variant, source: String) throws -> [SourceKit.PrimitiveToken] {
+        return try variant.value(for: "key.syntaxmap").asArray().map { entry in
             return SourceKit.PrimitiveToken(range: try SyntaxElement.range(from: entry, for: "key.", in: source), kind: try entry.value(for: "key.kind").asString())
         }
+    }
 
-        try super.init(substructureInformation: variant, source: source, tokens: tokens)
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
+        try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens)
+    }
+
+    internal func postProcess(source: String) {
 
         // [_Warning: This needs to parse exerpts._]
 

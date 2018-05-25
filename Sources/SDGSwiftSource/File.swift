@@ -18,7 +18,7 @@ import SDGControlFlow
 import SDGLogic
 
 /// A Swift file.
-public class File : ContainerSyntaxElement {
+public class File : Exerpt {
 
     // MARK: - Initialization
 
@@ -30,49 +30,9 @@ public class File : ContainerSyntaxElement {
         let variant = try SourceKit.parse(file: location)
         let source = try String(from: location)
 
-        let tokens = try variant.value(for: "key.syntaxmap").asArray().map { entry in
-            return SourceKit.PrimitiveToken(range: try SyntaxElement.range(from: entry, for: "key.", in: source), kind: try entry.value(for: "key.kind").asString())
-        }
-
+        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
-
-        // Catch comment tokens before headings.
-        parseUnidentified(in: source, for: "//") { Comment(range: $0, source: source, tokens: []) }
-
-        // Catch newlines.
-        parseNewlines(in: source)
-
-        // Catch punctuation.
-        parseUnidentified(in: source, for: "{") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "}") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "(") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ")") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "[") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "]") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "\u{2D}>") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ":") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ",") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: ".") { Punctuation(range: $0) }
-        parseUnidentified(in: source, for: "=") { Punctuation(range: $0) }
-
-        // Fill in whitespace.
-        parseUnidentified { unidentified in
-            if let whitespace = Whitespace(unidentified: unidentified, in: source) {
-                return [whitespace]
-            } else { // [_Exempt from Test Coverage_]
-                // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
-                return nil
-            }
-        }
-
-        if BuildConfiguration.current == .debug {
-            parseUnidentified { unidenified in // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
-                print("Unidentified element.")
-                print("Parent: \(String(describing: unidenified.parent))")
-                print("Source: “\(String(source.scalars[unidenified.range]))”")
-                return nil
-            }
-        }
+        postProcess(source: source)
     }
 
     // MARK: - Properties
