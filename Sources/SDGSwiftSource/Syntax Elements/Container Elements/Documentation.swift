@@ -203,6 +203,7 @@ public class Documentation : DocumentationContainerElement {
                             interveningNewline = true
                         }
                     } else if let listElement = following as? DocumentationListElement {
+                        interveningNewline = false
                         entries.append(listElement)
                     } else if following is Whitespace ∨ following is DocumentationToken {
                         continue // Ignore.

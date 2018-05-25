@@ -75,7 +75,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Parameters:
  ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲parameterOne: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲parameterTwo: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Returns: ̲A̲ ̲B̲o̲o̲l̲e̲a̲n̲ ̲v̲a̲l̲u̲e̲.̲
  ̲ ̲ ̲ ̲///

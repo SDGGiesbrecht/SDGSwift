@@ -75,7 +75,7 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:̲
 ̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ The first parameter.
-̲    /̲/̲/̲     -̲ parameterTwo: The second parameter.
+̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ The second parameter.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ R̲e̲t̲u̲r̲n̲s̲:̲ A Boolean value.
 ̲    /̲/̲/̲
