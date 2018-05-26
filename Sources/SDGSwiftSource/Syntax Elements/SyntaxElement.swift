@@ -27,7 +27,8 @@ open class SyntaxElement {
         switch kind {
         case "source.lang.swift.decl.extension":
             return try Extension(substructureInformation: substructureInformation, source: source, tokens: tokens)
-        case "source.lang.swift.decl.function.method.instance":
+        case "source.lang.swift.decl.function.free",
+             "source.lang.swift.decl.function.method.instance":
             return try FunctionDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
@@ -44,6 +45,10 @@ open class SyntaxElement {
             return try Expression(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.tuple":
             return try Tuple(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.brace":
+            return try Scope(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.if":
+            return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
