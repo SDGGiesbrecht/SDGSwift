@@ -61,9 +61,9 @@
 ̲    /̲/̲/̲ And `̲l̲e̲t̲ x =̲ 1̲`̲ contains a keyword.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
-̲    /̲/̲/̲ /̲/̲ ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲n̲ ̲e̲x̲a̲m̲p̲l̲e̲.̲
-̲    /̲/̲/̲ ̲i̲f̲ ̲t̲r̲y̲ ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(̲o̲n̲:̲ ̲"̲1̲"̲,̲ ̲w̲i̲t̲h̲:̲ ̲"̲2̲"̲)̲ {̲
-̲    /̲/̲/̲ ̲ ̲ ̲ ̲ ̲p̲r̲i̲n̲t̲(̲"̲I̲t̲ ̲w̲o̲r̲k̲e̲d̲.̲"̲)̲
+̲    /̲/̲/̲ /̲/̲ This is an example.
+̲    /̲/̲/̲ i̲f̲ t̲r̲y̲ performAction(̲on:̲ "̲1"̲,̲ with:̲ "̲2"̲)̲ {̲
+̲    /̲/̲/̲     print(̲"̲It worked."̲)̲
 ̲    /̲/̲/̲ }̲
 ̲    /̲/̲/̲ `̲`̲`̲
 ̲    /̲/̲/̲

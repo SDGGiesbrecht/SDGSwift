@@ -62,8 +62,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     ///
     /// ```swift
     /// // This is an example.
-    /// if try performAction(on: "1", with: "2") {
-    ///     print("It worked.")
+    /// if try p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲: "1", w̲i̲t̲h̲: "2") {
+    ///     p̲r̲i̲n̲t̲("It worked.")
     /// }
     /// ```
     ///
