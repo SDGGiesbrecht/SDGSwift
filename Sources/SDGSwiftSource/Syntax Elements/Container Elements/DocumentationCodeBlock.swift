@@ -50,10 +50,11 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
         if let language = self.language {
             contentStart = language.range.upperBound
         }
+        let contentEnd = endFence.range.lowerBound
 
         var interveningElements: [SyntaxElement] = []
         var contentSource = ""
-        for child in children where child is UnidentifiedSyntaxElement ∨ child is Newline {
+        for child in children where child.range.lowerBound ≥ contentStart ∧ child.range.upperBound ≤ contentEnd {
             if child is UnidentifiedSyntaxElement ∨ child is Newline {
                 contentSource.append(String(source.scalars[child.range]))
             } else {
@@ -62,7 +63,7 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
         }
         let excerpt = try Excerpt(from: contentSource)
         excerpt.offset(by: source.scalars.distance(from: source.scalars.startIndex, to: contentStart), in: source)
-        for element in interveningElements where element.range.lowerBound ≥ contentStart {
+        for element in interveningElements {
             excerpt.insert(interruption: element, in: source)
         }
 

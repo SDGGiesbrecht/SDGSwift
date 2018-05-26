@@ -199,6 +199,7 @@ open class ContainerSyntaxElement : SyntaxElement {
 
     internal func insert(interruption: SyntaxElement, in source: String) {
         let length = source.distance(from: interruption.range.lowerBound, to: interruption.range.upperBound)
+        range = range.lowerBound ..< source.scalars.index(range.upperBound, offsetBy: length)
         for child in children.reversed() {
             if child.range.lowerBound ≥ interruption.range.lowerBound {
                 child.offset(by: length, in: source)
