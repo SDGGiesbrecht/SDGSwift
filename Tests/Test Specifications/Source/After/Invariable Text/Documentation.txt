@@ -58,7 +58,7 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There is something significant about `̲parameterOne`̲.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ And `̲l̲e̲t̲ ̲x̲ ̲=̲ ̲1̲`̲ contains a keyword.
+̲    /̲/̲/̲ And `̲l̲e̲t̲ x =̲ 1̲`̲ contains a keyword.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
 ̲    /̲/̲/̲ /̲/̲ ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲n̲ ̲e̲x̲a̲m̲p̲l̲e̲.̲

@@ -44,12 +44,13 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
     }
 
     func parseContents(source: String) throws {
+        parsed = true
+
         var contentStart = startFence.range.upperBound
         if let language = self.language {
             contentStart = language.range.upperBound
         }
 
-        print("Parsing contents...")
         var interveningElements: [SyntaxElement] = []
         var contentSource = ""
         for child in children where child is UnidentifiedSyntaxElement ∨ child is Newline {
@@ -70,6 +71,8 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
     }
 
     // MARK: - Properties
+
+    internal var parsed: Bool = false
 
     /// The start fence.
     public let startFence: Punctuation

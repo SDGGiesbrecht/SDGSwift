@@ -50,7 +50,7 @@ public class Excerpt : ContainerSyntaxElement {
         func nextBlock() -> DocumentationCodeBlock? {
             let block = makeDeepIterator().first(where: { element in
                 if let block = element as? DocumentationCodeBlock,
-                    block.children.contains(where: { $0 is UnidentifiedSyntaxElement }) {
+                    block.parsed == false {
                     return true
                 } else {
                     return false
@@ -64,7 +64,6 @@ public class Excerpt : ContainerSyntaxElement {
         }
         while let block = nextBlock() {
             try block.parseContents(source: source)
-            break // [_Warning: Temporary._]
         }
 
         // Catch comment tokens before headings.
