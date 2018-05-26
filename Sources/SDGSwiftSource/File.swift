@@ -18,7 +18,7 @@ import SDGControlFlow
 import SDGLogic
 
 /// A Swift file.
-public class File : Exerpt {
+public class File : Excerpt {
 
     // MARK: - Initialization
 

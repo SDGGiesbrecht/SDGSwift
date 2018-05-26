@@ -1,5 +1,5 @@
 /*
- Exerpt.swift
+ Excerpt.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -17,23 +17,23 @@ import Foundation
 import SDGControlFlow
 import SDGLogic
 
-/// An exerpt of Swift source code.
-public class Exerpt : ContainerSyntaxElement {
+/// An excerpt of Swift source code.
+public class Excerpt : ContainerSyntaxElement {
 
     // MARK: - Initialization
 
-    /// Creates an exerpt with the specified source code.
+    /// Creates an excerpt with the specified source code.
     ///
     /// Throws: A `SourceKit.Error`.
     public init(from source: String) throws {
         let variant = try SourceKit.parse(source: source)
-        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
+        let tokens = try Excerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
         try postProcess(source: source)
     }
 
     internal init(variant: SourceKit.Variant, source: String) throws {
-        let tokens = try Exerpt.tokens(fromVariant: variant, source: source)
+        let tokens = try Excerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
         try postProcess(source: source)
     }
@@ -46,38 +46,26 @@ public class Exerpt : ContainerSyntaxElement {
 
     private func postProcess(source: String) throws {
 
-        /*
         // Parse documentation code blocks.
         func nextBlock() -> DocumentationCodeBlock? {
             let block = makeDeepIterator().first(where: { element in
-                print("Element:")
-                print(type(of: element))
-                if let block = element as? DocumentationCodeBlock {
-                    print(block.children.map({ type(of: $0) }))
-                }
                 if let block = element as? DocumentationCodeBlock,
                     block.children.contains(where: { $0 is UnidentifiedSyntaxElement }) {
-                    print("Needs work.")
                     return true
                 } else {
-                    print("Irrelevant.")
                     return false
                 }
             })
-            print("Found:")
-            print(type(of: block))
-            print(block)
             if let found = block {
-                print("Returning.")
                 return found as? DocumentationCodeBlock
             } else {
-                print("Aborting.")
                 return nil
             }
         }
         while let block = nextBlock() {
             try block.parseContents(source: source)
-        }*/
+            break // [_Warning: Temporary._]
+        }
 
         // Catch comment tokens before headings.
         parseUnidentified(in: source, for: "//", deepSearch: true) { Comment(range: $0, source: source, tokens: []) }

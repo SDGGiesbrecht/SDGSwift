@@ -80,10 +80,18 @@ open class SyntaxElement {
 
     // [_Define Documentation: SyntaxElement.range_]
     /// The range of the element.
-    public var range: Range<String.ScalarView.Index>
+    public internal(set) var range: Range<String.ScalarView.Index>
 
     /// The parent syntax element.
     public internal(set) weak var parent: SyntaxElement?
+
+    // MARK: - Offsets
+
+    internal func offset(by distance: Int, in source: String) {
+        let upperBound = source.scalars.index(range.upperBound, offsetBy: distance)
+        let lowerBound = source.scalars.index(range.lowerBound, offsetBy: distance)
+        range = lowerBound ..< upperBound
+    }
 
     // MARK: - Iteration
 

@@ -186,6 +186,14 @@ public class Identifier : AtomicSyntaxElement {
         super.init(range: range)
     }
 
+    /// :nodoc:
+    public required init(range: Range<String.ScalarView.Index>) {
+        // Should never need splitting anyway.
+        self.isDefinition = false
+        self.isParameterDocumentation = false
+        super.init(range: range)
+    }
+
     // MARK: - Properties
 
     /// Whether or not the identifier is a definition or a reference.

@@ -188,6 +188,32 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
     }
 
+    // MARK: - Offsets
+
+    internal override func offset(by distance: Int, in source: String) {
+        super.offset(by: distance, in: source)
+        for child in children {
+            child.offset(by: distance, in: source)
+        }
+    }
+
+    internal func insert(interruption: SyntaxElement, in source: String) {
+        let length = source.distance(from: interruption.range.lowerBound, to: interruption.range.upperBound)
+        for child in children.reversed() {
+            if child.range.lowerBound ≥ interruption.range.lowerBound {
+                child.offset(by: length, in: source)
+            } else if child.range.overlaps(interruption.range) {
+                if let container = child as? ContainerSyntaxElement {
+                    container.insert(interruption: interruption, in: source)
+                } else if let atomic = child as? AtomicSyntaxElement {
+                    children.append(contentsOf: atomic.splitting(arround: interruption, in: source))
+                }
+            } else {
+                break
+            }
+        }
+    }
+
     // MARK: - Parsing
 
     internal func parseUnidentified(deepSearch: Bool, parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {

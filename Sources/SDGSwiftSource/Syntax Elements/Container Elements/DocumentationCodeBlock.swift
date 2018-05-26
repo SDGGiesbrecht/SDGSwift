@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 /// A code block in symbol documentation.
@@ -43,20 +44,29 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
     }
 
     func parseContents(source: String) throws {
+        var contentStart = startFence.range.upperBound
+        if let language = self.language {
+            contentStart = language.range.upperBound
+        }
+
         print("Parsing contents...")
-        var contentElements: [SyntaxElement] = []
         var interveningElements: [SyntaxElement] = []
         var contentSource = ""
         for child in children where child is UnidentifiedSyntaxElement ∨ child is Newline {
             if child is UnidentifiedSyntaxElement ∨ child is Newline {
-                contentElements.append(child)
                 contentSource.append(String(source.scalars[child.range]))
             } else {
                 interveningElements.append(child)
             }
         }
-        let exerpt = try Exerpt(from: contentSource)
-        print(exerpt.makeDeepIterator().map({ type(of: $0) }))
+        let excerpt = try Excerpt(from: contentSource)
+        excerpt.offset(by: source.scalars.distance(from: source.scalars.startIndex, to: contentStart), in: source)
+        for element in interveningElements where element.range.lowerBound ≥ contentStart {
+            excerpt.insert(interruption: element, in: source)
+        }
+
+        let structure = children.filter { ¬$0.range.overlaps(excerpt.range) }
+        children = structure + [excerpt]
     }
 
     // MARK: - Properties
