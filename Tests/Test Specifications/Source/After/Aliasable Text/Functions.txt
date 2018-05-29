@@ -14,4 +14,6 @@
 
 func doSomething(_ unnamedParameter: S̲t̲r̲i̲n̲g̲) {
 
+    var localVariable = 0
+    l̲o̲c̲a̲l̲V̲a̲r̲i̲a̲b̲l̲e̲ += 1
 }
