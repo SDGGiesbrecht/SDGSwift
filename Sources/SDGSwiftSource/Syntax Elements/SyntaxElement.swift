@@ -33,7 +33,8 @@ open class SyntaxElement {
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.global",
-             "source.lang.swift.decl.var.instance":
+             "source.lang.swift.decl.var.instance",
+             "source.lang.swift.decl.var.static":
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)

@@ -25,6 +25,10 @@ import Foundation
 
 struct Structure {
 
+    // MARK: - Static Properties
+
+    static var staticProperty = 0
+
     // MARK: - Initialization
 
     init(property: Bool) {

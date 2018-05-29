@@ -25,6 +25,10 @@ import F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 
 struct Structure {
 
+    // MARK: - Static Properties
+
+    static var staticProperty = 0
+
     // MARK: - Initialization
 
     init(property: B̲o̲o̲l̲) {

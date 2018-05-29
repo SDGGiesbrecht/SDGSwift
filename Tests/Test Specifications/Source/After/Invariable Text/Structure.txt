@@ -25,6 +25,10 @@
 ̲
 ̲s̲t̲r̲u̲c̲t̲ Structure {̲
 ̲
+̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Static Properties
+̲
+̲    s̲t̲a̲t̲i̲c̲ v̲a̲r̲ staticProperty =̲ 0̲
+̲
 ̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Initialization
 ̲
 ̲    i̲n̲i̲t̲(̲property:̲ Bool)̲ {̲
