@@ -44,5 +44,14 @@
 ̲    f̲u̲n̲c̲ performAction(̲)̲ {̲
 ̲        property =̲ t̲r̲u̲e̲
 ̲    }̲
+̲
+̲    s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲index:̲ Int)̲ -̲>̲ Int {̲
+̲        g̲e̲t̲ {̲
+̲            r̲e̲t̲u̲r̲n̲ index
+̲        }̲
+̲        s̲e̲t̲ {̲
+̲            property =̲ t̲r̲u̲e̲
+̲        }̲
+̲    }̲
 ̲}̲
 ̲

@@ -44,4 +44,13 @@ struct Structure {
     func performAction() {
         property = true
     }
+
+    subscript(index: Int) -> Int {
+        get {
+            return index
+        }
+        set {
+            property = true
+        }
+    }
 }
