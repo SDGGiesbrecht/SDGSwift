@@ -164,7 +164,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                         } else {
                             if BuildConfiguration.current == .debug {
                                 print("Overlapping children:")
-                                print([type(of: sorted[index]), type(of: next)])
+                                print(type(of: self))
+                                print([type(of: sorted[index]), type(of: sorted[next])])
                             }
                         }
                     }
@@ -207,7 +208,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                 if let container = child as? ContainerSyntaxElement {
                     container.insert(interruption: interruption, in: source)
                 } else if let atomic = child as? AtomicSyntaxElement {
-                    children.append(contentsOf: atomic.splitting(arround: interruption, in: source))
+                    let others = children.filter { $0.range.lowerBound ≠ child.range.lowerBound }
+                    children = others.appending(contentsOf: atomic.splitting(arround: interruption, in: source))
                 }
             } else {
                 break
