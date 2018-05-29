@@ -45,7 +45,7 @@ struct Structure {
         p̲r̲o̲p̲e̲r̲t̲y̲ = true
     }
 
-    subscript(i̲n̲d̲e̲x̲: I̲n̲t̲) -> I̲n̲t̲ {
+    subscript(index: I̲n̲t̲) -> I̲n̲t̲ {
         get {
             return i̲n̲d̲e̲x̲
         }

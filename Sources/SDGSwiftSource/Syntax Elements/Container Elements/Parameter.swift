@@ -26,6 +26,12 @@ public class Parameter : ContainerSyntaxElement {
             label = nil
             try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [])
         }
+        for child in children {
+            if let name = child as? Identifier { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                name.isDefinition = true
+                break
+            }
+        }
     }
 
     // MARK: - Properties

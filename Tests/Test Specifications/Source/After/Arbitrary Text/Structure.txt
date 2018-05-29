@@ -45,7 +45,7 @@ struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲property ̲= ̲true
  ̲ ̲ ̲ ̲}
 
- ̲ ̲ ̲ ̲subscript(index: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲subscript(i̲n̲d̲e̲x̲: ̲Int) ̲-> ̲Int ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲index
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
