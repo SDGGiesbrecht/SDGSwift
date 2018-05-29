@@ -175,11 +175,22 @@ open class ContainerSyntaxElement : SyntaxElement {
             if sorted.isEmpty {
                 inserts.append(UnidentifiedSyntaxElement(range: range))
             } else if ¬range.isEmpty {
-                if range.lowerBound ≠ sorted.first!.range.lowerBound {
+                if range.lowerBound < sorted.first!.range.lowerBound {
                     inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
+                } else if BuildConfiguration.current == .debug,
+                    range.lowerBound ≠ sorted.first!.range.lowerBound {
+                    print("Child out of bounds:")
+                    print(type(of: self))
+                    print(type(of: sorted.first!))
                 }
-                if sorted.last!.range.upperBound ≠ range.upperBound {
+
+                if sorted.last!.range.upperBound < range.upperBound {
                     inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
+                } else if BuildConfiguration.current == .debug,
+                    sorted.last!.range.upperBound ≠ range.upperBound {
+                    print("Child out of bounds:")
+                    print(type(of: self))
+                    print(type(of: sorted.last!))
                 }
             }
             _children = sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
