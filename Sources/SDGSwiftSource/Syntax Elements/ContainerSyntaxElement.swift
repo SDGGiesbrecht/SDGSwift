@@ -49,9 +49,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                 // “next” is really a subelement of “last”
 
                 substructureElements.removeLast()
-                var lastChildren = lastContainer.children.filter { ¬$0.range.overlaps(next.range) }
-                lastChildren.append(next)
-                lastContainer.children = lastChildren
+                lastContainer.insert(substructureChild: next)
                 substructureElements.append(lastContainer)
 
             } else {
@@ -197,6 +195,17 @@ open class ContainerSyntaxElement : SyntaxElement {
             for child in _children {
                 child.parent = self
             }
+        }
+    }
+
+    private func insert(substructureChild: SyntaxElement) {
+        if let nested = children.first(where: { $0.range ⊇ substructureChild.range }),
+            let container = nested as? ContainerSyntaxElement {
+            container.insert(substructureChild: substructureChild)
+        } else {
+            var adjusted = children.filter { ¬$0.range.overlaps(substructureChild.range) }
+            adjusted.append(substructureChild)
+            children = adjusted
         }
     }
 
