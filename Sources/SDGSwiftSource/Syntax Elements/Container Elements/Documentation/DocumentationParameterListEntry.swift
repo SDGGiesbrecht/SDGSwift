@@ -19,11 +19,11 @@ public class DocumentationParameterListEntry : DocumentationListElement {
 
     internal init?(entry: DocumentationListElement, in source: String) {
         guard let colon = source.scalars.firstMatch(for: ":".scalars, in: entry.bullet.range.upperBound ..< entry.range.upperBound)?.range else {
-            return nil
+            return nil // [_Exempt from Test Coverage_] Would be invalid source.
         }
 
         guard let nameStart = source.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ Whitespace.whitespaceCharacters }), in: entry.bullet.range.upperBound ..< colon.lowerBound)?.range.lowerBound else {
-            return nil
+            return nil // [_Exempt from Test Coverage_] Would be invalid source.
 
         }
         let nameRange = nameStart ..< colon.lowerBound

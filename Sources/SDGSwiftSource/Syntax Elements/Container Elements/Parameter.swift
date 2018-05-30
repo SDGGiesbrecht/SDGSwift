@@ -20,7 +20,7 @@ public class Parameter : ContainerSyntaxElement {
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
         let possibleLabel = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         if ¬possibleLabel.range.isEmpty {
-            label = possibleLabel
+            label = possibleLabel // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [possibleLabel])
         } else {
             label = nil

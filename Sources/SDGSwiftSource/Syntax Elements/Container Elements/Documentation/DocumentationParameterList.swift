@@ -18,12 +18,12 @@ public class DocumentationParameterList : DocumentationCallout {
     internal init(callout: DocumentationCallout, parameters: [DocumentationListElement], in source: String) {
         var parameterList: [DocumentationParameterListEntry] = []
         for parameter in parameters {
-            if let parsed = DocumentationParameterListEntry(entry: parameter, in: source) {
+            if let parsed = DocumentationParameterListEntry(entry: parameter, in: source) { // [_Exempt from Test Coverage_] False result in Xcode 9.3.
                 parameterList.append(parsed)
             }
         }
         self.parameters = parameterList
-        super.init(bullet: callout.bullet, callout: callout.callout, colon: callout.colon, end: parameterList.last?.range.upperBound ?? callout.range.upperBound, in: source, knownChildren: parameterList)
+        super.init(bullet: callout.bullet, callout: callout.callout, colon: callout.colon, end: parameterList.last?.range.upperBound ?? callout.range.upperBound, in: source, knownChildren: parameterList) // [_Exempt from Test Coverage_] After ?? would require invalid syntax.
     }
 
     // MARK: - Properties

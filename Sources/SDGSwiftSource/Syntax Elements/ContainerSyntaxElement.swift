@@ -41,8 +41,8 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
 
         var substructureElements: [SyntaxElement] = []
-        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) {
-            if let last = substructureElements.last,
+        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) { // [_Exempt from Test Coverage_] Parenthesis is meaningless.
+            if let last = substructureElements.last, // [_Exempt from Test Coverage_] False result in Xcode 9.3.
                 next.range.overlaps(last.range) {
 
                 if next.range ⊆ last.range,
@@ -173,6 +173,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                         if lowerBound ≤ upperBound {
                             inserts.append(UnidentifiedSyntaxElement(range: lowerBound ..< upperBound))
                         } else {
+                            // [_Exempt from Test Coverage_]
                             if BuildConfiguration.current == .debug {
                                 print("Overlapping children:")
                                 print(type(of: self))
@@ -190,6 +191,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
                 } else if BuildConfiguration.current == .debug,
                     range.lowerBound ≠ sorted.first!.range.lowerBound {
+                    // [_Exempt from Test Coverage_]
                     print("Child out of bounds:")
                     print(type(of: self))
                     print(type(of: sorted.first!))
@@ -199,6 +201,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
                 } else if BuildConfiguration.current == .debug,
                     sorted.last!.range.upperBound ≠ range.upperBound {
+                    // [_Exempt from Test Coverage_]
                     print("Child out of bounds:")
                     print(type(of: self))
                     print(type(of: sorted.last!))

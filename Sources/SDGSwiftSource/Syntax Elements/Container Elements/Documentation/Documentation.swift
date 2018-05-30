@@ -37,7 +37,7 @@ public class Documentation : DocumentationContainerElement {
         // Find tokens.
         var tokens: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singleLineToken.scalars) {
-            // Single line
+            // Single line // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             parseIndents(in: source)
         } else {
             // Multiline
@@ -62,14 +62,14 @@ public class Documentation : DocumentationContainerElement {
 
         // Callouts
         while let keyword = children.first(where: { $0 is Keyword }) as? Keyword {
-            if let bullet = source.scalars.lastMatch(for: AlternativePatterns([
+            if let bullet = source.scalars.lastMatch(for: AlternativePatterns([ // [_Exempt from Test Coverage_] False result in Xcode 9.3.
                 LiteralPattern("\u{2D}".scalars),
                 LiteralPattern("*".scalars),
                 LiteralPattern("+".scalars)
                 ]), in: range.lowerBound ..< keyword.range.lowerBound),
                 let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
                 var lineEnd = keyword.range.upperBound
-                source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters }))) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
 
                 let callout: SyntaxElement
                 let name = String(source.scalars[keyword.range]).lowercased()
@@ -80,7 +80,7 @@ public class Documentation : DocumentationContainerElement {
                 }
 
                 let adjusted = children.filter { ¬$0.range.overlaps(callout.range) }
-                children = adjusted + [callout]
+                children = adjusted + [callout] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             }
         }
 
@@ -95,10 +95,10 @@ public class Documentation : DocumentationContainerElement {
         }
         while let startFence = nextFence(after: range.lowerBound),
             let endFence = nextFence(after: startFence.upperBound) {
-                let adjusted = children.filter { child in
+                let adjusted = children.filter { child in // [_Exempt from Test Coverage_] False result in Xcode 9.3.
                     ¬child.range.overlaps(startFence.lowerBound ..< endFence.upperBound)
                 }
-                children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)]
+                children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
         }
 
         // Headings
@@ -185,7 +185,7 @@ public class Documentation : DocumentationContainerElement {
 
         // Fix grouped parameters.
         for index in children.indices {
-            let child = children[index]
+            let child = children[index] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             if let parameterList = child as? DocumentationCallout,
                 String(source.scalars[parameterList.callout.range]).lowercased() == "parameters" {
 
@@ -212,7 +212,7 @@ public class Documentation : DocumentationContainerElement {
                 let list = DocumentationParameterList(callout: parameterList, parameters: entries, in: source)
 
                 let adjusted = children.filter { ¬$0.range.overlaps(list.range) }
-                children = adjusted + [list]
+                children = adjusted + [list] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
 
                 break // Can only be one.
             }

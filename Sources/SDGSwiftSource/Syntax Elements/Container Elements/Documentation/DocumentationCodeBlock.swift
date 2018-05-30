@@ -25,9 +25,9 @@ public class DocumentationCodeBlock : DocumentationContainerElement {
         var tokens: [SyntaxElement] = [startFence, endFence]
 
         if String(source.scalars[startFence.range]) == "```" {
-            var languageEnd = startFence.range.upperBound
+            var languageEnd = startFence.range.upperBound // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             source.scalars.advance(&languageEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
-            languageEnd.decrease(to: endFence.range.lowerBound)
+            languageEnd.decrease(to: endFence.range.lowerBound) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             if languageEnd ≠ startFence.range.upperBound {
                 let language = Keyword(range: startFence.range.upperBound ..< languageEnd)
                 self.language = language

@@ -67,7 +67,7 @@
 ̲    /̲/̲/̲ }̲
 ̲    /̲/̲/̲ `̲`̲`̲
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲.
+̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲. (Or _̲_̲strong_̲_̲ and _̲emphasized_̲.)
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There are also [̲links]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲)̲.
 ̲    /̲/̲/̲

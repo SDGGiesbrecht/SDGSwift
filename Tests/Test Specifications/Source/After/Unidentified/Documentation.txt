@@ -67,7 +67,7 @@ extension Structure {
     /// }
     /// ```
     ///
-    /// Here are **strong** and *emphasized*.
+    /// Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)
     ///
     /// There are also [links](somewhere.com).
     ///

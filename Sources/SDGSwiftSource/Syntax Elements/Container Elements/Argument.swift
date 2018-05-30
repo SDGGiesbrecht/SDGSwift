@@ -22,7 +22,7 @@ public class Argument : ContainerSyntaxElement {
 
         let possibleLabel = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: false)
         if ¬possibleLabel.range.isEmpty {
-            label = possibleLabel
+            label = possibleLabel // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             knownChildren.append(possibleLabel)
         } else {
             label = nil

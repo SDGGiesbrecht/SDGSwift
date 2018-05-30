@@ -19,7 +19,7 @@ public class StringLiteral : ContainerSyntaxElement {
 
     internal init(range: Range<String.ScalarView.Index>, source: String) {
         guard source.scalars[range].count ≥ 2 else {
-            super.init(range: range, children: [])
+            super.init(range: range, children: []) // [_Exempt from Test Coverage_] Should be unreachable.
             return
         }
 
