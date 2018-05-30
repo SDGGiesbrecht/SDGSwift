@@ -16,4 +16,7 @@ func doSomething(_ unnamedParameter: String) {
 
     var localVariable = 0
     localVariable += 1
+
+    performFunction(argument)
+    performFunction(with: argument)
 }

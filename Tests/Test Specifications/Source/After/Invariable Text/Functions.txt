@@ -16,5 +16,8 @@
 ̲
 ̲    v̲a̲r̲ localVariable =̲ 0̲
 ̲    localVariable += 1̲
+̲
+̲    performFunction(̲argument)̲
+̲    performFunction(̲with:̲ argument)̲
 ̲}̲
 ̲

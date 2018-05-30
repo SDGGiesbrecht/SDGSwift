@@ -33,7 +33,7 @@ public class Excerpt : ContainerSyntaxElement {
         try postProcess(source: source)
     }
 
-    internal init(variant: SourceKit.Variant, source: String) throws {
+    internal init(variant: SourceKit.Variant, source: String) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
         let tokens = try Excerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
         try postProcess(source: source)
@@ -56,7 +56,7 @@ public class Excerpt : ContainerSyntaxElement {
                 } else {
                     return false
                 }
-            })
+            }) // [_Exempt from Test Coverage_] Meaningless line.
             if let found = block {
                 return found as? DocumentationCodeBlock
             } else {

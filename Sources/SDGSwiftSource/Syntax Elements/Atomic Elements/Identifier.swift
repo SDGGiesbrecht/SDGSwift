@@ -188,7 +188,7 @@ public class Identifier : AtomicSyntaxElement {
     }
 
     /// :nodoc:
-    public required init(range: Range<String.ScalarView.Index>) {
+    public required init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_]
         // Should never need splitting anyway.
         self.isOperator = false
         self.isDefinition = false
