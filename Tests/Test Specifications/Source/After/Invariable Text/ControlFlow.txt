@@ -12,7 +12,7 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲f̲u̲n̲c̲ main(̲)̲
+̲f̲u̲n̲c̲ main(̲)̲ {̲
 ̲
 ̲    i̲f̲ number.̲isIrrational {̲
 ̲        number.̲round(̲)̲
@@ -20,6 +20,10 @@
 ̲
 ̲    f̲o̲r̲ element i̲n̲ [̲1̲,̲ 2̲,̲ 3̲]̲ {̲
 ̲
+̲    }̲
+̲
+̲    l̲e̲t̲ trailingClosure =̲ [̲1̲,̲ 2̲,̲ 3̲]̲.̲filter {̲ (̲number:̲ Int)̲ -̲>̲ Bool i̲n̲
+̲        r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲
 ̲    }̲
 ̲}̲
 ̲

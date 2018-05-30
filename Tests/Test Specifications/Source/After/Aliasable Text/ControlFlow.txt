@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-func main()
+func main() {
 
     if n̲u̲m̲b̲e̲r̲.i̲s̲I̲r̲r̲a̲t̲i̲o̲n̲a̲l̲ {
         n̲u̲m̲b̲e̲r̲.r̲o̲u̲n̲d̲()
@@ -20,5 +20,9 @@ func main()
 
     for element in [1, 2, 3] {
 
+    }
+
+    let trailingClosure = [1, 2, 3].f̲i̲l̲t̲e̲r̲ { (number: I̲n̲t̲) -> B̲o̲o̲l̲ in
+        return true
     }
 }

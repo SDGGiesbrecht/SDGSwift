@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-func main()
+func main() {
 
     if number.isIrrational {
         number.round()
@@ -20,5 +20,9 @@ func main()
 
     for element in [1, 2, 3] {
 
+    }
+
+    let trailingClosure = [1, 2, 3].filter { (number: Int) -> Bool in
+        return true
     }
 }

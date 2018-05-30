@@ -12,7 +12,7 @@
  ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
  ̲*/
 
-func ̲m̲a̲i̲n̲()
+func ̲m̲a̲i̲n̲() ̲{
 
  ̲ ̲ ̲ ̲if ̲number.isIrrational ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲number.round()
@@ -20,5 +20,9 @@ func ̲m̲a̲i̲n̲()
 
  ̲ ̲ ̲ ̲for ̲e̲l̲e̲m̲e̲n̲t̲ ̲in ̲[1, ̲2, ̲3] ̲{
 
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲let ̲t̲r̲a̲i̲l̲i̲n̲g̲C̲l̲o̲s̲u̲r̲e̲ ̲= ̲[1, ̲2, ̲3].filter ̲{ ̲(n̲u̲m̲b̲e̲r̲: ̲Int) ̲-> ̲Bool ̲in
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
  ̲ ̲ ̲ ̲}
 }
