@@ -86,7 +86,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                 relevantTokens.removeFirst()
 
                 switch token.kind {
-                case "source.lang.swift.syntaxtype.attribute.builtin":
+                case "source.lang.swift.syntaxtype.attribute.builtin",
+                     "source.lang.swift.syntaxtype.attribute.id":
                     resolvedTokens.append(Keyword(range: token.range))
                 case "source.lang.swift.syntaxtype.comment":
                     // Group them to nest URLs, etc.
