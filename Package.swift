@@ -37,7 +37,7 @@ let package = Package(
         .library(name: "SDGXcode", targets: ["SDGXcode"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 9, 2))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 10, 0))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [

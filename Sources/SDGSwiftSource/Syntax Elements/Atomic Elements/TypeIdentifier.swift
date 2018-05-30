@@ -26,6 +26,13 @@ public class TypeIdentifier : AtomicSyntaxElement {
         super.init(range: range)
     }
 
+    /// :nodoc:
+    public required init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_]
+        // Should never need splitting anyway.
+        self.isDefinition = false
+        super.init(range: range)
+    }
+
     // MARK: - Properties
 
     public private(set) var isDefinition: Bool

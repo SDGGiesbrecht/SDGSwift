@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 /// An element of Swift syntax which contains child elements.
@@ -38,7 +39,37 @@ open class ContainerSyntaxElement : SyntaxElement {
             children = knownChildren
             return
         }
-        children = try knownChildren + substructure.asArray().map { try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }
+
+        var substructureElements: [SyntaxElement] = []
+        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) { // [_Exempt from Test Coverage_] Parenthesis is meaningless.
+            if let last = substructureElements.last, // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                next.range.overlaps(last.range) {
+
+                if next.range ⊆ last.range,
+                let lastContainer = last as? ContainerSyntaxElement {
+                    // “next” is really a subelement of “last”
+
+                    substructureElements.removeLast()
+                    lastContainer.insert(substructureChild: next)
+                    substructureElements.append(lastContainer)
+
+                } else if next.range ⊇ last.range,
+                    let nextContainer = next as? ContainerSyntaxElement {
+                    // “last” is really a subelement of “next”
+
+                    substructureElements.removeLast()
+                    nextContainer.insert(substructureChild: last)
+                    substructureElements.append(nextContainer)
+
+                } else {
+                    substructureElements.append(next)
+                }
+            } else {
+                substructureElements.append(next)
+            }
+        }
+
+        children = knownChildren + substructureElements
     }
 
     internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
@@ -55,6 +86,9 @@ open class ContainerSyntaxElement : SyntaxElement {
                 relevantTokens.removeFirst()
 
                 switch token.kind {
+                case "source.lang.swift.syntaxtype.attribute.builtin",
+                     "source.lang.swift.syntaxtype.attribute.id":
+                    resolvedTokens.append(Keyword(range: token.range))
                 case "source.lang.swift.syntaxtype.comment":
                     // Group them to nest URLs, etc.
                     var endIndex = token.range.upperBound
@@ -73,10 +107,32 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Comment(range: token.range.lowerBound ..< endIndex, source: source, tokens: childTokens))
                 case "source.lang.swift.syntaxtype.comment.url":
                     resolvedTokens.append(CommentURL(range: token.range))
+                case "source.lang.swift.syntaxtype.doccomment":
+                    // Group them to nest callouts, etc.
+                    var endIndex = token.range.upperBound
+                    var childTokens: [SourceKit.PrimitiveToken] = []
+                    while let next = relevantTokens.first,
+                        ¬source.scalars[endIndex ..< next.range.lowerBound].contains(where: { $0 ∉ Whitespace.whitespaceCharacters ∧ $0 ∉ Newline.newlineCharacters }), // contiguous
+                        next.kind ∈ ["source.lang.swift.syntaxtype.doccomment", "source.lang.swift.syntaxtype.doccomment.field"] as Set<String> {
+
+                            relevantTokens.removeFirst() // Consume it.
+                            endIndex = next.range.upperBound
+                            if next.kind ≠ "source.lang.swift.syntaxtype.doccomment" {
+                                // Nest special regions.
+                                childTokens.append(next)
+                            }
+                    }
+                    resolvedTokens.append(Documentation(range: token.range.lowerBound ..< endIndex, source: source, tokens: childTokens))
+                case "source.lang.swift.syntaxtype.doccomment.field":
+                    resolvedTokens.append(Keyword(range: token.range))
                 case "source.lang.swift.syntaxtype.identifier":
                     resolvedTokens.append(Identifier(range: token.range, isDefinition: false))
                 case "source.lang.swift.syntaxtype.keyword":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.number":
+                    resolvedTokens.append(Number(range: token.range))
+                case "source.lang.swift.syntaxtype.string":
+                    resolvedTokens.append(StringLiteral(range: token.range, source: source))
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
@@ -112,7 +168,18 @@ open class ContainerSyntaxElement : SyntaxElement {
                 let next = sorted.index(after: index)
                 if next ≠ sorted.endIndex {
                     if sorted[index].range.upperBound ≠ sorted[next].range.lowerBound {
-                        inserts.append(UnidentifiedSyntaxElement(range: sorted[index].range.upperBound ..< sorted[next].range.lowerBound))
+                        let lowerBound = sorted[index].range.upperBound
+                        let upperBound = sorted[next].range.lowerBound
+                        if lowerBound ≤ upperBound {
+                            inserts.append(UnidentifiedSyntaxElement(range: lowerBound ..< upperBound))
+                        } else {
+                            // [_Exempt from Test Coverage_]
+                            if BuildConfiguration.current == .debug {
+                                print("Overlapping children:")
+                                print(type(of: self))
+                                print([type(of: sorted[index]), type(of: sorted[next])])
+                            }
+                        }
                     }
                 }
             }
@@ -120,11 +187,24 @@ open class ContainerSyntaxElement : SyntaxElement {
             if sorted.isEmpty {
                 inserts.append(UnidentifiedSyntaxElement(range: range))
             } else if ¬range.isEmpty {
-                if range.lowerBound ≠ sorted.first!.range.lowerBound {
+                if range.lowerBound < sorted.first!.range.lowerBound {
                     inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
+                } else if BuildConfiguration.current == .debug,
+                    range.lowerBound ≠ sorted.first!.range.lowerBound {
+                    // [_Exempt from Test Coverage_]
+                    print("Child out of bounds:")
+                    print(type(of: self))
+                    print(type(of: sorted.first!))
                 }
-                if sorted.last!.range.upperBound ≠ range.upperBound {
+
+                if sorted.last!.range.upperBound < range.upperBound {
                     inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
+                } else if BuildConfiguration.current == .debug,
+                    sorted.last!.range.upperBound ≠ range.upperBound {
+                    // [_Exempt from Test Coverage_]
+                    print("Child out of bounds:")
+                    print(type(of: self))
+                    print(type(of: sorted.last!))
                 }
             }
             _children = sorted.appending(contentsOf: inserts).sorted(by: { $0.range.lowerBound < $1.range.lowerBound })
@@ -132,5 +212,126 @@ open class ContainerSyntaxElement : SyntaxElement {
                 child.parent = self
             }
         }
+    }
+
+    private func insert(substructureChild: SyntaxElement) {
+        if let nested = children.first(where: { $0.range ⊇ substructureChild.range }),
+            let container = nested as? ContainerSyntaxElement {
+            container.insert(substructureChild: substructureChild) // [_Exempt from Test Coverage_]
+        } else {
+            var adjusted = children.filter { ¬$0.range.overlaps(substructureChild.range) }
+            adjusted.append(substructureChild)
+            children = adjusted
+        }
+    }
+
+    // MARK: - Offsets
+
+    internal override func offset(by distance: Int, in source: String) {
+        super.offset(by: distance, in: source)
+        for child in children {
+            child.offset(by: distance, in: source)
+        }
+    }
+
+    internal func insert(interruption: SyntaxElement, in source: String) {
+        let length = source.distance(from: interruption.range.lowerBound, to: interruption.range.upperBound)
+        range = range.lowerBound ..< source.scalars.index(range.upperBound, offsetBy: length)
+        for child in children.reversed() {
+            if child.range.lowerBound ≥ interruption.range.lowerBound {
+                child.offset(by: length, in: source)
+            } else if child.range.overlaps(interruption.range) {
+                if let container = child as? ContainerSyntaxElement {
+                    container.insert(interruption: interruption, in: source)
+                } else if let atomic = child as? AtomicSyntaxElement {
+                    let others = children.filter { $0.range.lowerBound ≠ child.range.lowerBound }
+                    children = others.appending(contentsOf: atomic.splitting(arround: interruption, in: source))
+                }
+            } else {
+                break
+            }
+        }
+    }
+
+    // MARK: - Parsing
+
+    internal func parseUnidentified(deepSearch: Bool, parse: (UnidentifiedSyntaxElement) -> [SyntaxElement]?) {
+        let elements: [SyntaxElement]
+        if deepSearch {
+            elements = Array(makeDeepIterator())
+        } else {
+            elements = children
+        }
+        for element in elements {
+            if let unidentified = element as? UnidentifiedSyntaxElement {
+                if let replacement = parse(unidentified),
+                    ¬replacement.isEmpty,
+                    let parent = element.parent as? ContainerSyntaxElement {
+                    let otherChildren = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
+                    parent.children = otherChildren + replacement
+                }
+            }
+        }
+    }
+
+    internal func parseUnidentified(in source: String, for literal: String, deepSearch: Bool, create: (Range<String.ScalarView.Index>) -> SyntaxElement) {
+        return parseUnidentified(deepSearch: deepSearch) { unidentified in
+            let matches = source.scalars.matches(for: literal.scalars, in: unidentified.range)
+            if matches.isEmpty {
+                return nil
+            } else {
+                return matches.map { create($0.range) }
+            }
+        }
+    }
+
+    internal func fixOperators(in source: String, deepSearch: Bool) {
+        var replacements: [SyntaxElement] = []
+        var toSkip = 0
+        for index in children.indices {
+            if toSkip ≠ 0 {
+                toSkip.decrement()
+                continue
+            }
+
+            let child = children[index]
+            if let identifier = child as? Identifier,
+                identifier.isOperator {
+
+                while let predecessor = replacements.last,
+                    let punctuation = predecessor as? Punctuation,
+                    ¬source.scalars[punctuation.range].contains(where: { $0 ∉ Identifier.operatorCharactersIncludingDot }) {
+                    replacements.removeLast() // Consume
+                    identifier.range = punctuation.range.lowerBound ..< identifier.range.upperBound
+                }
+
+                var endIndex = index + 1
+                while let successor = children[endIndex ..< children.endIndex].first,
+                    let punctuation = successor as? Punctuation,
+                    ¬source.scalars[punctuation.range].contains(where: { $0 ∉ Identifier.operatorCharactersIncludingDot }) {
+                        toSkip.increment() // Consume.
+                        endIndex.increment()
+                        identifier.range = identifier.range.lowerBound ..< punctuation.range.upperBound
+                }
+
+                replacements.append(identifier)
+            } else {
+                replacements.append(child)
+            }
+        }
+        children = replacements
+
+        if deepSearch {
+            for child in children {
+                if let container = child as? ContainerSyntaxElement {
+                    container.fixOperators(in: source, deepSearch: deepSearch)
+                }
+            }
+        }
+    }
+
+    internal func parseNewlines(in source: String, deepSearch: Bool) {
+        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // [_Exempt from Test Coverage_]
+        parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
     }
 }

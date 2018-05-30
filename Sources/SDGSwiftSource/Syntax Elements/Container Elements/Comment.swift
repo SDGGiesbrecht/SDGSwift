@@ -36,23 +36,23 @@ public class Comment : ContainerSyntaxElement {
         children = urls
         #endif
 
-        let singeLineToken = "//"
+        let singleLineToken = "//"
         let commentSource = String(source.scalars[range])
-        guard commentSource.scalars.count ≥ singeLineToken.scalars.count else {
+        guard commentSource.scalars.count ≥ singleLineToken.scalars.count else {
             return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
         }
 
         // Find tokens.
         var resolvedNesting: [SyntaxElement] = []
-        if source.scalars[range].hasPrefix(singeLineToken.scalars) {
+        if source.scalars[range].hasPrefix(singleLineToken.scalars) {
             // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
             // Single line
             guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
                 unidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
-                String(source.scalars[unidentified.range]).scalars.count ≥ singeLineToken.scalars.count else {
+                String(source.scalars[unidentified.range]).scalars.count ≥ singleLineToken.scalars.count else {
                 return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
             }
-            resolvedNesting.append(CommentToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singeLineToken.scalars.count)))
+            resolvedNesting.append(CommentToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singleLineToken.scalars.count)))
         } else {
             // Multiline (possibly nested)
             for child in children where child is UnidentifiedSyntaxElement {
@@ -68,12 +68,10 @@ public class Comment : ContainerSyntaxElement {
         let structure = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
         children = structure + resolvedNesting
 
+        // Find newlines.
+        parseNewlines(in: source, deepSearch: false)
+
         // The rest is text.
-        var text: [SyntaxElement] = []
-        for child in children where child is UnidentifiedSyntaxElement {
-            text.append(CommentText(range: child.range)) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
-        }
-        let other = children.filter({ ¬($0 is UnidentifiedSyntaxElement) })
-        children = other + text
+        parseUnidentified(deepSearch: false) { [CommentText(range: $0.range)] }
     }
 }

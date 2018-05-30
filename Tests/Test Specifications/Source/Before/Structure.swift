@@ -1,5 +1,5 @@
 /*
- File.swift
+ Structure.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -23,7 +23,13 @@
 
 import Foundation
 
+typealias Alias = Structure
+
 struct Structure {
+
+    // MARK: - Static Properties
+
+    static var staticProperty = 0
 
     // MARK: - Initialization
 
@@ -39,5 +45,14 @@ struct Structure {
 
     func performAction() {
         property = true
+    }
+
+    subscript(index: Int) -> Int {
+        get {
+            return index
+        }
+        set {
+            property = true
+        }
     }
 }

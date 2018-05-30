@@ -1,0 +1,24 @@
+/*
+ Functions.swift
+
+ This source file is part of the SDGSwift open source project.
+ https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+
+ Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+func doSomething(_ unnamedParameter: S̲t̲r̲i̲n̲g̲) {
+
+    var localVariable = 0
+    l̲o̲c̲a̲l̲V̲a̲r̲i̲a̲b̲l̲e̲ +̲=̲ 1
+
+    _ = 1 .̲.̲<̲ 2
+
+    p̲e̲r̲f̲o̲r̲m̲F̲u̲n̲c̲t̲i̲o̲n̲(a̲r̲g̲u̲m̲e̲n̲t̲)
+    p̲e̲r̲f̲o̲r̲m̲F̲u̲n̲c̲t̲i̲o̲n̲(w̲i̲t̲h̲: a̲r̲g̲u̲m̲e̲n̲t̲)
+}

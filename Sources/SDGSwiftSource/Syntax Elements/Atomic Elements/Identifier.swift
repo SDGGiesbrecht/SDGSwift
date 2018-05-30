@@ -180,18 +180,42 @@ public class Identifier : AtomicSyntaxElement {
 
     // MARK: - Initialization
 
-    internal init(range: Range<String.ScalarView.Index>, isDefinition: Bool) {
+    internal init(range: Range<String.ScalarView.Index>, isDefinition: Bool, isOperator: Bool = false, isParameterDocumentation: Bool = false) {
+        self.isOperator = isOperator
         self.isDefinition = isDefinition
+        self.isParameterDocumentation = isParameterDocumentation
+        super.init(range: range)
+    }
+
+    /// :nodoc:
+    public required init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_]
+        // Should never need splitting anyway.
+        self.isOperator = false
+        self.isDefinition = false
+        self.isParameterDocumentation = false
         super.init(range: range)
     }
 
     // MARK: - Properties
 
+    /// Whether or not the identifier is an operator.
+    public internal(set) var isOperator: Bool
+
+    /// Whether or not the identifier is a definition or a reference.
     public internal(set) var isDefinition: Bool
+
+    /// Whether or not the identifier is a reference in a parameter documentation callout.
+    public internal(set) var isParameterDocumentation: Bool
 
     // [_Inherit Documentation: SyntaxElement.textFreedom_]
     /// How much freedom the user has in choosing the text of the element.
     public override var textFreedom: TextFreedom {
-        return isDefinition ? .arbitrary : .aliasable
+        if isDefinition {
+            return .arbitrary
+        } else if isParameterDocumentation {
+            return .invariable
+        } else {
+            return .aliasable
+        }
     }
 }

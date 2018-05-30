@@ -25,14 +25,44 @@ open class SyntaxElement {
     internal static func parse(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
-        case "source.lang.swift.decl.function.method.instance":
+        case "source.lang.swift.decl.extension":
+            return try Extension(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.function.free",
+             "source.lang.swift.decl.function.method.instance":
             return try FunctionDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
-        case "source.lang.swift.decl.var.instance":
+        case "source.lang.swift.decl.var.global",
+             "source.lang.swift.decl.var.instance",
+             "source.lang.swift.decl.var.local",
+             "source.lang.swift.decl.var.static":
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.typealias":
+            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.function.subscript":
+            return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.protocol":
+            return try ProtocolDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.argument":
+            return try Argument(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.array":
+            return try ArrayLiteral(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.call":
+            return try Expression(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.tuple":
+            return try Tuple(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.brace":
+            return try Scope(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.case":
+            return try Case(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.foreach":
+            return try ForStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.if":
+            return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.switch":
+            return try Switch(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
@@ -69,10 +99,18 @@ open class SyntaxElement {
 
     // [_Define Documentation: SyntaxElement.range_]
     /// The range of the element.
-    public var range: Range<String.ScalarView.Index>
+    public internal(set) var range: Range<String.ScalarView.Index>
 
     /// The parent syntax element.
     public internal(set) weak var parent: SyntaxElement?
+
+    // MARK: - Offsets
+
+    internal func offset(by distance: Int, in source: String) {
+        let upperBound = source.scalars.index(range.upperBound, offsetBy: distance)
+        let lowerBound = source.scalars.index(range.lowerBound, offsetBy: distance)
+        range = lowerBound ..< upperBound
+    }
 
     // MARK: - Iteration
 

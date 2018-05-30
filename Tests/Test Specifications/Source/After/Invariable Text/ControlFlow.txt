@@ -1,0 +1,37 @@
+/̲*̲
+̲ ControlFlow.swift
+̲
+̲ This source file is part of the SDGSwift open source project.
+̲ h̲t̲t̲p̲s̲:̲/̲/̲s̲d̲g̲g̲i̲e̲s̲b̲r̲e̲c̲h̲t̲.̲g̲i̲t̲h̲u̲b̲.̲i̲o̲/̲S̲D̲G̲S̲w̲i̲f̲t̲/̲S̲D̲G̲S̲w̲i̲f̲t̲
+̲
+̲ Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+̲
+̲ Soli Deo gloria.
+̲
+̲ Licensed under the Apache Licence, Version 2.0.
+̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
+̲ *̲/̲
+̲
+̲f̲u̲n̲c̲ main(̲)̲ {̲
+̲
+̲    i̲f̲ number.̲isIrrational {̲
+̲        number.̲round(̲)̲
+̲    }̲
+̲
+̲    f̲o̲r̲ element i̲n̲ [̲1̲,̲ 2̲,̲ 3̲]̲ {̲
+̲
+̲    }̲
+̲
+̲    l̲e̲t̲ trailingClosure =̲ [̲1̲,̲ 2̲,̲ 3̲]̲.̲filter {̲ (̲number:̲ Int)̲ -̲>̲ Bool i̲n̲
+̲        r̲e̲t̲u̲r̲n̲ number =̲=̲ 1̲
+̲    }̲
+̲
+̲    l̲e̲t̲ number =̲ 1̲
+̲    s̲w̲i̲t̲c̲h̲ number {̲
+̲    c̲a̲s̲e̲ 1̲:̲
+̲        print(̲"̲one"̲)̲
+̲    d̲e̲f̲a̲u̲l̲t̲:̲
+̲        print(̲"̲default"̲)̲
+̲    }̲
+̲}̲
+̲
