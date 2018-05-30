@@ -13,6 +13,6 @@
  */
 
 /// An expression.
-public class Expression: ContainerSyntaxElement {
+public class Expression : ContainerSyntaxElement {
 
 }

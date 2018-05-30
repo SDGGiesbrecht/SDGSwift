@@ -13,6 +13,6 @@
  */
 
 /// A scope denoted by braces.
-public class Scope: ContainerSyntaxElement {
+public class Scope : ContainerSyntaxElement {
 
 }

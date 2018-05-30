@@ -13,6 +13,6 @@
  */
 
 /// An array literal.
-public class ArrayLiteral: ContainerSyntaxElement {
+public class ArrayLiteral : ContainerSyntaxElement {
 
 }

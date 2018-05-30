@@ -13,6 +13,6 @@
  */
 
 /// An extension.
-public class Extension: ContainerSyntaxElement {
+public class Extension : ContainerSyntaxElement {
 
 }

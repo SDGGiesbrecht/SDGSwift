@@ -13,6 +13,6 @@
  */
 
 /// An “if” statement.
-public class IfStatement: ContainerSyntaxElement {
+public class IfStatement : ContainerSyntaxElement {
 
 }

@@ -13,6 +13,6 @@
  */
 
 /// A tuple.
-public class Tuple: ContainerSyntaxElement {
+public class Tuple : ContainerSyntaxElement {
 
 }

@@ -13,6 +13,6 @@
  */
 
 /// An “switch” statement.
-public class Switch: ContainerSyntaxElement {
+public class Switch : ContainerSyntaxElement {
 
 }

@@ -27,7 +27,7 @@ public class Documentation : DocumentationContainerElement {
         super.init(range: range, source: source, tokens: tokens)
 
         let singleLineToken = "///"
-        let startToken = "/**"
+        let startToken = "\u{2F}**"
         let endToken = "*/"
         let commentSource = String(source.scalars[range])
         guard commentSource.scalars.count ≥ singleLineToken.scalars.count else {
