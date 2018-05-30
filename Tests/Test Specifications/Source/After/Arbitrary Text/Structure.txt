@@ -23,6 +23,8 @@
 
 import ̲Foundation
 
+typealias ̲A̲l̲i̲a̲s̲ ̲= ̲Structure
+
 struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 
  ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲S̲t̲a̲t̲i̲c̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲

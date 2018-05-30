@@ -23,6 +23,8 @@
 
 import F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 
+typealias Alias = S̲t̲r̲u̲c̲t̲u̲r̲e̲
+
 struct Structure {
 
     // MARK: - Static Properties

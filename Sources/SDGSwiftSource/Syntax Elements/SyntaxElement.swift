@@ -39,6 +39,8 @@ open class SyntaxElement {
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.typealias":
+            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.subscript":
             return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.argument":

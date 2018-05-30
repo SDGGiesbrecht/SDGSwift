@@ -23,6 +23,8 @@
 
 import Foundation
 
+typealias Alias = Structure
+
 struct Structure {
 
     // MARK: - Static Properties

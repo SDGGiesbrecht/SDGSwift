@@ -23,6 +23,8 @@
 ̲
 ̲i̲m̲p̲o̲r̲t̲ Foundation
 ̲
+̲t̲y̲p̲e̲a̲l̲i̲a̲s̲ Alias =̲ Structure
+̲
 ̲s̲t̲r̲u̲c̲t̲ Structure {̲
 ̲
 ̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Static Properties
