@@ -260,6 +260,51 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
     }
 
+    internal func fixOperators(in source: String, deepSearch: Bool) {
+        var replacements: [SyntaxElement] = []
+        var toSkip = 0
+        for index in children.indices {
+            if toSkip ≠ 0 {
+                toSkip.decrement()
+                continue
+            }
+
+            let child = children[index]
+            if let identifier = child as? Identifier,
+                identifier.isOperator {
+
+                while let predecessor = replacements.last,
+                    let punctuation = predecessor as? Punctuation,
+                    ¬source.scalars[punctuation.range].contains(where: { $0 ∉ Identifier.operatorCharactersIncludingDot }) {
+                    replacements.removeLast() // Consume
+                    identifier.range = punctuation.range.lowerBound ..< identifier.range.upperBound
+                }
+
+                var endIndex = index + 1
+                while let successor = children[endIndex ..< children.endIndex].first,
+                    let punctuation = successor as? Punctuation,
+                    ¬source.scalars[punctuation.range].contains(where: { $0 ∉ Identifier.operatorCharactersIncludingDot }) {
+                        toSkip.increment() // Consume.
+                        endIndex.increment()
+                        identifier.range = identifier.range.lowerBound ..< punctuation.range.upperBound
+                }
+
+                replacements.append(identifier)
+            } else {
+                replacements.append(child)
+            }
+        }
+        children = replacements
+
+        if deepSearch {
+            for child in children {
+                if let container = child as? ContainerSyntaxElement {
+                    container.fixOperators(in: source, deepSearch: deepSearch)
+                }
+            }
+        }
+    }
+
     internal func parseNewlines(in source: String, deepSearch: Bool) {
         parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) }
         parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }

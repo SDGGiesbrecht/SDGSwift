@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 /// An excerpt of Swift source code.
 public class Excerpt : ContainerSyntaxElement {
@@ -84,6 +85,16 @@ public class Excerpt : ContainerSyntaxElement {
         parseUnidentified(in: source, for: ",", deepSearch: true) { Punctuation(range: $0) }
         parseUnidentified(in: source, for: ".", deepSearch: true) { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "=", deepSearch: true) { Punctuation(range: $0) }
+
+        // Catch operators.
+        parseUnidentified(deepSearch: true) { unidentified in
+            var operators: [SyntaxElement] = []
+            for match in source.scalars.matches(for: RepetitionPattern(ConditionalPattern({ $0 ∈ Identifier.operatorCharactersIncludingDot }), count: 1 ..< Int.max), in: unidentified.range) {
+                operators.append(Identifier(range: match.range, isDefinition: false, isOperator: true))
+            }
+            return operators
+        }
+        fixOperators(in: source, deepSearch: true)
 
         // Fill in whitespace.
         parseUnidentified(deepSearch: true) { unidentified in

@@ -15,6 +15,6 @@
 ̲f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ String)̲ {̲
 ̲
 ̲    v̲a̲r̲ localVariable =̲ 0̲
-̲    localVariable ̲+̲=̲ 1̲
+̲    localVariable += 1̲
 ̲}̲
 ̲

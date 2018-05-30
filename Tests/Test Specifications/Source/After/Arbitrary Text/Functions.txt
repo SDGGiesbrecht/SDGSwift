@@ -15,5 +15,5 @@
 func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(_ ̲u̲n̲n̲a̲m̲e̲d̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲String) ̲{
 
  ̲ ̲ ̲ ̲var ̲l̲o̲c̲a̲l̲V̲a̲r̲i̲a̲b̲l̲e̲ ̲= ̲0
- ̲ ̲ ̲ ̲localVariable += ̲1
+ ̲ ̲ ̲ ̲localVariable ̲+= ̲1
 }

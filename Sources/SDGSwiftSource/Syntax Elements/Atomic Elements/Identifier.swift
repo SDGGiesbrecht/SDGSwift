@@ -180,7 +180,8 @@ public class Identifier : AtomicSyntaxElement {
 
     // MARK: - Initialization
 
-    internal init(range: Range<String.ScalarView.Index>, isDefinition: Bool, isParameterDocumentation: Bool = false) {
+    internal init(range: Range<String.ScalarView.Index>, isDefinition: Bool, isOperator: Bool = false, isParameterDocumentation: Bool = false) {
+        self.isOperator = isOperator
         self.isDefinition = isDefinition
         self.isParameterDocumentation = isParameterDocumentation
         super.init(range: range)
@@ -189,12 +190,16 @@ public class Identifier : AtomicSyntaxElement {
     /// :nodoc:
     public required init(range: Range<String.ScalarView.Index>) {
         // Should never need splitting anyway.
+        self.isOperator = false
         self.isDefinition = false
         self.isParameterDocumentation = false
         super.init(range: range)
     }
 
     // MARK: - Properties
+
+    /// Whether or not the identifier is an operator.
+    public internal(set) var isOperator: Bool
 
     /// Whether or not the identifier is a definition or a reference.
     public internal(set) var isDefinition: Bool
