@@ -17,4 +17,8 @@ func main()
     if number.isIrrational {
         number.round()
     }
+
+    for element in [1, 2, 3] {
+
+    }
 }

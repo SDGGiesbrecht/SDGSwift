@@ -51,6 +51,8 @@ open class SyntaxElement {
             return try Tuple(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.brace":
             return try Scope(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.foreach":
+            return try ForStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.if":
             return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":

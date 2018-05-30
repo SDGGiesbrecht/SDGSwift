@@ -17,5 +17,9 @@
 ̲    i̲f̲ number.̲isIrrational {̲
 ̲        number.̲round(̲)̲
 ̲    }̲
+̲
+̲    f̲o̲r̲ element i̲n̲ [̲1̲,̲ 2̲,̲ 3̲]̲ {̲
+̲
+̲    }̲
 ̲}̲
 ̲

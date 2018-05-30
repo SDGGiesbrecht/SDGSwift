@@ -17,4 +17,8 @@ func main()
     if n̲u̲m̲b̲e̲r̲.i̲s̲I̲r̲r̲a̲t̲i̲o̲n̲a̲l̲ {
         n̲u̲m̲b̲e̲r̲.r̲o̲u̲n̲d̲()
     }
+
+    for element in [1, 2, 3] {
+
+    }
 }
