@@ -43,6 +43,8 @@ open class SyntaxElement {
             return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.subscript":
             return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.protocol":
+            return try ProtocolDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.argument":
             return try Argument(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.array":
