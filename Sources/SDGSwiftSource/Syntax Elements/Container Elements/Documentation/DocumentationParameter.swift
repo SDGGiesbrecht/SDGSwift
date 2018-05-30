@@ -19,7 +19,8 @@ public class DocumentationParameter : DocumentationCallout {
 
     internal init(bullet: Punctuation, callout: Keyword, colon: Punctuation, end: String.ScalarView.Index, in source: String) {
         let range: Range<String.ScalarView.Index>
-        if let nameStart = source.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ Whitespace.whitespaceCharacters }), in: callout.range.upperBound ..< colon.range.lowerBound)?.range.lowerBound { // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+        if let nameStart = source.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ Whitespace.whitespaceCharacters }), in: callout.range.upperBound ..< colon.range.lowerBound)?.range.lowerBound {
+            // [_Exempt from Test Coverage_] False result in Xcode 9.3.
             range = nameStart ..< colon.range.lowerBound
         } else {
             // Invalid syntax anyway.

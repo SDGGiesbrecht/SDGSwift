@@ -217,7 +217,7 @@ open class ContainerSyntaxElement : SyntaxElement {
     private func insert(substructureChild: SyntaxElement) {
         if let nested = children.first(where: { $0.range ⊇ substructureChild.range }),
             let container = nested as? ContainerSyntaxElement {
-            container.insert(substructureChild: substructureChild)
+            container.insert(substructureChild: substructureChild) // [_Exempt from Test Coverage_]
         } else {
             var adjusted = children.filter { ¬$0.range.overlaps(substructureChild.range) }
             adjusted.append(substructureChild)
@@ -331,7 +331,7 @@ open class ContainerSyntaxElement : SyntaxElement {
     }
 
     internal func parseNewlines(in source: String, deepSearch: Bool) {
-        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) }
+        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // [_Exempt from Test Coverage_]
         parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
     }
 }

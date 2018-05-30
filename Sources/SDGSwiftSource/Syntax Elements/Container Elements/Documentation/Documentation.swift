@@ -69,7 +69,8 @@ public class Documentation : DocumentationContainerElement {
                 ]), in: range.lowerBound ..< keyword.range.lowerBound),
                 let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
                 var lineEnd = keyword.range.upperBound
-                source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters }))) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
+                // [_Exempt from Test Coverage_] False result in Xcode 9.3.
 
                 let callout: SyntaxElement
                 let name = String(source.scalars[keyword.range]).lowercased()
