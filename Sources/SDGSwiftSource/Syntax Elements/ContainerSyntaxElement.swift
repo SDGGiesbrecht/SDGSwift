@@ -43,15 +43,27 @@ open class ContainerSyntaxElement : SyntaxElement {
         var substructureElements: [SyntaxElement] = []
         for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) {
             if let last = substructureElements.last,
-                next.range.overlaps(last.range),
-                next.range ⊆ last.range,
+                next.range.overlaps(last.range) {
+
+                if next.range ⊆ last.range,
                 let lastContainer = last as? ContainerSyntaxElement {
-                // “next” is really a subelement of “last”
+                    // “next” is really a subelement of “last”
 
-                substructureElements.removeLast()
-                lastContainer.insert(substructureChild: next)
-                substructureElements.append(lastContainer)
+                    substructureElements.removeLast()
+                    lastContainer.insert(substructureChild: next)
+                    substructureElements.append(lastContainer)
 
+                } else if next.range ⊇ last.range,
+                    let nextContainer = next as? ContainerSyntaxElement {
+                    // “last” is really a subelement of “next”
+
+                    substructureElements.removeLast()
+                    nextContainer.insert(substructureChild: last)
+                    substructureElements.append(nextContainer)
+
+                } else {
+                    substructureElements.append(next)
+                }
             } else {
                 substructureElements.append(next)
             }
