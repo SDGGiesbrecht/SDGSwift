@@ -23,7 +23,7 @@ func main() {
     }
 
     let trailingClosure = [1, 2, 3].filter { (number: Int) -> Bool in
-        return true
+        return number == 1
     }
 
     let number = 1

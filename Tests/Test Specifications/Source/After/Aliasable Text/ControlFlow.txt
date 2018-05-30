@@ -23,7 +23,7 @@ func main() {
     }
 
     let trailingClosure = [1, 2, 3].f̲i̲l̲t̲e̲r̲ { (number: I̲n̲t̲) -> B̲o̲o̲l̲ in
-        return true
+        return n̲u̲m̲b̲e̲r̲ == 1
     }
 
     let number = 1

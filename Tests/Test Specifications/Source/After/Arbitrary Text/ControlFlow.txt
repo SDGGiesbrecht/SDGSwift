@@ -23,7 +23,7 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲let ̲t̲r̲a̲i̲l̲i̲n̲g̲C̲l̲o̲s̲u̲r̲e̲ ̲= ̲[1, ̲2, ̲3].filter ̲{ ̲(n̲u̲m̲b̲e̲r̲: ̲Int) ̲-> ̲Bool ̲in
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲number ̲== ̲1
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲let ̲n̲u̲m̲b̲e̲r̲ ̲= ̲1
