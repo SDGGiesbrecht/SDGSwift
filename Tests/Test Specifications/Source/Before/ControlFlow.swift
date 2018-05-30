@@ -25,4 +25,12 @@ func main() {
     let trailingClosure = [1, 2, 3].filter { (number: Int) -> Bool in
         return true
     }
+
+    let number = 1
+    switch number {
+    case 1:
+        print("one")
+    default:
+        print("default")
+    }
 }

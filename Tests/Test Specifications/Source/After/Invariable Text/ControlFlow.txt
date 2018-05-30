@@ -25,5 +25,13 @@
 ̲    l̲e̲t̲ trailingClosure =̲ [̲1̲,̲ 2̲,̲ 3̲]̲.̲filter {̲ (̲number:̲ Int)̲ -̲>̲ Bool i̲n̲
 ̲        r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲
 ̲    }̲
+̲
+̲    l̲e̲t̲ number =̲ 1̲
+̲    s̲w̲i̲t̲c̲h̲ number {̲
+̲    c̲a̲s̲e̲ 1̲:̲
+̲        print(̲"̲one"̲)̲
+̲    d̲e̲f̲a̲u̲l̲t̲:̲
+̲        print(̲"̲default"̲)̲
+̲    }̲
 ̲}̲
 ̲

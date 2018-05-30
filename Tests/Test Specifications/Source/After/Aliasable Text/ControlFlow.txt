@@ -25,4 +25,12 @@ func main() {
     let trailingClosure = [1, 2, 3].f̲i̲l̲t̲e̲r̲ { (number: I̲n̲t̲) -> B̲o̲o̲l̲ in
         return true
     }
+
+    let number = 1
+    switch n̲u̲m̲b̲e̲r̲ {
+    case 1:
+        p̲r̲i̲n̲t̲("one")
+    default:
+        p̲r̲i̲n̲t̲("default")
+    }
 }
