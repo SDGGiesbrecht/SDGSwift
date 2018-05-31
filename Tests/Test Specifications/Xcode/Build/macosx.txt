@@ -1,4 +1,3 @@
-    SDKROOT = macosx10.13
 $ xcodebuild build -sdk macosx -scheme Mock-Package
 ** BUILD SUCCEEDED **
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
