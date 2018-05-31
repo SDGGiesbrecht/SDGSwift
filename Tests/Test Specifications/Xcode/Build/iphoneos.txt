@@ -1,4 +1,3 @@
-    SDKROOT = iphoneos11.3
 $ xcodebuild build -sdk iphoneos -scheme Mock-Package
 ** BUILD SUCCEEDED **
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===

@@ -1,4 +1,3 @@
-    SDKROOT = watchos4.3
 $ xcodebuild build -sdk watchos -scheme Mock-Package
 ** BUILD SUCCEEDED **
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
