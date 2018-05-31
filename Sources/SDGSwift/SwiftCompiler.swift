@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 import SDGExternalProcess
 
 /// The Swift compiler.
@@ -23,18 +24,18 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let version = Version(4, 1, 0)
+    internal static let versions = Version(4, 1, 0) /* Travis CI */ ... Version(4, 1, 2) /* Current */
 
     internal static let standardLocations = [
         // Swift
         "/usr/bin/swift",
         // Xcode
         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
-        "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        "/Library/Developer/Toolchains/swift\u{2D}\(versions.lowerBound.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(versions.lowerBound.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
         // Swift Version Manager
         NSHomeDirectory() + "/.swiftenv/shims/swift",
-        NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
+        NSHomeDirectory() + "/.swiftenv/versions/\(versions.lowerBound.string(droppingEmptyPatch: true))/usr/bin/swift"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
     private static func compilerLocation(for swift: URL) -> URL {
@@ -78,8 +79,14 @@ public enum SwiftCompiler {
                 }
 
                 // Make sure version matches.
-                let output = try? swift.run(["\u{2D}\u{2D}version"])
-                return output?.contains(" " + version.string(droppingEmptyPatch: true) + " ") == true
+                if let output = try? swift.run(["\u{2D}\u{2D}version"]),
+                    let version = Version(firstIn: output),
+                    version ∈ versions {
+                    return true
+                } else { // [_Exempt from Test Coverage_]
+                    // [_Exempt from Test Coverage_] Would require Xcode to be absent.
+                    return false
+                }
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validate) {
