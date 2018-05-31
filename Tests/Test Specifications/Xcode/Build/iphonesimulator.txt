@@ -1,4 +1,3 @@
-    SDKROOT = iphonesimulator11.3
 $ xcodebuild build -sdk iphonesimulator -scheme Mock-Package
 ** BUILD SUCCEEDED **
 === BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
