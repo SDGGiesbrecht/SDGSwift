@@ -25,6 +25,8 @@ open class SyntaxElement {
     internal static func parse(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
+        case "source.lang.swift.decl.class":
+            return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.extension":
             return try Extension(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.free",
