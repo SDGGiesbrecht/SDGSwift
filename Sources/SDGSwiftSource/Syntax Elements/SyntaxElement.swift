@@ -28,7 +28,8 @@ open class SyntaxElement {
         case "source.lang.swift.decl.extension":
             return try Extension(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.free",
-             "source.lang.swift.decl.function.method.instance":
+             "source.lang.swift.decl.function.method.instance",
+             "source.lang.swift.decl.function.method.static":
             return try FunctionDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
