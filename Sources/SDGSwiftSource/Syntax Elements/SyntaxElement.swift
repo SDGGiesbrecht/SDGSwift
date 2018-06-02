@@ -76,6 +76,8 @@ open class SyntaxElement {
             return try Guard(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.if":
             return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.repeatwhile":
+            return try RepeatStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.switch":
             return try Switch(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.while":

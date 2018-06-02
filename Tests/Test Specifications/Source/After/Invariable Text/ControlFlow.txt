@@ -41,5 +41,9 @@
 ̲    w̲h̲i̲l̲e̲ something {̲
 ̲        /̲/̲ Wait.
 ̲    }̲
+̲
+̲    r̲e̲p̲e̲a̲t̲ {̲
+̲        someTask(̲)̲
+̲    }̲ w̲h̲i̲l̲e̲ time < 1̲0̲
 ̲}̲
 ̲

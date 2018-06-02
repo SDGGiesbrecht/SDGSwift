@@ -41,4 +41,8 @@ func main() {
     while s̲o̲m̲e̲t̲h̲i̲n̲g̲ {
         // Wait.
     }
+
+    repeat {
+        s̲o̲m̲e̲T̲a̲s̲k̲()
+    } while t̲i̲m̲e̲ <̲ 10
 }

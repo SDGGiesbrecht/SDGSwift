@@ -41,4 +41,8 @@ func main() {
     while something {
         // Wait.
     }
+
+    repeat {
+        someTask()
+    } while time < 10
 }

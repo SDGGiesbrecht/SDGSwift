@@ -41,4 +41,8 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲while ̲something ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲// ̲W̲a̲i̲t̲.̲
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲repeat ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲someTask()
+ ̲ ̲ ̲ ̲} ̲while ̲time ̲< ̲10
 }
