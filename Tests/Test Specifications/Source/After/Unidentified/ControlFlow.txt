@@ -37,4 +37,8 @@ func main() {
     guard boolean == true else {
         preconditionFailure()
     }
+
+    while something {
+        // Wait.
+    }
 }

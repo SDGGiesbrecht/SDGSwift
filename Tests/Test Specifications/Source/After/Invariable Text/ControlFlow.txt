@@ -37,5 +37,9 @@
 ̲    g̲u̲a̲r̲d̲ boolean =̲=̲ t̲r̲u̲e̲ e̲l̲s̲e̲ {̲
 ̲        preconditionFailure(̲)̲
 ̲    }̲
+̲
+̲    w̲h̲i̲l̲e̲ something {̲
+̲        /̲/̲ Wait.
+̲    }̲
 ̲}̲
 ̲

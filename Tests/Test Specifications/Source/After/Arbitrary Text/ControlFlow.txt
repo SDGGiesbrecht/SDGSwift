@@ -37,4 +37,8 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲guard ̲boolean ̲== ̲true ̲else ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲preconditionFailure()
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲while ̲something ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲// ̲W̲a̲i̲t̲.̲
+ ̲ ̲ ̲ ̲}
 }

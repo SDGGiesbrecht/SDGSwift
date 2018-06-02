@@ -76,6 +76,8 @@ open class SyntaxElement {
             return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.switch":
             return try Switch(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.while":
+            return try WhileStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:
