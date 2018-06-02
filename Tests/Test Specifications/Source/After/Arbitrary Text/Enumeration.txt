@@ -13,7 +13,7 @@
  ̲*/
 
 enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
- ̲ ̲ ̲ ̲case ̲a
- ̲ ̲ ̲ ̲case ̲b
- ̲ ̲ ̲ ̲case ̲c
+ ̲ ̲ ̲ ̲case ̲a̲
+ ̲ ̲ ̲ ̲case ̲b̲
+ ̲ ̲ ̲ ̲case ̲c̲
 }

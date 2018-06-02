@@ -13,7 +13,7 @@
  */
 
 enum Enumeration {
-    case a̲
-    case b̲
-    case c̲
+    case a
+    case b
+    case c
 }

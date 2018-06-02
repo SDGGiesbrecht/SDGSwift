@@ -46,6 +46,8 @@ open class SyntaxElement {
             return try Enumeration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.enumcase":
             return try EnumerationCase(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enumelement":
+            return try EnumerationElement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.subscript":
             return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.protocol":
