@@ -35,7 +35,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testTemporary() {
         // [_Warning: Temporary._]
         do {
-            for url in try FileManager.default.deepFileEnumeration(in: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("SDGCornerstone")) where url.lastPathComponent == "DateDefinition.swift" {//url.pathExtension == "swift" {
+            for url in try FileManager.default.deepFileEnumeration(in: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("SDGCornerstone")) where url.pathExtension == "swift" {
                 print(url.path)
                 let syntax = try File(from: url)
                 let source = try String(from: url)

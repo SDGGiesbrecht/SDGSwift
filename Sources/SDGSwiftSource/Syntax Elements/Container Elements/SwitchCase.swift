@@ -13,6 +13,6 @@
  */
 
 /// A switch case.
-public class Case : ContainerSyntaxElement {
+public class SwitchCase : ContainerSyntaxElement {
 
 }

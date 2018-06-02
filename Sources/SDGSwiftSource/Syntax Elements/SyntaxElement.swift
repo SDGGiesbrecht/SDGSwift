@@ -42,12 +42,16 @@ open class SyntaxElement {
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
-        case "source.lang.swift.decl.typealias":
-            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enum":
+            return try Enumeration(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enumcase":
+            return try EnumerationCase(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.subscript":
             return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.protocol":
             return try ProtocolDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.typealias":
+            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.argument":
             return try Argument(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.array":
@@ -61,7 +65,7 @@ open class SyntaxElement {
         case "source.lang.swift.stmt.brace":
             return try Scope(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.case":
-            return try Case(substructureInformation: substructureInformation, source: source, tokens: tokens)
+            return try SwitchCase(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.foreach":
             return try ForStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.guard":
