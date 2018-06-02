@@ -92,3 +92,11 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
 }
+
+/// ̲A̲ ̲s̲t̲r̲u̲c̲t̲u̲r̲e̲.̲
+///
+/// ̲```swift
+/// ̲// ̲S̲o̲m̲e̲ ̲s̲o̲u̲r̲c̲e̲.̲
+/// ̲```
+struct ̲D̲o̲c̲u̲m̲e̲n̲t̲e̲d̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
+}

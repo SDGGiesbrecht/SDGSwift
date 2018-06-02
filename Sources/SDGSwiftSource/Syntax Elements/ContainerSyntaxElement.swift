@@ -240,16 +240,18 @@ open class ContainerSyntaxElement : SyntaxElement {
         let length = source.distance(from: interruption.range.lowerBound, to: interruption.range.upperBound)
         range = range.lowerBound ..< source.scalars.index(range.upperBound, offsetBy: length)
         for child in children.reversed() {
-            if child.range.lowerBound ≥ interruption.range.lowerBound {
+            if interruption.range.lowerBound ≤ child.range.lowerBound {
                 child.offset(by: length, in: source)
-            } else if child.range.overlaps(interruption.range) {
+            } else if interruption.range.overlaps(child.range) {
                 if let container = child as? ContainerSyntaxElement {
                     container.insert(interruption: interruption, in: source)
                 } else if let atomic = child as? AtomicSyntaxElement {
                     let others = children.filter { $0.range.lowerBound ≠ child.range.lowerBound }
                     children = others.appending(contentsOf: atomic.splitting(arround: interruption, in: source))
                 }
+                break
             } else {
+                children.append(interruption)
                 break
             }
         }

@@ -92,3 +92,11 @@ extension Structure {
         return false
     }
 }
+
+/// A structure.
+///
+/// ```swift
+/// // Some source.
+/// ```
+struct DocumentedStructure {
+}
