@@ -33,5 +33,9 @@
 ̲    d̲e̲f̲a̲u̲l̲t̲:̲
 ̲        print(̲"̲default"̲)̲
 ̲    }̲
+̲
+̲    g̲u̲a̲r̲d̲ boolean =̲=̲ t̲r̲u̲e̲ e̲l̲s̲e̲ {̲
+̲        preconditionFailure(̲)̲
+̲    }̲
 ̲}̲
 ̲

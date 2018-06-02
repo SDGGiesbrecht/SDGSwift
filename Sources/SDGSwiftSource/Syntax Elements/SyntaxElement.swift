@@ -59,6 +59,8 @@ open class SyntaxElement {
             return try Case(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.foreach":
             return try ForStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.guard":
+            return try Guard(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.if":
             return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.switch":

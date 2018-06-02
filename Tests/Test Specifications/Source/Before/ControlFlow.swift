@@ -33,4 +33,8 @@ func main() {
     default:
         print("default")
     }
+
+    guard boolean == true else {
+        preconditionFailure()
+    }
 }

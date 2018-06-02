@@ -33,4 +33,8 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲default:
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲print("d̲e̲f̲a̲u̲l̲t̲")
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲guard ̲boolean ̲== ̲true ̲else ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲preconditionFailure()
+ ̲ ̲ ̲ ̲}
 }
