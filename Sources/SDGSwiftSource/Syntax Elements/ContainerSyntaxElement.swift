@@ -133,6 +133,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Number(range: token.range))
                 case "source.lang.swift.syntaxtype.string":
                     resolvedTokens.append(StringLiteral(range: token.range, source: source))
+                case "source.lang.swift.syntaxtype.string_interpolation_anchor":
+                    resolvedTokens.append(Punctuation(range: token.range))
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:

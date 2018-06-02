@@ -13,3 +13,5 @@
  */
 
 let string = ""
+
+let interpolated = "\(x) + \(y)"
