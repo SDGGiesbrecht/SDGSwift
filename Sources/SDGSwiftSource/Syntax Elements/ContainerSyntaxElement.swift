@@ -89,6 +89,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.attribute.builtin",
                      "source.lang.swift.syntaxtype.attribute.id":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.buildconfig.keyword":
+                    resolvedTokens.append(CompilerControl(range: token.range))
                 case "source.lang.swift.syntaxtype.comment":
                     // Group them to nest URLs, etc.
                     var endIndex = token.range.upperBound

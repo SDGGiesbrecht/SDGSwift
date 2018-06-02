@@ -12,10 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#̲i̲f̲ o̲s̲(m̲a̲c̲O̲S̲)
+#if o̲s̲(m̲a̲c̲O̲S̲)
 /// Falls on Newton.
 func fallOnNewton() {}
-#̲e̲l̲s̲e̲i̲f̲ o̲s̲(L̲i̲n̲u̲x̲)
+#elseif o̲s̲(L̲i̲n̲u̲x̲)
 /// Waddles.
 func waddle() {}
-#̲e̲n̲d̲i̲f̲
+#endif
