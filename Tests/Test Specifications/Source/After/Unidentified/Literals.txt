@@ -17,6 +17,6 @@ let string = ""
 let interpolated = "\(x) + \(y)"
 
 let dictionary = [
-    "A": 1,
-    "B": 2
+    "A" : 1,
+    "B" : 2
 ]

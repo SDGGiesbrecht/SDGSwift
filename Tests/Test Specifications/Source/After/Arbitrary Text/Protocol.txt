@@ -14,4 +14,5 @@
 
 protocol ̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{
 
+ ̲ ̲ ̲ ̲associatedtype ̲A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲T̲y̲p̲e̲
 }
