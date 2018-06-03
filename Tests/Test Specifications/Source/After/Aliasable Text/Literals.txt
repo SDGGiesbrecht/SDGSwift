@@ -13,3 +13,10 @@
  */
 
 let string = ""
+
+let interpolated = "\(x̲) + \(y̲)"
+
+let dictionary = [
+    "A" : 1,
+    "B" : 2
+]

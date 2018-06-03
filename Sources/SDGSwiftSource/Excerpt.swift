@@ -85,6 +85,7 @@ public class Excerpt : ContainerSyntaxElement {
         parseUnidentified(in: source, for: ",", deepSearch: true) { Punctuation(range: $0) }
         parseUnidentified(in: source, for: ".", deepSearch: true) { Punctuation(range: $0) }
         parseUnidentified(in: source, for: "=", deepSearch: true) { Punctuation(range: $0) }
+        parseUnidentified(in: source, for: "\u{5C}", deepSearch: true) { Punctuation(range: $0) }
 
         // Catch operators.
         parseUnidentified(deepSearch: true) { unidentified in

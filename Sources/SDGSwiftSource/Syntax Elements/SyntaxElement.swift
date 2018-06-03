@@ -25,10 +25,15 @@ open class SyntaxElement {
     internal static func parse(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws -> SyntaxElement {
         let kind = try substructureInformation.value(for: "key.kind").asString()
         switch kind {
+        case "source.lang.swift.decl.associatedtype":
+            return try AssociatedType(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.class":
+            return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.extension":
             return try Extension(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.free",
-             "source.lang.swift.decl.function.method.instance":
+             "source.lang.swift.decl.function.method.instance",
+             "source.lang.swift.decl.function.method.static":
             return try FunctionDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.struct":
             return try TypeDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
@@ -39,30 +44,44 @@ open class SyntaxElement {
             return try VariableDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.var.parameter":
             return try Parameter(substructureInformation: substructureInformation, source: source, tokens: tokens)
-        case "source.lang.swift.decl.typealias":
-            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enum":
+            return try Enumeration(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enumcase":
+            return try EnumerationCase(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.enumelement":
+            return try EnumerationElement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.function.subscript":
             return try Subscript(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.decl.protocol":
             return try ProtocolDeclaration(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.decl.typealias":
+            return try TypeAlias(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.argument":
             return try Argument(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.array":
             return try ArrayLiteral(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.call":
             return try Expression(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.expr.dictionary":
+            return try DictionaryLiteral(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.expr.tuple":
             return try Tuple(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.brace":
             return try Scope(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.case":
-            return try Case(substructureInformation: substructureInformation, source: source, tokens: tokens)
+            return try SwitchCase(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.foreach":
             return try ForStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.guard":
+            return try Guard(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.if":
             return try IfStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.repeatwhile":
+            return try RepeatStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.stmt.switch":
             return try Switch(substructureInformation: substructureInformation, source: source, tokens: tokens)
+        case "source.lang.swift.stmt.while":
+            return try WhileStatement(substructureInformation: substructureInformation, source: source, tokens: tokens)
         case "source.lang.swift.syntaxtype.comment.mark":
             return try Heading(substructureInformation: substructureInformation, source: source, tokens: tokens)
         default:

@@ -19,7 +19,7 @@ import SDGCollections
 public class Heading : ContainerSyntaxElement {
 
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
-        try super.init(substructureInformation: substructureInformation, source: source, tokens: [])
+        try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens)
 
         var location = range.lowerBound
         var parsedChildren: [SyntaxElement] = []

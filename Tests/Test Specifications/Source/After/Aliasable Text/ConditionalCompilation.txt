@@ -1,5 +1,5 @@
 /*
- Literals.swift
+ ConditionalCompilation.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-let string = ""
-
-let interpolated = "\(x) + \(y)"
-
-let dictionary = [
-    "A" : 1,
-    "B" : 2
-]
+#if os(macOS)
+/// Falls on Newton.
+func fallOnNewton() {}
+#elseif os(Linux)
+/// Waddles.
+func waddle() {}
+#endif

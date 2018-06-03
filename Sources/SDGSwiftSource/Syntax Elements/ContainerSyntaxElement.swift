@@ -89,6 +89,9 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.attribute.builtin",
                      "source.lang.swift.syntaxtype.attribute.id":
                     resolvedTokens.append(Keyword(range: token.range))
+                case "source.lang.swift.syntaxtype.buildconfig.id",
+                     "source.lang.swift.syntaxtype.buildconfig.keyword":
+                    resolvedTokens.append(CompilerControl(range: token.range))
                 case "source.lang.swift.syntaxtype.comment":
                     // Group them to nest URLs, etc.
                     var endIndex = token.range.upperBound
@@ -133,6 +136,8 @@ open class ContainerSyntaxElement : SyntaxElement {
                     resolvedTokens.append(Number(range: token.range))
                 case "source.lang.swift.syntaxtype.string":
                     resolvedTokens.append(StringLiteral(range: token.range, source: source))
+                case "source.lang.swift.syntaxtype.string_interpolation_anchor":
+                    resolvedTokens.append(Punctuation(range: token.range))
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
@@ -238,16 +243,18 @@ open class ContainerSyntaxElement : SyntaxElement {
         let length = source.distance(from: interruption.range.lowerBound, to: interruption.range.upperBound)
         range = range.lowerBound ..< source.scalars.index(range.upperBound, offsetBy: length)
         for child in children.reversed() {
-            if child.range.lowerBound ≥ interruption.range.lowerBound {
+            if interruption.range.lowerBound ≤ child.range.lowerBound {
                 child.offset(by: length, in: source)
-            } else if child.range.overlaps(interruption.range) {
+            } else if interruption.range.overlaps(child.range) {
                 if let container = child as? ContainerSyntaxElement {
                     container.insert(interruption: interruption, in: source)
                 } else if let atomic = child as? AtomicSyntaxElement {
                     let others = children.filter { $0.range.lowerBound ≠ child.range.lowerBound }
                     children = others.appending(contentsOf: atomic.splitting(arround: interruption, in: source))
                 }
+                break
             } else {
+                children.append(interruption)
                 break
             }
         }

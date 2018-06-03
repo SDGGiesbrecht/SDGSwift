@@ -1,5 +1,5 @@
 /*
- ̲L̲i̲t̲e̲r̲a̲l̲s̲.̲s̲w̲i̲f̲t̲
+ ̲B̲a̲s̲e̲C̲l̲a̲s̲s̲.̲s̲w̲i̲f̲t̲
 
  ̲T̲h̲i̲s̲ ̲s̲o̲u̲r̲c̲e̲ ̲f̲i̲l̲e̲ ̲i̲s̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲o̲p̲e̲n̲ ̲s̲o̲u̲r̲c̲e̲ ̲p̲r̲o̲j̲e̲c̲t̲.̲
  ̲https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,6 @@
  ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
  ̲*/
 
-let ̲s̲t̲r̲i̲n̲g̲ ̲= ̲""
+class ̲B̲a̲s̲e̲C̲l̲a̲s̲s̲ ̲{
 
-let ̲i̲n̲t̲e̲r̲p̲o̲l̲a̲t̲e̲d̲ ̲= ̲"\(x) ̲+̲ ̲\(y)"
-
-let ̲d̲i̲c̲t̲i̲o̲n̲a̲r̲y̲ ̲= ̲[
- ̲ ̲ ̲ ̲"A̲" ̲: ̲1,
- ̲ ̲ ̲ ̲"B̲" ̲: ̲2
-]
+}

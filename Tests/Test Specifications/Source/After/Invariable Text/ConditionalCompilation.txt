@@ -1,5 +1,5 @@
 /̲*̲
-̲ Protocol.swift
+̲ ConditionalCompilation.swift
 ̲
 ̲ This source file is part of the SDGSwift open source project.
 ̲ h̲t̲t̲p̲s̲:̲/̲/̲s̲d̲g̲g̲i̲e̲s̲b̲r̲e̲c̲h̲t̲.̲g̲i̲t̲h̲u̲b̲.̲i̲o̲/̲S̲D̲G̲S̲w̲i̲f̲t̲/̲S̲D̲G̲S̲w̲i̲f̲t̲
@@ -12,8 +12,11 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲p̲r̲o̲t̲o̲c̲o̲l̲ Protocol {̲
-̲
-̲    a̲s̲s̲o̲c̲i̲a̲t̲e̲d̲t̲y̲p̲e̲ AssociatedType
-̲}̲
+̲#̲i̲f̲ o̲s̲(̲m̲a̲c̲O̲S̲)̲
+̲/̲/̲/̲ Falls on Newton.
+̲f̲u̲n̲c̲ fallOnNewton(̲)̲ {̲}̲
+̲#̲e̲l̲s̲e̲i̲f̲ o̲s̲(̲L̲i̲n̲u̲x̲)̲
+̲/̲/̲/̲ Waddles.
+̲f̲u̲n̲c̲ waddle(̲)̲ {̲}̲
+̲#̲e̲n̲d̲i̲f̲
 ̲

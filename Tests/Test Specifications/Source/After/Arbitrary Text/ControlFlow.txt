@@ -33,4 +33,16 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲default:
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲print("d̲e̲f̲a̲u̲l̲t̲")
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲guard ̲boolean ̲== ̲true ̲else ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲preconditionFailure()
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲while ̲something ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲// ̲W̲a̲i̲t̲.̲
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲repeat ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲someTask()
+ ̲ ̲ ̲ ̲} ̲while ̲time ̲< ̲10
 }

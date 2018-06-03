@@ -14,4 +14,5 @@
 
 protocol Protocol {
 
+    associatedtype AssociatedType
 }

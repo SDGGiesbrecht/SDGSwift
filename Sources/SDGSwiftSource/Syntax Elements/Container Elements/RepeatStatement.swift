@@ -1,5 +1,5 @@
 /*
- Literals.swift
+ RepeatStatement.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-let string = ""
+/// A “repeat” statement.
+public class RepeatStatement : ContainerSyntaxElement {
 
-let interpolated = "\(x) + \(y)"
-
-let dictionary = [
-    "A" : 1,
-    "B" : 2
-]
+}

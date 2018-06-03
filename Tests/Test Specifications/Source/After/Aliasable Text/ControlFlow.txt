@@ -33,4 +33,16 @@ func main() {
     default:
         p̲r̲i̲n̲t̲("default")
     }
+
+    guard b̲o̲o̲l̲e̲a̲n̲ == true else {
+        p̲r̲e̲c̲o̲n̲d̲i̲t̲i̲o̲n̲F̲a̲i̲l̲u̲r̲e̲()
+    }
+
+    while s̲o̲m̲e̲t̲h̲i̲n̲g̲ {
+        // Wait.
+    }
+
+    repeat {
+        s̲o̲m̲e̲T̲a̲s̲k̲()
+    } while t̲i̲m̲e̲ <̲ 10
 }

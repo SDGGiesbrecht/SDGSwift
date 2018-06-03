@@ -18,17 +18,21 @@ import SDGMathematics
 public class StringLiteral : ContainerSyntaxElement {
 
     internal init(range: Range<String.ScalarView.Index>, source: String) {
-        guard source.scalars[range].count ≥ 2 else {
-            super.init(range: range, children: []) // [_Exempt from Test Coverage_] Should be unreachable.
-            return
+        let length = source.scalars[range].count
+        var quotationMarks: [Punctuation] = []
+
+        if length ≥ 1,
+            source.scalars[range.lowerBound] == "\u{22}" {
+            quotationMarks.append(Punctuation(range: range.lowerBound ..< source.scalars.index(after: range.lowerBound))) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+        }
+        if length ≥ 2 {
+            let start = source.scalars.index(before: range.upperBound) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            if source.scalars[start] == "\u{22}" {
+                quotationMarks.append(Punctuation(range: start ..< range.upperBound))
+            }
         }
 
-        let textStart = source.scalars.index(after: range.lowerBound)
-        let textEnd = source.scalars.index(before: range.upperBound)
-        super.init(range: range, children: [
-            Punctuation(range: range.lowerBound ..< textStart),
-            StringLiteralText(range: textStart ..< textEnd),
-            Punctuation(range: textEnd ..< range.upperBound)
-            ])
+        super.init(range: range, children: quotationMarks)
+        parseUnidentified(deepSearch: false) { [StringLiteralText(range: $0.range)] }
     }
 }

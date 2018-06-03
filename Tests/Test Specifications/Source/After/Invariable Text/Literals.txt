@@ -14,3 +14,10 @@
 ̲
 ̲l̲e̲t̲ string =̲ "̲"̲
 ̲
+̲l̲e̲t̲ interpolated =̲ "̲\̲(̲x)̲ + \̲(̲y)̲"̲
+̲
+̲l̲e̲t̲ dictionary =̲ [̲
+̲    "̲A"̲ :̲ 1̲,̲
+̲    "̲B"̲ :̲ 2̲
+̲]̲
+̲

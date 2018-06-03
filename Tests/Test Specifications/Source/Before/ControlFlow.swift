@@ -33,4 +33,16 @@ func main() {
     default:
         print("default")
     }
+
+    guard boolean == true else {
+        preconditionFailure()
+    }
+
+    while something {
+        // Wait.
+    }
+
+    repeat {
+        someTask()
+    } while time < 10
 }

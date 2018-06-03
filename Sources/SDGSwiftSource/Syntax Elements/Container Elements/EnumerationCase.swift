@@ -1,5 +1,5 @@
 /*
- Literals.swift
+ EnumerationCase.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-let string = ""
+/// An enumeration case declaration.
+public class EnumerationCase : ContainerSyntaxElement {
 
-let interpolated = "\(x) + \(y)"
-
-let dictionary = [
-    "A" : 1,
-    "B" : 2
-]
+}

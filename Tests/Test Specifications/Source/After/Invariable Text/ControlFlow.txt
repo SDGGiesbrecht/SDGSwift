@@ -33,5 +33,17 @@
 ̲    d̲e̲f̲a̲u̲l̲t̲:̲
 ̲        print(̲"̲default"̲)̲
 ̲    }̲
+̲
+̲    g̲u̲a̲r̲d̲ boolean =̲=̲ t̲r̲u̲e̲ e̲l̲s̲e̲ {̲
+̲        preconditionFailure(̲)̲
+̲    }̲
+̲
+̲    w̲h̲i̲l̲e̲ something {̲
+̲        /̲/̲ Wait.
+̲    }̲
+̲
+̲    r̲e̲p̲e̲a̲t̲ {̲
+̲        someTask(̲)̲
+̲    }̲ w̲h̲i̲l̲e̲ time < 1̲0̲
 ̲}̲
 ̲

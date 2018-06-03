@@ -93,3 +93,11 @@
 ̲    }̲
 ̲}̲
 ̲
+̲/̲/̲/̲ A structure.
+̲/̲/̲/̲
+̲/̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
+̲/̲/̲/̲ /̲/̲ Some source.
+̲/̲/̲/̲ `̲`̲`̲
+̲s̲t̲r̲u̲c̲t̲ DocumentedStructure {̲
+̲}̲
+̲

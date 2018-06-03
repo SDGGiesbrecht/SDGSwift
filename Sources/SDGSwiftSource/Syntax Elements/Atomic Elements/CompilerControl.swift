@@ -1,5 +1,5 @@
 /*
- Literals.swift
+ CompilerControl.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-let string = ""
+/// A compiler control.
+public class CompilerControl : AtomicSyntaxElement {
 
-let interpolated = "\(x) + \(y)"
+    // MARK: - Properties
 
-let dictionary = [
-    "A" : 1,
-    "B" : 2
-]
+    // [_Inherit Documentation: SyntaxElement.textFreedom_]
+    /// How much freedom the user has in choosing the text of the element.
+    public override var textFreedom: TextFreedom {
+        return .invariable
+    }
+}

@@ -1,5 +1,5 @@
 /*
- Case.swift
+ Enumeration.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A switch case.
-public class Case : ContainerSyntaxElement {
+/// An enumeration declaration.
+public class Enumeration : TypeDeclaration {
 
 }
