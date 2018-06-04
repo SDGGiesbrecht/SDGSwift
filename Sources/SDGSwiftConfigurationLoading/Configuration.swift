@@ -16,6 +16,8 @@ import SDGLocalization
 
 extension Configuration {
 
+    private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
+
     /// Loads the configuration in the specified directory with the specified file name.
     ///
     /// - Parameters:
@@ -24,17 +26,31 @@ extension Configuration {
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     public class func loadConfiguration<L>(named fileName: UserFacing<StrictString, L>, from directory: URL) throws -> Self where L : InputLocalization {
-        // [_Warning: Rename this._]
 
-        var configurationFile: URL?
+        var possibleConfigurationFile: URL?
         for localization in L.cases {
             let resolvedFileName = fileName.resolved(for: localization)
             let url = directory.appendingPathComponent("\(resolvedFileName).swift")
             if try url.checkResourceIsReachable() {
-                configurationFile = url
+                possibleConfigurationFile = url
+                break
             }
         }
-        print(configurationFile)
+
+        guard let configurationFile = possibleConfigurationFile else {
+            return self.init()
+        }
+
+        let extensionRemoved = configurationFile.deletingPathExtension()
+        let fileNameOnly = extensionRemoved.lastPathComponent
+        let parentDirectory = extensionRemoved.deletingLastPathComponent()
+        let parentDirectoryNameOnly = parentDirectory.lastPathComponent
+
+        let cachePath = cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly)
+
+        var configurationContents = try String(from: configurationFile)
+        configurationContents.append("\n_exportConfiguration()\n")
+        try configurationContents.save(to: cachePath.appendingPathComponent("Sources/configure/main.swift"))
 
         notImplementedYet()
         return self.init()

@@ -39,7 +39,10 @@ let package = Package(
         /// Utilities for defining configuration files written in Swift (similar to package manifests).
         .library(name: "SDGSwiftConfiguration", targets: ["SDGSwiftConfiguration"]),
         /// Utilities for loading configuration files written in Swift (similar to package manifests).
-        .library(name: "SDGSwiftConfigurationLoading", targets: ["SDGSwiftConfigurationLoading"])
+        // [_Workaround: Needs a stable release of SDGSwiftConfiguration to depend on._]
+        //.library(name: "SDGSwiftConfigurationLoading", targets: ["SDGSwiftConfigurationLoading"])
+        /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
+        .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 10, 0))),
