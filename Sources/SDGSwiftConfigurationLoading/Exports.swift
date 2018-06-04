@@ -12,4 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+@_exported import struct Foundation.URL
+
+@_exported import SDGLocalization
+
 @_exported import SDGSwiftConfiguration
+@_exported import struct SDGSwift.Package
+@_exported import struct SDGSwift.Version

@@ -14,6 +14,8 @@
 
 import SDGLocalization
 
+import SDGSwift
+
 extension Configuration {
 
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
@@ -21,11 +23,13 @@ extension Configuration {
     /// Loads the configuration in the specified directory with the specified file name.
     ///
     /// - Parameters:
-    ///     - fileName: A localized file name (without “.swift”). Any of the localized names will be detected. If several are present, which one gets loaded is undefined.
-    ///     - directory: The directory where the configuration is located.
-    ///
+    ///     - fileName: The localized file name (without “.swift”) of the configuration. Any of the localized names will be detected. If several are present, which one gets loaded is undefined. (This file name is equivalent to the package manager’s `Package.swift`.)
+    ///     - directory: The directory in which to look fo a configuration.
+    ///     - module: The name of the module which defines the `Configuration` subclass. It will be directly imported in configuration files. (This module is equivalent to the package manager’s `PackageDescription` module).
+    ///     - package: The package were the module is defined.
+    ///     - version: The version of the package to link against.
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
-    public class func loadConfiguration<L>(named fileName: UserFacing<StrictString, L>, from directory: URL) throws -> Self where L : InputLocalization {
+    public class func loadConfiguration<L>(named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst module: String, in package: Package, at version: Version) throws -> Self where L : InputLocalization {
 
         var possibleConfigurationFile: URL?
         for localization in L.cases {
@@ -51,6 +55,12 @@ extension Configuration {
         var configurationContents = try String(from: configurationFile)
         configurationContents.append("\n_exportConfiguration()\n")
         try configurationContents.save(to: cachePath.appendingPathComponent("Sources/configure/main.swift"))
+
+        var manifest = String(data: Resources.package, encoding: .utf8)!
+        manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
+        manifest.replaceMatches(for: "[*version*]", with: "configuration") // [_Warning: Pointing at branch._]
+        manifest.replaceMatches(for: "[*module*]", with: module)
+        try manifest.save(to: cachePath.appendingPathComponent("Package.swift"))
 
         notImplementedYet()
         return self.init()
