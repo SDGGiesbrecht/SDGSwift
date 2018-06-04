@@ -15,6 +15,10 @@
 /// The type which represents the overall configuration.
 ///
 /// This is comparable to the `Package` type in a package manifest.
-public protocol Configuration : Codable {
+public protocol Configuration : class, Codable {
 
+    /// Creates the default configuration.
+    ///
+    /// This is the configuration which will be used when there is no configuration file.
+    init()
 }
