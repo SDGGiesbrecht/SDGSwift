@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode)
+APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode) • [SDGSwiftConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfiguration) • [SDGSwiftConfigurationLoading](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfigurationLoading)
 
 # SDGSwift
 
@@ -48,6 +48,8 @@ let package = Package(
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
         ])
     ]
 )
@@ -59,6 +61,8 @@ let package = Package(
 import SDGSwift
 import SDGSwiftPackageManager
 import SDGXcode
+import SDGSwiftConfiguration
+import SDGSwiftConfigurationLoading
 ```
 
 ## Example Usage

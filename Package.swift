@@ -34,7 +34,12 @@ let package = Package(
         //.library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
         /// Xcode‐related utilities for working with Swift packages.
-        .library(name: "SDGXcode", targets: ["SDGXcode"])
+        .library(name: "SDGXcode", targets: ["SDGXcode"]),
+
+        /// Utilities for defining configuration files written in Swift (similar to package manifests).
+        .library(name: "SDGSwiftConfiguration", targets: ["SDGSwiftConfiguration"]),
+        /// Utilities for loading configuration files written in Swift (similar to package manifests).
+        .library(name: "SDGSwiftConfigurationLoading", targets: ["SDGSwiftConfigurationLoading"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 10, 0))),
@@ -78,6 +83,8 @@ let package = Package(
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
+        .target(name: "SDGSwiftConfigurationLoading", dependencies: ["SDGSwiftConfiguration"]),
+        .target(name: "SDGSwiftConfiguration"),
 
         // Internal
         .target(name: "SDGSwiftLocalizations", dependencies: [
