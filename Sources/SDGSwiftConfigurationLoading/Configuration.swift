@@ -50,17 +50,33 @@ extension Configuration {
         let parentDirectory = extensionRemoved.deletingLastPathComponent()
         let parentDirectoryNameOnly = parentDirectory.lastPathComponent
 
-        let cachePath = cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly)
+        let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
 
+        let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
         var configurationContents = try String(from: configurationFile)
-        configurationContents.append("\n_exportConfiguration()\n")
-        try configurationContents.save(to: cachePath.appendingPathComponent("Sources/configure/main.swift"))
+        configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
+        if let existingMain = try? String(from: mainLocation),
+            existingMain == configurationContents {
+            // Already there.
+        } else {
+            try configurationContents.save(to: mainLocation)
+        }
 
+        let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-        manifest.replaceMatches(for: "[*version*]", with: "configuration") // [_Warning: Pointing at branch._]
+        manifest.replaceMatches(for: "[*branch*]", with: "configuration") // [_Warning: Pointing at branch._]
         manifest.replaceMatches(for: "[*module*]", with: module)
-        try manifest.save(to: cachePath.appendingPathComponent("Package.swift"))
+        if let existingManifest = try? String(from: manifestLocation),
+            existingManifest == manifest {
+            // Already there.
+        } else {
+            try manifest.save(to: manifestLocation)
+        }
+
+        try configurationRepository.build()
+        let json = try SwiftCompiler.runCustomSubcommand(["run", "configure"], in: configurationRepository.location)
+        print(json)
 
         notImplementedYet()
         return self.init()
