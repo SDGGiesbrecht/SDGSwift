@@ -13,6 +13,7 @@
  */
 
 import SDGSwiftConfigurationLoading
+import SampleConfiguration
 import SDGXCTestUtilities
 
 class SDGSwiftConfigurationAPITests : TestCase {
