@@ -139,6 +139,11 @@ let package = Package(
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
+        .testTartet(name: "SDGSwiftConfigurationTests", dependencies: [
+            "SDGSwiftConfiguration",
+            "SDGSwiftConfigurationLoading",
+            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            ])
         .testTarget(name: "SDGSwiftDocumentationExampleTests", dependencies: [
             "SDGSwift",
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
