@@ -24,6 +24,6 @@ class SDGSwiftConfigurationAPITests : TestCase {
     func testConfiguration() {
         XCTAssertEqual(SampleConfiguration().option, "Default")
         let configuredDirectory = testSpecificationDirectory().appendingPathComponent("Configuration")
-        XCTAssertEqual(try SampleConfiguration.load(configuration: SampleConfiguration.self, named: UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"}), from: configuredDirectory).option, "Configured")
+        XCTAssertEqual(try SampleConfiguration.loadConfiguration(named: UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"}), from: configuredDirectory).option, "Configured")
     }
 }
