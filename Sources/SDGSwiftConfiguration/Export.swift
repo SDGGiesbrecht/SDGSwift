@@ -1,5 +1,5 @@
 /*
- SampleConfiguration.swift
+ Export.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,13 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftConfiguration
-
-/// A sample configuration.
-public final class SampleConfiguration : Configuration {
-
-    // MARK: - Properties
-
-    /// A customizable option.
-    public var option: String = "Default"
+/// :nodoc:
+public func _exportConfiguration(file: StaticString = #file, line: UInt = #line) {
+    do {
+        let json = try JSONEncoder().encode(Configuration.registered)
+        print(String(data: json, encoding: .utf8)!)
+    } catch {
+        fatalError(error.localizedDescription, file: file, line: line)
+    }
 }

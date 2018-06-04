@@ -12,6 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 extension Configuration {
 
+    public class func load<C, L>(configuration: C.Type, named name: UserFacing<StrictString, L>, from directory: URL) throws -> C where C : Configuration, L : InputLocalization {
+        // [_Warning: Rename this._]
+
+        var configurationFile: URL?
+        for localization in L.cases {
+            let fileName = name.resolved(for: localization)
+            let url = directory.appendingPathComponent("\(fileName).swift")
+            if try url.checkResourceIsReachable() {
+                configurationFile = url
+            }
+        }
+        print(configurationFile)
+
+        notImplementedYet()
+        return C()
+    }
 }

@@ -12,13 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// The type which represents the overall configuration.
+/// An abstract superclass for a type representing an overall configuration.
 ///
-/// This is comparable to the `Package` type in a package manifest.
-public protocol Configuration : class, Codable {
+/// The concrete subclass is comparable to the `Package` type in a package manifest.
+open class Configuration : Codable {
 
-    /// Creates the default configuration.
+    // MARK: - Static Properties
+
+    internal static var registered: Configuration? = nil
+
+    // MARK: - Initialization
+
+    /// Creates a configuration and registers it for export.
     ///
-    /// This is the configuration which will be used when there is no configuration file.
-    init()
+    /// The result of this initializer represents the default configuration, and will also be used if no configuration file exists.
+    public required init() {
+        Configuration.registered = self
+    }
 }

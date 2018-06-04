@@ -12,13 +12,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGPersistenceTestUtilities
+import SDGXCTestUtilities
+
+import SDGSwiftLocalizations
 import SDGSwiftConfigurationLoading
 import SampleConfiguration
-import SDGXCTestUtilities
 
 class SDGSwiftConfigurationAPITests : TestCase {
 
     func testConfiguration() {
-
+        XCTAssertEqual(SampleConfiguration().option, "Default")
+        let configuredDirectory = testSpecificationDirectory().appendingPathComponent("Configuration")
+        XCTAssertEqual(try SampleConfiguration.load(configuration: SampleConfiguration.self, named: UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"}), from: configuredDirectory).option, "Configured")
     }
 }

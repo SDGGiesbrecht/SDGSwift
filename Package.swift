@@ -84,7 +84,10 @@ let package = Package(
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
         .target(name: "SDGSwiftConfiguration"),
-        .target(name: "SDGSwiftConfigurationLoading", dependencies: ["SDGSwiftConfiguration"]),
+        .target(name: "SDGSwiftConfigurationLoading", dependencies: [
+            "SDGSwiftConfiguration",
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
+            ]),
 
         // Samples
         .target(name: "SampleConfiguration", dependencies: ["SDGSwiftConfiguration"]),
@@ -146,6 +149,7 @@ let package = Package(
             "SDGSwiftConfiguration",
             "SDGSwiftConfigurationLoading",
             "SampleConfiguration",
+            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftDocumentationExampleTests", dependencies: [
