@@ -46,6 +46,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [
+        // Samples
+        .target(name: "SampleConfiguration", dependencies: ["SDGSwiftConfiguration"]),
 
         // Products
         .target(name: "SDGSwift", dependencies: [
@@ -142,6 +144,7 @@ let package = Package(
         .testTarget(name: "SDGSwiftConfigurationTests", dependencies: [
             "SDGSwiftConfiguration",
             "SDGSwiftConfigurationLoading",
+            "SampleConfiguration",
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftDocumentationExampleTests", dependencies: [
