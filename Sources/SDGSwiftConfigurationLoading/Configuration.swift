@@ -23,13 +23,17 @@ extension Configuration {
     /// Loads the configuration in the specified directory with the specified file name.
     ///
     /// - Parameters:
+    ///     - configuration: The subclass of `Configuration` to load. (This is equivalent to the package manager’s `Package` type.
     ///     - fileName: The localized file name (without “.swift”) of the configuration. Any of the localized names will be detected. If several are present, which one gets loaded is undefined. (This file name is equivalent to the package manager’s `Package.swift`.)
     ///     - directory: The directory in which to look fo a configuration.
     ///     - module: The name of the module which defines the `Configuration` subclass. It will be directly imported in configuration files. (This module is equivalent to the package manager’s `PackageDescription` module).
     ///     - package: The package were the module is defined.
     ///     - version: The version of the package to link against.
+    ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
-    public class func loadConfiguration<L>(named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst module: String, in package: Package, at version: Version) throws -> Self where L : InputLocalization {
+    ///
+    /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
+    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst module: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
 
         var possibleConfigurationFile: URL?
         for localization in L.cases {
@@ -42,7 +46,7 @@ extension Configuration {
         }
 
         guard let configurationFile = possibleConfigurationFile else {
-            return self.init()
+            return C()
         }
 
         let extensionRemoved = configurationFile.deletingPathExtension()
@@ -76,9 +80,14 @@ extension Configuration {
 
         try configurationRepository.build()
         let json = try SwiftCompiler.runCustomSubcommand(["run", "configure"], in: configurationRepository.location)
-        print(json)
 
-        notImplementedYet()
-        return self.init()
+        let decoded = try JSONDecoder().decode([C?].self, from: json.file)
+        guard let registry = decoded.first else {
+            throw Configuration.Error.corruptConfiguration
+        }
+        guard let registered = registry else {
+            throw Configuration.Error.emptyConfiguration
+        }
+        return registered
     }
 }

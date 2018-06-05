@@ -88,6 +88,7 @@ let package = Package(
             ]),
         .target(name: "SDGSwiftConfiguration"),
         .target(name: "SDGSwiftConfigurationLoading", dependencies: [
+            "SDGSwiftLocalizations",
             "SDGSwiftConfiguration",
             "SDGSwift",
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
