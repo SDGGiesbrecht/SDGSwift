@@ -22,9 +22,11 @@ import SampleConfiguration
 class SDGSwiftConfigurationAPITests : TestCase {
 
     func testConfiguration() {
-        /* [_Workaround: Requires phase 2._]
-        XCTAssertEqual(SampleConfiguration().option, "Default")
 
+        XCTAssertEqual(SampleConfiguration().option, "Default")
+        testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+
+        /* [_Workaround: Requires phase 2._]
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
         let configuredDirectory = specifications.appendingPathComponent("Configured")

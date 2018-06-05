@@ -13,7 +13,7 @@
  */
 
 /// :nodoc:
-public func _exportConfiguration(file: StaticString = #file, line: UInt = #line) {
+public func _exportConfiguration(file: StaticString = #file, line: UInt = #line) { // [_Exempt from Test Coverage_] Testing occurs beyond the reach of coverage tracking.
     do {
         let json = try JSONEncoder().encode([Configuration.registered])
         print(String(data: json, encoding: .utf8)!)

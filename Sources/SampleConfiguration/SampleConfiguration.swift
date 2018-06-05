@@ -15,7 +15,7 @@
 import SDGSwiftConfiguration
 
 /// A sample configuration.
-public final class SampleConfiguration : Configuration {
+public final class SampleConfiguration : Configuration, Equatable {
 
     // MARK: - Properties
 
@@ -48,5 +48,11 @@ public final class SampleConfiguration : Configuration {
 
     public required init() {
         super.init()
+    }
+
+    // MARK: - Equatable
+
+    public static func == (precedingValue: SampleConfiguration, followingValue: SampleConfiguration) -> Bool {
+        return precedingValue.option == followingValue.option
     }
 }
