@@ -16,6 +16,7 @@ import XCTest
 
 import SDGSwiftDocumentationExampleTests
 import SDGSwiftTests
+import SDGSwiftConfigurationTests
 import SDGSwiftPackageManagerTests
 import SDGSwiftSourceTests
 import SDGXcodeTests
@@ -24,6 +25,7 @@ import SDGXCTestUtilities
 var tests = [XCTestCaseEntry]()
 tests += SDGSwiftDocumentationExampleTests.__allTests()
 tests += SDGSwiftTests.__allTests()
+tests += SDGSwiftConfigurationTests.__allTests()
 tests += SDGSwiftPackageManagerTests.__allTests()
 tests += SDGSwiftSourceTests.__allTests()
 tests += SDGXcodeTests.__allTests()
