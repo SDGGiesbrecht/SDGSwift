@@ -24,7 +24,7 @@ public class Comment : ContainerSyntaxElement {
         super.init(range: range, source: source, tokens: tokens)
 
         #if os(Linux)
-        // [_Workaround: Linux does not report URLs. (Swift 4.1)_]
+        // [_Workaround: Linux does not report URLs. (Swift 4.1.2)_]
         var urls: [CommentURL] = []
         for match in source.scalars.matches(for: CompositePattern([
             RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.whitespacesAndNewlines })),

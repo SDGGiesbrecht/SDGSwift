@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/*
 import SDGLocalization
 
 import SDGSwift
@@ -70,7 +69,7 @@ extension Configuration {
         let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-        manifest.replaceMatches(for: "[*branch*]", with: "configuration") // [_Workaround: Pointing at branch._]
+        manifest.replaceMatches(for: "[*version*]", with: version.string())
         manifest.replaceMatches(for: "[*module*]", with: module)
         if let existingManifest = try? String(from: manifestLocation),
             existingManifest == manifest {
@@ -91,4 +90,4 @@ extension Configuration {
         }
         return registered
     }
-}*/
+}
