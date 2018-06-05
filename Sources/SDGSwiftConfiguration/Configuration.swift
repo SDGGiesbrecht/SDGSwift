@@ -26,7 +26,7 @@ open class Configuration : Codable {
     /// Creates a configuration and registers it for export.
     ///
     /// The result of this initializer represents the default configuration, and will also be used if no configuration file exists.
-    public required init() {
+    public required init() { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.4.
         Configuration.registered = self
     }
 }
