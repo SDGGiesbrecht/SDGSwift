@@ -69,7 +69,7 @@ extension Configuration {
         let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-        manifest.replaceMatches(for: "[*branch*]", with: "configuration") // [_Warning: Pointing at branch._]
+        manifest.replaceMatches(for: "[*branch*]", with: "configuration") // [_Workaround: Pointing at branch._]
         manifest.replaceMatches(for: "[*module*]", with: module)
         if let existingManifest = try? String(from: manifestLocation),
             existingManifest == manifest {

@@ -24,7 +24,7 @@ public final class SampleConfiguration : Configuration {
 
     // MARK: - Codable
 
-    private enum CodingKeys: CodingKey {
+    private enum CodingKeys : CodingKey {
         case option
     }
 

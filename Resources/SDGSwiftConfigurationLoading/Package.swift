@@ -19,12 +19,12 @@ import PackageDescription
 let package = Package(
     name: "configure",
     dependencies: [
-        // [_Warning: Pointing at branch._]
+        // [_Workaround: Pointing at branch._]
         .package(url: "[*URL*]", .branch("[*branch*]"))
     ],
     targets: [
         .target(name: "configure", dependencies: [
             "[*module*]"
-            ]),
+            ])
         ]
 )

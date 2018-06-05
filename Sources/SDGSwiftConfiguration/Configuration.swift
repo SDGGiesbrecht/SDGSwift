@@ -19,7 +19,7 @@ open class Configuration : Codable {
 
     // MARK: - Static Properties
 
-    internal static var registered: Configuration? = nil
+    internal static var registered: Configuration?
 
     // MARK: - Initialization
 
