@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGLocalization
 
 import SDGSwift
@@ -66,11 +67,32 @@ extension Configuration {
             try configurationContents.save(to: mainLocation)
         }
 
+        var dependencies: [(package: URL, version: Version, product: String)] = []
+        for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
+            if let comment = line.line.suffix(after: "// ".scalars) {
+                let components = String(comment.contents).components(separatedBy: ", ") as [String]
+                if components.count == 3 {
+                    if let url = URL(string: components[0]),
+                        let version = Version(components[1]) {
+                        dependencies.append((url, version, components[2]))
+                    }
+                }
+            }
+        }
+        let packages = dependencies.map({
+            return "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
+        }).joined(separator: "\n")
+        let products = dependencies.map({
+            return "            \u{22}\($0.product)\u{22},"
+        }).joined(separator: "\n")
+
         let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
         manifest.replaceMatches(for: "[*version*]", with: version.string())
+        manifest.replaceMatches(for: "[*packages*]", with: packages)
         manifest.replaceMatches(for: "[*product*]", with: product)
+        manifest.replaceMatches(for: "[*products*]", with: products)
         if let existingManifest = try? String(from: manifestLocation),
             existingManifest == manifest {
             // Already there.

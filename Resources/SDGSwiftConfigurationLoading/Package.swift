@@ -19,11 +19,13 @@ import PackageDescription
 let package = Package(
     name: "configure",
     dependencies: [
-        .package(url: "[*URL*]", .exact("[*version*]"))
+        .package(url: "[*URL*]", .exact("[*version*]")),
+[*packages*]
     ],
     targets: [
         .target(name: "configure", dependencies: [
-            "[*product*]"
+            "[*product*]",
+[*products*]
             ])
         ]
 )

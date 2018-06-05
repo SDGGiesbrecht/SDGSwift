@@ -90,6 +90,7 @@ let package = Package(
             "SDGSwiftLocalizations",
             "SDGSwiftConfiguration",
             "SDGSwift",
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
