@@ -26,14 +26,14 @@ extension Configuration {
     ///     - configuration: The subclass of `Configuration` to load. (This is equivalent to the package manager’s `Package` type.
     ///     - fileName: The localized file name (without “.swift”) of the configuration. Any of the localized names will be detected. If several are present, which one gets loaded is undefined. (This file name is equivalent to the package manager’s `Package.swift`.)
     ///     - directory: The directory in which to look fo a configuration.
-    ///     - module: The name of the module which defines the `Configuration` subclass. It will be directly imported in configuration files. (This module is equivalent to the package manager’s `PackageDescription` module).
+    ///     - product: The name of the product which defines the `Configuration` subclass. It will be directly imported in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
     ///     - package: The package were the module is defined.
     ///     - version: The version of the package to link against.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
-    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst module: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
+    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
 
         var possibleConfigurationFile: URL?
         for localization in L.cases {
@@ -70,7 +70,7 @@ extension Configuration {
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
         manifest.replaceMatches(for: "[*version*]", with: version.string())
-        manifest.replaceMatches(for: "[*module*]", with: module)
+        manifest.replaceMatches(for: "[*product*]", with: product)
         if let existingManifest = try? String(from: manifestLocation),
             existingManifest == manifest {
             // Already there.

@@ -23,7 +23,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "configure", dependencies: [
-            "[*module*]"
+            "[*product*]"
             ])
         ]
 )
