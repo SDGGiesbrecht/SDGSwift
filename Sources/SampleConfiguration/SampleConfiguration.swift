@@ -22,7 +22,7 @@ public final class SampleConfiguration : Configuration {
     /// A customizable option.
     public var option: String = "Default"
 
-    // MARK: - Coding
+    // MARK: - Codable
 
     private enum CodingKeys: CodingKey {
         case option
