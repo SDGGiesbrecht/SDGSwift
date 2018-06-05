@@ -27,8 +27,16 @@ class SDGSwiftConfigurationAPITests : TestCase {
         testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
 
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
+        let type = SampleConfiguration.self
+        let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"})
+        let module = "SampleConfiguration"
+        let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+        let version = Version(0, 1, 8)
 
         let configuredDirectory = specifications.appendingPathComponent("Configured")
-        XCTAssertEqual(try SampleConfiguration.load(configuration: SampleConfiguration.self, named: UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"}), from: configuredDirectory, linkingAgainst: "SampleConfiguration", in: Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!), at: Version(0, 1, 8)).option, "Configured")
+        XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: module, in: package, at: version).option, "Configured")
+
+        let emptyDirectory = specifications.appendingPathComponent("Empty")
+        XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: module, in: package, at: version))
     }
 }
