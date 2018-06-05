@@ -23,6 +23,8 @@ class SDGSwiftConfigurationAPITests : TestCase {
 
     func testConfiguration() {
         do {
+            FileManager.default.delete(.cache)
+            defer { FileManager.default.delete(.cache) }
 
             XCTAssertEqual(SampleConfiguration().option, "Default")
             testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
@@ -48,6 +50,13 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
             XCTAssertEqual(loadedConfiguration.option, "Configured")
             // [_End_]
+
+            // Cached:
+            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            XCTAssertEqual(cached.option, "Configured")
+
+            let none = specifications.appendingPathComponent("None")
+            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version).option, "Default")
 
             let emptyDirectory = specifications.appendingPathComponent("Empty")
             XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version))

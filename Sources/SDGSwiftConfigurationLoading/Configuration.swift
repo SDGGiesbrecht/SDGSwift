@@ -81,7 +81,7 @@ extension Configuration {
         for localization in L.cases {
             let resolvedFileName = fileName.resolved(for: localization)
             let url = directory.appendingPathComponent("\(resolvedFileName).swift")
-            if try url.checkResourceIsReachable() {
+            if (try? url.checkResourceIsReachable()) == true {
                 possibleConfigurationFile = url
                 break
             }
