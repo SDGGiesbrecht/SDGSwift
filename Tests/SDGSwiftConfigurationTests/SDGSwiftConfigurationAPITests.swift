@@ -22,21 +22,28 @@ import SampleConfiguration
 class SDGSwiftConfigurationAPITests : TestCase {
 
     func testConfiguration() {
+        do {
 
-        XCTAssertEqual(SampleConfiguration().option, "Default")
-        testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+            XCTAssertEqual(SampleConfiguration().option, "Default")
+            testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
 
-        let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
-        let type = SampleConfiguration.self
-        let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfiguration"})
-        let module = "SampleConfiguration"
-        let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-        let version = Version(0, 1, 8)
+            let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-        let configuredDirectory = specifications.appendingPathComponent("Configured")
-        XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: module, in: package, at: version).option, "Configured")
+            let type = SampleConfiguration.self
+            let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile"})
+            let product = "SampleConfiguration"
+            let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+            let version = Version(0, 1, 8)
 
-        let emptyDirectory = specifications.appendingPathComponent("Empty")
-        XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: module, in: package, at: version))
+            let configuredDirectory: URL = specifications.appendingPathComponent("Configured")
+            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            XCTAssertEqual(loadedConfiguration.option, "Configured")
+
+            let emptyDirectory = specifications.appendingPathComponent("Empty")
+            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version))
+
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
     }
 }
