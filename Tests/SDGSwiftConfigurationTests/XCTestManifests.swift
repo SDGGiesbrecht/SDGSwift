@@ -17,6 +17,7 @@ import XCTest
 extension SDGSwiftConfigurationAPITests {
     static let __allTests = [
         ("testConfiguration", testConfiguration),
+        ("testConfigurationError", testConfigurationError),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
     ]
 }

@@ -146,7 +146,7 @@ extension Configuration {
 
         let decoded = try JSONDecoder().decode([C?].self, from: json.file)
         guard let registry = decoded.first else {
-            throw Configuration.Error.corruptConfiguration
+            throw Configuration.Error.corruptConfiguration // [_Exempt from Test Coverage_]
         }
         guard let registered = registry else {
             throw Configuration.Error.emptyConfiguration

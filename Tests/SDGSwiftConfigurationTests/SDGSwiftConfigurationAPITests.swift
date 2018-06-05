@@ -13,6 +13,7 @@
  */
 
 import SDGPersistenceTestUtilities
+import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftLocalizations
@@ -64,5 +65,10 @@ class SDGSwiftConfigurationAPITests : TestCase {
         } catch {
             XCTFail(error.localizedDescription)
         }
+    }
+
+    func testConfigurationError() {
+        testCustomStringConvertibleConformance(of: Configuration.Error.corruptConfiguration, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Configuration.Error.emptyConfiguration, localizations: InterfaceLocalization.self, uniqueTestName: "Empty", overwriteSpecificationInsteadOfFailing: false)
     }
 }
