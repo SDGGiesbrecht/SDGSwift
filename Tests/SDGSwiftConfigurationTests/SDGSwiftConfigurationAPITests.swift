@@ -29,15 +29,25 @@ class SDGSwiftConfigurationAPITests : TestCase {
 
             let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-            let type = SampleConfiguration.self
-            let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile"})
+            let wherever = specifications.appendingPathComponent("Configured")
+            // [_Define Example: Configuration Loading_]
+            // These refer to a real, working sample product.
+            // See its source for more details:
+            // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.8/Sources/SampleConfiguration
             let product = "SampleConfiguration"
             let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
             let version = Version(0, 1, 8)
+            let type = SampleConfiguration.self // Import it first if necessary.
 
-            let configuredDirectory: URL = specifications.appendingPathComponent("Configured")
+            // Assuming the above file is called “SampleConfigurationFile.swift”...
+            let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile"})
+
+            // Change this to actually point at a directory containing the above file.
+            let configuredDirectory: URL = wherever
+
             let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
             XCTAssertEqual(loadedConfiguration.option, "Configured")
+            // [_End_]
 
             let emptyDirectory = specifications.appendingPathComponent("Empty")
             XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version))

@@ -21,13 +21,54 @@ extension Configuration {
 
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
+    // [_Example 1: Configuration File_] [_Example 2: Configuration Loading_]
     /// Loads the configuration in the specified directory with the specified file name.
+    ///
+    /// A loadable file might look something like this:
+    ///
+    /// ```swift
+    /// // Import the configuration definitions.
+    /// import SampleConfiguration
+    ///
+    /// /*
+    ///  Exernal packages can be imported with this syntax:
+    ///  import [module] // [url], [version], [product]
+    ///  */
+    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    ///
+    /// // Initialize the configuration with its defaults.
+    /// let configuration = SampleConfiguration()
+    ///
+    /// // Change whatever options are available.
+    /// configuration.option = "Configured"
+    /// ```
+    ///
+    /// The above file could be loaded like this:
+    ///
+    /// ```swift
+    /// // These refer to a real, working sample product.
+    /// // See its source for more details:
+    /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.8/Sources/SampleConfiguration
+    /// let product = "SampleConfiguration"
+    /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+    /// let version = Version(0, 1, 8)
+    /// let type = SampleConfiguration.self // Import it first if necessary.
+    ///
+    /// // Assuming the above file is called “SampleConfigurationFile.swift”...
+    /// let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile"})
+    ///
+    /// // Change this to actually point at a directory containing the above file.
+    /// let configuredDirectory: URL = wherever
+    ///
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+    /// XCTAssertEqual(loadedConfiguration.option, "Configured")
+    /// ```
     ///
     /// - Parameters:
     ///     - configuration: The subclass of `Configuration` to load. (This is equivalent to the package manager’s `Package` type.
     ///     - fileName: The localized file name (without “.swift”) of the configuration. Any of the localized names will be detected. If several are present, which one gets loaded is undefined. (This file name is equivalent to the package manager’s `Package.swift`.)
-    ///     - directory: The directory in which to look fo a configuration.
-    ///     - product: The name of the product which defines the `Configuration` subclass. It will be directly imported in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
+    ///     - directory: The directory in which to look for a configuration.
+    ///     - product: The name of the product which defines the `Configuration` subclass. Users will directly import it in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
     ///     - package: The package were the module is defined.
     ///     - version: The version of the package to link against.
     ///
