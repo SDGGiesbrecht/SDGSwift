@@ -64,3 +64,6 @@ Encrypted Travis Deployment Key: UnR8vHpiMV+K/hw28327AUTPMi3Hz2l0lB4/kcMRacT3nkl
 Parameter Style
 Unicode
 [_End_]
+
+([_Workaround: Jazzy’s redundant building is way too slow. (workspace version 0.7.3)])
+Generate Documentation: False
