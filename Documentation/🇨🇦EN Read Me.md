@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode) • [SDGSwiftConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfiguration) • [SampleConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SampleConfiguration)
+APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode) • [SDGSwiftConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfiguration) • [SDGSwiftConfigurationLoading](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfigurationLoading) • [SampleConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SampleConfiguration)
 
 # SDGSwift
 
@@ -49,6 +49,7 @@ let package = Package(
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
             .productItem(name: "SampleConfiguration", package: "SDGSwift"),
         ])
     ]
@@ -62,6 +63,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 import SDGXcode
 import SDGSwiftConfiguration
+import SDGSwiftConfigurationLoading
 import SampleConfiguration
 ```
 
