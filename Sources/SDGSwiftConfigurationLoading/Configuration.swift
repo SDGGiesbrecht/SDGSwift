@@ -77,74 +77,83 @@ extension Configuration {
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
     public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
 
-        var possibleConfigurationFile: URL?
-        for localization in L.cases {
-            let resolvedFileName = fileName.resolved(for: localization)
-            let url = directory.appendingPathComponent("\(resolvedFileName).swift")
-            if (try? url.checkResourceIsReachable()) == true {
-                possibleConfigurationFile = url
-                break
-            }
-        }
-
-        guard let configurationFile = possibleConfigurationFile else {
-            return C()
-        }
-
-        let extensionRemoved = configurationFile.deletingPathExtension()
-        let fileNameOnly = extensionRemoved.lastPathComponent
-        let parentDirectory = extensionRemoved.deletingLastPathComponent()
-        let parentDirectoryNameOnly = parentDirectory.lastPathComponent
-
-        let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
-
-        let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
-        var configurationContents = try String(from: configurationFile)
-        configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
-        if let existingMain = try? String(from: mainLocation),
-            existingMain == configurationContents {
-            // Already there.
+        var jsonData: Data
+        if let mock = Configuration.mockQueue.first {
+            configuration.mockQueue.removeFirst()
+            jsonData = try JSONEncoder().encode([mock])
         } else {
-            try configurationContents.save(to: mainLocation)
-        }
 
-        var dependencies: [(package: URL, version: Version, product: String)] = []
-        for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
-            if let comment = line.line.suffix(after: "// ".scalars) {
-                let components = String(comment.contents).components(separatedBy: ", ") as [String]
-                if components.count == 3 {
-                    if let url = URL(string: components[0]),
-                        let version = Version(components[1]) {
-                        dependencies.append((url, version, components[2]))
+            var possibleConfigurationFile: URL?
+            for localization in L.cases {
+                let resolvedFileName = fileName.resolved(for: localization)
+                let url = directory.appendingPathComponent("\(resolvedFileName).swift")
+                if (try? url.checkResourceIsReachable()) == true {
+                    possibleConfigurationFile = url
+                    break
+                }
+            }
+
+            guard let configurationFile = possibleConfigurationFile else {
+                return C()
+            }
+
+            let extensionRemoved = configurationFile.deletingPathExtension()
+            let fileNameOnly = extensionRemoved.lastPathComponent
+            let parentDirectory = extensionRemoved.deletingLastPathComponent()
+            let parentDirectoryNameOnly = parentDirectory.lastPathComponent
+
+            let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
+
+            let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
+            var configurationContents = try String(from: configurationFile)
+            configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
+            if let existingMain = try? String(from: mainLocation),
+                existingMain == configurationContents {
+                // Already there.
+            } else {
+                try configurationContents.save(to: mainLocation)
+            }
+
+            var dependencies: [(package: URL, version: Version, product: String)] = []
+            for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
+                if let comment = line.line.suffix(after: "// ".scalars) {
+                    let components = String(comment.contents).components(separatedBy: ", ") as [String]
+                    if components.count == 3 {
+                        if let url = URL(string: components[0]),
+                            let version = Version(components[1]) {
+                            dependencies.append((url, version, components[2]))
+                        }
                     }
                 }
             }
+            let packages = dependencies.map({
+                return "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
+            }).joined(separator: "\n")
+            let products = dependencies.map({
+                return "            \u{22}\($0.product)\u{22},"
+            }).joined(separator: "\n")
+
+            let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
+            var manifest = String(data: Resources.package, encoding: .utf8)!
+            manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
+            manifest.replaceMatches(for: "[*version*]", with: version.string())
+            manifest.replaceMatches(for: "[*packages*]", with: packages)
+            manifest.replaceMatches(for: "[*product*]", with: product)
+            manifest.replaceMatches(for: "[*products*]", with: products)
+            if let existingManifest = try? String(from: manifestLocation),
+                existingManifest == manifest {
+                // Already there.
+            } else {
+                try manifest.save(to: manifestLocation)
+            }
+
+            try configurationRepository.build()
+            let json = try SwiftCompiler.runCustomSubcommand(["run", "configure"], in: configurationRepository.location)
+
+            jsonData = json.file
         }
-        let packages = dependencies.map({
-            return "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
-        }).joined(separator: "\n")
-        let products = dependencies.map({
-            return "            \u{22}\($0.product)\u{22},"
-        }).joined(separator: "\n")
 
-        let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
-        var manifest = String(data: Resources.package, encoding: .utf8)!
-        manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-        manifest.replaceMatches(for: "[*version*]", with: version.string())
-        manifest.replaceMatches(for: "[*packages*]", with: packages)
-        manifest.replaceMatches(for: "[*product*]", with: product)
-        manifest.replaceMatches(for: "[*products*]", with: products)
-        if let existingManifest = try? String(from: manifestLocation),
-            existingManifest == manifest {
-            // Already there.
-        } else {
-            try manifest.save(to: manifestLocation)
-        }
-
-        try configurationRepository.build()
-        let json = try SwiftCompiler.runCustomSubcommand(["run", "configure"], in: configurationRepository.location)
-
-        let decoded = try JSONDecoder().decode([C?].self, from: json.file)
+        let decoded = try JSONDecoder().decode([C?].self, from: jsonData)
         guard let registry = decoded.first else {
             throw Configuration.Error.corruptConfiguration // [_Exempt from Test Coverage_]
         }
@@ -152,5 +161,13 @@ extension Configuration {
             throw Configuration.Error.emptyConfiguration
         }
         return registered
+    }
+
+    private static var mockQueue: [Configuration] = []
+    /// Queues a mock configuration.
+    ///
+    /// If there is a mock configuration in the queue, it will be used instead at the next attempt to load a configuration from the disk. This allows tests to bypass the need for a published release of the configuration definition module.
+    public static func queue(mock: Configuration) {
+        mockQueue.append(mock)
     }
 }

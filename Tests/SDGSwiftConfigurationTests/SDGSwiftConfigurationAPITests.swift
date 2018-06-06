@@ -62,6 +62,11 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let emptyDirectory = specifications.appendingPathComponent("Empty")
             XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version))
 
+            let mock = SampleConfiguration()
+            mock.option = "Mock"
+            Configuration.queue(mock: mock)
+            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            XCTAssertEqual(loadedMock.option, "Mock")
         } catch {
             XCTFail(error.localizedDescription)
         }
