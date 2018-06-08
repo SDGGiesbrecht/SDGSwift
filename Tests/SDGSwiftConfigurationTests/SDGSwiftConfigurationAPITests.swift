@@ -52,7 +52,6 @@ class SDGSwiftConfigurationAPITests : TestCase {
             XCTAssertEqual(loadedConfiguration.option, "Configured")
             // [_End_]
 
-            // Cached:
             let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
             XCTAssertEqual(cached.option, "Configured")
 

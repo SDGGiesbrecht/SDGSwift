@@ -22,6 +22,13 @@ public final class SampleConfiguration : Configuration, Equatable {
     /// A customizable option.
     public var option: String = "Default"
 
+    // MARK: - Context
+
+    /// Sample context information.
+    public var location: URL? {
+        return SampleContext.context?.location
+    }
+
     // MARK: - Codable
 
     private enum CodingKeys : CodingKey {

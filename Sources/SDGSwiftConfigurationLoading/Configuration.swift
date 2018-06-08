@@ -76,6 +76,15 @@ extension Configuration {
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
     public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
+        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: version, context: Optional<NullContext>.none)
+    }
+    private struct NullContext : Context {}
+
+    // [_Example 1: Configuration File_] [_Example 2: Configuration Loading_]
+    /// Loads the configuration, providing it with additional context information.
+    ///
+    /// - SeeAlso: `load(configuration:named:from:linkingAgainst:in:at:)`
+    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, context: E?) throws -> C where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
@@ -148,7 +157,14 @@ extension Configuration {
             }
 
             try configurationRepository.build()
-            let json = try SwiftCompiler.runCustomSubcommand(["run", "configure"], in: configurationRepository.location)
+
+            var script = ["run", "configure"]
+            if let information = context {
+                let json = try JSONEncoder().encode([information])
+                script.append(String(data: json, encoding: .utf8)!)
+            }
+
+            let json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
 
             jsonData = json.file
         }
