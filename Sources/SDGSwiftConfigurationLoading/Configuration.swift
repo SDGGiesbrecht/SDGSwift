@@ -60,7 +60,10 @@ extension Configuration {
     /// // Change this to actually point at a directory containing the above file.
     /// let configuredDirectory: URL = wherever
     ///
-    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+    /// // Provide context information if desired.
+    /// let context = SampleContext(information: "Information")
+    ///
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
     /// XCTAssertEqual(loadedConfiguration.option, "Configured")
     /// ```
     ///
