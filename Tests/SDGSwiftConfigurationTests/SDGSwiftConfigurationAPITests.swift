@@ -67,7 +67,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let mock = SampleConfiguration()
             mock.option = "Mock"
             Configuration.queue(mock: mock)
-            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
+            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
             XCTAssertEqual(loadedMock.option, "Mock")
         } catch {
             XCTFail(error.localizedDescription)
