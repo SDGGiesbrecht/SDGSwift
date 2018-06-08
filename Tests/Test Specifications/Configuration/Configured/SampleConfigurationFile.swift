@@ -27,4 +27,7 @@ let configuration = SampleConfiguration()
 
 // Change whatever options are available.
 configuration.option = "Configured"
+
+// The configuration loader may provide context information.
+assert(SampleContext.context?.information == "Information")
 // [_End_]

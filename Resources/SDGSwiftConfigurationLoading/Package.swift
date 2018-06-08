@@ -19,7 +19,7 @@ import PackageDescription
 let package = Package(
     name: "configure",
     dependencies: [
-        .package(url: "[*URL*]", .exact("[*version*]")),
+        .package(url: "[*URL*]", .branch("[*version*]")),
 [*packages*]
     ],
     targets: [

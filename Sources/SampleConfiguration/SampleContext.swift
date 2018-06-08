@@ -20,7 +20,7 @@ public struct SampleContext : Context {
     // MARK: - Static Properties
 
     /// The context received from the configuration loader.
-    public static let context: SampleContext? = SampleContext.accept()
+    public static var context: SampleContext? = SampleContext.accept()
 
     // MARK: - Initialization
 

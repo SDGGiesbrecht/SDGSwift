@@ -41,6 +41,9 @@ extension Configuration {
     ///
     /// // Change whatever options are available.
     /// configuration.option = "Configured"
+    ///
+    /// // The configuration loader may provide context information.
+    /// assert(SampleContext.context?.information == "Information")
     /// ```
     ///
     /// The above file could be loaded like this:
@@ -60,7 +63,7 @@ extension Configuration {
     /// // Change this to actually point at a directory containing the above file.
     /// let configuredDirectory: URL = wherever
     ///
-    /// // Provide context information if desired.
+    /// // Context information can be provided.
     /// let context = SampleContext(information: "Information")
     ///
     /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
@@ -149,7 +152,7 @@ extension Configuration {
             let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
             var manifest = String(data: Resources.package, encoding: .utf8)!
             manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-            manifest.replaceMatches(for: "[*version*]", with: version.string())
+            manifest.replaceMatches(for: "[*version*]", with: "configuration‐context")//version.string()) // [_Warning: Broken._]
             manifest.replaceMatches(for: "[*packages*]", with: packages)
             manifest.replaceMatches(for: "[*product*]", with: product)
             manifest.replaceMatches(for: "[*products*]", with: products)
