@@ -1,5 +1,4 @@
 
-import Foundation
 import SDGSwiftConfiguration
 
 /// A sample configuration context.
@@ -12,12 +11,12 @@ public struct SampleContext : Context {
     // MARK: - Initialization
 
     /// Creates the context.
-    public init(path: String) {
-        self.path = path
+    public init(information: String) {
+        self.information = information
     }
 
     // MARK: - Properties
 
-    /// The path of the configuration file.
-    internal var path: String
+    /// Sample context information.
+    internal var information: String
 }
