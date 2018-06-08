@@ -12,12 +12,12 @@ public struct SampleContext : Context {
     // MARK: - Initialization
 
     /// Creates the context.
-    public init(location: URL) {
-        self.location = location
+    public init(path: String) {
+        self.path = path
     }
 
     // MARK: - Properties
 
-    /// The location of the configuration file.
-    internal var location: URL
+    /// The path of the configuration file.
+    internal var path: String
 }

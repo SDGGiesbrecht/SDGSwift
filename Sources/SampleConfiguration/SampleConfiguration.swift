@@ -25,8 +25,8 @@ public final class SampleConfiguration : Configuration, Equatable {
     // MARK: - Context
 
     /// Sample context information.
-    public var location: URL? {
-        return SampleContext.context?.location
+    public var path: String? {
+        return SampleContext.context?.path
     }
 
     // MARK: - Codable
