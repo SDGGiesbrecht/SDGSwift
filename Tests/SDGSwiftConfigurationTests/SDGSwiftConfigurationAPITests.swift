@@ -48,19 +48,21 @@ class SDGSwiftConfigurationAPITests : TestCase {
             // Change this to actually point at a directory containing the above file.
             let configuredDirectory: URL = wherever
 
-            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            // Context information can be provided.
+            let context = SampleContext(information: "Information")
+
+            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
             XCTAssertEqual(loadedConfiguration.option, "Configured")
             // [_End_]
 
-            // Cached:
-            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
             XCTAssertEqual(cached.option, "Configured")
 
             let none = specifications.appendingPathComponent("None")
-            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version).option, "Default")
+            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version, context: context).option, "Default")
 
             let emptyDirectory = specifications.appendingPathComponent("Empty")
-            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version))
+            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version, context: context))
 
             let mock = SampleConfiguration()
             mock.option = "Mock"

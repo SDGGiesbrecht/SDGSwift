@@ -52,8 +52,9 @@ a psalmist
 
 [_Begin Feature List_]
 [_🇨🇦EN_]
-- Compiler operations such as building and testing.
-- Package Manager operations such as fetching and manifest loading.
+- Compiler operations such as building and testing: `SDGSwift`, `SDGXcode`
+- Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
+- Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 [_End_]
 
 Original Documentation Copyright Year: 2018
