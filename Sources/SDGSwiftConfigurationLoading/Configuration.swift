@@ -43,7 +43,7 @@ extension Configuration {
     /// configuration.option = "Configured"
     ///
     /// // The configuration loader may provide context information.
-    /// //assert(SampleContext.context?.information == "Information")
+    /// assert(SampleContext.context?.information == "Information")
     /// ```
     ///
     /// The above file could be loaded like this:
@@ -51,10 +51,10 @@ extension Configuration {
     /// ```swift
     /// // These refer to a real, working sample product.
     /// // See its source for more details:
-    /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.8/Sources/SampleConfiguration
+    /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.10/Sources/SampleConfiguration
     /// let product = "SampleConfiguration"
     /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-    /// let version = Version(0, 1, 8)
+    /// let version = Version(0, 1, 10)
     /// let type = SampleConfiguration.self // Import it first if necessary.
     ///
     /// // Assuming the above file is called “SampleConfigurationFile.swift”...
