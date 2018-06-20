@@ -34,7 +34,8 @@ public enum Xcode {
     internal static let standardLocations = [
         // Xcode
         "/usr/bin/xcodebuild",
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+        "/Applications/Xcode \(versions.lowerBound.string(droppingEmptyPatch: true)).app/Contents/Developer/usr/bin/xcodebuild"
         ].lazy.map({ URL(fileURLWithPath: $0) })
 
     private static func coverageToolLocation(for xcode: URL) -> URL {
