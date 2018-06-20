@@ -29,7 +29,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let versions = Version(9, 3, 0) /* Travis CI */ ... Version(9, 4, 0) /* Current */
+    internal static let versions = Version(9, 3, 0) /* Travis CI */ ... Version(9, 4, 1) /* Current */
 
     internal static let standardLocations = [
         // Xcode
