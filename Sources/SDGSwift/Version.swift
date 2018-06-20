@@ -19,7 +19,7 @@ import SDGCollections
 import SDGSwiftLocalizations
 
 /// A semantic version.
-public struct Version : Comparable, Equatable, ExpressibleByStringLiteral, Hashable, TextualPlaygroundDisplay {
+public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiteral, Hashable, TextualPlaygroundDisplay {
 
     // MARK: - Initialization
 
