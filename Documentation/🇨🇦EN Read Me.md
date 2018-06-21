@@ -34,9 +34,9 @@ SDGSwift enables use of the Swift compiler as a package dependency.
 
 ## Importing
 
-`SDGSwift` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDGSwift provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `SDGSwift` as a dependency in `Package.swift`:
+Simply add SDGSwift as a dependency in `Package.swift` and specify which of the libraries to use:
 
 ```swift
 let package = Package(
@@ -57,7 +57,7 @@ let package = Package(
 )
 ```
 
-`SDGSwift` can then be imported in source files:
+The libraries’ modules can then be imported in source files:
 
 ```swift
 import SDGSwift

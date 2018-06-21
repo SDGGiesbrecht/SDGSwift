@@ -1,10 +1,10 @@
 /*
  Workspace.swift
 
- This source file is part of the SDGCornerstone open source project.
- https://sdggiesbrecht.github.io/SDGCornerstone/SDGCornerstone
+ This source file is part of the SDGSwift open source project.
+ https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGCornerstone project contributors.
+ Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -45,7 +45,6 @@ configuration.documentation.readMe.featureList["🇨🇦EN"] = [
 
 configuration.documentation.readMe.exampleUsage["🇨🇦EN"] = "#example(Read‐Me 🇨🇦EN)"
 
-configuration.continuousIntegration.skipSimulatorOutsideContinuousIntegration = true
 configuration.documentation.api.encryptedTravisCIDeploymentKey = "UnR8vHpiMV+K/hw28327AUTPMi3Hz2l0lB4/kcMRacT3nklN8+PHCISUThkd+W1qy1fjHXjwcYvgIATzfhcZT6+AGT+Qn1O2nOJFs/6Y2XJvrhFOwvkSDh0JqcZYHNbsbpx4xk84nOV9/EHtNFHb9xLFT9cr0K+GaZfAHnDO5VLbUnSBqs0FxPDKv4P75lTmd3LbNfsPl3tfL/xDMCCcqf0zm5bO9JeRQVxTx8RWLe5q+Rw6a15IcFmFjptRdyjJmrDKIDAR/vNn2ytmfDwPlaz0a0Q1j5uH1/x1y6aIHVu+/2eLXEbm0s9hpPg+DOPUoNfrDLVqijpyXxAo6d/XAOb/yV6YYZhMUt5FgZ3936izSOAQ20JYrlf7fTX7IrfEq75fiLleEWs2YAvO/uUd8E0uICjpAW8vR2i90/mHqQHWCpRVET4OZjs8D8zibb4XBstBa6Ddj6ojGyo7N8rgdPztfiaml3FJ9JhNdFcG3JgOB1J1Bte8Ky+eOma5VFJeK8NpgZ+Bdi5QzSkmnBYoTKfZ1Ylq3rkcCUt9EDW0jYPtJ6vXbA6VnB80KI00t3869jsF6BDEzsCgxjcX4dSlWVVrhaU5bbI7a64HqoZx0x+0PKYS3RqHyx9YQfUTkjOoEIYz1Zv4kW4LU0+fO4D0kgWTVT9B2YOSqTgiDOJLLho="
 
 configuration.applySDGOverrides()
