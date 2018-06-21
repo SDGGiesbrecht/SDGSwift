@@ -50,10 +50,10 @@ class SDGSwiftConfigurationAPITests : TestCase {
             // Change this to actually point at a directory containing the above file.
             let configuredDirectory: URL = wherever
 
-            // Context information can be provided.
+            // Context information can be provided. (Optional.)
             let context = SampleContext(information: "Information")
 
-            // A log to store progress reported while loading.
+            // A log to collect progress reports while loading. (Optional.)
             var log = String()
 
             let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })

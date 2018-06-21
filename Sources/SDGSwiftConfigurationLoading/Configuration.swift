@@ -64,10 +64,13 @@ extension Configuration {
     /// // Change this to actually point at a directory containing the above file.
     /// let configuredDirectory: URL = wherever
     ///
-    /// // Context information can be provided.
+    /// // Context information can be provided. (Optional.)
     /// let context = SampleContext(information: "Information")
     ///
-    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
+    /// // A log to collect progress reports while loading. (Optional.)
+    /// var log = String()
+    ///
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })
     /// XCTAssertEqual(loadedConfiguration.option, "Configured")
     /// ```
     ///
