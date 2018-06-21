@@ -84,21 +84,26 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(loadedMock.option, "Mock")
 
-            func clean(logEntry: String) {
+            func abbreviate(logEntry: String) {
                 log.scalars.replaceMatches(for: CompositePattern([
                     LiteralPattern((logEntry + " ").scalars),
                     RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
                     LiteralPattern("\n".scalars)
                     ]), with: (logEntry + " [...]\n").scalars)
             }
-            clean(logEntry: "Fetching")
-            clean(logEntry: "Cloning")
-            clean(logEntry: "Resolving")
-            clean(logEntry: "Compile Swift Module")
-            clean(logEntry: "Linking")
-            #if !os(Linux) // These are sometimes received out of order on Linux.
+            func remove(logEntry: String) {
+                log.scalars.replaceMatches(for: CompositePattern([
+                    LiteralPattern((logEntry + " ").scalars),
+                    RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                    LiteralPattern("\n".scalars)
+                    ]), with: "".scalars)
+            }
+            abbreviate(logEntry: "Fetching")
+            abbreviate(logEntry: "Cloning")
+            abbreviate(logEntry: "Resolving")
+            remove(logEntry: "Compile Swift Module") // These may occur out of order.
+            remove(logEntry: "Linking")
             compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
-            #endif
         } catch {
             XCTFail(error.localizedDescription)
         }

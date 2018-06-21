@@ -8,11 +8,6 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-Compile Swift Module [...]
-Compile Swift Module [...]
-Compile Swift Module [...]
-Compile Swift Module [...]
-Linking [...]
 
 Cached
 Loading “SampleConfigurationFile.swift”...
@@ -31,9 +26,5 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-Compile Swift Module [...]
-Compile Swift Module [...]
-Compile Swift Module [...]
-Linking [...]
 
 Mock
