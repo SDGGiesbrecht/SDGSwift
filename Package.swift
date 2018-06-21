@@ -154,6 +154,8 @@ let package = Package(
             "SDGSwiftConfiguration",
             "SDGSwiftConfigurationLoading",
             "SampleConfiguration",
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")

@@ -1,0 +1,30 @@
+Loading “SampleConfigurationFile.swift”...
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Cloning [...]
+Resolving [...]
+Cloning [...]
+Resolving [...]
+Cloning [...]
+Resolving [...]
+
+Cached
+Loading “SampleConfigurationFile.swift”...
+
+None
+No configuration found. Using defaults...
+
+Empty
+Loading “SampleConfigurationFile.swift”...
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Cloning [...]
+Resolving [...]
+Cloning [...]
+Resolving [...]
+Cloning [...]
+Resolving [...]
+
+Mock
