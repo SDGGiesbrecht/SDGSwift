@@ -16,6 +16,7 @@ import SDGLogic
 import SDGLocalization
 
 import SDGSwift
+import SDGSwiftLocalizations
 
 extension Configuration {
 
@@ -81,9 +82,9 @@ extension Configuration {
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
-    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version) throws -> C where C : Configuration, L : InputLocalization {
+    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
         let nullContext: NullContext? = nil
-        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: version, context: nullContext)
+        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: version, context: nullContext, reportProgress: reportProgress)
     }
     private struct NullContext : Context {}
 
@@ -91,7 +92,7 @@ extension Configuration {
     /// Loads the configuration, providing it with additional context information.
     ///
     /// - SeeAlso: `load(configuration:named:from:linkingAgainst:in:at:)`
-    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, context: E?) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, context: E?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
@@ -110,8 +111,21 @@ extension Configuration {
             }
 
             guard let configurationFile = possibleConfigurationFile else {
+                reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "No configuration found. Using defaults..."
+                    }
+                }).resolved()))
                 return C()
             }
+
+            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Loading “" + StrictString(configurationFile.lastPathComponent) + "”..."
+                }
+            }).resolved()))
 
             let extensionRemoved = configurationFile.deletingPathExtension()
             let fileNameOnly = extensionRemoved.lastPathComponent
@@ -163,7 +177,11 @@ extension Configuration {
                 try manifest.save(to: manifestLocation)
             }
 
-            try configurationRepository.build()
+            try configurationRepository.build { report in
+                if ¬report.hasPrefix("$") {
+                    reportProgress(report)
+                }
+            }
 
             var script = ["run", "configure"]
             if let information = context {

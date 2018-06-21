@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
 import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
@@ -51,24 +53,50 @@ class SDGSwiftConfigurationAPITests : TestCase {
             // Context information can be provided.
             let context = SampleContext(information: "Information")
 
-            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
+            // A log to store progress reported while loading.
+            var log = String()
+
+            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(loadedConfiguration.option, "Configured")
             // [_End_]
 
-            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context)
+            print("", to: &log)
+            print("Cached", to: &log)
+            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(cached.option, "Configured")
 
+            print("", to: &log)
+            print("None", to: &log)
             let none = specifications.appendingPathComponent("None")
-            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version, context: context).option, "Default")
+            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) }).option, "Default")
 
+            print("", to: &log)
+            print("Empty", to: &log)
             let emptyDirectory = specifications.appendingPathComponent("Empty")
-            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version, context: context))
+            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) }))
+
+            print("", to: &log)
+            print("Mock", to: &log)
 
             let mock = SampleConfiguration()
             mock.option = "Mock"
             Configuration.queue(mock: mock)
-            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version)
+            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(loadedMock.option, "Mock")
+
+            func clean(logEntry: String) {
+                log.scalars.replaceMatches(for: CompositePattern([
+                    LiteralPattern((logEntry + " ").scalars),
+                    RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                    LiteralPattern("\n".scalars)
+                    ]), with: (logEntry + " [...]\n").scalars)
+            }
+            clean(logEntry: "Fetching")
+            clean(logEntry: "Cloning")
+            clean(logEntry: "Resolving")
+            clean(logEntry: "Compile Swift Module")
+            clean(logEntry: "Linking")
+            compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
         } catch {
             XCTFail(error.localizedDescription)
         }
