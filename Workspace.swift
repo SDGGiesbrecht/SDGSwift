@@ -50,10 +50,6 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "UnR8vHpiMV+K/h
 configuration.applySDGOverrides()
 configuration.validateSDGStandards()
 
-// [_Workaround: Until source specifications can be exempted by directory. (workspace version 0.8.0)_]
+// [_Workaround: Until source specifications can be exempted by directory. (workspace version 0.8.1)_]
 configuration.proofreading.rules.remove(.parameterGrouping)
 configuration.proofreading.rules.remove(.unicode)
-
-// [_Workaround: Jazzy’s redundant building is way too slow. (workspace version 0.8.0)_]
-configuration.documentation.api.generate = false
-configuration.documentation.api.enforceCoverage = false
