@@ -17,7 +17,7 @@ import WorkspaceConfiguration
 let configuration = WorkspaceConfiguration()
 configuration.applySDGDefaults()
 
-configuration.documentation.currentVersion = Version(0, 1, 11)
+configuration.documentation.currentVersion = Version(0, 1, 12)
 
 configuration.documentation.projectWebsite = URL(string: "https://sdggiesbrecht.github.io/SDGSwift/SDGSwift")!
 configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/SDGSwift")!
