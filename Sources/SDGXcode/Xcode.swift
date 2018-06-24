@@ -246,12 +246,12 @@ public enum Xcode {
         for fileURL in fileURLs {
             try autoreleasepool {
 
-                print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Parsing report for “\(fileURL.path(relativeTo: package.location))”...")
                     }
-                }).resolved())
+                }).resolved()))
 
                 var report = try runCustomCoverageSubcommand([
                     "view",
