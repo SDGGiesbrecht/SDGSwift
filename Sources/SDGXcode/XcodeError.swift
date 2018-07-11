@@ -42,7 +42,8 @@ extension Xcode {
 
         // MARK: - PresentableError
 
-        // #documentation(SDGCornerstone.PresentableError.presentableDescription())
+        // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+        // @documentation(SDGCornerstone.PresentableError.presentableDescription())
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {

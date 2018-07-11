@@ -107,7 +107,8 @@ public struct PackageRepository : TransparentWrapper {
 
     // MARK: - TransparentWrapper
 
-    // #documentation(SDGCornerstone.TransparentWrapper.wrapped)
+    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+    // @documentation(SDGCornerstone.TransparentWrapper.wrapped)
     /// The wrapped instance.
     public var wrappedInstance: Any {
         return location.path
