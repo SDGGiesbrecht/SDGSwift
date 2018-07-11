@@ -207,7 +207,7 @@ public class Identifier : AtomicSyntaxElement {
     /// Whether or not the identifier is a reference in a parameter documentation callout.
     public internal(set) var isParameterDocumentation: Bool
 
-    // [_Inherit Documentation: SyntaxElement.textFreedom_]
+    // #documentation(SyntaxElement.textFreedom)
     /// How much freedom the user has in choosing the text of the element.
     public override var textFreedom: TextFreedom {
         if isDefinition {
