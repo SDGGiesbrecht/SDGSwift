@@ -22,7 +22,7 @@ extension Configuration {
 
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
-    // [_Example 1: Configuration File_] [_Example 2: Configuration Loading_]
+    // #example(1, configurationFile) #example(2, configurationLoading)
     /// Loads the configuration in the specified directory with the specified file name.
     ///
     /// A loadable file might look something like this:
@@ -91,7 +91,6 @@ extension Configuration {
     }
     private struct NullContext : Context {}
 
-    // [_Example 1: Configuration File_] [_Example 2: Configuration Loading_]
     /// Loads the configuration, providing it with additional context information.
     ///
     /// - SeeAlso: `load(configuration:named:from:linkingAgainst:in:at:)`
