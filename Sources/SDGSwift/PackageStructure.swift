@@ -68,7 +68,7 @@ public struct Package : TransparentWrapper {
         try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
         let products = temporaryRepository.releaseProductsDirectory()
         #if os(macOS)
-        // #workaround(Swift links with absolute paths on macOS. (Swift 4.1.2))
+        // #workaround(Swift 4.1.2, Swift links with absolute paths on macOS.)
         for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
             for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
                 _ = try? Shell.default.run(command: [
