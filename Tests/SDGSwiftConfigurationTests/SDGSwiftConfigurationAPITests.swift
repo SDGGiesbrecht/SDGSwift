@@ -35,7 +35,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
             let wherever = specifications.appendingPathComponent("Configured")
-            // [_Define Example: Configuration Loading_]
+            // @example(Configuration Loading)
             // These refer to a real, working sample product.
             // See its source for more details:
             // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.10/Sources/SampleConfiguration
@@ -58,7 +58,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
 
             let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(loadedConfiguration.option, "Configured")
-            // [_End_]
+            // @endExample
 
             print("", to: &log)
             print("Cached", to: &log)
