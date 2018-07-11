@@ -35,7 +35,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
             let wherever = specifications.appendingPathComponent("Configured")
-            // @example(Configuration Loading)
+            // @example(configurationLoading)
             // These refer to a real, working sample product.
             // See its source for more details:
             // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.10/Sources/SampleConfiguration
