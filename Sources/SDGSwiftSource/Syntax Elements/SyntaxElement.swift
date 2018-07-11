@@ -116,7 +116,7 @@ open class SyntaxElement {
 
     // MARK: - Properties
 
-    // [_Define Documentation: SyntaxElement.range_]
+    // @documentation(SyntaxElement.range)
     /// The range of the element.
     public internal(set) var range: Range<String.ScalarView.Index>
 

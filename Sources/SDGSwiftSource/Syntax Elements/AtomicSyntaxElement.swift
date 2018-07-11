@@ -32,7 +32,7 @@ open class AtomicSyntaxElement : SyntaxElement {
 
     // MARK: - Properties
 
-    // [_Define Documentation: SyntaxElement.textFreedom_]
+    // @documentation(SyntaxElement.textFreedom)
     /// How much freedom the user has in choosing the text of the element.
     public var textFreedom: TextFreedom {
         primitiveMethod()
