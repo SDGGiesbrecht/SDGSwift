@@ -165,7 +165,7 @@ public enum SwiftCompiler {
     @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         let result = try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
 
-        // [_Workaround: Until swift does a better job on its own. (Swift 4.2)_]
+        // #workaround(Until swift does a better job on its own. (Swift 4.2))
         for file in try FileManager.default.deepFileEnumeration(in: package.location) {
             if file.is(in: package.location.appendingPathComponent(".build")) ∨ file.is(in: package.location.appendingPathComponent("Packages")) {
                 // [_Exempt from Test Coverage_]
