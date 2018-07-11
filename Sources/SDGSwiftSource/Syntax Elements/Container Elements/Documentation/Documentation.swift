@@ -31,26 +31,26 @@ public class Documentation : DocumentationContainerElement {
         let endToken = "*/"
         let commentSource = String(source.scalars[range])
         guard commentSource.scalars.count ≥ singleLineToken.scalars.count else {
-            return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
+            return // Invalid syntax. Leave it as unidentified. @exempt(from: tests)
         }
 
         // Find tokens.
         var tokens: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singleLineToken.scalars) {
-            // Single line // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            // Single line // @exempt(from: tests) False result in Xcode 9.3.
             parseIndents(in: source)
         } else {
             // Multiline
             guard let firstUnidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
-                firstUnidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                firstUnidentified.range.lowerBound == range.lowerBound, // @exempt(from: tests) False coverage result in Xcode 9.3.
                 String(source.scalars[firstUnidentified.range]).scalars.count ≥ startToken.scalars.count else {
-                    return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
+                    return // Overlaps something else. Leave it as unidentified. @exempt(from: tests)
             }
             tokens.append(DocumentationToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: startToken.scalars.count)))
             guard let lastUnidentified = children.lazy.reversed().first(where: { $0 is UnidentifiedSyntaxElement }),
-                lastUnidentified.range.upperBound == range.upperBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                lastUnidentified.range.upperBound == range.upperBound, // @exempt(from: tests) False coverage result in Xcode 9.3.
                 String(source.scalars[lastUnidentified.range]).scalars.count ≥ endToken.scalars.count else {
-                    return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
+                    return // Overlaps something else. Leave it as unidentified. @exempt(from: tests)
             }
             tokens.append(DocumentationToken(range: source.scalars.index(range.upperBound, offsetBy: −endToken.scalars.count) ..< range.upperBound))
         }
@@ -62,7 +62,7 @@ public class Documentation : DocumentationContainerElement {
 
         // Callouts
         while let keyword = children.first(where: { $0 is Keyword }) as? Keyword {
-            if let bullet = source.scalars.lastMatch(for: AlternativePatterns([ // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            if let bullet = source.scalars.lastMatch(for: AlternativePatterns([ // @exempt(from: tests) False result in Xcode 9.3.
                 LiteralPattern("\u{2D}".scalars),
                 LiteralPattern("*".scalars),
                 LiteralPattern("+".scalars)
@@ -70,7 +70,7 @@ public class Documentation : DocumentationContainerElement {
                 let colon = source.scalars.firstMatch(for: ":".scalars, in: keyword.range.upperBound ..< range.upperBound) {
                 var lineEnd = keyword.range.upperBound
                 source.scalars.advance(&lineEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∉ Newline.newlineCharacters })))
-                // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                // @exempt(from: tests) False result in Xcode 9.3.
 
                 let callout: SyntaxElement
                 let name = String(source.scalars[keyword.range]).lowercased()
@@ -81,7 +81,7 @@ public class Documentation : DocumentationContainerElement {
                 }
 
                 let adjusted = children.filter { ¬$0.range.overlaps(callout.range) }
-                children = adjusted + [callout] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                children = adjusted + [callout] // @exempt(from: tests) False result in Xcode 9.3.
             }
         }
 
@@ -96,10 +96,10 @@ public class Documentation : DocumentationContainerElement {
         }
         while let startFence = nextFence(after: range.lowerBound),
             let endFence = nextFence(after: startFence.upperBound) {
-                let adjusted = children.filter { child in // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                let adjusted = children.filter { child in // @exempt(from: tests) False result in Xcode 9.3.
                     ¬child.range.overlaps(startFence.lowerBound ..< endFence.upperBound)
                 }
-                children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                children = adjusted + [DocumentationCodeBlock(startFence: Punctuation(range: startFence), endFence: Punctuation(range: endFence), in: source)] // @exempt(from: tests) False result in Xcode 9.3.
         }
 
         // Headings
@@ -186,7 +186,7 @@ public class Documentation : DocumentationContainerElement {
 
         // Fix grouped parameters.
         for index in children.indices {
-            let child = children[index] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            let child = children[index] // @exempt(from: tests) False result in Xcode 9.3.
             if let parameterList = child as? DocumentationCallout,
                 String(source.scalars[parameterList.callout.range]).lowercased() == "parameters" {
 
@@ -213,7 +213,7 @@ public class Documentation : DocumentationContainerElement {
                 let list = DocumentationParameterList(callout: parameterList, parameters: entries, in: source)
 
                 let adjusted = children.filter { ¬$0.range.overlaps(list.range) }
-                children = adjusted + [list] // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+                children = adjusted + [list] // @exempt(from: tests) False result in Xcode 9.3.
 
                 break // Can only be one.
             }

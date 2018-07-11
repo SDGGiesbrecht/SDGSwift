@@ -113,7 +113,7 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache") // [_Exempt from Test Coverage_]
+        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache") // @exempt(from: tests)
         let cache = try self.cacheDirectory(in: cacheRoot, for: version)
 
         if ¬FileManager.default.fileExists(atPath: cache.path) {

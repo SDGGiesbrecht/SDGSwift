@@ -199,7 +199,7 @@ extension Configuration {
 
         let decoded = try JSONDecoder().decode([C?].self, from: jsonData)
         guard let registry = decoded.first else {
-            throw Configuration.Error.corruptConfiguration // [_Exempt from Test Coverage_]
+            throw Configuration.Error.corruptConfiguration // @exempt(from: tests)
         }
         guard let registered = registry else {
             throw Configuration.Error.emptyConfiguration

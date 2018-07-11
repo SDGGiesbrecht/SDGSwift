@@ -42,7 +42,7 @@ public final class SampleConfiguration : Configuration, Equatable {
         try super.init(from: container.superDecoder())
 
         if let option = try container.decodeIfPresent(String.self, forKey: .option) {
-            self.option = option // [_Exempt from Test Coverage_] False coverage result in Xcode 9.4.
+            self.option = option // @exempt(from: tests) False coverage result in Xcode 9.4.
         }
     }
 

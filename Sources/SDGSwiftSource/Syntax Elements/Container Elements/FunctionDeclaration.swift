@@ -20,7 +20,7 @@ public class FunctionDeclaration : ContainerSyntaxElement {
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens)
         for child in children {
-            if let name = child as? Identifier { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+            if let name = child as? Identifier { // @exempt(from: tests) False coverage result in Xcode 9.3.
                 name.isDefinition = true
                 break
             } else if let keyword = child as? Keyword,

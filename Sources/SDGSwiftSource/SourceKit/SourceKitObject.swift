@@ -34,7 +34,7 @@ extension SourceKit {
             var keys: [sourcekitd_uid_t?] = []
             var values: [sourcekitd_object_t?] = []
             for (key, value) in dictionary {
-                keys.append(key.rawValue) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3
+                keys.append(key.rawValue) // @exempt(from: tests) False coverage result in Xcode 9.3
                 values.append(value.rawValue)
             }
             rawValue = (try load(symbol: "sourcekitd_request_dictionary_create") as (@convention(c) (UnsafePointer<sourcekitd_uid_t?>?, UnsafePointer<sourcekitd_object_t?>?, Int) -> sourcekitd_object_t?))(keys, values, keys.count)!
@@ -42,10 +42,10 @@ extension SourceKit {
 
         deinit {
             if let release = (try? load(symbol: "sourcekitd_request_release") as (@convention(c) (sourcekitd_object_t) -> Void)) {
-                release(rawValue) // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3
+                release(rawValue) // @exempt(from: tests) False coverage result in Xcode 9.3
             } else {
                 if BuildConfiguration.current == .debug {
-                    print("Memory leak! Failed to link “sourcekitd_request_release”.") // [_Exempt from Test Coverage_]
+                    print("Memory leak! Failed to link “sourcekitd_request_release”.") // @exempt(from: tests)
                 }
             }
         }

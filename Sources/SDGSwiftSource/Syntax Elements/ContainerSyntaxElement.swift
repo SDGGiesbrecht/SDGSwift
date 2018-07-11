@@ -32,7 +32,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         self.children = children
     }
 
-    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) throws { // @exempt(from: tests) False coverage result in Xcode 9.3.
         try super.init(substructureInformation: substructureInformation, in: source)
         defer { resolve(tokens: tokens, source: source) }
         guard let substructure = try? substructureInformation.value(for: "key.substructure") else {
@@ -41,8 +41,8 @@ open class ContainerSyntaxElement : SyntaxElement {
         }
 
         var substructureElements: [SyntaxElement] = []
-        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) { // [_Exempt from Test Coverage_] Parenthesis is meaningless.
-            if let last = substructureElements.last, // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+        for next in try substructure.asArray().map({ try SyntaxElement.parse(substructureInformation: $0, source: source, tokens: tokens) }) { // @exempt(from: tests) Parenthesis is meaningless.
+            if let last = substructureElements.last, // @exempt(from: tests) False result in Xcode 9.3.
                 next.range.overlaps(last.range) {
 
                 if next.range ⊆ last.range,
@@ -72,7 +72,7 @@ open class ContainerSyntaxElement : SyntaxElement {
         children = knownChildren + substructureElements
     }
 
-    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+    internal init(range: Range<String.ScalarView.Index>, source: String, tokens: [SourceKit.PrimitiveToken], knownChildren: [SyntaxElement] = []) { // @exempt(from: tests) False coverage result in Xcode 9.3.
         super.init(range: range)
         children = knownChildren
         resolve(tokens: tokens, source: source)
@@ -141,7 +141,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                 case "source.lang.swift.syntaxtype.typeidentifier":
                     resolvedTokens.append(TypeIdentifier(range: token.range, isDefinition: false))
                 default:
-                    // [_Exempt from Test Coverage_]
+                    // @exempt(from: tests)
                     if BuildConfiguration.current == .debug {
                         print("Unidentified token kind: \(token.kind)")
                     }
@@ -178,7 +178,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                         if lowerBound ≤ upperBound {
                             inserts.append(UnidentifiedSyntaxElement(range: lowerBound ..< upperBound))
                         } else {
-                            // [_Exempt from Test Coverage_]
+                            // @exempt(from: tests)
                             if BuildConfiguration.current == .debug {
                                 print("Overlapping children:")
                                 print(type(of: self))
@@ -196,7 +196,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     inserts.append(UnidentifiedSyntaxElement(range: range.lowerBound ..< sorted.first!.range.lowerBound))
                 } else if BuildConfiguration.current == .debug,
                     range.lowerBound ≠ sorted.first!.range.lowerBound {
-                    // [_Exempt from Test Coverage_]
+                    // @exempt(from: tests)
                     print("Child out of bounds:")
                     print(type(of: self))
                     print(type(of: sorted.first!))
@@ -206,7 +206,7 @@ open class ContainerSyntaxElement : SyntaxElement {
                     inserts.append(UnidentifiedSyntaxElement(range: sorted.last!.range.upperBound ..< range.upperBound))
                 } else if BuildConfiguration.current == .debug,
                     sorted.last!.range.upperBound ≠ range.upperBound {
-                    // [_Exempt from Test Coverage_]
+                    // @exempt(from: tests)
                     print("Child out of bounds:")
                     print(type(of: self))
                     print(type(of: sorted.last!))
@@ -222,7 +222,7 @@ open class ContainerSyntaxElement : SyntaxElement {
     private func insert(substructureChild: SyntaxElement) {
         if let nested = children.first(where: { $0.range ⊇ substructureChild.range }),
             let container = nested as? ContainerSyntaxElement {
-            container.insert(substructureChild: substructureChild) // [_Exempt from Test Coverage_]
+            container.insert(substructureChild: substructureChild) // @exempt(from: tests)
         } else {
             var adjusted = children.filter { ¬$0.range.overlaps(substructureChild.range) }
             adjusted.append(substructureChild)
@@ -338,7 +338,7 @@ open class ContainerSyntaxElement : SyntaxElement {
     }
 
     internal func parseNewlines(in source: String, deepSearch: Bool) {
-        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // [_Exempt from Test Coverage_]
+        parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // @exempt(from: tests)
         parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
     }
 }

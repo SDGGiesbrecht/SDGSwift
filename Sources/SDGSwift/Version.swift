@@ -169,7 +169,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
         guard let result = Version(stringLiteral) else {
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in
                 switch localization {
-                case .englishCanada: // [_Exempt from Test Coverage_]
+                case .englishCanada: // @exempt(from: tests)
                     return StrictString("“\(stringLiteral)” is not a version number.")
                 }
             }))

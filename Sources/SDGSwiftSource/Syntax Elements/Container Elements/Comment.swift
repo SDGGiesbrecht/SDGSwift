@@ -39,24 +39,24 @@ public class Comment : ContainerSyntaxElement {
         let singleLineToken = "//"
         let commentSource = String(source.scalars[range])
         guard commentSource.scalars.count ≥ singleLineToken.scalars.count else {
-            return // Invalid syntax. Leave it as unidentified. [_Exempt from Test Coverage_]
+            return // Invalid syntax. Leave it as unidentified. @exempt(from: tests)
         }
 
         // Find tokens.
         var resolvedNesting: [SyntaxElement] = []
         if source.scalars[range].hasPrefix(singleLineToken.scalars) {
-            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+            // @exempt(from: tests) False coverage result in Xcode 9.3.
             // Single line
             guard let unidentified = children.first(where: { $0 is UnidentifiedSyntaxElement }),
-                unidentified.range.lowerBound == range.lowerBound, // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                unidentified.range.lowerBound == range.lowerBound, // @exempt(from: tests) False coverage result in Xcode 9.3.
                 String(source.scalars[unidentified.range]).scalars.count ≥ singleLineToken.scalars.count else {
-                return // Overlaps something else. Leave it as unidentified. [_Exempt from Test Coverage_]
+                return // Overlaps something else. Leave it as unidentified. @exempt(from: tests)
             }
             resolvedNesting.append(CommentToken(range: range.lowerBound ..< source.scalars.index(range.lowerBound, offsetBy: singleLineToken.scalars.count)))
         } else {
             // Multiline (possibly nested)
             for child in children where child is UnidentifiedSyntaxElement {
-                for match in source.scalars.matches(for: AlternativePatterns([// [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                for match in source.scalars.matches(for: AlternativePatterns([// @exempt(from: tests) False coverage result in Xcode 9.3.
                     LiteralPattern("/*".scalars),
                     LiteralPattern("*/".scalars)
                     ]), in: child.range) {

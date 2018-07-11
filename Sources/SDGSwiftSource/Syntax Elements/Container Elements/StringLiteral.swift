@@ -23,10 +23,10 @@ public class StringLiteral : ContainerSyntaxElement {
 
         if length ≥ 1,
             source.scalars[range.lowerBound] == "\u{22}" {
-            quotationMarks.append(Punctuation(range: range.lowerBound ..< source.scalars.index(after: range.lowerBound))) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            quotationMarks.append(Punctuation(range: range.lowerBound ..< source.scalars.index(after: range.lowerBound))) // @exempt(from: tests) False result in Xcode 9.3.
         }
         if length ≥ 2 {
-            let start = source.scalars.index(before: range.upperBound) // [_Exempt from Test Coverage_] False result in Xcode 9.3.
+            let start = source.scalars.index(before: range.upperBound) // @exempt(from: tests) False result in Xcode 9.3.
             if source.scalars[start] == "\u{22}" {
                 quotationMarks.append(Punctuation(range: start ..< range.upperBound))
             }

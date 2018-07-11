@@ -39,15 +39,15 @@ public enum Git {
                 // Make sure version is compatible.
                 guard let output = try? swift.run(["\u{2D}\u{2D}version"]),
                     let version = Version(firstIn: output) else {
-                    return false // [_Exempt from Test Coverage_] Git is necessarily available when tests are run.
+                    return false // @exempt(from: tests) Git is necessarily available when tests are run.
                 }
                 return version ∈ compatibleVersionRange
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "git", validate: validate) {
                 return found
-            } else { // [_Exempt from Test Coverage_]
-                // [_Exempt from Test Coverage_] Git is necessarily available when tests are run.
+            } else { // @exempt(from: tests)
+                // @exempt(from: tests) Git is necessarily available when tests are run.
                 throw Git.Error.unavailable
             }
         }

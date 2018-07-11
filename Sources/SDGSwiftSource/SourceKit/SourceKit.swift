@@ -29,7 +29,7 @@ public enum SourceKit {
     private static func library() throws -> UnsafeMutableRawPointer {
         return try cached(in: &located) {
             guard let library = dlopen(try SwiftCompiler._sourceKitLocation().path, RTLD_LAZY) else {
-                throw SourceKit.Error.currentDynamicLinkerError() // [_Exempt from Test Coverage_]
+                throw SourceKit.Error.currentDynamicLinkerError() // @exempt(from: tests)
             }
 
             return library
@@ -40,7 +40,7 @@ public enum SourceKit {
     private static func uninitializedLoad<Symbol>(symbol name: String) throws -> Symbol {
         let loadedSymbol = try cached(in: &loaded[name]) {
             guard let loaded = dlsym(try library(), name) else {
-                throw SourceKit.Error.currentDynamicLinkerError() // [_Exempt from Test Coverage_]
+                throw SourceKit.Error.currentDynamicLinkerError() // @exempt(from: tests)
             }
             return unsafeBitCast(loaded, to: Symbol.self)
         }
@@ -71,7 +71,7 @@ public enum SourceKit {
         }
 
         guard ¬(try load(symbol: "sourcekitd_response_is_error") as (@convention(c) (sourcekitd_response_t) -> Bool))(response) else {
-            let cString = (try load(symbol: "sourcekitd_response_error_get_description") as (@convention(c) (sourcekitd_response_t) -> UnsafePointer<Int8>?))(response)! // [_Exempt from Test Coverage_]
+            let cString = (try load(symbol: "sourcekitd_response_error_get_description") as (@convention(c) (sourcekitd_response_t) -> UnsafePointer<Int8>?))(response)! // @exempt(from: tests)
             throw SourceKit.Error.sourceKitError(description: String(cString: cString))
         }
 
@@ -85,7 +85,7 @@ public enum SourceKit {
             try UID("key.sourcefile"): try Object(file.path)
             ]))
         guard let variant = response else {
-            throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any) // [_Exempt from Test Coverage_]
+            throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any) // @exempt(from: tests)
         }
         return variant
     }
@@ -97,7 +97,7 @@ public enum SourceKit {
             try UID("key.sourcetext"): try Object(source)
             ]))
         guard let variant = response else {
-            throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any) // [_Exempt from Test Coverage_]
+            throw SourceKit.Error.unknownResponse(contents: Variant?.none as Any) // @exempt(from: tests)
         }
         return variant
     }

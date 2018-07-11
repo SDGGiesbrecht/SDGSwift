@@ -22,11 +22,11 @@ import SDGLocalization
 open class AtomicSyntaxElement : SyntaxElement {
 
     /// Creates a syntax element with the specified range.
-    public required override init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+    public required override init(range: Range<String.ScalarView.Index>) { // @exempt(from: tests) False coverage result in Xcode 9.3.
         super.init(range: range)
     }
 
-    internal override init(substructureInformation: SourceKit.Variant, in source: String) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+    internal override init(substructureInformation: SourceKit.Variant, in source: String) throws { // @exempt(from: tests) False coverage result in Xcode 9.3.
         try super.init(substructureInformation: substructureInformation, in: source)
     }
 
