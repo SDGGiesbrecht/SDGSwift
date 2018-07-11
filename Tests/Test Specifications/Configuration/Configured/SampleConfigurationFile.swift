@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// [_Define Example: Configuration File_]
+// @example(configurationFile)
 // Import the configuration definitions.
 import SampleConfiguration
 
@@ -30,4 +30,4 @@ configuration.option = "Configured"
 
 // The configuration loader may provide context information.
 assert(SampleContext.context?.information == "Information")
-// [_End_]
+// @endExample
