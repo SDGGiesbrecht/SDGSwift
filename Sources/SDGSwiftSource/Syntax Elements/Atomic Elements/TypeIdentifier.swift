@@ -27,7 +27,7 @@ public class TypeIdentifier : AtomicSyntaxElement {
     }
 
     /// :nodoc:
-    public required init(range: Range<String.ScalarView.Index>) { // [_Exempt from Test Coverage_]
+    public required init(range: Range<String.ScalarView.Index>) { // @exempt(from: tests)
         // Should never need splitting anyway.
         self.isDefinition = false
         super.init(range: range)
@@ -37,7 +37,7 @@ public class TypeIdentifier : AtomicSyntaxElement {
 
     public private(set) var isDefinition: Bool
 
-    // [_Inherit Documentation: SyntaxElement.textFreedom_]
+    // #documentation(SyntaxElement.textFreedom)
     /// How much freedom the user has in choosing the text of the element.
     public override var textFreedom: TextFreedom {
         return isDefinition ? .arbitrary : .aliasable

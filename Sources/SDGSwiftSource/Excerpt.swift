@@ -33,7 +33,7 @@ public class Excerpt : ContainerSyntaxElement {
         try postProcess(source: source)
     }
 
-    internal init(variant: SourceKit.Variant, source: String) throws { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+    internal init(variant: SourceKit.Variant, source: String) throws { // @exempt(from: tests) False coverage result in Xcode 9.3.
         let tokens = try Excerpt.tokens(fromVariant: variant, source: source)
         try super.init(substructureInformation: variant, source: source, tokens: tokens)
         try postProcess(source: source)
@@ -56,7 +56,7 @@ public class Excerpt : ContainerSyntaxElement {
                 } else {
                     return false
                 }
-            }) // [_Exempt from Test Coverage_] Meaningless line.
+            }) // @exempt(from: tests) Meaningless line.
             if let found = block {
                 return found as? DocumentationCodeBlock
             } else {
@@ -101,14 +101,14 @@ public class Excerpt : ContainerSyntaxElement {
         parseUnidentified(deepSearch: true) { unidentified in
             if let whitespace = Whitespace(unidentified: unidentified, in: source) {
                 return [whitespace]
-            } else { // [_Exempt from Test Coverage_]
-                // [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
+            } else { // @exempt(from: tests)
+                // @exempt(from: tests) The tests require that everying is accounted for by this point.
                 return nil
             }
         }
 
         if BuildConfiguration.current == .debug {
-            for unidentified in makeDeepIterator() where unidentified is UnidentifiedSyntaxElement {// [_Exempt from Test Coverage_] The tests require that everying is accounted for by this point.
+            for unidentified in makeDeepIterator() where unidentified is UnidentifiedSyntaxElement {// @exempt(from: tests) The tests require that everying is accounted for by this point.
                 print("Unidentified element.")
                 print("Parent: \(String(describing: unidentified.parent))")
                 print("Source: “\(String(source.scalars[unidentified.range]))”")

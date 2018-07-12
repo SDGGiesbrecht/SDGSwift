@@ -81,7 +81,7 @@ public struct PackageRepository : TransparentWrapper {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // [_Exempt from Test Coverage_] Xcode hijacks this.
+    @discardableResult public func test(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
         return try SwiftCompiler.test(self, reportProgress: reportProgress)
     }
 
@@ -107,7 +107,8 @@ public struct PackageRepository : TransparentWrapper {
 
     // MARK: - TransparentWrapper
 
-    // [_Inherit Documentation: SDGCornerstone.TransparentWrapper.wrapped_]
+    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+    // @documentation(SDGCornerstone.TransparentWrapper.wrapped)
     /// The wrapped instance.
     public var wrappedInstance: Any {
         return location.path

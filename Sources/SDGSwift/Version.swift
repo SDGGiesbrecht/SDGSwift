@@ -128,7 +128,8 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Comparable
 
-    // [_Inherit Documentation: SDGCornerstone.Comparable.<_]
+    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+    // @documentation(SDGCornerstone.Comparable.<)
     /// Returns `true` if the preceding value is less than the following value.
     ///
     /// - Parameters:
@@ -140,7 +141,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - CustomStringConvertible
 
-    // [_Inherit Documentation: SDGCornerstone.CustomStringConvertible.description_]
+    // #documentation(SDGCornerstone.CustomStringConvertible.description)
     /// A textual representation of the instance.
     public var description: String {
         return string()
@@ -148,7 +149,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Equatable
 
-    // [_Inherit Documentation: SDGCornerstone.Equatable.==_]
+    // #documentation(SDGCornerstone.Equatable.==)
     /// Returns `true` if the two values are equal.
     ///
     /// - Parameters:
@@ -160,7 +161,8 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - ExpressibleByStringLiteral
 
-    // [_Inherit Documentation: SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:)_]
+    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+    // @documentation(SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:))
     /// Creates an instance from a string literal.
     ///
     /// - Parameters:
@@ -169,7 +171,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
         guard let result = Version(stringLiteral) else {
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in
                 switch localization {
-                case .englishCanada: // [_Exempt from Test Coverage_]
+                case .englishCanada: // @exempt(from: tests)
                     return StrictString("“\(stringLiteral)” is not a version number.")
                 }
             }))
@@ -179,7 +181,8 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Hashable
 
-    // [_Inherit Documentation: SDGCornerstone.Hashable.hashValue_]
+    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
+    // @documentation(SDGCornerstone.Hashable.hashValue)
     /// The hash value.
     public var hashValue: Int {
         return string().hashValue

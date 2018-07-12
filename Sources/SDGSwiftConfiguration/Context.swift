@@ -22,7 +22,7 @@ public protocol Context : Codable {
 extension Context {
 
     /// Returns the context provided by the configuration loader.
-    public static func accept() -> Self? { // [_Exempt from Test Coverage_] Requires 0.1.10
+    public static func accept() -> Self? { // @exempt(from: tests) Requires 0.1.10
 
         guard ProcessInfo.processInfo.arguments.count > 1 else {
             return nil

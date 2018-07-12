@@ -39,13 +39,13 @@ extension SourceKit {
 
         // MARK: - Initialization
 
-        internal static func currentDynamicLinkerError() -> SourceKit.Error { // [_Exempt from Test Coverage_]
+        internal static func currentDynamicLinkerError() -> SourceKit.Error { // @exempt(from: tests)
             return .dynamicLinkerError(description: String(validatingUTF8: dlerror()))
         }
 
         // MARK: - PresentableError
 
-        // [_Inherit Documentation: SDGCornerstone.PresentableError.presentableDescription()_]
+        // #documentation(SDGCornerstone.PresentableError.presentableDescription())
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {

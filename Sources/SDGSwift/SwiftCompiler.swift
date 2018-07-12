@@ -83,16 +83,16 @@ public enum SwiftCompiler {
                     let version = Version(firstIn: output),
                     version ∈ versions {
                     return true
-                } else { // [_Exempt from Test Coverage_]
-                    // [_Exempt from Test Coverage_] Would require Xcode to be absent.
+                } else { // @exempt(from: tests)
+                    // @exempt(from: tests) Would require Xcode to be absent.
                     return false
                 }
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validate) {
                 return found
-            } else { // [_Exempt from Test Coverage_] Swift is necessarily available when tests are run.
-                // [_Exempt from Test Coverage_]
+            } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
+                // @exempt(from: tests)
                 throw SwiftCompiler.Error.unavailable
             }
         }
@@ -140,7 +140,7 @@ public enum SwiftCompiler {
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // [_Exempt from Test Coverage_] Xcode hijacks this.
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
         return try runCustomSubcommand(["test"], in: package.location, reportProgress: reportProgress)
     }
 
@@ -165,10 +165,10 @@ public enum SwiftCompiler {
     @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         let result = try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
 
-        // [_Workaround: Until swift does a better job on its own. (Swift 4.2)_]
+        // #workaround(Swift 4.2, Until swift does a better job on its own.)
         for file in try FileManager.default.deepFileEnumeration(in: package.location) {
             if file.is(in: package.location.appendingPathComponent(".build")) ∨ file.is(in: package.location.appendingPathComponent("Packages")) {
-                // [_Exempt from Test Coverage_]
+                // @exempt(from: tests)
                 // Belongs to a different package.
                 continue
             }

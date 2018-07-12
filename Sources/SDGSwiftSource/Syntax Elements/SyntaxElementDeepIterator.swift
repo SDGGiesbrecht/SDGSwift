@@ -24,7 +24,7 @@ extension SyntaxElement {
         internal init(rootElement: SyntaxElement) {
             element = rootElement
             if let root = rootElement as? ContainerSyntaxElement {
-                childrenIterator = root.children.makeIterator() // [_Exempt from Test Coverage_] False coverage result in Xcode 9.3.
+                childrenIterator = root.children.makeIterator() // @exempt(from: tests) False coverage result in Xcode 9.3.
             } else {
                 childrenIterator = [].makeIterator()
             }
