@@ -31,6 +31,6 @@ public class Extension : ContainerSyntaxElement {
     // #documentation(SDGSwiftSource.SyntaxElement.api())
     /// Returns the API provided by this element.
     open override func api(source: String) -> [APIElement] {
-        return [ExtensionAPI(type: String(source.scalars[type.range]))]
+        return [ExtensionAPI(type: String(source.scalars[type.range]), children: apiChildren(source: source))]
     }
 }

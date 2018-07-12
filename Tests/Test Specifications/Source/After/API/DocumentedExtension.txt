@@ -1,1 +1,2 @@
 (Bool)
+ isTrue • var isTrue

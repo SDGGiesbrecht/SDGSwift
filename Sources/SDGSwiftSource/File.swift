@@ -36,4 +36,12 @@ public class File : Excerpt {
 
     /// The location of the file.
     public var location: URL
+
+    // MARK: - API
+
+    // #documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open override func api(source: String) -> [APIElement] {
+        return apiChildren(source: source)
+    }
 }

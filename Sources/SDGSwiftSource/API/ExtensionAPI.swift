@@ -12,15 +12,37 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 public class ExtensionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(type: String) {
+    internal init(type: String, children: [APIElement]) {
         self.type = type
+        super.init()
+        for element in children {
+            if let property = element as? VariableAPI {
+                properties.append(property)
+            } else {
+                if BuildConfiguration.current == .debug {
+                    print("Unidentified API element: \(Swift.type(of: element))")
+                }
+            }
+        }
     }
 
     private var type: String
+
+    private var _properties: [VariableAPI] = []
+    private var properties: [VariableAPI] {
+        get {
+            return _properties
+        }
+        set {
+            _properties = newValue.sorted()
+        }
+    }
 
     // MARK: - Properties
 
@@ -30,5 +52,6 @@ public class ExtensionAPI : APIElement {
 
     public override var summary: [String] {
         return [name]
+            + properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }

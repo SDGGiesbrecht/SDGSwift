@@ -20,6 +20,10 @@ public class APIElement : Comparable {
         primitiveMethod()
     }
 
+    public var declaration: String? {
+        primitiveMethod()
+    }
+
     public var summary: [String] {
         primitiveMethod()
     }

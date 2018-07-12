@@ -18,6 +18,7 @@ import SDGLogic
 public class VariableDeclaration : ContainerSyntaxElement {
 
     internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
+        isPublic = try substructureInformation.asDictionary()["key.accessibility"]?.asString() == "source.lang.swift.accessibility.public"
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
     }
@@ -26,4 +27,19 @@ public class VariableDeclaration : ContainerSyntaxElement {
 
     /// The name of the variable.
     public let name: Identifier
+
+    /// Whether the variable is public.
+    public let isPublic: Bool
+
+    // MARK: - API
+
+    // #documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open override func api(source: String) -> [APIElement] {
+        if isPublic {
+            return [VariableAPI(name: String(source.scalars[name.range]))]
+        } else {
+            return []
+        }
+    }
 }
