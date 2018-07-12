@@ -18,4 +18,14 @@ extension Bool {
     public var isTrue: Bool {
         return self
     }
+
+    /// Whether or not the boolean means “yes”.
+    public internal(set) var meansYes: Bool {
+        get {
+            return self
+        }
+        set {
+            self = newValue
+        }
+    }
 }

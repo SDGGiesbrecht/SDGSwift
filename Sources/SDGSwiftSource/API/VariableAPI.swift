@@ -16,13 +16,15 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?) {
+    internal init(name: String, type: String?, isSettable: Bool) {
         _name = name
         self.type = type
+        self.isSettable = isSettable
     }
 
     private var _name: String
     private var type: String?
+    private var isSettable: Bool
 
     // MARK: - Properties
 
@@ -31,7 +33,7 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        return "var " + _name + ": " + (type ?? "Any")
+        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}"
     }
 
     public override var summary: [String] {

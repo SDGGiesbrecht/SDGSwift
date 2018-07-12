@@ -18,4 +18,14 @@ extension B̲o̲o̲l̲ {
     public var isTrue: B̲o̲o̲l̲ {
         return self
     }
+
+    /// Whether or not the boolean means “yes”.
+    public internal(set) var meansYes: B̲o̲o̲l̲ {
+        get {
+            return self
+        }
+        set {
+            self = n̲e̲w̲V̲a̲l̲u̲e̲
+        }
+    }
 }

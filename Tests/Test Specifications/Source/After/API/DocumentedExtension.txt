@@ -1,2 +1,3 @@
 (Bool)
- isTrue • var isTrue: Bool
+ isTrue • var isTrue: Bool { get set }
+ meansYes • var meansYes: Bool { get set }

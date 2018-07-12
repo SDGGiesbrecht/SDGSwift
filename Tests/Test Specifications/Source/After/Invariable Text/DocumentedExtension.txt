@@ -18,5 +18,15 @@
 ̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ isTrue:̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲    }̲
+̲
+̲    /̲/̲/̲ Whether or not the boolean means “yes”.
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲s̲e̲t̲)̲ v̲a̲r̲ meansYes:̲ Bool {̲
+̲        g̲e̲t̲ {̲
+̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
+̲        }̲
+̲        s̲e̲t̲ {̲
+̲            s̲e̲l̲f̲ =̲ newValue
+̲        }̲
+̲    }̲
 ̲}̲
 ̲

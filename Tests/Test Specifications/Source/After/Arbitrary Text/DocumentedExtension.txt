@@ -18,4 +18,14 @@ extension ̲Bool ̲{
  ̲ ̲ ̲ ̲public ̲var ̲i̲s̲T̲r̲u̲e̲: ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲/// ̲W̲h̲e̲t̲h̲e̲r̲ ̲o̲r̲ ̲n̲o̲t̲ ̲t̲h̲e̲ ̲b̲o̲o̲l̲e̲a̲n̲ ̲m̲e̲a̲n̲s̲ ̲“̲y̲e̲s̲”̲.̲
+ ̲ ̲ ̲ ̲public ̲internal(set) ̲var ̲m̲e̲a̲n̲s̲Y̲e̲s̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self ̲= ̲newValue
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲}
 }

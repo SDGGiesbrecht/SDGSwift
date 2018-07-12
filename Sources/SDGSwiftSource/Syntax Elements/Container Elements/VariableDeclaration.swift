@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 /// A variable declaration.
 public class VariableDeclaration : ContainerSyntaxElement {
@@ -21,6 +22,14 @@ public class VariableDeclaration : ContainerSyntaxElement {
         isPublic = try substructureInformation.asDictionary()["key.accessibility"]?.asString() == "source.lang.swift.accessibility.public"
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
+
+        for child in children {
+            if let keyword = child as? Keyword,
+                String(source.scalars[keyword.range]) ∈ Set(["var", "let"]) {
+                self.keyword = keyword
+                break
+            }
+        }
 
         for child in children where child.range.lowerBound > name.range.lowerBound {
             if let type = child as? TypeIdentifier {
@@ -31,6 +40,9 @@ public class VariableDeclaration : ContainerSyntaxElement {
     }
 
     // MARK: - Properties
+
+    /// The keyword.
+    public private(set) var keyword: Keyword!
 
     /// The name of the variable.
     public let name: Identifier
@@ -47,7 +59,17 @@ public class VariableDeclaration : ContainerSyntaxElement {
     /// Returns the API provided by this element.
     open override func api(source: String) -> [APIElement] {
         if isPublic {
-            return [VariableAPI(name: String(source.scalars[name.range]), type: type.flatMap({ String(source.scalars[$0.range]) }))]
+            var isSettable = false
+            if String(source.scalars[keyword.range]) == "var" {
+                let attributes = String(source.scalars[range.lowerBound ..< keyword.range.lowerBound])
+                if ¬attributes.contains("private(set)")
+                    ∧ ¬attributes.contains("fileprivate(set)")
+                    ∧ ¬attributes.contains("internal(set)") {
+                    isSettable = true
+                }
+            }
+
+            return [VariableAPI(name: String(source.scalars[name.range]), type: type.flatMap({ String(source.scalars[$0.range]) }), isSettable: isSettable)]
         } else {
             return []
         }
