@@ -16,11 +16,13 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String) {
+    internal init(name: String, type: String?) {
         _name = name
+        self.type = type
     }
 
     private var _name: String
+    private var type: String?
 
     // MARK: - Properties
 
@@ -29,7 +31,7 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        return "var " + _name
+        return "var " + _name + ": " + (type ?? "Any")
     }
 
     public override var summary: [String] {

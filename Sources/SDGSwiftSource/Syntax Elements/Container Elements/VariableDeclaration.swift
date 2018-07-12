@@ -21,12 +21,22 @@ public class VariableDeclaration : ContainerSyntaxElement {
         isPublic = try substructureInformation.asDictionary()["key.accessibility"]?.asString() == "source.lang.swift.accessibility.public"
         name = Identifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: true)
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
+
+        for child in children where child.range.lowerBound > name.range.lowerBound {
+            if let type = child as? TypeIdentifier {
+                self.type = type
+                break
+            }
+        }
     }
 
     // MARK: - Properties
 
     /// The name of the variable.
     public let name: Identifier
+
+    /// The type of the variable.
+    public private(set) var type: TypeIdentifier?
 
     /// Whether the variable is public.
     public let isPublic: Bool
@@ -37,7 +47,7 @@ public class VariableDeclaration : ContainerSyntaxElement {
     /// Returns the API provided by this element.
     open override func api(source: String) -> [APIElement] {
         if isPublic {
-            return [VariableAPI(name: String(source.scalars[name.range]))]
+            return [VariableAPI(name: String(source.scalars[name.range]), type: type.flatMap({ String(source.scalars[$0.range]) }))]
         } else {
             return []
         }
