@@ -341,4 +341,12 @@ open class ContainerSyntaxElement : SyntaxElement {
         parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // @exempt(from: tests)
         parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
     }
+
+    // MARK: - API
+
+    // #documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open override func api() -> [APIElement] {
+        return Array(children.map({ $0.api() }).joined())
+    }
 }

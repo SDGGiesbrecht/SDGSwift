@@ -15,4 +15,22 @@
 /// An extension.
 public class Extension : ContainerSyntaxElement {
 
+    // MARK: - Initialization
+
+    internal init(substructureInformation: SourceKit.Variant, source: String, tokens: [SourceKit.PrimitiveToken]) throws {
+        type = TypeIdentifier(range: try SyntaxElement.range(from: substructureInformation, for: "key.name", in: source), isDefinition: false)
+        try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [type])
+    }
+
+    // MARK: - Properties
+
+    public let type: TypeIdentifier
+
+    // MARK: - API
+
+    // #documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open override func api() -> [APIElement] {
+        return [ExtensionAPI(type: "?")]
+    }
 }

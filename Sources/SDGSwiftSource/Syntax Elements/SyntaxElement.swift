@@ -137,4 +137,12 @@ open class SyntaxElement {
     public func makeDeepIterator() -> SyntaxElement.DeepIterator {
         return DeepIterator(rootElement: self)
     }
+
+    // MARK: - API
+
+    // @documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open func api() -> [APIElement] {
+        return []
+    }
 }
