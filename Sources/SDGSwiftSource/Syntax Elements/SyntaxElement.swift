@@ -142,7 +142,7 @@ open class SyntaxElement {
 
     // @documentation(SDGSwiftSource.SyntaxElement.api())
     /// Returns the API provided by this element.
-    open func api() -> [APIElement] {
+    open func api(source: String) -> [APIElement] {
         return []
     }
 }

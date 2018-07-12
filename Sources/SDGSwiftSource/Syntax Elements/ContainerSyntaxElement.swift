@@ -346,7 +346,7 @@ open class ContainerSyntaxElement : SyntaxElement {
 
     // #documentation(SDGSwiftSource.SyntaxElement.api())
     /// Returns the API provided by this element.
-    open override func api() -> [APIElement] {
-        return Array(children.map({ $0.api() }).joined())
+    open override func api(source: String) -> [APIElement] {
+        return Array(children.map({ $0.api(source: source) }).joined())
     }
 }
