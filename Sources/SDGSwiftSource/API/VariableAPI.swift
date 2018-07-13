@@ -33,7 +33,7 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}"
+        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}" // @exempt(from: tests) #workaround(Not yet reachable.)
     }
 
     public override var summary: [String] {

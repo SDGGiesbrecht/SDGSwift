@@ -22,7 +22,7 @@ public class ExtensionAPI : APIElement {
         self.type = type
         super.init()
         for element in children {
-            if let property = element as? VariableAPI {
+            if let property = element as? VariableAPI { // @exempt(from: tests) #workaround(Not yet reachable.)
                 properties.append(property)
             } else {
                 if BuildConfiguration.current == .debug {

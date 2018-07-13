@@ -24,7 +24,7 @@ public class VariableDeclaration : ContainerSyntaxElement {
         try super.init(substructureInformation: substructureInformation, source: source, tokens: tokens, knownChildren: [name])
 
         for child in children {
-            if let keyword = child as? Keyword,
+            if let keyword = child as? Keyword, // @exempt(from: tests) #workaround(Not yet reachable.)
                 String(source.scalars[keyword.range]) ∈ Set(["var", "let"]) {
                 self.keyword = keyword
                 break
@@ -32,7 +32,7 @@ public class VariableDeclaration : ContainerSyntaxElement {
         }
 
         for child in children where child.range.lowerBound > name.range.lowerBound {
-            if let type = child as? TypeIdentifier {
+            if let type = child as? TypeIdentifier { // @exempt(from: tests) #workaround(Not yet reachable.)
                 self.type = type
                 break
             }
@@ -70,12 +70,12 @@ public class VariableDeclaration : ContainerSyntaxElement {
                 if setterAccessLevel == nil {
                     var searchZone = String(source.scalars[name.range.upperBound..<range.upperBound])
                     if ¬searchZone.scalars.contains("{".scalars) {
-                        // Not a computed property.
+                        // Not a computed property. // @exempt(from: tests) #workaround(Not yet reachable.)
                         isSettable = true
                     } else {
                         searchZone.scalars.truncate(before: "{".scalars)
                         if searchZone.scalars.contains("=".scalars) {
-                            // Set by a closure.
+                            // Set by a closure. // @exempt(from: tests) #workaround(Not yet reachable.)
                             isSettable = true
                         } else {
                             // Computed property.
