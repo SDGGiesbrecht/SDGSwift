@@ -14,13 +14,23 @@
 
 extension Bool {
 
-    /// Whether or not the boolean value is true.
-    public var isTrue: Bool {
+    /// A read‐only computed property.
+    public var readOnlyComputedProperty: Bool {
         return self
     }
 
-    /// Whether or not the boolean means “yes”.
-    public internal(set) var meansYes: Bool {
+    /// A read‐only computed property with an internal setter.
+    public internal(set) var readOnlyWithInternalSetter: Bool {
+        get {
+            return self
+        }
+        set {
+            self = newValue
+        }
+    }
+
+    /// A read‐write computed property.
+    public var readWriteComputedProperty: Bool {
         get {
             return self
         }

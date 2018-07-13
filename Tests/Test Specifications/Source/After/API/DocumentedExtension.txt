@@ -1,3 +1,4 @@
 (Bool)
- isTrue • var isTrue: Bool { get set }
- meansYes • var meansYes: Bool { get set }
+ readOnlyComputedProperty • var readOnlyComputedProperty: Bool { get }
+ readOnlyWithInternalSetter • var readOnlyWithInternalSetter: Bool { get }
+ readWriteComputedProperty • var readWriteComputedProperty: Bool { get set }

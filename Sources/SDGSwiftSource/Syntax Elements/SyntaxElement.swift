@@ -121,7 +121,7 @@ open class SyntaxElement {
     public internal(set) var range: Range<String.ScalarView.Index>
 
     /// The parent syntax element.
-    public internal(set) weak var parent: SyntaxElement?
+    public internal(set) weak var parent: ContainerSyntaxElement?
 
     // MARK: - Offsets
 

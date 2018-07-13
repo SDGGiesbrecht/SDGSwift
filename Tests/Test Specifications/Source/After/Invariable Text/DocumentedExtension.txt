@@ -14,13 +14,23 @@
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
 ̲
-̲    /̲/̲/̲ Whether or not the boolean value is true.
-̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ isTrue:̲ Bool {̲
+̲    /̲/̲/̲ A read‐only computed property.
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ readOnlyComputedProperty:̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲    }̲
 ̲
-̲    /̲/̲/̲ Whether or not the boolean means “yes”.
-̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲s̲e̲t̲)̲ v̲a̲r̲ meansYes:̲ Bool {̲
+̲    /̲/̲/̲ A read‐only computed property with an internal setter.
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲s̲e̲t̲)̲ v̲a̲r̲ readOnlyWithInternalSetter:̲ Bool {̲
+̲        g̲e̲t̲ {̲
+̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
+̲        }̲
+̲        s̲e̲t̲ {̲
+̲            s̲e̲l̲f̲ =̲ newValue
+̲        }̲
+̲    }̲
+̲
+̲    /̲/̲/̲ A read‐write computed property.
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ readWriteComputedProperty:̲ Bool {̲
 ̲        g̲e̲t̲ {̲
 ̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲        }̲

@@ -41,6 +41,12 @@ public class VariableDeclaration : ContainerSyntaxElement {
 
     // MARK: - Properties
 
+    /// The getter access level.
+    public internal(set) var accessLevel: Keyword?
+
+    /// The setter access level.
+    public internal(set) var setterAccessLevel: Keyword?
+
     /// The keyword.
     public private(set) var keyword: Keyword!
 
@@ -61,11 +67,26 @@ public class VariableDeclaration : ContainerSyntaxElement {
         if isPublic {
             var isSettable = false
             if String(source.scalars[keyword.range]) == "var" {
-                let attributes = String(source.scalars[range.lowerBound ..< keyword.range.lowerBound])
-                if ¬attributes.contains("private(set)")
-                    ∧ ¬attributes.contains("fileprivate(set)")
-                    ∧ ¬attributes.contains("internal(set)") {
-                    isSettable = true
+                if setterAccessLevel == nil {
+                    var searchZone = String(source.scalars[name.range.upperBound..<range.upperBound])
+                    if ¬searchZone.scalars.contains("{".scalars) {
+                        // Not a computed property.
+                        isSettable = true
+                    } else {
+                        searchZone.scalars.truncate(before: "{".scalars)
+                        if searchZone.scalars.contains("=".scalars) {
+                            // Set by a closure.
+                            isSettable = true
+                        } else {
+                            // Computed property.
+                            for child in children {
+                                if let keyword = child as? Keyword,
+                                    String(source.scalars[keyword.range]) == "set" {
+                                    isSettable = true
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
