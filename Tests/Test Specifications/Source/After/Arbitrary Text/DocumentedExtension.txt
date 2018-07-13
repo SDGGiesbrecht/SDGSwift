@@ -1,0 +1,41 @@
+/*
+ ̲D̲o̲c̲u̲m̲e̲n̲t̲e̲d̲E̲x̲t̲e̲n̲s̲i̲o̲n̲.̲s̲w̲i̲f̲t̲
+
+ ̲T̲h̲i̲s̲ ̲s̲o̲u̲r̲c̲e̲ ̲f̲i̲l̲e̲ ̲i̲s̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲o̲p̲e̲n̲ ̲s̲o̲u̲r̲c̲e̲ ̲p̲r̲o̲j̲e̲c̲t̲.̲
+ ̲https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+
+ ̲C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲©̲2̲0̲1̲8̲ ̲J̲e̲r̲e̲m̲y̲ ̲D̲a̲v̲i̲d̲ ̲G̲i̲e̲s̲b̲r̲e̲c̲h̲t̲ ̲a̲n̲d̲ ̲t̲h̲e̲ ̲S̲D̲G̲S̲w̲i̲f̲t̲ ̲p̲r̲o̲j̲e̲c̲t̲ ̲c̲o̲n̲t̲r̲i̲b̲u̲t̲o̲r̲s̲.̲
+
+ ̲S̲o̲l̲i̲ ̲D̲e̲o̲ ̲g̲l̲o̲r̲i̲a̲.̲
+
+ ̲L̲i̲c̲e̲n̲s̲e̲d̲ ̲u̲n̲d̲e̲r̲ ̲t̲h̲e̲ ̲A̲p̲a̲c̲h̲e̲ ̲L̲i̲c̲e̲n̲c̲e̲,̲ ̲V̲e̲r̲s̲i̲o̲n̲ ̲2̲.̲0̲.̲
+ ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
+ ̲*/
+
+extension ̲Bool ̲{
+
+ ̲ ̲ ̲ ̲/// ̲A̲ ̲r̲e̲a̲d̲‐̲o̲n̲l̲y̲ ̲c̲o̲m̲p̲u̲t̲e̲d̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲.̲
+ ̲ ̲ ̲ ̲public ̲var ̲r̲e̲a̲d̲O̲n̲l̲y̲C̲o̲m̲p̲u̲t̲e̲d̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲/// ̲A̲ ̲r̲e̲a̲d̲‐̲o̲n̲l̲y̲ ̲c̲o̲m̲p̲u̲t̲e̲d̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲w̲i̲t̲h̲ ̲a̲n̲ ̲i̲n̲t̲e̲r̲n̲a̲l̲ ̲s̲e̲t̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲public ̲internal(set) ̲var ̲r̲e̲a̲d̲O̲n̲l̲y̲W̲i̲t̲h̲I̲n̲t̲e̲r̲n̲a̲l̲S̲e̲t̲t̲e̲r̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self ̲= ̲newValue
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲/// ̲A̲ ̲r̲e̲a̲d̲‐̲w̲r̲i̲t̲e̲ ̲c̲o̲m̲p̲u̲t̲e̲d̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲.̲
+ ̲ ̲ ̲ ̲public ̲var ̲r̲e̲a̲d̲W̲r̲i̲t̲e̲C̲o̲m̲p̲u̲t̲e̲d̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self ̲= ̲newValue
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲}
+}

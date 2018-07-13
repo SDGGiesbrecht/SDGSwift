@@ -121,7 +121,7 @@ open class SyntaxElement {
     public internal(set) var range: Range<String.ScalarView.Index>
 
     /// The parent syntax element.
-    public internal(set) weak var parent: SyntaxElement?
+    public internal(set) weak var parent: ContainerSyntaxElement?
 
     // MARK: - Offsets
 
@@ -136,5 +136,13 @@ open class SyntaxElement {
     /// Returns a deep iterator over the element and its children.
     public func makeDeepIterator() -> SyntaxElement.DeepIterator {
         return DeepIterator(rootElement: self)
+    }
+
+    // MARK: - API
+
+    // @documentation(SDGSwiftSource.SyntaxElement.api())
+    /// Returns the API provided by this element.
+    open func api(source: String) -> [APIElement] {
+        return []
     }
 }

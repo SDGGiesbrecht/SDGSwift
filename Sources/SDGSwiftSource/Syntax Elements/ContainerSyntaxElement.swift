@@ -273,7 +273,7 @@ open class ContainerSyntaxElement : SyntaxElement {
             if let unidentified = element as? UnidentifiedSyntaxElement {
                 if let replacement = parse(unidentified),
                     ¬replacement.isEmpty,
-                    let parent = element.parent as? ContainerSyntaxElement {
+                    let parent = element.parent {
                     let otherChildren = parent.children.filter { $0.range.lowerBound ≠ element.range.lowerBound }
                     parent.children = otherChildren + replacement
                 }
@@ -340,5 +340,9 @@ open class ContainerSyntaxElement : SyntaxElement {
     internal func parseNewlines(in source: String, deepSearch: Bool) {
         parseUnidentified(in: source, for: "\u{D}\u{A}" /* CR + LF */, deepSearch: deepSearch) { Newline(range: $0) } // @exempt(from: tests)
         parseUnidentified(in: source, for: "\u{A}" /* LF */, deepSearch: deepSearch) { Newline(range: $0) }
+    }
+
+    internal func apiChildren(source: String) -> [APIElement] {
+        return Array(children.map({ $0.api(source: source) }).joined())
     }
 }

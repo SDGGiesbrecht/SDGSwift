@@ -47,6 +47,30 @@ public class Excerpt : ContainerSyntaxElement {
 
     private func postProcess(source: String) throws {
 
+        // Attach access modifiers.
+        for element in makeDeepIterator() {
+            if let keyword = element as? Keyword {
+                let name = String(source.scalars[keyword.range])
+                if name ∈ Set(["private", "fileprivate", "internal", "public"]),
+                    let siblings = keyword.parent?.children {
+                    for sibling in siblings where sibling.range.lowerBound > keyword.range.lowerBound {
+                        if let variable = sibling as? VariableDeclaration {
+                            variable.accessLevel = keyword
+                            break
+                        }
+                    }
+                } else if name ∈ Set(["private(set)", "fileprivate(set)", "internal(set)"]),
+                    let siblings = keyword.parent?.children {
+                    for sibling in siblings where sibling.range.lowerBound > keyword.range.lowerBound {
+                        if let variable = sibling as? VariableDeclaration {
+                            variable.setterAccessLevel = keyword
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
         // Parse documentation code blocks.
         func nextBlock() -> DocumentationCodeBlock? {
             let block = makeDeepIterator().first(where: { element in

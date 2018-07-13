@@ -72,6 +72,10 @@ class SDGSwiftSourceAPITests : TestCase {
                 compare(specification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false) { element in
                     (element as? AtomicSyntaxElement)?.textFreedom == .invariable
                 }
+
+                // API
+                let api = sourceFile.api(source: source).sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+                SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
             }
         } catch {
             XCTFail("\(error)")
