@@ -110,6 +110,10 @@ func run(_ executable: URL, arguments: [String] = []) -> ProcessResult {
   }
 }
 
+// ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+// Modification for the SDGSwift project:
+// ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+/*
 /// Finds the dylib or executable which the provided address falls in.
 /// - Parameter dsohandle: A pointer to a symbol in the object file you're
 ///                        looking for. If not provided, defaults to the
@@ -127,6 +131,7 @@ func findFirstObjectFile(for dsohandle: UnsafeRawPointer = #dsohandle) -> URL? {
   let path = String(cString: info.dli_fname)
   return URL(fileURLWithPath: path)
 }
+*/
 
 enum InvocationError: Error {
   case couldNotFindSwiftc
