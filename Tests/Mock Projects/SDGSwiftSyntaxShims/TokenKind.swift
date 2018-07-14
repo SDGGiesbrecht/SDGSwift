@@ -437,7 +437,14 @@ public enum TokenKind: Codable {
     case "string_literal":
       let text = try container.decode(String.self, forKey: .text)
       self = .stringLiteral(text)
-    default: fatalError("unknown token kind \(kind)")
+    default:
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Modification for the SDGSwift project:
+        self = .unknown
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        /*
+        fatalError("unknown token kind \(kind)")
+        */
     }
   }
   

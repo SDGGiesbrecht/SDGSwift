@@ -20,6 +20,11 @@ import Darwin
 import Glibc
 #endif
 
+// ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+// Modification for the SDGSwift project:
+import SDGSwift
+// ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
 /// The result of process execution, containing the exit status code,
 /// stdout, and stderr
 struct ProcessResult {
@@ -131,6 +136,11 @@ struct SwiftcRunner {
   ///                 - libswiftSwiftSyntax.[dylib|so]
   ///         ```
   static func locateSwiftc() -> URL? {
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Modification for the SDGSwift project:
+    return try? SwiftCompiler.location()
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    /*
     guard let libraryPath = findFirstObjectFile() else { return nil }
     let swiftcURL = libraryPath.deletingLastPathComponent()
                                .deletingLastPathComponent()
@@ -142,6 +152,7 @@ struct SwiftcRunner {
       return nil
     }
     return swiftcURL
+    */
   }
 
 #if os(macOS)

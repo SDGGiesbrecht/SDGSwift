@@ -32,7 +32,57 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
     }
 
-    func testParsing() {
+    func testParsingSwiftSyntax() {
+        do {
+            let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
+            let beforeDirectory = sourceDirectory.appendingPathComponent("Before")
+            for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
+                let sourceFile = try SourceFileSyntax.parse(url)/*
+                let source = try String(from: url)
+
+                let underline: Unicode.Scalar = "\u{332}"
+
+                @discardableResult func compare(specification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line, highlighting shouldHighlight: (SyntaxElement) -> Bool) -> String {
+                    var highlighted = source
+                    for element in sourceFile.makeDeepIterator().reversed() where shouldHighlight(element) {
+                        var index = element.range.upperBound
+                        while index ≠ element.range.lowerBound {
+                            highlighted.scalars.insert(underline, at: index)
+                            index = source.scalars.index(before: index)
+                        }
+                    }
+                    let specification = sourceDirectory.appendingPathComponent("After").appendingPathComponent(name).appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt")
+                    SDGPersistenceTestUtilities.compare(highlighted, against: specification, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
+                    return highlighted
+                }
+
+                // Unidentified
+                let unidentified = compare(specification: "Unidentified", overwriteSpecificationInsteadOfFailing: false) { element in
+                    return element is UnidentifiedSyntaxElement
+                }
+                XCTAssert(¬unidentified.scalars.contains(underline), "There are unidentified syntax elements in “\(url.lastPathComponent)”.")
+
+                // Text Freedom
+                compare(specification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false) { element in
+                    (element as? AtomicSyntaxElement)?.textFreedom == .arbitrary
+                }
+                compare(specification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false) { element in
+                    (element as? AtomicSyntaxElement)?.textFreedom == .aliasable
+                }
+                compare(specification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false) { element in
+                    (element as? AtomicSyntaxElement)?.textFreedom == .invariable
+                }
+
+                // API
+                let api = sourceFile.api(source: source).sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+                SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)*/
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testParsingSourceKit() {
         do {
             let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
             let beforeDirectory = sourceDirectory.appendingPathComponent("Before")

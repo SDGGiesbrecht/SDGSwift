@@ -19,7 +19,8 @@ extension SDGSwiftSourceAPITests {
         ("testContainerSyntaxElement", testContainerSyntaxElement),
         ("testIdentifier", testIdentifier),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
-        ("testParsing", testParsing),
+        ("testParsingSourceKit", testParsingSourceKit),
+        ("testParsingSwiftSyntax", testParsingSwiftSyntax),
         ("testSourceKitError", testSourceKitError),
         ("testUnidentifiedSyntaxElement", testUnidentifiedSyntaxElement)
     ]
