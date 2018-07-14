@@ -41,24 +41,27 @@ class SDGSwiftSourceAPITests : TestCase {
                 // #warning(Remove unidentifed test specifications. They are meaningless.
 
                 class ArbitraryText : Highlighter {
-                    override func shouldHighlight(_ token: TokenSyntax) -> Bool {
-                        return false
+                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
+                        return trivia.textFreedom == .arbitrary
                     }
                 }
                 ArbitraryText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 
-                /*
+                class AliasableText : Highlighter {
+                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
+                        return trivia.textFreedom == .aliasable
+                    }
+                }
+                AliasableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
 
-                // Text Freedom
-                compare(specification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false) { element in
-                    (element as? AtomicSyntaxElement)?.textFreedom == .arbitrary
+                class InvariableText : Highlighter {
+                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
+                        return trivia.textFreedom == .invariable
+                    }
                 }
-                compare(specification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false) { element in
-                    (element as? AtomicSyntaxElement)?.textFreedom == .aliasable
-                }
-                compare(specification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false) { element in
-                    (element as? AtomicSyntaxElement)?.textFreedom == .invariable
-                }
+                InvariableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
+                /*
+                 #warning(Not handled yet.)
 
                 // API
                 let api = sourceFile.api(source: source).sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")

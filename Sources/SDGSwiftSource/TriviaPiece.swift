@@ -19,4 +19,19 @@ extension TriviaPiece {
         write(to: &result)
         return result
     }
+
+    public var textFreedom: SyntaxElement.TextFreedom {
+        switch self {
+        case .spaces, .tabs, .verticalTabs, .formfeeds:
+            return .arbitrary
+        case .newlines:
+            return .invariable
+        case .backticks:
+            return .invariable
+        case .lineComment, .blockComment:
+            return .arbitrary
+        case .docLineComment, .docBlockComment:
+            return .arbitrary
+        }
+    }
 }
