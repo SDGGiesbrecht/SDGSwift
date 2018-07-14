@@ -22,6 +22,7 @@ import Glibc
 
 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 // Modification for the SDGSwift project:
+import SDGControlFlow
 import SDGSwift
 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
