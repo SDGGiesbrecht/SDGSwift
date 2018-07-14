@@ -23,6 +23,7 @@ import Glibc
 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 // Modification for the SDGSwift project:
 import SDGControlFlow
+import SDGExternalProcess
 import SDGSwift
 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
@@ -65,6 +66,18 @@ func run(_ executable: URL, arguments: [String] = []) -> ProcessResult {
   return autoreleasepool {
     () -> ProcessResult in
     
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Modification for the SDGSwift project:
+    do {
+        let result = try ExternalProcess(at: executable).run(arguments)
+        return ProcessResult(exitCode: 0, stdoutData: result.file, stderrData: Data())
+    } catch let error as ExternalProcess.Error {
+        return ProcessResult(exitCode: error.code, stdoutData: Data(), stderrData: error.output.file)
+    } catch {
+        return ProcessResult(exitCode: 1, stdoutData: Data(), stderrData: "\(error)".file)
+    }
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    /*
     let stdoutPipe = Pipe()
     var stdoutData = Data()
     stdoutPipe.fileHandleForReading.readabilityHandler = { file in
@@ -93,6 +106,7 @@ func run(_ executable: URL, arguments: [String] = []) -> ProcessResult {
     return ProcessResult(exitCode: Int(process.terminationStatus),
                          stdoutData: stdoutData,
                          stderrData: stderrData)
+    */
   }
 }
 

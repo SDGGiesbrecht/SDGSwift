@@ -105,7 +105,8 @@ let package = Package(
         .target(name: "SDGSourceKitShims"),
         .target(name: "SDGSwiftSyntaxShims", dependencies: [
             "SDGSwift",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone")
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ], path: "Tests/Mock Projects/SDGSwiftSyntaxShims"), // This is duplicated from the Swift project itself, since stable releases do not expose its API yet.
 
         // Tests
