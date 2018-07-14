@@ -68,6 +68,7 @@ let package = Package(
             "SDGSwift",
             "SDGSwiftLocalizations",
             "SDGSourceKitShims",
+            "SDGSwiftSyntaxShims",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
@@ -102,7 +103,9 @@ let package = Package(
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
         .target(name: "SDGSourceKitShims"),
-        .target(name: "SDGSwiftSyntaxShims", path: "Tests/Mock Projects/SDGSwiftSyntaxShims"), // This is duplicated from the Swift project itself, since stable releases do not expose its API yet.
+        .target(name: "SDGSwiftSyntaxShims", dependencies: [
+            "SDGSwift"
+            ], path: "Tests/Mock Projects/SDGSwiftSyntaxShims"), // This is duplicated from the Swift project itself, since stable releases do not expose its API yet.
 
         // Tests
         .target(name: "SDGSwiftTestUtilities", dependencies: [
