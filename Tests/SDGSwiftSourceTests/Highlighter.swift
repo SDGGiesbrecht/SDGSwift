@@ -13,8 +13,10 @@
  */
 
 import SDGLogic
+import SDGPersistenceTestUtilities
 
 import SDGSwiftSource
+
 
 class Highlighter : SyntaxRewriter {
 
@@ -22,20 +24,41 @@ class Highlighter : SyntaxRewriter {
         return false
     }
 
+    func shouldHighlight(_ trivia: Trivia.Element) -> Bool {
+        return false
+    }
+
+    @discardableResult func compare(syntax: Syntax, parsedFrom url: URL, againstSpecification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) -> String {
+        let result = highlight(syntax)
+
+        let specification = afterDirectory.appendingPathComponent(name).appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt")
+
+        SDGPersistenceTestUtilities.compare(result, against: specification, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
+        return result
+    }
+
     private var highlighted = ""
-    func highlight(_ source: Syntax) -> String {
+    private func highlight(_ source: Syntax) -> String {
         highlighted = ""
         _ = visit(source)
         return highlighted
     }
 
     override func visit(_ node: TokenSyntax) -> Syntax {
-        var text = node.text
-        if shouldHighlight(node) {
-            text = text.clusters.map({ "\($0)" + "\u{332}" }).joined()
+        var text = ""
+        for element in node.leadingTrivia {
+            text += shouldHighlight(element) ? highlight(element.text) : element.text
+        }
+        text += shouldHighlight(node) ? highlight(node.text) : node.text
+        for element in node.trailingTrivia {
+            text += shouldHighlight(element) ? highlight(element.text) : element.text
         }
         highlighted += text
 
         return super.visit(node)
+    }
+
+    private func highlight(_ source: String) -> String {
+        return source.clusters.map({ "\($0)" + "\u{332}" }).joined()
     }
 }
