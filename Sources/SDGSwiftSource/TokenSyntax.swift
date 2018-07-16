@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
 extension TokenSyntax {
 
     // MARK: - Properties
@@ -19,7 +21,15 @@ extension TokenSyntax {
     public var textFreedom: SyntaxElement.TextFreedom {
         switch tokenKind {
         case .identifier:
+            if text == "element" {
+                print(parent?.isDecl)
+                print(parent)
+            }
             if parent?.isDecl == true {
+                return .arbitrary
+            } else if indexInParent > 0,
+                (parent!.child(at: indexInParent − 1) as? TokenSyntax)?.tokenKind == .forKeyword {
+                // Declaration of loop variable.
                 return .arbitrary
             } else {
                 return .aliasable
