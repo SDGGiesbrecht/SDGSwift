@@ -39,26 +39,14 @@ class SDGSwiftSourceAPITests : TestCase {
 
                 // #warning(Remove unidentifed test specifications. They are meaningless.
 
-                class ArbitraryText : Highlighter {
-                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
-                        return trivia.kind.textFreedom == .arbitrary
-                    }
-                }
-                ArbitraryText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
+                TextFreedomHighlighter.targetTestFreedom = .arbitrary
+                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 
-                class AliasableText : Highlighter {
-                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
-                        return trivia.kind.textFreedom == .aliasable
-                    }
-                }
-                AliasableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
+                TextFreedomHighlighter.targetTestFreedom = .aliasable
+                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
 
-                class InvariableText : Highlighter {
-                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
-                        return trivia.kind.textFreedom == .invariable
-                    }
-                }
-                InvariableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
+                TextFreedomHighlighter.targetTestFreedom = .invariable
+                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
                 /*
                  #warning(Not handled yet.)
 
