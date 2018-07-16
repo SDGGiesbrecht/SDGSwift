@@ -16,8 +16,23 @@ import SDGSwiftLocalizations
 
 extension TriviaPiece {
 
-    public var syntax: TriviaPieceSyntax {
-        return TriviaPieceSyntax.parse(self)
+    public var syntax: ExtendedSyntax {
+        switch self {
+        case .spaces, .tabs:
+            return ExtendedTokenSyntax(text: text, kind: .whitespace)
+        case .verticalTabs, .formfeeds, .newlines:
+            return ExtendedTokenSyntax(text: text, kind: .newlines)
+        case .backticks:
+            return ExtendedTokenSyntax(text: text, kind: .escape)
+        case .lineComment:
+            return LineCommentSyntax(source: text)
+        case .blockComment:
+            return BlockCommentSyntax(source: text)
+        case .docLineComment:
+            return LineDocumentationSyntax(source: text)
+        case .docBlockComment:
+            return BlockDocumentationSyntax(source: text)
+        }
     }
 
     public var text: String {

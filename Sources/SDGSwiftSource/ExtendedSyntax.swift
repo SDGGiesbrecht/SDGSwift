@@ -32,29 +32,6 @@ public class ExtendedSyntax : TextOutputStreamable {
         return result
     }
 
-    // MARK: - Parsing
-
-    internal static func parse(_ piece: TriviaPiece) -> TriviaPieceSyntax {
-        let children: [ExtendedSyntax]
-        switch piece {
-        case .spaces, .tabs:
-            children = [ExtendedTokenSyntax(text: piece.text, kind: .whitespace)]
-        case .verticalTabs, .formfeeds, .newlines:
-            children = [ExtendedTokenSyntax(text: piece.text, kind: .newlines)]
-        case .backticks:
-            children = [ExtendedTokenSyntax(text: piece.text, kind: .escape)]
-        case .lineComment:
-            children = [LineCommentSyntax(source: piece.text)]
-        case .blockComment:
-            children = [BlockCommentSyntax(source: piece.text)]
-        case .docLineComment:
-            children = [LineDocumentationSyntax(source: piece.text)]
-        case .docBlockComment:
-            children = [BlockDocumentationSyntax(source: piece.text)]
-        }
-        return TriviaPieceSyntax(children: children)
-    }
-
     // MARK: - TextOutputStreamable
 
     public func write<Target>(to target: inout Target) where Target : TextOutputStream {
