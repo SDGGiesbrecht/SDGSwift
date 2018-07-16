@@ -38,11 +38,11 @@ public class ExtendedSyntax : TextOutputStreamable {
         let children: [ExtendedSyntax]
         switch piece {
         case .spaces, .tabs:
-            children = [TokenTriviaSyntax(text: piece.text, kind: .whitespace)]
+            children = [ExtendedTokenSyntax(text: piece.text, kind: .whitespace)]
         case .verticalTabs, .formfeeds, .newlines:
-            children = [TokenTriviaSyntax(text: piece.text, kind: .newlines)]
+            children = [ExtendedTokenSyntax(text: piece.text, kind: .newlines)]
         case .backticks:
-            children = [TokenTriviaSyntax(text: piece.text, kind: .escape)]
+            children = [ExtendedTokenSyntax(text: piece.text, kind: .escape)]
         case .lineComment:
             children = [LineCommentSyntax(source: piece.text)]
         case .blockComment:

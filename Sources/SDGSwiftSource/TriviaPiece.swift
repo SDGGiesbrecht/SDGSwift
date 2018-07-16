@@ -18,7 +18,7 @@ extension TriviaPiece {
 
     internal init(syntax: TriviaPieceSyntax) {
         switch syntax.child {
-        case let token as TokenTriviaSyntax:
+        case let token as ExtendedTokenSyntax:
             switch token.kind {
             case .whitespace, .newlines, .escape:
                 guard let first = token.text.first else {

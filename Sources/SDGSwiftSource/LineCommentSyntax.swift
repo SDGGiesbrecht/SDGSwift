@@ -18,8 +18,8 @@ public class LineCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties
 
-    internal class var delimiter: TokenTriviaSyntax {
-        return TokenTriviaSyntax(text: "//", kind: .lineCommentDelimiter)
+    internal class var delimiter: ExtendedTokenSyntax {
+        return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
     }
 
     internal class var contentKind: TriviaTokenKind {
@@ -38,14 +38,14 @@ public class LineCommentSyntax : ExtendedSyntax {
 
         if line.first == " " {
             line.removeFirst()
-            let indent = TokenTriviaSyntax(text: " ", kind: .whitespace)
+            let indent = ExtendedTokenSyntax(text: " ", kind: .whitespace)
             self.indent = indent
             children.append(indent)
         } else {
             self.indent = nil
         }
 
-        let content = TokenTriviaSyntax(text: line, kind: type(of: self).contentKind)
+        let content = ExtendedTokenSyntax(text: line, kind: type(of: self).contentKind)
         self.content = content
         children.append(content)
 
@@ -55,11 +55,11 @@ public class LineCommentSyntax : ExtendedSyntax {
     // MARK: - Properties
 
     /// The delimiter.
-    public let delimiter: TokenTriviaSyntax
+    public let delimiter: ExtendedTokenSyntax
 
     /// The intent.
-    public let indent: TokenTriviaSyntax?
+    public let indent: ExtendedTokenSyntax?
 
     /// The content.
-    public let content: TokenTriviaSyntax
+    public let content: ExtendedTokenSyntax
 }

@@ -16,8 +16,8 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties
 
-    internal override class var delimiter: TokenTriviaSyntax {
-        return TokenTriviaSyntax(text: "///", kind: .lineDocumentationDelimiter)
+    internal override class var delimiter: ExtendedTokenSyntax {
+        return ExtendedTokenSyntax(text: "///", kind: .lineDocumentationDelimiter)
     }
 
     internal override class var contentKind: TriviaTokenKind {

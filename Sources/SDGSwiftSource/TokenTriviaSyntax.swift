@@ -12,8 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A trivia syntax node representing a single token.
-public class TokenTriviaSyntax : ExtendedSyntax {
+/// A syntax node representing a single token.
+///
+/// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
+public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 

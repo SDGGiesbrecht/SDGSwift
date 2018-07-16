@@ -16,8 +16,8 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
 
     // MARK: - Class Properties
 
-    internal override class var openingDelimiter: TokenTriviaSyntax {
-        return TokenTriviaSyntax(text: "/**", kind: .openingBlockDocumentationDelimiter)
+    internal override class var openingDelimiter: ExtendedTokenSyntax {
+        return ExtendedTokenSyntax(text: "/**", kind: .openingBlockDocumentationDelimiter)
     }
 
     internal override class var contentKind: TriviaTokenKind {

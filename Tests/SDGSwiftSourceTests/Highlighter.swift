@@ -12,9 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #warning(Temporary.)
-typealias TokenExtendedSyntax = TokenTriviaSyntax
-
 import SDGLogic
 import SDGPersistenceTestUtilities
 
@@ -26,7 +23,7 @@ class Highlighter : SyntaxScanner {
         return false
     }
 
-    func shouldHighlight(_ trivia: TokenExtendedSyntax) -> Bool {
+    func shouldHighlight(_ trivia: ExtendedTokenSyntax) -> Bool {
         return false
     }
 
@@ -54,7 +51,7 @@ class Highlighter : SyntaxScanner {
     }
 
     override func visit(_ node: ExtendedSyntax) -> Bool {
-        if let token = node as? TokenExtendedSyntax {
+        if let token = node as? ExtendedTokenSyntax {
             highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
         }
         return true

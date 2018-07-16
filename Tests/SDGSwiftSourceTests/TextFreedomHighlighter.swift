@@ -23,7 +23,7 @@ class TextFreedomHighlighter : Highlighter {
     override func shouldHighlight(_ token: TokenSyntax) -> Bool {
         return token.textFreedom == type(of: self).targetTestFreedom
     }
-    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
+    override func shouldHighlight(_ trivia: ExtendedTokenSyntax) -> Bool {
         return trivia.kind.textFreedom == type(of: self).targetTestFreedom
     }
 }

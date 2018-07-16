@@ -18,11 +18,11 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties
 
-    internal class var openingDelimiter: TokenTriviaSyntax {
-        return TokenTriviaSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
+    internal class var openingDelimiter: ExtendedTokenSyntax {
+        return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
     }
-    private static var closingDelimiter: TokenTriviaSyntax {
-        return TokenTriviaSyntax(text: "*/", kind: .closingBlockCommentDelimiter)
+    private static var closingDelimiter: ExtendedTokenSyntax {
+        return ExtendedTokenSyntax(text: "*/", kind: .closingBlockCommentDelimiter)
     }
 
     internal class var contentKind: TriviaTokenKind {
@@ -38,15 +38,15 @@ public class BlockCommentSyntax : ExtendedSyntax {
         var block = source
         block.removeFirst(openingDelimiter.text.count)
         self.openingDelimiter = openingDelimiter
-        var opening: [TokenTriviaSyntax] = [openingDelimiter]
+        var opening: [ExtendedTokenSyntax] = [openingDelimiter]
 
         block.removeLast(closingDelimiter.text.count)
         self.closingDelimiter = closingDelimiter
-        var closing: [TokenTriviaSyntax] = [closingDelimiter]
+        var closing: [ExtendedTokenSyntax] = [closingDelimiter]
 
         if block.last == " " {
             block.removeLast()
-            let indent = TokenTriviaSyntax(text: " ", kind: .whitespace)
+            let indent = ExtendedTokenSyntax(text: " ", kind: .whitespace)
             self.closingDelimiterIndentation = indent
             closing.prepend(indent)
         } else {
@@ -55,7 +55,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
         if block.first == "\n" {
             block.removeFirst()
-            let margin = TokenTriviaSyntax(text: "\n", kind: .newlines)
+            let margin = ExtendedTokenSyntax(text: "\n", kind: .newlines)
             self.openingVerticalMargin = margin
             opening.append(margin)
         } else {
@@ -63,7 +63,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
         }
         if block.last == "\n" {
             block.removeLast()
-            let margin = TokenTriviaSyntax(text: "\n", kind: .newlines)
+            let margin = ExtendedTokenSyntax(text: "\n", kind: .newlines)
             self.closingVerticalMargin = margin
             closing.prepend(margin)
         } else {
@@ -71,8 +71,8 @@ public class BlockCommentSyntax : ExtendedSyntax {
         }
 
         let contentKind = type(of: self).contentKind
-        let lines = block.lines.map { [TokenTriviaSyntax(text: String($0.line), kind: contentKind)] }
-        let content = Array(lines.joined(separator: [TokenTriviaSyntax(text: "\n", kind: .newlines)]))
+        let lines = block.lines.map { [ExtendedTokenSyntax(text: String($0.line), kind: contentKind)] }
+        let content = Array(lines.joined(separator: [ExtendedTokenSyntax(text: "\n", kind: .newlines)]))
         self.content = content
         super.init(children: opening + content + closing)
     }
@@ -80,20 +80,20 @@ public class BlockCommentSyntax : ExtendedSyntax {
     // MARK: - Properties
 
     /// The opening delimiter.
-    public let openingDelimiter: TokenTriviaSyntax
+    public let openingDelimiter: ExtendedTokenSyntax
 
     /// The opening vertical margin (a possible newline between the delimiter and the content).
-    public let openingVerticalMargin: TokenTriviaSyntax?
+    public let openingVerticalMargin: ExtendedTokenSyntax?
 
     /// The content.
-    public let content: [TokenTriviaSyntax]
+    public let content: [ExtendedTokenSyntax]
 
     /// The closing vertical margin (a possible newline between the delimiter and the content).
-    public let closingVerticalMargin: TokenTriviaSyntax?
+    public let closingVerticalMargin: ExtendedTokenSyntax?
 
     /// The indentation of the closing delimiter (a possible space preceding it).
-    public let closingDelimiterIndentation: TokenTriviaSyntax?
+    public let closingDelimiterIndentation: ExtendedTokenSyntax?
 
     /// The closing delimiter.
-    public let closingDelimiter: TokenTriviaSyntax
+    public let closingDelimiter: ExtendedTokenSyntax
 }
