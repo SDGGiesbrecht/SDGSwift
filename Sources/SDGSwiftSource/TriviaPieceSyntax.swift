@@ -15,9 +15,9 @@
 import SDGSwiftLocalizations
 
 /// The syntax of an entire trivia piece.
-public class TriviaPieceSyntax : TriviaSyntax {
+public class TriviaPieceSyntax : ExtendedSyntax {
 
-    public var child: TriviaSyntax {
+    public var child: ExtendedSyntax {
         guard let first = children.first else {
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in
                 switch localization {

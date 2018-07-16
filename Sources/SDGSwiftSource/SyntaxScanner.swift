@@ -12,9 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #warning(Temporary.)
-public typealias ExtendedSyntax = TriviaSyntax
-
 /// A scanner for read‐only handling of a syntax tree.
 open class SyntaxScanner {
 

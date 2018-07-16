@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-public class LineCommentSyntax : TriviaSyntax {
+public class LineCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties
 
@@ -34,7 +34,7 @@ public class LineCommentSyntax : TriviaSyntax {
         var line = source
         line.removeFirst(delimiter.text.count)
         self.delimiter = delimiter
-        var children: [TriviaSyntax] = [delimiter]
+        var children: [ExtendedSyntax] = [delimiter]
 
         if line.first == " " {
             line.removeFirst()

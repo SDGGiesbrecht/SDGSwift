@@ -13,7 +13,7 @@
  */
 
 /// A trivia syntax node representing a single token.
-public class TokenTriviaSyntax : TriviaSyntax {
+public class TokenTriviaSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 

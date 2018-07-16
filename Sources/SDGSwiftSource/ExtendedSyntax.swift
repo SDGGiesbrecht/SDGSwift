@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A syntax node for trivia.
-public class TriviaSyntax : TextOutputStreamable {
+/// A syntax node.
+///
+/// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
+public class ExtendedSyntax : TextOutputStreamable {
 
-    internal init(children: [TriviaSyntax]) {
+    internal init(children: [ExtendedSyntax]) {
         self.children = children
     }
 
     // MARK: - Properties
 
     /// The children of this node.
-    public internal(set) var children: [TriviaSyntax]
+    public internal(set) var children: [ExtendedSyntax]
 
     public var text: String {
         var result = ""
@@ -33,7 +35,7 @@ public class TriviaSyntax : TextOutputStreamable {
     // MARK: - Parsing
 
     internal static func parse(_ piece: TriviaPiece) -> TriviaPieceSyntax {
-        let children: [TriviaSyntax]
+        let children: [ExtendedSyntax]
         switch piece {
         case .spaces, .tabs:
             children = [TokenTriviaSyntax(text: piece.text, kind: .whitespace)]

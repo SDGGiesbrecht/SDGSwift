@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-public class BlockCommentSyntax : TriviaSyntax {
+public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties
 
