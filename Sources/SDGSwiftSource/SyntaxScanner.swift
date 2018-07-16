@@ -25,14 +25,23 @@ open class SyntaxScanner {
     public func scan(_ node: Syntax) {
         if let token = node as? TokenSyntax {
             scan(token.leadingTrivia)
-        }
-        if visit(node) {
-            for child in node.children {
-                scan(child)
+            if shouldExtend(token),
+                let extended = token.extended {
+                if visit(extended) {
+                    for child in extended.children {
+                        scan(child)
+                    }
+                }
+            } else {
+                _ = visit(token)
             }
-        }
-        if let token = node as? TokenSyntax {
             scan(token.trailingTrivia)
+        } else {
+            if visit(node) {
+                for child in node.children {
+                    scan(child)
+                }
+            }
         }
     }
 
@@ -88,6 +97,18 @@ open class SyntaxScanner {
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     open func visit(_ node: TriviaPiece) -> Bool {
+        return true
+    }
+
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Subclass this to skip extended parsing for particular tokens.
+    ///
+    /// - Parameters:
+    ///     - node: A `TokenSyntax` instance.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` subclass; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
+    open func shouldExtend(_ node: TokenSyntax) -> Bool {
         return true
     }
 }
