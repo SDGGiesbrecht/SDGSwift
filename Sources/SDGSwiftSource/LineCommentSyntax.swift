@@ -19,11 +19,11 @@ public class LineCommentSyntax : ExtendedSyntax {
     // MARK: - Class Properties
 
     internal class var delimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
+        primitiveMethod()
     }
 
-    internal class var contentKind: ExtendedTokenKind {
-        return .commentText
+    internal class func parse(contents: String) -> ExtendedSyntax {
+        primitiveMethod()
     }
 
     // MARK: - Initialization
@@ -45,8 +45,8 @@ public class LineCommentSyntax : ExtendedSyntax {
             self.indent = nil
         }
 
-        let content = ExtendedTokenSyntax(text: line, kind: type(of: self).contentKind)
-        self.content = content
+        let content = type(of: self).parse(contents: line)
+        _content = content
         children.append(content)
 
         super.init(children: children)
@@ -60,6 +60,5 @@ public class LineCommentSyntax : ExtendedSyntax {
     /// The intent.
     public let indent: ExtendedTokenSyntax?
 
-    /// The content.
-    public let content: ExtendedTokenSyntax
+    internal var _content: ExtendedSyntax
 }

@@ -25,7 +25,7 @@ extension TriviaPiece {
         case .backticks:
             return ExtendedTokenSyntax(text: text, kind: .escape)
         case .lineComment:
-            return LineCommentSyntax(source: text)
+            return LineDeveloperCommentSyntax(source: text)
         case .blockComment:
             return BlockCommentSyntax(source: text)
         case .docLineComment:

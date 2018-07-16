@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGLocalization
 
-public class CommentContent : ExtendedSyntax {
+public class CommentContentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
