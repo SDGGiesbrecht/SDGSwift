@@ -38,11 +38,11 @@ public class BlockCommentSyntax : TriviaSyntax {
         var block = source
         block.removeFirst(openingDelimiter.text.count)
         self.openingDelimiter = openingDelimiter
-        var opening: [TriviaSyntax] = [openingDelimiter]
+        var opening: [TokenTriviaSyntax] = [openingDelimiter]
 
         block.removeLast(closingDelimiter.text.count)
         self.closingDelimiter = closingDelimiter
-        var closing: [TriviaSyntax] = [closingDelimiter]
+        var closing: [TokenTriviaSyntax] = [closingDelimiter]
 
         if block.last == " " {
             block.removeLast()
@@ -70,9 +70,11 @@ public class BlockCommentSyntax : TriviaSyntax {
             self.closingVerticalMargin = nil
         }
 
-        let content = TokenTriviaSyntax(text: block, kind: type(of: self).contentKind)
+        let contentKind = type(of: self).contentKind
+        let lines = block.lines.map { [TokenTriviaSyntax(text: String($0.line), kind: contentKind)] }
+        let content = Array(lines.joined(separator: [TokenTriviaSyntax(text: "\n", kind: .newlines)]))
         self.content = content
-        super.init(children: opening + [content] + closing)
+        super.init(children: opening + content + closing)
     }
 
     // MARK: - Properties
@@ -84,7 +86,7 @@ public class BlockCommentSyntax : TriviaSyntax {
     public let openingVerticalMargin: TokenTriviaSyntax?
 
     /// The content.
-    public let content: TokenTriviaSyntax
+    public let content: [TokenTriviaSyntax]
 
     /// The closing vertical margin (a possible newline between the delimiter and the content).
     public let closingVerticalMargin: TokenTriviaSyntax?
