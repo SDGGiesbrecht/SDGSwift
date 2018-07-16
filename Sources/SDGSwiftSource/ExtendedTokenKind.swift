@@ -19,6 +19,12 @@ public enum ExtendedTokenKind {
 
     // MARK: - Cases
 
+    /// An ASCII quotation mark (U+0022) used to enclose a string literal.
+    case quotationMark
+
+    /// The text of a literal string.
+    case string
+
     /// Whitespace; a sequence of spaces (U+0020) or similar ASCII controls.
     case whitespace
 
@@ -56,9 +62,9 @@ public enum ExtendedTokenKind {
 
     public var textFreedom: SyntaxElement.TextFreedom {
         switch self {
-        case .whitespace, .escape, .commentText, .documentationText:
+        case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
             return .invariable
         }
     }
