@@ -32,7 +32,6 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
     }
 
-
     func testParsingSwiftSyntax() {
         do {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
@@ -41,22 +40,22 @@ class SDGSwiftSourceAPITests : TestCase {
                 // #warning(Remove unidentifed test specifications. They are meaningless.
 
                 class ArbitraryText : Highlighter {
-                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
-                        return trivia.textFreedom == .arbitrary
+                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
+                        return trivia.kind.textFreedom == .arbitrary
                     }
                 }
                 ArbitraryText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 
                 class AliasableText : Highlighter {
-                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
-                        return trivia.textFreedom == .aliasable
+                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
+                        return trivia.kind.textFreedom == .aliasable
                     }
                 }
                 AliasableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
 
                 class InvariableText : Highlighter {
-                    override func shouldHighlight(_ trivia: TriviaPiece) -> Bool {
-                        return trivia.textFreedom == .invariable
+                    override func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
+                        return trivia.kind.textFreedom == .invariable
                     }
                 }
                 InvariableText().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)

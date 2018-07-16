@@ -17,14 +17,13 @@ import SDGPersistenceTestUtilities
 
 import SDGSwiftSource
 
-
-class Highlighter : SyntaxRewriter {
+class Highlighter : SyntaxAndTriviaRewriter {
 
     func shouldHighlight(_ token: TokenSyntax) -> Bool {
         return false
     }
 
-    func shouldHighlight(_ trivia: Trivia.Element) -> Bool {
+    func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
         return false
     }
 
@@ -44,17 +43,13 @@ class Highlighter : SyntaxRewriter {
         return highlighted
     }
 
-    override func visit(_ node: TokenSyntax) -> Syntax {
-        var text = ""
-        for element in node.leadingTrivia {
-            text += shouldHighlight(element) ? highlight(element.text) : element.text
-        }
-        text += shouldHighlight(node) ? highlight(node.text) : node.text
-        for element in node.trailingTrivia {
-            text += shouldHighlight(element) ? highlight(element.text) : element.text
-        }
-        highlighted += text
+    override func visitToken(_ node: TokenSyntax) -> Syntax {
+        highlighted += shouldHighlight(node) ? highlight(node.text) : node.text
+        return super.visitToken(node)
+    }
 
+    override func visit(_ node: TokenTriviaSyntax) -> TriviaSyntax {
+        highlighted += shouldHighlight(node) ? highlight(node.text) : node.text
         return super.visit(node)
     }
 
