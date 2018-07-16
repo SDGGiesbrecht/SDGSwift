@@ -20,7 +20,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
         return ExtendedTokenSyntax(text: "///", kind: .lineDocumentationDelimiter)
     }
 
-    internal override class var contentKind: TriviaTokenKind {
+    internal override class var contentKind: ExtendedTokenKind {
         return .documentationText
     }
 }

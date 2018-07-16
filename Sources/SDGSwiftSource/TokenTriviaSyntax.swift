@@ -19,7 +19,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(text: String, kind: TriviaTokenKind) {
+    internal init(text: String, kind: ExtendedTokenKind) {
         self._text = text
         self.kind = kind
         super.init(children: [])
@@ -30,7 +30,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     private let _text: String
 
     /// The kind of the token.
-    public let kind: TriviaTokenKind
+    public let kind: ExtendedTokenKind
 
     // MARK: - TextOutputStreamable
 

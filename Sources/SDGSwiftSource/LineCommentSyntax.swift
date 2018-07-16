@@ -22,7 +22,7 @@ public class LineCommentSyntax : ExtendedSyntax {
         return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
     }
 
-    internal class var contentKind: TriviaTokenKind {
+    internal class var contentKind: ExtendedTokenKind {
         return .commentText
     }
 

@@ -25,7 +25,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
         return ExtendedTokenSyntax(text: "*/", kind: .closingBlockCommentDelimiter)
     }
 
-    internal class var contentKind: TriviaTokenKind {
+    internal class var contentKind: ExtendedTokenKind {
         return .commentText
     }
 

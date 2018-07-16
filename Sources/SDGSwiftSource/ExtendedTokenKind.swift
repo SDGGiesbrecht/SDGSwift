@@ -12,8 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// Enumerates the kinds of trivia tokens.
-public enum TriviaTokenKind {
+/// Enumerates the kinds of extended tokens.
+///
+/// This type is comparable to `TokenKind`, but represents syntax not handled by the `SwiftSyntax` module.
+public enum ExtendedTokenKind {
 
     // MARK: - Cases
 

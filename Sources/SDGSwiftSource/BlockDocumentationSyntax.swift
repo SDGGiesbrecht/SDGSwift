@@ -20,7 +20,7 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
         return ExtendedTokenSyntax(text: "/**", kind: .openingBlockDocumentationDelimiter)
     }
 
-    internal override class var contentKind: TriviaTokenKind {
+    internal override class var contentKind: ExtendedTokenKind {
         return .documentationText
     }
 }
