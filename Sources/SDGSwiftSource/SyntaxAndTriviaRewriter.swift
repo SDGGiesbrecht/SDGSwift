@@ -50,13 +50,13 @@ open class SyntaxAndTriviaRewriter : SyntaxRewriter {
         switch node {
         case let token as TokenTriviaSyntax:
             result = visit(token)
-        case let comment as LineCommentSyntax:
-            result = visit(comment)
-        case let comment as BlockCommentSyntax:
-            result = visit(comment)
         case let comment as LineDocumentationSyntax:
             result = visit(comment)
         case let comment as BlockDocumentationSyntax:
+            result = visit(comment)
+        case let comment as LineCommentSyntax:
+            result = visit(comment)
+        case let comment as BlockCommentSyntax:
             result = visit(comment)
         case let triviaPiece as TriviaPieceSyntax:
             result = visit(triviaPiece)
