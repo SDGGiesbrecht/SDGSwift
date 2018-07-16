@@ -26,16 +26,16 @@ open class SyntaxScanner {
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
     public func scan(_ node: Syntax) {
+        if let token = node as? TokenSyntax {
+            scan(token.leadingTrivia)
+        }
         if visit(node) {
-            if let token = node as? TokenSyntax {
-                scan(token.leadingTrivia)
-            }
             for child in node.children {
                 scan(child)
             }
-            if let token = node as? TokenSyntax {
-                scan(token.trailingTrivia)
-            }
+        }
+        if let token = node as? TokenSyntax {
+            scan(token.trailingTrivia)
         }
     }
 

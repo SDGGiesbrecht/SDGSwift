@@ -12,18 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #warning(Temporary.)
+typealias TokenExtendedSyntax = TokenTriviaSyntax
+
 import SDGLogic
 import SDGPersistenceTestUtilities
 
 import SDGSwiftSource
 
-class Highlighter : SyntaxAndTriviaRewriter {
+class Highlighter : SyntaxScanner {
 
     func shouldHighlight(_ token: TokenSyntax) -> Bool {
         return false
     }
 
-    func shouldHighlight(_ trivia: TokenTriviaSyntax) -> Bool {
+    func shouldHighlight(_ trivia: TokenExtendedSyntax) -> Bool {
         return false
     }
 
@@ -39,18 +42,22 @@ class Highlighter : SyntaxAndTriviaRewriter {
     private var highlighted = ""
     private func highlight(_ source: Syntax) -> String {
         highlighted = ""
-        _ = visit(source)
+        _ = scan(source)
         return highlighted
     }
 
-    override func visitToken(_ node: TokenSyntax) -> Syntax {
-        highlighted += shouldHighlight(node) ? highlight(node.text) : node.text
-        return super.visitToken(node)
+    override func visit(_ node: Syntax) -> Bool {
+        if let token = node as? TokenSyntax {
+            highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
+        }
+        return true
     }
 
-    override func visit(_ node: TokenTriviaSyntax) -> TriviaSyntax {
-        highlighted += shouldHighlight(node) ? highlight(node.text) : node.text
-        return super.visit(node)
+    override func visit(_ node: ExtendedSyntax) -> Bool {
+        if let token = node as? TokenExtendedSyntax {
+            highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
+        }
+        return true
     }
 
     private func highlight(_ source: String) -> String {
