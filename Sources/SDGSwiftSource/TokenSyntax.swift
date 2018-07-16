@@ -21,6 +21,14 @@ extension TokenSyntax {
 
     // MARK: - Properties
 
+    public var extended: ExtendedSyntax {
+        if case .stringLiteral(var source) = tokenKind {
+
+        } else {
+            return []
+        }
+    }
+
     public var textFreedom: SyntaxElement.TextFreedom {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
