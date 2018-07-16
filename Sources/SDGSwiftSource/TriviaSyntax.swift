@@ -22,7 +22,7 @@ public class TriviaSyntax : TextOutputStreamable {
     // MARK: - Properties
 
     /// The children of this node.
-    public let children: [TriviaSyntax]
+    public internal(set) var children: [TriviaSyntax]
 
     public var text: String {
         var result = ""

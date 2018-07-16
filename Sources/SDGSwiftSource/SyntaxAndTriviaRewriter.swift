@@ -42,15 +42,24 @@ open class SyntaxAndTriviaRewriter : SyntaxRewriter {
     }
 
     internal func visit(_ trivia: TriviaPiece) -> TriviaPiece {
-        return TriviaPiece(syntax: visit(trivia.syntax))
+        return TriviaPiece(syntax: visit(trivia.syntax as TriviaSyntax) as! TriviaPieceSyntax)
     }
 
     internal func visit(_ node: TriviaSyntax) -> TriviaSyntax {
+        let result: TriviaSyntax
         switch node {
         case let token as TokenTriviaSyntax:
-            return visit(token)
+            result = visit(token)
+        case let comment as LineCommentSyntax:
+            result = visit(comment)
+        case let comment as BlockCommentSyntax:
+            result = visit(comment)
+        case let comment as LineDocumentationSyntax:
+            result = visit(comment)
+        case let comment as BlockDocumentationSyntax:
+            result = visit(comment)
         case let triviaPiece as TriviaPieceSyntax:
-            return visit(triviaPiece)
+            result = visit(triviaPiece)
         default:
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in
                 switch localization {
@@ -59,9 +68,27 @@ open class SyntaxAndTriviaRewriter : SyntaxRewriter {
                 }
             }))
         }
+        result.children = result.children.map({ visit($0) })
+        return result
     }
 
     open func visit(_ node: TriviaPieceSyntax) -> TriviaPieceSyntax {
+        return node
+    }
+
+    open func visit(_ node: LineCommentSyntax) -> LineCommentSyntax {
+        return node
+    }
+
+    open func visit(_ node: BlockCommentSyntax) -> BlockCommentSyntax {
+        return node
+    }
+
+    open func visit(_ node: LineDocumentationSyntax) -> LineCommentSyntax {
+        return node
+    }
+
+    open func visit(_ node: BlockDocumentationSyntax) -> BlockCommentSyntax {
         return node
     }
 
