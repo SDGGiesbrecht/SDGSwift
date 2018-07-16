@@ -43,8 +43,11 @@ public enum ExtendedTokenKind {
     /// An asterisk and a slash delimiting the end of a block comment.
     case closingBlockCommentDelimiter
 
-    /// The text of a comment.
+    /// Raw text in a comment.
     case commentText
+
+    /// A URL in a comment.
+    case commentURL
 
     /// A pair of slashes delimiting a line comment.
     case lineDocumentationDelimiter
@@ -64,7 +67,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
             return .invariable
         }
     }
