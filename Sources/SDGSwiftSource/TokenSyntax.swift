@@ -21,11 +21,11 @@ extension TokenSyntax {
 
     // MARK: - Properties
 
-    public var extended: ExtendedSyntax {
-        if case .stringLiteral(var source) = tokenKind {
-
+    public var extended: ExtendedSyntax? {
+        if case .stringLiteral(let source) = tokenKind {
+            return StringLiteralSyntax(source: source)
         } else {
-            return []
+            return nil
         }
     }
 
