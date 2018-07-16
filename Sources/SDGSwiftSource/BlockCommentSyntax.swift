@@ -19,14 +19,14 @@ public class BlockCommentSyntax : ExtendedSyntax {
     // MARK: - Class Properties
 
     internal class var openingDelimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
+        primitiveMethod()
     }
     private static var closingDelimiter: ExtendedTokenSyntax {
         return ExtendedTokenSyntax(text: "*/", kind: .closingBlockCommentDelimiter)
     }
 
-    internal class var contentKind: ExtendedTokenKind {
-        return .commentText
+    internal class func parse(contents: String) -> ExtendedSyntax {
+        primitiveMethod()
     }
 
     // MARK: - Initialization
@@ -38,11 +38,11 @@ public class BlockCommentSyntax : ExtendedSyntax {
         var block = source
         block.removeFirst(openingDelimiter.text.count)
         self.openingDelimiter = openingDelimiter
-        var opening: [ExtendedTokenSyntax] = [openingDelimiter]
+        var opening: [ExtendedSyntax] = [openingDelimiter]
 
         block.removeLast(closingDelimiter.text.count)
         self.closingDelimiter = closingDelimiter
-        var closing: [ExtendedTokenSyntax] = [closingDelimiter]
+        var closing: [ExtendedSyntax] = [closingDelimiter]
 
         if block.last == " " {
             block.removeLast()
@@ -70,11 +70,9 @@ public class BlockCommentSyntax : ExtendedSyntax {
             self.closingVerticalMargin = nil
         }
 
-        let contentKind = type(of: self).contentKind
-        let lines = block.lines.map { [ExtendedTokenSyntax(text: String($0.line), kind: contentKind)] }
-        let content = Array(lines.joined(separator: [ExtendedTokenSyntax(text: "\n", kind: .newlines)]))
-        self.content = content
-        super.init(children: opening + content + closing)
+        let content = type(of: self).parse(contents: block)
+        _content = content
+        super.init(children: opening + [content] + closing)
     }
 
     // MARK: - Properties
@@ -86,7 +84,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
     public let openingVerticalMargin: ExtendedTokenSyntax?
 
     /// The content.
-    public let content: [ExtendedTokenSyntax]
+    public let _content: ExtendedSyntax
 
     /// The closing vertical margin (a possible newline between the delimiter and the content).
     public let closingVerticalMargin: ExtendedTokenSyntax?

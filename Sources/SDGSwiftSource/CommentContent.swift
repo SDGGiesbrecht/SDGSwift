@@ -23,19 +23,28 @@ public class CommentContentSyntax : ExtendedSyntax {
         var source = source
         var children: [ExtendedSyntax] = []
 
-        while let `protocol` = source.scalars.firstMatch(for: "://".scalars)?.range {
-            let start = source.scalars.lastMatch(for: " ".scalars, in: source.startIndex ..< `protocol`.lowerBound)?.range.upperBound ?? source.startIndex
-            let end = source.scalars.firstMatch(for: " ".scalars, in: `protocol`.upperBound ..< source.scalars.endIndex)?.range.lowerBound ?? source.endIndex
+        for lineInfo in source.lines {
+            if ¬lineInfo.line.isEmpty {
+                var line = String(lineInfo.line)
 
-            if start ≠ source.startIndex {
-                children.append(ExtendedTokenSyntax(text: String(source[..<start]), kind: .commentText))
+                while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
+                    let start = line.scalars.lastMatch(for: " ".scalars, in: line.startIndex ..< `protocol`.lowerBound)?.range.upperBound ?? line.startIndex
+                    let end = line.scalars.firstMatch(for: " ".scalars, in: `protocol`.upperBound ..< line.scalars.endIndex)?.range.lowerBound ?? line.endIndex
+
+                    if start ≠ line.startIndex {
+                        children.append(ExtendedTokenSyntax(text: String(line[..<start]), kind: .commentText))
+                    }
+                    children.append(ExtendedTokenSyntax(text: String(line[start..<end]), kind: .commentURL))
+                    line.scalars.removeSubrange(line.scalars.startIndex ..< end)
+                }
+
+                if ¬line.isEmpty {
+                    children.append(ExtendedTokenSyntax(text: line, kind: .commentText))
+                }
             }
-            children.append(ExtendedTokenSyntax(text: String(source[start..<end]), kind: .commentURL))
-            source.scalars.removeSubrange(source.scalars.startIndex ..< end)
-        }
-
-        if ¬source.isEmpty {
-            children.append(ExtendedTokenSyntax(text: source, kind: .commentText))
+            if ¬lineInfo.newline.isEmpty {
+                children.append(ExtendedTokenSyntax(text: String(lineInfo.newline), kind: .newlines))
+            }
         }
 
         super.init(children: children)

@@ -20,7 +20,7 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
         return ExtendedTokenSyntax(text: "/**", kind: .openingBlockDocumentationDelimiter)
     }
 
-    internal override class var contentKind: ExtendedTokenKind {
-        return .documentationText
+    internal override class func parse(contents: String) -> ExtendedSyntax {
+        return ExtendedTokenSyntax(text: contents, kind: .documentationText)
     }
 }

@@ -27,7 +27,7 @@ extension TriviaPiece {
         case .lineComment:
             return LineDeveloperCommentSyntax(source: text)
         case .blockComment:
-            return BlockCommentSyntax(source: text)
+            return BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
             return LineDocumentationSyntax(source: text)
         case .docBlockComment:
