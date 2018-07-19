@@ -18,83 +18,77 @@ import SDGCMarkShims
 public class MarkdownSyntax : ExtendedSyntax {
 
     internal static func parse(node: cmark_node) -> ExtendedSyntax {
-        let source: String
-        if let cString = cmark_node_get_literal(node) {
-            source = String(cString: cString)
-        } else {
-            source = ""
+        func nodeSource() -> String {
+            if let cString = cmark_node_get_literal(node) {
+                var pointer = cString
+                while cString ≠ nil {
+                    let pointee = UInt8(bitPattern: pointer.pointee)
+                    print(pointee)
+                    if pointee == 0 {
+                        break
+                    } else {
+                       pointer = pointer.advanced(by: 1)
+                    }
+                }
+                return String(cString: cString, encoding: .utf8) ?? ""
+            } else {
+                return ""
+            }
         }
 
         switch cmark_node_get_type(node) {
         // #warning(Handle all of these.)
+        // CMARK_NODE_DOCUMENT will never occur.
         case CMARK_NODE_BLOCK_QUOTE:
             print("Quote node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_LIST:
             print("List node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_ITEM:
             print("Item node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_CODE_BLOCK:
             print("Code block node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_HTML:
             print("HTML node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_PARAGRAPH:
             print("Paragraph node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_HEADER:
             print("Header node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_HRULE:
             print("Horizontal rule node.")
-            print(source)
             return MarkdownSyntax(node: node)
-        case CMARK_NODE_TEXT:
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
         case CMARK_NODE_SOFTBREAK:
             print("Softbreak node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_LINEBREAK:
             print("Linebreak node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_CODE:
             print("Code node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_INLINE_HTML:
             print("Inline HTML node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_EMPH:
             print("Emphasis node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_STRONG:
             print("Strong node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_LINK:
             print("Link node.")
-            print(source)
             return MarkdownSyntax(node: node)
         case CMARK_NODE_IMAGE:
             print("Image node.")
-            print(source)
             return MarkdownSyntax(node: node)
-        default /* CMARK_NODE_DOCUMENT */:
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+        default /* CMARK_NODE_TEXT */:
+            return ExtendedTokenSyntax(text: nodeSource(), kind: .documentationText)
         }
     }
 
