@@ -27,61 +27,73 @@ public class MarkdownSyntax : ExtendedSyntax {
 
         switch cmark_node_get_type(node) {
         // #warning(Handle all of these.)
-        case CMARK_NODE_DOCUMENT:
-            print("Document node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
         case CMARK_NODE_BLOCK_QUOTE:
             print("Quote node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_LIST:
             print("List node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_ITEM:
             print("Item node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_CODE_BLOCK:
             print("Code block node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_HTML:
             print("HTML node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_PARAGRAPH:
             print("Paragraph node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_HEADER:
             print("Header node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_HRULE:
             print("Horizontal rule node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_TEXT:
-            print("Text node.")
             return ExtendedTokenSyntax(text: source, kind: .documentationText)
         case CMARK_NODE_SOFTBREAK:
             print("Softbreak node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_LINEBREAK:
             print("Linebreak node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_CODE:
             print("Code node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_INLINE_HTML:
             print("Inline HTML node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_EMPH:
             print("Emphasis node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_STRONG:
             print("Strong node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_LINK:
             print("Link node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
+            print(source)
+            return MarkdownSyntax(node: node)
         case CMARK_NODE_IMAGE:
             print("Image node.")
-            return ExtendedTokenSyntax(text: source, kind: .documentationText)
-        default:
+            print(source)
+            return MarkdownSyntax(node: node)
+        default /* CMARK_NODE_DOCUMENT */:
             return ExtendedTokenSyntax(text: source, kind: .documentationText)
         }
     }
@@ -97,6 +109,6 @@ public class MarkdownSyntax : ExtendedSyntax {
                 child = next
             }
         }
-        super.init(children: [])
+        super.init(children: children)
     }
 }
