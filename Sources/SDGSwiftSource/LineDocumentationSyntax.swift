@@ -12,8 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCMarkShims
-
 public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties
@@ -23,7 +21,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
     }
 
     internal override class func parse(contents: String) -> ExtendedSyntax {
-        return ExtendedTokenSyntax(text: contents, kind: .documentationText)
+        return DocumentationSyntax(source: contents)
     }
 
     // MARK: - Properties
