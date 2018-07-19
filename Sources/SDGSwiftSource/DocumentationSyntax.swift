@@ -12,11 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class DocumentationSyntax : ExtendedSyntax {
+import SDGLogic
+import SDGCMarkShims
+
+public class DocumentationSyntax : MarkdownSyntax {
 
     // MARK: - Initialization
 
     internal init(source: String) {
-        super.init(children: [ExtendedTokenSyntax(text: source, kind: .documentationText)])
+        let cSource = source.cString(using: .utf8)!
+        let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
+        defer { cmark_node_free(tree) }
+        super.init(node: tree)
     }
 }
