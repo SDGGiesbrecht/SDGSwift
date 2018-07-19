@@ -1,5 +1,5 @@
 /*
- CMark.swift
+ HeadingSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,4 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal typealias cmark_node = OpaquePointer?
+public class HeadingSyntax : MarkdownSyntax {
+
+    internal override init(node: cmark_node) {
+        super.init(node: node)
+    }
+}
