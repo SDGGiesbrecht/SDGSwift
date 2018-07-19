@@ -20,16 +20,6 @@ public class MarkdownSyntax : ExtendedSyntax {
     internal static func parse(node: cmark_node) -> ExtendedSyntax {
         func nodeSource() -> String {
             if let cString = cmark_node_get_literal(node) {
-                var pointer = cString
-                while cString ≠ nil {
-                    let pointee = UInt8(bitPattern: pointer.pointee)
-                    print(pointee)
-                    if pointee == 0 {
-                        break
-                    } else {
-                       pointer = pointer.advanced(by: 1)
-                    }
-                }
                 return String(cString: cString, encoding: .utf8) ?? ""
             } else {
                 return ""

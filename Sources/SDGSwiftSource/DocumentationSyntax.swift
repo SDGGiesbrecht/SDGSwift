@@ -20,8 +20,9 @@ public class DocumentationSyntax : MarkdownSyntax {
     // MARK: - Initialization
 
     internal init(source: String) {
-        let cSource = source.cString(using: .utf8)!
-        let tree = cmark_parse_document(cSource, cSource.count − 1, CMARK_OPT_DEFAULT)
+        var cSource = source.cString(using: .utf8)!
+        cSource.removeLast() // Remove trailing NULL.
+        let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
         defer { cmark_node_free(tree) }
         super.init(node: tree)
     }
