@@ -67,9 +67,11 @@ extension Optional where Wrapped == OpaquePointer {
         }
 
         var result = indexFor(line: Int(line), column: Int(column), in: documentation)
-        let type = cmark_node_get_type(self)
-        if type == CMARK_NODE_PARAGRAPH ∨ type == CMARK_NODE_HEADER {
+        switch cmark_node_get_type(self) {
+        case CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH, CMARK_NODE_ITEM:
             result = documentation.scalars.index(after: result)
+        default:
+            break
         }
         return result
     }
