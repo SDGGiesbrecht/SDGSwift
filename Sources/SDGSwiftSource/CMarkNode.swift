@@ -67,8 +67,8 @@ extension Optional where Wrapped == OpaquePointer {
             node = cmark_node_parent(node)
         }
 
-        let result = indexFor(line: line, column: column, in: documentation)
-        return result
+        let last = indexFor(line: line, column: column, in: documentation)
+        return documentation.scalars.index(after: last)
     }
     private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView.Index {
         let scalars = documentation.scalars
