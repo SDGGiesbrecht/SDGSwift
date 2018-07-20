@@ -24,6 +24,6 @@ public class DocumentationSyntax : MarkdownSyntax {
         cSource.removeLast() // Remove trailing NULL.
         let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
         defer { cmark_node_free(tree) }
-        super.init(node: tree)
+        super.init(node: tree, in: source)
     }
 }

@@ -61,13 +61,16 @@ public enum ExtendedTokenKind {
     /// Documentation text.
     case documentationText
 
+    /// A markdown delimiter for a heading.
+    case headingDelimiter
+
     // MARK: - Properties
 
     public var textFreedom: SyntaxElement.TextFreedom {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .headingDelimiter:
             return .invariable
         }
     }

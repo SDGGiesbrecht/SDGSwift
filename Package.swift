@@ -74,6 +74,7 @@ let package = Package(
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGText", package: "SDGText"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
         .target(name: "SDGXcode", dependencies: [

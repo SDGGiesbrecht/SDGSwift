@@ -19,15 +19,15 @@ public class MarkdownSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node) {
+    internal init(node: cmark_node, in documentation: String, precedingChildren: [ExtendedSyntax] = [], followingChildren: [ExtendedSyntax] = []) {
         var children: [ExtendedSyntax] = []
         if var child = cmark_node_first_child(node) {
-            children.append(node.syntax)
+            children.append(child.syntax(in: documentation))
             while let next = cmark_node_next(child) {
-                children.append(node.syntax)
+                children.append(next.syntax(in: documentation))
                 child = next
             }
         }
-        super.init(children: children)
+        super.init(children: precedingChildren + children + followingChildren)
     }
 }
