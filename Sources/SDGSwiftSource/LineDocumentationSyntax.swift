@@ -21,7 +21,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
     }
 
     internal override class func parse(contents: String) -> ExtendedSyntax {
-        return DocumentationSyntax(source: contents)
+        return DocumentationSyntax.parse(source: contents)
     }
 
     // MARK: - Properties

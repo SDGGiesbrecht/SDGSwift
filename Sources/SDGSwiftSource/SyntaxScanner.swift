@@ -46,6 +46,7 @@ open class SyntaxScanner {
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
+    /// Scans the node and its children.
     public func scan(_ node: ExtendedSyntax) {
         if visit(node) {
             for child in node.children {
@@ -55,6 +56,7 @@ open class SyntaxScanner {
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
+    /// Scans the node and its children.
     public func scan(_ trivia: Trivia) {
         if visit(trivia) {
             for piece in trivia {
@@ -64,6 +66,7 @@ open class SyntaxScanner {
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
+    /// Scans the node and its children.
     public func scan(_ piece: TriviaPiece) {
         if visit(piece) {
             scan(piece.syntax)
@@ -86,16 +89,40 @@ open class SyntaxScanner {
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     open func visit(_ node: ExtendedSyntax) -> Bool {
         return true
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     open func visit(_ node: Trivia) -> Bool {
         return true
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     open func visit(_ node: TriviaPiece) -> Bool {
         return true
     }

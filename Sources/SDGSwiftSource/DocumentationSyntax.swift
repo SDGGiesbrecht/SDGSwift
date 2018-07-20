@@ -12,14 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGMathematics
 import SDGCMarkShims
 
+private var documentationCache: [String: DocumentationSyntax] = [:]
+
 public class DocumentationSyntax : MarkdownSyntax {
+
+    internal static func parse(source: String) -> DocumentationSyntax {
+        let result = cached(in: &documentationCache[source]) {
+            return DocumentationSyntax(source: source)
+        }
+        if documentationCache.underestimatedCount ≥ 100 {
+            documentationCache = [:]
+        }
+        return result
+    }
 
     // MARK: - Initialization
 
-    internal init(source: String) {
+    private init(source: String) {
         var cSource = source.cString(using: .utf8)!
         cSource.removeLast() // Remove trailing NULL.
         let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)

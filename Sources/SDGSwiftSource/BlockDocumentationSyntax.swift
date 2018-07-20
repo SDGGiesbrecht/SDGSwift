@@ -21,6 +21,6 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
     }
 
     internal override class func parse(contents: String) -> ExtendedSyntax {
-        return DocumentationSyntax(source: contents)
+        return DocumentationSyntax.parse(source: contents)
     }
 }
