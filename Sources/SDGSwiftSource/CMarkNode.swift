@@ -108,8 +108,7 @@ extension Optional where Wrapped == OpaquePointer {
             print("HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_PARAGRAPH:
-            print("Paragraph node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return ParagraphSyntax(node: self, in: documentation)
         case CMARK_NODE_HEADER:
             return HeadingSyntax(node: self, in: documentation)
         case CMARK_NODE_HRULE:
