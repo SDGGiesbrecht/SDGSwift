@@ -61,11 +61,17 @@ public enum ExtendedTokenKind {
     /// Documentation text.
     case documentationText
 
-    /// A Markdown delimiter for a heading.
-    case headingDelimiter
-
     /// A Markdown delimiter for a bullet.
     case bullet
+
+    /// A Markdown code delimiter.
+    case codeDelimiter
+
+    /// Source code.
+    case source
+
+    /// A Markdown delimiter for a heading.
+    case headingDelimiter
 
     /// A Markdown delimiter for an asterism.
     case asterism
@@ -76,7 +82,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .headingDelimiter, .bullet, .asterism:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .source, .headingDelimiter, .asterism:
             return .invariable
         }
     }

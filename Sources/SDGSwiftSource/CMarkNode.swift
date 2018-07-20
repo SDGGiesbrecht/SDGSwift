@@ -86,7 +86,7 @@ extension Optional where Wrapped == OpaquePointer {
         return index.samePosition(in: scalars)
     }
 
-    private var literal: String? {
+    internal var literal: String? {
         if let cString = cmark_node_get_literal(self) {
             return String(cString: cString, encoding: .utf8)
         } else {
@@ -123,8 +123,7 @@ extension Optional where Wrapped == OpaquePointer {
             print("Linebreak node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_CODE:
-            print("Code node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return CodeSyntax(node: self, in: documentation)
         case CMARK_NODE_INLINE_HTML:
             print("Inline HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
