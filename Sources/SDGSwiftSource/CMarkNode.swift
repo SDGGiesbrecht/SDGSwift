@@ -36,38 +36,37 @@ extension Optional where Wrapped == OpaquePointer {
 
     internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
         var node = self
-        var line = 0
-        while line == 0 {
-            line = Int(cmark_node_get_start_line(node))
+        var line: Int32 = 0
+        var column: Int32 = 0
+        while line == 0 ∨ column == 0 {
+            line = cmark_node_get_start_line(node)
+            column = cmark_node_get_start_column(node)
+            if line == 0 ∨ column == 0 {
+                let previous = cmark_node_previous(node)
+                line = cmark_node_get_end_line(previous)
+                column = cmark_node_get_end_column(previous)
+            }
             node = cmark_node_parent(node)
         }
 
-        node = self
-        var column = 0
-        while column == 0 {
-            column = Int(cmark_node_get_start_column(node))
-            node = cmark_node_parent(node)
-        }
-
-        let result = indexFor(line: line, column: column, in: documentation)
-        return result
+        return indexFor(line: Int(line), column: Int(column), in: documentation)
     }
     internal func upperBound(in documentation: String) -> String.ScalarView.Index {
         var node = self
-        var line = 0
-        while line == 0 {
-            line = Int(cmark_node_get_end_line(node))
+        var line: Int32 = 0
+        var column: Int32 = 0
+        while line == 0 ∨ column == 0 {
+            line = cmark_node_get_end_line(node)
+            column = cmark_node_get_end_column(node)
+            if line == 0 ∨ column == 0 {
+                let next = cmark_node_next(node)
+                line = cmark_node_get_start_line(next)
+                column = cmark_node_get_start_column(next)
+            }
             node = cmark_node_parent(node)
         }
 
-        node = self
-        var column = 0
-        while column == 0 {
-            column = Int(cmark_node_get_end_column(node))
-            node = cmark_node_parent(node)
-        }
-
-        let last = indexFor(line: line, column: column, in: documentation)
+        let last = indexFor(line: Int(line), column: Int(column), in: documentation)
         return documentation.scalars.index(after: last)
     }
     private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView.Index {

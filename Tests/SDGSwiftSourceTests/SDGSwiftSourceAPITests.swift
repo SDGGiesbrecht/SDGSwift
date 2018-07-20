@@ -42,6 +42,12 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
     }
 
+    func testFragment() {
+        let markdown = ["This", "spans", "several", "lines", "."].joined(separator: "\n")
+        let scanned = DocumentationSyntax.parse(source: markdown)
+        XCTAssertEqual(scanned.text, markdown)
+    }
+
     func testIdentifier() {
         XCTAssert(Identifier.identifierCharacters ∋ "α")
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
