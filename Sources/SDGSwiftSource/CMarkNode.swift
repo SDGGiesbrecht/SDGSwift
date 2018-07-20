@@ -66,8 +66,12 @@ extension Optional where Wrapped == OpaquePointer {
             node = cmark_node_parent(node)
         }
 
-        let last = indexFor(line: Int(line), column: Int(column), in: documentation)
-        return documentation.scalars.index(after: last)
+        var result = indexFor(line: Int(line), column: Int(column), in: documentation)
+        let type = cmark_node_get_type(self)
+        if type == CMARK_NODE_PARAGRAPH ∨ type == CMARK_NODE_HEADER {
+            result = documentation.scalars.index(after: result)
+        }
+        return result
     }
     private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView.Index {
         let scalars = documentation.scalars
@@ -112,8 +116,7 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_HEADER:
             return HeadingSyntax(node: self, in: documentation)
         case CMARK_NODE_HRULE:
-            print("Horizontal rule node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return ExtendedTokenSyntax(text: String(documentation.scalars[lowerBound(in: documentation) ..< upperBound(in: documentation)]), kind: .asterism)
         case CMARK_NODE_SOFTBREAK:
             return ExtendedTokenSyntax(text: "\n", kind: .newlines)
         case CMARK_NODE_LINEBREAK:
