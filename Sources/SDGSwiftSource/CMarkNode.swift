@@ -100,8 +100,7 @@ extension Optional where Wrapped == OpaquePointer {
             print("Quote node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_LIST:
-            print("List node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return ListSyntax(node: self, in: documentation)
         case CMARK_NODE_ITEM:
             print("Item node.")
             return MarkdownSyntax(node: self, in: documentation)
