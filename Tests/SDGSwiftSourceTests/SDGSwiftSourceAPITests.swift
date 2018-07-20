@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #warning(Temporary.)
+@testable import SDGSwiftSource
+
 import SDGLogic
 import SDGCollections
 import SDGPersistenceTestUtilities
@@ -25,6 +28,18 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testContainerSyntaxElement() {
         XCTAssert(¬ContainerSyntaxElement(range: "".bounds, children: []).children.isEmpty)
+    }
+
+    func testCMark() {
+        var markdown = "This is a simple paragraph."
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
+
+        markdown = [
+            "This is a description.",
+            "",
+            "It also has specific details."
+            ].joined(separator: "\n")
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
     }
 
     func testIdentifier() {

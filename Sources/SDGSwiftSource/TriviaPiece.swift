@@ -16,7 +16,7 @@ import SDGSwiftLocalizations
 
 extension TriviaPiece {
 
-    public var syntax: ExtendedSyntax {
+    public func syntax(siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
         switch self {
         case .spaces, .tabs:
             return ExtendedTokenSyntax(text: text, kind: .whitespace)
@@ -25,11 +25,11 @@ extension TriviaPiece {
         case .backticks:
             return ExtendedTokenSyntax(text: text, kind: .escape)
         case .lineComment:
-            return LineDeveloperCommentSyntax(source: text)
+            return LineDeveloperCommentSyntax(source: text, siblings: siblings, index: index)
         case .blockComment:
             return BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
-            return LineDocumentationSyntax(source: text)
+            return LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
             return BlockDocumentationSyntax(source: text)
         }

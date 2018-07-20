@@ -59,17 +59,18 @@ open class SyntaxScanner {
     /// Scans the node and its children.
     public func scan(_ trivia: Trivia) {
         if visit(trivia) {
-            for piece in trivia {
-                scan(piece)
+            for index in trivia.indices {
+                let piece = trivia[index]
+                scan(piece, siblings: trivia, index: index)
             }
         }
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ piece: TriviaPiece) {
+    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index) {
         if visit(piece) {
-            scan(piece.syntax)
+            scan(piece.syntax(siblings: siblings, index: index))
         }
     }
 

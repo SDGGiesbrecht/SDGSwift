@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGMathematics
+
 public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties
@@ -20,8 +23,56 @@ public class LineDocumentationSyntax : LineCommentSyntax {
         return ExtendedTokenSyntax(text: "///", kind: .lineDocumentationDelimiter)
     }
 
-    internal override class func parse(contents: String) -> ExtendedSyntax {
-        return DocumentationSyntax.parse(source: contents)
+    internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
+        var preceding: [String] = []
+        var interveningNewlines = 0
+        search: for searchIndex in (siblings.startIndex ..< index).reversed() {
+            let sibling = siblings[searchIndex]
+            switch sibling {
+            case .spaces, .tabs:
+                continue
+            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number):
+                interveningNewlines += number
+                if interveningNewlines > 1 {
+                    break search
+                }
+            case .docLineComment:
+                preceding.prepend(String(sibling.text.dropFirst(3)))
+                interveningNewlines = 0
+            case .backticks, .lineComment, .blockComment, .docBlockComment:
+                break search
+            }
+        }
+
+        var following: [String] = []
+        interveningNewlines = 0
+        search: for searchIndex in siblings.index(after: index) ..< siblings.endIndex {
+            let sibling = siblings[searchIndex]
+            switch sibling {
+            case .spaces, .tabs:
+                continue
+            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number):
+                interveningNewlines += number
+                if interveningNewlines > 1 {
+                    break search
+                }
+            case .docLineComment:
+                following.append(String(sibling.text.dropFirst(3)))
+                interveningNewlines = 0
+            case .backticks, .lineComment, .blockComment, .docBlockComment:
+                break search
+            }
+        }
+
+        let group = preceding + [contents] + following
+        let togetherSource = group.joined(separator: "\n")
+        let togetherSyntax = DocumentationSyntax.parse(source: togetherSource)
+
+        var precedingLength: Int = 0
+        for line in preceding {
+            precedingLength += line.count + 1
+        }
+        return FragmentSyntax(clusterOffsets: precedingLength ..< precedingLength + contents.count, in: togetherSyntax)
     }
 
     // MARK: - Properties

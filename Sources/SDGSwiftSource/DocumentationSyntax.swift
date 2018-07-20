@@ -39,4 +39,8 @@ public class DocumentationSyntax : MarkdownSyntax {
         defer { cmark_node_free(tree) }
         super.init(node: tree, in: source)
     }
+
+    internal override init(children: [ExtendedSyntax]) {
+        super.init(children: children)
+    }
 }

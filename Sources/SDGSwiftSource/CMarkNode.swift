@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGMathematics
 import SDGCMarkShims
 
@@ -22,15 +23,52 @@ extension OpaquePointer {
     internal func syntax(in documentation: String) -> ExtendedSyntax {
         return Optional(self).syntax(in: documentation)
     }
+
+    internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
+        return Optional(self).lowerBound(in: documentation)
+    }
+    internal func upperBound(in documentation: String) -> String.ScalarView.Index {
+        return Optional(self).upperBound(in: documentation)
+    }
 }
 
 extension Optional where Wrapped == OpaquePointer {
 
     internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
-        return indexFor(line: Int(cmark_node_get_start_line(self)), column: Int(cmark_node_get_start_column(self)), in: documentation)
+        var node = self
+        var line = 0
+        while line == 0 {
+            line = Int(cmark_node_get_start_line(node))
+            node = cmark_node_parent(node)
+        }
+
+        node = self
+        var column = 0
+        while column == 0 {
+            column = Int(cmark_node_get_start_column(node))
+            node = cmark_node_parent(node)
+        }
+
+        let result = indexFor(line: line, column: column, in: documentation)
+        return result
     }
-    private func upperBound(in documentation: String) -> String.ScalarView.Index {
-        return documentation.scalars.index(after: indexFor(line: Int(cmark_node_get_end_line(self)), column: Int(cmark_node_get_end_column(self)), in: documentation))
+    internal func upperBound(in documentation: String) -> String.ScalarView.Index {
+        var node = self
+        var line = 0
+        while line == 0 {
+            line = Int(cmark_node_get_end_line(node))
+            node = cmark_node_parent(node)
+        }
+
+        node = self
+        var column = 0
+        while column == 0 {
+            column = Int(cmark_node_get_end_column(node))
+            node = cmark_node_parent(node)
+        }
+
+        let result = indexFor(line: line, column: column, in: documentation)
+        return result
     }
     private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView.Index {
         let scalars = documentation.scalars

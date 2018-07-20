@@ -22,13 +22,13 @@ public class LineCommentSyntax : ExtendedSyntax {
         primitiveMethod()
     }
 
-    internal class func parse(contents: String) -> ExtendedSyntax {
+    internal class func parse(contents: String, siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
         primitiveMethod()
     }
 
     // MARK: - Initialization
 
-    internal init(source: String) {
+    internal init(source: String, siblings: Trivia, index: Trivia.Index) {
         let delimiter = type(of: self).delimiter
 
         var line = source
@@ -45,7 +45,7 @@ public class LineCommentSyntax : ExtendedSyntax {
             self.indent = nil
         }
 
-        let content = type(of: self).parse(contents: line)
+        let content = type(of: self).parse(contents: line, siblings: siblings, index: index)
         _content = content
         children.append(content)
 
