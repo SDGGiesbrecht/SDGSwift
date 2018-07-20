@@ -116,8 +116,7 @@ extension Optional where Wrapped == OpaquePointer {
             print("Horizontal rule node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_SOFTBREAK:
-            print("Softbreak node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return ExtendedTokenSyntax(text: "\n", kind: .newlines)
         case CMARK_NODE_LINEBREAK:
             print("Linebreak node.")
             return MarkdownSyntax(node: self, in: documentation)
