@@ -43,11 +43,12 @@ public class HeadingSyntax : MarkdownSyntax {
 
             newline = nil
             underline = nil
+            trailingNewlines = nil
         } else {
             numberSignDelimiter = nil
             indent = nil
 
-            let contentEnd = node.upperBound(in: documentation)
+            let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
             if let newline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: contentStart ..< contentEnd) {
                 let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
                 followingChildren.append(newlineToken)
@@ -60,9 +61,20 @@ public class HeadingSyntax : MarkdownSyntax {
                 let underline = ExtendedTokenSyntax(text: String(documentation.scalars[newline.range.upperBound ..< delimiterEnd]), kind: .headingDelimiter)
                 followingChildren.append(underline)
                 self.underline = underline
+
+                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< contentEnd])
+                if ¬trailingNewlinesString.isEmpty {
+                    let trailingNewlines = ExtendedTokenSyntax(text: trailingNewlinesString, kind: .newlines)
+                    self.trailingNewlines = trailingNewlines
+                    followingChildren.append(trailingNewlines)
+                } else {
+                    self.trailingNewlines = nil
+                }
+
             } else {
                 self.newline = nil
                 underline = nil
+                trailingNewlines = nil
             }
         }
         super.init(node: node, in: documentation, precedingChildren: precedingChildren, followingChildren: followingChildren)
@@ -79,4 +91,7 @@ public class HeadingSyntax : MarkdownSyntax {
 
     /// The underline delimiter.
     public let underline: ExtendedTokenSyntax?
+
+    /// Trailing newlines.
+    public let trailingNewlines: ExtendedTokenSyntax?
 }
