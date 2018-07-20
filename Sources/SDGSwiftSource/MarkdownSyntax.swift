@@ -28,10 +28,15 @@ public class MarkdownSyntax : ExtendedSyntax {
         var children: [ExtendedSyntax] = []
         if var child = cmark_node_first_child(node) {
             children.append(child.syntax(in: documentation))
-            let end = child.upperBound(in: documentation)
+            var end = child.upperBound(in: documentation)
             while let next = cmark_node_next(child) {
+                defer {
+                    child = next
+                    end = child.upperBound(in: documentation)
+                }
+
                 let start = next.lowerBound(in: documentation)
-                if start ≠ end {
+                if start > end {
                     var trivia = String(documentation.scalars[end ..< start])
                     while let first = trivia.scalars.first {
                         if first ∈ CharacterSet.whitespaces {
@@ -59,7 +64,6 @@ public class MarkdownSyntax : ExtendedSyntax {
                     }
                 }
                 children.append(next.syntax(in: documentation))
-                child = next
             }
         }
         super.init(children: precedingChildren + children + followingChildren)
