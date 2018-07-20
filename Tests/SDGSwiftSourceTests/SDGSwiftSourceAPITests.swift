@@ -51,6 +51,15 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
 
         markdown = [
+            "This is a list:",
+            "\u{2D} An entry.",
+            "\u{2D} Another entry.",
+            "",
+            "This is a paragraph."
+            ].joined(separator: "\n")
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
+
+        markdown = [
             "This Is a Heading",
             "=================",
             "",

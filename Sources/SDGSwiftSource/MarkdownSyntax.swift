@@ -26,6 +26,36 @@ public class MarkdownSyntax : ExtendedSyntax {
     internal init(node: cmark_node, in documentation: String, precedingChildren: [ExtendedSyntax] = [], followingChildren: [ExtendedSyntax] = []) {
 
         var children: [ExtendedSyntax] = []
+
+        func assimilate(trivia: String) {
+            var trivia = trivia
+
+            while let first = trivia.scalars.first {
+                if first ∈ CharacterSet.whitespaces {
+                    var whitespace = String(first)
+                    trivia.scalars.removeFirst()
+                    while let another = trivia.scalars.first,
+                        another ∈ CharacterSet.whitespaces {
+                            whitespace.scalars.append(trivia.scalars.removeFirst())
+                    }
+                    children.append(ExtendedTokenSyntax(text: whitespace, kind: .whitespace))
+                } else if first ∈ CharacterSet.newlines {
+                    var newlines = String(first)
+                    trivia.scalars.removeFirst()
+                    while let another = trivia.scalars.first,
+                        another ∈ CharacterSet.newlines {
+                            newlines.scalars.append(trivia.scalars.removeFirst())
+                    }
+                    children.append(ExtendedTokenSyntax(text: newlines, kind: .newlines))
+                } else {
+                    if BuildConfiguration.current == .debug {
+                        print("Unexpected Markdown trivia: \(first)")
+                        break
+                    }
+                }
+            }
+        }
+
         if var child = cmark_node_first_child(node) {
             children.append(child.syntax(in: documentation))
             var end = child.upperBound(in: documentation)
@@ -34,36 +64,15 @@ public class MarkdownSyntax : ExtendedSyntax {
                     child = next
                     end = child.upperBound(in: documentation)
                 }
-
                 let start = next.lowerBound(in: documentation)
                 if start > end {
-                    var trivia = String(documentation.scalars[end ..< start])
-                    while let first = trivia.scalars.first {
-                        if first ∈ CharacterSet.whitespaces {
-                            var whitespace = String(first)
-                            trivia.scalars.removeFirst()
-                            while let another = trivia.scalars.first,
-                                another ∈ CharacterSet.whitespaces {
-                                    whitespace.scalars.append(trivia.scalars.removeFirst())
-                            }
-                            children.append(ExtendedTokenSyntax(text: whitespace, kind: .whitespace))
-                        } else if first ∈ CharacterSet.newlines {
-                            var newlines = String(first)
-                            trivia.scalars.removeFirst()
-                            while let another = trivia.scalars.first,
-                                another ∈ CharacterSet.newlines {
-                                    newlines.scalars.append(trivia.scalars.removeFirst())
-                            }
-                            children.append(ExtendedTokenSyntax(text: newlines, kind: .newlines))
-                        } else {
-                            if BuildConfiguration.current == .debug {
-                                print("Unexpected Markdown trivia: \(first)")
-                                break
-                            }
-                        }
-                    }
+                    assimilate(trivia: String(documentation.scalars[end ..< start]))
                 }
                 children.append(next.syntax(in: documentation))
+            }
+            let endIndex = node.upperBound(in: documentation)
+            if endIndex > end {
+                assimilate(trivia: String(documentation.scalars[end ..< endIndex]))
             }
         }
         super.init(children: precedingChildren + children + followingChildren)
