@@ -30,16 +30,25 @@ public class HeadingSyntax : MarkdownSyntax {
             lineStart = newline.range.upperBound
         }
 
-        if let token = documentation.scalars.lastMatch(for: String(repeating: "#", count: level).scalars, in: lineStart ..< contentStart) {
-            let delimiter = ExtendedTokenSyntax(text: "#", kind: .headingDelimiter)
-            numberSignDelimiter = delimiter
-            precedingChildren.append(delimiter)
+        if let delimiter = documentation.scalars.lastMatch(for: String(repeating: "#", count: level).scalars, in: lineStart ..< contentStart) {
+
+            let delimiterSyntax = ExtendedTokenSyntax(text: "#", kind: .headingDelimiter)
+            numberSignDelimiter = delimiterSyntax
+            precedingChildren.append(delimiterSyntax)
+
+            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< contentStart]), kind: .whitespace)
+            self.indent = indent
+            precedingChildren.append(indent)
         } else {
             numberSignDelimiter = nil
+            indent = nil
         }
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
     }
 
-    /// Delimiter.
+    /// The number sign delimiter.
     public let numberSignDelimiter: ExtendedTokenSyntax?
+
+    /// The indent after the number sign delimiter.
+    public let indent: ExtendedTokenSyntax?
 }
