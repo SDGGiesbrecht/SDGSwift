@@ -92,13 +92,13 @@ class SDGSwiftSourceAPITests : TestCase {
                 // #warning(Remove unidentifed test specifications. They are meaningless.
 
                 TextFreedomHighlighter.targetTestFreedom = .arbitrary
-                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
+                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 
                 TextFreedomHighlighter.targetTestFreedom = .aliasable
-                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
+                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
 
                 TextFreedomHighlighter.targetTestFreedom = .invariable
-                TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
+                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
                 /*
                  #warning(Not handled yet.)
 

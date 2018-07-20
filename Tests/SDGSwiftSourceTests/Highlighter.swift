@@ -27,8 +27,8 @@ class Highlighter : SyntaxScanner {
         return false
     }
 
-    @discardableResult func compare(syntax: Syntax, parsedFrom url: URL, againstSpecification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) -> String {
-        let result = highlight(syntax)
+    @discardableResult func compare(syntax: Syntax, parsedFrom url: URL, againstSpecification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) throws -> String {
+        let result = try highlight(syntax)
 
         let specification = afterDirectory.appendingPathComponent(name).appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt")
 
@@ -37,9 +37,9 @@ class Highlighter : SyntaxScanner {
     }
 
     private var highlighted = ""
-    private func highlight(_ source: Syntax) -> String {
+    private func highlight(_ source: Syntax) throws -> String {
         highlighted = ""
-        _ = scan(source)
+        _ = try scan(source)
         return highlighted
     }
 

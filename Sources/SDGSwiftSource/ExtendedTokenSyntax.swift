@@ -32,6 +32,11 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     /// The kind of the token.
     public let kind: ExtendedTokenKind
 
+    /// The syntax of the source code contained in this token.
+    public func syntax() throws -> Syntax {
+        return try Syntax.parse(_text)
+    }
+
     // MARK: - TextOutputStreamable
 
     public override func write<Target>(to target: inout Target) where Target : TextOutputStream {

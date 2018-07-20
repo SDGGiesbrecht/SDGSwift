@@ -22,24 +22,24 @@ open class SyntaxScanner {
 
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ node: Syntax) {
+    public func scan(_ node: Syntax) throws {
         if let token = node as? TokenSyntax {
-            scan(token.leadingTrivia)
+            try scan(token.leadingTrivia)
             if shouldExtend(token),
                 let extended = token.extended {
                 if visit(extended) {
                     for child in extended.children {
-                        scan(child)
+                        try scan(child)
                     }
                 }
             } else {
                 _ = visit(token)
             }
-            scan(token.trailingTrivia)
+            try scan(token.trailingTrivia)
         } else {
             if visit(node) {
                 for child in node.children {
-                    scan(child)
+                    try scan(child)
                 }
             }
         }
@@ -47,30 +47,36 @@ open class SyntaxScanner {
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ node: ExtendedSyntax) {
-        if visit(node) {
-            for child in node.children {
-                scan(child)
+    public func scan(_ node: ExtendedSyntax) throws {
+        if let token = node as? ExtendedTokenSyntax,
+            token.kind == .source,
+            shouldExtend(token) {
+            try scan(token.syntax())
+        } else {
+            if visit(node) {
+                for child in node.children {
+                    try scan(child)
+                }
             }
         }
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ trivia: Trivia) {
+    public func scan(_ trivia: Trivia) throws {
         if visit(trivia) {
             for index in trivia.indices {
                 let piece = trivia[index]
-                scan(piece, siblings: trivia, index: index)
+                try scan(piece, siblings: trivia, index: index)
             }
         }
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index) {
+    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index) throws {
         if visit(piece) {
-            scan(piece.syntax(siblings: siblings, index: index))
+            try scan(piece.syntax(siblings: siblings, index: index))
         }
     }
 
@@ -137,6 +143,18 @@ open class SyntaxScanner {
     ///
     /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` subclass; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
     open func shouldExtend(_ node: TokenSyntax) -> Bool {
+        return true
+    }
+
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Subclass this to skip extended parsing for particular tokens.
+    ///
+    /// - Parameters:
+    ///     - node: An `ExtendedTokenSyntax` instance.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `Syntax` subclass; return `false` to skip extended parsing and have the token visited as an `ExtendedTokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and an `ExtendedTokenSyntax` instance will be visited regardless.
+    open func shouldExtend(_ node: ExtendedTokenSyntax) -> Bool {
         return true
     }
 }
