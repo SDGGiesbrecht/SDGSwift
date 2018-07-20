@@ -32,7 +32,7 @@ public class HeadingSyntax : MarkdownSyntax {
 
         if let delimiter = documentation.scalars.lastMatch(for: String(repeating: "#", count: level).scalars, in: lineStart ..< contentStart) {
 
-            let delimiterSyntax = ExtendedTokenSyntax(text: "#", kind: .headingDelimiter)
+            let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
