@@ -40,6 +40,12 @@ class SDGSwiftSourceAPITests : TestCase {
             "It also has specific details."
             ].joined(separator: "\n")
         XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
+
+        markdown = [
+            "This is a heading.",
+            "=================="
+        ].joined(separator: "\n")
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
     }
 
     func testFragment() {

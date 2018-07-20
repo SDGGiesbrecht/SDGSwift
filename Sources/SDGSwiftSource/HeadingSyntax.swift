@@ -20,6 +20,7 @@ public class HeadingSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
+        var followingChildren: [ExtendedSyntax] = []
 
         let level = Int(cmark_node_get_header_level(node))
 
@@ -39,11 +40,32 @@ public class HeadingSyntax : MarkdownSyntax {
             let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< contentStart]), kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
+
+            newline = nil
+            underline = nil
         } else {
             numberSignDelimiter = nil
             indent = nil
+
+            let contentEnd = node.upperBound(in: documentation)
+            if let newline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: contentStart ..< contentEnd) {
+                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
+                followingChildren.append(newlineToken)
+                self.newline = newlineToken
+
+                var delimiterEnd = documentation.scalars.endIndex
+                if let nextNewline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: newline.range.upperBound ..< documentation.scalars.endIndex) {
+                    delimiterEnd = nextNewline.range.lowerBound
+                }
+                let underline = ExtendedTokenSyntax(text: String(documentation.scalars[newline.range.upperBound ..< delimiterEnd]), kind: .headingDelimiter)
+                followingChildren.append(underline)
+                self.underline = underline
+            } else {
+                self.newline = nil
+                underline = nil
+            }
         }
-        super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+        super.init(node: node, in: documentation, precedingChildren: precedingChildren, followingChildren: followingChildren)
     }
 
     /// The number sign delimiter.
@@ -51,4 +73,10 @@ public class HeadingSyntax : MarkdownSyntax {
 
     /// The indent after the number sign delimiter.
     public let indent: ExtendedTokenSyntax?
+
+    /// The newline before the underline delimiter.
+    public let newline: ExtendedTokenSyntax?
+
+    /// The underline delimiter.
+    public let underline: ExtendedTokenSyntax?
 }
