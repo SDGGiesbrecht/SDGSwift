@@ -24,6 +24,14 @@ public class LineDocumentationSyntax : LineCommentSyntax {
     }
 
     internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
+        func process(sibling: TriviaPiece) -> String {
+            var siblingText = String(sibling.text.dropFirst(3))
+            if siblingText.scalars.first == " " {
+                siblingText.scalars.removeFirst()
+            }
+            return siblingText
+        }
+
         var preceding: [String] = []
         var interveningNewlines = 0
         search: for searchIndex in (siblings.startIndex ..< index).reversed() {
@@ -37,7 +45,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
                     break search
                 }
             case .docLineComment:
-                preceding.prepend(String(sibling.text.dropFirst(3)))
+                preceding.prepend(process(sibling: sibling))
                 interveningNewlines = 0
             case .backticks, .lineComment, .blockComment, .docBlockComment:
                 break search
@@ -57,7 +65,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
                     break search
                 }
             case .docLineComment:
-                following.append(String(sibling.text.dropFirst(3)))
+                following.append(process(sibling: sibling))
                 interveningNewlines = 0
             case .backticks, .lineComment, .blockComment, .docBlockComment:
                 break search
