@@ -104,8 +104,6 @@ class SDGSwiftSourceAPITests : TestCase {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
                 let sourceFile = try SourceFileSyntax.parse(url)
 
-                // #warning(Remove unidentifed test specifications. They are meaningless.
-
                 TextFreedomHighlighter.targetTestFreedom = .arbitrary
                 try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 

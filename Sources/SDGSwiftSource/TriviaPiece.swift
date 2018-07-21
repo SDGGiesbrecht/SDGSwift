@@ -29,6 +29,10 @@ extension TriviaPiece {
         case .blockComment:
             return BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
+            let text = self.text
+            if text.hasPrefix("/**") {
+                return TriviaPiece.docBlockComment(text).syntax(siblings: siblings, index: index)
+            }
             return LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
             return BlockDocumentationSyntax(source: text)
