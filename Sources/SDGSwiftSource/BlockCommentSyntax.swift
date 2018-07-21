@@ -73,7 +73,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
             self.closingVerticalMargin = nil
         }
 
-        let indentMatch = block.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ CharacterSet.whitespaces }))
+        let indentMatch = block.scalars.prefix(upTo: ConditionalPattern({ $0 ∉ CharacterSet.whitespaces }))
         let indent = indentMatch.flatMap({ String($0.contents) }) ?? ""
         var indents: [String] = []
         var contents: [String] = []
