@@ -15,7 +15,7 @@
 import SDGSwiftSyntaxShims
 import SDGCMarkShims
 
-public class CodeSyntax : MarkdownSyntax {
+public class InlineCodeSyntax : MarkdownSyntax {
 
     // MARK: - Initialization
 

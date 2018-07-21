@@ -123,7 +123,7 @@ extension Optional where Wrapped == OpaquePointer {
             print("Linebreak node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_CODE:
-            return CodeSyntax(node: self, in: documentation)
+            return InlineCodeSyntax(node: self, in: documentation)
         case CMARK_NODE_INLINE_HTML:
             print("Inline HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
