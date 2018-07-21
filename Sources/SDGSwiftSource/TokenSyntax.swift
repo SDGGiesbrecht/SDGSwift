@@ -35,6 +35,7 @@ extension TokenSyntax {
             if let parent = self.parent {
                 if parent.isDecl == true {
                     if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
+                        // Name of imported module.
                         return .invariable
                     }
                     return .arbitrary
