@@ -79,6 +79,21 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertEqual(croppedFragment.text, "is\nsp")
     }
 
+    func testCodeBlock() {
+        var markdown = "This has inline code: `let x = 0`"
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
+
+        markdown = [
+            "This is a code block:",
+            "",
+            "```swift",
+            "var x = 0",
+            "x += 1",
+            "```"
+            ].joined(separator: "\n")
+        XCTAssertEqual(DocumentationSyntax.parse(source: markdown).text, markdown)
+    }
+
     func testIdentifier() {
         XCTAssert(Identifier.identifierCharacters ∋ "α")
         XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")

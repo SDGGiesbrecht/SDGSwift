@@ -68,7 +68,7 @@ extension Optional where Wrapped == OpaquePointer {
 
         var result = indexFor(line: Int(line), column: Int(column), in: documentation)
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH, CMARK_NODE_ITEM:
+        case CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH:
             result = documentation.scalars.index(after: result)
         default:
             break
@@ -106,8 +106,7 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_ITEM:
             return ListEntrySyntax(node: self, in: documentation)
         case CMARK_NODE_CODE_BLOCK:
-            print("Code block node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return CodeBlockSyntax(node: self, in: documentation)
         case CMARK_NODE_HTML:
             print("HTML node.")
             return MarkdownSyntax(node: self, in: documentation)

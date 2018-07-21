@@ -67,6 +67,9 @@ public enum ExtendedTokenKind {
     /// A Markdown code delimiter.
     case codeDelimiter
 
+    /// A language identifier for a Markdown code block.
+    case language
+
     /// Source code.
     case source
 
@@ -82,7 +85,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .source, .headingDelimiter, .asterism:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism:
             return .invariable
         }
     }
