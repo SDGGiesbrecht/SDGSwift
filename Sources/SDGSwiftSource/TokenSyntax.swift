@@ -32,10 +32,15 @@ extension TokenSyntax {
     public var textFreedom: SyntaxElement.TextFreedom {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
-            if parent?.isDecl == true {
-                return .arbitrary
-            }
             if let parent = self.parent {
+                if parent.isDecl == true {
+                    return .arbitrary
+                }
+                if let argument = parent as? FunctionCallArgumentSyntax,
+                    argument.label == self {
+                    return .aliasable
+                }
+
                 if (parent.child(at: indexInParent − 1) as? TokenSyntax)?.tokenKind == .forKeyword {
                     // Loop variable declaration.
                     return .arbitrary
