@@ -38,6 +38,7 @@ extension TokenSyntax {
                         // Name of imported module.
                         return .invariable
                     }
+                    /// Declaration.
                     return .arbitrary
                 }
                 if let argument = parent as? FunctionCallArgumentSyntax,
