@@ -34,6 +34,9 @@ extension TokenSyntax {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
                 if parent.isDecl == true {
+                    if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
+                        return .invariable
+                    }
                     return .arbitrary
                 }
                 if let argument = parent as? FunctionCallArgumentSyntax,
