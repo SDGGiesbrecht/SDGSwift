@@ -87,7 +87,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
     // @documentation(SDGSwiftSource.LineDeveloperCommentSyntax.content)
     /// The content.
-    public var content: ExtendedTokenSyntax {
-        return _content as! ExtendedTokenSyntax
+    public var content: FragmentSyntax {
+        return _content as! FragmentSyntax
     }
 }

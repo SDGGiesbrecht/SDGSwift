@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
+import SDGText
 import SDGLocalization
 
 public class BlockCommentSyntax : ExtendedSyntax {
@@ -70,9 +73,42 @@ public class BlockCommentSyntax : ExtendedSyntax {
             self.closingVerticalMargin = nil
         }
 
-        let content = type(of: self).parse(contents: block)
-        _content = content
-        super.init(children: opening + [content] + closing)
+        let indentMatch = block.scalars.firstMatch(for: ConditionalPattern({ $0 ∉ CharacterSet.whitespaces }))
+        let indent = indentMatch.flatMap({ String($0.contents) }) ?? ""
+        var indents: [String] = []
+        var contents: [String] = []
+        var newlines: [String] = []
+        for line in block.lines {
+            var contentLine = String(line.line)
+            if contentLine.scalars.hasPrefix(indent.scalars) {
+                indents.append(indent)
+                contentLine.scalars.removeFirst(indent.scalars.count)
+            } else {
+                indents.append("")
+            }
+            contents.append(contentLine)
+            newlines.append(String(line.newline))
+        }
+        let contentsString = contents.joined(separator: "\n")
+        let parsed = type(of: self).parse(contents: contentsString)
+
+        var content: [ExtendedSyntax] = []
+        var index = 0
+        for line in parsed.text.lines {
+            defer { index += 1 }
+            let indent = indents[index]
+            if ¬indent.isEmpty {
+                content.append(ExtendedTokenSyntax(text: indent, kind: .whitespace))
+            }
+            content.append(FragmentSyntax(clusterOffsets: contentsString.clusters.distance(from: contentsString.clusters.startIndex, to: line.line.startIndex) ..< contentsString.clusters.distance(from: contentsString.clusters.startIndex, to: line.line.endIndex), in: parsed))
+            let newline = newlines[index]
+            if ¬newline.isEmpty {
+                content.append(ExtendedTokenSyntax(text: newline, kind: .newlines))
+            }
+        }
+
+        self.content = content
+        super.init(children: opening + content + closing)
     }
 
     // MARK: - Properties
@@ -84,7 +120,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
     public let openingVerticalMargin: ExtendedTokenSyntax?
 
     /// The content.
-    public let _content: ExtendedSyntax
+    public let content: [ExtendedSyntax]
 
     /// The closing vertical margin (a possible newline between the delimiter and the content).
     public let closingVerticalMargin: ExtendedTokenSyntax?
