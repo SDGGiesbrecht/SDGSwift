@@ -18,23 +18,23 @@
 ̲        number.̲round(̲)̲
 ̲    }̲
 ̲
-̲    f̲o̲r̲ element i̲n̲ [̲1̲,̲ 2̲,̲ 3̲]̲ {̲
+̲    f̲o̲r̲ element i̲n̲ [̲1,̲ 2,̲ 3]̲ {̲
 ̲
 ̲    }̲
 ̲
-̲    l̲e̲t̲ trailingClosure =̲ [̲1̲,̲ 2̲,̲ 3̲]̲.̲filter {̲ (̲number:̲ Int)̲ -̲>̲ Bool i̲n̲
-̲        r̲e̲t̲u̲r̲n̲ number =̲=̲ 1̲
+̲    l̲e̲t̲ trailingClosure =̲ [̲1,̲ 2,̲ 3]̲.̲filter {̲ (̲number:̲ Int)̲ -̲>̲ Bool i̲n̲
+̲        r̲e̲t̲u̲r̲n̲ number == 1
 ̲    }̲
 ̲
-̲    l̲e̲t̲ number =̲ 1̲
+̲    l̲e̲t̲ number =̲ 1
 ̲    s̲w̲i̲t̲c̲h̲ number {̲
-̲    c̲a̲s̲e̲ 1̲:̲
+̲    c̲a̲s̲e̲ 1:̲
 ̲        print(̲"̲one"̲)̲
 ̲    d̲e̲f̲a̲u̲l̲t̲:̲
 ̲        print(̲"̲default"̲)̲
 ̲    }̲
 ̲
-̲    g̲u̲a̲r̲d̲ boolean =̲=̲ t̲r̲u̲e̲ e̲l̲s̲e̲ {̲
+̲    g̲u̲a̲r̲d̲ boolean == t̲r̲u̲e̲ e̲l̲s̲e̲ {̲
 ̲        preconditionFailure(̲)̲
 ̲    }̲
 ̲
@@ -44,6 +44,6 @@
 ̲
 ̲    r̲e̲p̲e̲a̲t̲ {̲
 ̲        someTask(̲)̲
-̲    }̲ w̲h̲i̲l̲e̲ time < 1̲0̲
+̲    }̲ w̲h̲i̲l̲e̲ time < 10
 ̲}̲
 ̲

@@ -12,7 +12,7 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲i̲m̲p̲o̲r̲t̲ PackageDescription
+̲i̲m̲p̲o̲r̲t̲ P̲a̲c̲k̲a̲g̲e̲D̲e̲s̲c̲r̲i̲p̲t̲i̲o̲n̲
 ̲
 ̲l̲e̲t̲ package =̲ Package(̲
 ̲    name:̲ "̲Package"̲,̲
@@ -23,7 +23,7 @@
 ̲        .̲library(̲name:̲ "̲Library"̲,̲ targets:̲ [̲"̲Library"̲]̲)̲
 ̲    ]̲,̲
 ̲    dependencies:̲ [̲
-̲        .̲package(̲url:̲ "̲https://domain.tld/Package"̲,̲ from:̲ Version(̲1̲,̲ 0̲,̲ 0̲)̲)̲
+̲        .̲package(̲url:̲ "̲https://domain.tld/Package"̲,̲ from:̲ Version(̲1,̲ 0,̲ 0)̲)̲
 ̲    ]̲,̲
 ̲    targets:̲ [̲
 ̲
@@ -31,7 +31,7 @@
 ̲         A library.
 ̲
 ̲         It does stuff.
-̲         *̲/̲
+̲        *̲/̲
 ̲        .̲target(̲name:̲ "̲Library"̲,̲ dependencies:̲ [̲
 ̲            "̲Target"̲
 ̲            ]̲)̲,̲
