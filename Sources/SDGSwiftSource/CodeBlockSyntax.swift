@@ -57,7 +57,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
         self.closingVerticalMargin = closingVerticalMargin
         followingChildren.prepend(closingVerticalMargin)
 
-        let source = ExtendedTokenSyntax(text: contents, kind: .source)
+        let source = CodeFragmentSyntax(range: contents.bounds, in: contents)
         self.source = source
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren + [source] + followingChildren)
@@ -75,7 +75,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
     public let language: ExtendedTokenSyntax?
 
     /// The source code.
-    public let source: ExtendedTokenSyntax
+    public let source: CodeFragmentSyntax
 
     /// The closing vertical margin (the newline between the delimiter and the content).
     public let closingVerticalMargin: ExtendedTokenSyntax

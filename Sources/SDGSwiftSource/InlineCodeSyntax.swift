@@ -23,7 +23,8 @@ public class InlineCodeSyntax : MarkdownSyntax {
         let openingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
         self.openingDelimiter = openingDelimiter
 
-        let source = ExtendedTokenSyntax(text: node.literal ?? "", kind: .source)
+        let sourceText = node.literal ?? ""
+        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText)
         self.source = source
 
         let closingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
@@ -36,7 +37,7 @@ public class InlineCodeSyntax : MarkdownSyntax {
 
     public let openingDelimiter: ExtendedTokenSyntax
 
-    public let source: ExtendedTokenSyntax
+    public let source: CodeFragmentSyntax
 
     public let closingDelimiter: ExtendedTokenSyntax
 }

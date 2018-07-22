@@ -48,10 +48,11 @@ open class SyntaxScanner {
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
     public func scan(_ node: ExtendedSyntax) throws {
-        if let token = node as? ExtendedTokenSyntax,
-            token.kind == .source,
-            shouldExtend(token) {
-            try scan(token.syntax())
+        if let code = node as? CodeFragmentSyntax,
+            shouldExtend(code) {
+            for child in try code.syntax() {
+                try scan(child)
+            }
         } else {
             if visit(node) {
                 for child in node.children {
@@ -151,10 +152,10 @@ open class SyntaxScanner {
     /// Subclass this to skip extended parsing for particular tokens.
     ///
     /// - Parameters:
-    ///     - node: An `ExtendedTokenSyntax` instance.
+    ///     - node: A `CodeFragmentSyntax` instance.
     ///
-    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `Syntax` subclass; return `false` to skip extended parsing and have the token visited as an `ExtendedTokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and an `ExtendedTokenSyntax` instance will be visited regardless.
-    open func shouldExtend(_ node: ExtendedTokenSyntax) -> Bool {
+    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as `Syntax` subclasses; return `false` to skip extended parsing and have the token visited as a `CodeFragmentSyntax` instance.
+    open func shouldExtend(_ node: CodeFragmentSyntax) -> Bool {
         return true
     }
 }
