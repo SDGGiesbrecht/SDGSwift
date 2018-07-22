@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import P̲a̲c̲k̲a̲g̲e̲D̲e̲s̲c̲r̲i̲p̲t̲i̲o̲n̲
+import PackageDescription
 
 let package = P̲a̲c̲k̲a̲g̲e̲(
     n̲a̲m̲e̲: "Package",
@@ -31,7 +31,7 @@ let package = P̲a̲c̲k̲a̲g̲e̲(
          A library.
 
          It does stuff.
-         */
+        */
         .t̲a̲r̲g̲e̲t̲(n̲a̲m̲e̲: "Library", d̲e̲p̲e̲n̲d̲e̲n̲c̲i̲e̲s̲: [
             "Target"
             ]),
