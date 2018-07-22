@@ -27,6 +27,15 @@ public class CommentContentSyntax : ExtendedSyntax {
             if ¬lineInfo.line.isEmpty {
                 var line = String(lineInfo.line)
 
+                func check(forHeading heading: String) {
+                    if line.hasPrefix(heading) {
+                        line.removeFirst(heading.count)
+                        children.append(SourceHeadingSyntax(mark: heading, heading: line))
+                    }
+                }
+                check(forHeading: "MARK: \u{2D} ")
+                check(forHeading: "MARK:")
+
                 while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
                     let start = line.scalars.lastMatch(for: " ".scalars, in: line.startIndex ..< `protocol`.lowerBound)?.range.upperBound ?? line.startIndex
                     let end = line.scalars.firstMatch(for: " ".scalars, in: `protocol`.upperBound ..< line.scalars.endIndex)?.range.lowerBound ?? line.endIndex
