@@ -100,7 +100,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
             if ¬indent.isEmpty {
                 content.append(ExtendedTokenSyntax(text: indent, kind: .whitespace))
             }
-            content.append(FragmentSyntax(clusterOffsets: contentsString.clusters.distance(from: contentsString.clusters.startIndex, to: line.line.startIndex) ..< contentsString.clusters.distance(from: contentsString.clusters.startIndex, to: line.line.endIndex), in: parsed))
+            content.append(FragmentSyntax(scalarOffsets: contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.startIndex) ..< contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.endIndex), in: parsed))
             let newline = newlines[index]
             if ¬newline.isEmpty {
                 content.append(ExtendedTokenSyntax(text: newline, kind: .newlines))

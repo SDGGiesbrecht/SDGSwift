@@ -17,36 +17,40 @@ import SDGCollections
 
 public class FragmentSyntax : ExtendedSyntax {
 
-    init(clusterOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
+    init(scalarOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
         var cropped: [ExtendedSyntax] = []
         var index = 0
         for child in syntax.children {
             let childText = child.text
-            let childLength = childText.clusters.count
+            let childLength = childText.scalars.count
             let start = index
             let end = start + childLength
             defer { index = end }
 
-            if clusterOffsets ⊇ start ..< end  {
+            if scalarOffsets ⊇ start ..< end  {
                 cropped.append(child)
-            } else if clusterOffsets.overlaps(start ..< end) {
-                var lower = clusterOffsets.lowerBound − start
-                var upper = clusterOffsets.upperBound − start
+            } else if scalarOffsets.overlaps(start ..< end) {
+                var lower = scalarOffsets.lowerBound − start
+                var upper = scalarOffsets.upperBound − start
                 upper.decrease(to: childLength)
                 lower.increase(to: 0)
                 let childOffsets = lower ..< upper
 
-                if let token = child as? ExtendedTokenSyntax {
+                if let code = child as? CodeFragmentSyntax {
+                    let newStart = code.context.scalars.index(code.range.lowerBound, offsetBy: childOffsets.lowerBound)
+                    let newEnd = code.context.scalars.index(code.range.lowerBound, offsetBy: childOffsets.upperBound)
+                    cropped.append(CodeFragmentSyntax(range: newStart ..< newEnd, in: code.context))
+                } else if let token = child as? ExtendedTokenSyntax {
                     var childText = childText
                     if childLength > upper {
-                        childText.truncate(at: childText.index(childText.startIndex, offsetBy: upper))
+                        childText.truncate(at: childText.scalars.index(childText.startIndex, offsetBy: upper))
                     }
                     childText.removeFirst(lower)
                     cropped.append(ExtendedTokenSyntax(text: childText, kind: token.kind))
                 } else {
-                    cropped.append(FragmentSyntax(clusterOffsets: childOffsets, in: child))
+                    cropped.append(FragmentSyntax(scalarOffsets: childOffsets, in: child))
                 }
-            } else if start > clusterOffsets.upperBound {
+            } else if start > scalarOffsets.upperBound {
                 break
             }
         }

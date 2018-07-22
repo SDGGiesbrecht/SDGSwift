@@ -85,6 +85,9 @@ public enum ExtendedTokenKind {
     // MARK: - Properties
 
     public var textFreedom: SyntaxElement.TextFreedom {
+        if self == .source {
+            assertionFailure()
+        }
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary

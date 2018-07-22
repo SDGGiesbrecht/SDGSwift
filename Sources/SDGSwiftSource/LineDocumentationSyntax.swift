@@ -25,7 +25,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
     internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
         func process(sibling: TriviaPiece) -> String {
-            var siblingText = String(sibling.text.dropFirst(3))
+            var siblingText = String(sibling.text.scalars.dropFirst(3))
             if siblingText.scalars.first == " " {
                 siblingText.scalars.removeFirst()
             }
@@ -78,9 +78,9 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
         var precedingLength: Int = 0
         for line in preceding {
-            precedingLength += line.count + 1
+            precedingLength += line.scalars.count + 1
         }
-        return FragmentSyntax(clusterOffsets: precedingLength ..< precedingLength + contents.count, in: togetherSyntax)
+        return FragmentSyntax(scalarOffsets: precedingLength ..< precedingLength + contents.count, in: togetherSyntax)
     }
 
     // MARK: - Properties

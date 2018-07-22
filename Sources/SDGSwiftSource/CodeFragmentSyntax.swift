@@ -30,9 +30,9 @@ public class CodeFragmentSyntax : ExtendedSyntax {
 
     public let source: ExtendedTokenSyntax
 
-    private let context: String
+    internal let context: String
 
-    private let range: Range<String.ScalarView.Index>
+    internal let range: Range<String.ScalarView.Index>
 
     /// The syntax of the source code contained in this token.
     public func syntax() throws -> [Syntax] {

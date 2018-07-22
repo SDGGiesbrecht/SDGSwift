@@ -73,9 +73,9 @@ class SDGSwiftSourceAPITests : TestCase {
         let scanned = DocumentationSyntax.parse(source: markdown)
         XCTAssertEqual(scanned.text, markdown)
 
-        let fragment = FragmentSyntax(clusterOffsets: 5 ..< 10, in: scanned)
+        let fragment = FragmentSyntax(scalarOffsets: 5 ..< 10, in: scanned)
         XCTAssertEqual(fragment.text, "spans")
-        let croppedFragment = FragmentSyntax(clusterOffsets: 2 ..< 7, in: scanned)
+        let croppedFragment = FragmentSyntax(scalarOffsets: 2 ..< 7, in: scanned)
         XCTAssertEqual(croppedFragment.text, "is\nsp")
     }
 
