@@ -104,6 +104,13 @@ class SDGSwiftSourceAPITests : TestCase {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
                 let sourceFile = try SourceFileSyntax.parse(url)
 
+                let originalSource = try String(from: url)
+                var roundTripSource = ""
+                sourceFile.write(to: &roundTripSource)
+                if ¬roundTripSource.contains("unknown {") ∧ ¬roundTripSource.contains("interpolated") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
+                    XCTAssertEqual(roundTripSource, originalSource)
+                }
+
                 TextFreedomHighlighter.targetTestFreedom = .arbitrary
                 try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
 
