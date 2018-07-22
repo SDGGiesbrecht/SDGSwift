@@ -31,6 +31,7 @@ public class CommentContentSyntax : ExtendedSyntax {
                     if line.hasPrefix(heading) {
                         line.removeFirst(heading.count)
                         children.append(SourceHeadingSyntax(mark: heading, heading: line))
+                        line = ""
                     }
                 }
                 check(forHeading: "MARK: \u{2D} ")

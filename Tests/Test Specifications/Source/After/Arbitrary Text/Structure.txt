@@ -16,9 +16,9 @@
 
 /*
  ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲m̲u̲l̲t̲i̲l̲i̲n̲e̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
- ̲/*
+ ̲/̲*̲
  ̲ ̲I̲t̲ ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲n̲e̲s̲t̲e̲d̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
- ̲ ̲*/
+ ̲ ̲*̲/̲
  ̲*/
 
 import ̲Foundation
@@ -27,31 +27,31 @@ typealias ̲A̲l̲i̲a̲s̲ ̲= ̲Structure
 
 struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 
- ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲S̲t̲a̲t̲i̲c̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
+ ̲ ̲ ̲ ̲// ̲MARK: - S̲t̲a̲t̲i̲c̲ ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 
- ̲ ̲ ̲ ̲static ̲var ̲s̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲ ̲= ̲0
+ ̲ ̲ ̲ ̲static ̲var ̲s̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲ ̲= ̲0̲
 
- ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
+ ̲ ̲ ̲ ̲// ̲MARK: - I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲t̲i̲o̲n̲
 
  ̲ ̲ ̲ ̲init(p̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool) ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.property ̲= ̲property
  ̲ ̲ ̲ ̲}
 
- ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
+ ̲ ̲ ̲ ̲// ̲MARK: - P̲r̲o̲p̲e̲r̲t̲i̲e̲s̲
 
  ̲ ̲ ̲ ̲var ̲p̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool
 
- ̲ ̲ ̲ ̲// ̲MARK: ̲- ̲M̲e̲t̲h̲o̲d̲s̲
+ ̲ ̲ ̲ ̲// ̲MARK: - M̲e̲t̲h̲o̲d̲s̲
 
  ̲ ̲ ̲ ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲() ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲property ̲= ̲true
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲subscript(i̲n̲d̲e̲x̲: ̲Int) ̲-> ̲Int ̲{
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲index
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲property ̲= ̲true
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
