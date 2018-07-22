@@ -127,11 +127,9 @@ extension Optional where Wrapped == OpaquePointer {
             print("Inline HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_EMPH:
-            print("Emphasis node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return FontSyntax(node: self, in: documentation, delimiter: "*")
         case CMARK_NODE_STRONG:
-            print("Strong node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return FontSyntax(node: self, in: documentation, delimiter: "**")
         case CMARK_NODE_LINK:
             print("Link node.")
             return MarkdownSyntax(node: self, in: documentation)

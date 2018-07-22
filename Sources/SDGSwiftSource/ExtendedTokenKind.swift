@@ -82,6 +82,9 @@ public enum ExtendedTokenKind {
     /// A Markdown delimiter for an asterism.
     case asterism
 
+    /// A Markdown delimiter for font modification, such as for emphasis.
+    case fontModificationDelimiter
+
     // MARK: - Properties
 
     public var textFreedom: SyntaxElement.TextFreedom {
@@ -91,7 +94,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter:
             return .invariable
         }
     }
