@@ -85,6 +85,12 @@ public enum ExtendedTokenKind {
     /// A Markdown delimiter for font modification, such as for emphasis.
     case fontModificationDelimiter
 
+    /// A Markdown link delimiter.
+    case linkDelimiter
+
+    /// The URL of a Markdown link.
+    case linkURL
+
     // MARK: - Properties
 
     public var textFreedom: SyntaxElement.TextFreedom {
@@ -94,7 +100,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL:
             return .invariable
         }
     }

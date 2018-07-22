@@ -15,6 +15,6 @@
 public class FontSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String, delimiter: String) {
-        super .init(node: node, in: documentation, precedingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)], followingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)])
+        super.init(node: node, in: documentation, precedingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)], followingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)])
     }
 }
