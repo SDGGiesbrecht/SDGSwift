@@ -29,4 +29,12 @@ extension Syntax {
 
         return try Syntax.parse(temporary)
     }
+
+    public func ancestors() -> AnySequence<Syntax> {
+        if let parent = self.parent {
+            return AnySequence(sequence(first: parent, next: { $0.parent }))
+        } else {
+            return AnySequence([])
+        }
+    }
 }

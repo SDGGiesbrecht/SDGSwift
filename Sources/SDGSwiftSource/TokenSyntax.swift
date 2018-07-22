@@ -54,6 +54,22 @@ extension TokenSyntax {
                     // Closure argument declaration.
                     return .arbitrary
                 }
+
+                for ancestor in ancestors() {
+                    switch ancestor {
+                    case is IdentifierExprSyntax, is UnknownExprSyntax:
+                        continue
+                    case let statement as UnknownStmtSyntax:
+                        if let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
+                            token.tokenKind == .poundIfKeyword ∨ token.tokenKind == .poundElseifKeyword {
+                            // Part of an “#if” statement.
+                            return .invariable
+                        }
+                        break
+                    default:
+                        break
+                    }
+                }
             }
 
             return .aliasable
