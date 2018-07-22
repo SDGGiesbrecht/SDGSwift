@@ -51,7 +51,12 @@ open class SyntaxScanner {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code) {
             for child in try code.syntax() {
-                try scan(child)
+                switch child {
+                case .syntax(let node):
+                    try scan(node)
+                case .trivia(let node, let siblings, let index):
+                    try scan(node, siblings: siblings, index: index)
+                }
             }
         } else {
             if visit(node) {
