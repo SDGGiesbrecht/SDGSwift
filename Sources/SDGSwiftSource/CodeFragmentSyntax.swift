@@ -51,8 +51,11 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     var result = syntax(of: token.leadingTrivia, startingAt: position)
                     position = context.scalars.index(position, offsetBy: token.leadingTrivia.source().scalars.count)
 
-                    result.append(.syntax(token.withLeadingTrivia([]).withTrailingTrivia([])))
-                    position = context.scalars.index(position, offsetBy: token.text.scalars.count)
+                    let end = context.scalars.index(position, offsetBy: token.text.scalars.count)
+                    if position ..< end ⊆ range {
+                        result.append(.syntax(token.withLeadingTrivia([]).withTrailingTrivia([])))
+                    }
+                    position = end
 
                     result.append(contentsOf: syntax(of: token.trailingTrivia, startingAt: position
                     ))
