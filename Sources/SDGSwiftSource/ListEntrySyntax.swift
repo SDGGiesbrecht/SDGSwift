@@ -19,6 +19,44 @@ import SDGText
 
 public class ListEntrySyntax : MarkdownSyntax {
 
+    // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
+    private static let casedCallouts: [String] = [
+        "Parameter",
+        "Parameters",
+
+        "Attention",
+        "Author",
+        "Authors",
+        "Bug",
+        "Complexity",
+        "Copyright",
+        "Date",
+        "Experiment",
+        "Important",
+        "Invariant",
+        "LocalizationKey",
+        "MutatingVariant",
+        "NonmutatingVariant",
+        "Note",
+        "Postcondition",
+        "Precondition",
+        "Remark",
+        "Remarks",
+        "Returns",
+        "Requires",
+        "See",
+        "Since",
+        "Tag",
+        "ToDo",
+        "Throws",
+        "Version",
+        "Warning",
+        "Keyword",
+        "Recommended",
+        "RecommendedOver",
+    ]
+    private static let allCallouts = Array([ListEntrySyntax.casedCallouts, ListEntrySyntax.casedCallouts.map({ $0.lowercased() })].joined())
+
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
 
@@ -39,6 +77,33 @@ public class ListEntrySyntax : MarkdownSyntax {
         }
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+
+        // Detect callouts.
+        search: for index in children.indices {
+            let child = children[index]
+            if let token = child as? ExtendedTokenSyntax,
+                token.kind ∈ Set([.bullet, .whitespace]) {
+                continue
+            } else if let paragraph = child as? ParagraphSyntax,
+                let token = paragraph.children.first as? ExtendedTokenSyntax,
+                token.kind == .documentationText {
+
+                for callout in ListEntrySyntax.allCallouts {
+                    if token.text.hasPrefix(callout + ": ") {
+                        paragraph.children.removeFirst()
+                        let callout = ExtendedTokenSyntax(text: callout, kind: .callout)
+                        let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
+                        var remainder = token.text
+                        remainder.scalars.removeFirst(callout.text.scalars.count + colon.text.scalars.count)
+                        let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
+                        paragraph.children.prepend(remainderSyntax)
+                        children.insert(contentsOf: [callout, colon], at: index)
+                    }
+                }
+            } else {
+                break
+            }
+        }
     }
 
     /// The bullet.
