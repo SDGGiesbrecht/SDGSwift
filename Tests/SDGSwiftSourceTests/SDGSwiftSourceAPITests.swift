@@ -101,7 +101,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testParsingSwiftSyntax() {
         do {
-            for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) {
+            for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
                 let sourceFile = try SourceFileSyntax.parse(url)
 
                 let originalSource = try String(from: url)
