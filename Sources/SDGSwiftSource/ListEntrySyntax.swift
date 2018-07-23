@@ -21,7 +21,6 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
     private static let casedCallouts: [String] = [
-        "Parameter",
         "Parameters",
 
         "Attention",
