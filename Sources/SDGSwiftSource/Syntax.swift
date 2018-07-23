@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 import SDGPersistence
 
 import SDGSwiftSyntaxShims
@@ -65,9 +66,62 @@ extension Syntax {
 
     // MARK: - API
 
+    private func apiChildren() -> [APIElement] {
+        return Array(children.map({ $0.api() }).joined())
+    }
+
+    private func isPublic() -> Bool {
+        return children.contains(where: { node in
+            if let modifier = node as? DeclModifierSyntax,
+                modifier.name.tokenKind == .publicKeyword {
+                return true
+            }
+            return false
+        })
+    }
+
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-        return []
+        switch self {
+        case is UnknownDeclSyntax:
+            search: for child in children {
+                if let token = child as? TokenSyntax {
+                    switch token.tokenKind {
+                    case .varKeyword, .letKeyword:
+                        // Variable
+                        if isPublic() {
+                            if let nameToken = self.child(at: token.indexInParent + 1) as? TokenSyntax {
+                                switch nameToken.tokenKind {
+                                case .identifier(let name):
+                                    var typeName: String?
+                                    if let type = self.child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax {
+                                        typeName = type.name.text
+                                    }
+                                    return [VariableAPI(name: name, type: typeName, isSettable: false)]
+                                default:
+                                    break
+                                }
+                            }
+                        }
+                    case .funcKeyword:
+                        // Function
+                        return [] // Nothing nested is relevant.
+                    case .extensionKeyword:
+                        // Extension
+                        if let type = self.child(at: token.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
+                            if ¬children.isEmpty {
+                                return [ExtensionAPI(type: type.name.text, children: apiChildren())]
+                            }
+                        }
+                    default:
+                        continue search
+                    }
+                }
+            }
+            return apiChildren()
+        default:
+            return apiChildren()
+        }
     }
 }
