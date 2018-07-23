@@ -120,7 +120,8 @@ class SDGSwiftSourceAPITests : TestCase {
                 TextFreedomHighlighter.targetTestFreedom = .invariable
                 try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
 
-                let api = APIScanner().visit(sourceFile).source()
+                // API
+                let api = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
                 SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
             }
         } catch {

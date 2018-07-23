@@ -62,4 +62,12 @@ extension Syntax {
             return AnySequence([])
         }
     }
+
+    // MARK: - API
+
+    // @documentation(SDGSwiftSource.Syntax.api())
+    /// Returns the API provided by this node.
+    public func api() -> [APIElement] {
+        return []
+    }
 }
