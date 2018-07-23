@@ -33,4 +33,8 @@ public class APIScanner : SyntaxRewriter {
         }
         return SyntaxFactory.makeBlankDecl()
     }
+
+    public override func visit(_ node: UnknownStmtSyntax) -> StmtSyntax {
+        return SyntaxFactory.makeBlankStmt()
+    }
 }
