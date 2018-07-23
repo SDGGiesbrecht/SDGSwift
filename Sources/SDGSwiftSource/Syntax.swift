@@ -110,8 +110,9 @@ extension Syntax {
                     case .extensionKeyword:
                         // Extension
                         if let type = self.child(at: token.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
+                            let children = apiChildren()
                             if ¬children.isEmpty {
-                                return [ExtensionAPI(type: type.name.text, children: apiChildren())]
+                                return [ExtensionAPI(type: type.name.text, children: children)]
                             }
                         }
                     default:
