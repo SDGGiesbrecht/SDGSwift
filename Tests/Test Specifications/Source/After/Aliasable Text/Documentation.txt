@@ -67,7 +67,7 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// }
     /// ```
     ///
-    /// Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)
+    /// Here are **strong** and *emphasized*. (Or **strong** and *emphasized*.)
     ///
     /// There are also [links](somewhere.com).
     ///
@@ -80,7 +80,7 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// - Returns: A Boolean value.
     ///
     /// - Throws: An error.
-    public func performAction(on p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: S̲t̲r̲i̲n̲g̲, with p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
+    public func performAction(o̲n̲ parameterOne: S̲t̲r̲i̲n̲g̲, w̲i̲t̲h̲ parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }
 
