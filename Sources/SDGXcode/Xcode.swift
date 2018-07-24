@@ -234,6 +234,11 @@ public enum Xcode {
             "\u{2D}\u{2D}file\u{2D}list",
             archive.path
             ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in
+                if file.pathExtension ≠ "swift" {
+                    // @exempt(from: tests)
+                    // The report is unlikely to be readable.
+                    return false
+                }
                 if file.is(in: package.dataDirectory) ∨ file.is(in: package.editablesDirectory) {
                     // @exempt(from: tests)
                     // Belongs to a dependency.
