@@ -33,6 +33,7 @@ extension OpaquePointer {
 }
 
 extension Optional where Wrapped == OpaquePointer {
+    // MARK: - where Wrapped == OpaquePointer
 
     internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
         var node = self
@@ -68,7 +69,7 @@ extension Optional where Wrapped == OpaquePointer {
 
         var result = indexFor(line: Int(line), column: Int(column), in: documentation)
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH:
+        case CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH :
             result = documentation.scalars.index(after: result)
         default:
             break
@@ -96,47 +97,47 @@ extension Optional where Wrapped == OpaquePointer {
 
     internal func syntax(in documentation: String) -> ExtendedSyntax {
         switch cmark_node_get_type(self) {
-            // #warning(Handle all of these.)
-        // CMARK_NODE_DOCUMENT will never occur.
-        case CMARK_NODE_BLOCK_QUOTE:
+        // #warning(Handle all of these.)
+        // ..._DOCUMENT will never occur.
+        case CMARK_NODE_BLOCK_QUOTE :
             print("Quote node.")
             return MarkdownSyntax(node: self, in: documentation)
-        case CMARK_NODE_LIST:
+        case CMARK_NODE_LIST :
             return ListSyntax(node: self, in: documentation)
-        case CMARK_NODE_ITEM:
+        case CMARK_NODE_ITEM :
             return ListEntrySyntax(node: self, in: documentation)
-        case CMARK_NODE_CODE_BLOCK:
+        case CMARK_NODE_CODE_BLOCK :
             return CodeBlockSyntax(node: self, in: documentation)
-        case CMARK_NODE_HTML:
+        case CMARK_NODE_HTML :
             print("HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
-        case CMARK_NODE_PARAGRAPH:
+        case CMARK_NODE_PARAGRAPH :
             return ParagraphSyntax(node: self, in: documentation)
-        case CMARK_NODE_HEADER:
+        case CMARK_NODE_HEADER :
             return HeadingSyntax(node: self, in: documentation)
-        case CMARK_NODE_HRULE:
+        case CMARK_NODE_HRULE :
             return ExtendedTokenSyntax(text: String(documentation.scalars[lowerBound(in: documentation) ..< upperBound(in: documentation)]), kind: .asterism)
-        case CMARK_NODE_SOFTBREAK:
+        case CMARK_NODE_SOFTBREAK :
             return ExtendedTokenSyntax(text: "\n", kind: .newlines)
-        case CMARK_NODE_LINEBREAK:
+        case CMARK_NODE_LINEBREAK :
             print("Linebreak node.")
             return MarkdownSyntax(node: self, in: documentation)
-        case CMARK_NODE_CODE:
+        case CMARK_NODE_CODE :
             return InlineCodeSyntax(node: self, in: documentation)
-        case CMARK_NODE_INLINE_HTML:
+        case CMARK_NODE_INLINE_HTML :
             print("Inline HTML node.")
             return MarkdownSyntax(node: self, in: documentation)
-        case CMARK_NODE_EMPH:
+        case CMARK_NODE_EMPH :
             return FontSyntax(node: self, in: documentation, delimiter: "*")
-        case CMARK_NODE_STRONG:
+        case CMARK_NODE_STRONG :
             return FontSyntax(node: self, in: documentation, delimiter: "**")
-        case CMARK_NODE_LINK:
+        case CMARK_NODE_LINK :
             print("Link node.")
             return LinkSyntax(node: self, in: documentation)
-        case CMARK_NODE_IMAGE:
+        case CMARK_NODE_IMAGE :
             print("Image node.")
             return MarkdownSyntax(node: self, in: documentation)
-        default /* CMARK_NODE_TEXT */:
+        default /* CMARK_NODE_TEXT */ :
             return ExtendedTokenSyntax(text: self.literal ?? "", kind: .documentationText)
         }
     }

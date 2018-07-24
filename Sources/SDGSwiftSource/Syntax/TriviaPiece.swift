@@ -30,7 +30,7 @@ extension TriviaPiece {
             return BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
             let text = self.text
-            if text.hasPrefix("/**") {
+            if text.hasPrefix("/\u{2A}*") {
                 return TriviaPiece.docBlockComment(text).syntax(siblings: siblings, index: index)
             }
             return LineDocumentationSyntax(source: text, siblings: siblings, index: index)

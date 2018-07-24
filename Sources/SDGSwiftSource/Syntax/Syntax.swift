@@ -84,7 +84,7 @@ extension Syntax {
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
         switch self {
-        case is UnknownDeclSyntax:
+        case is UnknownDeclSyntax :
             search: for child in children {
                 if let token = child as? TokenSyntax {
                     switch token.tokenKind {

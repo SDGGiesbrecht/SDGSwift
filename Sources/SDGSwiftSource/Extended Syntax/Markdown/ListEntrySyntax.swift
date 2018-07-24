@@ -52,7 +52,7 @@ public class ListEntrySyntax : MarkdownSyntax {
         "Warning",
         "Keyword",
         "Recommended",
-        "RecommendedOver",
+        "RecommendedOver"
     ]
     private static let allCallouts = Array([ListEntrySyntax.casedCallouts, ListEntrySyntax.casedCallouts.map({ $0.lowercased() })].joined())
 

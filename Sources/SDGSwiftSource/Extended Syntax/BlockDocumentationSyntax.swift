@@ -17,7 +17,7 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
     // MARK: - Class Properties
 
     internal override class var openingDelimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "/**", kind: .openingBlockDocumentationDelimiter)
+        return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
     }
 
     internal override class func parse(contents: String) -> ExtendedSyntax {

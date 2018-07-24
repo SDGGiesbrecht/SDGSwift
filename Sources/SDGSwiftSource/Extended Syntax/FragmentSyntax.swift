@@ -27,7 +27,7 @@ public class FragmentSyntax : ExtendedSyntax {
             let end = start + childLength
             defer { index = end }
 
-            if scalarOffsets ⊇ start ..< end  {
+            if scalarOffsets ⊇ start ..< end {
                 cropped.append(child)
             } else if scalarOffsets.overlaps(start ..< end) {
                 var lower = scalarOffsets.lowerBound − start
