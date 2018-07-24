@@ -23,15 +23,6 @@ import SDGSwiftSource
 
 class SDGSwiftSourceAPITests : TestCase {
 
-    func testContainerSyntaxElement() {
-        XCTAssert(¬ContainerSyntaxElement(range: "".bounds, children: []).children.isEmpty)
-    }
-
-    func testIdentifier() {
-        XCTAssert(Identifier.identifierCharacters ∋ "α")
-        XCTAssert(Identifier.operatorCharactersIncludingDot ∋ "∧")
-    }
-
     func testParsing() {
         do {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
@@ -60,9 +51,5 @@ class SDGSwiftSourceAPITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
-    }
-
-    func testUnidentifiedSyntaxElement() {
-        XCTAssertEqual(UnidentifiedSyntaxElement(range: "".scalars.bounds).textFreedom, .invariable)
     }
 }

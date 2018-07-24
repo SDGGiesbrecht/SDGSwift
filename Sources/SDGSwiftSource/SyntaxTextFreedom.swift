@@ -14,11 +14,6 @@
 
 import SDGSwiftSyntaxShims
 
-// #warning(Temporary.)
-extension SyntaxElement {
-    public typealias TextFreedom = Syntax.TextFreedom
-}
-
 extension Syntax {
 
     /// How much freedom the user has in choosing the text of the element.

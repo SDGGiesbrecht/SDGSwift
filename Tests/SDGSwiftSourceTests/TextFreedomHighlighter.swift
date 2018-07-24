@@ -18,7 +18,7 @@ import SDGSwiftSource
 
 class TextFreedomHighlighter : Highlighter {
 
-    static var targetTestFreedom: SyntaxElement.TextFreedom = .arbitrary
+    static var targetTestFreedom: Syntax.TextFreedom = .arbitrary
 
     override func shouldHighlight(_ token: TokenSyntax) -> Bool {
         return token.textFreedom == type(of: self).targetTestFreedom
