@@ -1,4 +1,0 @@
-module SDGSourceKitShim {
-    header "SourceKitShims.h"
-    export *
-}
