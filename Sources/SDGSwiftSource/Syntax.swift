@@ -98,7 +98,38 @@ extension Syntax {
                                     if let type = self.child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax {
                                         typeName = type.name.text
                                     }
-                                    return [VariableAPI(name: name, type: typeName, isSettable: false)]
+                                    var isSettable = false
+                                    if token.tokenKind == .varKeyword {
+                                        if ¬children.contains(where: { node in
+                                            if let modifier = node as? DeclModifierSyntax {
+                                                switch modifier.name.tokenKind {
+                                                case .privateKeyword, .fileprivateKeyword, .internalKeyword:
+                                                    return true // Reduced setter access level.
+                                                default:
+                                                    break
+                                                }
+                                            }
+                                            return false
+                                        }) {
+                                            // No setter access reduction.
+
+                                            if children.contains(where: { node in
+                                                if let token = node as? TokenSyntax {
+                                                    switch token.tokenKind {
+                                                    case .unknown, // “set”
+                                                        .equal: // Stored property, not computed.
+                                                        return true
+                                                    default:
+                                                        break
+                                                    }
+                                                }
+                                                return false
+                                            }) {
+                                                isSettable = true
+                                            }
+                                        }
+                                    }
+                                    return [VariableAPI(name: name, type: typeName, isSettable: isSettable)]
                                 default:
                                     break
                                 }
