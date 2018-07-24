@@ -99,7 +99,7 @@ public enum ExtendedTokenKind {
 
     // MARK: - Properties
 
-    public var textFreedom: Syntax.TextFreedom {
+    public var textFreedom: TextFreedom {
         if self == .source {
             assertionFailure()
         }

@@ -29,7 +29,7 @@ extension TokenSyntax {
         }
     }
 
-    public var textFreedom: Syntax.TextFreedom {
+    public var textFreedom: TextFreedom {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
