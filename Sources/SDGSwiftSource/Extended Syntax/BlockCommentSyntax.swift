@@ -34,7 +34,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(source: String) {
+    internal init(source: String) { // @exempt(from: tests) False result in Xcode 9.4.1)
         let openingDelimiter = type(of: self).openingDelimiter
         let closingDelimiter = type(of: self).closingDelimiter
 
