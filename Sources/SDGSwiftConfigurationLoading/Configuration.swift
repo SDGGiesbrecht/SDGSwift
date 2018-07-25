@@ -148,7 +148,7 @@ extension Configuration {
 
             var dependencies: [(package: URL, version: Version, product: String)] = []
             for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
-                if let comment = line.line.suffix(after: "// ".scalars) {
+                if let comment = line.line.suffix(after: "/\u{2F} ".scalars) {
                     let components = String(comment.contents).components(separatedBy: ", ") as [String]
                     if components.count == 3 {
                         if let url = URL(string: components[0]),

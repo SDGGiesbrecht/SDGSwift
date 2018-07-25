@@ -39,7 +39,7 @@ public class APIElement : Comparable {
         }
     }
 
-    public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) #workaround(Not yet reachable.)
+    public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
         // #workaround(Swift 4.1.2, Order differs between operating systems.)
         return precedingValue.name == followingValue.name
     }
