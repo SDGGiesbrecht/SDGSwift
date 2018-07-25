@@ -147,7 +147,16 @@ extension Syntax {
                                 case .identifier(let name):
                                     print(children.map({ (type(of: $0), $0) }))
                                     let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-                                    return [FunctionAPI(name: name, arguments: [], throws: `throws`, returnType: nil)]
+
+                                    var returnType: String?
+                                    for child in children {
+                                        if let type = child as? SimpleTypeIdentifierSyntax {
+                                            returnType = type.name.text
+                                            break
+                                        }
+                                    }
+
+                                    return [FunctionAPI(name: name, arguments: [], throws: `throws`, returnType: returnType)]
                                 default:
                                     break
                                 }
