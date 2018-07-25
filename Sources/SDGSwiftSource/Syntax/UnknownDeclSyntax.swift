@@ -32,6 +32,40 @@ extension UnknownDeclSyntax {
         return variableKeyword ≠ nil
     }
 
+    private var hasReducedSetterAccessLevel: Bool {
+        for child in children {
+            if let modifier = child as? DeclModifierSyntax {
+                switch modifier.name.tokenKind {
+                case .privateKeyword, .fileprivateKeyword, .internalKeyword:
+                    return true // Reduced setter access level.
+                default:
+                    break
+                }
+            }
+        }
+        return false
+    }
+
+    private var isStored: Bool {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .leftBrace {
+                return false
+            }
+        }
+        return true
+    }
+
+    private var hasSetter: Bool {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .unknown {
+                return true
+            }
+        }
+        return false
+    }
+
     internal var variableAPI: VariableAPI? {
         if ¬isPublic() {
             return nil
@@ -41,37 +75,15 @@ extension UnknownDeclSyntax {
             let name = nameToken.identifierText {
 
             let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
+
             var isSettable = false
             if keyword.tokenKind == .varKeyword {
-                if ¬children.contains(where: { node in
-                    if let modifier = node as? DeclModifierSyntax {
-                        switch modifier.name.tokenKind {
-                        case .privateKeyword, .fileprivateKeyword, .internalKeyword:
-                            return true // Reduced setter access level.
-                        default:
-                            break
-                        }
-                    }
-                    return false
-                }) {
-                    // No setter access reduction.
-
-                    if children.contains(where: { node in
-                        if let token = node as? TokenSyntax {
-                            switch token.tokenKind {
-                            case .unknown, // “set”
-                            .equal: // Stored property, not computed.
-                                return true
-                            default:
-                                break
-                            }
-                        }
-                        return false
-                    }) {
-                        isSettable = true
-                    }
+                if ¬hasReducedSetterAccessLevel,
+                    isStored ∨ hasSetter {
+                    isSettable = true
                 }
             }
+
             return VariableAPI(name: name, type: typeName, isSettable: isSettable)
         }
         return nil
