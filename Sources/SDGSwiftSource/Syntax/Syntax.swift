@@ -87,44 +87,12 @@ extension Syntax {
         case let unknown as UnknownDeclSyntax :
             if unknown.isVariableSyntax {
                 return unknown.variableAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isFunctionSyntax {
+                return unknown.functionAPI.flatMap({ [$0] }) ?? []
             }
             search: for child in children {
                 if let token = child as? TokenSyntax {
                     switch token.tokenKind {
-                    case .funcKeyword:
-                        // Function
-                        if ¬isPublic() {
-                            return [] // Nothing nested is relevant.
-                        } else {
-                            if let nameToken = self.child(at: token.indexInParent + 1) as? TokenSyntax {
-                                switch nameToken.tokenKind {
-                                case .identifier(let name):
-                                    var argumentAPIs: [ArgumentAPI] = []
-                                    for arguments in children
-                                        where type(of: arguments) == Syntax.self
-                                            ∧ ¬arguments.children.contains(where: { type(of: $0) ≠ Syntax.self }) {
-                                                for argument in arguments.children {
-                                                    argumentAPIs.append(ArgumentAPI(label: nil, name: "...", type: "..."))
-                                                    print(argument.children.map({ (type(of: $0), $0) }))
-                                                }
-                                    }
-
-                                    let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-
-                                    var returnType: String?
-                                    for child in children {
-                                        if let type = child as? SimpleTypeIdentifierSyntax {
-                                            returnType = type.name.text
-                                            break
-                                        }
-                                    }
-
-                                    return [FunctionAPI(name: name, arguments: argumentAPIs, throws: `throws`, returnType: returnType)]
-                                default:
-                                    break
-                                }
-                            }
-                        }
                     case .extensionKeyword:
                         // Extension
                         if let type = self.child(at: token.indexInParent + 1) as? SimpleTypeIdentifierSyntax {

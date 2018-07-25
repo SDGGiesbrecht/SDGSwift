@@ -66,6 +66,15 @@ extension UnknownDeclSyntax {
         return false
     }
 
+    private var isSettable: Bool {
+        if variableKeyword?.tokenKind == .varKeyword,
+            ¬hasReducedSetterAccessLevel,
+            isStored ∨ hasSetter {
+            return true
+        }
+        return false
+    }
+
     internal var variableAPI: VariableAPI? {
         if ¬isPublic() {
             return nil
@@ -73,18 +82,58 @@ extension UnknownDeclSyntax {
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-
             let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
-
-            var isSettable = false
-            if keyword.tokenKind == .varKeyword {
-                if ¬hasReducedSetterAccessLevel,
-                    isStored ∨ hasSetter {
-                    isSettable = true
-                }
-            }
-
             return VariableAPI(name: name, type: typeName, isSettable: isSettable)
+        }
+        return nil
+    }
+
+    // MARK: - Function Syntax
+
+    private var functionKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .funcKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isFunctionSyntax: Bool {
+        return functionKeyword ≠ nil
+    }
+
+    internal var arguments: [ArgumentAPI] {
+        var arguments: [ArgumentAPI] = []
+        for child in children
+            where type(of: child) == Syntax.self
+                ∧ ¬child.children.contains(where: { type(of: $0) ≠ Syntax.self }) {
+                    for argument in child.children {
+                        arguments.append(ArgumentAPI(label: nil, name: "...", type: "..."))
+                        print(argument.children.map({ (type(of: $0), $0) }))
+                    }
+        }
+        return arguments
+    }
+
+    internal var returnType: String? {
+        for child in children {
+            if let type = child as? SimpleTypeIdentifierSyntax {
+                return type.name.text
+            }
+        }
+        return nil
+    }
+
+    internal var functionAPI: FunctionAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = functionKeyword,
+            let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
+            let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
+            return FunctionAPI(name: name, arguments: arguments, throws: `throws`, returnType: returnType)
         }
         return nil
     }
