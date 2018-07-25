@@ -1,14 +1,16 @@
-# Standard Configuration.yml
+# .swiftlint.yml
 #
-# This source file is part of the Workspace open source project.
-# https://github.com/SDGGiesbrecht/Workspace#workspace
+# This source file is part of the SDGSwift open source project.
+# https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
 #
-# Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+# Copyright ©2017–2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
 #
 # Soli Deo gloria.
 #
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+# #workaround(workspace version 0.11.0, Until SwiftLint is deprecated.)
 
 excluded:
   # ••••••• Tool Compatibility •••••••
