@@ -50,6 +50,9 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "UnR8vHpiMV+K/h
 configuration.applySDGOverrides()
 configuration.validateSDGStandards()
 
+configuration.repository.ignoredPaths.insert("Sources/Shims")
+configuration.testing.exemptPaths.insert("Sources/Shims")
+
 // #workaround(workspace version 0.10.2, Until source specifications can be exempted by directory.)
 configuration.proofreading.rules.remove(.parameterGrouping)
 configuration.proofreading.rules.remove(.unicode)
