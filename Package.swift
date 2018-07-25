@@ -110,9 +110,9 @@ let package = Package(
             "SDGSwift",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
-            ], path: "Tests/Mock Projects/SDGSwiftSyntaxShims"),
+            ], path: "Sources/Shims/SDGSwiftSyntaxShims"),
         .target(name: "SDGCMarkShims", dependencies: [
-            ], path: "Tests/Mock Projects/SDGCMarkShims"),
+            ], path: "Sources/Shims/SDGCMarkShims"),
 
         // Tests
         .target(name: "SDGSwiftTestUtilities", dependencies: [
