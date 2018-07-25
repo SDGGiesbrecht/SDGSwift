@@ -98,4 +98,23 @@ extension Syntax {
             return apiChildren()
         }
     }
+
+    // MARK: - Argument List API
+
+    internal var argumentListAPI: [ArgumentAPI] {
+        var arguments: [ArgumentAPI] = []
+        for child in children {
+            if let argument = child.argumentAPI {
+                arguments.append(argument)
+            }
+        }
+        return arguments
+    }
+
+    // MARK: - Argument API
+
+    internal var argumentAPI: ArgumentAPI? {
+        print(children.map({ (type(of: $0), $0) }))
+        return ArgumentAPI(label: nil, name: "...", type: "...")
+    }
 }

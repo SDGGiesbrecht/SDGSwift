@@ -105,16 +105,10 @@ extension UnknownDeclSyntax {
     }
 
     private var arguments: [ArgumentAPI] {
-        var arguments: [ArgumentAPI] = []
-        for child in children
-            where type(of: child) == Syntax.self
-                ∧ ¬child.children.contains(where: { type(of: $0) ≠ Syntax.self }) {
-                    for argument in child.children {
-                        arguments.append(ArgumentAPI(label: nil, name: "...", type: "..."))
-                        print(argument.children.map({ (type(of: $0), $0) }))
-                    }
+        for child in children where type(of: child) == Syntax.self {
+            return child.argumentListAPI
         }
-        return arguments
+        return []
     }
 
     private var returnType: String? {
