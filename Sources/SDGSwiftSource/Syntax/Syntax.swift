@@ -146,7 +146,8 @@ extension Syntax {
                                 switch nameToken.tokenKind {
                                 case .identifier(let name):
                                     print(children.map({ (type(of: $0), $0) }))
-                                    return [FunctionAPI(name: name, arguments: [], throws: false, returnType: nil)]
+                                    let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
+                                    return [FunctionAPI(name: name, arguments: [], throws: `throws`, returnType: nil)]
                                 default:
                                     break
                                 }
