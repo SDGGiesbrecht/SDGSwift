@@ -99,6 +99,7 @@ extension Optional where Wrapped == OpaquePointer {
         switch cmark_node_get_type(self) {
         // #warning(Handle all of these.)
         // ..._DOCUMENT will never occur.
+        // HTML nodes are undefined.
         case CMARK_NODE_BLOCK_QUOTE :
             return QuotationSyntax(node: self, in: documentation)
         case CMARK_NODE_LIST :
@@ -107,9 +108,6 @@ extension Optional where Wrapped == OpaquePointer {
             return ListEntrySyntax(node: self, in: documentation)
         case CMARK_NODE_CODE_BLOCK :
             return CodeBlockSyntax(node: self, in: documentation)
-        case CMARK_NODE_HTML :
-            print("HTML node.")
-            return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_PARAGRAPH :
             return ParagraphSyntax(node: self, in: documentation)
         case CMARK_NODE_HEADER :
@@ -123,9 +121,6 @@ extension Optional where Wrapped == OpaquePointer {
             return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_CODE :
             return InlineCodeSyntax(node: self, in: documentation)
-        case CMARK_NODE_INLINE_HTML :
-            print("Inline HTML node.")
-            return MarkdownSyntax(node: self, in: documentation)
         case CMARK_NODE_EMPH :
             return FontSyntax(node: self, in: documentation, delimiter: "*")
         case CMARK_NODE_STRONG :
