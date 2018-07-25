@@ -119,7 +119,7 @@ extension Syntax {
                                                 if let token = node as? TokenSyntax {
                                                     switch token.tokenKind {
                                                     case .unknown, // “set”
-                                                        .equal: // Stored property, not computed.
+                                                    .equal: // Stored property, not computed.
                                                         return true
                                                     default:
                                                         break
@@ -145,7 +145,16 @@ extension Syntax {
                             if let nameToken = self.child(at: token.indexInParent + 1) as? TokenSyntax {
                                 switch nameToken.tokenKind {
                                 case .identifier(let name):
-                                    print(children.map({ (type(of: $0), $0) }))
+                                    var argumentAPIs: [ArgumentAPI] = []
+                                    for arguments in children
+                                        where type(of: arguments) == Syntax.self
+                                            ∧ ¬arguments.children.contains(where: { type(of: $0) ≠ Syntax.self }) {
+                                                for argument in arguments.children {
+                                                    argumentAPIs.append(ArgumentAPI(label: nil, name: "...", type: "..."))
+                                                    print(argument.children.map({ (type(of: $0), $0) }))
+                                                }
+                                    }
+
                                     let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
 
                                     var returnType: String?
@@ -156,7 +165,7 @@ extension Syntax {
                                         }
                                     }
 
-                                    return [FunctionAPI(name: name, arguments: [], throws: `throws`, returnType: returnType)]
+                                    return [FunctionAPI(name: name, arguments: argumentAPIs, throws: `throws`, returnType: returnType)]
                                 default:
                                     break
                                 }
