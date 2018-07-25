@@ -33,9 +33,9 @@ public class APIElement : Comparable {
     public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
         // #workaround(Swift 4.1.2, Order differs between operating systems.)
         if precedingValue.name.scalars.elementsEqual(followingValue.name.scalars) {
-            return (precedingValue.declaration ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration ?? "").scalars) // @exempt(from: tests) #workaround(Not yet reachable.)
+            return (precedingValue.declaration ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration ?? "").scalars)
         } else {
-            return precedingValue.name.scalars.lexicographicallyPrecedes(followingValue.name.scalars) // @exempt(from: tests) #workaround(Not yet reachable.)
+            return precedingValue.name.scalars.lexicographicallyPrecedes(followingValue.name.scalars)
         }
     }
 

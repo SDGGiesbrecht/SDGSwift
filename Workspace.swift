@@ -53,9 +53,5 @@ configuration.validateSDGStandards()
 configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 
-// #workaround(workspace version 0.10.2, Until source specifications can be exempted by directory.)
-configuration.proofreading.rules.remove(.parameterGrouping)
-configuration.proofreading.rules.remove(.unicode)
-
-// #workaround(workspace version 0.10.2, Jazzy’s redundant building is way too slow.)
+// #workaround(workspace version 0.11.0, Jazzy’s redundant building is way too slow.)
 configuration.documentation.api.generate = false

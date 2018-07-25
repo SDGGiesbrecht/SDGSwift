@@ -23,9 +23,9 @@ public class ExtensionAPI : APIElement {
         super.init()
         for element in children {
             switch element {
-            case let property as VariableAPI:
+            case let property as VariableAPI :
                 properties.append(property)
-            case let method as FunctionAPI:
+            case let method as FunctionAPI :
                 methods.append(method)
             default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug {
