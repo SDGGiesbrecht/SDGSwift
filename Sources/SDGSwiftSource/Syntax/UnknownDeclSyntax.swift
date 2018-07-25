@@ -39,10 +39,8 @@ extension UnknownDeclSyntax {
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            var typeName: String?
-            if let type = self.child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax {
-                typeName = type.name.text
-            }
+
+            let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
             var isSettable = false
             if keyword.tokenKind == .varKeyword {
                 if ¬children.contains(where: { node in
