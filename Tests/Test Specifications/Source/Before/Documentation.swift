@@ -71,7 +71,19 @@ extension Structure {
     ///
     /// There are also [links](somewhere.com).
     ///
+    /// And ![images](somewhere.com/image).
+    ///
     /// > And someone said this.
+    ///
+    /// Paragraphs
+    /// may
+    /// be
+    /// broken
+    /// up
+    /// .
+    ///
+    /// Lines  
+    /// may be split.
     ///
     /// - Warning: There is something to watch out for.
     ///

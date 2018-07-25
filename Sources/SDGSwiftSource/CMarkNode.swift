@@ -128,8 +128,7 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_LINK :
             return LinkSyntax(node: self, in: documentation)
         case CMARK_NODE_IMAGE :
-            print("Image node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return ImageSyntax(node: self, in: documentation)
         default /* CMARK_NODE_TEXT */ :
             return ExtendedTokenSyntax(text: self.literal ?? "", kind: .documentationText)
         }
