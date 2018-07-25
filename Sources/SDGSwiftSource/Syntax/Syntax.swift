@@ -66,7 +66,7 @@ extension Syntax {
 
     // MARK: - API
 
-    private func apiChildren() -> [APIElement] {
+    internal func apiChildren() -> [APIElement] {
         return Array(children.map({ $0.api() }).joined())
     }
 
@@ -89,24 +89,11 @@ extension Syntax {
                 return unknown.variableAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isExtensionSyntax {
+                return unknown.extensionAPI.flatMap({ [$0] }) ?? []
+            } else {
+                return apiChildren()
             }
-            search: for child in children {
-                if let token = child as? TokenSyntax {
-                    switch token.tokenKind {
-                    case .extensionKeyword:
-                        // Extension
-                        if let type = self.child(at: token.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
-                            let children = apiChildren()
-                            if ¬children.isEmpty {
-                                return [ExtensionAPI(type: type.name.text, children: children)]
-                            }
-                        }
-                    default:
-                        continue search
-                    }
-                }
-            }
-            return apiChildren()
         default:
             return apiChildren()
         }

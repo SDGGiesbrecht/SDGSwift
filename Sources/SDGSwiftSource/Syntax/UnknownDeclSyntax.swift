@@ -104,7 +104,7 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    internal var arguments: [ArgumentAPI] {
+    private var arguments: [ArgumentAPI] {
         var arguments: [ArgumentAPI] = []
         for child in children
             where type(of: child) == Syntax.self
@@ -117,7 +117,7 @@ extension UnknownDeclSyntax {
         return arguments
     }
 
-    internal var returnType: String? {
+    private var returnType: String? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
                 return type.name.text
@@ -134,6 +134,33 @@ extension UnknownDeclSyntax {
             let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
             return FunctionAPI(name: name, arguments: arguments, throws: `throws`, returnType: returnType)
+        }
+        return nil
+    }
+
+    // MARK: - Extension Syntax
+
+    private var extensionKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .extensionKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isExtensionSyntax: Bool {
+        return extensionKeyword ≠ nil
+    }
+
+    internal var extensionAPI: ExtensionAPI? {
+        if let keyword = extensionKeyword,
+            let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
+            let children = apiChildren()
+            if ¬children.isEmpty {
+                return ExtensionAPI(type: type.name.text, children: children)
+            }
         }
         return nil
     }
