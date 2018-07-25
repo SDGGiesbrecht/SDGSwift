@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGLogic
+import SDGMathematics
 import SDGPersistence
 
 import SDGSwiftSyntaxShims
@@ -113,8 +114,35 @@ extension Syntax {
 
     // MARK: - Argument API
 
-    internal var argumentAPI: ArgumentAPI? {
-        print(children.map({ (type(of: $0), $0) }))
-        return ArgumentAPI(label: nil, name: "...", type: "...")
+    private var possibleArgumentLabel: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.identifierText ≠ nil {
+                return token
+            }
+        }
+        return nil
+    }
+
+    private var argumentAPI: ArgumentAPI? {
+        if let possibleLabelSyntax = possibleArgumentLabel,
+            let possibleLabel: String = possibleLabelSyntax.identifierText {
+            var label: String? = possibleLabel
+
+            var name: String
+            if let differentName = (child(at: possibleLabelSyntax.indexInParent + 1) as? TokenSyntax)?.identifierText {
+                name = differentName
+            } else {
+                name = possibleLabel
+            }
+
+            if (child(at: possibleLabelSyntax.indexInParent − 1) as? TokenSyntax)?.tokenKind == .wildcardKeyword {
+                label = nil
+            }
+
+            print(children.map({ (type(of: $0), $0) }))
+            return ArgumentAPI(label: label, name: name, type: "...")
+        }
+        return nil
     }
 }
