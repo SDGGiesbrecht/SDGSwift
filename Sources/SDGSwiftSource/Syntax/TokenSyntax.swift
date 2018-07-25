@@ -78,4 +78,15 @@ extension TokenSyntax {
             return .invariable
         }
     }
+
+    // MARK: - Short Cuts
+
+    internal var identifierText: String? {
+        switch tokenKind {
+        case .identifier(let text):
+            return text
+        default:
+            return nil
+        }
+    }
 }
