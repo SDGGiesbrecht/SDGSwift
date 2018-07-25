@@ -131,7 +131,6 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_STRONG :
             return FontSyntax(node: self, in: documentation, delimiter: "**")
         case CMARK_NODE_LINK :
-            print("Link node.")
             return LinkSyntax(node: self, in: documentation)
         case CMARK_NODE_IMAGE :
             print("Image node.")
