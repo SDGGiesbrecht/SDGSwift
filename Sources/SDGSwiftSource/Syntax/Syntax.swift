@@ -124,9 +124,19 @@ extension Syntax {
         return nil
     }
 
+    private var argumentType: String? {
+        for child in children {
+            if let type = child as? SimpleTypeIdentifierSyntax {
+                return type.name.text
+            }
+        }
+        return nil
+    }
+
     private var argumentAPI: ArgumentAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
-            let possibleLabel: String = possibleLabelSyntax.identifierText {
+            let possibleLabel: String = possibleLabelSyntax.identifierText,
+            let type = argumentType {
             var label: String? = possibleLabel
 
             var name: String
@@ -140,8 +150,7 @@ extension Syntax {
                 label = nil
             }
 
-            print(children.map({ (type(of: $0), $0) }))
-            return ArgumentAPI(label: label, name: name, type: "...")
+            return ArgumentAPI(label: label, name: name, type: type)
         }
         return nil
     }
