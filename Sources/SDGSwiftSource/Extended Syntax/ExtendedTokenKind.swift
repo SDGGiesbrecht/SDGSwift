@@ -91,6 +91,9 @@ public enum ExtendedTokenKind {
     /// The URL of a Markdown link.
     case linkURL
 
+    /// A Markdown delimiter for a quotation.
+    case quotationDelimiter
+
     /// A documentation callout.
     case callout
 
@@ -106,7 +109,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .callout, .colon:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .quotationDelimiter, .callout, .colon:
             return .invariable
         }
     }

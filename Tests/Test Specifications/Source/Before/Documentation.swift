@@ -71,6 +71,8 @@ extension Structure {
     ///
     /// There are also [links](somewhere.com).
     ///
+    /// > And someone said this.
+    ///
     /// - Warning: There is something to watch out for.
     ///
     /// - Parameters:
