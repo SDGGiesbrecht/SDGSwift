@@ -54,18 +54,6 @@ public enum SwiftCompiler {
         return packageManagerLibraries(for: try location())
     }
 
-    private static func sourceKitLocation(for swift: URL) -> URL {
-        #if os(macOS)
-        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/sourcekitd.framework/sourcekitd")
-        #else
-        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/libsourcekitdInProc.so")
-        #endif
-    }
-    /// :nodoc:
-    public static func _sourceKitLocation() throws -> URL {
-        return sourceKitLocation(for: try location())
-    }
-
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
@@ -73,8 +61,7 @@ public enum SwiftCompiler {
             func validate(_ swift: ExternalProcess) -> Bool {
                 // Make sure necessary relative libraries are available. (Otherwise it is a shim of some sort.)
                 if ¬FileManager.default.fileExists(atPath: compilerLocation(for: swift.executable).path)
-                    ∨ ¬FileManager.default.fileExists(atPath: packageManagerLibraries(for: swift.executable).path)
-                    ∨ ¬FileManager.default.fileExists(atPath: sourceKitLocation(for: swift.executable).path) {
+                    ∨ ¬FileManager.default.fileExists(atPath: packageManagerLibraries(for: swift.executable).path) {
                     return false
                 }
 
