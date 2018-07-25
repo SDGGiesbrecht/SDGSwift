@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-func doSomething(_ unnamedParameter: String) {
+public func doSomething(_ unnamedParameter: String) {
 
     var localVariable = 0
     localVariable += 1

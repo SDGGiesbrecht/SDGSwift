@@ -12,7 +12,7 @@
  ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
  ̲*/
 
-func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(_ ̲u̲n̲n̲a̲m̲e̲d̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲String) ̲{
+public ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(_ ̲u̲n̲n̲a̲m̲e̲d̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲String) ̲{
 
  ̲ ̲ ̲ ̲var ̲l̲o̲c̲a̲l̲V̲a̲r̲i̲a̲b̲l̲e̲ ̲= ̲0̲
  ̲ ̲ ̲ ̲localVariable ̲+= ̲1̲
