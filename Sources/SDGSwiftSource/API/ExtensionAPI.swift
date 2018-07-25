@@ -24,11 +24,10 @@ public class ExtensionAPI : APIElement {
         for element in children {
             switch element {
             case let property as VariableAPI:
-                // @exempt(from: tests) #workaround(Not yet reachable.)
                 properties.append(property)
             case let method as FunctionAPI:
                 methods.append(method)
-            default:
+            default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug {
                     print("Unidentified API element: \(Swift.type(of: element))")
                 }
