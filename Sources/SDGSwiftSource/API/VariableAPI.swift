@@ -22,11 +22,13 @@ public class VariableAPI : APIElement {
         self.isSettable = isSettable
     }
 
+    // MARK: - Properties
+
     private var _name: String
     private var type: String?
     private var isSettable: Bool
 
-    // MARK: - Properties
+    // MARK: - APIElement
 
     public override var name: String {
         return _name

@@ -90,7 +90,9 @@ extension Syntax {
                     switch token.tokenKind {
                     case .varKeyword, .letKeyword:
                         // Variable
-                        if isPublic() {
+                        if ¬isPublic() {
+                            return [] // Nothing nested is relevant.
+                        } else {
                             if let nameToken = self.child(at: token.indexInParent + 1) as? TokenSyntax {
                                 switch nameToken.tokenKind {
                                 case .identifier(let name):
@@ -137,7 +139,19 @@ extension Syntax {
                         }
                     case .funcKeyword:
                         // Function
-                        return [] // Nothing nested is relevant.
+                        if ¬isPublic() {
+                            return [] // Nothing nested is relevant.
+                        } else {
+                            if let nameToken = self.child(at: token.indexInParent + 1) as? TokenSyntax {
+                                switch nameToken.tokenKind {
+                                case .identifier(let name):
+                                    print(children.map({ (type(of: $0), $0) }))
+                                    return [FunctionAPI(name: name, arguments: [], throws: false, returnType: nil)]
+                                default:
+                                    break
+                                }
+                            }
+                        }
                     case .extensionKeyword:
                         // Extension
                         if let type = self.child(at: token.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
