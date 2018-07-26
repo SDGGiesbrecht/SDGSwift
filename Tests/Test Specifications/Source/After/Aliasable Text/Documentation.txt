@@ -100,6 +100,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
         return false
     }
 
+    /// Not part of the following documentation.
+
     /// ...
     ///
     /// - Parameter parameterOne: The first parameter.

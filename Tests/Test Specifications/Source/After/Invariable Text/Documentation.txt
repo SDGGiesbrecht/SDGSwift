@@ -100,6 +100,8 @@
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲
 ̲
+̲    /̲/̲/̲ Not part of the following documentation.
+̲
 ̲    /̲/̲/̲ ...
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ Parameter parameterOne: The first parameter.

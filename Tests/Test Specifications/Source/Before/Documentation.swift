@@ -100,6 +100,8 @@ extension Structure {
         return false
     }
 
+    /// Not part of the following documentation.
+
     /// ...
     ///
     /// - Parameter parameterOne: The first parameter.
