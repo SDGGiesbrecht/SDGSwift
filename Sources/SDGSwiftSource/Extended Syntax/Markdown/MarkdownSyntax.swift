@@ -23,7 +23,7 @@ public class MarkdownSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String, precedingChildren: [ExtendedSyntax] = [], followingChildren: [ExtendedSyntax] = []) {
+    internal init(node: cmark_node, in documentation: String, precedingChildren: [ExtendedSyntax] = [], followingChildren: [ExtendedSyntax] = []) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
         var children: [ExtendedSyntax] = []
 
@@ -55,6 +55,7 @@ public class MarkdownSyntax : ExtendedSyntax {
                 }
             }
         }
+        // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
         if var child = cmark_node_first_child(node) {
             children.append(child.syntax(in: documentation))
@@ -78,7 +79,7 @@ public class MarkdownSyntax : ExtendedSyntax {
         super.init(children: precedingChildren + children + followingChildren)
     }
 
-    internal override init(children: [ExtendedSyntax]) {
+    internal override init(children: [ExtendedSyntax]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         super.init(children: children)
     }
 }

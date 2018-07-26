@@ -28,10 +28,11 @@ public class HeadingSyntax : MarkdownSyntax {
 
         var lineStart = documentation.scalars.startIndex
         if let newline = documentation.scalars.lastMatch(for: CharacterSet.newlinePattern, in: documentation.scalars.startIndex ..< contentStart) {
-            lineStart = newline.range.upperBound
+            lineStart = newline.range.upperBound // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         }
 
         if let delimiter = documentation.scalars.lastMatch(for: String(repeating: "#", count: level).scalars, in: lineStart ..< contentStart) {
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
@@ -50,7 +51,7 @@ public class HeadingSyntax : MarkdownSyntax {
 
             let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
             if let newline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: contentStart ..< contentEnd) {
-                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
+                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 followingChildren.append(newlineToken)
                 self.newline = newlineToken
 
