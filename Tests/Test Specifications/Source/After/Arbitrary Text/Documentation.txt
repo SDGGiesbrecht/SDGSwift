@@ -14,6 +14,8 @@
 
 extension ̲Structure ̲{
 
+ ̲ ̲ ̲ ̲/// ̲N̲o̲t̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲f̲o̲l̲l̲o̲w̲i̲n̲g̲ ̲d̲o̲c̲u̲m̲e̲n̲t̲a̲t̲i̲o̲n̲.̲
+ ̲ ̲ ̲ ̲// ̲A̲n̲ ̲i̲n̲t̲e̲r̲v̲e̲n̲i̲n̲g̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
  ̲ ̲ ̲ ̲/// ̲P̲e̲r̲f̲o̲r̲m̲s̲ ̲a̲n̲ ̲a̲c̲t̲i̲o̲n̲ ̲u̲s̲i̲n̲g̲ ̲t̲h̲e̲ ̲s̲p̲e̲c̲i̲f̲i̲e̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲s̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲g̲r̲a̲p̲h̲.̲
@@ -58,7 +60,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲s̲i̲g̲n̲i̲f̲i̲c̲a̲n̲t̲ ̲a̲b̲o̲u̲t̲ ̲`parameterOne`.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲`let ̲x̲ ̲= ̲1` ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲k̲e̲y̲w̲o̲r̲d̲.̲
+ ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲`let ̲x̲ ̲= ̲1̲` ̲c̲o̲n̲t̲a̲i̲n̲s̲ ̲a̲ ̲k̲e̲y̲w̲o̲r̲d̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲```swift
  ̲ ̲ ̲ ̲/// ̲// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲n̲ ̲e̲x̲a̲m̲p̲l̲e̲.̲
@@ -67,27 +69,43 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲}
  ̲ ̲ ̲ ̲/// ̲```
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲ ̲(̲O̲r̲ ̲__s̲t̲r̲o̲n̲g̲__ ̲a̲n̲d̲ ̲_e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲_.̲)̲
+ ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲ ̲(̲O̲r̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲)̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲a̲r̲e̲ ̲a̲l̲s̲o̲ ̲[l̲i̲n̲k̲s̲](somewhere.com).̲
  ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲![i̲m̲a̲g̲e̲s̲](somewhere.com/image).̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲> ̲A̲n̲d̲ ̲s̲o̲m̲e̲o̲n̲e̲ ̲s̲a̲i̲d̲ ̲t̲h̲i̲s̲.̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲P̲a̲r̲a̲g̲r̲a̲p̲h̲s̲
+ ̲ ̲ ̲ ̲/// ̲m̲a̲y̲
+ ̲ ̲ ̲ ̲/// ̲b̲e̲
+ ̲ ̲ ̲ ̲/// ̲b̲r̲o̲k̲e̲n̲
+ ̲ ̲ ̲ ̲/// ̲u̲p̲
+ ̲ ̲ ̲ ̲/// ̲.̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲L̲i̲n̲e̲s̲  
+ ̲ ̲ ̲ ̲/// ̲m̲a̲y̲ ̲b̲e̲ ̲s̲p̲l̲i̲t̲.̲
+ ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Warning: ̲T̲h̲e̲r̲e̲ ̲i̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲t̲o̲ ̲w̲a̲t̲c̲h̲ ̲o̲u̲t̲ ̲f̲o̲r̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Parameters:
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲parameterOne: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
- ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲parameterTwo: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:̲
+ ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲ ̲ ̲ ̲ ̲- ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Returns: ̲A̲ ̲B̲o̲o̲l̲e̲a̲n̲ ̲v̲a̲l̲u̲e̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Throws: ̲A̲n̲ ̲e̲r̲r̲o̲r̲.̲
- ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲ ̲parameterOne: ̲String, ̲w̲i̲t̲h̲ ̲parameterTwo: ̲String) ̲throws ̲-> ̲Bool ̲{
+ ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(on ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲with ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
 
+ ̲ ̲ ̲ ̲/// ̲N̲o̲t̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲t̲h̲e̲ ̲f̲o̲l̲l̲o̲w̲i̲n̲g̲ ̲d̲o̲c̲u̲m̲e̲n̲t̲a̲t̲i̲o̲n̲.̲
+
  ̲ ̲ ̲ ̲/// ̲.̲.̲.̲
  ̲ ̲ ̲ ̲///
- ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲parameterOne: ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
- ̲ ̲ ̲ ̲/// ̲- ̲Parameter ̲parameterTwo: ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲P̲a̲r̲a̲m̲e̲t̲e̲r̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ ̲T̲h̲e̲ ̲f̲i̲r̲s̲t̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
+ ̲ ̲ ̲ ̲/// ̲- ̲P̲a̲r̲a̲m̲e̲t̲e̲r̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ ̲T̲h̲e̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲public ̲func ̲w̲i̲t̲h̲S̲e̲p̲a̲r̲a̲t̲e̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲(p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}

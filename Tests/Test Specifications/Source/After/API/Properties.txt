@@ -1,0 +1,3 @@
+(Int)
+ constantWithInferredType • var constantWithInferredType: Any { get }
+ var • var var: Int { get }

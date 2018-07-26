@@ -1,0 +1,7 @@
+extension I̲n̲t̲ {
+
+    public let constantWithInferredType = 0
+
+    // Escaped
+    public let `var`: I̲n̲t̲ = 0
+}

@@ -18,17 +18,17 @@ func ̲m̲a̲i̲n̲() ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲number.round()
  ̲ ̲ ̲ ̲}
 
- ̲ ̲ ̲ ̲for ̲e̲l̲e̲m̲e̲n̲t̲ ̲in ̲[1, ̲2, ̲3] ̲{
+ ̲ ̲ ̲ ̲for ̲e̲l̲e̲m̲e̲n̲t̲ ̲in ̲[1̲, ̲2̲, ̲3̲] ̲{
 
  ̲ ̲ ̲ ̲}
 
- ̲ ̲ ̲ ̲let ̲t̲r̲a̲i̲l̲i̲n̲g̲C̲l̲o̲s̲u̲r̲e̲ ̲= ̲[1, ̲2, ̲3].filter ̲{ ̲(n̲u̲m̲b̲e̲r̲: ̲Int) ̲-> ̲Bool ̲in
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲number ̲== ̲1
+ ̲ ̲ ̲ ̲let ̲t̲r̲a̲i̲l̲i̲n̲g̲C̲l̲o̲s̲u̲r̲e̲ ̲= ̲[1̲, ̲2̲, ̲3̲].filter ̲{ ̲(n̲u̲m̲b̲e̲r̲: ̲Int) ̲-> ̲Bool ̲in
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲number ̲== ̲1̲
  ̲ ̲ ̲ ̲}
 
- ̲ ̲ ̲ ̲let ̲n̲u̲m̲b̲e̲r̲ ̲= ̲1
+ ̲ ̲ ̲ ̲let ̲n̲u̲m̲b̲e̲r̲ ̲= ̲1̲
  ̲ ̲ ̲ ̲switch ̲number ̲{
- ̲ ̲ ̲ ̲case ̲1:
+ ̲ ̲ ̲ ̲case ̲1̲:
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲print("o̲n̲e̲")
  ̲ ̲ ̲ ̲default:
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲print("d̲e̲f̲a̲u̲l̲t̲")
@@ -44,5 +44,5 @@ func ̲m̲a̲i̲n̲() ̲{
 
  ̲ ̲ ̲ ̲repeat ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲someTask()
- ̲ ̲ ̲ ̲} ̲while ̲time ̲< ̲10
+ ̲ ̲ ̲ ̲} ̲while ̲time ̲< ̲1̲0̲
 }

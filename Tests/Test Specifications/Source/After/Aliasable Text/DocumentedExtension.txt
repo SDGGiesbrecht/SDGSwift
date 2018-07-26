@@ -20,22 +20,28 @@ extension B̲o̲o̲l̲ {
     }
 
     /// A read‐only computed property with an internal setter.
-    public internal(set) var readOnlyWithInternalSetter: B̲o̲o̲l̲ {
-        get {
+    public internal(s̲e̲t̲) var readOnlyWithInternalSetter: B̲o̲o̲l̲ {
+        unknown {
             return self
         }
-        set {
+        unknown {
             self = n̲e̲w̲V̲a̲l̲u̲e̲
         }
     }
 
     /// A read‐write computed property.
     public var readWriteComputedProperty: B̲o̲o̲l̲ {
-        get {
+        unknown {
             return self
         }
-        set {
+        unknown {
             self = n̲e̲w̲V̲a̲l̲u̲e̲
         }
     }
+}
+
+// Nothing surfaced to the API.
+extension A̲n̲y̲S̲e̲q̲u̲e̲n̲c̲e̲ {
+
+    var notPublic: B̲o̲o̲l̲
 }

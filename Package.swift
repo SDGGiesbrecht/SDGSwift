@@ -67,11 +67,14 @@ let package = Package(
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
-            "SDGSourceKitShims",
+            "SDGSwiftSyntaxShims",
+            "SDGCMarkShims",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGText", package: "SDGCornerstone"),
+            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
         .target(name: "SDGXcode", dependencies: [
@@ -101,7 +104,15 @@ let package = Package(
         .target(name: "SDGSwiftLocalizations", dependencies: [
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
-        .target(name: "SDGSourceKitShims"),
+
+        // These are duplicated from the Swift project itself, since stable releases do not expose the API yet.
+        .target(name: "SDGSwiftSyntaxShims", dependencies: [
+            "SDGSwift",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            ], path: "Sources/Shims/SDGSwiftSyntaxShims"),
+        .target(name: "SDGCMarkShims", dependencies: [
+            ], path: "Sources/Shims/SDGCMarkShims"),
 
         // Tests
         .target(name: "SDGSwiftTestUtilities", dependencies: [

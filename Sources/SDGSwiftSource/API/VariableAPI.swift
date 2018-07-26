@@ -17,23 +17,25 @@ public class VariableAPI : APIElement {
     // MARK: - Initialization
 
     internal init(name: String, type: String?, isSettable: Bool) {
-        _name = name
-        self.type = type
+        _name = name.decomposedStringWithCanonicalMapping
+        self.type = type?.decomposedStringWithCanonicalMapping
         self.isSettable = isSettable
     }
+
+    // MARK: - Properties
 
     private var _name: String
     private var type: String?
     private var isSettable: Bool
 
-    // MARK: - Properties
+    // MARK: - APIElement
 
     public override var name: String {
         return _name
     }
 
     public override var declaration: String {
-        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}" // @exempt(from: tests) #workaround(Not yet reachable.)
+        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}"
     }
 
     public override var summary: [String] {

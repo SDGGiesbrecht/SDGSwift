@@ -23,7 +23,7 @@ let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.library(name: ̲"L̲i̲b̲r̲a̲r̲y̲", ̲targets: ̲["L̲i̲b̲r̲a̲r̲y̲"])
  ̲ ̲ ̲ ̲],
  ̲ ̲ ̲ ̲dependencies: ̲[
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: ̲"h̲t̲t̲p̲s̲:̲/̲/̲d̲o̲m̲a̲i̲n̲.̲t̲l̲d̲/̲P̲a̲c̲k̲a̲g̲e̲", ̲from: ̲Version(1, ̲0, ̲0))
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.package(url: ̲"h̲t̲t̲p̲s̲:̲/̲/̲d̲o̲m̲a̲i̲n̲.̲t̲l̲d̲/̲P̲a̲c̲k̲a̲g̲e̲", ̲from: ̲Version(1̲, ̲0̲, ̲0̲))
  ̲ ̲ ̲ ̲],
  ̲ ̲ ̲ ̲targets: ̲[
 
@@ -31,7 +31,7 @@ let ̲p̲a̲c̲k̲a̲g̲e̲ ̲= ̲Package(
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲A̲ ̲l̲i̲b̲r̲a̲r̲y̲.̲
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲t̲ ̲d̲o̲e̲s̲ ̲s̲t̲u̲f̲f̲.̲
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲*/
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲.target(name: ̲"L̲i̲b̲r̲a̲r̲y̲", ̲dependencies: ̲[
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲"T̲a̲r̲g̲e̲t̲"
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲]),

@@ -19,12 +19,15 @@ public class ExtensionAPI : APIElement {
     // MARK: - Initialization
 
     internal init(type: String, children: [APIElement]) {
-        self.type = type
+        self.type = type.decomposedStringWithCanonicalMapping
         super.init()
         for element in children {
-            if let property = element as? VariableAPI { // @exempt(from: tests) #workaround(Not yet reachable.)
+            switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
+            case let property as VariableAPI :
                 properties.append(property)
-            } else {
+            case let method as FunctionAPI :
+                methods.append(method)
+            default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug {
                     print("Unidentified API element: \(Swift.type(of: element))")
                 }
@@ -32,7 +35,9 @@ public class ExtensionAPI : APIElement {
         }
     }
 
-    private var type: String
+    // MARK: - Properties
+
+    private let type: String
 
     private var _properties: [VariableAPI] = []
     private var properties: [VariableAPI] {
@@ -43,15 +48,29 @@ public class ExtensionAPI : APIElement {
             _properties = newValue.sorted()
         }
     }
+    private var _methods: [FunctionAPI] = []
+    private var methods: [FunctionAPI] {
+        get {
+            return _methods
+        }
+        set {
+            _methods = newValue.sorted()
+        }
+    }
 
-    // MARK: - Properties
+    // MARK: - APIElement
 
     public override var name: String {
         return "(" + type + ")"
     }
 
+    public override var declaration: String? { // @exempt(from: tests) Should never occur.
+        return nil
+    }
+
     public override var summary: [String] {
         return [name]
             + properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+            + methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }

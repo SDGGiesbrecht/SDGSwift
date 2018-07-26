@@ -12,14 +12,17 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ String)̲ {̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ String)̲ {̲
 ̲
-̲    v̲a̲r̲ localVariable =̲ 0̲
-̲    localVariable += 1̲
+̲    v̲a̲r̲ localVariable =̲ 0
+̲    localVariable += 1
 ̲
-̲    _̲ =̲ 1̲ ..< 2̲
+̲    _̲ =̲ 1 ..< 2
 ̲
 ̲    performFunction(̲argument)̲
 ̲    performFunction(̲with:̲ argument)̲
 ̲}̲
+̲
+̲/̲/̲ Overload
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ Int)̲ {̲}̲
 ̲

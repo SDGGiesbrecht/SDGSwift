@@ -14,6 +14,8 @@
 
 extension Structure {
 
+    /// Not part of following documentation.
+    // An intervening comment.
     /// Performs an action using the specified parameters.
     ///
     /// This is a second paragraph.
@@ -71,6 +73,20 @@ extension Structure {
     ///
     /// There are also [links](somewhere.com).
     ///
+    /// And ![images](somewhere.com/image).
+    ///
+    /// > And someone said this.
+    ///
+    /// Paragraphs
+    /// may
+    /// be
+    /// broken
+    /// up
+    /// .
+    ///
+    /// Lines  
+    /// may be split.
+    ///
     /// - Warning: There is something to watch out for.
     ///
     /// - Parameters:
@@ -83,6 +99,8 @@ extension Structure {
     public func performAction(on parameterOne: String, with parameterTwo: String) throws -> Bool {
         return false
     }
+
+    /// Not part of the following documentation.
 
     /// ...
     ///

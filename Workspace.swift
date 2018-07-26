@@ -50,9 +50,9 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "UnR8vHpiMV+K/h
 configuration.applySDGOverrides()
 configuration.validateSDGStandards()
 
-// #workaround(workspace version 0.10.2, Until source specifications can be exempted by directory.)
-configuration.proofreading.rules.remove(.parameterGrouping)
-configuration.proofreading.rules.remove(.unicode)
+configuration.repository.ignoredPaths.insert("Sources/Shims")
+configuration.testing.exemptPaths.insert("Sources/Shims")
+configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
-// #workaround(workspace version 0.10.2, Jazzy’s redundant building is way too slow.)
+// #workaround(workspace version 0.11.0, Jazzy’s redundant building is way too slow.)
 configuration.documentation.api.generate = false

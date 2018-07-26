@@ -14,6 +14,8 @@
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Structure {̲
 ̲
+̲    /̲/̲/̲ Not part of following documentation.
+̲    /̲/̲ An intervening comment.
 ̲    /̲/̲/̲ Performs an action using the specified parameters.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ This is a second paragraph.
@@ -58,7 +60,7 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There is something significant about `̲parameterOne`̲.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ And `̲l̲e̲t̲ x =̲ 1̲`̲ contains a keyword.
+̲    /̲/̲/̲ And `̲l̲e̲t̲ x =̲ 1`̲ contains a keyword.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲s̲w̲i̲f̲t̲
 ̲    /̲/̲/̲ /̲/̲ This is an example.
@@ -67,15 +69,29 @@
 ̲    /̲/̲/̲ }̲
 ̲    /̲/̲/̲ `̲`̲`̲
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲. (Or _̲_̲strong_̲_̲ and _̲emphasized_̲.)
+̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲. (Or *̲*̲strong*̲*̲ and *̲emphasized*̲.)
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There are also [̲links]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲)̲.
 ̲    /̲/̲/̲
+̲    /̲/̲/̲ And !̲[̲images]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲/̲i̲m̲a̲g̲e̲)̲.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ >̲ And someone said this.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ Paragraphs
+̲    /̲/̲/̲ may
+̲    /̲/̲/̲ be
+̲    /̲/̲/̲ broken
+̲    /̲/̲/̲ up
+̲    /̲/̲/̲ .
+̲    /̲/̲/̲
+̲    /̲/̲/̲ Lines ̲ ̲
+̲    /̲/̲/̲ may be split.
+̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ W̲a̲r̲n̲i̲n̲g̲:̲ There is something to watch out for.
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:̲
-̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ The first parameter.
-̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ The second parameter.
+̲    /̲/̲/̲ -̲ Parameters:
+̲    /̲/̲/̲     -̲ parameterOne: The first parameter.
+̲    /̲/̲/̲     -̲ parameterTwo: The second parameter.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ R̲e̲t̲u̲r̲n̲s̲:̲ A Boolean value.
 ̲    /̲/̲/̲
@@ -84,10 +100,12 @@
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲
 ̲
+̲    /̲/̲/̲ Not part of the following documentation.
+̲
 ̲    /̲/̲/̲ ...
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ The first parameter.
-̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ The second parameter.
+̲    /̲/̲/̲ -̲ Parameter parameterOne: The first parameter.
+̲    /̲/̲/̲ -̲ Parameter parameterTwo: The second parameter.
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withSeparateParameters(̲parameterOne:̲ String,̲ parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ -̲>̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲

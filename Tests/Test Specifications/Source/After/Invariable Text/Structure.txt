@@ -16,42 +16,42 @@
 ̲
 ̲/̲*̲
 ̲ This is a multiline comment.
-̲ /̲*̲
+̲ /*
 ̲  It contains a nested comment.
-̲  *̲/̲
+̲  */
 ̲ *̲/̲
 ̲
-̲i̲m̲p̲o̲r̲t̲ Foundation
+̲i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲
 ̲t̲y̲p̲e̲a̲l̲i̲a̲s̲ Alias =̲ Structure
 ̲
 ̲s̲t̲r̲u̲c̲t̲ Structure {̲
 ̲
-̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Static Properties
+̲    /̲/̲ M̲A̲R̲K̲:̲ ̲-̲ ̲Static Properties
 ̲
-̲    s̲t̲a̲t̲i̲c̲ v̲a̲r̲ staticProperty =̲ 0̲
+̲    s̲t̲a̲t̲i̲c̲ v̲a̲r̲ staticProperty =̲ 0
 ̲
-̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Initialization
+̲    /̲/̲ M̲A̲R̲K̲:̲ ̲-̲ ̲Initialization
 ̲
 ̲    i̲n̲i̲t̲(̲property:̲ Bool)̲ {̲
 ̲        s̲e̲l̲f̲.̲property =̲ property
 ̲    }̲
 ̲
-̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Properties
+̲    /̲/̲ M̲A̲R̲K̲:̲ ̲-̲ ̲Properties
 ̲
 ̲    v̲a̲r̲ property:̲ Bool
 ̲
-̲    /̲/̲ M̲A̲R̲K̲:̲ -̲ Methods
+̲    /̲/̲ M̲A̲R̲K̲:̲ ̲-̲ ̲Methods
 ̲
 ̲    f̲u̲n̲c̲ performAction(̲)̲ {̲
 ̲        property =̲ t̲r̲u̲e̲
 ̲    }̲
 ̲
 ̲    s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲index:̲ Int)̲ -̲>̲ Int {̲
-̲        g̲e̲t̲ {̲
+̲        u̲n̲k̲n̲o̲w̲n̲ {̲
 ̲            r̲e̲t̲u̲r̲n̲ index
 ̲        }̲
-̲        s̲e̲t̲ {̲
+̲        u̲n̲k̲n̲o̲w̲n̲ {̲
 ̲            property =̲ t̲r̲u̲e̲
 ̲        }̲
 ̲    }̲
