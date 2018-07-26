@@ -23,6 +23,19 @@ import SDGSwiftSource
 
 class SDGSwiftSourceAPITests : TestCase {
 
+    func testLineDeveloperCommentSyntax() throws {
+        let syntax = try Syntax.parse("// Comment.")
+        class CommentScanner : SyntaxScanner {
+            override func visit(_ node: ExtendedSyntax) -> Bool {
+                if let comment = node as? LineDeveloperCommentSyntax {
+                    XCTAssertNotNil(comment.content)
+                }
+                return true
+            }
+        }
+        try CommentScanner().scan(syntax)
+    }
+
     func testParsing() {
         do {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {

@@ -20,8 +20,8 @@ public class FragmentSyntax : ExtendedSyntax {
     init(scalarOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
         var cropped: [ExtendedSyntax] = []
         var index = 0
-        for child in syntax.children { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            let childText = child.text
+        for child in syntax.children {
+            let childText = child.text // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             let childLength = childText.scalars.count
             let start = index
             let end = start + childLength

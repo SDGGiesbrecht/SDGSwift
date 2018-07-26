@@ -64,7 +64,7 @@ public class ExtensionAPI : APIElement {
         return "(" + type + ")"
     }
 
-    public override var declaration: String? {
+    public override var declaration: String? { // @exempt(from: tests) Should never occur.
         return nil
     }
 
