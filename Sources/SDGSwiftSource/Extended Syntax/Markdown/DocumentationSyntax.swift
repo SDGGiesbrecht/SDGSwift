@@ -25,7 +25,7 @@ public class DocumentationSyntax : MarkdownSyntax {
             return DocumentationSyntax(source: source)
         }
         if documentationCache.underestimatedCount ≥ 100 {
-            documentationCache = [:]
+            documentationCache = [:] // @exempt(from: tests)
         }
         return result
     }
@@ -38,9 +38,5 @@ public class DocumentationSyntax : MarkdownSyntax {
         let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
         defer { cmark_node_free(tree) }
         super.init(node: tree, in: source)
-    }
-
-    internal override init(children: [ExtendedSyntax]) {
-        super.init(children: children)
     }
 }
