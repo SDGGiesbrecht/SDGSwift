@@ -17,9 +17,9 @@ public struct ArgumentAPI {
     // MARK: - Initialization
 
     internal init(label: String?, name: String, type: String) {
-        self.label = label
-        self.name = name
-        self.type = type
+        self.label = label?.decomposedStringWithCanonicalMapping
+        self.name = name.decomposedStringWithCanonicalMapping
+        self.type = type.decomposedStringWithCanonicalMapping
     }
 
     private var label: String?

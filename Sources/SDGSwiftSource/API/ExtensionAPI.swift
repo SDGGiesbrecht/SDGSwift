@@ -19,7 +19,7 @@ public class ExtensionAPI : APIElement {
     // MARK: - Initialization
 
     internal init(type: String, children: [APIElement]) {
-        self.type = type
+        self.type = type.decomposedStringWithCanonicalMapping
         super.init()
         for element in children {
             switch element {
@@ -37,7 +37,7 @@ public class ExtensionAPI : APIElement {
 
     // MARK: - Properties
 
-    private var type: String
+    private let type: String
 
     private var _properties: [VariableAPI] = []
     private var properties: [VariableAPI] {

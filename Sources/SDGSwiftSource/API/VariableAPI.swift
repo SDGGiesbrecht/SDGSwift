@@ -17,8 +17,8 @@ public class VariableAPI : APIElement {
     // MARK: - Initialization
 
     internal init(name: String, type: String?, isSettable: Bool) {
-        _name = name
-        self.type = type
+        _name = name.decomposedStringWithCanonicalMapping
+        self.type = type?.decomposedStringWithCanonicalMapping
         self.isSettable = isSettable
     }
 

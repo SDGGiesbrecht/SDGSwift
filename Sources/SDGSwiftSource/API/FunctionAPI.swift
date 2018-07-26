@@ -19,18 +19,18 @@ public class FunctionAPI : APIElement {
     // MARK: - Initialization
 
     internal init(name: String, arguments: [ArgumentAPI], throws: Bool, returnType: String?) {
-        _name = name
+        _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
         self.throws = `throws`
-        self.returnType = returnType
+        self.returnType = returnType?.decomposedStringWithCanonicalMapping
     }
 
     // MARK: - Properties
 
-    private var _name: String
-    private var arguments: [ArgumentAPI]
-    private var `throws`: Bool
-    private var returnType: String?
+    private let _name: String
+    private let arguments: [ArgumentAPI]
+    private let `throws`: Bool
+    private let returnType: String?
 
     // MARK: - APIElement
 
