@@ -90,8 +90,8 @@ extension Optional where Wrapped == OpaquePointer {
     internal var literal: String? {
         if let cString = cmark_node_get_literal(self) {
             return String(cString: cString, encoding: .utf8)
-        } else {
-            return nil
+        } else { // @exempt(from: tests) Should never occur.
+            return nil // @exempt(from: tests)
         }
     }
 
@@ -128,7 +128,7 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_IMAGE :
             return ImageSyntax(node: self, in: documentation)
         default /* CMARK_NODE_TEXT */ :
-            return ExtendedTokenSyntax(text: self.literal ?? "", kind: .documentationText)
+            return ExtendedTokenSyntax(text: self.literal ?? "", kind: .documentationText) // @exempt(from: tests) Empty literal should never occur.
         }
     }
 }

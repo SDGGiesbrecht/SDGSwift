@@ -74,8 +74,8 @@ public class BlockCommentSyntax : ExtendedSyntax {
         }
 
         let indentMatch = block.scalars.prefix(upTo: ConditionalPattern({ $0 ∉ CharacterSet.whitespaces }))
-        let indent = indentMatch.flatMap({ String($0.contents) }) ?? ""
-        var indents: [String] = []
+        let indent = indentMatch.flatMap({ String($0.contents) }) ?? "" // @exempt(from: tests) False coverage result in Xcode 9.4.1
+        var indents: [String] = [] // @exempt(from: tests) False coverage result in Xcode 9.4.1
         var contents: [String] = []
         var newlines: [String] = []
         for line in block.lines {

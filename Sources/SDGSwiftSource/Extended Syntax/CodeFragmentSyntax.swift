@@ -86,8 +86,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
         if location.overlaps(range) {
             if location ⊆ range {
                 return [.trivia(trivia, siblings, index)]
-            } else {
-                func reduce(count: Int, construct: (Int) -> TriviaPiece) -> [SyntaxFragment] {
+            } else { // @exempt(from: tests) Not reachable with real source code. (?)
+                func reduce(count: Int, construct: (Int) -> TriviaPiece) -> [SyntaxFragment] { // @exempt(from: tests) Not reachable with real source code. (?)
                     let overlap = location.clamped(to: range)
                     let number = min(count, context.scalars.distance(from: overlap.lowerBound, to: overlap.upperBound))
                     return [.trivia(construct(number), siblings, index)]
