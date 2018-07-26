@@ -64,6 +64,10 @@ public class ExtensionAPI : APIElement {
         return "(" + type + ")"
     }
 
+    public override var declaration: String? {
+        return nil
+    }
+
     public override var summary: [String] {
         return [name]
             + properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
