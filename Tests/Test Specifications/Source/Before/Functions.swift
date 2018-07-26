@@ -22,3 +22,6 @@ public func doSomething(_ unnamedParameter: String) {
     performFunction(argument)
     performFunction(with: argument)
 }
+
+// Overload
+public func doSomething(_ unnamedParameter: Int) {}

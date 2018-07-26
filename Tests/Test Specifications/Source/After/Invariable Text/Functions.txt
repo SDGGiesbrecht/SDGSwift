@@ -23,3 +23,6 @@
 ̲    performFunction(̲with:̲ argument)̲
 ̲}̲
 ̲
+̲/̲/̲ Overload
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ Int)̲ {̲}̲
+̲
