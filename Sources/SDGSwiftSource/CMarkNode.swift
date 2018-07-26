@@ -97,7 +97,6 @@ extension Optional where Wrapped == OpaquePointer {
 
     internal func syntax(in documentation: String) -> ExtendedSyntax {
         switch cmark_node_get_type(self) {
-        // #warning(Handle all of these.)
         // ..._DOCUMENT will never occur.
         // HTML nodes are undefined.
         case CMARK_NODE_BLOCK_QUOTE :
