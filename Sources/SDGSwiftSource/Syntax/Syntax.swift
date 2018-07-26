@@ -121,7 +121,7 @@ extension Syntax {
                 return token
             }
         }
-        return nil
+        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     private var argumentType: String? {
@@ -130,7 +130,7 @@ extension Syntax {
                 return type.name.text
             }
         }
-        return nil
+        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     private var argumentAPI: ArgumentAPI? {
@@ -152,6 +152,6 @@ extension Syntax {
 
             return ArgumentAPI(label: label, name: name, type: type)
         }
-        return nil
+        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 }
