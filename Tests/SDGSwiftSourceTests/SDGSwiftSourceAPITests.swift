@@ -25,7 +25,9 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testLineDeveloperCommentSyntax() throws {
         let syntax = try Syntax.parse("// Comment.")
+        try SyntaxScanner().scan(syntax)
         XCTAssertNil(syntax.ancestors().makeIterator().next())
+
         class CommentScanner : SyntaxScanner {
             override func visit(_ node: ExtendedSyntax) -> Bool {
                 if let comment = node as? LineDeveloperCommentSyntax {

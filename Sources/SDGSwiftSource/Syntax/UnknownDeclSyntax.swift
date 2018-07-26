@@ -53,7 +53,7 @@ extension UnknownDeclSyntax {
                 return false
             }
         }
-        return true
+        return true // @exempt(from: tests) Theoretically unreachable.
     }
 
     private var hasSetter: Bool {
@@ -85,7 +85,7 @@ extension UnknownDeclSyntax {
             let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
             return VariableAPI(name: name, type: typeName, isSettable: isSettable)
         }
-        return nil
+        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Function Syntax
@@ -129,7 +129,7 @@ extension UnknownDeclSyntax {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
             return FunctionAPI(name: name, arguments: arguments, throws: `throws`, returnType: returnType)
         }
-        return nil
+        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Extension Syntax
@@ -155,7 +155,7 @@ extension UnknownDeclSyntax {
             if ¬children.isEmpty {
                 return ExtensionAPI(type: type.name.text, children: children)
             }
-        }
+        } // @exempt(from: tests) Theoretically unreachable.
         return nil
     }
 }
