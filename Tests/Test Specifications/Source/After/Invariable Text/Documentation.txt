@@ -14,6 +14,8 @@
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Structure {̲
 ̲
+̲    /̲/̲/̲ Not part of following documentation.
+̲    /̲/̲ An intervening comment.
 ̲    /̲/̲/̲ Performs an action using the specified parameters.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ This is a second paragraph.

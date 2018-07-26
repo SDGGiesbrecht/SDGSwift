@@ -14,6 +14,8 @@
 
 extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
 
+    /// Not part of following documentation.
+    // An intervening comment.
     /// Performs an action using the specified parameters.
     ///
     /// This is a second paragraph.

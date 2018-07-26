@@ -14,6 +14,8 @@
 
 extension Structure {
 
+    /// Not part of following documentation.
+    // An intervening comment.
     /// Performs an action using the specified parameters.
     ///
     /// This is a second paragraph.

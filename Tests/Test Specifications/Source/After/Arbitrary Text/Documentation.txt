@@ -14,6 +14,8 @@
 
 extension ̲Structure ̲{
 
+ ̲ ̲ ̲ ̲/// ̲N̲o̲t̲ ̲p̲a̲r̲t̲ ̲o̲f̲ ̲f̲o̲l̲l̲o̲w̲i̲n̲g̲ ̲d̲o̲c̲u̲m̲e̲n̲t̲a̲t̲i̲o̲n̲.̲
+ ̲ ̲ ̲ ̲// ̲A̲n̲ ̲i̲n̲t̲e̲r̲v̲e̲n̲i̲n̲g̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲
  ̲ ̲ ̲ ̲/// ̲P̲e̲r̲f̲o̲r̲m̲s̲ ̲a̲n̲ ̲a̲c̲t̲i̲o̲n̲ ̲u̲s̲i̲n̲g̲ ̲t̲h̲e̲ ̲s̲p̲e̲c̲i̲f̲i̲e̲d̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲s̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲i̲s̲ ̲i̲s̲ ̲a̲ ̲s̲e̲c̲o̲n̲d̲ ̲p̲a̲r̲a̲g̲r̲a̲p̲h̲.̲
