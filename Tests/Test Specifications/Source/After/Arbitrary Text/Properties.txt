@@ -1,4 +1,3 @@
-
 extension ̲Int ̲{
 
  ̲ ̲ ̲ ̲public ̲let ̲c̲o̲n̲s̲t̲a̲n̲t̲W̲i̲t̲h̲I̲n̲f̲e̲r̲r̲e̲d̲T̲y̲p̲e̲ ̲= ̲0̲
