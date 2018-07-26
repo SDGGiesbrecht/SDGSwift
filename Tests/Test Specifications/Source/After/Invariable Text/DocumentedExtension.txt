@@ -40,3 +40,9 @@
 ̲    }̲
 ̲}̲
 ̲
+̲/̲/̲ Nothing surfaced to the API.
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ AnySequence {̲
+̲
+̲    v̲a̲r̲ notPublic:̲ Bool
+̲}̲
+̲

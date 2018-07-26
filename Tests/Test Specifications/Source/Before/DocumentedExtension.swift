@@ -39,3 +39,9 @@ extension Bool {
         }
     }
 }
+
+// Nothing surfaced to the API.
+extension AnySequence {
+
+    var notPublic: Bool
+}

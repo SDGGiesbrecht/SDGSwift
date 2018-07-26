@@ -39,3 +39,9 @@ extension B̲o̲o̲l̲ {
         }
     }
 }
+
+// Nothing surfaced to the API.
+extension A̲n̲y̲S̲e̲q̲u̲e̲n̲c̲e̲ {
+
+    var notPublic: B̲o̲o̲l̲
+}

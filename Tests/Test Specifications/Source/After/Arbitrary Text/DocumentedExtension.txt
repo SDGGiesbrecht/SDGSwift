@@ -39,3 +39,9 @@ extension ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
 }
+
+// ̲N̲o̲t̲h̲i̲n̲g̲ ̲s̲u̲r̲f̲a̲c̲e̲d̲ ̲t̲o̲ ̲t̲h̲e̲ ̲A̲P̲I̲.̲
+extension ̲AnySequence ̲{
+
+ ̲ ̲ ̲ ̲var ̲n̲o̲t̲P̲u̲b̲l̲i̲c̲: ̲Bool
+}
