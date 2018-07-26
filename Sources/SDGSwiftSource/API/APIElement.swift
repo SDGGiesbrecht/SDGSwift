@@ -39,7 +39,7 @@ public class APIElement : Comparable {
         }
     }
 
-    public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
+    public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) Apparently not actually used by the sorting algorithm.
         return (precedingValue.name, precedingValue.declaration) == (followingValue.name, followingValue.declaration)
     }
 }
