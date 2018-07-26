@@ -40,7 +40,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
         self.closingDelimiter = closingDelimiter
         followingChildren.prepend(closingDelimiter)
 
-        if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern) {
+        if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             let token = ExtendedTokenSyntax(text: String(language.contents), kind: .language)
             contents.scalars.removeSubrange(language.range)
             self.language = token
