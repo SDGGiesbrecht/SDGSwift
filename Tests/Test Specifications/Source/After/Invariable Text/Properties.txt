@@ -2,5 +2,8 @@
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ l̲e̲t̲ constantWithInferredType =̲ 0
+̲
+̲    /̲/̲ Escaped
+̲    p̲u̲b̲l̲i̲c̲ l̲e̲t̲ `̲var`̲:̲ Int =̲ 0
 ̲}̲
 ̲
