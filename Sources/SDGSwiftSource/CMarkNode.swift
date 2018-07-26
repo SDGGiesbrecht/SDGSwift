@@ -117,8 +117,7 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_SOFTBREAK :
             return ExtendedTokenSyntax(text: "\n", kind: .newlines)
         case CMARK_NODE_LINEBREAK :
-            print("Linebreak node.")
-            return MarkdownSyntax(node: self, in: documentation)
+            return LineSeparatorSyntax()
         case CMARK_NODE_CODE :
             return InlineCodeSyntax(node: self, in: documentation)
         case CMARK_NODE_EMPH :

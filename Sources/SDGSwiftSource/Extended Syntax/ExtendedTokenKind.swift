@@ -103,6 +103,9 @@ public enum ExtendedTokenKind {
     /// A colon.
     case colon
 
+    /// A Markdown line separator. (Two trailing spaces.)
+    case lineSeparator
+
     // MARK: - Properties
 
     public var textFreedom: TextFreedom {
@@ -112,7 +115,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .escape, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .callout, .colon:
+        case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .callout, .colon, .lineSeparator:
             return .invariable
         }
     }
