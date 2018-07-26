@@ -24,7 +24,7 @@ import SDGSwiftSource
 class SDGSwiftSourceAPITests : TestCase {
 
     func testLineDeveloperCommentSyntax() throws {
-        let syntax = try Syntax.parse("// Comment.")
+        let syntax = try Syntax.parse("/\u{2F} Comment.")
         try SyntaxScanner().scan(syntax)
         XCTAssertNil(syntax.ancestors().makeIterator().next())
 
@@ -40,7 +40,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testLineDocumentationCommentSyntax() throws {
-        let syntax = try Syntax.parse("/// Documentation.")
+        let syntax = try Syntax.parse("//\u{2F} Documentation.")
         class DocumentationScanner : SyntaxScanner {
             override func visit(_ node: ExtendedSyntax) -> Bool {
                 if let comment = node as? LineDocumentationSyntax {
