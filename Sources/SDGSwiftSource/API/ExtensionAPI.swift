@@ -22,7 +22,7 @@ public class ExtensionAPI : APIElement {
         self.type = type.decomposedStringWithCanonicalMapping
         super.init()
         for element in children {
-            switch element {
+            switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
             case let property as VariableAPI :
                 properties.append(property)
             case let method as FunctionAPI :
