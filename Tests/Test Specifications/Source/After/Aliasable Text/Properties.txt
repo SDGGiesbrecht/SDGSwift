@@ -1,0 +1,5 @@
+
+extension I̲n̲t̲ {
+
+    public let constantWithInferredType = 0
+}
