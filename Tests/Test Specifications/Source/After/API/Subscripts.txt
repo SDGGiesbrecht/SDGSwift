@@ -1,0 +1,3 @@
+Subscripted
+ [_:] • subscript(readOnly: Int) -> Int { get }
+ [x:y:] • subscript(x x: Int, y y: Int) -> Int { get }

@@ -39,7 +39,7 @@ public class FunctionAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "func " + _name + "(" + arguments.map({ $0.declarationForm }).joined(separator: ", ") + ")"
+        var result = "func " + _name + "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

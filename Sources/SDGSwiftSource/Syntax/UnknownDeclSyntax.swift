@@ -116,6 +116,34 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Variable Syntax
+
+    private var subscriptKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .subscriptKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isSubscriptSyntax: Bool {
+        return subscriptKeyword ≠ nil
+    }
+
+    internal var subscriptAPI: SubscriptAPI? {
+        print(#function)
+        if ¬isPublic() {
+            return nil
+        }
+        if isSubscriptSyntax,
+            let returnType = self.returnType {
+            return SubscriptAPI(arguments: arguments(forSubscript: true), returnType: returnType, isSettable: isSettable)
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Function Syntax
 
     private var functionKeyword: TokenSyntax? {
@@ -132,9 +160,9 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private var arguments: [ArgumentAPI] {
+    private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
         for child in children where type(of: child) == Syntax.self {
-            return child.argumentListAPI
+            return child.argumentListAPI(forSubscript: forSubscript)
         }
         return []
     }
@@ -155,7 +183,7 @@ extension UnknownDeclSyntax {
         if let keyword = functionKeyword,
             let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(name: name, arguments: arguments, throws: `throws`, returnType: returnType)
+            return FunctionAPI(name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

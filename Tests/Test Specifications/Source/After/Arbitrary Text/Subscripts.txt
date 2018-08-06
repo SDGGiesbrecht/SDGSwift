@@ -1,0 +1,20 @@
+
+public ̲struct ̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
+
+ ̲ ̲ ̲ ̲public ̲subscript(r̲e̲a̲d̲O̲n̲l̲y̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲readOnly
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲public ̲subscript(r̲e̲a̲d̲W̲r̲i̲t̲e̲: ̲String) ̲-> ̲String ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲readWrite
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲something ̲= ̲readWrite
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲public ̲subscript(x ̲x̲: ̲Int, ̲y ̲y̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲x ̲× ̲y
+ ̲ ̲ ̲ ̲}
+}

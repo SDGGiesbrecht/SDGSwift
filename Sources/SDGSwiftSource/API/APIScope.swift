@@ -27,6 +27,8 @@ public class APIScope : APIElement {
                 subtypes.append(subtype)
             case let property as VariableAPI :
                 properties.append(property)
+            case let `subscript` as SubscriptAPI :
+                subscripts.append(`subscript`)
             case let method as FunctionAPI :
                 methods.append(method)
             default: // @exempt(from: tests) Should never occur.
@@ -68,6 +70,17 @@ public class APIScope : APIElement {
             _properties = newValue.sorted()
         }
     }
+
+    private var _subscripts: [SubscriptAPI] = []
+    private var subscripts: [SubscriptAPI] {
+        get {
+            return _subscripts
+        }
+        set {
+            _subscripts = newValue.sorted()
+        }
+    }
+
     private var _methods: [FunctionAPI] = []
     private var methods: [FunctionAPI] {
         get {
@@ -84,6 +97,7 @@ public class APIScope : APIElement {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += conformances.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         return result
