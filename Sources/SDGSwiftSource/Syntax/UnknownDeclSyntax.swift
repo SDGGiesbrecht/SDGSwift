@@ -177,11 +177,12 @@ extension UnknownDeclSyntax {
     }
 
     internal var extensionAPI: ExtensionAPI? {
+        // @warning(Does not handle conformances yet.)
         if let keyword = extensionKeyword,
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
             if ¬children.isEmpty {
-                return ExtensionAPI(type: type.name.text, children: children)
+                return ExtensionAPI(type: type.name.text, conformances: [], children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil

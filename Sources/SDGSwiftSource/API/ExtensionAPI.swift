@@ -14,49 +14,18 @@
 
 import SDGControlFlow
 
-public class ExtensionAPI : APIElement {
+public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: String, children: [APIElement]) {
+    internal init(type: String, conformances: [ConformanceAPI], children: [APIElement]) {
         self.type = type.decomposedStringWithCanonicalMapping
-        super.init()
-        for element in children {
-            switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
-            case let property as VariableAPI :
-                properties.append(property)
-            case let method as FunctionAPI :
-                methods.append(method)
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug {
-                    print("Unidentified API element: \(Swift.type(of: element))")
-                }
-            }
-        }
+        super.init(conformances: conformances, children: children)
     }
 
     // MARK: - Properties
 
     private let type: String
-
-    private var _properties: [VariableAPI] = []
-    private var properties: [VariableAPI] {
-        get {
-            return _properties
-        }
-        set {
-            _properties = newValue.sorted()
-        }
-    }
-    private var _methods: [FunctionAPI] = []
-    private var methods: [FunctionAPI] {
-        get {
-            return _methods
-        }
-        set {
-            _methods = newValue.sorted()
-        }
-    }
 
     // MARK: - APIElement
 
@@ -69,8 +38,6 @@ public class ExtensionAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name]
-            + properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-            + methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        return [name] + scopeSummary
     }
 }

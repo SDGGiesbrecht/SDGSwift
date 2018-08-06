@@ -15,62 +15,20 @@
 import SDGControlFlow
 import SDGLogic
 
-public class TypeAPI : APIElement {
+public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
     internal init(keyword: String, name: String, conformances: [ConformanceAPI], children: [APIElement]) {
         _name = name.decomposedStringWithCanonicalMapping
         self.keyword = keyword
-        super.init()
-        self.conformances = conformances
-        for element in children {
-            switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
-            case let property as VariableAPI :
-                properties.append(property)
-            case let method as FunctionAPI :
-                methods.append(method)
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug {
-                    print("Unidentified API element: \(Swift.type(of: element))")
-                }
-            }
-        }
+        super.init(conformances: conformances, children: children)
     }
 
     // MARK: - Properties
 
     private let keyword: String
     private let _name: String
-
-    private var _conformances: [ConformanceAPI] = []
-    private var conformances: [ConformanceAPI] {
-        get {
-            return _conformances
-        }
-        set {
-            _conformances = newValue.sorted()
-        }
-    }
-
-    private var _properties: [VariableAPI] = []
-    private var properties: [VariableAPI] {
-        get {
-            return _properties
-        }
-        set {
-            _properties = newValue.sorted()
-        }
-    }
-    private var _methods: [FunctionAPI] = []
-    private var methods: [FunctionAPI] {
-        get {
-            return _methods
-        }
-        set {
-            _methods = newValue.sorted()
-        }
-    }
 
     // MARK: - APIElement
 
@@ -83,9 +41,6 @@ public class TypeAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name]
-            + properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-            + methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-            + conformances.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        return [name] + scopeSummary
     }
 }
