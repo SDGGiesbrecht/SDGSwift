@@ -1,0 +1,2 @@
+StructureWithMethods
+ mutateSomething() • mutating func mutateSomething()

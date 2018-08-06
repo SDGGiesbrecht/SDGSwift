@@ -161,7 +161,6 @@ extension UnknownDeclSyntax {
     }
 
     internal var subscriptAPI: SubscriptAPI? {
-        print(#function)
         if ¬isPublic() {
             return nil
         }
@@ -210,8 +209,9 @@ extension UnknownDeclSyntax {
         }
         if let keyword = functionKeyword,
             let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
+            let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType)
+            return FunctionAPI(isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
