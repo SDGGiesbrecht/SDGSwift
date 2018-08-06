@@ -35,7 +35,16 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        return "var " + _name + ": " + (type ?? "Any") + " { get " + (isSettable ? "set " : "") + "}"
+        var result = "var " + _name
+        if let type = self.type {
+            result += ": " + type
+        }
+        result += " { get "
+        if isSettable {
+            result += "set "
+        }
+        result += "}"
+        return result
     }
 
     public override var summary: [String] {
