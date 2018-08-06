@@ -95,7 +95,7 @@ extension UnknownDeclSyntax {
     }
 
     private var isSettable: Bool {
-        if variableKeyword?.tokenKind == .varKeyword,
+        if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
             ¬hasReducedSetterAccessLevel,
             isStored ∨ hasSetter {
             return true
