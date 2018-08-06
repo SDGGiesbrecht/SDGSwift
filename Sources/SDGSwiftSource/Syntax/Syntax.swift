@@ -84,10 +84,6 @@ extension Syntax {
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-        if source().contains("subscript") {
-            print(type(of: self))
-            print(source())
-        }
         switch self {
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
