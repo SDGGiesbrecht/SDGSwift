@@ -1,0 +1,7 @@
+
+public struct Initializable {
+
+    public init(x: I̲n̲t̲, y: I̲n̲t̲) {
+
+    }
+}

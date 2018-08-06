@@ -57,7 +57,7 @@ class SDGSwiftSourceAPITests : TestCase {
         let libraries = repositoryRoot.deletingLastPathComponent()
         let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
         let module = library.appendingPathComponent("SDGBinaryData")
-        let file = module.appendingPathComponent("DataBinaryView")
+        let file = module.appendingPathComponent("DataStream")
         let url = file.appendingPathExtension("swift")
 
         let sourceFile = try SourceFileSyntax.parse(url)

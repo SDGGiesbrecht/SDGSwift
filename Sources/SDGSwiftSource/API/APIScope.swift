@@ -25,6 +25,8 @@ public class APIScope : APIElement {
             switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
             case let subtype as TypeAPI :
                 subtypes.append(subtype)
+            case let initializer as InitializerAPI :
+                initializers.append(initializer)
             case let property as VariableAPI :
                 properties.append(property)
             case let `subscript` as SubscriptAPI :
@@ -41,16 +43,6 @@ public class APIScope : APIElement {
 
     // MARK: - Properties
 
-    private var _conformances: [ConformanceAPI] = []
-    private var conformances: [ConformanceAPI] {
-        get {
-            return _conformances
-        }
-        set {
-            _conformances = newValue.sorted()
-        }
-    }
-
     private var _subtypes: [TypeAPI] = []
     private var subtypes: [TypeAPI] {
         get {
@@ -58,6 +50,16 @@ public class APIScope : APIElement {
         }
         set {
             _subtypes = newValue.sorted()
+        }
+    }
+
+    private var _initializers: [InitializerAPI] = []
+    private var initializers: [InitializerAPI] {
+        get {
+            return _initializers
+        }
+        set {
+            _initializers = newValue.sorted()
         }
     }
 
@@ -91,11 +93,22 @@ public class APIScope : APIElement {
         }
     }
 
+    private var _conformances: [ConformanceAPI] = []
+    private var conformances: [ConformanceAPI] {
+        get {
+            return _conformances
+        }
+        set {
+            _conformances = newValue.sorted()
+        }
+    }
+
     // MARK: - APIElement
 
     internal var scopeSummary: [String] {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()

@@ -44,6 +44,34 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Initializer Syntax
+
+    private var initializerKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .initKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isInitializerSyntax: Bool {
+        return initializerKeyword ≠ nil
+    }
+
+    internal var initializerAPI: InitializerAPI? {
+        // @warning(Does not handle failable initializers.
+        if ¬isPublic() {
+            return nil
+        }
+        if initializerKeyword ≠ nil {
+            let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
+            return InitializerAPI(isFailable: false, arguments: arguments(forSubscript: false), throws: `throws`)
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Variable Syntax
 
     private var variableKeyword: TokenSyntax? {

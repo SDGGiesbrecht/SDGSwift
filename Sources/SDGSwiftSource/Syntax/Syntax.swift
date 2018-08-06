@@ -88,6 +88,8 @@ extension Syntax {
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isInitializerSyntax {
+                return unknown.initializerAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isVariableSyntax {
                 return unknown.variableAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isSubscriptSyntax {
