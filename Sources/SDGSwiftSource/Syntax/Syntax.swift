@@ -86,7 +86,9 @@ extension Syntax {
     public func api() -> [APIElement] {
         switch self {
         case let unknown as UnknownDeclSyntax :
-            if unknown.isVariableSyntax {
+            if unknown.isTypeSyntax {
+                return unknown.typeAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isVariableSyntax {
                 return unknown.variableAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []

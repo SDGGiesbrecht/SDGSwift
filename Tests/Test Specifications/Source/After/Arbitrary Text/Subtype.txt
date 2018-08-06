@@ -1,0 +1,12 @@
+
+extension ̲String ̲{
+
+ ̲ ̲ ̲ ̲public ̲struct ̲S̲u̲b̲t̲y̲p̲e̲ ̲: ̲CustomStringConvertible ̲{
+
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲internal ̲init() ̲{}
+
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲public ̲var ̲d̲e̲s̲c̲r̲i̲p̲t̲i̲o̲n̲: ̲String ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲""
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲}
+}

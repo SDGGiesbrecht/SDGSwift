@@ -16,6 +16,34 @@ import SDGLogic
 
 extension UnknownDeclSyntax {
 
+    // MARK: - Type Syntax
+
+    private var typeKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .structKeyword ∨ token.tokenKind == .classKeyword ∨ token.tokenKind == .enumKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isTypeSyntax: Bool {
+        return typeKeyword ≠ nil
+    }
+
+    internal var typeAPI: TypeAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = typeKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText {
+            return TypeAPI(keyword: keyword.text, name: name, conformances: [], children: apiChildren())
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Variable Syntax
 
     private var variableKeyword: TokenSyntax? {

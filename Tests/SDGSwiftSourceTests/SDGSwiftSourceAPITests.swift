@@ -52,6 +52,20 @@ class SDGSwiftSourceAPITests : TestCase {
         try DocumentationScanner().scan(syntax)
     }
 
+    func testRealSource() throws {
+        let repositoryRoot = testSpecificationDirectory().deletingLastPathComponent().deletingLastPathComponent()
+        let libraries = repositoryRoot.deletingLastPathComponent()
+        let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
+        let module = library.appendingPathComponent("SDGBinaryData")
+        let file = module.appendingPathComponent("DataBinaryView")
+        let url = file.appendingPathExtension("swift")
+
+        let sourceFile = try SourceFileSyntax.parse(url)
+        print("")
+        print(sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n"))
+        print("")
+    }
+
     func testParsing() {
         do {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
@@ -75,7 +89,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
                 // API
                 let api = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
-                SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
+                SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: true)
             }
         } catch {
             XCTFail("\(error)")
