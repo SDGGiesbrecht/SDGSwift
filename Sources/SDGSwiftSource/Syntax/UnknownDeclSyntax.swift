@@ -37,9 +37,9 @@ extension UnknownDeclSyntax {
         var foundConformancesSection = false
         search: for child in children.reversed() {
             switch child {
-            case is MemberDeclBlockSyntax:
+            case is MemberDeclBlockSyntax :
                 foundConformancesSection = true
-            case let type as SimpleTypeIdentifierSyntax:
+            case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
                     result.append(ConformanceAPI(protocolName: type.name.text))
                 }
