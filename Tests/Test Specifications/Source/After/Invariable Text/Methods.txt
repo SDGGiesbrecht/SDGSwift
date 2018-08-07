@@ -1,0 +1,7 @@
+p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ StructureWithMethods {̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ mutating f̲u̲n̲c̲ mutateSomething(̲)̲ {̲
+̲
+̲    }̲
+̲}̲
+̲

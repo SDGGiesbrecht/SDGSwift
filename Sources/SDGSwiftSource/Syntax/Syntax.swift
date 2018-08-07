@@ -86,8 +86,14 @@ extension Syntax {
     public func api() -> [APIElement] {
         switch self {
         case let unknown as UnknownDeclSyntax :
-            if unknown.isVariableSyntax {
+            if unknown.isTypeSyntax {
+                return unknown.typeAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isInitializerSyntax {
+                return unknown.initializerAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isVariableSyntax {
                 return unknown.variableAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isSubscriptSyntax {
+                return unknown.subscriptAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isExtensionSyntax {
@@ -102,10 +108,10 @@ extension Syntax {
 
     // MARK: - Argument List API
 
-    internal var argumentListAPI: [ArgumentAPI] {
+    internal func argumentListAPI(forSubscript: Bool) -> [ArgumentAPI] {
         var arguments: [ArgumentAPI] = []
         for child in children {
-            if let argument = child.argumentAPI {
+            if let argument = child.argumentAPI(forSubscript: forSubscript) {
                 arguments.append(argument)
             }
         }
@@ -133,7 +139,7 @@ extension Syntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    private var argumentAPI: ArgumentAPI? {
+    private func argumentAPI(forSubscript: Bool) -> ArgumentAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
             let possibleLabel: String = possibleLabelSyntax.identifierText,
             let type = argumentType {
@@ -144,6 +150,9 @@ extension Syntax {
                 name = differentName
             } else {
                 name = possibleLabel
+                if forSubscript {
+                    label = nil
+                }
             }
 
             if (child(at: possibleLabelSyntax.indexInParent − 1) as? TokenSyntax)?.tokenKind == .wildcardKeyword {

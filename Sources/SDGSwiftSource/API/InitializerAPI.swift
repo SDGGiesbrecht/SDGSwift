@@ -1,5 +1,5 @@
 /*
- VariableAPI.swift
+ InitializerAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,38 +12,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement {
+public class InitializerAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?, isSettable: Bool) {
-        _name = name.decomposedStringWithCanonicalMapping
-        self.type = type?.decomposedStringWithCanonicalMapping
-        self.isSettable = isSettable
+    internal init(isFailable: Bool, arguments: [ArgumentAPI], throws: Bool) {
+        self.isFailable = isFailable
+        self.arguments = arguments
+        self.throws = `throws`
     }
 
     // MARK: - Properties
 
-    private var _name: String
-    private var type: String?
-    private var isSettable: Bool
+    private let isFailable: Bool
+    private let arguments: [ArgumentAPI]
+    private let `throws`: Bool
 
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return "init(" + arguments.map({ $0.functionNameForm }).joined() + ")"
     }
 
     public override var declaration: String {
-        var result = "var " + _name
-        if let type = self.type {
-            result += ": " + type
+        var result = "init" + (isFailable ? "?" : "")
+        result += "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+        if `throws` {
+            result += " throws"
         }
-        result += " { get "
-        if isSettable {
-            result += "set "
-        }
-        result += "}"
         return result
     }
 

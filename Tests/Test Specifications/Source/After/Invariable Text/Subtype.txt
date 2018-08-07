@@ -1,0 +1,12 @@
+e̲x̲t̲e̲n̲s̲i̲o̲n̲ String {̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Subtype :̲ CustomStringConvertible {̲
+̲
+̲        i̲n̲t̲e̲r̲n̲a̲l̲ i̲n̲i̲t̲(̲)̲ {̲}̲
+̲
+̲        p̲u̲b̲l̲i̲c̲ v̲a̲r̲ description:̲ String {̲
+̲            r̲e̲t̲u̲r̲n̲ "̲"̲
+̲        }̲
+̲    }̲
+̲}̲
+̲

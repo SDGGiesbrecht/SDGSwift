@@ -1,5 +1,5 @@
 /*
- VariableAPI.swift
+ TypeAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,21 +12,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement {
+import SDGControlFlow
+import SDGLogic
+
+public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?, isSettable: Bool) {
+    internal init(keyword: String, name: String, conformances: [ConformanceAPI], children: [APIElement]) {
         _name = name.decomposedStringWithCanonicalMapping
-        self.type = type?.decomposedStringWithCanonicalMapping
-        self.isSettable = isSettable
+        self.keyword = keyword
+        super.init(conformances: conformances, children: children)
     }
 
     // MARK: - Properties
 
-    private var _name: String
-    private var type: String?
-    private var isSettable: Bool
+    private let keyword: String
+    private let _name: String
 
     // MARK: - APIElement
 
@@ -35,19 +37,10 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "var " + _name
-        if let type = self.type {
-            result += ": " + type
-        }
-        result += " { get "
-        if isSettable {
-            result += "set "
-        }
-        result += "}"
-        return result
+        return keyword + " " + name
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        return [name + " • " + declaration] + scopeSummary
     }
 }

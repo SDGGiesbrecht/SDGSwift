@@ -18,7 +18,8 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, arguments: [ArgumentAPI], throws: Bool, returnType: String?) {
+    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: String?) {
+        self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
         self.throws = `throws`
@@ -27,6 +28,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Properties
 
+    private let isMutating: Bool
     private let _name: String
     private let arguments: [ArgumentAPI]
     private let `throws`: Bool
@@ -39,7 +41,11 @@ public class FunctionAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "func " + _name + "(" + arguments.map({ $0.declarationForm }).joined(separator: ", ") + ")"
+        var result = ""
+        if isMutating {
+            result += "mutating "
+        }
+        result += "func " + _name + "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

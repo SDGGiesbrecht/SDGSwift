@@ -16,6 +16,82 @@ import SDGLogic
 
 extension UnknownDeclSyntax {
 
+    // MARK: - Type Syntax
+
+    private var typeKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .structKeyword ∨ token.tokenKind == .classKeyword ∨ token.tokenKind == .enumKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isTypeSyntax: Bool {
+        return typeKeyword ≠ nil
+    }
+
+    private var conformances: [ConformanceAPI] {
+        var result: [ConformanceAPI] = []
+        var foundConformancesSection = false
+        search: for child in children.reversed() {
+            switch child {
+            case is MemberDeclBlockSyntax :
+                foundConformancesSection = true
+            case let type as SimpleTypeIdentifierSyntax :
+                if foundConformancesSection {
+                    result.append(ConformanceAPI(protocolName: type.name.text))
+                }
+            default:
+                if foundConformancesSection {
+                    break search
+                }
+            }
+        }
+        return result
+    }
+
+    internal var typeAPI: TypeAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = typeKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText {
+            return TypeAPI(keyword: keyword.text, name: name, conformances: conformances, children: apiChildren())
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
+    // MARK: - Initializer Syntax
+
+    private var initializerKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .initKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isInitializerSyntax: Bool {
+        return initializerKeyword ≠ nil
+    }
+
+    internal var initializerAPI: InitializerAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = initializerKeyword {
+            let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
+            let isFailable = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.tokenKind == .postfixQuestionMark
+            return InitializerAPI(isFailable: isFailable, arguments: arguments(forSubscript: false), throws: `throws`)
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Variable Syntax
 
     private var variableKeyword: TokenSyntax? {
@@ -67,7 +143,7 @@ extension UnknownDeclSyntax {
     }
 
     private var isSettable: Bool {
-        if variableKeyword?.tokenKind == .varKeyword,
+        if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
             ¬hasReducedSetterAccessLevel,
             isStored ∨ hasSetter {
             return true
@@ -88,6 +164,33 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Variable Syntax
+
+    private var subscriptKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .subscriptKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isSubscriptSyntax: Bool {
+        return subscriptKeyword ≠ nil
+    }
+
+    internal var subscriptAPI: SubscriptAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if isSubscriptSyntax,
+            let returnType = self.returnType {
+            return SubscriptAPI(arguments: arguments(forSubscript: true), returnType: returnType, isSettable: isSettable)
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Function Syntax
 
     private var functionKeyword: TokenSyntax? {
@@ -104,9 +207,9 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private var arguments: [ArgumentAPI] {
+    private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
         for child in children where type(of: child) == Syntax.self {
-            return child.argumentListAPI
+            return child.argumentListAPI(forSubscript: forSubscript)
         }
         return []
     }
@@ -126,8 +229,9 @@ extension UnknownDeclSyntax {
         }
         if let keyword = functionKeyword,
             let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
+            let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(name: name, arguments: arguments, throws: `throws`, returnType: returnType)
+            return FunctionAPI(isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -153,7 +257,7 @@ extension UnknownDeclSyntax {
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
             if ¬children.isEmpty {
-                return ExtensionAPI(type: type.name.text, children: children)
+                return ExtensionAPI(type: type.name.text, conformances: conformances, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil

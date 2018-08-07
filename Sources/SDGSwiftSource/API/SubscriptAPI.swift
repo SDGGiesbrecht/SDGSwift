@@ -1,5 +1,5 @@
 /*
- VariableAPI.swift
+ SubscriptAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,38 +12,32 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement {
+public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?, isSettable: Bool) {
-        _name = name.decomposedStringWithCanonicalMapping
-        self.type = type?.decomposedStringWithCanonicalMapping
+    internal init(arguments: [ArgumentAPI], returnType: String, isSettable: Bool) {
+        self.arguments = arguments
+        self.returnType = returnType.decomposedStringWithCanonicalMapping
         self.isSettable = isSettable
     }
 
     // MARK: - Properties
 
-    private var _name: String
-    private var type: String?
+    private let arguments: [ArgumentAPI]
+    private let returnType: String
     private var isSettable: Bool
 
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return "[" + arguments.map({ $0.subscriptNameForm }).joined() + "]"
     }
 
     public override var declaration: String {
-        var result = "var " + _name
-        if let type = self.type {
-            result += ": " + type
-        }
-        result += " { get "
-        if isSettable {
-            result += "set "
-        }
-        result += "}"
+        var result = "subscript(" + arguments.map({ $0.subscriptDeclarationForm }).joined(separator: ", ") + ")"
+        result += " \u{2D}> " + returnType
+        result += " { get " + (isSettable ? "set " : "") + "}"
         return result
     }
 

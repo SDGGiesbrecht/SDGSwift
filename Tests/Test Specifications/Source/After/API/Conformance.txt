@@ -1,0 +1,3 @@
+Conforming • struct Conforming
+ description • var description: String { get }
+ CustomStringConvertible

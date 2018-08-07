@@ -1,5 +1,5 @@
 /*
- ExtensionAPI.swift
+ ConformanceAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,25 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
-
-public class ExtensionAPI : APIScope {
+public class ConformanceAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(type: String, conformances: [ConformanceAPI], children: [APIElement]) {
-        self.type = type.decomposedStringWithCanonicalMapping
-        super.init(conformances: conformances, children: children)
+    internal init(protocolName: String) {
+        self.protocolName = protocolName.decomposedStringWithCanonicalMapping
     }
 
     // MARK: - Properties
 
-    private let type: String
+    private var protocolName: String
 
     // MARK: - APIElement
 
     public override var name: String {
-        return "(" + type + ")"
+        return protocolName
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.
@@ -38,6 +35,6 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        return [name] + scopeSummary
+        return [name]
     }
 }

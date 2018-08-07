@@ -30,13 +30,28 @@ public struct ArgumentAPI {
         return (label ?? "_") + ":"
     }
 
-    internal var declarationForm: String {
+    internal var subscriptNameForm: String {
+        return functionNameForm
+    }
+
+    internal var functionDeclarationForm: String {
         var result = ""
         if label == name {
             result = name
         } else {
             result = (label ?? "_") + " " + name
         }
+        result += ": "
+        result += type
+        return result
+    }
+
+    internal var subscriptDeclarationForm: String {
+        var result = ""
+        if let theLabel = label {
+            result += theLabel + " "
+        }
+        result += name
         result += ": "
         result += type
         return result

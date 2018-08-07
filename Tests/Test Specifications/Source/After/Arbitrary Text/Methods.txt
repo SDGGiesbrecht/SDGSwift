@@ -1,0 +1,6 @@
+public ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲W̲i̲t̲h̲M̲e̲t̲h̲o̲d̲s̲ ̲{
+
+ ̲ ̲ ̲ ̲public ̲mutating ̲func ̲m̲u̲t̲a̲t̲e̲S̲o̲m̲e̲t̲h̲i̲n̲g̲() ̲{
+
+ ̲ ̲ ̲ ̲}
+}

@@ -52,6 +52,23 @@ class SDGSwiftSourceAPITests : TestCase {
         try DocumentationScanner().scan(syntax)
     }
 
+    func testRealSource() throws {
+        // #workaround(Until API detection is complete.)
+        /*
+         let repositoryRoot = testSpecificationDirectory().deletingLastPathComponent().deletingLastPathComponent()
+         let libraries = repositoryRoot.deletingLastPathComponent()
+         let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
+         let module = library.appendingPathComponent("SDGBinaryData")
+         let file = module.appendingPathComponent("UInt")
+         let url = file.appendingPathExtension("swift")
+
+         let sourceFile = try SourceFileSyntax.parse(url)
+         print("")
+         print(sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n"))
+         print("")
+         */
+    }
+
     func testParsing() {
         do {
             for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
