@@ -16,4 +16,8 @@ public struct Subscripted {
     public subscript(x x: Int, y y: Int) -> Int {
         return x × y
     }
+
+    private subscript(private: UInt) -> UInt {
+        return `private`
+    }
 }

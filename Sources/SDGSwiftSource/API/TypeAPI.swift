@@ -36,11 +36,11 @@ public class TypeAPI : APIScope {
         return _name
     }
 
-    public override var declaration: String? {
+    public override var declaration: String {
         return keyword + " " + name
     }
 
     public override var summary: [String] {
-        return [name] + scopeSummary
+        return [name + " • " + declaration] + scopeSummary
     }
 }

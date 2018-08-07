@@ -1,4 +1,4 @@
 (String)
- Subtype
+ Subtype • struct Subtype
   description • var description: String { get }
   CustomStringConvertible

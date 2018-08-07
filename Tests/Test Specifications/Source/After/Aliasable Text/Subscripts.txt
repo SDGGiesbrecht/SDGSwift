@@ -16,4 +16,8 @@ public struct Subscripted {
     public subscript(x̲ x: I̲n̲t̲, y̲ y: I̲n̲t̲) -> I̲n̲t̲ {
         return x̲ ×̲ y̲
     }
+
+    private subscript(private: U̲I̲n̲t̲) -> U̲I̲n̲t̲ {
+        return `p̲r̲i̲v̲a̲t̲e̲`
+    }
 }

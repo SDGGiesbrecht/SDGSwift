@@ -16,4 +16,8 @@ public ̲struct ̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
  ̲ ̲ ̲ ̲public ̲subscript(x ̲x̲: ̲Int, ̲y ̲y̲: ̲Int) ̲-> ̲Int ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲x ̲× ̲y
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲private ̲subscript(p̲r̲i̲v̲a̲t̲e̲: ̲UInt) ̲-> ̲UInt ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲`private`
+ ̲ ̲ ̲ ̲}
 }

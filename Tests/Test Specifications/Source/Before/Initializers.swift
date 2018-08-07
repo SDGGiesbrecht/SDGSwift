@@ -7,4 +7,10 @@ public struct Initializable {
     public init?(string: String) {
 
     }
+
+    public init(throwing: Bool) throws {
+
+    }
+
+    private init(private: UInt) {}
 }

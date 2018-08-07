@@ -16,5 +16,9 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Subscripted {̲
 ̲    p̲u̲b̲l̲i̲c̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲x x:̲ Int,̲ y y:̲ Int)̲ -̲>̲ Int {̲
 ̲        r̲e̲t̲u̲r̲n̲ x × y
 ̲    }̲
+̲
+̲    p̲r̲i̲v̲a̲t̲e̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲private:̲ UInt)̲ -̲>̲ UInt {̲
+̲        r̲e̲t̲u̲r̲n̲ `̲private`̲
+̲    }̲
 ̲}̲
 ̲

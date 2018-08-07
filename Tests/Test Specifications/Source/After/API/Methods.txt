@@ -1,2 +1,2 @@
-StructureWithMethods
+StructureWithMethods • struct StructureWithMethods
  mutateSomething() • mutating func mutateSomething()

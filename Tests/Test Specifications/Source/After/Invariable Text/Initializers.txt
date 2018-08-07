@@ -7,5 +7,11 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Initializable {̲
 ̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲?̲(̲string:̲ String)̲ {̲
 ̲
 ̲    }̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲(̲throwing:̲ Bool)̲ t̲h̲r̲o̲w̲s̲ {̲
+̲
+̲    }̲
+̲
+̲    p̲r̲i̲v̲a̲t̲e̲ i̲n̲i̲t̲(̲private:̲ UInt)̲ {̲}̲
 ̲}̲
 ̲
