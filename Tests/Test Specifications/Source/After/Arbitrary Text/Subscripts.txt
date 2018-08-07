@@ -1,4 +1,3 @@
-
 public ̲struct ̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
 
  ̲ ̲ ̲ ̲public ̲subscript(r̲e̲a̲d̲O̲n̲l̲y̲: ̲Int) ̲-> ̲Int ̲{

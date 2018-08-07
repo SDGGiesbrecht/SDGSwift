@@ -61,7 +61,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var initializerAPI: InitializerAPI? {
-        // @warning(Does not handle failable initializers.
+        // #warning(Does not handle failable initializers.
         if ¬isPublic() {
             return nil
         }
@@ -233,7 +233,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var extensionAPI: ExtensionAPI? {
-        // @warning(Does not handle conformances yet.)
+        // #warning(Does not handle conformances yet.)
         if let keyword = extensionKeyword,
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()

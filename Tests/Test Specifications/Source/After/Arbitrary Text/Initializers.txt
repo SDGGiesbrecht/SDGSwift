@@ -1,4 +1,3 @@
-
 public ̲struct ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲b̲l̲e̲ ̲{
 
  ̲ ̲ ̲ ̲public ̲init(x̲: ̲Int, ̲y̲: ̲Int) ̲{

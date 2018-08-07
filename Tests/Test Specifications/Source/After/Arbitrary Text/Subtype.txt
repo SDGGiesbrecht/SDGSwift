@@ -1,4 +1,3 @@
-
 extension ̲String ̲{
 
  ̲ ̲ ̲ ̲public ̲struct ̲S̲u̲b̲t̲y̲p̲e̲ ̲: ̲CustomStringConvertible ̲{

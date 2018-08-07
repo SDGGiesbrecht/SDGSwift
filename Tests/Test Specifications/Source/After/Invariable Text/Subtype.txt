@@ -1,5 +1,4 @@
-
-̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ String {̲
+e̲x̲t̲e̲n̲s̲i̲o̲n̲ String {̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Subtype :̲ CustomStringConvertible {̲
 ̲

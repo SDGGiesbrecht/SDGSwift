@@ -1,4 +1,3 @@
-
 extension String {
 
     public struct Subtype : CustomStringConvertible {

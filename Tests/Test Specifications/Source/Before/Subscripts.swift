@@ -1,4 +1,3 @@
-
 public struct Subscripted {
 
     public subscript(readOnly: Int) -> Int {

@@ -1,4 +1,3 @@
-
 public struct StructureWithMethods {
 
     public m̲u̲t̲a̲t̲i̲n̲g̲ func mutateSomething() {

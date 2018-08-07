@@ -1,5 +1,4 @@
-
-̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Subscripted {̲
+p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Subscripted {̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲readOnly:̲ Int)̲ -̲>̲ Int {̲
 ̲        r̲e̲t̲u̲r̲n̲ readOnly
