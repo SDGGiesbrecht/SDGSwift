@@ -1,0 +1,6 @@
+public ̲struct ̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲: ̲CustomStringConvertible ̲{
+
+ ̲ ̲ ̲ ̲public ̲var ̲d̲e̲s̲c̲r̲i̲p̲t̲i̲o̲n̲: ̲String ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲""
+ ̲ ̲ ̲ ̲}
+}

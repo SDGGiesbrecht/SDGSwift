@@ -32,6 +32,26 @@ extension UnknownDeclSyntax {
         return typeKeyword ≠ nil
     }
 
+    private var conformances: [ConformanceAPI] {
+        var result: [ConformanceAPI] = []
+        var foundConformancesSection = false
+        search: for child in children.reversed() {
+            switch child {
+            case is MemberDeclBlockSyntax:
+                foundConformancesSection = true
+            case let type as SimpleTypeIdentifierSyntax:
+                if foundConformancesSection {
+                    result.append(ConformanceAPI(protocolName: type.name.text))
+                }
+            default:
+                if foundConformancesSection {
+                    break search
+                }
+            }
+        }
+        return result
+    }
+
     internal var typeAPI: TypeAPI? {
         if ¬isPublic() {
             return nil
@@ -39,7 +59,7 @@ extension UnknownDeclSyntax {
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: name, conformances: [], children: apiChildren())
+            return TypeAPI(keyword: keyword.text, name: name, conformances: conformances, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -233,12 +253,11 @@ extension UnknownDeclSyntax {
     }
 
     internal var extensionAPI: ExtensionAPI? {
-        // #warning(Does not handle conformances yet.)
         if let keyword = extensionKeyword,
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
             if ¬children.isEmpty {
-                return ExtensionAPI(type: type.name.text, conformances: [], children: children)
+                return ExtensionAPI(type: type.name.text, conformances: conformances, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil
