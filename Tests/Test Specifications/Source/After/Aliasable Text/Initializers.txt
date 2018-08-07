@@ -3,4 +3,8 @@ public struct Initializable {
     public init(x: I̲n̲t̲, y: I̲n̲t̲) {
 
     }
+
+    public init?(string: S̲t̲r̲i̲n̲g̲) {
+
+    }
 }

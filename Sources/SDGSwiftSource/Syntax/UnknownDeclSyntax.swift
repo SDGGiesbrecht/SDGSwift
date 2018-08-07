@@ -61,13 +61,13 @@ extension UnknownDeclSyntax {
     }
 
     internal var initializerAPI: InitializerAPI? {
-        // #warning(Does not handle failable initializers.
         if ¬isPublic() {
             return nil
         }
-        if initializerKeyword ≠ nil {
+        if let keyword = initializerKeyword {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return InitializerAPI(isFailable: false, arguments: arguments(forSubscript: false), throws: `throws`)
+            let isFailable = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.tokenKind == .postfixQuestionMark
+            return InitializerAPI(isFailable: isFailable, arguments: arguments(forSubscript: false), throws: `throws`)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

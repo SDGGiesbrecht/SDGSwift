@@ -3,5 +3,9 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Initializable {̲
 ̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲(̲x:̲ Int,̲ y:̲ Int)̲ {̲
 ̲
 ̲    }̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲?̲(̲string:̲ String)̲ {̲
+̲
+̲    }̲
 ̲}̲
 ̲
