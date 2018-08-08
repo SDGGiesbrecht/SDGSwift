@@ -130,7 +130,7 @@ extension Syntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    private var argumentType: TypeReference? {
+    private var argumentType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
                 return type.reference

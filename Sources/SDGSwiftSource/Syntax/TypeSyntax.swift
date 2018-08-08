@@ -14,18 +14,18 @@
 
 extension TypeSyntax {
 
-    internal var reference: TypeReference {
+    internal var reference: TypeReferenceAPI {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax :
             let genericArguments = simple.genericArgumentClause?.arguments.map({ $0.argumentType.reference }) ?? []
-            return TypeReference(name: simple.name.text, genericArguments: genericArguments)
+            return TypeReferenceAPI(name: simple.name.text, genericArguments: genericArguments)
         default:
             for child in children {
                 if let type = child as? TokenSyntax {
-                    return TypeReference(name: type.text, genericArguments: [])
+                    return TypeReferenceAPI(name: type.text, genericArguments: [])
                 }
             }
-            return TypeReference(name: "?", genericArguments: [])
+            return TypeReferenceAPI(name: "?", genericArguments: [])
         }
     }
 }

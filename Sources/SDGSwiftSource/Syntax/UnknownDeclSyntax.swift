@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 extension UnknownDeclSyntax {
@@ -41,7 +42,7 @@ extension UnknownDeclSyntax {
                 foundConformancesSection = true
             case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
-                    result.append(ConformanceAPI(protocolName: type.name.text))
+                    result.append(type.conformance)
                 }
             default:
                 if foundConformancesSection {
@@ -52,23 +53,35 @@ extension UnknownDeclSyntax {
         return result
     }
 
-    private func genericArguments(of typeName: TokenSyntax) -> [TypeReference] {
+    private func genericArguments(of typeName: TokenSyntax) -> ([TypeReferenceAPI], [ConstraintAPI]) {
         guard let next = child(at: typeName.indexInParent + 1),
             (next as? TokenSyntax)?.tokenKind == .leftAngle else {
-                return []
+                return ([], [])
         }
-        var arguments: [TypeReference] = []
+        var arguments: [TypeReferenceAPI] = []
+        var constraints: [ConstraintAPI] = []
         var token = next
-        while let next = child(at: token.indexInParent + 1),
+        while var next = child(at: token.indexInParent + 1),
             (next as? TokenSyntax)?.tokenKind ≠ .rightAngle {
-            defer { token = next }
+                defer { token = next }
 
-            if let generic = next as? TokenSyntax,
-                case .identifier = generic.tokenKind {
-                arguments.append(TypeReference(name: generic.text, genericArguments: []))
-            }
+                if let generic = next as? TokenSyntax {
+                    switch generic.tokenKind {
+                    case .identifier:
+                        arguments.append(TypeReferenceAPI(name: generic.text, genericArguments: []))
+                    case .colon:
+                        if let last = arguments.last,
+                            let following = child(at: next.indexInParent + 1),
+                            let conformance = following as? SimpleTypeIdentifierSyntax {
+                            next = following
+                            constraints.append(.conformance(last, conformance.conformance))
+                        }
+                    default:
+                        break
+                    }
+                }
         }
-        return arguments
+        return (arguments, constraints)
     }
 
     internal var typeAPI: TypeAPI? {
@@ -78,7 +91,8 @@ extension UnknownDeclSyntax {
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: TypeReference(name: name, genericArguments: genericArguments(of: nameToken)), conformances: conformances, children: apiChildren())
+            let (genericArguments, constraints) = self.genericArguments(of: nameToken)
+            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -233,7 +247,7 @@ extension UnknownDeclSyntax {
         return []
     }
 
-    private var returnType: TypeReference? {
+    private var returnType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
                 return type.reference

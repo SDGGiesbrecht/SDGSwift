@@ -18,14 +18,14 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: TypeReference, conformances: [ConformanceAPI], children: [APIElement]) {
+    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], children: [APIElement]) {
         self.type = type
         super.init(conformances: conformances, children: children)
     }
 
     // MARK: - Properties
 
-    private let type: TypeReference
+    private let type: TypeReferenceAPI
 
     // MARK: - APIElement
 

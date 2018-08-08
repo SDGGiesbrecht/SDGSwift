@@ -19,16 +19,26 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(keyword: String, name: TypeReference, conformances: [ConformanceAPI], children: [APIElement]) {
+    internal init(keyword: String, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         _name = name
         self.keyword = keyword
         super.init(conformances: conformances, children: children)
+        self.constraints = constraints.map({ $0.normalized() })
     }
 
     // MARK: - Properties
 
     private let keyword: String
-    private let _name: TypeReference
+    private let _name: TypeReferenceAPI
+    private var _constraints: [ConstraintAPI] = []
+    private var constraints: [ConstraintAPI] {
+        get {
+            return _constraints
+        }
+        set {
+            _constraints = newValue.map({ $0.normalized() })
+        }
+    }
 
     // MARK: - APIElement
 
@@ -37,7 +47,11 @@ public class TypeAPI : APIScope {
     }
 
     public override var declaration: String {
-        return keyword + " " + name
+        var result = keyword + " " + name
+        if ¬constraints.isEmpty {
+            result += " where " + constraints.map({ $0.description }).joined(separator: ", ")
+        }
+        return result
     }
 
     public override var summary: [String] {

@@ -16,7 +16,7 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: TypeReference?, isSettable: Bool) {
+    internal init(name: String, type: TypeReferenceAPI?, isSettable: Bool) {
         _name = name.decomposedStringWithCanonicalMapping
         self.type = type
         self.isSettable = isSettable
@@ -25,7 +25,7 @@ public class VariableAPI : APIElement {
     // MARK: - Properties
 
     private var _name: String
-    private var type: TypeReference?
+    private var type: TypeReferenceAPI?
     private var isSettable: Bool
 
     // MARK: - APIElement

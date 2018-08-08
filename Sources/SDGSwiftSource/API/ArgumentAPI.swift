@@ -16,7 +16,7 @@ public struct ArgumentAPI {
 
     // MARK: - Initialization
 
-    internal init(label: String?, name: String, type: TypeReference) {
+    internal init(label: String?, name: String, type: TypeReferenceAPI) {
         self.label = label?.decomposedStringWithCanonicalMapping
         self.name = name.decomposedStringWithCanonicalMapping
         self.type = type
@@ -24,7 +24,7 @@ public struct ArgumentAPI {
 
     private var label: String?
     private var name: String
-    private var type: TypeReference
+    private var type: TypeReferenceAPI
 
     internal var functionNameForm: String {
         return (label ?? "_") + ":"
