@@ -44,3 +44,8 @@ public struct NestingStructure {
     public typealias Universal = Bool
     #endif
 }
+
+public struct PossiblyConforming {}
+#if os(macOS)
+extension PossiblyConforming : ConditionallyAvailableProtocol {}
+#endif

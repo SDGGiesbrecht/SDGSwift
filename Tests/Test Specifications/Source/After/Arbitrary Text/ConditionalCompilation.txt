@@ -44,3 +44,8 @@ public ̲struct ̲N̲e̲s̲t̲i̲n̲g̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
  ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
  ̲ ̲ ̲ ̲#endif
 }
+
+public ̲struct ̲P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲{}
+#if ̲os(macOS)
+extension ̲PossiblyConforming ̲: ̲ConditionallyAvailableProtocol ̲{}
+#endif

@@ -34,20 +34,37 @@ extension UnknownDeclSyntax {
     }
 
     private var conformances: [ConformanceAPI] {
+        if source().contains("ConditionallyAvailable") {
+            print(#function)
+            for child in children {
+                print(type(of: child))
+                print(child.source())
+            }
+        }
         var result: [ConformanceAPI] = []
         var foundConformancesSection = false
         search: for child in children.reversed() {
             `switch`: switch child {
-            case is MemberDeclBlockSyntax :
+            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax>:
                 foundConformancesSection = true
             case is GenericWhereClauseSyntax:
                 break `switch`
             case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
-                    result.append(type.conformance)
+                    if let `extension` = extensionKeyword {
+                        if type.indexInParent ≠ `extension`.indexInParent + 1 {
+                            result.append(type.conformance)
+                        } else {
+                            break search
+                        }
+                    } else {
+                        result.append(type.conformance)
+                    }
                 }
             case let token as TokenSyntax:
-                if token.tokenKind == .comma {
+                if token.tokenKind == .comma
+                    ∨ token.tokenKind == .leftBrace
+                    ∨ token.tokenKind == .rightBrace {
                     break `switch`
                 } else {
                     fallthrough
@@ -347,7 +364,12 @@ extension UnknownDeclSyntax {
         if let keyword = extensionKeyword,
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
-            if ¬children.isEmpty {
+            let conformances = self.conformances
+            if source().contains("Conditionally") {
+                print(#function)
+                print(conformances)
+            }
+            if ¬children.isEmpty ∨ ¬conformances.isEmpty {
                 return ExtensionAPI(type: type.reference, conformances: conformances, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.

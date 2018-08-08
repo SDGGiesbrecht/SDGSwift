@@ -50,6 +50,6 @@ public class APIElement : Comparable, Hashable {
     // MARK: - Hashable
 
     public var hashValue: Int {
-        return declaration?.hashValue ?? name.hashValue
+        return declaration?.hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
     }
 }
