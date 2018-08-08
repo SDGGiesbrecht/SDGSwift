@@ -130,10 +130,10 @@ extension Syntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    private var argumentType: String? {
+    private var argumentType: TypeReference? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
-                return type.name.text
+                return type.reference
             }
         }
         return nil // @exempt(from: tests) Theoretically unreachable.

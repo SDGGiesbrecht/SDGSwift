@@ -18,19 +18,19 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: String, conformances: [ConformanceAPI], children: [APIElement]) {
-        self.type = type.decomposedStringWithCanonicalMapping
+    internal init(type: TypeReference, conformances: [ConformanceAPI], children: [APIElement]) {
+        self.type = type
         super.init(conformances: conformances, children: children)
     }
 
     // MARK: - Properties
 
-    private let type: String
+    private let type: TypeReference
 
     // MARK: - APIElement
 
     public override var name: String {
-        return "(" + type + ")"
+        return "(" + type.description + ")"
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.

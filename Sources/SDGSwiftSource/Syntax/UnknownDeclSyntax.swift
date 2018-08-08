@@ -158,8 +158,8 @@ extension UnknownDeclSyntax {
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
-            return VariableAPI(name: name, type: typeName, isSettable: isSettable)
+            let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
+            return VariableAPI(name: name, type: type, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -214,10 +214,10 @@ extension UnknownDeclSyntax {
         return []
     }
 
-    private var returnType: String? {
+    private var returnType: TypeReference? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
-                return type.name.text
+                return type.reference
             }
         }
         return nil
@@ -257,7 +257,7 @@ extension UnknownDeclSyntax {
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
             if ¬children.isEmpty {
-                return ExtensionAPI(type: type.name.text, conformances: conformances, children: children)
+                return ExtensionAPI(type: type.reference, conformances: conformances, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil

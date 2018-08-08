@@ -18,12 +18,12 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: String?) {
+    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReference?) {
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
         self.throws = `throws`
-        self.returnType = returnType?.decomposedStringWithCanonicalMapping
+        self.returnType = returnType
     }
 
     // MARK: - Properties
@@ -32,7 +32,7 @@ public class FunctionAPI : APIElement {
     private let _name: String
     private let arguments: [ArgumentAPI]
     private let `throws`: Bool
-    private let returnType: String?
+    private let returnType: TypeReference?
 
     // MARK: - APIElement
 
@@ -49,7 +49,7 @@ public class FunctionAPI : APIElement {
         if `throws` {
             result += " throws"
         }
-        if let returnType = self.returnType, returnType ≠ "Void", returnType ≠ "()" {
+        if let returnType = self.returnType?.description, returnType ≠ "Void", returnType ≠ "()" {
             result += " \u{2D}> " + returnType
         }
         return result

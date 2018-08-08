@@ -54,7 +54,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testRealSource() throws {
         // #workaround(Until API detection is complete.)
-        /*
+
          let repositoryRoot = testSpecificationDirectory().deletingLastPathComponent().deletingLastPathComponent()
          let libraries = repositoryRoot.deletingLastPathComponent()
          let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
@@ -66,7 +66,7 @@ class SDGSwiftSourceAPITests : TestCase {
          print("")
          print(sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n"))
          print("")
-         */
+
     }
 
     func testParsing() {

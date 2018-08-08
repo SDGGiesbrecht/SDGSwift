@@ -16,16 +16,16 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?, isSettable: Bool) {
+    internal init(name: String, type: TypeReference?, isSettable: Bool) {
         _name = name.decomposedStringWithCanonicalMapping
-        self.type = type?.decomposedStringWithCanonicalMapping
+        self.type = type
         self.isSettable = isSettable
     }
 
     // MARK: - Properties
 
     private var _name: String
-    private var type: String?
+    private var type: TypeReference?
     private var isSettable: Bool
 
     // MARK: - APIElement
@@ -37,7 +37,7 @@ public class VariableAPI : APIElement {
     public override var declaration: String {
         var result = "var " + _name
         if let type = self.type {
-            result += ": " + type
+            result += ": " + type.description
         }
         result += " { get "
         if isSettable {
