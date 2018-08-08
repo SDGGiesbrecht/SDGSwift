@@ -8,5 +8,7 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ String {̲
 ̲            r̲e̲t̲u̲r̲n̲ "̲"̲
 ̲        }̲
 ̲    }̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ AliasedSubtype =̲ Int
 ̲}̲
 ̲

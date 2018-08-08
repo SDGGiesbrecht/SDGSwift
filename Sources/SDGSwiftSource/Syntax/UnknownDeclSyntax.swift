@@ -114,6 +114,34 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Type Alias Syntax
+
+    private var typeAliasKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .typealiasKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isTypeAliasSyntax: Bool {
+        return typeAliasKeyword ≠ nil
+    }
+
+    internal var typeAliasAPI: TypeAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = typeAliasKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText {
+            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Initializer Syntax
 
     private var initializerKeyword: TokenSyntax? {

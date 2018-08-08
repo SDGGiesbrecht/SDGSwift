@@ -8,4 +8,6 @@ extension String {
             return ""
         }
     }
+
+    public typealias AliasedSubtype = Int
 }

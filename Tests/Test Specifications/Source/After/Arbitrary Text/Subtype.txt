@@ -8,4 +8,6 @@ extension ̲String ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲""
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲public ̲typealias ̲A̲l̲i̲a̲s̲e̲d̲S̲u̲b̲t̲y̲p̲e̲ ̲= ̲Int
 }
