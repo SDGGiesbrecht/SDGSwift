@@ -37,9 +37,11 @@ extension UnknownDeclSyntax {
         var result: [ConformanceAPI] = []
         var foundConformancesSection = false
         search: for child in children.reversed() {
-            switch child {
+            `switch`: switch child {
             case is MemberDeclBlockSyntax :
                 foundConformancesSection = true
+            case is GenericWhereClauseSyntax:
+                break `switch`
             case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
                     result.append(type.conformance)
