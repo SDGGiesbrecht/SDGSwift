@@ -48,4 +48,7 @@ public ̲struct ̲N̲e̲s̲t̲i̲n̲g̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 public ̲struct ̲P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲{}
 #if ̲os(macOS)
 extension ̲PossiblyConforming ̲: ̲ConditionallyAvailableProtocol ̲{}
+ ̲ ̲ ̲ ̲#if ̲CUSTOM
+ ̲ ̲ ̲ ̲extension ̲PossiblyConforming ̲: ̲AnotherConditionallyAvailableProtocol ̲{}
+ ̲ ̲ ̲ ̲#endif
 #endif

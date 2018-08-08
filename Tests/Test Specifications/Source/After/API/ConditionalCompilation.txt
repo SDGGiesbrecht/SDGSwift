@@ -5,6 +5,7 @@ NestingStructure • struct NestingStructure
  WithAppKit • typealias WithAppKit • #if canImport(AppKit)
  WithUIKit • typealias WithUIKit • #if !(canImport(AppKit)) && (canImport(UIKit))
 PossiblyConforming • struct PossiblyConforming
+ AnotherConditionallyAvailableProtocol • #if (os(macOS)) && (CUSTOM)
  ConditionallyAvailableProtocol • #if os(macOS)
 Universal • typealias Universal
 WithAppKit • typealias WithAppKit • #if canImport(AppKit)

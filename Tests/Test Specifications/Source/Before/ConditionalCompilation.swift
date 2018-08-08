@@ -48,4 +48,7 @@ public struct NestingStructure {
 public struct PossiblyConforming {}
 #if os(macOS)
 extension PossiblyConforming : ConditionallyAvailableProtocol {}
+    #if CUSTOM
+    extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
+    #endif
 #endif

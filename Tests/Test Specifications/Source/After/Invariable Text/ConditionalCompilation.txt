@@ -48,5 +48,8 @@
 ̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ PossiblyConforming {̲}̲
 ̲#̲i̲f̲ o̲s̲(̲m̲a̲c̲O̲S̲)̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ :̲ C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {̲}̲
+̲    #̲i̲f̲ C̲U̲S̲T̲O̲M̲
+̲    e̲x̲t̲e̲n̲s̲i̲o̲n̲ P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ :̲ A̲n̲o̲t̲h̲e̲r̲C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {̲}̲
+̲    #̲e̲n̲d̲i̲f̲
 ̲#̲e̲n̲d̲i̲f̲
 ̲
