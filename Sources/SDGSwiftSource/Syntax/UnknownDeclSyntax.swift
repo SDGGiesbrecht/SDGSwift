@@ -269,7 +269,10 @@ extension UnknownDeclSyntax {
 
     private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
         for child in children where type(of: child) == Syntax.self {
-            return child.argumentListAPI(forSubscript: forSubscript)
+            let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
+            if ¬possibleArgumentList.isEmpty {
+                return possibleArgumentList
+            }
         }
         return []
     }
