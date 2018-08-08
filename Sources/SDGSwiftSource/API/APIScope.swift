@@ -132,6 +132,49 @@ public class APIScope : APIElement {
 
     // MARK: - APIElement
 
+    private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
+        if var newCondition = addition {
+            if var existing = child?.compilationConditions {
+                existing.removeFirst(4) // “#if ”
+                newCondition.removeFirst(4)
+
+                child?.compilationConditions = "#if (" + newCondition + ") && (" + existing + ")"
+            } else {
+                child?.compilationConditions = addition
+            }
+        }
+    }
+
+    public override var compilationConditions: String? {
+        get {
+            return super.compilationConditions
+        }
+        set {
+            super.compilationConditions = newValue
+            for subtype in subtypes {
+                prependCompilationCondition(newValue, to: subtype)
+            }
+            for property in typeProperties {
+                prependCompilationCondition(newValue, to: property)
+            }
+            for initializer in initializers {
+                prependCompilationCondition(newValue, to: initializer)
+            }
+            for property in properties {
+                prependCompilationCondition(newValue, to: property)
+            }
+            for `subscript` in subscripts {
+                prependCompilationCondition(newValue, to: `subscript`)
+            }
+            for method in methods {
+                prependCompilationCondition(newValue, to: method)
+            }
+            for conformance in conformances {
+                prependCompilationCondition(newValue, to: conformance)
+            }
+        }
+    }
+
     internal var scopeSummary: [String] {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
