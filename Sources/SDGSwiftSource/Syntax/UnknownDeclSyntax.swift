@@ -38,9 +38,9 @@ extension UnknownDeclSyntax {
         var foundConformancesSection = false
         search: for child in children.reversed() {
             `switch`: switch child {
-            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax>:
+            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax> :
                 foundConformancesSection = true
-            case is GenericWhereClauseSyntax:
+            case is GenericWhereClauseSyntax :
                 break `switch`
             case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
@@ -54,7 +54,7 @@ extension UnknownDeclSyntax {
                         result.append(type.conformance)
                     }
                 }
-            case let token as TokenSyntax:
+            case let token as TokenSyntax :
                 if token.tokenKind == .comma
                     ∨ token.tokenKind == .leftBrace
                     ∨ token.tokenKind == .rightBrace {

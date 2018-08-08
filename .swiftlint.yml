@@ -44,3 +44,4 @@ disabled_rules:
   - cyclomatic_complexity
   - nesting
   - force_cast
+  - fallthrough

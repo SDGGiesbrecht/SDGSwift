@@ -43,6 +43,22 @@ extension Syntax {
         return result
     }
 
+    internal func withTriviaReducedToSpaces() -> Syntax {
+        class TriviaNormalizer : SyntaxRewriter {
+            override func visit(_ token: TokenSyntax) -> Syntax {
+                var token = token
+                if ¬token.leadingTrivia.isEmpty {
+                    token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
+                }
+                if ¬token.trailingTrivia.isEmpty {
+                    token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
+                }
+                return token
+            }
+        }
+        return TriviaNormalizer().visit(self)
+    }
+
     public func location(in source: String) -> Range<String.ScalarView.Index> {
         let start: String.ScalarView.Index
         if let parent = self.parent {
@@ -87,11 +103,9 @@ extension Syntax {
 
         extensionIteration: for `extension` in extensions {
             let extensionType = `extension`.type
-            for type in types {
-                if extensionType == type.typeName {
-                    type.merge(extension: `extension`)
-                    continue extensionIteration
-                }
+            for type in types where extensionType == type.typeName {
+                type.merge(extension: `extension`)
+                continue extensionIteration
             }
             other.append(`extension`)
         }
@@ -243,17 +257,16 @@ extension Syntax {
                 default:
                     break
                 }
-                break
             case let condition as UnknownExprSyntax :
-                currentCondition = condition.source() // #warning(Needs to filter trivia.)
+                currentCondition = condition.withTriviaReducedToSpaces().source()
             default:
                 var composedConditions = "#if "
-                composedConditions.append(contentsOf: previousConditions.map({ "!(" + $0 + ")" }).joined(separator: " && "))
+                composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
                 if previousConditions.isEmpty {
                     composedConditions.append(contentsOf: (currentCondition ?? ""))
                 } else {
                     if let current = currentCondition {
-                        composedConditions.append(contentsOf: " && (" + current + ")")
+                        composedConditions.append(contentsOf: " \u{26}& (" + current + ")")
                     }
                 }
                 for element in child.api() {
@@ -262,7 +275,7 @@ extension Syntax {
                         existing.removeFirst(4)
                         existing.prepend("(")
                         existing.append(")")
-                        existing.append(contentsOf: " && (" + composedConditions + ")")
+                        existing.append(contentsOf: " \u{26}& (" + composedConditions + ")")
                         existing.prepend(contentsOf: "#if ")
                         element.compilationConditions = existing
                     } else {
