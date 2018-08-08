@@ -118,6 +118,18 @@ public class APIScope : APIElement {
         }
     }
 
+    // MARK: - Merging
+
+    internal func merge(extension: ExtensionAPI) {
+        subtypes.append(contentsOf: `extension`.subtypes)
+        typeProperties.append(contentsOf: `extension`.typeProperties)
+        initializers.append(contentsOf: `extension`.initializers)
+        properties.append(contentsOf: `extension`.properties)
+        subscripts.append(contentsOf: `extension`.subscripts)
+        methods.append(contentsOf: `extension`.methods)
+        conformances.append(contentsOf: `extension`.conformances)
+    }
+
     // MARK: - APIElement
 
     internal var scopeSummary: [String] {

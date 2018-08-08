@@ -1,5 +1,3 @@
-(PossiblyConforming) • #if os(macOS)
- ConditionallyAvailableProtocol
 Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
 NestingStructure • struct NestingStructure
  Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
@@ -7,6 +5,7 @@ NestingStructure • struct NestingStructure
  WithAppKit • typealias WithAppKit • #if canImport(AppKit)
  WithUIKit • typealias WithUIKit • #if !(canImport(AppKit)) && (canImport(UIKit))
 PossiblyConforming • struct PossiblyConforming
+ ConditionallyAvailableProtocol • #if os(macOS)
 Universal • typealias Universal
 WithAppKit • typealias WithAppKit • #if canImport(AppKit)
 WithUIKit • typealias WithUIKit • #if !(canImport(AppKit)) && (canImport(UIKit))

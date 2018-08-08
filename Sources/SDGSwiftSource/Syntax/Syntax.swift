@@ -69,7 +69,34 @@ extension Syntax {
     // MARK: - API
 
     internal func apiChildren() -> [APIElement] {
-        return Array(children.map({ $0.api() }).joined())
+        let elements = Array(children.map({ $0.api() }).joined())
+
+        var extensions: [ExtensionAPI] = []
+        var types: [TypeAPI] = []
+        var other: [APIElement] = []
+        for element in elements {
+            switch element {
+            case let `extension` as ExtensionAPI :
+                extensions.append(`extension`)
+            case let type as TypeAPI :
+                types.append(type)
+            default:
+                other.append(element)
+            }
+        }
+
+        extensionIteration: for `extension` in extensions {
+            let extensionType = `extension`.type
+            for type in types {
+                if extensionType == type.typeName {
+                    type.merge(extension: `extension`)
+                    continue extensionIteration
+                }
+            }
+            other.append(`extension`)
+        }
+
+        return types as [APIElement] + other
     }
 
     internal func isPublic() -> Bool {

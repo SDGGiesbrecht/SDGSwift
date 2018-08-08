@@ -25,7 +25,7 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Properties
 
-    private let type: TypeReferenceAPI
+    internal let type: TypeReferenceAPI
 
     // MARK: - APIElement
 

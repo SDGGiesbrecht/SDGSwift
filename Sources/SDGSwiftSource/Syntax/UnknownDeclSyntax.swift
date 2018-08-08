@@ -34,13 +34,6 @@ extension UnknownDeclSyntax {
     }
 
     private var conformances: [ConformanceAPI] {
-        if source().contains("ConditionallyAvailable") {
-            print(#function)
-            for child in children {
-                print(type(of: child))
-                print(child.source())
-            }
-        }
         var result: [ConformanceAPI] = []
         var foundConformancesSection = false
         search: for child in children.reversed() {
@@ -365,10 +358,6 @@ extension UnknownDeclSyntax {
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
             let conformances = self.conformances
-            if source().contains("Conditionally") {
-                print(#function)
-                print(conformances)
-            }
             if ¬children.isEmpty ∨ ¬conformances.isEmpty {
                 return ExtensionAPI(type: type.reference, conformances: conformances, children: children)
             }
