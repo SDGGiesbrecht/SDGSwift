@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-public class APIElement : Comparable {
+public class APIElement : Comparable, Hashable {
 
     public var name: String {
         primitiveMethod()
@@ -45,5 +45,11 @@ public class APIElement : Comparable {
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) Apparently not actually used by the sorting algorithm.
         return (precedingValue.name, precedingValue.declaration) == (followingValue.name, followingValue.declaration)
+    }
+
+    // MARK: - Hashable
+
+    public var hashValue: Int {
+        return declaration?.hashValue ?? name.hashValue
     }
 }

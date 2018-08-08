@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 extension UnknownStmtSyntax {
 
@@ -35,16 +36,30 @@ extension UnknownStmtSyntax {
     internal var conditionallyCompiledChildren: [APIElement] {
         var previousConditions: [String] = []
         var currentCondition: String? = nil
+        var universalSet: Set<APIElement> = []
+        var filledUniversalSet: Bool = false
+        var elseOccurred: Bool = false
+        var currentSet: Set<APIElement> = []
         var api: [APIElement] = []
         for child in children {
             switch child {
             case let token as TokenSyntax : // “#if”, “#elseif” or “#else”
                 switch token.tokenKind {
-                case .poundElseifKeyword, .poundElseKeyword:
+                case .poundElseKeyword:
+                    elseOccurred = true
+                    fallthrough
+                case .poundElseifKeyword:
+                    defer { filledUniversalSet = true }
                     if let current = currentCondition {
                         previousConditions.append(current)
                         currentCondition = nil
                     }
+                    if ¬filledUniversalSet {
+                        universalSet = currentSet
+                    } else {
+                        universalSet ∩= currentSet
+                    }
+                    currentSet = []
                 default:
                     break
                 }
@@ -62,6 +77,7 @@ extension UnknownStmtSyntax {
                     }
                 }
                 for element in contents.api() {
+                    currentSet.insert(element)
                     if var existing = element.compilationConditions {
                         existing.removeFirst(4)
                         existing.prepend("(")
@@ -76,6 +92,13 @@ extension UnknownStmtSyntax {
                 }
             default:
                 break
+            }
+        }
+        if elseOccurred {
+            for element in universalSet {
+                element.compilationConditions = nil
+                api = api.filter({ $0 ≠ element })
+                api.append(element)
             }
         }
         return api
