@@ -36,7 +36,7 @@ public class TypeAPI : APIScope {
             return _constraints
         }
         set {
-            _constraints = newValue.map({ $0.normalized() })
+            _constraints = newValue.map({ $0.normalized() }).sorted()
         }
     }
 

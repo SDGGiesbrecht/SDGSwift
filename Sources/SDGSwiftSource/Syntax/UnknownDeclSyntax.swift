@@ -74,7 +74,7 @@ extension UnknownDeclSyntax {
                             let following = child(at: next.indexInParent + 1),
                             let conformance = following as? SimpleTypeIdentifierSyntax {
                             next = following
-                            constraints.append(.conformance(last, conformance.conformance))
+                            constraints.append(.conformance(last, conformance.reference))
                         }
                     default:
                         break
@@ -82,6 +82,15 @@ extension UnknownDeclSyntax {
                 }
         }
         return (arguments, constraints)
+    }
+
+    private var constraints: [ConstraintAPI] {
+        for child in children {
+            if let whereClause = child as? GenericWhereClauseSyntax {
+                return whereClause.constraints
+            }
+        }
+        return []
     }
 
     internal var typeAPI: TypeAPI? {
@@ -92,7 +101,7 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints, children: apiChildren())
+            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
