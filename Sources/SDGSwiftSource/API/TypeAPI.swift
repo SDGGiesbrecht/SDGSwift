@@ -55,6 +55,10 @@ public class TypeAPI : APIScope {
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration] + scopeSummary
+        var result = name + " • " + declaration
+        if let conditions = compilationConditions {
+            result += " • " + conditions
+        }
+        return [result] + scopeSummary
     }
 }

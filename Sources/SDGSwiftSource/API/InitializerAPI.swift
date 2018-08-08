@@ -44,6 +44,10 @@ public class InitializerAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        var result = name + " • " + declaration
+        if let conditions = compilationConditions {
+            result += " • " + conditions
+        }
+        return [result]
     }
 }

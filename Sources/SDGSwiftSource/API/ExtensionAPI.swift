@@ -38,6 +38,10 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        return [name] + scopeSummary
+        var result = name
+        if let conditions = compilationConditions {
+            result += " • " + conditions
+        }
+        return [result] + scopeSummary
     }
 }

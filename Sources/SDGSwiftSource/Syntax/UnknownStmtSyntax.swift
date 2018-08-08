@@ -33,6 +33,51 @@ extension UnknownStmtSyntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
-        return []
+        var previousConditions: [String] = []
+        var currentCondition: String? = nil
+        var api: [APIElement] = []
+        for child in children {
+            switch child {
+            case let token as TokenSyntax : // “#if”, “#elseif” or “#else”
+                switch token.tokenKind {
+                case .poundElseifKeyword, .poundElseKeyword:
+                    if let current = currentCondition {
+                        previousConditions.append(current)
+                        currentCondition = nil
+                    }
+                default:
+                    break
+                }
+                break
+            case let condition as UnknownExprSyntax :
+                currentCondition = condition.source() // #warning(Needs to filter trivia.)
+            case let contents as SyntaxCollection<StmtSyntax> :
+                var composedConditions = "#if "
+                composedConditions.append(contentsOf: previousConditions.map({ "!(" + $0 + ")" }).joined(separator: " && "))
+                if previousConditions.isEmpty {
+                    composedConditions.append(contentsOf: (currentCondition ?? ""))
+                } else {
+                    if let current = currentCondition {
+                        composedConditions.append(contentsOf: " && (" + current + ")")
+                    }
+                }
+                for element in contents.api() {
+                    if var existing = element.compilationConditions {
+                        existing.removeFirst(4)
+                        existing.prepend("(")
+                        existing.append(")")
+                        existing.append(contentsOf: " && (" + composedConditions + ")")
+                        existing.prepend(contentsOf: "#if ")
+                        element.compilationConditions = existing
+                    } else {
+                        element.compilationConditions = composedConditions
+                    }
+                    api.append(element)
+                }
+            default:
+                break
+            }
+        }
+        return api
     }
 }

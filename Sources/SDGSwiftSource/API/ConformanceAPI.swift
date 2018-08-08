@@ -35,6 +35,10 @@ public class ConformanceAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name]
+        var result = name
+        if let conditions = compilationConditions {
+            result += " • " + conditions
+        }
+        return [result]
     }
 }

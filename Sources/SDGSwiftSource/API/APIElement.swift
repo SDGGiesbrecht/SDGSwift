@@ -24,6 +24,8 @@ public class APIElement : Comparable {
         primitiveMethod()
     }
 
+    public internal(set) var compilationConditions: String?
+
     public var summary: [String] {
         primitiveMethod()
     }
