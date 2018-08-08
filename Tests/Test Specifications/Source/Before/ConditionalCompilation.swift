@@ -19,3 +19,14 @@ func fallOnNewton() {}
 /// Waddles.
 func waddle() {}
 #endif
+
+#if canImport(AppKit)
+public typealias WithAppKit = Bool
+public typealias Universal = Bool
+#elseif canImport(UIKit)
+public typealias WithUIKit = Bool
+public typealias Universal = Bool
+#else
+public typealias Fallback = Bool
+public typealias Universal = Bool
+#endif

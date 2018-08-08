@@ -19,3 +19,14 @@ func ̲f̲a̲l̲l̲O̲n̲N̲e̲w̲t̲o̲n̲() ̲{}
 /// ̲W̲a̲d̲d̲l̲e̲s̲.̲
 func ̲w̲a̲d̲d̲l̲e̲() ̲{}
 #endif
+
+#if ̲canImport(AppKit)
+public ̲typealias ̲W̲i̲t̲h̲A̲p̲p̲K̲i̲t̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#elseif ̲canImport(UIKit)
+public ̲typealias ̲W̲i̲t̲h̲U̲I̲K̲i̲t̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#else
+public ̲typealias ̲F̲a̲l̲l̲b̲a̲c̲k̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#endif

@@ -103,6 +103,12 @@ extension Syntax {
             } else {
                 return apiChildren()
             }
+        case let unknown as UnknownStmtSyntax :
+            if unknown.isConditionalCompilation {
+                return unknown.conditionallyCompiledChildren
+            } else {
+                return apiChildren()
+            }
         default:
             return apiChildren()
         }

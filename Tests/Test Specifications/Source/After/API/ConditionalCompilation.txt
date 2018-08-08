@@ -1,0 +1,4 @@
+Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
+Universal • typealias Universal
+WithAppKit • typealias WithAppKit • #if canImport(AppKit)
+WithUIKit • typealias WithUIKit • #if !(canImport(AppKit) && (canImport(UIKit))
