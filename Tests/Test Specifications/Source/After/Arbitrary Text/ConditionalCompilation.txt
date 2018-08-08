@@ -30,3 +30,17 @@ public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
 public ̲typealias ̲F̲a̲l̲l̲b̲a̲c̲k̲ ̲= ̲Bool
 public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
 #endif
+
+public ̲struct ̲N̲e̲s̲t̲i̲n̲g̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
+
+ ̲ ̲ ̲ ̲#if ̲canImport(AppKit)
+ ̲ ̲ ̲ ̲public ̲typealias ̲W̲i̲t̲h̲A̲p̲p̲K̲i̲t̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#elseif ̲canImport(UIKit)
+ ̲ ̲ ̲ ̲public ̲typealias ̲W̲i̲t̲h̲U̲I̲K̲i̲t̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#else
+ ̲ ̲ ̲ ̲public ̲typealias ̲F̲a̲l̲l̲b̲a̲c̲k̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#endif
+}
