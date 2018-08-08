@@ -187,11 +187,6 @@ extension Syntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
-        for child in children {
-            print(type(of: child))
-            print(child.source())
-        }
-
         var previousConditions: [String] = []
         var currentCondition: String? = nil
         var universalSet: Set<APIElement> = []
