@@ -46,6 +46,12 @@ extension UnknownDeclSyntax {
                 if foundConformancesSection {
                     result.append(type.conformance)
                 }
+            case let token as TokenSyntax:
+                if token.tokenKind == .comma {
+                    break `switch`
+                } else {
+                    fallthrough
+                }
             default:
                 if foundConformancesSection {
                     break search
