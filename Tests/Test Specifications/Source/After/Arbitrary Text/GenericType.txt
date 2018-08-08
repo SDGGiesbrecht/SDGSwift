@@ -1,0 +1,3 @@
+public ̲struct ̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲ ̲: ̲RequiredConformance> ̲: ̲DeclaredConformanceOne, ̲DeclaredConformanceTwo ̲where ̲Thing ̲: ̲ConformanceRequiredByWhere ̲{
+
+}

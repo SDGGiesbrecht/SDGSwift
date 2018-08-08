@@ -19,8 +19,8 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(keyword: String, name: String, conformances: [ConformanceAPI], children: [APIElement]) {
-        _name = name.decomposedStringWithCanonicalMapping
+    internal init(keyword: String, name: TypeReference, conformances: [ConformanceAPI], children: [APIElement]) {
+        _name = name
         self.keyword = keyword
         super.init(conformances: conformances, children: children)
     }
@@ -28,12 +28,12 @@ public class TypeAPI : APIScope {
     // MARK: - Properties
 
     private let keyword: String
-    private let _name: String
+    private let _name: TypeReference
 
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return _name.description
     }
 
     public override var declaration: String {

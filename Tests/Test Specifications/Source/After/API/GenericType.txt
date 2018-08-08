@@ -1,0 +1,3 @@
+Generic<Thing> • struct Generic<Thing> where Thing : ConformanceRequiredByWhere, Thing : RequiredConformance
+ DeclaredConformanceOne
+ DeclaredConformanceTwo

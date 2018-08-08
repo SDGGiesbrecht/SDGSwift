@@ -52,6 +52,25 @@ extension UnknownDeclSyntax {
         return result
     }
 
+    private func genericArguments(of typeName: TokenSyntax) -> [TypeReference] {
+        guard let next = child(at: typeName.indexInParent + 1),
+            (next as? TokenSyntax)?.tokenKind == .leftAngle else {
+                return []
+        }
+        var arguments: [TypeReference] = []
+        var token = next
+        while let next = child(at: token.indexInParent + 1),
+            (next as? TokenSyntax)?.tokenKind ≠ .rightAngle {
+            defer { token = next }
+
+            if let generic = next as? TokenSyntax,
+                case .identifier = generic.tokenKind {
+                arguments.append(TypeReference(name: generic.text, genericArguments: []))
+            }
+        }
+        return arguments
+    }
+
     internal var typeAPI: TypeAPI? {
         if ¬isPublic() {
             return nil
@@ -59,7 +78,7 @@ extension UnknownDeclSyntax {
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: name, conformances: conformances, children: apiChildren())
+            return TypeAPI(keyword: keyword.text, name: TypeReference(name: name, genericArguments: genericArguments(of: nameToken)), conformances: conformances, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
