@@ -144,6 +144,16 @@ extension UnknownDeclSyntax {
 
     // MARK: - Variable Syntax
 
+    private var typePropertyKeyword: String? {
+        for child in children {
+            if let modifier = child as? DeclModifierSyntax,
+                modifier.name.tokenKind == .staticKeyword ∨ modifier.name.tokenKind == .classKeyword {
+                return modifier.name.text
+            }
+        }
+        return nil
+    }
+
     private var variableKeyword: TokenSyntax? {
         for child in children {
             if let token = child as? TokenSyntax,
@@ -209,7 +219,7 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
             let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
-            return VariableAPI(name: name, type: type, isSettable: isSettable)
+            return VariableAPI(typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

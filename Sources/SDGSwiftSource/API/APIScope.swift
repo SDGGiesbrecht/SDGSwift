@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 public class APIScope : APIElement {
 
@@ -28,7 +29,11 @@ public class APIScope : APIElement {
             case let initializer as InitializerAPI :
                 initializers.append(initializer)
             case let property as VariableAPI :
-                properties.append(property)
+                if property.typePropertyKeyword ≠ nil {
+                    typeProperties.append(property)
+                } else {
+                    properties.append(property)
+                }
             case let `subscript` as SubscriptAPI :
                 subscripts.append(`subscript`)
             case let method as FunctionAPI :
@@ -50,6 +55,16 @@ public class APIScope : APIElement {
         }
         set {
             _subtypes = newValue.sorted()
+        }
+    }
+
+    private var _typeProperties: [VariableAPI] = []
+    private var typeProperties: [VariableAPI] {
+        get {
+            return _typeProperties
+        }
+        set {
+            _typeProperties = newValue.sorted()
         }
     }
 
@@ -108,6 +123,7 @@ public class APIScope : APIElement {
     internal var scopeSummary: [String] {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()

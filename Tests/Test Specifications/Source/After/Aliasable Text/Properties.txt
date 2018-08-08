@@ -4,4 +4,6 @@ extension I̲n̲t̲ {
 
     // Escaped
     public let `var`: I̲n̲t̲ = 0
+
+    public static let staticProperty: I̲n̲t̲ = 0
 }

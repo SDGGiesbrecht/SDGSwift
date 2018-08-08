@@ -16,7 +16,8 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+    internal init(typePropertyKeyword: String?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+        self.typePropertyKeyword = typePropertyKeyword
         _name = name.decomposedStringWithCanonicalMapping
         self.type = type
         self.isSettable = isSettable
@@ -24,6 +25,7 @@ public class VariableAPI : APIElement {
 
     // MARK: - Properties
 
+    internal var typePropertyKeyword: String?
     private var _name: String
     private var type: TypeReferenceAPI?
     private var isSettable: Bool
@@ -35,7 +37,11 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "var " + _name
+        var result = ""
+        if let typePropertyKeyword = self.typePropertyKeyword {
+            result += typePropertyKeyword + " "
+        }
+        result += "var " + _name
         if let type = self.type {
             result += ": " + type.description
         }

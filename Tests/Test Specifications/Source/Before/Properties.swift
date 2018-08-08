@@ -4,4 +4,6 @@ extension Int {
 
     // Escaped
     public let `var`: Int = 0
+
+    public static let staticProperty: Int = 0
 }
