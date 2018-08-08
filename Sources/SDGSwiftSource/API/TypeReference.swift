@@ -12,21 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public struct TypeReference {
 
     // MARK: - Initialization
 
-    internal init(name: String) {
+    internal init(name: String, genericArguments: [TypeReference]) {
         self.name = name.decomposedStringWithCanonicalMapping
+        self.genericArguments = genericArguments
     }
 
     // MARK: - Properties
 
     private var name: String
+    private var genericArguments: [TypeReference]
 
     // MARK: - Output
 
     internal var description: String {
-        return name
+        var result = name
+        if ¬genericArguments.isEmpty {
+            result += "<" + genericArguments.map({ $0.description }).joined(separator: ", ") + ">"
+        }
+        return result
     }
 }
