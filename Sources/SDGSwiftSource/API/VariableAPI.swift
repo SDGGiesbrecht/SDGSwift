@@ -45,6 +45,7 @@ public class VariableAPI : APIElement {
         if let type = self.type {
             result += ": " + type.description
         }
+        appendConstraintDescriptions(to: &result)
         result += " { get "
         if isSettable {
             result += "set "
@@ -55,9 +56,7 @@ public class VariableAPI : APIElement {
 
     public override var summary: [String] {
         var result = name + " • " + declaration
-        if let conditions = compilationConditions {
-            result += " • " + conditions
-        }
+        appendCompilationConditions(to: &result)
         return [result]
     }
 }

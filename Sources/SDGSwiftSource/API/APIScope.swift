@@ -120,29 +120,37 @@ public class APIScope : APIElement {
 
     // MARK: - Merging
 
-    private func moveCompilationConditionsToChildren() {
+    private func moveConditionsToChildren() {
         for subtype in subtypes {
             prependCompilationCondition(compilationConditions, to: subtype)
+            subtype.constraints.append(contentsOf: constraints)
         }
         for property in typeProperties {
             prependCompilationCondition(compilationConditions, to: property)
+            property.constraints.append(contentsOf: constraints)
         }
         for initializer in initializers {
             prependCompilationCondition(compilationConditions, to: initializer)
+            initializer.constraints.append(contentsOf: constraints)
         }
         for property in properties {
             prependCompilationCondition(compilationConditions, to: property)
+            property.constraints.append(contentsOf: constraints)
         }
         for `subscript` in subscripts {
             prependCompilationCondition(compilationConditions, to: `subscript`)
+            `subscript`.constraints.append(contentsOf: constraints)
         }
         for method in methods {
             prependCompilationCondition(compilationConditions, to: method)
+            method.constraints.append(contentsOf: constraints)
         }
         for conformance in conformances {
             prependCompilationCondition(compilationConditions, to: conformance)
+            conformance.constraints.append(contentsOf: constraints)
         }
         compilationConditions = nil
+        constraints = []
     }
 
     private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
@@ -159,7 +167,7 @@ public class APIScope : APIElement {
     }
 
     internal func merge(extension: ExtensionAPI) {
-        `extension`.moveCompilationConditionsToChildren()
+        `extension`.moveConditionsToChildren()
         subtypes.append(contentsOf: `extension`.subtypes)
         typeProperties.append(contentsOf: `extension`.typeProperties)
         initializers.append(contentsOf: `extension`.initializers)

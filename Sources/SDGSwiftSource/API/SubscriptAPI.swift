@@ -37,15 +37,14 @@ public class SubscriptAPI : APIElement {
     public override var declaration: String {
         var result = "subscript(" + arguments.map({ $0.subscriptDeclarationForm }).joined(separator: ", ") + ")"
         result += " \u{2D}> " + returnType.description
+        appendConstraintDescriptions(to: &result)
         result += " { get " + (isSettable ? "set " : "") + "}"
         return result
     }
 
     public override var summary: [String] {
         var result = name + " • " + declaration
-        if let conditions = compilationConditions {
-            result += " • " + conditions
-        }
+        appendCompilationConditions(to: &result)
         return [result]
     }
 }

@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGLocalization
 
 public class APIElement : Comparable, Hashable {
@@ -24,10 +25,33 @@ public class APIElement : Comparable, Hashable {
         primitiveMethod()
     }
 
+    private var _constraints: [ConstraintAPI] = []
+    public internal(set) var constraints: [ConstraintAPI] {
+        get {
+            return _constraints
+        }
+        set {
+            _constraints = newValue.map({ $0.normalized() }).sorted()
+        }
+    }
     public internal(set) var compilationConditions: String?
 
     public var summary: [String] {
         primitiveMethod()
+    }
+
+    // MARK: - Description
+
+    internal func appendConstraintDescriptions(to description: inout String) {
+        if ¬constraints.isEmpty {
+            description += " where " + constraints.map({ $0.description }).joined(separator: ", ")
+        }
+    }
+
+    internal func appendCompilationConditions(to description: inout String) {
+        if let conditions = compilationConditions {
+            description += " • " + conditions
+        }
     }
 
     // MARK: - Comparable

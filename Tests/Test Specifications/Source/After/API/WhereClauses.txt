@@ -1,0 +1,2 @@
+(Collection)
+ requiresReorderedConstraints() • func requiresReorderedConstraints() where Index : CustomStringConvertible, Index : SignedNumeric, Element == Index

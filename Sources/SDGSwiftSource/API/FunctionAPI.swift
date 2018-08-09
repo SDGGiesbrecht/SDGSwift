@@ -52,14 +52,13 @@ public class FunctionAPI : APIElement {
         if let returnType = self.returnType?.description, returnType ≠ "Void", returnType ≠ "()" {
             result += " \u{2D}> " + returnType
         }
+        appendConstraintDescriptions(to: &result)
         return result
     }
 
     public override var summary: [String] {
         var result = name + " • " + declaration
-        if let conditions = compilationConditions {
-            result += " • " + conditions
-        }
+        appendCompilationConditions(to: &result)
         return [result]
     }
 }
