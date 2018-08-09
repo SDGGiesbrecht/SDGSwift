@@ -277,7 +277,7 @@ extension Syntax {
                         existing.removeFirst(4)
                         existing.prepend("(")
                         existing.append(")")
-                        existing.append(contentsOf: " \u{26}& (" + composedConditions + ")")
+                        existing.prepend(contentsOf: "(" + composedConditions + ") \u{26}& ")
                         existing.prepend(contentsOf: "#if ")
                         element.compilationConditions = existing
                     } else {
