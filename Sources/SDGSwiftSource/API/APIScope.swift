@@ -120,17 +120,30 @@ public class APIScope : APIElement {
 
     // MARK: - Merging
 
-    internal func merge(extension: ExtensionAPI) {
-        subtypes.append(contentsOf: `extension`.subtypes)
-        typeProperties.append(contentsOf: `extension`.typeProperties)
-        initializers.append(contentsOf: `extension`.initializers)
-        properties.append(contentsOf: `extension`.properties)
-        subscripts.append(contentsOf: `extension`.subscripts)
-        methods.append(contentsOf: `extension`.methods)
-        conformances.append(contentsOf: `extension`.conformances)
+    private func moveCompilationConditionsToChildren() {
+        for subtype in subtypes {
+            prependCompilationCondition(compilationConditions, to: subtype)
+        }
+        for property in typeProperties {
+            prependCompilationCondition(compilationConditions, to: property)
+        }
+        for initializer in initializers {
+            prependCompilationCondition(compilationConditions, to: initializer)
+        }
+        for property in properties {
+            prependCompilationCondition(compilationConditions, to: property)
+        }
+        for `subscript` in subscripts {
+            prependCompilationCondition(compilationConditions, to: `subscript`)
+        }
+        for method in methods {
+            prependCompilationCondition(compilationConditions, to: method)
+        }
+        for conformance in conformances {
+            prependCompilationCondition(compilationConditions, to: conformance)
+        }
+        compilationConditions = nil
     }
-
-    // MARK: - APIElement
 
     private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
         if var newCondition = addition {
@@ -145,35 +158,18 @@ public class APIScope : APIElement {
         }
     }
 
-    public override var compilationConditions: String? {
-        get {
-            return super.compilationConditions
-        }
-        set {
-            super.compilationConditions = newValue
-            for subtype in subtypes {
-                prependCompilationCondition(newValue, to: subtype)
-            }
-            for property in typeProperties {
-                prependCompilationCondition(newValue, to: property)
-            }
-            for initializer in initializers {
-                prependCompilationCondition(newValue, to: initializer)
-            }
-            for property in properties {
-                prependCompilationCondition(newValue, to: property)
-            }
-            for `subscript` in subscripts {
-                prependCompilationCondition(newValue, to: `subscript`)
-            }
-            for method in methods {
-                prependCompilationCondition(newValue, to: method)
-            }
-            for conformance in conformances {
-                prependCompilationCondition(newValue, to: conformance)
-            }
-        }
+    internal func merge(extension: ExtensionAPI) {
+        `extension`.moveCompilationConditionsToChildren()
+        subtypes.append(contentsOf: `extension`.subtypes)
+        typeProperties.append(contentsOf: `extension`.typeProperties)
+        initializers.append(contentsOf: `extension`.initializers)
+        properties.append(contentsOf: `extension`.properties)
+        subscripts.append(contentsOf: `extension`.subscripts)
+        methods.append(contentsOf: `extension`.methods)
+        conformances.append(contentsOf: `extension`.conformances)
     }
+
+    // MARK: - APIElement
 
     internal var scopeSummary: [String] {
         var result: [String] = []

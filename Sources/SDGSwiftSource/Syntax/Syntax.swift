@@ -275,9 +275,11 @@ extension Syntax {
                     currentSet.insert(element)
                     if var existing = element.compilationConditions {
                         existing.removeFirst(4)
+                        var new = composedConditions
+                        new.removeFirst(4)
                         existing.prepend("(")
                         existing.append(")")
-                        existing.prepend(contentsOf: "(" + composedConditions + ") \u{26}& ")
+                        existing.prepend(contentsOf: "(" + new + ") \u{26}& ")
                         existing.prepend(contentsOf: "#if ")
                         element.compilationConditions = existing
                     } else {
