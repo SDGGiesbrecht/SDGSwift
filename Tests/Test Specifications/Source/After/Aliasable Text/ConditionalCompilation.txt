@@ -47,8 +47,27 @@ public struct NestingStructure {
 
 public struct PossiblyConforming {}
 #if os(macOS)
-extension PossiblyConforming : ConditionallyAvailableProtocol {}
-    #if CUSTOM
-    extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
+extension PossiblyConforming : ConditionallyAvailableProtocol {
+    public struct ConditionalSubType {}
+    public static var conditionalStaticProperty: Bool {
+        return true
+    }
+    public init(conditionalInitializer: Bool) {
+        self.init()
+    }
+    public var conditionalProperty: Bool {
+        return true
+    }
+    public subscript(conditionalSubscript: Bool) -> Bool {
+        return conditionalSubscript
+    }
+    #if ADDITIONAL_CONDITION
+    public func conditionalMethod() {}
     #endif
+}
+
+#if CUSTOM
+extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
+#endif
+
 #endif

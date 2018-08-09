@@ -47,8 +47,27 @@ public ̲struct ̲N̲e̲s̲t̲i̲n̲g̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 
 public ̲struct ̲P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲{}
 #if ̲os(macOS)
-extension ̲PossiblyConforming ̲: ̲ConditionallyAvailableProtocol ̲{}
- ̲ ̲ ̲ ̲#if ̲CUSTOM
- ̲ ̲ ̲ ̲extension ̲PossiblyConforming ̲: ̲AnotherConditionallyAvailableProtocol ̲{}
+extension ̲PossiblyConforming ̲: ̲ConditionallyAvailableProtocol ̲{
+ ̲ ̲ ̲ ̲public ̲struct ̲C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲T̲y̲p̲e̲ ̲{}
+ ̲ ̲ ̲ ̲public ̲static ̲var ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲init(c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲I̲n̲i̲t̲i̲a̲l̲i̲z̲e̲r̲: ̲Bool) ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.init()
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲var ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲subscript(c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲: ̲Bool) ̲-> ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲conditionalSubscript
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲#if ̲ADDITIONAL_CONDITION
+ ̲ ̲ ̲ ̲public ̲func ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲M̲e̲t̲h̲o̲d̲() ̲{}
  ̲ ̲ ̲ ̲#endif
+}
+
+#if ̲CUSTOM
+extension ̲PossiblyConforming ̲: ̲AnotherConditionallyAvailableProtocol ̲{}
+#endif
+
 #endif

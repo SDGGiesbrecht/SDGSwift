@@ -5,6 +5,12 @@ NestingStructure • struct NestingStructure
  WithAppKit • typealias WithAppKit • #if canImport(AppKit)
  WithUIKit • typealias WithUIKit • #if !(canImport(AppKit)) && (canImport(UIKit))
 PossiblyConforming • struct PossiblyConforming
+ ConditionalSubType • struct ConditionalSubType • #if os(macOS)
+ conditionalStaticProperty • static var conditionalStaticProperty: Bool { get } • #if os(macOS)
+ init(conditionalInitializer:) • init(conditionalInitializer: Bool) • #if os(macOS)
+ conditionalProperty • var conditionalProperty: Bool { get } • #if os(macOS)
+ [_:] • subscript(conditionalSubscript: Bool) -> Bool { get } • #if os(macOS)
+ conditionalMethod() • func conditionalMethod() • #if (os(macOS)) && (ADDITIONAL_CONDITION)
  AnotherConditionallyAvailableProtocol • #if (os(macOS)) && (CUSTOM)
  ConditionallyAvailableProtocol • #if os(macOS)
 Universal • typealias Universal
