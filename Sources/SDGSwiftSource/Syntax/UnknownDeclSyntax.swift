@@ -359,7 +359,7 @@ extension UnknownDeclSyntax {
             let children = apiChildren()
             let conformances = self.conformances
             if ¬children.isEmpty ∨ ¬conformances.isEmpty {
-                return ExtensionAPI(type: type.reference, conformances: conformances, children: children)
+                return ExtensionAPI(type: type.reference, conformances: conformances, constraints: constraints, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil

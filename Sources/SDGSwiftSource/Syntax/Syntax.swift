@@ -107,6 +107,7 @@ extension Syntax {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
+            `extension`.moveConditionsToChildren()
             other.append(`extension`)
         }
 

@@ -120,7 +120,7 @@ public class APIScope : APIElement {
 
     // MARK: - Merging
 
-    private func moveConditionsToChildren() {
+    internal func moveConditionsToChildren() {
         for subtype in subtypes {
             prependCompilationCondition(compilationConditions, to: subtype)
             subtype.constraints.append(contentsOf: constraints)
