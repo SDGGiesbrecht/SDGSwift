@@ -69,33 +69,29 @@ class SDGSwiftSourceAPITests : TestCase {
         */
     }
 
-    func testParsing() {
-        do {
-            for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
-                let sourceFile = try SourceFileSyntax.parse(url)
+    func testParsing() throws {
+        for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
+            let sourceFile = try SourceFileSyntax.parse(url)
 
-                let originalSource = try String(from: url)
-                var roundTripSource = ""
-                sourceFile.write(to: &roundTripSource)
-                if ¬roundTripSource.contains("unknown {") ∧ ¬roundTripSource.contains("interpolated") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
-                    XCTAssertEqual(roundTripSource, originalSource)
-                }
-
-                TextFreedomHighlighter.targetTestFreedom = .arbitrary
-                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
-
-                TextFreedomHighlighter.targetTestFreedom = .aliasable
-                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
-
-                TextFreedomHighlighter.targetTestFreedom = .invariable
-                try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
-
-                // API
-                let api = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
-                SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
+            let originalSource = try String(from: url)
+            var roundTripSource = ""
+            sourceFile.write(to: &roundTripSource)
+            if ¬roundTripSource.contains("unknown {") ∧ ¬roundTripSource.contains("interpolated") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
+                XCTAssertEqual(roundTripSource, originalSource)
             }
-        } catch {
-            XCTFail("\(error)")
+
+            TextFreedomHighlighter.targetTestFreedom = .arbitrary
+            try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
+
+            TextFreedomHighlighter.targetTestFreedom = .aliasable
+            try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Aliasable Text", overwriteSpecificationInsteadOfFailing: false)
+
+            TextFreedomHighlighter.targetTestFreedom = .invariable
+            try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
+
+            // API
+            let api = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+            SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
         }
     }
 }
