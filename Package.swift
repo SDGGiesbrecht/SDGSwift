@@ -66,6 +66,7 @@ let package = Package(
             ]),
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
+            "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             "SDGSwiftSyntaxShims",
             "SDGCMarkShims",
