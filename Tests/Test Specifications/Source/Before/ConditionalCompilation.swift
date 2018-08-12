@@ -75,3 +75,9 @@ extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
 #if    /* This condition needs clean‐up.*/      NEEDING_CLEANUP // ...
 public struct CleanedUpCompilationCondition {}
 #endif
+
+#if LEVEL_ONE
+#if LEVEL_TWO
+public struct DoublyNested {}
+#endif
+#endif

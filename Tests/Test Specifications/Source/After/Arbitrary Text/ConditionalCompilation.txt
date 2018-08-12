@@ -75,3 +75,9 @@ extension ̲PossiblyConforming ̲: ̲AnotherConditionallyAvailableProtocol ̲{}
 #if ̲ ̲ ̲ ̲/* ̲T̲h̲i̲s̲ ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲ ̲n̲e̲e̲d̲s̲ ̲c̲l̲e̲a̲n̲‐̲u̲p̲.̲*/ ̲ ̲ ̲ ̲ ̲ ̲NEEDING_CLEANUP ̲// ̲.̲.̲.̲
 public ̲struct ̲C̲l̲e̲a̲n̲e̲d̲U̲p̲C̲o̲m̲p̲i̲l̲a̲t̲i̲o̲n̲C̲o̲n̲d̲i̲t̲i̲o̲n̲ ̲{}
 #endif
+
+#if ̲LEVEL_ONE
+#if ̲LEVEL_TWO
+public ̲struct ̲D̲o̲u̲b̲l̲y̲N̲e̲s̲t̲e̲d̲ ̲{}
+#endif
+#endif

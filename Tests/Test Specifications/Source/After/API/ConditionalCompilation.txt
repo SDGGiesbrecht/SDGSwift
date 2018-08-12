@@ -1,4 +1,5 @@
 CleanedUpCompilationCondition • struct CleanedUpCompilationCondition • #if  NEEDING_CLEANUP 
+DoublyNested • struct DoublyNested • #if (LEVEL_ONE) && (LEVEL_TWO)
 Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
 NestingStructure • struct NestingStructure
  Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
