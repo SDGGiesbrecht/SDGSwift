@@ -1,3 +1,4 @@
+CleanedUpCompilationCondition • struct CleanedUpCompilationCondition • #if  NEEDING_CLEANUP 
 Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))
 NestingStructure • struct NestingStructure
  Fallback • typealias Fallback • #if !(canImport(AppKit)) && !(canImport(UIKit))

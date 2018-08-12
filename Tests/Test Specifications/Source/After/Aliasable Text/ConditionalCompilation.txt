@@ -71,3 +71,7 @@ extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
 #endif
 
 #endif
+
+#if    /* This condition needs clean‐up.*/      NEEDING_CLEANUP // ...
+public struct CleanedUpCompilationCondition {}
+#endif

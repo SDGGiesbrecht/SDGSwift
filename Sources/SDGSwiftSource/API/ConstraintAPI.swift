@@ -63,7 +63,7 @@ public enum ConstraintAPI : Comparable {
 
     // MARK: - Equatable
 
-    public static func == (precedingValue: ConstraintAPI, followingValue: ConstraintAPI) -> Bool {
+    public static func == (precedingValue: ConstraintAPI, followingValue: ConstraintAPI) -> Bool { // @exempt(from: tests) Unreachable with valid source.
         return precedingValue.description == followingValue.description
     }
 }

@@ -266,7 +266,7 @@ extension Syntax {
                 var composedConditions = "#if "
                 composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
                 if previousConditions.isEmpty {
-                    composedConditions.append(contentsOf: (currentCondition ?? ""))
+                    composedConditions.append(contentsOf: (currentCondition ?? "")) // @exempt(from: tests) Never nil in valid source.
                 } else {
                     if let current = currentCondition {
                         composedConditions.append(contentsOf: " \u{26}& (" + current + ")")
