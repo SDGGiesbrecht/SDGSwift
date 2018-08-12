@@ -24,8 +24,8 @@ extension TypeSyntax {
                 if let type = child as? TokenSyntax {
                     return TypeReferenceAPI(name: type.text, genericArguments: [])
                 }
-            }
-            return TypeReferenceAPI(name: "?", genericArguments: []) // @exempt(from: tests) Unreachable with valid source.
+            } // @exempt(from: tests) Unreachable with valid source.
+            return TypeReferenceAPI(name: "?", genericArguments: [])
         }
     }
 }
