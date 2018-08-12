@@ -1,6 +1,7 @@
 PrimaryModule
  (Bool)
   extensionProperty • var extensionProperty: Bool { get }
+  propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }
  Structure • struct Structure
   init() • init()
  executeFunction() • func executeFunction()

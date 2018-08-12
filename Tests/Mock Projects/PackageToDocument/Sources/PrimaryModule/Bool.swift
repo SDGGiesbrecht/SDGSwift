@@ -18,3 +18,10 @@ extension Bool {
         return false
     }
 }
+
+extension Bool { // Separated
+
+    public var propertyInASeparateExtension: Bool {
+        return false
+    }
+}
