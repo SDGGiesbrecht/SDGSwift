@@ -143,6 +143,7 @@ let package = Package(
         .testTarget(name: "SDGSwiftSourceTests", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwiftSource",
+            "SDGSwiftTestUtilities",
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),

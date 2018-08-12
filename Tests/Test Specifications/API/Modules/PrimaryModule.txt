@@ -1,0 +1,5 @@
+PrimaryModule
+ Structure • struct Structure
+  init() • init()
+ executeFunction() • func executeFunction()
+ globalVariable • var globalVariable: Bool { get set }

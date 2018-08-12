@@ -19,9 +19,21 @@ import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftLocalizations
+import SDGSwiftPackageManager
 import SDGSwiftSource
 
+import SDGSwiftTestUtilities
+
 class SDGSwiftSourceAPITests : TestCase {
+
+    func testAPIParsing() throws {
+        let package = PackageRepository(at: mocksDirectory.appendingPathComponent("PackageToDocument"))
+        for target in try package.package().targets {
+            let specification = testSpecificationDirectory().appendingPathComponent("API/Modules/\(target.name).txt")
+            let parsed = try ModuleAPI(module: target).summary
+            SDGPersistenceTestUtilities.compare(parsed, against: specification, overwriteSpecificationInsteadOfFailing: true)
+        }
+    }
 
     func testLineDeveloperCommentSyntax() throws {
         let syntax = try Syntax.parse("/\u{2F} Comment.")
@@ -50,23 +62,6 @@ class SDGSwiftSourceAPITests : TestCase {
             }
         }
         try DocumentationScanner().scan(syntax)
-    }
-
-    func testRealSource() throws {
-        // #workaround(Until API detection is complete.)
-        /*
-         let repositoryRoot = testSpecificationDirectory().deletingLastPathComponent().deletingLastPathComponent()
-         let libraries = repositoryRoot.deletingLastPathComponent()
-         let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
-         let module = library.appendingPathComponent("SDGBinaryData")
-         let file = module.appendingPathComponent("UIntBinaryView")
-         let url = file.appendingPathExtension("swift")
-
-         let sourceFile = try SourceFileSyntax.parse(url)
-         print("")
-         print(sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n"))
-         print("")
-        */
     }
 
     func testParsing() throws {

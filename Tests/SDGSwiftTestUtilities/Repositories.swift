@@ -21,6 +21,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 
 public let thisRepository = PackageRepository(at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent())
+public let mocksDirectory = thisRepository.location.appendingPathComponent("Tests/Mock Projects")
 
 private func withMock(file: StaticString = #file, line: UInt = #line, test: (URL) throws -> Void) throws {
     let mock = URL(fileURLWithPath: "/tmp/Mock") // Fixed path to prevent run‐away growth of Xcode’s derived data.
@@ -44,7 +45,6 @@ public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #
 
 public func withMockDynamicLinkedExecutable(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) {
     do {
-        let mocksDirectory = thisRepository.location.appendingPathComponent("Tests/Mock Projects")
 
         var mocks: [PackageRepository] = []
         defer {
