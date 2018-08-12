@@ -30,6 +30,8 @@ public struct ModuleAPI {
                 switch element {
                 case let type as TypeAPI :
                     types.append(type)
+                case let `extension` as ExtensionAPI :
+                    extensions.append(`extension`)
                 case let function as FunctionAPI :
                     functions.append(function)
                 case let globalVariable as VariableAPI :
@@ -58,6 +60,16 @@ public struct ModuleAPI {
         }
     }
 
+    private var _extensions: [ExtensionAPI] = []
+    private var extensions: [ExtensionAPI] {
+        get {
+            return _extensions
+        }
+        set {
+            _extensions = newValue.sorted()
+        }
+    }
+
     private var _functions: [FunctionAPI] = []
     private var functions: [FunctionAPI] {
         get {
@@ -80,7 +92,7 @@ public struct ModuleAPI {
 
     public var summary: String {
 
-        var children: [[String]] = types.map({ $0.summary })
+        var children: [[String]] = (types as [APIElement] + extensions as [APIElement]).sorted().map({ $0.summary })
         children += functions.map({ $0.summary })
         children += globalVariables.map({ $0.summary })
 

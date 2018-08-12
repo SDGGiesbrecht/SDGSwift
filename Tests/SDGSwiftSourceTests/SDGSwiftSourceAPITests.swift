@@ -26,6 +26,14 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftSourceAPITests : TestCase {
 
+    func testReadSource() throws {
+        let libraries = thisRepository.location.deletingLastPathComponent()
+        let cornerstone = PackageRepository(at: libraries.appendingPathComponent("SDGCornerstone"))
+        for target in try cornerstone.package().targets where target.name == "SDGBinaryData" {
+            print(try ModuleAPI(module: target).summary)
+        }
+    }
+
     func testAPIParsing() throws {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent("PackageToDocument"))
         for target in try package.package().targets {
