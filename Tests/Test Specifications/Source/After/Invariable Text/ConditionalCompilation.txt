@@ -20,3 +20,65 @@
 ̲f̲u̲n̲c̲ waddle(̲)̲ {̲}̲
 ̲#̲e̲n̲d̲i̲f̲
 ̲
+̲#̲i̲f̲ c̲a̲n̲I̲m̲p̲o̲r̲t̲(̲A̲p̲p̲K̲i̲t̲)̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithAppKit =̲ B̲o̲o̲l̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ B̲o̲o̲l̲
+̲#̲e̲l̲s̲e̲i̲f̲ c̲a̲n̲I̲m̲p̲o̲r̲t̲(̲U̲I̲K̲i̲t̲)̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithUIKit =̲ B̲o̲o̲l̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ B̲o̲o̲l̲
+̲#̲e̲l̲s̲e̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Fallback =̲ B̲o̲o̲l̲
+̲p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ B̲o̲o̲l̲
+̲#̲e̲n̲d̲i̲f̲
+̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ NestingStructure {̲
+̲
+̲    #̲i̲f̲ canImport(̲AppKit)̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithAppKit =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
+̲    #̲e̲l̲s̲e̲i̲f̲ canImport(̲UIKit)̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithUIKit =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
+̲    #̲e̲l̲s̲e̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Fallback =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
+̲    #̲e̲n̲d̲i̲f̲
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ PossiblyConforming {̲}̲
+̲#̲i̲f̲ o̲s̲(̲m̲a̲c̲O̲S̲)̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ :̲ C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ ConditionalSubType {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲a̲t̲i̲c̲ v̲a̲r̲ conditionalStaticProperty:̲ B̲o̲o̲l̲ {̲
+̲        r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲
+̲    }̲
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲(̲conditionalInitializer:̲ B̲o̲o̲l̲)̲ {̲
+̲        s̲e̲l̲f̲.̲i̲n̲i̲t̲(̲)̲
+̲    }̲
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ conditionalProperty:̲ B̲o̲o̲l̲ {̲
+̲        r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲
+̲    }̲
+̲    p̲u̲b̲l̲i̲c̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲conditionalSubscript:̲ B̲o̲o̲l̲)̲ -̲>̲ B̲o̲o̲l̲ {̲
+̲        r̲e̲t̲u̲r̲n̲ c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲
+̲    }̲
+̲    #̲i̲f̲ A̲D̲D̲I̲T̲I̲O̲N̲A̲L̲_̲C̲O̲N̲D̲I̲T̲I̲O̲N̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ conditionalMethod(̲)̲ {̲}̲
+̲    #̲e̲n̲d̲i̲f̲
+̲}̲
+̲
+̲#̲i̲f̲ C̲U̲S̲T̲O̲M̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ :̲ A̲n̲o̲t̲h̲e̲r̲C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {̲}̲
+̲#̲e̲n̲d̲i̲f̲
+̲
+̲#̲e̲n̲d̲i̲f̲
+̲
+̲#̲i̲f̲    /̲*̲ This condition needs clean‐up.*̲/̲      N̲E̲E̲D̲I̲N̲G̲_̲C̲L̲E̲A̲N̲U̲P̲ /̲/̲ ...
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ CleanedUpCompilationCondition {̲}̲
+̲#̲e̲n̲d̲i̲f̲
+̲
+̲#̲i̲f̲ L̲E̲V̲E̲L̲_̲O̲N̲E̲
+̲#̲i̲f̲ L̲E̲V̲E̲L̲_̲T̲W̲O̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ DoublyNested {̲}̲
+̲#̲e̲n̲d̲i̲f̲
+̲#̲e̲n̲d̲i̲f̲
+̲

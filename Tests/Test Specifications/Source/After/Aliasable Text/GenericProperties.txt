@@ -1,0 +1,6 @@
+extension I̲n̲t̲e̲g̲e̲r̲ {
+
+    public var singleDigits: R̲a̲n̲g̲e̲<Self> {
+        return 0 .̲.̲<̲ 9
+    }
+}

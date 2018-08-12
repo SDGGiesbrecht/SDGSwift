@@ -1,0 +1,3 @@
+extension ̲Collection ̲where ̲Index ̲== ̲Element, ̲Index ̲: ̲SignedNumeric, ̲Index ̲: ̲CustomStringConvertible ̲{
+ ̲ ̲ ̲ ̲public ̲func ̲r̲e̲q̲u̲i̲r̲e̲s̲R̲e̲o̲r̲d̲e̲r̲e̲d̲C̲o̲n̲s̲t̲r̲a̲i̲n̲t̲s̲()
+}

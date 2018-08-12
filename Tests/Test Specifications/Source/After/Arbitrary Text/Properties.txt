@@ -4,4 +4,6 @@ extension ̲Int ̲{
 
  ̲ ̲ ̲ ̲// ̲E̲s̲c̲a̲p̲e̲d̲
  ̲ ̲ ̲ ̲public ̲let ̲`v̲a̲r̲`: ̲Int ̲= ̲0̲
+
+ ̲ ̲ ̲ ̲public ̲static ̲let ̲s̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Int ̲= ̲0̲
 }

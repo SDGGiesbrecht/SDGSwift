@@ -12,9 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGLocalization
 
-public class APIElement : Comparable {
+public class APIElement : Comparable, Hashable {
 
     public var name: String {
         primitiveMethod()
@@ -24,8 +25,33 @@ public class APIElement : Comparable {
         primitiveMethod()
     }
 
+    private var _constraints: [ConstraintAPI] = []
+    public internal(set) var constraints: [ConstraintAPI] {
+        get {
+            return _constraints
+        }
+        set {
+            _constraints = newValue.map({ $0.normalized() }).sorted()
+        }
+    }
+    public internal(set) var compilationConditions: String?
+
     public var summary: [String] {
         primitiveMethod()
+    }
+
+    // MARK: - Description
+
+    internal func appendConstraintDescriptions(to description: inout String) {
+        if ¬constraints.isEmpty {
+            description += " where " + constraints.map({ $0.description }).joined(separator: ", ")
+        }
+    }
+
+    internal func appendCompilationConditions(to description: inout String) {
+        if let conditions = compilationConditions {
+            description += " • " + conditions
+        }
     }
 
     // MARK: - Comparable
@@ -39,7 +65,15 @@ public class APIElement : Comparable {
         }
     }
 
+    // MARK: - Equatable
+
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) Apparently not actually used by the sorting algorithm.
         return (precedingValue.name, precedingValue.declaration) == (followingValue.name, followingValue.declaration)
+    }
+
+    // MARK: - Hashable
+
+    public var hashValue: Int {
+        return declaration?.hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
     }
 }

@@ -1,0 +1,7 @@
+e̲x̲t̲e̲n̲s̲i̲o̲n̲ Integer {̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ singleDigits:̲ Range<̲S̲e̲l̲f̲>̲ {̲
+̲        r̲e̲t̲u̲r̲n̲ 0 ..< 9
+̲    }̲
+̲}̲
+̲

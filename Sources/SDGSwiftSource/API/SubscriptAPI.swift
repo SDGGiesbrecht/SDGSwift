@@ -16,16 +16,16 @@ public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(arguments: [ArgumentAPI], returnType: String, isSettable: Bool) {
+    internal init(arguments: [ArgumentAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
         self.arguments = arguments
-        self.returnType = returnType.decomposedStringWithCanonicalMapping
+        self.returnType = returnType
         self.isSettable = isSettable
     }
 
     // MARK: - Properties
 
     private let arguments: [ArgumentAPI]
-    private let returnType: String
+    private let returnType: TypeReferenceAPI
     private var isSettable: Bool
 
     // MARK: - APIElement
@@ -36,12 +36,15 @@ public class SubscriptAPI : APIElement {
 
     public override var declaration: String {
         var result = "subscript(" + arguments.map({ $0.subscriptDeclarationForm }).joined(separator: ", ") + ")"
-        result += " \u{2D}> " + returnType
+        result += " \u{2D}> " + returnType.description
+        appendConstraintDescriptions(to: &result)
         result += " { get " + (isSettable ? "set " : "") + "}"
         return result
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        var result = name + " • " + declaration
+        appendCompilationConditions(to: &result)
+        return [result]
     }
 }

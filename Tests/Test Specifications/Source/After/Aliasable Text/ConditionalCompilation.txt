@@ -19,3 +19,65 @@ func fallOnNewton() {}
 /// Waddles.
 func waddle() {}
 #endif
+
+#if canImport(AppKit)
+public typealias WithAppKit = Bool
+public typealias Universal = Bool
+#elseif canImport(UIKit)
+public typealias WithUIKit = Bool
+public typealias Universal = Bool
+#else
+public typealias Fallback = Bool
+public typealias Universal = Bool
+#endif
+
+public struct NestingStructure {
+
+    #if c̲a̲n̲I̲m̲p̲o̲r̲t̲(A̲p̲p̲K̲i̲t̲)
+    public typealias WithAppKit = B̲o̲o̲l̲
+    public typealias Universal = B̲o̲o̲l̲
+    #elseif c̲a̲n̲I̲m̲p̲o̲r̲t̲(U̲I̲K̲i̲t̲)
+    public typealias WithUIKit = B̲o̲o̲l̲
+    public typealias Universal = B̲o̲o̲l̲
+    #else
+    public typealias Fallback = B̲o̲o̲l̲
+    public typealias Universal = B̲o̲o̲l̲
+    #endif
+}
+
+public struct PossiblyConforming {}
+#if os(macOS)
+extension PossiblyConforming : ConditionallyAvailableProtocol {
+    public struct ConditionalSubType {}
+    public static var conditionalStaticProperty: Bool {
+        return true
+    }
+    public init(conditionalInitializer: Bool) {
+        self.init()
+    }
+    public var conditionalProperty: Bool {
+        return true
+    }
+    public subscript(conditionalSubscript: Bool) -> Bool {
+        return conditionalSubscript
+    }
+    #if ADDITIONAL_CONDITION
+    public func conditionalMethod() {}
+    #endif
+}
+
+#if CUSTOM
+extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
+#endif
+
+#endif
+
+#if    /* This condition needs clean‐up.*/      NEEDING_CLEANUP // ...
+public struct CleanedUpCompilationCondition {}
+#endif
+
+#if LEVEL_ONE
+#if LEVEL_TWO
+public struct DoublyNested {}
+#endif
+#endif

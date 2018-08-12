@@ -1,0 +1,6 @@
+extension ̲Integer ̲{
+
+ ̲ ̲ ̲ ̲public ̲var ̲s̲i̲n̲g̲l̲e̲D̲i̲g̲i̲t̲s̲: ̲Range<Self> ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲0̲ ̲..< ̲9̲
+ ̲ ̲ ̲ ̲}
+}

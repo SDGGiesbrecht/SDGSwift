@@ -59,14 +59,14 @@ class SDGSwiftSourceAPITests : TestCase {
          let libraries = repositoryRoot.deletingLastPathComponent()
          let library = libraries.appendingPathComponent("SDGCornerstone/Sources")
          let module = library.appendingPathComponent("SDGBinaryData")
-         let file = module.appendingPathComponent("UInt")
+         let file = module.appendingPathComponent("UIntBinaryView")
          let url = file.appendingPathExtension("swift")
 
          let sourceFile = try SourceFileSyntax.parse(url)
          print("")
          print(sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n"))
          print("")
-         */
+        */
     }
 
     func testParsing() {

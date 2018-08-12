@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 public class APIScope : APIElement {
 
@@ -28,7 +29,11 @@ public class APIScope : APIElement {
             case let initializer as InitializerAPI :
                 initializers.append(initializer)
             case let property as VariableAPI :
-                properties.append(property)
+                if property.typePropertyKeyword ≠ nil {
+                    typeProperties.append(property)
+                } else {
+                    properties.append(property)
+                }
             case let `subscript` as SubscriptAPI :
                 subscripts.append(`subscript`)
             case let method as FunctionAPI :
@@ -50,6 +55,16 @@ public class APIScope : APIElement {
         }
         set {
             _subtypes = newValue.sorted()
+        }
+    }
+
+    private var _typeProperties: [VariableAPI] = []
+    private var typeProperties: [VariableAPI] {
+        get {
+            return _typeProperties
+        }
+        set {
+            _typeProperties = newValue.sorted()
         }
     }
 
@@ -103,11 +118,71 @@ public class APIScope : APIElement {
         }
     }
 
+    // MARK: - Merging
+
+    internal func moveConditionsToChildren() {
+        for subtype in subtypes {
+            prependCompilationCondition(compilationConditions, to: subtype)
+            subtype.constraints.append(contentsOf: constraints)
+        }
+        for property in typeProperties {
+            prependCompilationCondition(compilationConditions, to: property)
+            property.constraints.append(contentsOf: constraints)
+        }
+        for initializer in initializers {
+            prependCompilationCondition(compilationConditions, to: initializer)
+            initializer.constraints.append(contentsOf: constraints)
+        }
+        for property in properties {
+            prependCompilationCondition(compilationConditions, to: property)
+            property.constraints.append(contentsOf: constraints)
+        }
+        for `subscript` in subscripts {
+            prependCompilationCondition(compilationConditions, to: `subscript`)
+            `subscript`.constraints.append(contentsOf: constraints)
+        }
+        for method in methods {
+            prependCompilationCondition(compilationConditions, to: method)
+            method.constraints.append(contentsOf: constraints)
+        }
+        for conformance in conformances {
+            prependCompilationCondition(compilationConditions, to: conformance)
+            conformance.constraints.append(contentsOf: constraints)
+        }
+        compilationConditions = nil
+        constraints = []
+    }
+
+    private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
+        if var newCondition = addition {
+            if var existing = child?.compilationConditions {
+                existing.removeFirst(4) // “#if ”
+                newCondition.removeFirst(4)
+
+                child?.compilationConditions = "#if (" + newCondition + ") && (" + existing + ")"
+            } else {
+                child?.compilationConditions = addition
+            }
+        }
+    }
+
+    internal func merge(extension: ExtensionAPI) {
+        `extension`.moveConditionsToChildren()
+        subtypes.append(contentsOf: `extension`.subtypes)
+        typeProperties.append(contentsOf: `extension`.typeProperties)
+        initializers.append(contentsOf: `extension`.initializers)
+        properties.append(contentsOf: `extension`.properties)
+        subscripts.append(contentsOf: `extension`.subscripts)
+        methods.append(contentsOf: `extension`.methods)
+        conformances.append(contentsOf: `extension`.conformances)
+    }
+
     // MARK: - APIElement
 
     internal var scopeSummary: [String] {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()

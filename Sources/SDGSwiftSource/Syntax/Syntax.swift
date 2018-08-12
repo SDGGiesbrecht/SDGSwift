@@ -16,6 +16,7 @@ import Foundation
 
 import SDGLogic
 import SDGMathematics
+import SDGCollections
 import SDGPersistence
 
 import SDGSwiftSyntaxShims
@@ -40,6 +41,22 @@ extension Syntax {
         var result = ""
         write(to: &result)
         return result
+    }
+
+    internal func withTriviaReducedToSpaces() -> Syntax {
+        class TriviaNormalizer : SyntaxRewriter {
+            override func visit(_ token: TokenSyntax) -> Syntax {
+                var token = token
+                if ¬token.leadingTrivia.isEmpty {
+                    token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
+                }
+                if ¬token.trailingTrivia.isEmpty {
+                    token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
+                }
+                return token
+            }
+        }
+        return TriviaNormalizer().visit(self)
     }
 
     public func location(in source: String) -> Range<String.ScalarView.Index> {
@@ -68,7 +85,33 @@ extension Syntax {
     // MARK: - API
 
     internal func apiChildren() -> [APIElement] {
-        return Array(children.map({ $0.api() }).joined())
+        let elements = Array(children.map({ $0.api() }).joined())
+
+        var extensions: [ExtensionAPI] = []
+        var types: [TypeAPI] = []
+        var other: [APIElement] = []
+        for element in elements {
+            switch element {
+            case let `extension` as ExtensionAPI :
+                extensions.append(`extension`)
+            case let type as TypeAPI :
+                types.append(type)
+            default:
+                other.append(element)
+            }
+        }
+
+        extensionIteration: for `extension` in extensions {
+            let extensionType = `extension`.type
+            for type in types where extensionType == type.typeName {
+                type.merge(extension: `extension`)
+                continue extensionIteration
+            }
+            `extension`.moveConditionsToChildren()
+            other.append(`extension`)
+        }
+
+        return types as [APIElement] + other
     }
 
     internal func isPublic() -> Bool {
@@ -84,10 +127,15 @@ extension Syntax {
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
+        if isConditionalCompilation { // UnknownStmtSyntax or UnknownDeclSyntax
+            return conditionallyCompiledChildren
+        }
         switch self {
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isTypeAliasSyntax {
+                return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {
                 return unknown.initializerAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isVariableSyntax {
@@ -130,10 +178,10 @@ extension Syntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    private var argumentType: String? {
+    private var argumentType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
-                return type.name.text
+                return type.reference
             }
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
@@ -162,5 +210,93 @@ extension Syntax {
             return ArgumentAPI(label: label, name: name, type: type)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
+    // MARK: - Compilation Conditions
+
+    private var compilerIfKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .poundIfKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isConditionalCompilation: Bool {
+        return compilerIfKeyword ≠ nil
+    }
+
+    internal var conditionallyCompiledChildren: [APIElement] {
+        var previousConditions: [String] = []
+        var currentCondition: String? = nil
+        var universalSet: Set<APIElement> = []
+        var filledUniversalSet: Bool = false
+        var elseOccurred: Bool = false
+        var currentSet: Set<APIElement> = []
+        var api: [APIElement] = []
+        for child in children {
+            switch child {
+            case let token as TokenSyntax : // “#if”, “#elseif” or “#else”
+                switch token.tokenKind {
+                case .poundElseKeyword:
+                    elseOccurred = true
+                    fallthrough
+                case .poundElseifKeyword:
+                    defer { filledUniversalSet = true }
+                    if let current = currentCondition {
+                        previousConditions.append(current)
+                        currentCondition = nil
+                    }
+                    if ¬filledUniversalSet {
+                        universalSet = currentSet
+                    } else {
+                        universalSet ∩= currentSet
+                    }
+                    currentSet = []
+                default:
+                    break
+                }
+            case let condition as UnknownExprSyntax :
+                currentCondition = condition.withTriviaReducedToSpaces().source()
+            case let condition as IdentifierExprSyntax :
+                currentCondition = condition.withTriviaReducedToSpaces().source()
+            default:
+                var composedConditions = "#if "
+                composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
+                if previousConditions.isEmpty {
+                    composedConditions.append(contentsOf: (currentCondition ?? "")) // @exempt(from: tests) Never nil in valid source.
+                } else {
+                    if let current = currentCondition {
+                        composedConditions.append(contentsOf: " \u{26}& (" + current + ")")
+                    }
+                }
+                for element in child.api() {
+                    currentSet.insert(element)
+                    if var existing = element.compilationConditions {
+                        existing.removeFirst(4)
+                        var new = composedConditions
+                        new.removeFirst(4)
+                        existing.prepend("(")
+                        existing.append(")")
+                        existing.prepend(contentsOf: "(" + new + ") \u{26}& ")
+                        existing.prepend(contentsOf: "#if ")
+                        element.compilationConditions = existing
+                    } else {
+                        element.compilationConditions = composedConditions
+                    }
+                    api.append(element)
+                }
+            }
+        }
+        if elseOccurred {
+            for element in universalSet {
+                element.compilationConditions = nil
+                api = api.filter({ $0 ≠ element })
+                api.append(element)
+            }
+        }
+        return api
     }
 }

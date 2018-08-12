@@ -18,19 +18,20 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: String, conformances: [ConformanceAPI], children: [APIElement]) {
-        self.type = type.decomposedStringWithCanonicalMapping
+    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+        self.type = type
         super.init(conformances: conformances, children: children)
+        self.constraints = constraints
     }
 
     // MARK: - Properties
 
-    private let type: String
+    internal let type: TypeReferenceAPI
 
     // MARK: - APIElement
 
     public override var name: String {
-        return "(" + type + ")"
+        return "(" + type.description + ")"
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.
@@ -38,6 +39,9 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        return [name] + scopeSummary
+        var result = name
+        appendConstraintDescriptions(to: &result)
+        appendCompilationConditions(to: &result)
+        return [result] + scopeSummary
     }
 }

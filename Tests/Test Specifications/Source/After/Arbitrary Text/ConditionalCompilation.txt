@@ -19,3 +19,65 @@ func ̲f̲a̲l̲l̲O̲n̲N̲e̲w̲t̲o̲n̲() ̲{}
 /// ̲W̲a̲d̲d̲l̲e̲s̲.̲
 func ̲w̲a̲d̲d̲l̲e̲() ̲{}
 #endif
+
+#if ̲canImport(AppKit)
+public ̲typealias ̲W̲i̲t̲h̲A̲p̲p̲K̲i̲t̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#elseif ̲canImport(UIKit)
+public ̲typealias ̲W̲i̲t̲h̲U̲I̲K̲i̲t̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#else
+public ̲typealias ̲F̲a̲l̲l̲b̲a̲c̲k̲ ̲= ̲Bool
+public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+#endif
+
+public ̲struct ̲N̲e̲s̲t̲i̲n̲g̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
+
+ ̲ ̲ ̲ ̲#if ̲canImport(AppKit)
+ ̲ ̲ ̲ ̲public ̲typealias ̲W̲i̲t̲h̲A̲p̲p̲K̲i̲t̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#elseif ̲canImport(UIKit)
+ ̲ ̲ ̲ ̲public ̲typealias ̲W̲i̲t̲h̲U̲I̲K̲i̲t̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#else
+ ̲ ̲ ̲ ̲public ̲typealias ̲F̲a̲l̲l̲b̲a̲c̲k̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲public ̲typealias ̲U̲n̲i̲v̲e̲r̲s̲a̲l̲ ̲= ̲Bool
+ ̲ ̲ ̲ ̲#endif
+}
+
+public ̲struct ̲P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲{}
+#if ̲os(macOS)
+extension ̲PossiblyConforming ̲: ̲ConditionallyAvailableProtocol ̲{
+ ̲ ̲ ̲ ̲public ̲struct ̲C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲T̲y̲p̲e̲ ̲{}
+ ̲ ̲ ̲ ̲public ̲static ̲var ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲init(c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲I̲n̲i̲t̲i̲a̲l̲i̲z̲e̲r̲: ̲Bool) ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self.init()
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲var ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲true
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲subscript(c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲: ̲Bool) ̲-> ̲Bool ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲conditionalSubscript
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲#if ̲ADDITIONAL_CONDITION
+ ̲ ̲ ̲ ̲public ̲func ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲M̲e̲t̲h̲o̲d̲() ̲{}
+ ̲ ̲ ̲ ̲#endif
+}
+
+#if ̲CUSTOM
+extension ̲PossiblyConforming ̲: ̲AnotherConditionallyAvailableProtocol ̲{}
+#endif
+
+#endif
+
+#if ̲ ̲ ̲ ̲/* ̲T̲h̲i̲s̲ ̲c̲o̲n̲d̲i̲t̲i̲o̲n̲ ̲n̲e̲e̲d̲s̲ ̲c̲l̲e̲a̲n̲‐̲u̲p̲.̲*/ ̲ ̲ ̲ ̲ ̲ ̲NEEDING_CLEANUP ̲// ̲.̲.̲.̲
+public ̲struct ̲C̲l̲e̲a̲n̲e̲d̲U̲p̲C̲o̲m̲p̲i̲l̲a̲t̲i̲o̲n̲C̲o̲n̲d̲i̲t̲i̲o̲n̲ ̲{}
+#endif
+
+#if ̲LEVEL_ONE
+#if ̲LEVEL_TWO
+public ̲struct ̲D̲o̲u̲b̲l̲y̲N̲e̲s̲t̲e̲d̲ ̲{}
+#endif
+#endif

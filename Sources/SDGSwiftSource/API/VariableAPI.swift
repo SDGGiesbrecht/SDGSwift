@@ -16,16 +16,18 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, type: String?, isSettable: Bool) {
+    internal init(typePropertyKeyword: String?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+        self.typePropertyKeyword = typePropertyKeyword
         _name = name.decomposedStringWithCanonicalMapping
-        self.type = type?.decomposedStringWithCanonicalMapping
+        self.type = type
         self.isSettable = isSettable
     }
 
     // MARK: - Properties
 
+    internal var typePropertyKeyword: String?
     private var _name: String
-    private var type: String?
+    private var type: TypeReferenceAPI?
     private var isSettable: Bool
 
     // MARK: - APIElement
@@ -35,10 +37,15 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "var " + _name
-        if let type = self.type {
-            result += ": " + type
+        var result = ""
+        if let typePropertyKeyword = self.typePropertyKeyword {
+            result += typePropertyKeyword + " "
         }
+        result += "var " + _name
+        if let type = self.type {
+            result += ": " + type.description
+        }
+        appendConstraintDescriptions(to: &result)
         result += " { get "
         if isSettable {
             result += "set "
@@ -48,6 +55,8 @@ public class VariableAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        var result = name + " • " + declaration
+        appendCompilationConditions(to: &result)
+        return [result]
     }
 }

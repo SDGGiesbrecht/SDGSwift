@@ -40,10 +40,13 @@ public class InitializerAPI : APIElement {
         if `throws` {
             result += " throws"
         }
+        appendConstraintDescriptions(to: &result)
         return result
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        var result = name + " • " + declaration
+        appendCompilationConditions(to: &result)
+        return [result]
     }
 }

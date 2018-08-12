@@ -1,3 +1,4 @@
 (Int)
+ staticProperty • static var staticProperty: Int { get }
  constantWithInferredType • var constantWithInferredType { get }
  var • var var: Int { get }

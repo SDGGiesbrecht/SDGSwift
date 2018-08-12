@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 extension UnknownDeclSyntax {
@@ -36,12 +37,30 @@ extension UnknownDeclSyntax {
         var result: [ConformanceAPI] = []
         var foundConformancesSection = false
         search: for child in children.reversed() {
-            switch child {
-            case is MemberDeclBlockSyntax :
+            `switch`: switch child {
+            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax> :
                 foundConformancesSection = true
+            case is GenericWhereClauseSyntax :
+                break `switch`
             case let type as SimpleTypeIdentifierSyntax :
                 if foundConformancesSection {
-                    result.append(ConformanceAPI(protocolName: type.name.text))
+                    if let `extension` = extensionKeyword {
+                        if type.indexInParent ≠ `extension`.indexInParent + 1 {
+                            result.append(type.conformance)
+                        } else {
+                            break search
+                        }
+                    } else {
+                        result.append(type.conformance)
+                    }
+                }
+            case let token as TokenSyntax :
+                if token.tokenKind == .comma
+                    ∨ token.tokenKind == .leftBrace
+                    ∨ token.tokenKind == .rightBrace {
+                    break `switch`
+                } else {
+                    fallthrough
                 }
             default:
                 if foundConformancesSection {
@@ -52,6 +71,46 @@ extension UnknownDeclSyntax {
         return result
     }
 
+    private func genericArguments(of typeName: TokenSyntax) -> ([TypeReferenceAPI], [ConstraintAPI]) {
+        guard let next = child(at: typeName.indexInParent + 1),
+            (next as? TokenSyntax)?.tokenKind == .leftAngle else {
+                return ([], [])
+        }
+        var arguments: [TypeReferenceAPI] = []
+        var constraints: [ConstraintAPI] = []
+        var token = next
+        while var next = child(at: token.indexInParent + 1),
+            (next as? TokenSyntax)?.tokenKind ≠ .rightAngle {
+                defer { token = next }
+
+                if let generic = next as? TokenSyntax {
+                    switch generic.tokenKind {
+                    case .identifier:
+                        arguments.append(TypeReferenceAPI(name: generic.text, genericArguments: []))
+                    case .colon:
+                        if let last = arguments.last,
+                            let following = child(at: next.indexInParent + 1),
+                            let conformance = following as? SimpleTypeIdentifierSyntax {
+                            next = following
+                            constraints.append(.conformance(last, conformance.reference))
+                        }
+                    default:
+                        break // @exempt(from: tests) Unreachable with valid source.
+                    }
+                }
+        }
+        return (arguments, constraints)
+    }
+
+    private var constraints: [ConstraintAPI] {
+        for child in children {
+            if let whereClause = child as? GenericWhereClauseSyntax {
+                return whereClause.constraints
+            }
+        }
+        return []
+    }
+
     internal var typeAPI: TypeAPI? {
         if ¬isPublic() {
             return nil
@@ -59,7 +118,36 @@ extension UnknownDeclSyntax {
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: name, conformances: conformances, children: apiChildren())
+            let (genericArguments, constraints) = self.genericArguments(of: nameToken)
+            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
+    // MARK: - Type Alias Syntax
+
+    private var typeAliasKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .typealiasKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isTypeAliasSyntax: Bool {
+        return typeAliasKeyword ≠ nil
+    }
+
+    internal var typeAliasAPI: TypeAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = typeAliasKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText {
+            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -93,6 +181,16 @@ extension UnknownDeclSyntax {
     }
 
     // MARK: - Variable Syntax
+
+    private var typePropertyKeyword: String? {
+        for child in children {
+            if let modifier = child as? DeclModifierSyntax,
+                modifier.name.tokenKind == .staticKeyword ∨ modifier.name.tokenKind == .classKeyword {
+                return modifier.name.text
+            }
+        }
+        return nil
+    }
 
     private var variableKeyword: TokenSyntax? {
         for child in children {
@@ -158,8 +256,8 @@ extension UnknownDeclSyntax {
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            let typeName = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.name.text
-            return VariableAPI(name: name, type: typeName, isSettable: isSettable)
+            let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
+            return VariableAPI(typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -209,15 +307,18 @@ extension UnknownDeclSyntax {
 
     private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
         for child in children where type(of: child) == Syntax.self {
-            return child.argumentListAPI(forSubscript: forSubscript)
+            let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
+            if ¬possibleArgumentList.isEmpty {
+                return possibleArgumentList
+            }
         }
         return []
     }
 
-    private var returnType: String? {
+    private var returnType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {
-                return type.name.text
+                return type.reference
             }
         }
         return nil
@@ -256,8 +357,9 @@ extension UnknownDeclSyntax {
         if let keyword = extensionKeyword,
             let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
             let children = apiChildren()
-            if ¬children.isEmpty {
-                return ExtensionAPI(type: type.name.text, conformances: conformances, children: children)
+            let conformances = self.conformances
+            if ¬children.isEmpty ∨ ¬conformances.isEmpty {
+                return ExtensionAPI(type: type.reference, conformances: conformances, constraints: constraints, children: children)
             }
         } // @exempt(from: tests) Theoretically unreachable.
         return nil

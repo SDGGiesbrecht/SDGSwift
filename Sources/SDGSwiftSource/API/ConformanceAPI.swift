@@ -35,6 +35,9 @@ public class ConformanceAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name]
+        var result = name
+        appendConstraintDescriptions(to: &result)
+        appendCompilationConditions(to: &result)
+        return [result]
     }
 }
