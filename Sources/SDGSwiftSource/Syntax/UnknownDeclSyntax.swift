@@ -95,7 +95,7 @@ extension UnknownDeclSyntax {
                             constraints.append(.conformance(last, conformance.reference))
                         }
                     default:
-                        break
+                        break // @exempt(from: tests) Unreachable with valid source.
                     }
                 }
         }
