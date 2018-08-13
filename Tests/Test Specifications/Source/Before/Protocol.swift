@@ -27,3 +27,5 @@ extension Protocol {
 extension Protocol where Self : OtherProtocol {
     public func possiblyRequiredFunction()
 }
+
+protocol InternalProtocol {}

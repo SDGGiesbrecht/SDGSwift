@@ -27,3 +27,5 @@ extension P̲r̲o̲t̲o̲c̲o̲l̲ {
 extension P̲r̲o̲t̲o̲c̲o̲l̲ where Self : O̲t̲h̲e̲r̲P̲r̲o̲t̲o̲c̲o̲l̲ {
     public func possiblyRequiredFunction()
 }
+
+protocol InternalProtocol {}

@@ -158,7 +158,7 @@ extension Syntax {
             } else if unknown.isTypeAliasSyntax {
                 return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isAssociatedTypeSyntax {
-                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? []
+                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
             } else if unknown.isProtocolSyntax {
                 return unknown.protocolAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {

@@ -28,3 +28,5 @@
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
 ̲}̲
 ̲
+̲p̲r̲o̲t̲o̲c̲o̲l̲ InternalProtocol {̲}̲
+̲

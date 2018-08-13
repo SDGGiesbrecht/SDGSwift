@@ -37,8 +37,8 @@ public struct ModuleAPI {
                     functions.append(function)
                 case let globalVariable as VariableAPI :
                     globalVariables.append(globalVariable)
-                default: // @exempt(from: tests) Should never occur.
-                    if BuildConfiguration.current == .debug {
+                default:
+                    if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
                         print("Unidentified API element: \(Swift.type(of: element))")
                     }
 

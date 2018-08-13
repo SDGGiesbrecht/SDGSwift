@@ -27,3 +27,5 @@ extension ̲Protocol ̲{
 extension ̲Protocol ̲where ̲Self ̲: ̲OtherProtocol ̲{
  ̲ ̲ ̲ ̲public ̲func ̲p̲o̲s̲s̲i̲b̲l̲y̲R̲e̲q̲u̲i̲r̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲()
 }
+
+protocol ̲I̲n̲t̲e̲r̲n̲a̲l̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{}

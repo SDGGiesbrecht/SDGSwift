@@ -22,7 +22,7 @@ public class ProtocolAPI : APIScope {
         self.constraints = constraints
 
         for method in methods {
-            method.isProtocolRequirement = true
+            method.isProtocolRequirement = true // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         }
     }
 
