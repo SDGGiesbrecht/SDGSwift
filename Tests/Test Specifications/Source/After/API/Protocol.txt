@@ -1,5 +1,5 @@
 Protocol • protocol Protocol
- associatedtype AssociatedType
+ AssociatedType • associatedtype AssociatedType
  (customizable) overrideableFunction() • func overrideableFunction()
  (required) possiblyRequiredFunction() • func possiblyRequiredFunction()
   func possiblyRequiredFunction() where Self : OtherProtocol
