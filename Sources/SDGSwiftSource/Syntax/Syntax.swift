@@ -138,6 +138,8 @@ extension Syntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isTypeAliasSyntax {
                 return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isProtocolSyntax {
+                return unknown.protocolAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {
                 return unknown.initializerAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isVariableSyntax {

@@ -152,6 +152,34 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Protocol Syntax
+
+    private var protocolKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .protocolKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isProtocolSyntax: Bool {
+        return protocolKeyword ≠ nil
+    }
+
+    internal var protocolAPI: ProtocolAPI? {
+        if ¬isPublic() {
+            return nil
+        }
+        if let keyword = protocolKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText {
+            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Initializer Syntax
 
     private var initializerKeyword: TokenSyntax? {
