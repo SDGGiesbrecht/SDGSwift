@@ -29,7 +29,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testReadSource() throws {
         let libraries = thisRepository.location.deletingLastPathComponent()
         let cornerstone = PackageRepository(at: libraries.appendingPathComponent("SDGCornerstone"))
-        for target in try cornerstone.package().targets where target.name == "SDGBinaryData" {
+        for target in try cornerstone.package().targets where target.name == "SDGCalendar" {
             print(try ModuleAPI(module: target).summary)
         }
     }

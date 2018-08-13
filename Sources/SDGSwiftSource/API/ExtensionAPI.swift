@@ -16,6 +16,29 @@ import SDGControlFlow
 
 public class ExtensionAPI : APIScope {
 
+    internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
+        var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
+
+        for `extension` in extensions {
+            sorted[`extension`.type, default: []].append(`extension`)
+        }
+
+        var result: [ExtensionAPI] = []
+        for (_, group) in sorted {
+            var merged: ExtensionAPI?
+            for `extension` in group {
+                if let existing = merged {
+                    existing.merge(extension: `extension`)
+                } else {
+                    merged = `extension`
+                }
+            }
+            result.append(merged!)
+        }
+
+        return result
+    }
+
     // MARK: - Initialization
 
     internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {

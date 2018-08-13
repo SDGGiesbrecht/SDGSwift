@@ -24,7 +24,6 @@ public struct ModuleAPI {
     public init(module: PackageModel.Target) throws {
         name = module.name.decomposedStringWithCanonicalMapping
 
-        var sortedExtensions: [TypeReferenceAPI: [ExtensionAPI]] = [:]
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             let source = try Syntax.parse(sourceFile)
             let api = source.api()
@@ -33,7 +32,7 @@ public struct ModuleAPI {
                 case let type as TypeAPI :
                     types.append(type)
                 case let `extension` as ExtensionAPI :
-                    sortedExtensions[`extension`.type, default: []].append(`extension`)
+                    `extensions`.append(`extension`)
                 case let function as FunctionAPI :
                     functions.append(function)
                 case let globalVariable as VariableAPI :
@@ -47,17 +46,7 @@ public struct ModuleAPI {
             }
         }
 
-        for (_, group) in sortedExtensions {
-            var merged: ExtensionAPI?
-            for `extension` in group {
-                if let existing = merged {
-                    existing.merge(extension: `extension`)
-                } else {
-                    merged = `extension`
-                }
-            }
-            self.`extensions`.append(merged!)
-        }
+        `extensions` = ExtensionAPI.combine(extensions: `extensions`)
     }
 
     // MARK: - Properties

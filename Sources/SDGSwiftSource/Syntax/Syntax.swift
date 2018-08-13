@@ -101,6 +101,7 @@ extension Syntax {
             }
         }
 
+        var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
             let extensionType = `extension`.type
             for type in types where extensionType == type.typeName {
@@ -108,8 +109,9 @@ extension Syntax {
                 continue extensionIteration
             }
             `extension`.moveConditionsToChildren()
-            other.append(`extension`)
+            unmergedExtensions.append(`extension`)
         }
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
 
         return types as [APIElement] + other
     }
