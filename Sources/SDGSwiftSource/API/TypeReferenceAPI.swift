@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public struct TypeReferenceAPI : Comparable {
+public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Initialization
 
@@ -53,5 +53,11 @@ public struct TypeReferenceAPI : Comparable {
 
     public static func == (precedingValue: TypeReferenceAPI, followingValue: TypeReferenceAPI) -> Bool {
         return (precedingValue.name, precedingValue.genericArguments) == (followingValue.name, followingValue.genericArguments)
+    }
+
+    // MARK: - Hashable
+
+    public var hashValue: Int {
+        return name.hashValue
     }
 }

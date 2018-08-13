@@ -99,7 +99,7 @@ public class APIScope : APIElement {
     }
 
     private var _methods: [FunctionAPI] = []
-    private var methods: [FunctionAPI] {
+    internal var methods: [FunctionAPI] {
         get {
             return _methods
         }
@@ -175,6 +175,8 @@ public class APIScope : APIElement {
         subscripts.append(contentsOf: `extension`.subscripts)
         methods.append(contentsOf: `extension`.methods)
         conformances.append(contentsOf: `extension`.conformances)
+
+        methods = FunctionAPI.groupIntoOverloads(methods)
     }
 
     // MARK: - APIElement

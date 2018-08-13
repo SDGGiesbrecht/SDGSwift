@@ -12,8 +12,21 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲p̲r̲o̲t̲o̲c̲o̲l̲ Protocol {̲
-̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ Protocol {̲
 ̲    a̲s̲s̲o̲c̲i̲a̲t̲e̲d̲t̲y̲p̲e̲ AssociatedType
+̲    f̲u̲n̲c̲ requiredFunction(̲)̲
+̲    f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
+̲    f̲u̲n̲c̲ overrideableFunction(̲)̲
 ̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overrideableFunction(̲)̲ {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ providedFunction(̲)̲ {̲}̲
+̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol w̲h̲e̲r̲e̲ S̲e̲l̲f̲ :̲ OtherProtocol {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
+̲}̲
+̲
+̲p̲r̲o̲t̲o̲c̲o̲l̲ InternalProtocol {̲}̲
 ̲

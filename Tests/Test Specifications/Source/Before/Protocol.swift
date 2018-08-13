@@ -12,7 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-protocol Protocol {
-
+public protocol Protocol {
     associatedtype AssociatedType
+    func requiredFunction()
+    func possiblyRequiredFunction()
+    func overrideableFunction()
 }
+
+extension Protocol {
+    public func overrideableFunction() {}
+    public func providedFunction() {}
+}
+
+extension Protocol where Self : OtherProtocol {
+    public func possiblyRequiredFunction()
+}
+
+protocol InternalProtocol {}

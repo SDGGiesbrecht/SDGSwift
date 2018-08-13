@@ -88,7 +88,9 @@ extension Syntax {
         let elements = Array(children.map({ $0.api() }).joined())
 
         var extensions: [ExtensionAPI] = []
+        var functions: [FunctionAPI] = []
         var types: [TypeAPI] = []
+        var protocols: [ProtocolAPI] = []
         var other: [APIElement] = []
         for element in elements {
             switch element {
@@ -96,32 +98,51 @@ extension Syntax {
                 extensions.append(`extension`)
             case let type as TypeAPI :
                 types.append(type)
+            case let `protocol` as ProtocolAPI :
+                protocols.append(`protocol`)
+            case let function as FunctionAPI :
+                functions.append(function)
             default:
                 other.append(element)
             }
         }
 
+        var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
             let extensionType = `extension`.type
             for type in types where extensionType == type.typeName {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
+            for `protocol` in protocols where extensionType.description == `protocol`.name {
+                `protocol`.merge(extension: `extension`)
+                continue extensionIteration
+            }
             `extension`.moveConditionsToChildren()
-            other.append(`extension`)
+            unmergedExtensions.append(`extension`)
         }
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
 
-        return types as [APIElement] + other
+        functions = FunctionAPI.groupIntoOverloads(functions)
+
+        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
     }
 
     internal func isPublic() -> Bool {
-        return children.contains(where: { node in
+
+        let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
                 modifier.name.tokenKind == .publicKeyword {
                 return true
             }
             return false
         })
+
+        if hasPublicKeyword {
+            return true
+        } else {
+            return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
+        }
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
@@ -136,6 +157,10 @@ extension Syntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isTypeAliasSyntax {
                 return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isAssociatedTypeSyntax {
+                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
+            } else if unknown.isProtocolSyntax {
+                return unknown.protocolAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {
                 return unknown.initializerAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isVariableSyntax {

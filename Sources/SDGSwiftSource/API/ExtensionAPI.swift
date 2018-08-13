@@ -28,10 +28,35 @@ public class ExtensionAPI : APIScope {
 
     internal let type: TypeReferenceAPI
 
+    // MARK: - Combining
+
+    internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
+        var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
+
+        for `extension` in extensions {
+            sorted[`extension`.type, default: []].append(`extension`)
+        }
+
+        var result: [ExtensionAPI] = []
+        for (_, group) in sorted {
+            var merged: ExtensionAPI?
+            for `extension` in group {
+                if let existing = merged {
+                    existing.merge(extension: `extension`)
+                } else {
+                    merged = `extension`
+                }
+            }
+            result.append(merged!)
+        }
+
+        return result
+    }
+
     // MARK: - APIElement
 
     public override var name: String {
-        return "(" + type.description + ")"
+        return type.description
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.
@@ -39,7 +64,7 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        var result = name
+        var result = "(" + name + ")"
         appendConstraintDescriptions(to: &result)
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary

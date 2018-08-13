@@ -34,6 +34,54 @@ public class FunctionAPI : APIElement {
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
 
+    internal var isProtocolRequirement: Bool = false
+    internal var hasDefaultImplementation: Bool = false
+    private var _overloads: [FunctionAPI] = []
+    internal var overloads: [FunctionAPI] {
+        get {
+            return _overloads
+        }
+        set {
+            var new = newValue.sorted()
+            if isProtocolRequirement {
+                for index in new.indices {
+                    let overload = new[index]
+                    if overload.declaration == declaration {
+                        hasDefaultImplementation = true
+                        new.remove(at: index)
+                        break
+                    }
+                }
+            }
+            _overloads = new
+        }
+    }
+
+    // MARK: - Combining
+
+    internal static func groupIntoOverloads(_ functions: [FunctionAPI]) -> [FunctionAPI] {
+        var sorted: [String: [FunctionAPI]] = [:]
+
+        for function in functions {
+            sorted[function.name, default: []].append(function)
+        }
+
+        var result: [FunctionAPI] = []
+        for (_, group) in sorted {
+            var merged: FunctionAPI?
+            for function in group.sorted() {
+                if let existing = merged {
+                    existing.overloads.append(function)
+                } else {
+                    merged = function
+                }
+            }
+            result.append(merged!)
+        }
+
+        return result
+    }
+
     // MARK: - APIElement
 
     public override var name: String {
@@ -57,8 +105,22 @@ public class FunctionAPI : APIElement {
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = ""
+        if isProtocolRequirement {
+            if hasDefaultImplementation {
+                result += "(customizable) "
+            } else {
+                result += "(required) "
+            }
+        }
+        result += name + " • " + declaration
         appendCompilationConditions(to: &result)
-        return [result]
+        var resultSummary = [result]
+        for overload in overloads {
+            var declaration = overload.declaration
+            overload.appendCompilationConditions(to: &declaration)
+            resultSummary.append(declaration.prepending(" "))
+        }
+        return resultSummary
     }
 }
