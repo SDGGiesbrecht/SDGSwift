@@ -31,7 +31,7 @@ public class ExtensionAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return "(" + type.description + ")"
+        return type.description
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.
@@ -39,7 +39,7 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        var result = name
+        var result = "(" + name + ")"
         appendConstraintDescriptions(to: &result)
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
