@@ -88,6 +88,7 @@ extension Syntax {
         let elements = Array(children.map({ $0.api() }).joined())
 
         var extensions: [ExtensionAPI] = []
+        var functions: [FunctionAPI] = []
         var types: [TypeAPI] = []
         var protocols: [ProtocolAPI] = []
         var other: [APIElement] = []
@@ -99,6 +100,8 @@ extension Syntax {
                 types.append(type)
             case let `protocol` as ProtocolAPI :
                 protocols.append(`protocol`)
+            case let function as FunctionAPI :
+                functions.append(function)
             default:
                 other.append(element)
             }
@@ -120,7 +123,9 @@ extension Syntax {
         }
         other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
 
-        return types as [APIElement] + protocols as [APIElement] + other
+        functions = FunctionAPI.groupIntoOverloads(functions)
+
+        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
     }
 
     internal func isPublic() -> Bool {

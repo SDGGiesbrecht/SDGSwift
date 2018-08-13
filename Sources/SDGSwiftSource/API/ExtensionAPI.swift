@@ -16,6 +16,20 @@ import SDGControlFlow
 
 public class ExtensionAPI : APIScope {
 
+    // MARK: - Initialization
+
+    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+        self.type = type
+        super.init(conformances: conformances, children: children)
+        self.constraints = constraints
+    }
+
+    // MARK: - Properties
+
+    internal let type: TypeReferenceAPI
+
+    // MARK: - Combining
+
     internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
         var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
 
@@ -38,18 +52,6 @@ public class ExtensionAPI : APIScope {
 
         return result
     }
-
-    // MARK: - Initialization
-
-    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
-        self.type = type
-        super.init(conformances: conformances, children: children)
-        self.constraints = constraints
-    }
-
-    // MARK: - Properties
-
-    internal let type: TypeReferenceAPI
 
     // MARK: - APIElement
 

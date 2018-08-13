@@ -47,6 +47,7 @@ public struct ModuleAPI {
         }
 
         `extensions` = ExtensionAPI.combine(extensions: `extensions`)
+        functions = FunctionAPI.groupIntoOverloads(functions)
     }
 
     // MARK: - Properties

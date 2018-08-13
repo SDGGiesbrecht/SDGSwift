@@ -33,7 +33,34 @@ public class FunctionAPI : APIElement {
     private let arguments: [ArgumentAPI]
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
+
     internal var isProtocolRequirement: Bool = false
+    internal var overloads: [FunctionAPI] = []
+
+    // MARK: - Combining
+
+    internal static func groupIntoOverloads(_ functions: [FunctionAPI]) -> [FunctionAPI] {
+        var sorted: [String: [FunctionAPI]] = [:]
+
+        for function in functions {
+            sorted[function.name, default: []].append(function)
+        }
+
+        var result: [FunctionAPI] = []
+        for (_, group) in sorted {
+            var merged: FunctionAPI?
+            for function in group.sorted() {
+                if let existing = merged {
+                    existing.overloads.append(function)
+                } else {
+                    merged = function
+                }
+            }
+            result.append(merged!)
+        }
+
+        return result
+    }
 
     // MARK: - APIElement
 
@@ -64,6 +91,12 @@ public class FunctionAPI : APIElement {
         }
         result += name + " • " + declaration
         appendCompilationConditions(to: &result)
-        return [result]
+        var resultSummary = [result]
+        for overload in overloads {
+            var declaration = overload.declaration
+            overload.appendCompilationConditions(to: &declaration)
+            resultSummary.append(declaration.prepending(" "))
+        }
+        return resultSummary
     }
 }

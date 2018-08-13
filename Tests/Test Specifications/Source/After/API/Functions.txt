@@ -1,2 +1,2 @@
 doSomething(_:) • func doSomething(_ unnamedParameter: Int)
-doSomething(_:) • func doSomething(_ unnamedParameter: String)
+ func doSomething(_ unnamedParameter: String)
