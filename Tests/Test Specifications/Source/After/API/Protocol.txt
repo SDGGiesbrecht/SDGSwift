@@ -2,6 +2,6 @@ Protocol
  associatedtype AssociatedType
  (customizable) overrideableFunction() • func overrideableFunction()
  (required) possiblyRequiredFunction() • func possiblyRequiredFunction()
-  possiblyRequiredFunction() • func possiblyRequiredFunction() where Self : OtherProtocol
+  func possiblyRequiredFunction() where Self : OtherProtocol
  providedFunction() • func providedFunction()
  (required) requiredFunction() • func requiredFunction()
