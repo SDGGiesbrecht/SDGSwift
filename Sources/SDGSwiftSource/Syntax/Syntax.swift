@@ -124,13 +124,20 @@ extension Syntax {
     }
 
     internal func isPublic() -> Bool {
-        return children.contains(where: { node in
+
+        let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
                 modifier.name.tokenKind == .publicKeyword {
                 return true
             }
             return false
         })
+
+        if hasPublicKeyword {
+            return true
+        } else {
+            return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
+        }
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
