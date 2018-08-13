@@ -33,6 +33,7 @@ public class FunctionAPI : APIElement {
     private let arguments: [ArgumentAPI]
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
+    internal var isProtocolRequirement: Bool = false
 
     // MARK: - APIElement
 
@@ -57,7 +58,11 @@ public class FunctionAPI : APIElement {
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = ""
+        if isProtocolRequirement {
+            result += "(required) "
+        }
+        result += name + " • " + declaration
         appendCompilationConditions(to: &result)
         return [result]
     }

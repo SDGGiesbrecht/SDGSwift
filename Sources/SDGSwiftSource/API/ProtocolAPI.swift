@@ -20,6 +20,10 @@ public class ProtocolAPI : APIScope {
         _name = name.decomposedStringWithCanonicalMapping
         super.init(conformances: conformances, children: children)
         self.constraints = constraints
+
+        for method in methods {
+            method.isProtocolRequirement = true
+        }
     }
 
     // MARK: - Properties

@@ -99,7 +99,7 @@ public class APIScope : APIElement {
     }
 
     private var _methods: [FunctionAPI] = []
-    private var methods: [FunctionAPI] {
+    internal var methods: [FunctionAPI] {
         get {
             return _methods
         }
