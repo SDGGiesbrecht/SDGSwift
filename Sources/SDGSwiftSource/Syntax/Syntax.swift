@@ -89,6 +89,7 @@ extension Syntax {
 
         var extensions: [ExtensionAPI] = []
         var types: [TypeAPI] = []
+        var protocols: [ProtocolAPI] = []
         var other: [APIElement] = []
         for element in elements {
             switch element {
@@ -96,6 +97,8 @@ extension Syntax {
                 extensions.append(`extension`)
             case let type as TypeAPI :
                 types.append(type)
+            case let `protocol` as ProtocolAPI :
+                protocols.append(`protocol`)
             default:
                 other.append(element)
             }
@@ -108,12 +111,16 @@ extension Syntax {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
+            for `protocol` in protocols where extensionType.description == `protocol`.name {
+                `protocol`.merge(extension: `extension`)
+                continue extensionIteration
+            }
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)
         }
         other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
 
-        return types as [APIElement] + other
+        return types as [APIElement] + protocols as [APIElement] + other
     }
 
     internal func isPublic() -> Bool {

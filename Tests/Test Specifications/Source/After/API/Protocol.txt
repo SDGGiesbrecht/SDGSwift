@@ -1,4 +1,4 @@
-Protocol
+Protocol • protocol Protocol
  associatedtype AssociatedType
  (customizable) overrideableFunction() • func overrideableFunction()
  (required) possiblyRequiredFunction() • func possiblyRequiredFunction()
