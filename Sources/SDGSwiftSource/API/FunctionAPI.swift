@@ -35,7 +35,27 @@ public class FunctionAPI : APIElement {
     private let returnType: TypeReferenceAPI?
 
     internal var isProtocolRequirement: Bool = false
-    internal var overloads: [FunctionAPI] = []
+    internal var hasDefaultImplementation: Bool = false
+    private var _overloads: [FunctionAPI] = []
+    internal var overloads: [FunctionAPI] {
+        get {
+            return _overloads
+        }
+        set {
+            var new = newValue.sorted()
+            if isProtocolRequirement {
+                for index in new.indices {
+                    let overload = new[index]
+                    if overload.declaration == declaration {
+                        hasDefaultImplementation = true
+                        new.remove(at: index)
+                        break
+                    }
+                }
+            }
+            _overloads = new
+        }
+    }
 
     // MARK: - Combining
 
@@ -87,7 +107,11 @@ public class FunctionAPI : APIElement {
     public override var summary: [String] {
         var result = ""
         if isProtocolRequirement {
-            result += "(required) "
+            if hasDefaultImplementation {
+                result += "(customizable) "
+            } else {
+                result += "(required) "
+            }
         }
         result += name + " • " + declaration
         appendCompilationConditions(to: &result)
