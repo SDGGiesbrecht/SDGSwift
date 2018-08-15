@@ -294,12 +294,28 @@ extension UnknownDeclSyntax {
     }
 
     private var isSettable: Bool {
-        if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
-            ¬hasReducedSetterAccessLevel,
-            isStored ∨ hasSetter {
-            return true
+        if (parent?.parent as? UnknownDeclSyntax)?.isProtocolSyntax == true  {
+            // Protocol requirement.
+            var unknownCount = 0
+            for child in children {
+                if let token = child as? TokenSyntax,
+                    token.tokenKind == .unknown {
+                    unknownCount += 1
+                    if unknownCount > 1 {
+                        return true
+                    }
+                }
+            }
+            return false
+        } else {
+            // Declaration.
+            if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
+                ¬hasReducedSetterAccessLevel,
+                isStored ∨ hasSetter {
+                return true
+            }
+            return false
         }
-        return false
     }
 
     internal var variableAPI: VariableAPI? {

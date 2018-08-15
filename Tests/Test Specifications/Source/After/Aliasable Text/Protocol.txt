@@ -17,6 +17,8 @@ public protocol Protocol {
     func requiredFunction()
     func possiblyRequiredFunction()
     func overrideableFunction()
+    var getOnlyProperty: B̲o̲o̲l̲ { unknown }
+    var getSetProperty: B̲o̲o̲l̲ { unknown unknown }
 }
 
 extension P̲r̲o̲t̲o̲c̲o̲l̲ {
