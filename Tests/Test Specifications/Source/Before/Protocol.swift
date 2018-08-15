@@ -31,3 +31,7 @@ extension Protocol where Self : OtherProtocol {
 }
 
 protocol InternalProtocol {}
+
+extension Protocol where Self.AssociatedType == Int {
+    public func conditionallyProvidedFunction() {}
+}
