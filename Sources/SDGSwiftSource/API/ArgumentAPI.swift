@@ -22,7 +22,7 @@ public struct ArgumentAPI {
         self.type = type
     }
 
-    private var label: String?
+    internal var label: String?
     private var name: String
     private var type: TypeReferenceAPI
 

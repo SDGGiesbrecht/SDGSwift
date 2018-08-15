@@ -18,12 +18,23 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?) {
+    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+
+        var arguments = arguments
+        if isOperator {
+            arguments = arguments.map({ argument in
+                var argument = argument
+                argument.label = nil
+                return argument
+            })
+        }
+
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
         self.throws = `throws`
         self.returnType = returnType
+        self.isOperator = isOperator
     }
 
     // MARK: - Properties
@@ -33,6 +44,8 @@ public class FunctionAPI : APIElement {
     private let arguments: [ArgumentAPI]
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
+
+    private let isOperator: Bool
 
     internal var isProtocolRequirement: Bool = false
     internal var hasDefaultImplementation: Bool = false
