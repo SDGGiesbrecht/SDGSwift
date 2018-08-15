@@ -66,16 +66,6 @@ public struct ModuleAPI {
         }
     }
 
-    private var _protocols: [ProtocolAPI] = []
-    private var protocols: [ProtocolAPI] {
-        get {
-            return _protocols
-        }
-        set {
-            _protocols = newValue.sorted()
-        }
-    }
-
     private var _extensions: [ExtensionAPI] = []
     private var extensions: [ExtensionAPI] {
         get {
@@ -83,6 +73,16 @@ public struct ModuleAPI {
         }
         set {
             _extensions = newValue.sorted()
+        }
+    }
+
+    private var _protocols: [ProtocolAPI] = []
+    private var protocols: [ProtocolAPI] {
+        get {
+            return _protocols
+        }
+        set {
+            _protocols = newValue.sorted()
         }
     }
 
@@ -108,7 +108,9 @@ public struct ModuleAPI {
 
     public var summary: String {
 
-        var children: [[String]] = (types as [APIElement] + protocols as [APIElement] + extensions as [APIElement]).sorted().map({ $0.summary })
+        var children: [[String]] = types.map({ $0.summary })
+        children += extensions.map({ $0.summary })
+        children += protocols.map({ $0.summary })
         children += functions.map({ $0.summary })
         children += globalVariables.map({ $0.summary })
 
