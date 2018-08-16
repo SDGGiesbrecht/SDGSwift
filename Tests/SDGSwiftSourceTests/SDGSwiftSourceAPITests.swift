@@ -26,7 +26,7 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftSourceAPITests : TestCase {
 
-    func testRealSource() throws { // #workaroun(Until API parsing is complete.)
+    func testRealSource() throws { // #workaround(Until API parsing is complete.)
 /*
         let libraries = thisRepository.location.deletingLastPathComponent()
         let cornerstone = PackageRepository(at: libraries.appendingPathComponent("SDGCornerstone"))

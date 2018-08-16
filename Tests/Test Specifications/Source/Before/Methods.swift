@@ -6,3 +6,7 @@ public struct StructureWithMethods {
 
     }
 }
+
+extension StructureWithMethods {
+    public static func extensionStaticMethod() {}
+}

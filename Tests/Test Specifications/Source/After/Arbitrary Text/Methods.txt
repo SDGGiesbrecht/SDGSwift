@@ -6,3 +6,7 @@ public ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲W̲i̲t̲h̲M̲e̲t̲h̲o̲d̲s̲ �
 
  ̲ ̲ ̲ ̲}
 }
+
+extension ̲StructureWithMethods ̲{
+ ̲ ̲ ̲ ̲public ̲static ̲func ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲S̲t̲a̲t̲i̲c̲M̲e̲t̲h̲o̲d̲() ̲{}
+}
