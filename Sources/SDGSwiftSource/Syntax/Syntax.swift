@@ -221,6 +221,10 @@ extension Syntax {
         return false
     }
 
+    private var hasDefault: Bool {
+        return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
+    }
+
     private func argumentAPI(forSubscript: Bool) -> ArgumentAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
             let possibleLabel: String = possibleLabelSyntax.identifierText,
@@ -241,7 +245,7 @@ extension Syntax {
                 label = nil
             }
 
-            return ArgumentAPI(label: label, name: name, isInOut: isInOut, type: type)
+            return ArgumentAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

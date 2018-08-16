@@ -26,3 +26,5 @@
 ̲/̲/̲ Overload
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ doSomething(̲_̲ unnamedParameter:̲ Int)̲ {̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ functionWith(̲defaultParameterOne:̲ Bool =̲ t̲r̲u̲e̲,̲ defaultParameterTwo:̲ Bool =̲ f̲a̲l̲s̲e̲)̲ {̲}̲
+̲

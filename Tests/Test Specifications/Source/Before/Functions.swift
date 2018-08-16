@@ -25,3 +25,5 @@ public func doSomething(_ unnamedParameter: String) {
 
 // Overload
 public func doSomething(_ unnamedParameter: Int) {}
+
+public func functionWith(defaultParameterOne: Bool = true, defaultParameterTwo: Bool = false) {}

@@ -1,2 +1,3 @@
 doSomething(_:) • func doSomething(_ unnamedParameter: Int)
  func doSomething(_ unnamedParameter: String)
+functionWith(defaultParameterOne:defaultParameterTwo:) • func functionWith(defaultParameterOne: Bool = default, defaultParameterTwo: Bool = default)
