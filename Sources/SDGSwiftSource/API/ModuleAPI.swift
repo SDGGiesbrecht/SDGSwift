@@ -24,32 +24,31 @@ public struct ModuleAPI {
     public init(module: PackageModel.Target) throws {
         name = module.name.decomposedStringWithCanonicalMapping
 
+        var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             let source = try Syntax.parse(sourceFile)
-            let api = source.api()
-            for element in api {
-                switch element {
-                case let type as TypeAPI :
-                    types.append(type)
-                case let `protocol` as ProtocolAPI :
-                    protocols.append(`protocol`)
-                case let `extension` as ExtensionAPI :
-                    `extensions`.append(`extension`)
-                case let function as FunctionAPI :
-                    functions.append(function)
-                case let globalVariable as VariableAPI :
-                    globalVariables.append(globalVariable)
-                default:
-                    if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
-                        print("Unidentified API element: \(Swift.type(of: element))")
-                    }
+            api += source.api()
+        }
+        api = APIElement.merge(elements: api)
 
+        for element in api {
+            switch element {
+            case let type as TypeAPI :
+                types.append(type)
+            case let `protocol` as ProtocolAPI :
+                protocols.append(`protocol`)
+            case let `extension` as ExtensionAPI :
+                `extensions`.append(`extension`)
+            case let function as FunctionAPI :
+                functions.append(function)
+            case let globalVariable as VariableAPI :
+                globalVariables.append(globalVariable)
+            default:
+                if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
+                    print("Unidentified API element: \(Swift.type(of: element))")
                 }
             }
         }
-
-        `extensions` = ExtensionAPI.combine(extensions: `extensions`)
-        functions = FunctionAPI.groupIntoOverloads(functions)
     }
 
     // MARK: - Properties
