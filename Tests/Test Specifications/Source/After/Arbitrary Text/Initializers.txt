@@ -13,4 +13,6 @@ public ̲struct ̲I̲n̲i̲t̲i̲a̲l̲i̲z̲a̲b̲l̲e̲ ̲{
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲private ̲init(p̲r̲i̲v̲a̲t̲e̲: ̲UInt) ̲{}
+
+ ̲ ̲ ̲ ̲public ̲init(_̲h̲i̲d̲d̲e̲n̲: ̲Bool) ̲{}
 }

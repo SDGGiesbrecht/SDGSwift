@@ -13,4 +13,6 @@ public struct Initializable {
     }
 
     private init(private: UInt) {}
+
+    public init(_hidden: Bool) {}
 }

@@ -230,7 +230,11 @@ extension UnknownDeclSyntax {
         if let keyword = initializerKeyword {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
             let isFailable = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.tokenKind == .postfixQuestionMark
-            return InitializerAPI(isFailable: isFailable, arguments: arguments(forSubscript: false), throws: `throws`)
+            let arguments = self.arguments(forSubscript: false)
+            if arguments.first?.label?.hasPrefix("_") == true {
+                return nil
+            }
+            return InitializerAPI(isFailable: isFailable, arguments: arguments, throws: `throws`)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
