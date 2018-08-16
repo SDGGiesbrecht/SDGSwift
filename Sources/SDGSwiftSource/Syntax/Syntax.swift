@@ -131,7 +131,7 @@ extension Syntax {
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isCaseSyntax {
-                return unknown.caseAPI.flatMap({[$0]}) ?? []
+                return unknown.caseAPI.flatMap({[$0]}) ?? [] // @exempt(from: tests) Never nil for valid source.
             } else if unknown.isExtensionSyntax {
                 return unknown.extensionAPI.flatMap({ [$0] }) ?? []
             } else {

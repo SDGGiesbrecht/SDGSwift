@@ -107,7 +107,7 @@ extension TokenSyntax {
             case .prefixOperator(let text), .postfixOperator(let text), .spacedBinaryOperator(let text), .unspacedBinaryOperator(let text):
                 return text
             default:
-                return nil
+                return nil // @exempt(from: tests) Never nil for valid source.
             }
         }
     }

@@ -34,7 +34,7 @@ extension TypeSyntax {
                     return type.reference
                 }
             } // @exempt(from: tests) Unreachable with valid source.
-            return TypeReferenceAPI(name: "?", genericArguments: [])
+            return TypeReferenceAPI(name: "?", genericArguments: []) // @exempt(from: tests)
         }
     }
 }
