@@ -19,16 +19,6 @@ public class FunctionAPI : APIElement {
     // MARK: - Initialization
 
     internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
-
-        var arguments = arguments
-        if isOperator {
-            arguments = arguments.map({ argument in
-                var argument = argument
-                argument.label = nil
-                return argument
-            })
-        }
-
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
@@ -98,7 +88,7 @@ public class FunctionAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name + "(" + arguments.map({ $0.functionNameForm }).joined() + ")"
+        return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
     public override var declaration: String {
@@ -106,7 +96,7 @@ public class FunctionAPI : APIElement {
         if isMutating {
             result += "mutating "
         }
-        result += "func " + _name + "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

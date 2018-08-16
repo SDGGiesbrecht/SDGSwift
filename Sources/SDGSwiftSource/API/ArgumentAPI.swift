@@ -30,6 +30,10 @@ public struct ArgumentAPI {
         return (label ?? "_") + ":"
     }
 
+    internal var operatorNameForm: String {
+        return "_:"
+    }
+
     internal var subscriptNameForm: String {
         return functionNameForm
     }
@@ -44,6 +48,10 @@ public struct ArgumentAPI {
         result += ": "
         result += type.description
         return result
+    }
+
+    internal var operatorDeclarationForm: String {
+        return name + ": " + type.description
     }
 
     internal var subscriptDeclarationForm: String {
