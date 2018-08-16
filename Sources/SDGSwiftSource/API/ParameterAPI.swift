@@ -58,11 +58,7 @@ public struct ParameterAPI {
     }
 
     internal var operatorDeclarationForm: String {
-        var result = name + ": " + (isInOut ? "inout " : "") + type.description
-        if hasDefault {
-            result += " = default"
-        }
-        return result
+        return name + ": " + (isInOut ? "inout " : "") + type.description
     }
 
     internal var subscriptDeclarationForm: String {
@@ -73,9 +69,6 @@ public struct ParameterAPI {
         result += name
         result += ": "
         result += (isInOut ? "inout " : "") + type.description
-        if hasDefault {
-            result += " = default"
-        }
         return result
     }
 }

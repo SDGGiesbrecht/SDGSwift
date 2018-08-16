@@ -20,7 +20,7 @@ public ̲struct ̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
  ̲ ̲ ̲ ̲private ̲subscript(p̲r̲i̲v̲a̲t̲e̲: ̲UInt) ̲-> ̲UInt ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲`private`
  ̲ ̲ ̲ ̲}
- ̲ ̲ ̲ ̲
+
  ̲ ̲ ̲ ̲public ̲subscript(i̲n̲O̲u̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲inout ̲Bool) ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
