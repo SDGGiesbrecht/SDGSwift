@@ -399,7 +399,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = functionKeyword,
             let nameToken = (child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierOrOperatorText {
+            let name = nameToken.identifierOrOperatorText,
+            ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
             return FunctionAPI(isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)

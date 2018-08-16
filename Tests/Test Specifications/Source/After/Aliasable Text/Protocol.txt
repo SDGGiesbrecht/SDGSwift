@@ -17,6 +17,7 @@ public protocol Protocol {
     func requiredFunction()
     func possiblyRequiredFunction()
     func overrideableFunction()
+    func _hiddenFunction()
     var getOnlyProperty: B̲o̲o̲l̲ { unknown }
     var getSetProperty: B̲o̲o̲l̲ { unknown unknown }
 }
