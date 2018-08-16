@@ -16,14 +16,16 @@ public struct ArgumentAPI {
 
     // MARK: - Initialization
 
-    internal init(label: String?, name: String, type: TypeReferenceAPI) {
+    internal init(label: String?, name: String, isInOut: Bool, type: TypeReferenceAPI) {
         self.label = label?.decomposedStringWithCanonicalMapping
         self.name = name.decomposedStringWithCanonicalMapping
+        self.isInOut = isInOut
         self.type = type
     }
 
     internal var label: String?
     private var name: String
+    private var isInOut: Bool
     private var type: TypeReferenceAPI
 
     internal var functionNameForm: String {
@@ -46,12 +48,12 @@ public struct ArgumentAPI {
             result = (label ?? "_") + " " + name
         }
         result += ": "
-        result += type.description
+        result += (isInOut ? "inout " : "") + type.description
         return result
     }
 
     internal var operatorDeclarationForm: String {
-        return name + ": " + type.description
+        return name + ": " + (isInOut ? "inout " : "") + type.description
     }
 
     internal var subscriptDeclarationForm: String {
@@ -61,7 +63,7 @@ public struct ArgumentAPI {
         }
         result += name
         result += ": "
-        result += type.description
+        result += (isInOut ? "inout " : "") + type.description
         return result
     }
 }

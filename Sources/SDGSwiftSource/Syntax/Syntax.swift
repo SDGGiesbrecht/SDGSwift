@@ -212,6 +212,15 @@ extension Syntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    private var isInOut: Bool {
+        if let unknownType = children.first(where: ({ $0 is UnknownTypeSyntax })),
+            let type = unknownType as? UnknownTypeSyntax,
+            type.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .inoutKeyword }) {
+            return true
+        }
+        return false
+    }
+
     private func argumentAPI(forSubscript: Bool) -> ArgumentAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
             let possibleLabel: String = possibleLabelSyntax.identifierText,
@@ -232,7 +241,7 @@ extension Syntax {
                 label = nil
             }
 
-            return ArgumentAPI(label: label, name: name, type: type)
+            return ArgumentAPI(label: label, name: name, isInOut: isInOut, type: type)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
