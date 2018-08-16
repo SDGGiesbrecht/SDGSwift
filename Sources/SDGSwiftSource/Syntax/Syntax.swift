@@ -205,7 +205,7 @@ extension Syntax {
 
     private var argumentType: TypeReferenceAPI? {
         for child in children {
-            if let type = child as? SimpleTypeIdentifierSyntax {
+            if let type = child as? TypeSyntax {
                 return type.reference
             }
         }

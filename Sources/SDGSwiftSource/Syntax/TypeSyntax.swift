@@ -24,8 +24,14 @@ extension TypeSyntax {
         default:
             for child in children {
                 if let type = child as? TokenSyntax,
-                    type.text ≠ "." {
+                    type.text ≠ ".",
+                    type.tokenKind ≠ .inoutKeyword {
                     return TypeReferenceAPI(name: type.text, genericArguments: [])
+                }
+            }
+            for child in children {
+                if let type = child as? SimpleTypeIdentifierSyntax {
+                    return type.reference
                 }
             } // @exempt(from: tests) Unreachable with valid source.
             return TypeReferenceAPI(name: "?", genericArguments: [])
