@@ -25,9 +25,9 @@ public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
 }
 
 public ̲enum ̲R̲a̲w̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲: ̲String ̲{
- ̲ ̲ ̲ ̲case ̲a̲ ̲= ̲"a̲"
- ̲ ̲ ̲ ̲case ̲b̲ ̲= ̲"b̲"
- ̲ ̲ ̲ ̲case ̲c̲ ̲= ̲"c̲"
+ ̲ ̲ ̲ ̲case ̲a̲ ̲= ̲"A̲"
+ ̲ ̲ ̲ ̲case ̲b̲ ̲= ̲"B̲"
+ ̲ ̲ ̲ ̲case ̲c̲ ̲= ̲"C̲"
 }
 
 public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲W̲i̲t̲h̲A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲V̲a̲l̲u̲e̲s̲ ̲{

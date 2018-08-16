@@ -300,7 +300,7 @@ extension UnknownDeclSyntax {
     }
 
     private var isSettable: Bool {
-        if (parent?.parent as? UnknownDeclSyntax)?.isProtocolSyntax == true  {
+        if (parent?.parent as? UnknownDeclSyntax)?.isProtocolSyntax == true {
             // Protocol requirement.
             var unknownCount = 0
             for child in children {

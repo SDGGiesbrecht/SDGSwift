@@ -25,9 +25,9 @@ public enum Enumeration {
 }
 
 public enum RawEnumeration: S̲t̲r̲i̲n̲g̲ {
-    case a = "a"
-    case b = "b"
-    case c = "c"
+    case a = "A"
+    case b = "B"
+    case c = "C"
 }
 
 public enum EnumerationWithAssociatedValues {
