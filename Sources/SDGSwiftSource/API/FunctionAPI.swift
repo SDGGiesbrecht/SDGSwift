@@ -18,7 +18,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
         self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
@@ -33,7 +33,7 @@ public class FunctionAPI : APIElement {
     internal let typeMethodKeyword: String?
     private let isMutating: Bool
     private let _name: String
-    private let arguments: [ArgumentAPI]
+    private let arguments: [ParameterAPI]
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
 

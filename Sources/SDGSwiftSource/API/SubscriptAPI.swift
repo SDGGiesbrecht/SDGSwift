@@ -16,7 +16,7 @@ public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(arguments: [ArgumentAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
+    internal init(arguments: [ParameterAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
         self.arguments = arguments
         self.returnType = returnType
         self.isSettable = isSettable
@@ -24,7 +24,7 @@ public class SubscriptAPI : APIElement {
 
     // MARK: - Properties
 
-    private let arguments: [ArgumentAPI]
+    private let arguments: [ParameterAPI]
     private let returnType: TypeReferenceAPI
     private var isSettable: Bool
 

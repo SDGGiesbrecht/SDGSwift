@@ -144,10 +144,10 @@ extension Syntax {
 
     // MARK: - Argument List API
 
-    internal func argumentListAPI(forSubscript: Bool) -> [ArgumentAPI] {
-        var arguments: [ArgumentAPI] = []
+    internal func argumentListAPI(forSubscript: Bool) -> [ParameterAPI] {
+        var arguments: [ParameterAPI] = []
         for child in children {
-            if let argument = child.argumentAPI(forSubscript: forSubscript) {
+            if let argument = child.parameterAPI(forSubscript: forSubscript) {
                 arguments.append(argument)
             }
         }
@@ -188,7 +188,7 @@ extension Syntax {
         return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
     }
 
-    private func argumentAPI(forSubscript: Bool) -> ArgumentAPI? {
+    private func parameterAPI(forSubscript: Bool) -> ParameterAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
             let possibleLabel: String = possibleLabelSyntax.identifierText,
             let type = argumentType {
@@ -208,7 +208,7 @@ extension Syntax {
                 label = nil
             }
 
-            return ArgumentAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
+            return ParameterAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

@@ -385,7 +385,7 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
+    private func arguments(forSubscript: Bool) -> [ParameterAPI] {
         for child in children where type(of: child) == Syntax.self {
             let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
             if ¬possibleArgumentList.isEmpty {
