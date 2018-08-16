@@ -31,6 +31,7 @@ public enum RawEnumeration: String {
 }
 
 public enum EnumerationWithAssociatedValues {
-    case simple
-    case complex(Bool)
+    case none
+    case one(Bool)
+    case two(Bool, Bool)
 }

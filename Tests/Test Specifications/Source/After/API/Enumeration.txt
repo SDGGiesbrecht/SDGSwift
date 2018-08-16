@@ -3,8 +3,9 @@ Enumeration • enum Enumeration
  b • case b
  c • case c
 EnumerationWithAssociatedValues • enum EnumerationWithAssociatedValues
- simple • case simple
- complex(_) • case complex(Bool)
+ none • case none
+ one(_) • case one(Bool)
+ two(_, _) • case two(Bool, Bool)
 RawEnumeration • enum RawEnumeration
  a • case a
  b • case b

@@ -18,7 +18,7 @@ public class CaseAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, associatedValues: [ArgumentAPI]) {
+    internal init(name: String, associatedValues: [TypeReferenceAPI]) {
         _name = name.decomposedStringWithCanonicalMapping
         self.associatedValues = associatedValues
     }
@@ -26,7 +26,7 @@ public class CaseAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
-    private let associatedValues: [ArgumentAPI]
+    private let associatedValues: [TypeReferenceAPI]
 
     // MARK: - APIElement
 
@@ -38,9 +38,7 @@ public class CaseAPI : APIElement {
         var result = "case " + name
         if ¬associatedValues.isEmpty {
             result += "("
-            for value in associatedValues {
-                result += value.functionDeclarationForm
-            }
+            result += associatedValues.map({ $0.description }).joined(separator: ", ")
             result += ")"
         }
         return result

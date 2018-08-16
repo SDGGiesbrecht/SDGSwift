@@ -31,6 +31,7 @@ public enum RawEnumeration: S̲t̲r̲i̲n̲g̲ {
 }
 
 public enum EnumerationWithAssociatedValues {
-    case simple
-    case complex(B̲o̲o̲l̲)
+    case none
+    case one(B̲o̲o̲l̲)
+    case two(B̲o̲o̲l̲, B̲o̲o̲l̲)
 }

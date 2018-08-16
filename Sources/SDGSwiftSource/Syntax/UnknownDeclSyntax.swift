@@ -435,12 +435,29 @@ extension UnknownDeclSyntax {
         return caseKeyword ≠ nil
     }
 
+    private var associatedValues: [TypeReferenceAPI] {
+        for tuple in children where tuple is UnknownTypeSyntax {
+            var result: [TypeReferenceAPI] = []
+            for component in tuple.children where Swift.type(of: component) == Syntax.self {
+                for nestingLevel in component.children {
+                    for child in nestingLevel.children {
+                        if let type = child as? TypeSyntax {
+                            result.append(type.reference)
+                        }
+                    }
+                }
+            }
+            return result
+        }
+        return []
+    }
+
     internal var caseAPI: CaseAPI? {
         if let keyword = caseKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
-            return CaseAPI(name: name, associatedValues: [])
+            return CaseAPI(name: name, associatedValues: associatedValues)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

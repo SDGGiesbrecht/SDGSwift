@@ -31,7 +31,8 @@
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ EnumerationWithAssociatedValues {̲
-̲    c̲a̲s̲e̲ simple
-̲    c̲a̲s̲e̲ complex(̲Bool)̲
+̲    c̲a̲s̲e̲ none
+̲    c̲a̲s̲e̲ one(̲Bool)̲
+̲    c̲a̲s̲e̲ two(̲Bool,̲ Bool)̲
 ̲}̲
 ̲
