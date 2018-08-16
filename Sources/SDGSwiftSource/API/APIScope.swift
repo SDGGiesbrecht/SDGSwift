@@ -37,7 +37,11 @@ public class APIScope : APIElement {
             case let `subscript` as SubscriptAPI :
                 subscripts.append(`subscript`)
             case let method as FunctionAPI :
-                methods.append(method)
+                if method.typeMethodKeyword ≠ nil {
+                    typeMethods.append(method)
+                } else {
+                    methods.append(method)
+                }
             default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug {
                     print("Unidentified API element: \(Swift.type(of: element))")
@@ -65,6 +69,16 @@ public class APIScope : APIElement {
         }
         set {
             _typeProperties = newValue.sorted()
+        }
+    }
+
+    private var _typeMethods: [FunctionAPI] = []
+    private var typeMethods: [FunctionAPI] {
+        get {
+            return _typeMethods
+        }
+        set {
+            _typeMethods = newValue.sorted()
         }
     }
 
@@ -129,6 +143,10 @@ public class APIScope : APIElement {
             prependCompilationCondition(compilationConditions, to: property)
             property.constraints.append(contentsOf: constraints)
         }
+        for method in typeMethods {
+            prependCompilationCondition(compilationConditions, to: method)
+            method.constraints.append(contentsOf: constraints)
+        }
         for initializer in initializers {
             prependCompilationCondition(compilationConditions, to: initializer)
             initializer.constraints.append(contentsOf: constraints)
@@ -170,6 +188,7 @@ public class APIScope : APIElement {
         `extension`.moveConditionsToChildren()
         subtypes.append(contentsOf: `extension`.subtypes)
         typeProperties.append(contentsOf: `extension`.typeProperties)
+        typeMethods.append(contentsOf: `extension`.typeMethods)
         initializers.append(contentsOf: `extension`.initializers)
         properties.append(contentsOf: `extension`.properties)
         subscripts.append(contentsOf: `extension`.subscripts)
@@ -185,6 +204,7 @@ public class APIScope : APIElement {
         var result: [String] = []
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        result += typeMethods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()

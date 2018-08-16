@@ -18,7 +18,8 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+        self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
@@ -29,6 +30,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Properties
 
+    internal let typeMethodKeyword: String?
     private let isMutating: Bool
     private let _name: String
     private let arguments: [ArgumentAPI]
@@ -66,7 +68,7 @@ public class FunctionAPI : APIElement {
         var sorted: [String: [FunctionAPI]] = [:]
 
         for function in functions {
-            sorted[function.name, default: []].append(function)
+            sorted[(function.typeMethodKeyword ≠ nil ? "static " : "") + function.name, default: []].append(function)
         }
 
         var result: [FunctionAPI] = []
@@ -93,6 +95,9 @@ public class FunctionAPI : APIElement {
 
     public override var declaration: String {
         var result = ""
+        if let typeKeyword = typeMethodKeyword {
+            result += typeKeyword + " "
+        }
         if isMutating {
             result += "mutating "
         }

@@ -1,2 +1,3 @@
 StructureWithMethods • struct StructureWithMethods
+ staticMethod() • static func staticMethod()
  mutateSomething() • mutating func mutateSomething()

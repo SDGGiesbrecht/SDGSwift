@@ -336,6 +336,10 @@ extension UnknownDeclSyntax {
 
     // MARK: - Variable Syntax
 
+    private var typeMethodKeyword: String? {
+        return typePropertyKeyword
+    }
+
     private var subscriptKeyword: TokenSyntax? {
         for child in children {
             if let token = child as? TokenSyntax,
@@ -406,7 +410,7 @@ extension UnknownDeclSyntax {
             ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+            return FunctionAPI(typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
