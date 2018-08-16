@@ -31,11 +31,17 @@ public class CaseAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        var result = _name
+        if ¬associatedValues.isEmpty {
+            result += "("
+            result += associatedValues.map({ _ in "_" }).joined(separator: ", ")
+            result += ")"
+        }
+        return result
     }
 
     public override var declaration: String {
-        var result = "case " + name
+        var result = "case " + _name
         if ¬associatedValues.isEmpty {
             result += "("
             result += associatedValues.map({ $0.description }).joined(separator: ", ")
