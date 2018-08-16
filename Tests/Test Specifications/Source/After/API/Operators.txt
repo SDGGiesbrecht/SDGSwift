@@ -1,0 +1,2 @@
+(Bool)
+ +=(_:_:) • func +=(precedingValue: inout Bool, followingValue: Bool)
