@@ -35,3 +35,8 @@ protocol InternalProtocol {}
 extension P̲r̲o̲t̲o̲c̲o̲l̲ where Self.A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲T̲y̲p̲e̲ =̲=̲ I̲n̲t̲ {
     public func conditionallyProvidedFunction() {}
 }
+
+public protocol ProtocolWithInheritanceAndConstraints : I̲n̲h̲e̲r̲i̲t̲e̲d̲O̲n̲e̲, I̲n̲h̲e̲r̲i̲t̲e̲d̲T̲w̲o̲
+where A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲T̲y̲p̲e̲ : O̲t̲h̲e̲r̲P̲r̲o̲t̲o̲c̲o̲l̲ {
+
+}

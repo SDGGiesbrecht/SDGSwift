@@ -36,3 +36,8 @@
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ conditionallyProvidedFunction(̲)̲ {̲}̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ ProtocolWithInheritanceAndConstraints :̲ InheritedOne,̲ InheritedTwo
+̲w̲h̲e̲r̲e̲ AssociatedType :̲ OtherProtocol {̲
+̲
+̲}̲
+̲

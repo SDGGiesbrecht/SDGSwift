@@ -35,3 +35,8 @@ protocol InternalProtocol {}
 extension Protocol where Self.AssociatedType == Int {
     public func conditionallyProvidedFunction() {}
 }
+
+public protocol ProtocolWithInheritanceAndConstraints : InheritedOne, InheritedTwo
+where AssociatedType : OtherProtocol {
+
+}

@@ -200,7 +200,7 @@ extension UnknownDeclSyntax {
         if let keyword = protocolKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

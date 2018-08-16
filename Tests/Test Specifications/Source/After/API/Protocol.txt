@@ -8,3 +8,6 @@ Protocol • protocol Protocol
   func possiblyRequiredFunction() where Self : OtherProtocol
  providedFunction() • func providedFunction()
  (required) requiredFunction() • func requiredFunction()
+ProtocolWithInheritanceAndConstraints • protocol ProtocolWithInheritanceAndConstraints where AssociatedType : OtherProtocol
+ InheritedOne
+ InheritedTwo
