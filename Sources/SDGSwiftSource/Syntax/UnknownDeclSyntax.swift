@@ -117,7 +117,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
             return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
@@ -199,8 +200,9 @@ extension UnknownDeclSyntax {
         }
         if let keyword = protocolKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
-            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
+            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -228,7 +230,11 @@ extension UnknownDeclSyntax {
         if let keyword = initializerKeyword {
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
             let isFailable = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.tokenKind == .postfixQuestionMark
-            return InitializerAPI(isFailable: isFailable, arguments: arguments(forSubscript: false), throws: `throws`)
+            let arguments = self.arguments(forSubscript: false)
+            if arguments.first?.label?.hasPrefix("_") == true {
+                return nil
+            }
+            return InitializerAPI(isFailable: isFailable, arguments: arguments, throws: `throws`)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -294,12 +300,28 @@ extension UnknownDeclSyntax {
     }
 
     private var isSettable: Bool {
-        if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
-            ¬hasReducedSetterAccessLevel,
-            isStored ∨ hasSetter {
-            return true
+        if (parent?.parent as? UnknownDeclSyntax)?.isProtocolSyntax == true {
+            // Protocol requirement.
+            var unknownCount = 0
+            for child in children {
+                if let token = child as? TokenSyntax,
+                    token.tokenKind == .unknown {
+                    unknownCount += 1
+                    if unknownCount > 1 {
+                        return true
+                    }
+                }
+            }
+            return false
+        } else {
+            // Declaration.
+            if variableKeyword?.tokenKind == .varKeyword ∨ subscriptKeyword ≠ nil,
+                ¬hasReducedSetterAccessLevel,
+                isStored ∨ hasSetter {
+                return true
+            }
+            return false
         }
-        return false
     }
 
     internal var variableAPI: VariableAPI? {
@@ -308,7 +330,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
             let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
             return VariableAPI(typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
@@ -316,6 +339,10 @@ extension UnknownDeclSyntax {
     }
 
     // MARK: - Variable Syntax
+
+    private var typeMethodKeyword: String? {
+        return typePropertyKeyword
+    }
 
     private var subscriptKeyword: TokenSyntax? {
         for child in children {
@@ -358,7 +385,7 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private func arguments(forSubscript: Bool) -> [ArgumentAPI] {
+    private func arguments(forSubscript: Bool) -> [ParameterAPI] {
         for child in children where type(of: child) == Syntax.self {
             let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
             if ¬possibleArgumentList.isEmpty {
@@ -382,10 +409,55 @@ extension UnknownDeclSyntax {
             return nil
         }
         if let keyword = functionKeyword,
-            let name = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.identifierText {
+            let nameToken = (child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierOrOperatorText,
+            ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType)
+            return FunctionAPI(typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
+    // MARK: - Case Syntax
+
+    private var caseKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .caseKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isCaseSyntax: Bool {
+        return caseKeyword ≠ nil
+    }
+
+    private var associatedValues: [TypeReferenceAPI] {
+        for tuple in children where tuple is UnknownTypeSyntax {
+            var result: [TypeReferenceAPI] = []
+            for component in tuple.children where Swift.type(of: component) == Syntax.self {
+                for nestingLevel in component.children {
+                    for child in nestingLevel.children {
+                        if let type = child as? TypeSyntax {
+                            result.append(type.reference)
+                        }
+                    }
+                }
+            }
+            return result
+        }
+        return []
+    }
+
+    internal var caseAPI: CaseAPI? {
+        if let keyword = caseKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
+            return CaseAPI(name: name, associatedValues: associatedValues)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

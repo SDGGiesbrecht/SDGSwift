@@ -13,4 +13,6 @@ public struct Initializable {
     }
 
     private init(private: U̲I̲n̲t̲) {}
+
+    public init(_hidden: B̲o̲o̲l̲) {}
 }

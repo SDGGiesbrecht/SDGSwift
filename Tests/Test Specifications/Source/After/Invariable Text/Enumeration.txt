@@ -12,9 +12,27 @@
 ̲ See h̲t̲t̲p̲:̲/̲/̲w̲w̲w̲.̲a̲p̲a̲c̲h̲e̲.̲o̲r̲g̲/̲l̲i̲c̲e̲n̲s̲e̲s̲/̲L̲I̲C̲E̲N̲S̲E̲-̲2̲.̲0̲ for licence information.
 ̲ *̲/̲
 ̲
-̲e̲n̲u̲m̲ Enumeration {̲
+̲e̲n̲u̲m̲ InternalEnumeration {̲
 ̲    c̲a̲s̲e̲ a
 ̲    c̲a̲s̲e̲ b
 ̲    c̲a̲s̲e̲ c
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ Enumeration {̲
+̲    c̲a̲s̲e̲ a
+̲    c̲a̲s̲e̲ b
+̲    c̲a̲s̲e̲ c
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ RawEnumeration:̲ String {̲
+̲    c̲a̲s̲e̲ a =̲ "̲A"̲
+̲    c̲a̲s̲e̲ b =̲ "̲B"̲
+̲    c̲a̲s̲e̲ c =̲ "̲C"̲
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ EnumerationWithAssociatedValues {̲
+̲    c̲a̲s̲e̲ none
+̲    c̲a̲s̲e̲ one(̲Bool)̲
+̲    c̲a̲s̲e̲ two(̲Bool,̲ Bool)̲
 ̲}̲
 ̲

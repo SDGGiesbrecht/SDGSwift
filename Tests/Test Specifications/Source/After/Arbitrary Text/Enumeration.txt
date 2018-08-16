@@ -12,8 +12,26 @@
  ̲S̲e̲e̲ ̲http://www.apache.org/licenses/LICENSE-2.0 ̲f̲o̲r̲ ̲l̲i̲c̲e̲n̲c̲e̲ ̲i̲n̲f̲o̲r̲m̲a̲t̲i̲o̲n̲.̲
  ̲*/
 
-enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
+enum ̲I̲n̲t̲e̲r̲n̲a̲l̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
  ̲ ̲ ̲ ̲case ̲a̲
  ̲ ̲ ̲ ̲case ̲b̲
  ̲ ̲ ̲ ̲case ̲c̲
+}
+
+public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
+ ̲ ̲ ̲ ̲case ̲a̲
+ ̲ ̲ ̲ ̲case ̲b̲
+ ̲ ̲ ̲ ̲case ̲c̲
+}
+
+public ̲enum ̲R̲a̲w̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲: ̲String ̲{
+ ̲ ̲ ̲ ̲case ̲a̲ ̲= ̲"A̲"
+ ̲ ̲ ̲ ̲case ̲b̲ ̲= ̲"B̲"
+ ̲ ̲ ̲ ̲case ̲c̲ ̲= ̲"C̲"
+}
+
+public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲W̲i̲t̲h̲A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲V̲a̲l̲u̲e̲s̲ ̲{
+ ̲ ̲ ̲ ̲case ̲n̲o̲n̲e̲
+ ̲ ̲ ̲ ̲case ̲o̲n̲e̲(Bool)
+ ̲ ̲ ̲ ̲case ̲t̲w̲o̲(Bool, ̲Bool)
 }

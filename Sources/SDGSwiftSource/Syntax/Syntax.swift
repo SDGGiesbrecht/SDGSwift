@@ -86,46 +86,7 @@ extension Syntax {
 
     internal func apiChildren() -> [APIElement] {
         let elements = Array(children.map({ $0.api() }).joined())
-
-        var extensions: [ExtensionAPI] = []
-        var functions: [FunctionAPI] = []
-        var types: [TypeAPI] = []
-        var protocols: [ProtocolAPI] = []
-        var other: [APIElement] = []
-        for element in elements {
-            switch element {
-            case let `extension` as ExtensionAPI :
-                extensions.append(`extension`)
-            case let type as TypeAPI :
-                types.append(type)
-            case let `protocol` as ProtocolAPI :
-                protocols.append(`protocol`)
-            case let function as FunctionAPI :
-                functions.append(function)
-            default:
-                other.append(element)
-            }
-        }
-
-        var unmergedExtensions: [ExtensionAPI] = []
-        extensionIteration: for `extension` in extensions {
-            let extensionType = `extension`.type
-            for type in types where extensionType == type.typeName {
-                type.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            for `protocol` in protocols where extensionType.description == `protocol`.name {
-                `protocol`.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            `extension`.moveConditionsToChildren()
-            unmergedExtensions.append(`extension`)
-        }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
-
-        functions = FunctionAPI.groupIntoOverloads(functions)
-
-        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
+        return APIElement.merge(elements: elements)
     }
 
     internal func isPublic() -> Bool {
@@ -169,6 +130,8 @@ extension Syntax {
                 return unknown.subscriptAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isCaseSyntax {
+                return unknown.caseAPI.flatMap({[$0]}) ?? [] // @exempt(from: tests) Never nil for valid source.
             } else if unknown.isExtensionSyntax {
                 return unknown.extensionAPI.flatMap({ [$0] }) ?? []
             } else {
@@ -181,10 +144,10 @@ extension Syntax {
 
     // MARK: - Argument List API
 
-    internal func argumentListAPI(forSubscript: Bool) -> [ArgumentAPI] {
-        var arguments: [ArgumentAPI] = []
+    internal func argumentListAPI(forSubscript: Bool) -> [ParameterAPI] {
+        var arguments: [ParameterAPI] = []
         for child in children {
-            if let argument = child.argumentAPI(forSubscript: forSubscript) {
+            if let argument = child.parameterAPI(forSubscript: forSubscript) {
                 arguments.append(argument)
             }
         }
@@ -205,14 +168,27 @@ extension Syntax {
 
     private var argumentType: TypeReferenceAPI? {
         for child in children {
-            if let type = child as? SimpleTypeIdentifierSyntax {
+            if let type = child as? TypeSyntax {
                 return type.reference
             }
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    private func argumentAPI(forSubscript: Bool) -> ArgumentAPI? {
+    private var isInOut: Bool {
+        if let unknownType = children.first(where: ({ $0 is UnknownTypeSyntax })),
+            let type = unknownType as? UnknownTypeSyntax,
+            type.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .inoutKeyword }) {
+            return true
+        }
+        return false
+    }
+
+    private var hasDefault: Bool {
+        return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
+    }
+
+    private func parameterAPI(forSubscript: Bool) -> ParameterAPI? {
         if let possibleLabelSyntax = possibleArgumentLabel,
             let possibleLabel: String = possibleLabelSyntax.identifierText,
             let type = argumentType {
@@ -232,7 +208,7 @@ extension Syntax {
                 label = nil
             }
 
-            return ArgumentAPI(label: label, name: name, type: type)
+            return ParameterAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

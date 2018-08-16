@@ -1,6 +1,12 @@
 public struct StructureWithMethods {
 
+    public static func staticMethod() {}
+
     public m̲u̲t̲a̲t̲i̲n̲g̲ func mutateSomething() {
 
     }
+}
+
+extension S̲t̲r̲u̲c̲t̲u̲r̲e̲W̲i̲t̲h̲M̲e̲t̲h̲o̲d̲s̲ {
+    public static func extensionStaticMethod() {}
 }

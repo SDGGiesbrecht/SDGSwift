@@ -25,3 +25,7 @@ public func doSomething(_ unnamedParameter: S̲t̲r̲i̲n̲g̲) {
 
 // Overload
 public func doSomething(_ unnamedParameter: I̲n̲t̲) {}
+
+public func functionWith(defaultParameterOne: B̲o̲o̲l̲ = true, defaultParameterTwo: B̲o̲o̲l̲ = false) {}
+
+public func function(withInOutParameter: inout B̲o̲o̲l̲) {}

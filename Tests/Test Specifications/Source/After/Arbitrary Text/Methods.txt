@@ -1,6 +1,12 @@
 public ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲W̲i̲t̲h̲M̲e̲t̲h̲o̲d̲s̲ ̲{
 
+ ̲ ̲ ̲ ̲public ̲static ̲func ̲s̲t̲a̲t̲i̲c̲M̲e̲t̲h̲o̲d̲() ̲{}
+
  ̲ ̲ ̲ ̲public ̲mutating ̲func ̲m̲u̲t̲a̲t̲e̲S̲o̲m̲e̲t̲h̲i̲n̲g̲() ̲{
 
  ̲ ̲ ̲ ̲}
+}
+
+extension ̲StructureWithMethods ̲{
+ ̲ ̲ ̲ ̲public ̲static ̲func ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲S̲t̲a̲t̲i̲c̲M̲e̲t̲h̲o̲d̲() ̲{}
 }

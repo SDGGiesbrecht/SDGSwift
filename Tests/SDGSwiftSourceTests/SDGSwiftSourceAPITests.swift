@@ -26,14 +26,14 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftSourceAPITests : TestCase {
 
-    func testRealSource() throws { // #workaroun(Until API parsing is complete.)
+    func testRealSource() throws { // #workaround(Until API parsing is complete.)
 /*
         let libraries = thisRepository.location.deletingLastPathComponent()
         let cornerstone = PackageRepository(at: libraries.appendingPathComponent("SDGCornerstone"))
         for target in try cornerstone.package().targets where target.name == "SDGCalendar" {
             print(try ModuleAPI(module: target).summary)
         }
- */
+*/
     }
 
     func testAPIParsing() throws {
@@ -81,7 +81,9 @@ class SDGSwiftSourceAPITests : TestCase {
             let originalSource = try String(from: url)
             var roundTripSource = ""
             sourceFile.write(to: &roundTripSource)
-            if ¬roundTripSource.contains("unknown {") ∧ ¬roundTripSource.contains("interpolated") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
+            if ¬roundTripSource.contains("unknown {")
+                ∧ ¬roundTripSource.contains("interpolated")
+                ∧ ¬roundTripSource.contains("{ unknown") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
                 XCTAssertEqual(roundTripSource, originalSource)
             }
 

@@ -16,7 +16,7 @@ public class InitializerAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isFailable: Bool, arguments: [ArgumentAPI], throws: Bool) {
+    internal init(isFailable: Bool, arguments: [ParameterAPI], throws: Bool) {
         self.isFailable = isFailable
         self.arguments = arguments
         self.throws = `throws`
@@ -25,7 +25,7 @@ public class InitializerAPI : APIElement {
     // MARK: - Properties
 
     private let isFailable: Bool
-    private let arguments: [ArgumentAPI]
+    private let arguments: [ParameterAPI]
     private let `throws`: Bool
 
     // MARK: - APIElement

@@ -17,6 +17,9 @@
 ̲    f̲u̲n̲c̲ requiredFunction(̲)̲
 ̲    f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
 ̲    f̲u̲n̲c̲ overrideableFunction(̲)̲
+̲    f̲u̲n̲c̲ _hiddenFunction(̲)̲
+̲    v̲a̲r̲ getOnlyProperty:̲ Bool {̲ u̲n̲k̲n̲o̲w̲n̲ }̲
+̲    v̲a̲r̲ getSetProperty:̲ Bool {̲ u̲n̲k̲n̲o̲w̲n̲ u̲n̲k̲n̲o̲w̲n̲ }̲
 ̲}̲
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol {̲
@@ -29,4 +32,13 @@
 ̲}̲
 ̲
 ̲p̲r̲o̲t̲o̲c̲o̲l̲ InternalProtocol {̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol w̲h̲e̲r̲e̲ S̲e̲l̲f̲.̲AssociatedType == Int {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ conditionallyProvidedFunction(̲)̲ {̲}̲
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ ProtocolWithInheritanceAndConstraints :̲ InheritedOne,̲ InheritedTwo
+̲w̲h̲e̲r̲e̲ AssociatedType :̲ OtherProtocol {̲
+̲
+̲}̲
 ̲

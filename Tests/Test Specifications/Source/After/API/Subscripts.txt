@@ -1,4 +1,5 @@
 Subscripted • struct Subscripted
+ [_:] • subscript(inOutParameter: inout Bool) -> Bool { get }
  [_:] • subscript(readOnly: Int) -> Int { get }
  [_:] • subscript(readWrite: String) -> String { get set }
  [x:y:] • subscript(x x: Int, y y: Int) -> Int { get }

@@ -17,6 +17,9 @@ public protocol Protocol {
     func requiredFunction()
     func possiblyRequiredFunction()
     func overrideableFunction()
+    func _hiddenFunction()
+    var getOnlyProperty: Bool { get }
+    var getSetProperty: Bool { get set }
 }
 
 extension Protocol {
@@ -29,3 +32,12 @@ extension Protocol where Self : OtherProtocol {
 }
 
 protocol InternalProtocol {}
+
+extension Protocol where Self.AssociatedType == Int {
+    public func conditionallyProvidedFunction() {}
+}
+
+public protocol ProtocolWithInheritanceAndConstraints : InheritedOne, InheritedTwo
+where AssociatedType : OtherProtocol {
+
+}

@@ -18,21 +18,26 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isMutating: Bool, name: String, arguments: [ArgumentAPI], throws: Bool, returnType: TypeReferenceAPI?) {
+    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+        self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
         self.arguments = arguments
         self.throws = `throws`
         self.returnType = returnType
+        self.isOperator = isOperator
     }
 
     // MARK: - Properties
 
+    internal let typeMethodKeyword: String?
     private let isMutating: Bool
     private let _name: String
-    private let arguments: [ArgumentAPI]
+    private let arguments: [ParameterAPI]
     private let `throws`: Bool
     private let returnType: TypeReferenceAPI?
+
+    private let isOperator: Bool
 
     internal var isProtocolRequirement: Bool = false
     internal var hasDefaultImplementation: Bool = false
@@ -63,7 +68,7 @@ public class FunctionAPI : APIElement {
         var sorted: [String: [FunctionAPI]] = [:]
 
         for function in functions {
-            sorted[function.name, default: []].append(function)
+            sorted[(function.typeMethodKeyword ≠ nil ? "static " : "") + function.name, default: []].append(function)
         }
 
         var result: [FunctionAPI] = []
@@ -85,15 +90,18 @@ public class FunctionAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name + "(" + arguments.map({ $0.functionNameForm }).joined() + ")"
+        return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
     public override var declaration: String {
         var result = ""
+        if let typeKeyword = typeMethodKeyword {
+            result += typeKeyword + " "
+        }
         if isMutating {
             result += "mutating "
         }
-        result += "func " + _name + "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

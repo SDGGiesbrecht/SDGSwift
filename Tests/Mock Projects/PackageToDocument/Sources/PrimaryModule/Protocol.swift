@@ -1,5 +1,5 @@
 /*
- Enumeration.swift
+ Protocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,26 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum InternalEnumeration {
-    case a
-    case b
-    case c
-}
+public protocol Protocol {
 
-public enum Enumeration {
-    case a
-    case b
-    case c
-}
-
-public enum RawEnumeration: String {
-    case a = "A"
-    case b = "B"
-    case c = "C"
-}
-
-public enum EnumerationWithAssociatedValues {
-    case none
-    case one(Bool)
-    case two(Bool, Bool)
 }

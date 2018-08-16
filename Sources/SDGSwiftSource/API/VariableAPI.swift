@@ -25,10 +25,10 @@ public class VariableAPI : APIElement {
 
     // MARK: - Properties
 
-    internal var typePropertyKeyword: String?
-    private var _name: String
-    private var type: TypeReferenceAPI?
-    private var isSettable: Bool
+    internal let typePropertyKeyword: String?
+    private let _name: String
+    private let type: TypeReferenceAPI?
+    private let isSettable: Bool
 
     // MARK: - APIElement
 
