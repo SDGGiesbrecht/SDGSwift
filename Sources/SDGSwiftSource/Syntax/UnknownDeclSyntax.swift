@@ -117,7 +117,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = typeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
             return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
@@ -199,7 +200,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = protocolKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
             return ProtocolAPI(name: name, conformances: conformances, constraints: constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
@@ -324,7 +326,8 @@ extension UnknownDeclSyntax {
         }
         if let keyword = variableKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
             let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
             return VariableAPI(typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
