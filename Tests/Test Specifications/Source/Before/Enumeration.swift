@@ -12,8 +12,25 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum Enumeration {
+enum InternalEnumeration {
     case a
     case b
     case c
+}
+
+public enum Enumeration {
+    case a
+    case b
+    case c
+}
+
+public enum RawEnumeration: String {
+    case a = "a"
+    case b = "b"
+    case c = "c"
+}
+
+public enum EnumerationWithAssociatedValues {
+    case simple
+    case complex(Bool)
 }

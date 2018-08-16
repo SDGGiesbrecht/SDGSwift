@@ -419,6 +419,32 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
+    // MARK: - Case Syntax
+
+    private var caseKeyword: TokenSyntax? {
+        for child in children {
+            if let token = child as? TokenSyntax,
+                token.tokenKind == .caseKeyword {
+                return token
+            }
+        }
+        return nil
+    }
+
+    internal var isCaseSyntax: Bool {
+        return caseKeyword ≠ nil
+    }
+
+    internal var caseAPI: CaseAPI? {
+        if let keyword = caseKeyword,
+            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
+            let name = nameToken.identifierText,
+            ¬name.hasPrefix("_") {
+            return CaseAPI(name: name, associatedValues: [])
+        }
+        return nil // @exempt(from: tests) Theoretically unreachable.
+    }
+
     // MARK: - Extension Syntax
 
     private var extensionKeyword: TokenSyntax? {

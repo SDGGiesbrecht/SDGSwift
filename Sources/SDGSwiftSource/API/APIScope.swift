@@ -24,6 +24,8 @@ public class APIScope : APIElement {
         self.conformances = conformances
         for element in children {
             switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
+            case let `case` as CaseAPI :
+                cases.append(`case`)
             case let subtype as TypeAPI :
                 subtypes.append(subtype)
             case let initializer as InitializerAPI :
@@ -51,6 +53,16 @@ public class APIScope : APIElement {
     }
 
     // MARK: - Properties
+
+    private var _cases: [CaseAPI] = []
+    private var cases: [CaseAPI] {
+        get {
+            return _cases
+        }
+        set {
+            _cases = newValue.sorted()
+        }
+    }
 
     private var _subtypes: [TypeAPI] = []
     private var subtypes: [TypeAPI] {
@@ -202,6 +214,7 @@ public class APIScope : APIElement {
 
     internal var scopeSummary: [String] {
         var result: [String] = []
+        result += cases.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
         result += typeMethods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()

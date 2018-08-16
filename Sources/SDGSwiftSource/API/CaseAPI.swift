@@ -1,5 +1,5 @@
 /*
- VariableAPI.swift
+ CaseAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,23 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement {
+import SDGLogic
+
+public class CaseAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typePropertyKeyword: String?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
-        self.typePropertyKeyword = typePropertyKeyword
+    internal init(name: String, associatedValues: [ArgumentAPI]) {
         _name = name.decomposedStringWithCanonicalMapping
-        self.type = type
-        self.isSettable = isSettable
+        self.associatedValues = associatedValues
     }
 
     // MARK: - Properties
 
-    internal let typePropertyKeyword: String?
     private let _name: String
-    private let type: TypeReferenceAPI?
-    private let isSettable: Bool
+    private let associatedValues: [ArgumentAPI]
 
     // MARK: - APIElement
 
@@ -37,20 +35,14 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = ""
-        if let typePropertyKeyword = self.typePropertyKeyword {
-            result += typePropertyKeyword + " "
+        var result = "case " + name
+        if ¬associatedValues.isEmpty {
+            result += "("
+            for value in associatedValues {
+                result += value.functionDeclarationForm
+            }
+            result += ")"
         }
-        result += "var " + _name
-        if let type = self.type {
-            result += ": " + type.description
-        }
-        appendConstraintDescriptions(to: &result)
-        result += " { get "
-        if isSettable {
-            result += "set "
-        }
-        result += "}"
         return result
     }
 

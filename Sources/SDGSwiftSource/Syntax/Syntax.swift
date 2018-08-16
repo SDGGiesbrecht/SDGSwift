@@ -169,6 +169,8 @@ extension Syntax {
                 return unknown.subscriptAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
+            } else if unknown.isCaseSyntax {
+                return unknown.caseAPI.flatMap({[$0]}) ?? []
             } else if unknown.isExtensionSyntax {
                 return unknown.extensionAPI.flatMap({ [$0] }) ?? []
             } else {
