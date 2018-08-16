@@ -86,46 +86,7 @@ extension Syntax {
 
     internal func apiChildren() -> [APIElement] {
         let elements = Array(children.map({ $0.api() }).joined())
-
-        var extensions: [ExtensionAPI] = []
-        var functions: [FunctionAPI] = []
-        var types: [TypeAPI] = []
-        var protocols: [ProtocolAPI] = []
-        var other: [APIElement] = []
-        for element in elements {
-            switch element {
-            case let `extension` as ExtensionAPI :
-                extensions.append(`extension`)
-            case let type as TypeAPI :
-                types.append(type)
-            case let `protocol` as ProtocolAPI :
-                protocols.append(`protocol`)
-            case let function as FunctionAPI :
-                functions.append(function)
-            default:
-                other.append(element)
-            }
-        }
-
-        var unmergedExtensions: [ExtensionAPI] = []
-        extensionIteration: for `extension` in extensions {
-            let extensionType = `extension`.type
-            for type in types where extensionType == type.typeName {
-                type.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            for `protocol` in protocols where extensionType.description == `protocol`.name {
-                `protocol`.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            `extension`.moveConditionsToChildren()
-            unmergedExtensions.append(`extension`)
-        }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
-
-        functions = FunctionAPI.groupIntoOverloads(functions)
-
-        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
+        return APIElement.merge(elements: elements)
     }
 
     internal func isPublic() -> Bool {
