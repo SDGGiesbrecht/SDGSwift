@@ -20,4 +20,8 @@ public struct Subscripted {
     private subscript(private: UInt) -> UInt {
         return `private`
     }
+    
+    public subscript(inOutParameter: inout Bool) -> Bool {
+        return false
+    }
 }

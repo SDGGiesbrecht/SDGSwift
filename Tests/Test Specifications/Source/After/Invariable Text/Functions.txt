@@ -28,3 +28,5 @@
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ functionWith(̲defaultParameterOne:̲ Bool =̲ t̲r̲u̲e̲,̲ defaultParameterTwo:̲ Bool =̲ f̲a̲l̲s̲e̲)̲ {̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ function(̲withInOutParameter:̲ i̲n̲o̲u̲t̲ Bool)̲ {̲}̲
+̲

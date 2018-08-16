@@ -27,3 +27,5 @@ public func doSomething(_ unnamedParameter: String) {
 public func doSomething(_ unnamedParameter: Int) {}
 
 public func functionWith(defaultParameterOne: Bool = true, defaultParameterTwo: Bool = false) {}
+
+public func function(withInOutParameter: inout Bool) {}
