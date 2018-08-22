@@ -16,13 +16,14 @@ import SDGControlFlow
 
 import SDGSwiftPackageManager
 
-public struct ModuleAPI {
+public class ModuleAPI : APIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
     public init(module: PackageModel.Target) throws {
-        name = module.name.decomposedStringWithCanonicalMapping
+        _name = module.name.decomposedStringWithCanonicalMapping
+        super.init()
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -53,7 +54,10 @@ public struct ModuleAPI {
 
     // MARK: - Properties
 
-    private let name: String
+    private let _name: String
+    public override var name: String {
+        return _name
+    }
 
     private var _types: [TypeAPI] = []
     private var types: [TypeAPI] {
@@ -105,7 +109,7 @@ public struct ModuleAPI {
         }
     }
 
-    public var summary: String {
+    public override var summary: [String] {
 
         var children: [[String]] = types.map({ $0.summary })
         children += extensions.map({ $0.summary })
@@ -114,6 +118,6 @@ public struct ModuleAPI {
         children += globalVariables.map({ $0.summary })
 
         let flattenedChildren = children.joined().map({ $0.prepending(" ") })
-        return ([name] + flattenedChildren).joined(separator: "\n")
+        return [name] + flattenedChildren
     }
 }

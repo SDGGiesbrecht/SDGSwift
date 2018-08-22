@@ -40,7 +40,7 @@ class SDGSwiftSourceAPITests : TestCase {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent("PackageToDocument"))
         for target in try package.package().targets {
             let specification = testSpecificationDirectory().appendingPathComponent("API/Modules/\(target.name).txt")
-            let parsed = try ModuleAPI(module: target).summary
+            let parsed = try ModuleAPI(module: target).summary.joined(separator: "\n")
             SDGPersistenceTestUtilities.compare(parsed, against: specification, overwriteSpecificationInsteadOfFailing: false)
         }
     }

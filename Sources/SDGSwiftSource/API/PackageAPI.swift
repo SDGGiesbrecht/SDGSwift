@@ -14,24 +14,27 @@
 
 import SDGSwiftPackageManager
 
-public struct PackageAPI {
+public class PackageAPI : APIElement {
 
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
     public init(package: PackageModel.Package) throws {
-        name = package.name.decomposedStringWithCanonicalMapping
+        _name = package.name.decomposedStringWithCanonicalMapping
     }
 
     // MARK: - Properties
 
-    public let name: String
+    private let _name: String
+    public override var name: String {
+        return _name
+    }
 
-    private var declaration: String {
+    public override var declaration: String {
         return "Package(name: \u{22}\(name)\u{22})"
     }
 
-    private var summary: [String] {
+    public override var summary: [String] {
         return [name + " • " + declaration]
     }
 }
