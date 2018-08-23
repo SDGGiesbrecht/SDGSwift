@@ -38,5 +38,19 @@ public class DocumentationSyntax : MarkdownSyntax {
         let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
         defer { cmark_node_free(tree) }
         super.init(node: tree, in: source)
+
+        for child in children {
+            if let paragraph = child as? ParagraphSyntax, descriptionSection == nil {
+                descriptionSection = paragraph
+            } else {
+                discussionEntries.append(child)
+            }
+        }
     }
+
+    // MARK: - Properties
+
+    public private(set) var descriptionSection: ParagraphSyntax?
+
+    public private(set) var discussionEntries: [ExtendedSyntax] = []
 }

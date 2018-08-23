@@ -29,7 +29,6 @@ public class PackageAPI : APIElement {
         let manifest = try Syntax.parse(manifestURL)
 
         let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent
-        print(declaration)
         documentation = declaration?.documentation
     }
 
