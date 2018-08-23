@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 /// A syntax node.
 ///
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
@@ -48,10 +50,21 @@ public class ExtendedSyntax : TextOutputStreamable {
         return nil
     }
 
+    internal var renderedHTMLAttributes: [String: String] {
+        return [:]
+    }
+
     public func renderedHTML() -> String {
         var result = ""
         if let element = renderedHtmlElement {
-            result.append(contentsOf: "<" + element + ">")
+            result.append(contentsOf: "<" + element)
+            let attributes = renderedHTMLAttributes
+            if ¬attributes.isEmpty {
+                for key in attributes.keys.sorted() {
+                    result.append(contentsOf: " " + key + "=\u{22}" + attributes[key]! + "\u{22}")
+                }
+            }
+            result.append(contentsOf: ">")
         }
         for child in children {
             result.append(contentsOf: child.renderedHTML())
