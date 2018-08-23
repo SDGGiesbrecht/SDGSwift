@@ -17,7 +17,11 @@ import SDGCollections
 
 public class FragmentSyntax : ExtendedSyntax {
 
+    // MARK: - Initialization
+
     init(scalarOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
+        context = syntax
+
         var cropped: [ExtendedSyntax] = []
         var index = 0
         for child in syntax.children {
@@ -56,4 +60,8 @@ public class FragmentSyntax : ExtendedSyntax {
         }
         super.init(children: cropped)
     }
+
+    // MARK: - Properties
+
+    internal let context: ExtendedSyntax
 }

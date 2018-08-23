@@ -83,6 +83,8 @@ public class APIElement : Comparable, Hashable {
     }
     public internal(set) var compilationConditions: String?
 
+    public internal(set) var documentation: DocumentationSyntax?
+
     public var summary: [String] {
         primitiveMethod()
     }

@@ -142,6 +142,46 @@ extension Syntax {
         }
     }
 
+    internal var firstToken: TokenSyntax? {
+        if let token = self as? TokenSyntax {
+            return token
+        } else {
+            return child(at: 0)?.firstToken
+        }
+    }
+
+    internal var documentation: DocumentationSyntax? {
+        if let token = firstToken {
+            let leading = token.leadingTrivia
+            for index in leading.indices.lazy.reversed() {
+                let trivia = leading[index]
+                switch trivia {
+                case .docLineComment:
+                    let line = trivia.syntax(siblings: leading, index: index) as? LineDocumentationSyntax
+                    return line?.content.context as? DocumentationSyntax
+                case .docBlockComment:
+                    let block = trivia.syntax(siblings: leading, index: index) as? BlockDocumentationSyntax
+                    return block?.content.first as? DocumentationSyntax
+                default:
+                    continue
+                }
+            }
+        }
+        return nil
+    }
+
+    internal func smallestSubnode(containing searchTerm: String) -> Syntax? {
+        guard source().contains(searchTerm) else {
+            return nil
+        }
+        for child in children {
+            if let found = child.smallestSubnode(containing: searchTerm) {
+                return found
+            }
+        }
+        return self
+    }
+
     // MARK: - Argument List API
 
     internal func argumentListAPI(forSubscript: Bool) -> [ParameterAPI] {

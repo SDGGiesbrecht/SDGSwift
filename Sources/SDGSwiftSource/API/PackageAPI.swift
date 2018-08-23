@@ -16,11 +16,21 @@ import SDGSwiftPackageManager
 
 public class PackageAPI : APIElement {
 
+    // MARK: - Initialization
+
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
     public init(package: PackageModel.Package) throws {
         _name = package.name.decomposedStringWithCanonicalMapping
+        super.init()
+
+        let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
+        let manifest = try Syntax.parse(manifestURL)
+
+        let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent
+        print(declaration)
+        documentation = declaration?.documentation
     }
 
     // MARK: - Properties
