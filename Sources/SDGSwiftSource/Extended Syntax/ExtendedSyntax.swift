@@ -32,6 +32,36 @@ public class ExtendedSyntax : TextOutputStreamable {
         return result
     }
 
+    // MARK: - Syntax Colouring
+
+    public func syntaxColouredHTML() -> String {
+        var result = ""
+        for child in children {
+            result.append(contentsOf: child.syntaxColouredHTML())
+        }
+        return result
+    }
+
+    // MARK: - Rendering
+
+    internal var renderedHtmlElement: String? {
+        return nil
+    }
+
+    public func renderedHTML() -> String {
+        var result = ""
+        if let element = renderedHtmlElement {
+            result.append(contentsOf: "<" + element + ">")
+        }
+        for child in children {
+            result.append(contentsOf: child.renderedHTML())
+        }
+        if let element = renderedHtmlElement {
+            result.append(contentsOf: "</" + element + ">")
+        }
+        return result
+    }
+
     // MARK: - TextOutputStreamable
 
     public func write<Target>(to target: inout Target) where Target : TextOutputStream {

@@ -34,6 +34,21 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     /// The kind of the token.
     public let kind: ExtendedTokenKind
 
+    // MARK: - ExtendedSyntax
+
+    public override func renderedHTML() -> String {
+        switch kind {
+        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
+            return syntaxColouredHTML()
+        case .documentationText, .callout:
+            return text
+        case .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
+            return ""
+        case .lineSeparator:
+            return "<br>"
+        }
+    }
+
     // MARK: - TextOutputStreamable
 
     public override func write<Target>(to target: inout Target) where Target : TextOutputStream {

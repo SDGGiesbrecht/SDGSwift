@@ -14,4 +14,9 @@
 
 public class ParagraphSyntax : MarkdownSyntax {
 
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        return "p"
+    }
 }
