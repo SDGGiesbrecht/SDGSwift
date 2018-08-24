@@ -93,7 +93,7 @@ extension TokenSyntax {
             return "punctuation"
 
         case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
-            if name == "get" ∨ name == "set" {
+            if name == "get" ∨ name == "set" ∨ name == "mutating" {
                 return "keyword"
             }
 
