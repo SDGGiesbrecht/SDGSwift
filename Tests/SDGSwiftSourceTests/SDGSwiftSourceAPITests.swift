@@ -96,7 +96,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
             let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList }
             let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ $0.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) }).compactMap({ $0 }).joined(separator: "\n\n")
-            SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
+            SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: true)
         }
     }
 }
