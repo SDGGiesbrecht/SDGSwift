@@ -90,8 +90,12 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(highlighted, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             // API
-            let summary = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+            let api = sourceFile.api().sorted()
+            let summary = api.map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
             SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
+
+            let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ $0.declaration?.syntaxHighlightedHTML() }).compactMap({ $0 }).joined(separator: "\n\n")
+            SDGPersistenceTestUtilities.compare(syntaxHighlighting, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
         }
     }
 }

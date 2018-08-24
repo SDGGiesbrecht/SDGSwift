@@ -1,0 +1,19 @@
+protocol Protocol
+
+associatedtype AssociatedType
+
+var getOnlyProperty: Bool { get }
+
+var getSetProperty: Bool { get set }
+
+func conditionallyProvidedFunction() where AssociatedType == Int
+
+func overrideableFunction()
+
+func possiblyRequiredFunction()
+
+func providedFunction()
+
+func requiredFunction()
+
+protocol ProtocolWithInheritanceAndConstraints where AssociatedType : OtherProtocol
