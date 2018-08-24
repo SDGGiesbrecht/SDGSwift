@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 public class APIScope : APIElement {
 
@@ -144,21 +145,6 @@ public class APIScope : APIElement {
         }
     }
 
-    public override var children: AnyBidirectionalCollection<APIElement> {
-        let joined = ([
-            cases,
-            subtypes,
-            typeProperties,
-            typeMethods,
-            initializers,
-            properties,
-            subscripts,
-            methods,
-            conformances
-            ] as [[APIElement]]).joined()
-        return AnyBidirectionalCollection(joined)
-    }
-
     // MARK: - Merging
 
     internal func moveConditionsToChildren() {
@@ -198,6 +184,25 @@ public class APIScope : APIElement {
     }
 
     // MARK: - APIElement
+
+    internal var scopeIdentifiers: Set<String> {
+        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifiers }
+    }
+
+    public override var children: AnyBidirectionalCollection<APIElement> {
+        let joined = ([
+            cases,
+            subtypes,
+            typeProperties,
+            typeMethods,
+            initializers,
+            properties,
+            subscripts,
+            methods,
+            conformances
+            ] as [[APIElement]]).joined()
+        return AnyBidirectionalCollection(joined)
+    }
 
     internal var scopeSummary: [String] {
         return Array(children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined())

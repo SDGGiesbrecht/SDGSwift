@@ -26,11 +26,15 @@ public struct ParameterAPI {
         self.hasDefault = hasDefault
     }
 
+    // MARK: - Properties
+
     internal let label: String?
     private let name: String
     private let isInOut: Bool
     private let type: TypeReferenceAPI
     private let hasDefault: Bool
+
+    // MARK: - Forms
 
     internal var functionNameForm: String {
         return (label ?? "_") + ":"
@@ -42,6 +46,14 @@ public struct ParameterAPI {
 
     internal var subscriptNameForm: String {
         return functionNameForm
+    }
+
+    internal var identifiers: Set<String> {
+        if let label = self.label {
+            return [label]
+        } else {
+            return []
+        }
     }
 
     internal func functionDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {

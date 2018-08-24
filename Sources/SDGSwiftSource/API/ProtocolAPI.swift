@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
@@ -34,6 +36,10 @@ public class ProtocolAPI : APIScope {
 
     public override var name: String {
         return _name.description
+    }
+
+    internal override var identifiers: Set<String> {
+        return Set([_name]) ∪ scopeIdentifiers
     }
 
     public override var declaration: DeclSyntax {

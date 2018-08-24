@@ -72,6 +72,10 @@ public class APIElement : Comparable, Hashable {
         primitiveMethod()
     }
 
+    internal var identifiers: Set<String> {
+        return []
+    }
+
     private var _constraints: [ConstraintAPI] = []
     public internal(set) var constraints: [ConstraintAPI] {
         get {

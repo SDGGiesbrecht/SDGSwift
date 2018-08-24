@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public class InitializerAPI : APIElement {
 
@@ -34,6 +35,10 @@ public class InitializerAPI : APIElement {
 
     public override var name: String {
         return "init(" + arguments.map({ $0.functionNameForm }).joined() + ")"
+    }
+
+    internal override var identifiers: Set<String> {
+        return arguments.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var declaration: DeclSyntax {

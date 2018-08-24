@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGCollections
 
 import SDGSwiftPackageManager
 
@@ -55,26 +56,6 @@ public class ModuleAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
-    public override var name: String {
-        return _name
-    }
-
-    public override var declaration: FunctionCallExprSyntax {
-        return SyntaxFactory.makeFunctionCallExpr(
-            calledExpression: SyntaxFactory.makeMemberAccessExpr(
-                base: SyntaxFactory.makeBlankExpr(),
-                dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("target"))),
-            leftParen: SyntaxFactory.makeToken(.leftParen),
-            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-                SyntaxFactory.makeFunctionCallArgument(
-                    label: SyntaxFactory.makeToken(.identifier("name")),
-                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr(name),
-                    trailingComma: nil)
-                ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen))
-    }
 
     private var _types: [TypeAPI] = []
     private var types: [TypeAPI] {
@@ -135,6 +116,33 @@ public class ModuleAPI : APIElement {
             globalVariables
             ] as [[APIElement]]).joined()
         return AnyBidirectionalCollection(joined)
+    }
+
+    // MARK: - APIElement
+
+    public override var name: String {
+        return _name
+    }
+
+    internal override var identifiers: Set<String> {
+        return children.map({ $0.identifiers }).reduce(into: Set([_name]), { $0 ∪= $1 })
+    }
+
+    public override var declaration: FunctionCallExprSyntax {
+        return SyntaxFactory.makeFunctionCallExpr(
+            calledExpression: SyntaxFactory.makeMemberAccessExpr(
+                base: SyntaxFactory.makeBlankExpr(),
+                dot: SyntaxFactory.makeToken(.period),
+                name: SyntaxFactory.makeToken(.identifier("target"))),
+            leftParen: SyntaxFactory.makeToken(.leftParen),
+            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
+                SyntaxFactory.makeFunctionCallArgument(
+                    label: SyntaxFactory.makeToken(.identifier("name")),
+                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                    expression: SyntaxFactory.makeStringLiteralExpr(name),
+                    trailingComma: nil)
+                ]),
+            rightParen: SyntaxFactory.makeToken(.rightParen))
     }
 
     public override var summary: [String] {

@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 public class TypeAPI : APIScope {
 
@@ -35,6 +36,10 @@ public class TypeAPI : APIScope {
 
     public override var name: String {
         return typeName.declaration.source()
+    }
+
+    internal override var identifiers: Set<String> {
+        return typeName.identifiers ∪ scopeIdentifiers
     }
 
     public override var declaration: DeclSyntax {

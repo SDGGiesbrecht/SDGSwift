@@ -36,6 +36,10 @@ public class VariableAPI : APIElement {
         return _name
     }
 
+    internal override var identifiers: Set<String> {
+        return [name]
+    }
+
     public override var declaration: Syntax {
 
         var tokens: [TokenSyntax] = []

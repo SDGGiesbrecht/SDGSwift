@@ -59,6 +59,10 @@ public class ExtensionAPI : APIScope {
         return type.declaration.source()
     }
 
+    internal override var identifiers: Set<String> {
+        return scopeIdentifiers
+    }
+
     public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
         return nil
     }

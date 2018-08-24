@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public class SubscriptAPI : APIElement {
 
@@ -34,6 +35,10 @@ public class SubscriptAPI : APIElement {
 
     public override var name: String {
         return "[" + arguments.map({ $0.subscriptNameForm }).joined() + "]"
+    }
+
+    internal override var identifiers: Set<String> {
+        return arguments.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var declaration: Syntax {

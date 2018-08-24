@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 import SDGSwiftPackageManager
 
 public class PackageAPI : APIElement {
@@ -35,8 +37,15 @@ public class PackageAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
+
+    // MARK: - APIElement
+
     public override var name: String {
         return _name
+    }
+
+    internal override var identifiers: Set<String> {
+        return children.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var declaration: FunctionCallExprSyntax {

@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public struct TypeReferenceAPI : Comparable, Hashable {
 
@@ -29,6 +30,10 @@ public struct TypeReferenceAPI : Comparable, Hashable {
     private var genericArguments: [TypeReferenceAPI]
 
     // MARK: - Output
+
+    internal var identifiers: Set<String> {
+        return genericArguments.reduce(into: Set([name])) { $0 ∪= $1.identifiers }
+    }
 
     internal var declaration: SimpleTypeIdentifierSyntax {
 

@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public class FunctionAPI : APIElement {
 
@@ -91,6 +92,10 @@ public class FunctionAPI : APIElement {
 
     public override var name: String {
         return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
+    }
+
+    internal override var identifiers: Set<String> {
+        return arguments.map({ $0.identifiers }).reduce(into: Set([_name]), { $0 ∪= $1 })
     }
 
     public override var declaration: FunctionDeclSyntax {

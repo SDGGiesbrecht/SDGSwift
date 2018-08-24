@@ -56,6 +56,10 @@ public class CaseAPI : APIElement {
         return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
     }
 
+    internal override var identifiers: Set<String> {
+        return [name]
+    }
+
     public override var summary: [String] {
         var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
