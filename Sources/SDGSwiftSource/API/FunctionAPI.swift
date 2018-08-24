@@ -93,7 +93,7 @@ public class FunctionAPI : APIElement {
         return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
-    public override var declaration: String {
+    public override var declaration: FunctionDeclSyntax {
 
         var modifiers: [DeclModifierSyntax] = []
         if let typeKeyword = typeMethodKeyword {
@@ -152,7 +152,7 @@ public class FunctionAPI : APIElement {
                 returnTypeAttributes: nil,
                 returnType: returnTypeSyntax),
             genericWhereClause: constraintSyntax(),
-            body: SyntaxFactory.makeBlankCodeBlock()).source()
+            body: SyntaxFactory.makeBlankCodeBlock())
     }
 
     public override var summary: [String] {
@@ -164,11 +164,11 @@ public class FunctionAPI : APIElement {
                 result += "(required) "
             }
         }
-        result += name + " • " + declaration
+        result += name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         var resultSummary = [result]
         for overload in overloads {
-            var declaration = overload.declaration
+            var declaration = overload.declaration.source()
             overload.appendCompilationConditions(to: &declaration)
             resultSummary.append(declaration.prepending(" "))
         }

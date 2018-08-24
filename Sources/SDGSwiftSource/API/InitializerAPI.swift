@@ -36,7 +36,7 @@ public class InitializerAPI : APIElement {
         return "init(" + arguments.map({ $0.functionNameForm }).joined() + ")"
     }
 
-    public override var declaration: String {
+    public override var declaration: DeclSyntax {
 
         let failable: TokenSyntax
         if isFailable {
@@ -74,11 +74,11 @@ public class InitializerAPI : APIElement {
                 returnTypeAttributes: nil,
                 returnType: nil),
             genericWhereClause: constraintSyntax(),
-            body: SyntaxFactory.makeBlankCodeBlock()).source()
+            body: SyntaxFactory.makeBlankCodeBlock())
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

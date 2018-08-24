@@ -40,7 +40,7 @@ public class CaseAPI : APIElement {
         return result
     }
 
-    public override var declaration: String {
+    public override var declaration: Syntax {
 
         var tokens: [TokenSyntax] = [
             SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
@@ -53,11 +53,11 @@ public class CaseAPI : APIElement {
         }
 
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
-        return SyntaxFactory.makeUnknownSyntax(tokens: tokens).source()
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

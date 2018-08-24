@@ -37,7 +37,7 @@ public class TypeAPI : APIScope {
         return typeName.declaration.source()
     }
 
-    public override var declaration: String {
+    public override var declaration: DeclSyntax {
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory classes or enumerations yet.
         return SyntaxFactory.makeStructDecl(
             attributes: nil,
@@ -47,11 +47,11 @@ public class TypeAPI : APIScope {
             genericParameterClause: nil,
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
-            members: SyntaxFactory.makeBlankMemberDeclBlock()).source()
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }

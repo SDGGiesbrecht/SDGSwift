@@ -36,7 +36,7 @@ public class VariableAPI : APIElement {
         return _name
     }
 
-    public override var declaration: String {
+    public override var declaration: Syntax {
 
         var tokens: [TokenSyntax] = []
         if let typePropertyKeyword = self.typePropertyKeyword {
@@ -61,11 +61,11 @@ public class VariableAPI : APIElement {
         tokens.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
 
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
-        return SyntaxFactory.makeUnknownSyntax(tokens: tokens).source()
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

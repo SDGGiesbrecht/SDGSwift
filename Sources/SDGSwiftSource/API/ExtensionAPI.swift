@@ -59,7 +59,7 @@ public class ExtensionAPI : APIScope {
         return type.declaration.source()
     }
 
-    public override var declaration: String? { // @exempt(from: tests) Should never occur.
+    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
         return nil
     }
 

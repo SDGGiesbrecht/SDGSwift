@@ -59,7 +59,7 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
-    public override var declaration: String? {
+    public override var declaration: FunctionCallExprSyntax? {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
                 base: SyntaxFactory.makeBlankExpr(),
@@ -73,7 +73,7 @@ public class ModuleAPI : APIElement {
                     expression: SyntaxFactory.makeStringLiteralExpr("\u{22}\(name)\u{22}"),
                     trailingComma: nil)
                 ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen)).source()
+            rightParen: SyntaxFactory.makeToken(.rightParen))
     }
 
     private var _types: [TypeAPI] = []

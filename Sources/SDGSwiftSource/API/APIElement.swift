@@ -68,7 +68,7 @@ public class APIElement : Comparable, Hashable {
         primitiveMethod()
     }
 
-    public var declaration: String? {
+    public var declaration: Syntax? {
         primitiveMethod()
     }
 
@@ -118,7 +118,7 @@ public class APIElement : Comparable, Hashable {
     public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
         // #workaround(Swift 4.1.2, Order differs between operating systems.)
         if precedingValue.name == followingValue.name {
-            return (precedingValue.declaration ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration ?? "").scalars) // @exempt(from: tests) Empty declarations should never occur.
+            return (precedingValue.declaration?.source() ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration?.source() ?? "").scalars) // @exempt(from: tests) Empty declarations should never occur.
         } else {
             return precedingValue.name.scalars.lexicographicallyPrecedes(followingValue.name.scalars)
         }
@@ -133,6 +133,6 @@ public class APIElement : Comparable, Hashable {
     // MARK: - Hashable
 
     public var hashValue: Int {
-        return declaration?.hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
+        return declaration?.source().hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
     }
 }

@@ -36,7 +36,7 @@ public class ProtocolAPI : APIScope {
         return _name.description
     }
 
-    public override var declaration: String {
+    public override var declaration: DeclSyntax {
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this yet.
         return SyntaxFactory.makeStructDecl(
             attributes: nil,
@@ -46,11 +46,11 @@ public class ProtocolAPI : APIScope {
             genericParameterClause: nil,
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
-            members: SyntaxFactory.makeBlankMemberDeclBlock()).source()
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }

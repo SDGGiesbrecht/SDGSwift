@@ -39,7 +39,7 @@ public class PackageAPI : APIElement {
         return _name
     }
 
-    public override var declaration: String {
+    public override var declaration: FunctionCallExprSyntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeIdentifierExpr(
                 identifier: SyntaxFactory.makeToken(.identifier("Package"))),
@@ -51,10 +51,10 @@ public class PackageAPI : APIElement {
                     expression: SyntaxFactory.makeStringLiteralExpr("\u{22}\(name)\u{22}"),
                     trailingComma: nil)
                 ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen)).source()
+            rightParen: SyntaxFactory.makeToken(.rightParen))
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration]
+        return [name + " • " + declaration.source()]
     }
 }
