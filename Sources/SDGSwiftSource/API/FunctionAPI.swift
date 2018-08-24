@@ -101,7 +101,7 @@ public class FunctionAPI : APIElement {
         if isMutating {
             result += "mutating "
         }
-        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

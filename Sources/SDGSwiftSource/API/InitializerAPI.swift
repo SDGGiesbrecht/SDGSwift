@@ -36,7 +36,7 @@ public class InitializerAPI : APIElement {
 
     public override var declaration: String {
         var result = "init" + (isFailable ? "?" : "")
-        result += "(" + arguments.map({ $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+        result += "(" + arguments.map({ $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }

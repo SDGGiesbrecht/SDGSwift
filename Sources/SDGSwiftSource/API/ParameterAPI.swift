@@ -44,19 +44,7 @@ public struct ParameterAPI {
         return functionNameForm
     }
 
-    internal var functionDeclarationForm: String {
-        var result = ""
-        if label == name {
-            result = name
-        } else {
-            result = (label ?? "_") + " " + name
-        }
-        result += ": "
-        result += (isInOut ? "inout " : "") + type.description
-        if hasDefault {
-            result += " = default"
-        }
-
+    internal func functionDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
         var externalName: TokenSyntax?
         if label ≠ name {
             if let external = label {
@@ -78,7 +66,12 @@ public struct ParameterAPI {
             defaultValue = SyntaxFactory.makeIdentifierExpr(identifier: SyntaxFactory.makeToken(.defaultKeyword))
         }
 
-        let syntax = SyntaxFactory.makeFunctionParameter(
+        var comma: TokenSyntax?
+        if trailingComma {
+            comma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+        }
+
+        return SyntaxFactory.makeFunctionParameter(
             externalName: externalName,
             localName: SyntaxFactory.makeToken(.identifier(name)),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
@@ -89,10 +82,7 @@ public struct ParameterAPI {
             ellipsis: nil,
             defaultEquals: defaultEquals,
             defaultValue: defaultValue,
-            trailingComma: nil)
-
-        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
-        return result
+            trailingComma: comma)
     }
 
     internal var operatorDeclarationForm: String {
