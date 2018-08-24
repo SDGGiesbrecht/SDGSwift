@@ -34,16 +34,6 @@ public class ExtendedSyntax : TextOutputStreamable {
         return result
     }
 
-    // MARK: - Syntax Colouring
-
-    public func syntaxColouredHTML() -> String {
-        var result = ""
-        for child in children {
-            result.append(contentsOf: child.syntaxColouredHTML())
-        }
-        return result
-    }
-
     // MARK: - Rendering
 
     internal var renderedHtmlElement: String? {
@@ -74,6 +64,8 @@ public class ExtendedSyntax : TextOutputStreamable {
         }
         return result
     }
+
+    // MARK: - Syntax Colouring
 
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
         return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers), inline: inline)

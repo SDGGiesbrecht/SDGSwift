@@ -38,12 +38,10 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     public override func renderedHTML() -> String {
         switch kind {
-        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter:
-            return syntaxColouredHTML()
+        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
+            return ""
         case .documentationText, .callout:
             return text
-        case .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
-            return ""
         case .lineSeparator:
             return "<br>"
         }
