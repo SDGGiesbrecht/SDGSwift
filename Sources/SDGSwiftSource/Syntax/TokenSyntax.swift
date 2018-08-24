@@ -92,6 +92,11 @@ extension TokenSyntax {
             return "punctuation"
 
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
+            if case .identifier(let name) = tokenKind {
+                if name == "get" ∨ name == "set" {
+                    return "keyword"
+                }
+            }
             // #warning(Needs further disambiguation.)
             return "internal identifier"
 
