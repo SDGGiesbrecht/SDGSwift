@@ -12,8 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSyntaxShims
-
 /// How much freedom the user has in choosing the text of the element.
 public enum TextFreedom {
 

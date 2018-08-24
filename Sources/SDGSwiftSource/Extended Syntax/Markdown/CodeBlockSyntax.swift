@@ -17,7 +17,6 @@ import Foundation
 import SDGCollections
 import SDGText
 
-import SDGSwiftSyntaxShims
 import SDGCMarkShims
 
 public class CodeBlockSyntax : MarkdownSyntax {

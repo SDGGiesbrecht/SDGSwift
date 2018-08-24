@@ -19,8 +19,6 @@ import SDGMathematics
 import SDGCollections
 import SDGPersistence
 
-import SDGSwiftSyntaxShims
-
 extension Syntax {
 
     // MARK: - Parsing
@@ -339,5 +337,19 @@ extension Syntax {
             }
         }
         return api
+    }
+
+    // MARK: - Disection
+
+    internal func tokens() -> [TokenSyntax] {
+        var tokens: [TokenSyntax] = []
+        for child in children {
+            if let token = child as? TokenSyntax {
+                tokens.append(token)
+            } else {
+                tokens.append(contentsOf: child.tokens())
+            }
+        }
+        return tokens
     }
 }

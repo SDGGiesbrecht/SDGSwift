@@ -47,6 +47,19 @@ public class CaseAPI : APIElement {
             result += associatedValues.map({ $0.description }).joined(separator: ", ")
             result += ")"
         }
+
+        var tokens: [TokenSyntax] = [
+            SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier(_name))
+        ]
+        if ¬associatedValues.isEmpty {
+            tokens.append(SyntaxFactory.makeToken(.leftParen))
+            tokens.append(contentsOf: associatedValues.map({ $0.declaration.tokens() }).joined(separator: [SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))]))
+            tokens.append(SyntaxFactory.makeToken(.rightParen))
+        }
+        let syntax = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+
+        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
         return result
     }
 

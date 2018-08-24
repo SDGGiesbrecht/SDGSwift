@@ -38,6 +38,35 @@ public struct TypeReferenceAPI : Comparable, Hashable {
         return result
     }
 
+    internal var declaration: SimpleTypeIdentifierSyntax {
+
+        var genericArgumentClause: GenericArgumentClauseSyntax?
+        if ¬genericArguments.isEmpty {
+            var genericArguments: [GenericArgumentSyntax] = []
+            for index in self.genericArguments.indices {
+                let argument = self.genericArguments[index]
+
+                var trailingComma: TokenSyntax?
+                if index ≠ self.genericArguments.endIndex {
+                    trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+                }
+
+                genericArguments.append(SyntaxFactory.makeGenericArgument(
+                    argumentType: argument.declaration,
+                    trailingComma: trailingComma))
+            }
+
+            genericArgumentClause = SyntaxFactory.makeGenericArgumentClause(
+                leftAngleBracket: SyntaxFactory.makeToken(.leftAngle),
+                arguments: SyntaxFactory.makeGenericArgumentList(genericArguments),
+                rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
+        }
+
+        return SyntaxFactory.makeSimpleTypeIdentifier(
+            name: SyntaxFactory.makeToken(.identifier(name)),
+            genericArgumentClause: genericArgumentClause)
+    }
+
     // MARK: - Comparable
 
     public static func < (precedingValue: TypeReferenceAPI, followingValue: TypeReferenceAPI) -> Bool {

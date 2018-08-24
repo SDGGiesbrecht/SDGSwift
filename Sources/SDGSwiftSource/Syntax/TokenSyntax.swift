@@ -15,8 +15,6 @@
 import SDGLogic
 import SDGMathematics
 
-import SDGSwiftSyntaxShims
-
 extension TokenSyntax {
 
     // MARK: - Properties
