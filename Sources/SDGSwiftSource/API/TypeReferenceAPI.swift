@@ -31,6 +31,37 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Output
 
+    internal var nameDeclaration: TokenSyntax {
+        return SyntaxFactory.makeToken(.identifier(name))
+    }
+
+    internal var genericParameterClauseDeclaration: GenericParameterClauseSyntax? {
+        if self.genericArguments.isEmpty {
+            return nil
+        }
+
+        var genericArguments: [GenericParameterSyntax] = []
+        for index in self.genericArguments.indices {
+            let argument = self.genericArguments[index]
+
+            var trailingComma: TokenSyntax?
+            if index ≠ self.genericArguments.index(before: self.genericArguments.endIndex) {
+                trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+            }
+
+            genericArguments.append(SyntaxFactory.makeGenericParameter(
+                name: argument.nameDeclaration,
+                colon: nil,
+                inheritedType: nil,
+                trailingComma: trailingComma))
+        }
+
+        return SyntaxFactory.makeGenericParameterClause(
+            leftAngleBracket: SyntaxFactory.makeToken(.leftAngle),
+            genericParameterList: SyntaxFactory.makeGenericParameterList(genericArguments),
+            rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
+    }
+
     internal var declaration: SimpleTypeIdentifierSyntax {
 
         var genericArgumentClause: GenericArgumentClauseSyntax?
@@ -56,7 +87,7 @@ public struct TypeReferenceAPI : Comparable, Hashable {
         }
 
         return SyntaxFactory.makeSimpleTypeIdentifier(
-            name: SyntaxFactory.makeToken(.identifier(name)),
+            name: nameDeclaration,
             genericArgumentClause: genericArgumentClause)
     }
 

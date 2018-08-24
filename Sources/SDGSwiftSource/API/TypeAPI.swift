@@ -44,8 +44,8 @@ public class TypeAPI : APIScope {
             attributes: nil,
             accessLevelModifier: nil,
             structKeyword: SyntaxFactory.makeToken(keyword, trailingTrivia: .spaces(1)),
-            identifier: SyntaxFactory.makeToken(.identifier(name)),
-            genericParameterClause: nil,
+            identifier: typeName.nameDeclaration,
+            genericParameterClause: typeName.genericParameterClauseDeclaration,
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
             members: SyntaxFactory.makeBlankMemberDeclBlock())
