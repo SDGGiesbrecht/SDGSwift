@@ -120,7 +120,7 @@ extension UnknownDeclSyntax {
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            return TypeAPI(keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -148,7 +148,7 @@ extension UnknownDeclSyntax {
         if let keyword = typeAliasKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
+            return TypeAPI(keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -173,7 +173,7 @@ extension UnknownDeclSyntax {
         if let keyword = associatedTypeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: conformances, constraints: constraints + self.constraints, children: [])
+            return TypeAPI(keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: conformances, constraints: constraints + self.constraints, children: [])
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

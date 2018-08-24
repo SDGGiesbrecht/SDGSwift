@@ -19,7 +19,7 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(keyword: String, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         typeName = name
         self.keyword = keyword
         super.init(conformances: conformances, children: children)
@@ -28,7 +28,7 @@ public class TypeAPI : APIScope {
 
     // MARK: - Properties
 
-    private let keyword: String
+    private let keyword: TokenKind
     internal let typeName: TypeReferenceAPI
 
     // MARK: - APIElement
@@ -38,11 +38,16 @@ public class TypeAPI : APIScope {
     }
 
     public override var declaration: String {
-        var result = keyword + " " + name
-        if let constraints = constraintSyntax() {
-            result += constraints.source()
-        }
-        return result
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory classes or enumerations yet.
+        return SyntaxFactory.makeStructDecl(
+            attributes: nil,
+            accessLevelModifier: nil,
+            structKeyword: SyntaxFactory.makeToken(keyword, trailingTrivia: .spaces(1)),
+            identifier: SyntaxFactory.makeToken(.identifier(name)),
+            genericParameterClause: nil,
+            inheritanceClause: nil,
+            genericWhereClause: constraintSyntax(),
+            members: SyntaxFactory.makeBlankMemberDeclBlock()).source()
     }
 
     public override var summary: [String] {
