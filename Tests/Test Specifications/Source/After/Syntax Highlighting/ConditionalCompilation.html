@@ -21,73 +21,73 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">os</span><span class="punctuation">(</span><span class="internal‐identifier">macOS</span><span class="punctuation">)</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">os</span><span class="punctuation">(</span><span class="internal identifier">macOS</span><span class="punctuation">)</span>
 /// Falls on Newton.
-<span class="keyword">func</span> <span class="internal‐identifier">fallOnNewton</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-<span class="compilation‐condition">#elseif</span> <span class="internal‐identifier">os</span><span class="punctuation">(</span><span class="internal‐identifier">Linux</span><span class="punctuation">)</span>
+<span class="keyword">func</span> <span class="internal identifier">fallOnNewton</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="compilation‐condition">#elseif</span> <span class="internal identifier">os</span><span class="punctuation">(</span><span class="internal identifier">Linux</span><span class="punctuation">)</span>
 /// Waddles.
-<span class="keyword">func</span> <span class="internal‐identifier">waddle</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">func</span> <span class="internal identifier">waddle</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">canImport</span><span class="punctuation">(</span><span class="internal‐identifier">AppKit</span><span class="punctuation">)</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">WithAppKit</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-<span class="compilation‐condition">#elseif</span> <span class="internal‐identifier">canImport</span><span class="punctuation">(</span><span class="internal‐identifier">UIKit</span><span class="punctuation">)</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">WithUIKit</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">canImport</span><span class="punctuation">(</span><span class="internal identifier">AppKit</span><span class="punctuation">)</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">WithAppKit</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+<span class="compilation‐condition">#elseif</span> <span class="internal identifier">canImport</span><span class="punctuation">(</span><span class="internal identifier">UIKit</span><span class="punctuation">)</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">WithUIKit</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
 <span class="compilation‐condition">#else</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Fallback</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Fallback</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+<span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
 <span class="compilation‐condition">#endif</span>
 
-<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal‐identifier">NestingStructure</span> <span class="punctuation">{</span>
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal identifier">NestingStructure</span> <span class="punctuation">{</span>
 
-    <span class="compilation‐condition">#if</span> <span class="internal‐identifier">canImport</span><span class="punctuation">(</span><span class="internal‐identifier">AppKit</span><span class="punctuation">)</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">WithAppKit</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-    <span class="compilation‐condition">#elseif</span> <span class="internal‐identifier">canImport</span><span class="punctuation">(</span><span class="internal‐identifier">UIKit</span><span class="punctuation">)</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">WithUIKit</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
+    <span class="compilation‐condition">#if</span> <span class="internal identifier">canImport</span><span class="punctuation">(</span><span class="internal identifier">AppKit</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">WithAppKit</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+    <span class="compilation‐condition">#elseif</span> <span class="internal identifier">canImport</span><span class="punctuation">(</span><span class="internal identifier">UIKit</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">WithUIKit</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
     <span class="compilation‐condition">#else</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Fallback</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
-    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal‐identifier">Universal</span> <span class="punctuation">=</span> <span class="internal‐identifier">Bool</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Fallback</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="internal identifier">Universal</span> <span class="punctuation">=</span> <span class="internal identifier">Bool</span>
     <span class="compilation‐condition">#endif</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal‐identifier">PossiblyConforming</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">os</span><span class="punctuation">(</span><span class="internal‐identifier">macOS</span><span class="punctuation">)</span>
-<span class="keyword">extension</span> <span class="internal‐identifier">PossiblyConforming</span> <span class="punctuation">:</span> <span class="internal‐identifier">ConditionallyAvailableProtocol</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal‐identifier">ConditionalSubType</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> <span class="internal‐identifier">conditionalStaticProperty</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">{</span>
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal identifier">PossiblyConforming</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">os</span><span class="punctuation">(</span><span class="internal identifier">macOS</span><span class="punctuation">)</span>
+<span class="keyword">extension</span> <span class="internal identifier">PossiblyConforming</span> <span class="punctuation">:</span> <span class="internal identifier">ConditionallyAvailableProtocol</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal identifier">ConditionalSubType</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> <span class="internal identifier">conditionalStaticProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">true</span>
     <span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">init</span><span class="punctuation">(</span><span class="internal‐identifier">conditionalInitializer</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal‐identifier">init</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">init</span><span class="punctuation">(</span><span class="internal identifier">conditionalInitializer</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal identifier">init</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">var</span> <span class="internal‐identifier">conditionalProperty</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">var</span> <span class="internal identifier">conditionalProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">true</span>
     <span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal‐identifier">conditionalSubscript</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal‐identifier">Bool</span> <span class="punctuation">{</span>
-        <span class="keyword">return</span> <span class="internal‐identifier">conditionalSubscript</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">conditionalSubscript</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
+        <span class="keyword">return</span> <span class="internal identifier">conditionalSubscript</span>
     <span class="punctuation">}</span>
-    <span class="compilation‐condition">#if</span> <span class="internal‐identifier">ADDITIONAL_CONDITION</span>
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">conditionalMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="compilation‐condition">#if</span> <span class="internal identifier">ADDITIONAL_CONDITION</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal identifier">conditionalMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
     <span class="compilation‐condition">#endif</span>
 <span class="punctuation">}</span>
 
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">CUSTOM</span>
-<span class="keyword">extension</span> <span class="internal‐identifier">PossiblyConforming</span> <span class="punctuation">:</span> <span class="internal‐identifier">AnotherConditionallyAvailableProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">CUSTOM</span>
+<span class="keyword">extension</span> <span class="internal identifier">PossiblyConforming</span> <span class="punctuation">:</span> <span class="internal identifier">AnotherConditionallyAvailableProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
 <span class="compilation‐condition">#endif</span>
 
-<span class="compilation‐condition">#if</span>    /* This condition needs clean‐up.*/      <span class="internal‐identifier">NEEDING_CLEANUP</span> // ...
-<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal‐identifier">CleanedUpCompilationCondition</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="compilation‐condition">#if</span>    /* This condition needs clean‐up.*/      <span class="internal identifier">NEEDING_CLEANUP</span> // ...
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal identifier">CleanedUpCompilationCondition</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">LEVEL_ONE</span>
-<span class="compilation‐condition">#if</span> <span class="internal‐identifier">LEVEL_TWO</span>
-<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal‐identifier">DoublyNested</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">LEVEL_ONE</span>
+<span class="compilation‐condition">#if</span> <span class="internal identifier">LEVEL_TWO</span>
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="internal identifier">DoublyNested</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 <span class="compilation‐condition">#endif</span>
 

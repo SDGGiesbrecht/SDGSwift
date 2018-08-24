@@ -30,38 +30,38 @@
   */
  */
 
-<span class="keyword">import</span> <span class="internal‐identifier">Foundation</span>
+<span class="keyword">import</span> <span class="internal identifier">Foundation</span>
 
-<span class="keyword">typealias</span> <span class="internal‐identifier">Alias</span> <span class="punctuation">=</span> <span class="internal‐identifier">Structure</span>
+<span class="keyword">typealias</span> <span class="internal identifier">Alias</span> <span class="punctuation">=</span> <span class="internal identifier">Structure</span>
 
-<span class="keyword">struct</span> <span class="internal‐identifier">Structure</span> <span class="punctuation">{</span>
+<span class="keyword">struct</span> <span class="internal identifier">Structure</span> <span class="punctuation">{</span>
 
     // MARK: - Static Properties
 
-    <span class="keyword">static</span> <span class="keyword">var</span> <span class="internal‐identifier">staticProperty</span> <span class="punctuation">=</span> <span class="number">0</span>
+    <span class="keyword">static</span> <span class="keyword">var</span> <span class="internal identifier">staticProperty</span> <span class="punctuation">=</span> <span class="number">0</span>
 
     // MARK: - Initialization
 
-    <span class="keyword">init</span><span class="punctuation">(</span><span class="internal‐identifier">property</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="internal‐identifier">property</span>
+    <span class="keyword">init</span><span class="punctuation">(</span><span class="internal identifier">property</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal identifier">property</span> <span class="punctuation">=</span> <span class="internal identifier">property</span>
     <span class="punctuation">}</span>
 
     // MARK: - Properties
 
-    <span class="keyword">var</span> <span class="internal‐identifier">property</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span>
+    <span class="keyword">var</span> <span class="internal identifier">property</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span>
 
     // MARK: - Methods
 
-    <span class="keyword">func</span> <span class="internal‐identifier">performAction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-        <span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
+    <span class="keyword">func</span> <span class="internal identifier">performAction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="internal identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal‐identifier">index</span><span class="punctuation">:</span> <span class="internal‐identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal‐identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">index</span><span class="punctuation">:</span> <span class="internal identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal identifier">Int</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
-            <span class="keyword">return</span> <span class="internal‐identifier">index</span>
+            <span class="keyword">return</span> <span class="internal identifier">index</span>
         <span class="punctuation">}</span>
         unknown <span class="punctuation">{</span>
-            <span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
+            <span class="internal identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>

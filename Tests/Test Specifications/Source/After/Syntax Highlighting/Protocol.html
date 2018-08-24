@@ -21,33 +21,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="internal‐identifier">Protocol</span> <span class="punctuation">{</span>
-    <span class="keyword">associatedtype</span> <span class="internal‐identifier">AssociatedType</span>
-    <span class="keyword">func</span> <span class="internal‐identifier">requiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="keyword">func</span> <span class="internal‐identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="keyword">func</span> <span class="internal‐identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="keyword">func</span> <span class="internal‐identifier">_hiddenFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="keyword">var</span> <span class="internal‐identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">{</span> unknown <span class="punctuation">}</span>
-    <span class="keyword">var</span> <span class="internal‐identifier">getSetProperty</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">{</span> unknown unknown <span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="internal identifier">Protocol</span> <span class="punctuation">{</span>
+    <span class="keyword">associatedtype</span> <span class="internal identifier">AssociatedType</span>
+    <span class="keyword">func</span> <span class="internal identifier">requiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">func</span> <span class="internal identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">func</span> <span class="internal identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">func</span> <span class="internal identifier">_hiddenFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">var</span> <span class="internal identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span> unknown <span class="punctuation">}</span>
+    <span class="keyword">var</span> <span class="internal identifier">getSetProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span> unknown unknown <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">extension</span> <span class="internal‐identifier">Protocol</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">providedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">extension</span> <span class="internal identifier">Protocol</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal identifier">providedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">extension</span> <span class="internal‐identifier">Protocol</span> <span class="keyword">where</span> <span class="keyword">Self</span> <span class="punctuation">:</span> <span class="internal‐identifier">OtherProtocol</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+<span class="keyword">extension</span> <span class="internal identifier">Protocol</span> <span class="keyword">where</span> <span class="keyword">Self</span> <span class="punctuation">:</span> <span class="internal identifier">OtherProtocol</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">protocol</span> <span class="internal‐identifier">InternalProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">protocol</span> <span class="internal identifier">InternalProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 
-<span class="keyword">extension</span> <span class="internal‐identifier">Protocol</span> <span class="keyword">where</span> <span class="keyword">Self</span><span class="punctuation">.</span><span class="internal‐identifier">AssociatedType</span> <span class="internal‐identifier">==</span> <span class="internal‐identifier">Int</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">conditionallyProvidedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">extension</span> <span class="internal identifier">Protocol</span> <span class="keyword">where</span> <span class="keyword">Self</span><span class="punctuation">.</span><span class="internal identifier">AssociatedType</span> <span class="internal identifier">==</span> <span class="internal identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="internal identifier">conditionallyProvidedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="internal‐identifier">ProtocolWithInheritanceAndConstraints</span> <span class="punctuation">:</span> <span class="internal‐identifier">InheritedOne</span><span class="punctuation">,</span> <span class="internal‐identifier">InheritedTwo</span>
-<span class="keyword">where</span> <span class="internal‐identifier">AssociatedType</span> <span class="punctuation">:</span> <span class="internal‐identifier">OtherProtocol</span> <span class="punctuation">{</span>
+<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="internal identifier">ProtocolWithInheritanceAndConstraints</span> <span class="punctuation">:</span> <span class="internal identifier">InheritedOne</span><span class="punctuation">,</span> <span class="internal identifier">InheritedTwo</span>
+<span class="keyword">where</span> <span class="internal identifier">AssociatedType</span> <span class="punctuation">:</span> <span class="internal identifier">OtherProtocol</span> <span class="punctuation">{</span>
 
 <span class="punctuation">}</span>
 

@@ -21,32 +21,32 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-<span class="keyword">import</span> <span class="internal‐identifier">PackageDescription</span>
+<span class="keyword">import</span> <span class="internal identifier">PackageDescription</span>
 
-<span class="keyword">let</span> <span class="internal‐identifier">package</span> <span class="punctuation">=</span> <span class="internal‐identifier">Package</span><span class="punctuation">(</span>
-    <span class="internal‐identifier">name</span><span class="punctuation">:</span> "Package"<span class="punctuation">,</span>
-    <span class="internal‐identifier">products</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+<span class="keyword">let</span> <span class="internal identifier">package</span> <span class="punctuation">=</span> <span class="internal identifier">Package</span><span class="punctuation">(</span>
+    <span class="internal identifier">name</span><span class="punctuation">:</span> "Package"<span class="punctuation">,</span>
+    <span class="internal identifier">products</span><span class="punctuation">:</span> <span class="punctuation">[</span>
         /// A library.
         ///
         /// It does stuff.
-        <span class="punctuation">.</span><span class="internal‐identifier">library</span><span class="punctuation">(</span><span class="internal‐identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="internal‐identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>"Library"<span class="punctuation">]</span><span class="punctuation">)</span>
+        <span class="punctuation">.</span><span class="internal identifier">library</span><span class="punctuation">(</span><span class="internal identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="internal identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>"Library"<span class="punctuation">]</span><span class="punctuation">)</span>
     <span class="punctuation">]</span><span class="punctuation">,</span>
-    <span class="internal‐identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
-        <span class="punctuation">.</span><span class="internal‐identifier">package</span><span class="punctuation">(</span><span class="internal‐identifier">url</span><span class="punctuation">:</span> "https://domain.tld/Package"<span class="punctuation">,</span> <span class="internal‐identifier">from</span><span class="punctuation">:</span> <span class="internal‐identifier">Version</span><span class="punctuation">(</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">)</span><span class="punctuation">)</span>
+    <span class="internal identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="internal identifier">package</span><span class="punctuation">(</span><span class="internal identifier">url</span><span class="punctuation">:</span> "https://domain.tld/Package"<span class="punctuation">,</span> <span class="internal identifier">from</span><span class="punctuation">:</span> <span class="internal identifier">Version</span><span class="punctuation">(</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">)</span><span class="punctuation">)</span>
     <span class="punctuation">]</span><span class="punctuation">,</span>
-    <span class="internal‐identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+    <span class="internal identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>
 
         /**
          A library.
 
          It does stuff.
          */
-        <span class="punctuation">.</span><span class="internal‐identifier">target</span><span class="punctuation">(</span><span class="internal‐identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="internal‐identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="internal identifier">target</span><span class="punctuation">(</span><span class="internal identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="internal identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Target"
             <span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
         /// A target.
-        <span class="punctuation">.</span><span class="internal‐identifier">target</span><span class="punctuation">(</span><span class="internal‐identifier">name</span><span class="punctuation">:</span> "Target"<span class="punctuation">,</span> <span class="internal‐identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
-        <span class="punctuation">.</span><span class="internal‐identifier">testTarget</span><span class="punctuation">(</span><span class="internal‐identifier">name</span><span class="punctuation">:</span> "Tests"<span class="punctuation">,</span> <span class="internal‐identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="internal identifier">target</span><span class="punctuation">(</span><span class="internal identifier">name</span><span class="punctuation">:</span> "Target"<span class="punctuation">,</span> <span class="internal identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
+        <span class="punctuation">.</span><span class="internal identifier">testTarget</span><span class="punctuation">(</span><span class="internal identifier">name</span><span class="punctuation">:</span> "Tests"<span class="punctuation">,</span> <span class="internal identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Library"<span class="punctuation">,</span>
             "Target"
             <span class="punctuation">]</span><span class="punctuation">)</span>

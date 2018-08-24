@@ -93,7 +93,7 @@ extension TokenSyntax {
 
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             // #warning(Needs further disambiguation.)
-            return "internal‐identifier"
+            return "internal identifier"
 
         case .integerLiteral, .floatingLiteral:
             return "number"

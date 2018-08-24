@@ -21,39 +21,39 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-<span class="keyword">func</span> <span class="internal‐identifier">main</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+<span class="keyword">func</span> <span class="internal identifier">main</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
 
-    <span class="keyword">if</span> <span class="internal‐identifier">number</span><span class="punctuation">.</span><span class="internal‐identifier">isIrrational</span> <span class="punctuation">{</span>
-        <span class="internal‐identifier">number</span><span class="punctuation">.</span><span class="internal‐identifier">round</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">if</span> <span class="internal identifier">number</span><span class="punctuation">.</span><span class="internal identifier">isIrrational</span> <span class="punctuation">{</span>
+        <span class="internal identifier">number</span><span class="punctuation">.</span><span class="internal identifier">round</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">for</span> <span class="internal‐identifier">element</span> <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span> <span class="punctuation">{</span>
+    <span class="keyword">for</span> <span class="internal identifier">element</span> <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span> <span class="punctuation">{</span>
 
     <span class="punctuation">}</span>
 
-    <span class="keyword">let</span> <span class="internal‐identifier">trailingClosure</span> <span class="punctuation">=</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span><span class="punctuation">.</span><span class="internal‐identifier">filter</span> <span class="punctuation">{</span> <span class="punctuation">(</span><span class="internal‐identifier">number</span><span class="punctuation">:</span> <span class="internal‐identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal‐identifier">Bool</span> <span class="keyword">in</span>
-        <span class="keyword">return</span> <span class="internal‐identifier">number</span> <span class="internal‐identifier">==</span> <span class="number">1</span>
+    <span class="keyword">let</span> <span class="internal identifier">trailingClosure</span> <span class="punctuation">=</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span><span class="punctuation">.</span><span class="internal identifier">filter</span> <span class="punctuation">{</span> <span class="punctuation">(</span><span class="internal identifier">number</span><span class="punctuation">:</span> <span class="internal identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal identifier">Bool</span> <span class="keyword">in</span>
+        <span class="keyword">return</span> <span class="internal identifier">number</span> <span class="internal identifier">==</span> <span class="number">1</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">let</span> <span class="internal‐identifier">number</span> <span class="punctuation">=</span> <span class="number">1</span>
-    <span class="keyword">switch</span> <span class="internal‐identifier">number</span> <span class="punctuation">{</span>
+    <span class="keyword">let</span> <span class="internal identifier">number</span> <span class="punctuation">=</span> <span class="number">1</span>
+    <span class="keyword">switch</span> <span class="internal identifier">number</span> <span class="punctuation">{</span>
     <span class="keyword">case</span> <span class="number">1</span><span class="punctuation">:</span>
-        <span class="internal‐identifier">print</span><span class="punctuation">(</span>"one"<span class="punctuation">)</span>
+        <span class="internal identifier">print</span><span class="punctuation">(</span>"one"<span class="punctuation">)</span>
     <span class="keyword">default</span><span class="punctuation">:</span>
-        <span class="internal‐identifier">print</span><span class="punctuation">(</span>"default"<span class="punctuation">)</span>
+        <span class="internal identifier">print</span><span class="punctuation">(</span>"default"<span class="punctuation">)</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">guard</span> <span class="internal‐identifier">boolean</span> <span class="internal‐identifier">==</span> <span class="keyword">true</span> <span class="keyword">else</span> <span class="punctuation">{</span>
-        <span class="internal‐identifier">preconditionFailure</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">guard</span> <span class="internal identifier">boolean</span> <span class="internal identifier">==</span> <span class="keyword">true</span> <span class="keyword">else</span> <span class="punctuation">{</span>
+        <span class="internal identifier">preconditionFailure</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">while</span> <span class="internal‐identifier">something</span> <span class="punctuation">{</span>
+    <span class="keyword">while</span> <span class="internal identifier">something</span> <span class="punctuation">{</span>
         // Wait.
     <span class="punctuation">}</span>
 
     <span class="keyword">repeat</span> <span class="punctuation">{</span>
-        <span class="internal‐identifier">someTask</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="punctuation">}</span> <span class="keyword">while</span> <span class="internal‐identifier">time</span> <span class="internal‐identifier"><</span> <span class="number">10</span>
+        <span class="internal identifier">someTask</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span> <span class="keyword">while</span> <span class="internal identifier">time</span> <span class="internal identifier"><</span> <span class="number">10</span>
 <span class="punctuation">}</span>
 
 </code>

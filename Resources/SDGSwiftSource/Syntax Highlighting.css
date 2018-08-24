@@ -31,6 +31,29 @@
     background-color: #F9FAFA;
     border-color:  #E6E6E6;
 }
+.swift {
+    color: #000000;
+}
+
+.swift .keyword {
+    color: #AA0D91;
+}
+
+.swift .punctuation {
+    color: #000000;
+}
+
+.swift .internal.identifier {
+    color: #3F6E74;
+}
+
+.swift .number {
+    color: #0E0EFF;
+}
+
+.swift .compilation‐condition {
+    color: #643820;
+}
 
 /* Font */
 
