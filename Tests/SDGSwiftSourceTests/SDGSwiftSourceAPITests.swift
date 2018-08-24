@@ -86,7 +86,7 @@ class SDGSwiftSourceAPITests : TestCase {
             TextFreedomHighlighter.targetTestFreedom = .invariable
             try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
 
-            let highlighted = sourceFile.syntaxHighlightedHTML()
+            let highlighted = sourceFile.syntaxHighlightedHTML(inline: false)
             SDGPersistenceTestUtilities.compare(HTMLPage(content: highlighted, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             // API
@@ -94,7 +94,7 @@ class SDGSwiftSourceAPITests : TestCase {
             let summary = api.map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
             SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
 
-            let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ $0.declaration?.syntaxHighlightedHTML() }).compactMap({ $0 }).joined(separator: "\n\n")
+            let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ $0.declaration?.syntaxHighlightedHTML(inline: false) }).compactMap({ $0 }).joined(separator: "\n\n")
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
         }
     }

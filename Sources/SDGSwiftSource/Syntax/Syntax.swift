@@ -87,7 +87,24 @@ extension Syntax {
         return (try! StrictString(file: Resources.syntaxHighlighting, origin: nil)).dropping(through: "*/\n\n")
     }
 
-    public func syntaxHighlightedHTML() -> String {
+    public func syntaxHighlightedHTML(inline: Bool) -> String {
+        var result = "<code class=\u{22}"
+        if inline {
+            result += "inline "
+        }
+        result += "swift\u{22}>"
+        if ¬inline {
+            result += "\n"
+        }
+        result += nestedSyntaxHighlightedHTML(inline: inline)
+        if ¬inline {
+            result += "\n"
+        }
+        result += "</code>"
+        return result
+    }
+
+    private func nestedSyntaxHighlightedHTML(inline: Bool) -> String {
         return source()
     }
 
