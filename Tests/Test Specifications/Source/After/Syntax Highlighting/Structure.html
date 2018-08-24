@@ -30,41 +30,41 @@
   */
  */
 
-import Foundation
+<span class="keyword">import</span> <span class="internal‐identifier">Foundation</span>
 
-typealias Alias = Structure
+<span class="keyword">typealias</span> <span class="internal‐identifier">Alias</span> <span class="punctuation">=</span> <span class="internal‐identifier">Structure</span>
 
-struct Structure {
+<span class="keyword">struct</span> <span class="internal‐identifier">Structure</span> <span class="punctuation">{</span>
 
     // MARK: - Static Properties
 
-    static var staticProperty = 0
+    <span class="keyword">static</span> <span class="keyword">var</span> <span class="internal‐identifier">staticProperty</span> <span class="punctuation">=</span> <span class="number">0</span>
 
     // MARK: - Initialization
 
-    init(property: Bool) {
-        self.property = property
-    }
+    <span class="keyword">init</span><span class="punctuation">(</span><span class="internal‐identifier">property</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="internal‐identifier">property</span>
+    <span class="punctuation">}</span>
 
     // MARK: - Properties
 
-    var property: Bool
+    <span class="keyword">var</span> <span class="internal‐identifier">property</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span>
 
     // MARK: - Methods
 
-    func performAction() {
-        property = true
-    }
+    <span class="keyword">func</span> <span class="internal‐identifier">performAction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
+    <span class="punctuation">}</span>
 
-    subscript(index: Int) -> Int {
-        unknown {
-            return index
-        }
-        unknown {
-            property = true
-        }
-    }
-}
+    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal‐identifier">index</span><span class="punctuation">:</span> <span class="internal‐identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="internal‐identifier">Int</span> <span class="punctuation">{</span>
+        unknown <span class="punctuation">{</span>
+            <span class="keyword">return</span> <span class="internal‐identifier">index</span>
+        <span class="punctuation">}</span>
+        unknown <span class="punctuation">{</span>
+            <span class="internal‐identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
+        <span class="punctuation">}</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span>
 
 </code>
 

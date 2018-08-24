@@ -114,6 +114,7 @@ extension Syntax {
                 source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                 source.append(contentsOf: "</span>")
             }
+            result += source
 
             result += token.trailingTrivia.source()
             return result

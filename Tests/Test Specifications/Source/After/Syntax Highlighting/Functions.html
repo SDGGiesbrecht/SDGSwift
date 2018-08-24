@@ -21,23 +21,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public func doSomething(_ unnamedParameter: String) {
+<span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">doSomething</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal‐identifier">unnamedParameter</span><span class="punctuation">:</span> <span class="internal‐identifier">String</span><span class="punctuation">)</span> <span class="punctuation">{</span>
 
-    var localVariable = 0
-    localVariable += 1
+    <span class="keyword">var</span> <span class="internal‐identifier">localVariable</span> <span class="punctuation">=</span> <span class="number">0</span>
+    <span class="internal‐identifier">localVariable</span> <span class="internal‐identifier">+=</span> <span class="number">1</span>
 
-    _ = 1 ..< 2
+    <span class="keyword">_</span> <span class="punctuation">=</span> <span class="number">1</span> <span class="internal‐identifier">..<</span> <span class="number">2</span>
 
-    performFunction(argument)
-    performFunction(with: argument)
-}
+    <span class="internal‐identifier">performFunction</span><span class="punctuation">(</span><span class="internal‐identifier">argument</span><span class="punctuation">)</span>
+    <span class="internal‐identifier">performFunction</span><span class="punctuation">(</span><span class="internal‐identifier">with</span><span class="punctuation">:</span> <span class="internal‐identifier">argument</span><span class="punctuation">)</span>
+<span class="punctuation">}</span>
 
 // Overload
-public func doSomething(_ unnamedParameter: Int) {}
+<span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">doSomething</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal‐identifier">unnamedParameter</span><span class="punctuation">:</span> <span class="internal‐identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 
-public func functionWith(defaultParameterOne: Bool = true, defaultParameterTwo: Bool = false) {}
+<span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">functionWith</span><span class="punctuation">(</span><span class="internal‐identifier">defaultParameterOne</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">=</span> <span class="keyword">true</span><span class="punctuation">,</span> <span class="internal‐identifier">defaultParameterTwo</span><span class="punctuation">:</span> <span class="internal‐identifier">Bool</span> <span class="punctuation">=</span> <span class="keyword">false</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 
-public func function(withInOutParameter: inout Bool) {}
+<span class="keyword">public</span> <span class="keyword">func</span> <span class="internal‐identifier">function</span><span class="punctuation">(</span><span class="internal‐identifier">withInOutParameter</span><span class="punctuation">:</span> <span class="keyword">inout</span> <span class="internal‐identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 
 </code>
 
