@@ -60,15 +60,12 @@ public struct ParameterAPI {
         return declaration(externalName: nil, trailingComma: trailingComma)
     }
 
-    internal var subscriptDeclarationForm: String {
-        var result = ""
-        if let theLabel = label {
-            result += theLabel + " "
+    internal func subscriptDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
+        var externalName: TokenSyntax?
+        if let external = label {
+            externalName = SyntaxFactory.makeToken(.identifier(external), trailingTrivia: .spaces(1))
         }
-        result += name
-        result += ": "
-        result += (isInOut ? "inout " : "") + type.description
-        return result
+        return declaration(externalName: externalName, trailingComma: trailingComma)
     }
 
     private func declaration(externalName: TokenSyntax?, trailingComma: Bool) -> FunctionParameterSyntax {
