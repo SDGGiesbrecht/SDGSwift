@@ -94,23 +94,6 @@ public class FunctionAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = ""
-        if let typeKeyword = typeMethodKeyword {
-            result += SyntaxFactory.makeToken(typeKeyword).source() + " "
-        }
-        if isMutating {
-            result += "mutating "
-        }
-        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm(trailingComma: false).source() : $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
-        if `throws` {
-            result += " throws"
-        }
-        if let returnType = self.returnType?.description, returnType ≠ "Void", returnType ≠ "()" {
-            result += " \u{2D}> " + returnType
-        }
-        if let constraints = constraintSyntax() {
-            result += constraints.source()
-        }
 
         var modifiers: [DeclModifierSyntax] = []
         if let typeKeyword = typeMethodKeyword {
@@ -154,7 +137,7 @@ public class FunctionAPI : APIElement {
             returnTypeSyntax = returnType
         }
 
-        let syntax = SyntaxFactory.makeFunctionDecl(
+        return SyntaxFactory.makeFunctionDecl(
             attributes: nil,
             modifiers: modifierList,
             funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
@@ -169,10 +152,7 @@ public class FunctionAPI : APIElement {
                 returnTypeAttributes: nil,
                 returnType: returnTypeSyntax),
             genericWhereClause: constraintSyntax(),
-            body: SyntaxFactory.makeBlankCodeBlock())
-
-        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
-        return result
+            body: SyntaxFactory.makeBlankCodeBlock()).source()
     }
 
     public override var summary: [String] {
