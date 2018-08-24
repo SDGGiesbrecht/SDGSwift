@@ -17,6 +17,7 @@ import Foundation
 import SDGLogic
 import SDGMathematics
 import SDGCollections
+import SDGText
 import SDGPersistence
 
 extension Syntax {
@@ -81,6 +82,10 @@ extension Syntax {
     }
 
     // MARK: - Syntax Highlighting
+
+    public static var css: StrictString {
+        return (try! StrictString(file: Resources.syntaxHighlighting, origin: nil)).dropping(through: "*/\n\n")
+    }
 
     public func syntaxHighlightedHTML() -> String {
         return source()
