@@ -41,12 +41,6 @@ public class CaseAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "case " + _name
-        if ¬associatedValues.isEmpty {
-            result += "("
-            result += associatedValues.map({ $0.description }).joined(separator: ", ")
-            result += ")"
-        }
 
         var tokens: [TokenSyntax] = [
             SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
@@ -61,8 +55,7 @@ public class CaseAPI : APIElement {
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.
         let syntax = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
 
-        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
-        return result
+        return syntax.source()
     }
 
     public override var summary: [String] {
