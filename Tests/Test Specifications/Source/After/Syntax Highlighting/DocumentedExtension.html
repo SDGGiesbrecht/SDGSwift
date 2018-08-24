@@ -7,28 +7,28 @@
  <body>
 
 <code class="swift blockquote">
-/*
- DocumentedExtension.swift
+<span class="punctuation">/*</span>
+ <span class="comment">DocumentedExtension.swift</span>
 
- This source file is part of the SDGSwift open source project.
- https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+ <span class="comment">This source file is part of the SDGSwift open source project.</span>
+ <span class="url">https://sdggiesbrecht.github.io/SDGSwift/SDGSwift</span>
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ <span class="comment">Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.</span>
 
- Soli Deo gloria.
+ <span class="comment">Soli Deo gloria.</span>
 
- Licensed under the Apache Licence, Version 2.0.
- See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
- */
+ <span class="comment">Licensed under the Apache Licence, Version 2.0.</span>
+ <span class="comment">See </span><span class="url">http://www.apache.org/licenses/LICENSE-2.0</span><span class="comment"> for licence information.</span>
+ <span class="punctuation">*/</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
 
-    /// A read‐only computed property.
+    <span class="punctuation">///</span> <span class="comment">A read‐only computed property.</span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readOnlyComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">self</span>
     <span class="punctuation">}</span>
 
-    /// A read‐only computed property with an internal setter.
+    <span class="punctuation">///</span> <span class="comment">A read‐only computed property with an internal setter.</span>
     <span class="keyword">public</span> <span class="keyword">internal</span><span class="punctuation">(</span><span class="keyword">set</span><span class="punctuation">)</span> <span class="keyword">var</span> <span class="external identifier">readOnlyWithInternalSetter</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -38,7 +38,7 @@
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 
-    /// A read‐write computed property.
+    <span class="punctuation">///</span> <span class="comment">A read‐write computed property.</span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readWriteComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -49,7 +49,7 @@
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-// Nothing surfaced to the API.
+<span class="punctuation">//</span> <span class="comment">Nothing surfaced to the API.</span>
 <span class="keyword">extension</span> <span class="external identifier">AnySequence</span> <span class="punctuation">{</span>
 
     <span class="keyword">var</span> <span class="external identifier">notPublic</span><span class="punctuation">:</span> <span class="external identifier">Bool</span>

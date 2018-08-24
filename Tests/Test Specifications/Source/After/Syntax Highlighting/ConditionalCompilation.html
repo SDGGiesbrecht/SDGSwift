@@ -7,25 +7,25 @@
  <body>
 
 <code class="swift blockquote">
-/*
- ConditionalCompilation.swift
+<span class="punctuation">/*</span>
+ <span class="comment">ConditionalCompilation.swift</span>
 
- This source file is part of the SDGSwift open source project.
- https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+ <span class="comment">This source file is part of the SDGSwift open source project.</span>
+ <span class="url">https://sdggiesbrecht.github.io/SDGSwift/SDGSwift</span>
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ <span class="comment">Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.</span>
 
- Soli Deo gloria.
+ <span class="comment">Soli Deo gloria.</span>
 
- Licensed under the Apache Licence, Version 2.0.
- See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
- */
+ <span class="comment">Licensed under the Apache Licence, Version 2.0.</span>
+ <span class="comment">See </span><span class="url">http://www.apache.org/licenses/LICENSE-2.0</span><span class="comment"> for licence information.</span>
+ <span class="punctuation">*/</span>
 
 <span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span>
-/// Falls on Newton.
+<span class="punctuation">///</span> <span class="comment">Falls on Newton.</span>
 <span class="keyword">func</span> <span class="external identifier">fallOnNewton</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#elseif</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">Linux</span><span class="punctuation">)</span>
-/// Waddles.
+<span class="punctuation">///</span> <span class="comment">Waddles.</span>
 <span class="keyword">func</span> <span class="external identifier">waddle</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
@@ -81,7 +81,7 @@
 
 <span class="compilation‐condition">#endif</span>
 
-<span class="compilation‐condition">#if</span>    /* This condition needs clean‐up.*/      <span class="external identifier">NEEDING_CLEANUP</span> // ...
+<span class="compilation‐condition">#if</span>    <span class="punctuation">/*</span> <span class="comment">This condition needs clean‐up.</span><span class="punctuation">*/</span>      <span class="external identifier">NEEDING_CLEANUP</span> <span class="punctuation">//</span> <span class="comment">...</span>
 <span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">CleanedUpCompilationCondition</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
