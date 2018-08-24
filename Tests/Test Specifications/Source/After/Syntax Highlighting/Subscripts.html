@@ -1,0 +1,27 @@
+public struct Subscripted {
+
+    public subscript(readOnly: Int) -> Int {
+        return readOnly
+    }
+
+    public subscript(readWrite: String) -> String {
+        unknown {
+            return readWrite
+        }
+        unknown {
+            something = readWrite
+        }
+    }
+
+    public subscript(x x: Int, y y: Int) -> Int {
+        return x × y
+    }
+
+    private subscript(private: UInt) -> UInt {
+        return `private`
+    }
+
+    public subscript(inOutParameter: inout Bool) -> Bool {
+        return false
+    }
+}
