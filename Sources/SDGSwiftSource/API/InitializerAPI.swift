@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public class InitializerAPI : APIElement {
 
     // MARK: - Initialization
@@ -35,15 +37,44 @@ public class InitializerAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = "init" + (isFailable ? "?" : "")
-        result += "(" + arguments.map({ $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
+
+        let failable: TokenSyntax
+        if isFailable {
+            failable = SyntaxFactory.makeToken(.infixQuestionMark)
+        } else {
+            failable = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
+        }
+
+        var parameters: [FunctionParameterSyntax] = []
+        if ¬arguments.isEmpty {
+            for index in arguments.indices {
+                let argument = arguments[index]
+                parameters.append(argument.functionDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+            }
+        }
+
+        var throwsKeyword: TokenSyntax?
         if `throws` {
-            result += " throws"
+            throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
         }
-        if let constraints = constraintSyntax() {
-            result += constraints.source()
-        }
-        return result
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: nil,
+            funcKeyword: SyntaxFactory.makeToken(.initKeyword),
+            identifier: failable,
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                leftParen: SyntaxFactory.makeToken(.leftParen),
+                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
+                rightParen: SyntaxFactory.makeToken(.rightParen),
+                throwsOrRethrowsKeyword: throwsKeyword,
+                arrow: nil,
+                returnTypeAttributes: nil,
+                returnType: nil),
+            genericWhereClause: constraintSyntax(),
+            body: SyntaxFactory.makeBlankCodeBlock()).source()
     }
 
     public override var summary: [String] {

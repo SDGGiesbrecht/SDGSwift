@@ -52,10 +52,8 @@ public class CaseAPI : APIElement {
             tokens.append(SyntaxFactory.makeToken(.rightParen))
         }
 
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.
-        let syntax = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
-
-        return syntax.source()
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens).source()
     }
 
     public override var summary: [String] {
