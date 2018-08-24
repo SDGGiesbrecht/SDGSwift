@@ -55,8 +55,8 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .quotationMark, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
             return "punctuation"
 
-        case .string:
-            return "string"
+        case .string, .commentText, .documentationText:
+            return "text"
 
         case .whitespace:
             return nil // Ignored.
@@ -64,9 +64,6 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .newlines:
             // #warning(This may need disambiguation.)
             return nil
-
-        case .commentText, .documentationText:
-            return "comment"
 
         case .commentURL, .linkURL:
             return "url"
