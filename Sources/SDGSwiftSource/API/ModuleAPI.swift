@@ -59,6 +59,23 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
+    public override var declaration: String? {
+        return SyntaxFactory.makeFunctionCallExpr(
+            calledExpression: SyntaxFactory.makeMemberAccessExpr(
+                base: SyntaxFactory.makeBlankExpr(),
+                dot: SyntaxFactory.makeToken(.period),
+                name: SyntaxFactory.makeToken(.identifier("target"))),
+            leftParen: SyntaxFactory.makeToken(.leftParen),
+            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
+                SyntaxFactory.makeFunctionCallArgument(
+                    label: SyntaxFactory.makeToken(.identifier("name")),
+                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                    expression: SyntaxFactory.makeStringLiteralExpr("\u{22}\(name)\u{22}"),
+                    trailingComma: nil)
+                ]),
+            rightParen: SyntaxFactory.makeToken(.rightParen)).source()
+    }
+
     private var _types: [TypeAPI] = []
     private var types: [TypeAPI] {
         get {
