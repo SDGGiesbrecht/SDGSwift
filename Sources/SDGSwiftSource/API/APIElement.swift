@@ -127,7 +127,7 @@ public class APIElement : Comparable, Hashable {
     // MARK: - Equatable
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) Apparently not actually used by the sorting algorithm.
-        return (precedingValue.name, precedingValue.declaration) == (followingValue.name, followingValue.declaration)
+        return (precedingValue.name, precedingValue.declaration?.source()) == (followingValue.name, followingValue.declaration?.source())
     }
 
     // MARK: - Hashable

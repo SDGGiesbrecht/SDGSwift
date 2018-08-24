@@ -87,8 +87,10 @@ class SDGSwiftSourceAPITests : TestCase {
             try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
 
             // API
-            let api = sourceFile.api().sorted().map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
-            SDGPersistenceTestUtilities.compare(api, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
+            let api = sourceFile.api().sorted()
+            let summary = api.map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+
+            SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
         }
     }
 }

@@ -80,6 +80,12 @@ extension Syntax {
         }
     }
 
+    // MARK: - Syntax Highlighting
+
+    public func syntaxHighlightedHTML() -> String {
+        return source()
+    }
+
     // MARK: - API
 
     internal func apiChildren() -> [APIElement] {
