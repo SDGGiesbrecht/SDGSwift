@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
@@ -41,7 +43,54 @@ public class SubscriptAPI : APIElement {
             result += constraints.source()
         }
         result += " { get " + (isSettable ? "set " : "") + "}"
-        return result
+
+        var parameters: [FunctionParameterSyntax] = []
+        if ¬arguments.isEmpty {
+            for index in arguments.indices {
+                let argument = arguments[index]
+                parameters.append(argument.subscriptDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+            }
+        }
+
+        var modifiers: [Syntax] = [
+            SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier("get"))
+        ]
+        if isSettable {
+            modifiers.append(SyntaxFactory.makeToken(.identifier("set"), leadingTrivia: .spaces(1)))
+        }
+        modifiers.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has not builder for this.)
+        return SyntaxFactory.makeDeclList([
+
+            SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: nil,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
+            identifier: SyntaxFactory.makeToken(.subscriptKeyword),
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                leftParen: SyntaxFactory.makeToken(.leftParen),
+                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
+                rightParen: SyntaxFactory.makeToken(.rightParen),
+                throwsOrRethrowsKeyword: nil,
+                arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                returnTypeAttributes: nil,
+                returnType: returnType.declaration),
+            genericWhereClause: nil,
+            body: SyntaxFactory.makeBlankCodeBlock()),
+
+            SyntaxFactory.makeFunctionDecl(
+                attributes: nil,
+                modifiers: SyntaxFactory.makeModifierList(modifiers),
+                funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
+                identifier: SyntaxFactory.makeToken(.identifier(""), presence: .missing),
+                genericParameterClause: nil,
+                signature: SyntaxFactory.makeBlankFunctionSignature(),
+                genericWhereClause: constraintSyntax(),
+                body: SyntaxFactory.makeBlankCodeBlock())
+            ]).source()
     }
 
     public override var summary: [String] {
