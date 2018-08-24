@@ -44,10 +44,6 @@ public class PackageAPI : APIElement {
         return _name
     }
 
-    internal override var identifiers: Set<String> {
-        return children.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
-
     public override var declaration: FunctionCallExprSyntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeIdentifierExpr(
@@ -61,6 +57,10 @@ public class PackageAPI : APIElement {
                     trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen))
+    }
+
+    public override var identifierList: Set<String> {
+        return children.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

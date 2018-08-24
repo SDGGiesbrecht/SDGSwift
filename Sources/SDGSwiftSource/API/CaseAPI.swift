@@ -56,7 +56,7 @@ public class CaseAPI : APIElement {
         return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
     }
 
-    internal override var identifiers: Set<String> {
+    public override var identifierList: Set<String> {
         return [name]
     }
 

@@ -37,10 +37,6 @@ public class SubscriptAPI : APIElement {
         return "[" + arguments.map({ $0.subscriptNameForm }).joined() + "]"
     }
 
-    internal override var identifiers: Set<String> {
-        return arguments.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
-
     public override var declaration: Syntax {
 
         var parameters: [FunctionParameterSyntax] = []
@@ -90,6 +86,10 @@ public class SubscriptAPI : APIElement {
                 genericWhereClause: constraintSyntax(),
                 body: SyntaxFactory.makeBlankCodeBlock())
             ])
+    }
+
+    public override var identifierList: Set<String> {
+        return arguments.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

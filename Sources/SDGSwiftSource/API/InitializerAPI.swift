@@ -37,10 +37,6 @@ public class InitializerAPI : APIElement {
         return "init(" + arguments.map({ $0.functionNameForm }).joined() + ")"
     }
 
-    internal override var identifiers: Set<String> {
-        return arguments.map({ $0.identifiers }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
-
     public override var declaration: DeclSyntax {
 
         let failable: TokenSyntax
@@ -80,6 +76,10 @@ public class InitializerAPI : APIElement {
                 returnType: nil),
             genericWhereClause: constraintSyntax(),
             body: SyntaxFactory.makeBlankCodeBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return arguments.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

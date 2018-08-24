@@ -185,8 +185,8 @@ public class APIScope : APIElement {
 
     // MARK: - APIElement
 
-    internal var scopeIdentifiers: Set<String> {
-        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifiers }
+    internal var scopeIdentifierList: Set<String> {
+        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList }
     }
 
     public override var children: AnyBidirectionalCollection<APIElement> {

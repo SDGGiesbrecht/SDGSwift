@@ -48,14 +48,6 @@ public struct ParameterAPI {
         return functionNameForm
     }
 
-    internal var identifiers: Set<String> {
-        if let label = self.label {
-            return [label]
-        } else {
-            return []
-        }
-    }
-
     internal func functionDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
         var externalName: TokenSyntax?
         if label ≠ name {
@@ -111,5 +103,13 @@ public struct ParameterAPI {
             defaultEquals: defaultEquals,
             defaultValue: defaultValue,
             trailingComma: comma)
+    }
+
+    internal var identifierList: Set<String> {
+        if let label = self.label {
+            return [label]
+        } else {
+            return []
+        }
     }
 }

@@ -38,10 +38,6 @@ public class ProtocolAPI : APIScope {
         return _name.description
     }
 
-    internal override var identifiers: Set<String> {
-        return Set([_name]) ∪ scopeIdentifiers
-    }
-
     public override var declaration: DeclSyntax {
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this yet.
         return SyntaxFactory.makeStructDecl(
@@ -53,6 +49,10 @@ public class ProtocolAPI : APIScope {
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
             members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return Set([_name]) ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {

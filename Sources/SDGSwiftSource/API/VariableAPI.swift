@@ -36,10 +36,6 @@ public class VariableAPI : APIElement {
         return _name
     }
 
-    internal override var identifiers: Set<String> {
-        return [name]
-    }
-
     public override var declaration: Syntax {
 
         var tokens: [TokenSyntax] = []
@@ -66,6 +62,10 @@ public class VariableAPI : APIElement {
 
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
         return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+    }
+
+    public override var identifierList: Set<String> {
+        return [name]
     }
 
     public override var summary: [String] {

@@ -94,10 +94,6 @@ public class FunctionAPI : APIElement {
         return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
-    internal override var identifiers: Set<String> {
-        return arguments.map({ $0.identifiers }).reduce(into: Set([_name]), { $0 ∪= $1 })
-    }
-
     public override var declaration: FunctionDeclSyntax {
 
         var modifiers: [DeclModifierSyntax] = []
@@ -158,6 +154,10 @@ public class FunctionAPI : APIElement {
                 returnType: returnTypeSyntax),
             genericWhereClause: constraintSyntax(),
             body: SyntaxFactory.makeBlankCodeBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return arguments.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

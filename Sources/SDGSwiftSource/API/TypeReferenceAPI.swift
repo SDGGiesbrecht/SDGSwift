@@ -31,10 +31,6 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Output
 
-    internal var identifiers: Set<String> {
-        return genericArguments.reduce(into: Set([name])) { $0 ∪= $1.identifiers }
-    }
-
     internal var declaration: SimpleTypeIdentifierSyntax {
 
         var genericArgumentClause: GenericArgumentClauseSyntax?
@@ -62,6 +58,10 @@ public struct TypeReferenceAPI : Comparable, Hashable {
         return SyntaxFactory.makeSimpleTypeIdentifier(
             name: SyntaxFactory.makeToken(.identifier(name)),
             genericArgumentClause: genericArgumentClause)
+    }
+
+    internal var identifierList: Set<String> {
+        return genericArguments.reduce(into: Set([name])) { $0 ∪= $1.identifierList }
     }
 
     // MARK: - Comparable

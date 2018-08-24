@@ -38,10 +38,6 @@ public class TypeAPI : APIScope {
         return typeName.declaration.source()
     }
 
-    internal override var identifiers: Set<String> {
-        return typeName.identifiers ∪ scopeIdentifiers
-    }
-
     public override var declaration: DeclSyntax {
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory classes or enumerations yet.
         return SyntaxFactory.makeStructDecl(
@@ -53,6 +49,10 @@ public class TypeAPI : APIScope {
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
             members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return typeName.identifierList ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {

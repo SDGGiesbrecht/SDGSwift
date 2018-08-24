@@ -124,10 +124,6 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
-    internal override var identifiers: Set<String> {
-        return children.map({ $0.identifiers }).reduce(into: Set([_name]), { $0 ∪= $1 })
-    }
-
     public override var declaration: FunctionCallExprSyntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
@@ -143,6 +139,10 @@ public class ModuleAPI : APIElement {
                     trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen))
+    }
+
+    public override var identifierList: Set<String> {
+        return children.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

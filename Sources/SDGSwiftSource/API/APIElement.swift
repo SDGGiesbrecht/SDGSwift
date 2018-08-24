@@ -72,7 +72,7 @@ public class APIElement : Comparable, Hashable {
         primitiveMethod()
     }
 
-    internal var identifiers: Set<String> {
+    public var identifierList: Set<String> {
         return []
     }
 
