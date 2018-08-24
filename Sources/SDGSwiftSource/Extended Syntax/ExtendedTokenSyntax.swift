@@ -49,8 +49,46 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         }
     }
 
+    internal func syntaxHighlightingClass() -> String? {
+        switch kind {
+
+        case .quotationMark, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
+            return "punctuation"
+
+        case .string:
+            return "string"
+
+        case .whitespace:
+            return nil // Ignored.
+
+        case .newlines:
+            // #warning(This may need disambiguation.)
+            return nil
+
+        case .commentText, .documentationText:
+            return "comment"
+
+        case .commentURL, .linkURL:
+            return "url"
+
+        case .mark, .language:
+            return "keyword"
+
+        case .source, .lineSeparator:
+            return nil // Handled elsewhere.
+
+        case .callout:
+            return "callout"
+        }
+    }
+
     internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
-        return _text
+        var source = _text
+        if let `class` = syntaxHighlightingClass() {
+            source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+            source.append(contentsOf: "</span>")
+        }
+        return source
     }
 
     // MARK: - TextOutputStreamable
