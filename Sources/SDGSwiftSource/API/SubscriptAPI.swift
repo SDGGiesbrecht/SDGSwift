@@ -37,7 +37,9 @@ public class SubscriptAPI : APIElement {
     public override var declaration: String {
         var result = "subscript(" + arguments.map({ $0.subscriptDeclarationForm }).joined(separator: ", ") + ")"
         result += " \u{2D}> " + returnType.description
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         result += " { get " + (isSettable ? "set " : "") + "}"
         return result
     }

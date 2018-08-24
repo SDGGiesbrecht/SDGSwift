@@ -18,7 +18,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
         self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
@@ -30,7 +30,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Properties
 
-    internal let typeMethodKeyword: String?
+    internal let typeMethodKeyword: TokenKind?
     private let isMutating: Bool
     private let _name: String
     private let arguments: [ParameterAPI]
@@ -96,52 +96,82 @@ public class FunctionAPI : APIElement {
     public override var declaration: String {
         var result = ""
         if let typeKeyword = typeMethodKeyword {
-            result += typeKeyword + " "
+            result += SyntaxFactory.makeToken(typeKeyword).source() + " "
         }
         if isMutating {
             result += "mutating "
         }
-        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
+        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm(trailingComma: false).source() : $0.functionDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
         if `throws` {
             result += " throws"
         }
         if let returnType = self.returnType?.description, returnType ≠ "Void", returnType ≠ "()" {
             result += " \u{2D}> " + returnType
         }
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
 
-        var modifiers: ModifierListSyntax?
+        var modifiers: [DeclModifierSyntax] = []
+        if let typeKeyword = typeMethodKeyword {
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(typeKeyword, trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
+        }
+
         if isMutating {
-            modifiers = SyntaxFactory.makeModifierList([
-                SyntaxFactory.makeDeclModifier(
-                    name: SyntaxFactory.makeToken(.identifier("mutating"), trailingTrivia: .spaces(1)),
-                    detail: SyntaxFactory.makeTokenList([]))
-                ])
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(.identifier("mutating"), trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
+        }
+
+        var modifierList: ModifierListSyntax?
+        if ¬modifiers.isEmpty {
+            modifierList = SyntaxFactory.makeModifierList(modifiers)
+        }
+
+        var parameters: [FunctionParameterSyntax] = []
+        if ¬arguments.isEmpty {
+            for index in arguments.indices {
+                let argument = arguments[index]
+                if isOperator {
+                    parameters.append(argument.operatorDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+                } else {
+                    parameters.append(argument.functionDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+                }
+            }
         }
 
         var throwsKeyword: TokenSyntax?
         if `throws` {
             throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
         }
-        /*
+
+        var arrow: TokenSyntax?
+        var returnTypeSyntax: TypeSyntax?
+        if let returnType = self.returnType?.declaration, returnType.source() ≠ "Void", returnType.source() ≠ "()" {
+            arrow = SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+            returnTypeSyntax = returnType
+        }
+
         let syntax = SyntaxFactory.makeFunctionDecl(
             attributes: nil,
-            modifiers: modifiers,
+            modifiers: modifierList,
             funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
             identifier: SyntaxFactory.makeToken(.identifier(_name)),
             genericParameterClause: nil,
             signature: SyntaxFactory.makeFunctionSignature(
                 leftParen: SyntaxFactory.makeToken(.leftParen),
-                parameterList: <#T##FunctionParameterListSyntax#>,
+                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
                 rightParen: SyntaxFactory.makeToken(.rightParen),
                 throwsOrRethrowsKeyword: throwsKeyword,
-                arrow: <#T##TokenSyntax?#>,
-                returnTypeAttributes: <#T##AttributeListSyntax?#>,
-                returnType: <#T##TypeSyntax?#>),
-            genericWhereClause: <#T##GenericWhereClauseSyntax?#>,
+                arrow: arrow,
+                returnTypeAttributes: nil,
+                returnType: returnTypeSyntax),
+            genericWhereClause: constraintSyntax(),
             body: SyntaxFactory.makeBlankCodeBlock())
 
-        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")*/
+        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
         return result
     }
 

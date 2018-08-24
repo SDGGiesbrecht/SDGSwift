@@ -241,11 +241,11 @@ extension UnknownDeclSyntax {
 
     // MARK: - Variable Syntax
 
-    private var typePropertyKeyword: String? {
+    private var typePropertyKeyword: TokenKind? {
         for child in children {
             if let modifier = child as? DeclModifierSyntax,
                 modifier.name.tokenKind == .staticKeyword ∨ modifier.name.tokenKind == .classKeyword {
-                return modifier.name.text
+                return modifier.name.tokenKind
             }
         }
         return nil
@@ -340,7 +340,7 @@ extension UnknownDeclSyntax {
 
     // MARK: - Variable Syntax
 
-    private var typeMethodKeyword: String? {
+    private var typeMethodKeyword: TokenKind? {
         return typePropertyKeyword
     }
 

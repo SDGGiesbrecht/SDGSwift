@@ -16,7 +16,7 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typePropertyKeyword: String?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+    internal init(typePropertyKeyword: TokenKind?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
         self.typePropertyKeyword = typePropertyKeyword
         _name = name.decomposedStringWithCanonicalMapping
         self.type = type
@@ -25,7 +25,7 @@ public class VariableAPI : APIElement {
 
     // MARK: - Properties
 
-    internal let typePropertyKeyword: String?
+    internal let typePropertyKeyword: TokenKind?
     private let _name: String
     private let type: TypeReferenceAPI?
     private let isSettable: Bool
@@ -39,13 +39,15 @@ public class VariableAPI : APIElement {
     public override var declaration: String {
         var result = ""
         if let typePropertyKeyword = self.typePropertyKeyword {
-            result += typePropertyKeyword + " "
+            result += SyntaxFactory.makeToken(typePropertyKeyword).source() + " "
         }
         result += "var " + _name
         if let type = self.type {
             result += ": " + type.description
         }
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         result += " { get "
         if isSettable {
             result += "set "

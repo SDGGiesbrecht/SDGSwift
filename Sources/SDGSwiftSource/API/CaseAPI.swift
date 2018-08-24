@@ -57,6 +57,8 @@ public class CaseAPI : APIElement {
             tokens.append(contentsOf: associatedValues.map({ $0.declaration.tokens() }).joined(separator: [SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))]))
             tokens.append(SyntaxFactory.makeToken(.rightParen))
         }
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.
         let syntax = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
 
         assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")

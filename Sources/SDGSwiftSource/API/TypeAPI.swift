@@ -39,7 +39,9 @@ public class TypeAPI : APIScope {
 
     public override var declaration: String {
         var result = keyword + " " + name
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         return result
     }
 

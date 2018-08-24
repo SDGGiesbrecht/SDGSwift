@@ -38,7 +38,9 @@ public class ProtocolAPI : APIScope {
 
     public override var declaration: String {
         var result = "protocol " + name
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         return result
     }
 

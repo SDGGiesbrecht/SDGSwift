@@ -53,6 +53,25 @@ public struct ParameterAPI {
                 externalName = SyntaxFactory.makeToken(.wildcardKeyword, trailingTrivia: .spaces(1))
             }
         }
+        return declaration(externalName: externalName, trailingComma: trailingComma)
+    }
+
+    internal func operatorDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
+        return declaration(externalName: nil, trailingComma: trailingComma)
+    }
+
+    internal var subscriptDeclarationForm: String {
+        var result = ""
+        if let theLabel = label {
+            result += theLabel + " "
+        }
+        result += name
+        result += ": "
+        result += (isInOut ? "inout " : "") + type.description
+        return result
+    }
+
+    private func declaration(externalName: TokenSyntax?, trailingComma: Bool) -> FunctionParameterSyntax {
 
         var inOutKeyword: TokenSyntax?
         if isInOut {
@@ -83,20 +102,5 @@ public struct ParameterAPI {
             defaultEquals: defaultEquals,
             defaultValue: defaultValue,
             trailingComma: comma)
-    }
-
-    internal var operatorDeclarationForm: String {
-        return name + ": " + (isInOut ? "inout " : "") + type.description
-    }
-
-    internal var subscriptDeclarationForm: String {
-        var result = ""
-        if let theLabel = label {
-            result += theLabel + " "
-        }
-        result += name
-        result += ": "
-        result += (isInOut ? "inout " : "") + type.description
-        return result
     }
 }

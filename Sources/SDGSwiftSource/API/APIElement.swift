@@ -91,10 +91,20 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Description
 
-    internal func appendConstraintDescriptions(to description: inout String) {
-        if ¬constraints.isEmpty {
-            description += " where " + constraints.map({ $0.description }).joined(separator: ", ")
+    internal func constraintSyntax() -> GenericWhereClauseSyntax? {
+        guard ¬constraints.isEmpty else {
+            return nil
         }
+
+        var syntaxElements: [Syntax] = []
+        for index in constraints.indices {
+            let constraint = constraints[index]
+            syntaxElements.append(constraint.syntax(trailingComma: index ≠ constraints.index(before: constraints.endIndex)))
+        }
+
+        return SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            requirementList: SyntaxFactory.makeGenericRequirementList(syntaxElements))
     }
 
     internal func appendCompilationConditions(to description: inout String) {

@@ -40,7 +40,9 @@ public class InitializerAPI : APIElement {
         if `throws` {
             result += " throws"
         }
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         return result
     }
 

@@ -38,6 +38,23 @@ public enum ConstraintAPI : Comparable {
 
     // MARK: - Properties
 
+    internal func syntax(trailingComma: Bool) -> Syntax {
+        switch self {
+        case .conformance(let type, let conformance):
+            return SyntaxFactory.makeConformanceRequirement(
+                leftTypeIdentifier: type.declaration,
+                colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                rightTypeIdentifier: conformance.declaration,
+                trailingComma: trailingComma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
+        case .sameType(let one, let two):
+            return SyntaxFactory.makeSameTypeRequirement(
+                leftTypeIdentifier: one.declaration,
+                equalityToken: SyntaxFactory.makeToken(.spacedBinaryOperator("=="), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                rightTypeIdentifier: two.declaration,
+                trailingComma: trailingComma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
+        }
+    }
+
     internal var description: String {
         switch self {
         case .conformance(let type, let conformance):
