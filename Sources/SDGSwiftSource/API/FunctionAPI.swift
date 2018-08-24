@@ -51,7 +51,7 @@ public class FunctionAPI : APIElement {
             if isProtocolRequirement {
                 for index in new.indices {
                     let overload = new[index]
-                    if overload.declaration == declaration {
+                    if overload.declaration.source() == declaration.source() {
                         hasDefaultImplementation = true
                         new.remove(at: index)
                         break
