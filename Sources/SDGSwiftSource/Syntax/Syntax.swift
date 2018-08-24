@@ -111,7 +111,7 @@ extension Syntax {
     private func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
         switch self {
         case let token as TokenSyntax :
-            var result = token.leadingTrivia.source()
+            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
 
             var source = token.text
             if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
@@ -120,7 +120,7 @@ extension Syntax {
             }
             result += source
 
-            result += token.trailingTrivia.source()
+            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
             return result
         default:
             var identifiers = internalIdentifiers
