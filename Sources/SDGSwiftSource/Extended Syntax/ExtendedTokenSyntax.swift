@@ -49,6 +49,10 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         }
     }
 
+    internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
+        return _text
+    }
+
     // MARK: - TextOutputStreamable
 
     public override func write<Target>(to target: inout Target) where Target : TextOutputStream {

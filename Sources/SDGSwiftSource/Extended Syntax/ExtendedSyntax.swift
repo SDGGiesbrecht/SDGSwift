@@ -75,6 +75,14 @@ public class ExtendedSyntax : TextOutputStreamable {
         return result
     }
 
+    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers), inline: inline)
+    }
+
+    internal func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
+        return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers) }).joined()
+    }
+
     // MARK: - TextOutputStreamable
 
     public func write<Target>(to target: inout Target) where Target : TextOutputStream {
