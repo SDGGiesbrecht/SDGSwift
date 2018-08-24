@@ -55,15 +55,6 @@ public enum ConstraintAPI : Comparable {
         }
     }
 
-    internal var description: String {
-        switch self {
-        case .conformance(let type, let conformance):
-            return type.description + " : " + conformance.description
-        case .sameType(let one, let two):
-            return one.description + " == " + two.description
-        }
-    }
-
     // MARK: - Comparable
 
     public static func < (precedingValue: ConstraintAPI, followingValue: ConstraintAPI) -> Bool {
@@ -74,13 +65,13 @@ public enum ConstraintAPI : Comparable {
             return false
         default:
             // #workaround(Swift 4.1.2, Order differs between operating systems.)
-            return precedingValue.description.scalars.lexicographicallyPrecedes(followingValue.description.scalars)
+            return precedingValue.syntax(trailingComma: false).source().scalars.lexicographicallyPrecedes(followingValue.syntax(trailingComma: false).source().scalars)
         }
     }
 
     // MARK: - Equatable
 
     public static func == (precedingValue: ConstraintAPI, followingValue: ConstraintAPI) -> Bool { // @exempt(from: tests) Unreachable with valid source.
-        return precedingValue.description == followingValue.description
+        return precedingValue.syntax(trailingComma: false).source() == followingValue.syntax(trailingComma: false).source()
     }
 }
