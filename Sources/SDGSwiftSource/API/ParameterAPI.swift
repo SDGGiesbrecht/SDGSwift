@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public struct ParameterAPI {
 
     // MARK: - Initialization
@@ -54,6 +56,42 @@ public struct ParameterAPI {
         if hasDefault {
             result += " = default"
         }
+
+        var externalName: TokenSyntax?
+        if label ≠ name {
+            if let external = label {
+                externalName = SyntaxFactory.makeToken(.identifier(external), trailingTrivia: .spaces(1))
+            } else {
+                externalName = SyntaxFactory.makeToken(.wildcardKeyword, trailingTrivia: .spaces(1))
+            }
+        }
+
+        var inOutKeyword: TokenSyntax?
+        if isInOut {
+            inOutKeyword = SyntaxFactory.makeToken(.inoutKeyword, trailingTrivia: .spaces(1))
+        }
+
+        var defaultEquals: TokenSyntax?
+        var defaultValue: ExprSyntax?
+        if hasDefault {
+            defaultEquals = SyntaxFactory.makeToken(.equal, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+            defaultValue = SyntaxFactory.makeIdentifierExpr(identifier: SyntaxFactory.makeToken(.defaultKeyword))
+        }
+
+        let syntax = SyntaxFactory.makeFunctionParameter(
+            externalName: externalName,
+            localName: SyntaxFactory.makeToken(.identifier(name)),
+            colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+            typeAnnotation: SyntaxFactory.makeTypeAnnotation(
+                attributes: SyntaxFactory.makeAttributeList([]),
+                inOutKeyword: inOutKeyword,
+                type: type.declaration),
+            ellipsis: nil,
+            defaultEquals: defaultEquals,
+            defaultValue: defaultValue,
+            trailingComma: nil)
+
+        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")
         return result
     }
 
