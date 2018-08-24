@@ -34,7 +34,7 @@ public class TypeAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return typeName.description
+        return typeName.declaration.source()
     }
 
     public override var declaration: String {

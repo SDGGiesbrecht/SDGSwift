@@ -43,7 +43,7 @@ public class VariableAPI : APIElement {
         }
         result += "var " + _name
         if let type = self.type {
-            result += ": " + type.description
+            result += ": " + type.declaration.source()
         }
         if let constraints = constraintSyntax() {
             result += constraints.source()

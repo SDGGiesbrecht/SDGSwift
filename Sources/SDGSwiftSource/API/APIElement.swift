@@ -48,7 +48,7 @@ public class APIElement : Comparable, Hashable {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
-            for `protocol` in protocols where extensionType.description == `protocol`.name {
+            for `protocol` in protocols where extensionType.declaration.source() == `protocol`.name {
                 `protocol`.merge(extension: `extension`)
                 continue extensionIteration
             }

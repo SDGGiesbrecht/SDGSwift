@@ -38,7 +38,7 @@ public class SubscriptAPI : APIElement {
 
     public override var declaration: String {
         var result = "subscript(" + arguments.map({ $0.subscriptDeclarationForm(trailingComma: false).source() }).joined(separator: ", ") + ")"
-        result += " \u{2D}> " + returnType.description
+        result += " \u{2D}> " + returnType.declaration.source()
         if let constraints = constraintSyntax() {
             result += constraints.source()
         }

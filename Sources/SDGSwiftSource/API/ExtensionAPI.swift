@@ -56,7 +56,7 @@ public class ExtensionAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return type.description
+        return type.declaration.source()
     }
 
     public override var declaration: String? { // @exempt(from: tests) Should never occur.

@@ -30,14 +30,6 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Output
 
-    internal var description: String {
-        var result = name
-        if ¬genericArguments.isEmpty {
-            result += "<" + genericArguments.map({ $0.description }).joined(separator: ", ") + ">"
-        }
-        return result
-    }
-
     internal var declaration: SimpleTypeIdentifierSyntax {
 
         var genericArgumentClause: GenericArgumentClauseSyntax?
