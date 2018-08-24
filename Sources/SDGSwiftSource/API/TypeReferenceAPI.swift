@@ -39,7 +39,7 @@ public struct TypeReferenceAPI : Comparable, Hashable {
                 let argument = self.genericArguments[index]
 
                 var trailingComma: TokenSyntax?
-                if index ≠ self.genericArguments.endIndex {
+                if index ≠ self.genericArguments.index(before: self.genericArguments.endIndex) {
                     trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
                 }
 

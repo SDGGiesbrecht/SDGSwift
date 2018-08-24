@@ -37,23 +37,31 @@ public class VariableAPI : APIElement {
     }
 
     public override var declaration: String {
-        var result = ""
+
+        var tokens: [TokenSyntax] = []
         if let typePropertyKeyword = self.typePropertyKeyword {
-            result += SyntaxFactory.makeToken(typePropertyKeyword).source() + " "
+            tokens.append(SyntaxFactory.makeToken(typePropertyKeyword, trailingTrivia: .spaces(1)))
         }
-        result += "var " + _name
+        tokens.append(contentsOf: [
+            SyntaxFactory.makeVarKeyword(trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier(_name))
+        ])
         if let type = self.type {
-            result += ": " + type.declaration.source()
+            tokens.append(SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)))
+            tokens.append(contentsOf: type.declaration.tokens())
         }
-        if let constraints = constraintSyntax() {
-            result += constraints.source()
-        }
-        result += " { get "
+
+        tokens.append(contentsOf: [
+            SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier("get"))
+            ])
         if isSettable {
-            result += "set "
+            tokens.append(SyntaxFactory.makeToken(.identifier("set"), leadingTrivia: .spaces(1)))
         }
-        result += "}"
-        return result
+        tokens.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens).source()
     }
 
     public override var summary: [String] {
