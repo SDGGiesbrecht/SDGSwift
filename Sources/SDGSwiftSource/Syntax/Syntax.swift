@@ -105,7 +105,21 @@ extension Syntax {
     }
 
     private func nestedSyntaxHighlightedHTML(inline: Bool) -> String {
-        return source()
+        switch self {
+        case let token as TokenSyntax :
+            var result = token.leadingTrivia.source()
+
+            var source = token.text
+            if let `class` = token.syntaxHighlightingClass {
+                source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+                source.append(contentsOf: "</span>")
+            }
+
+            result += token.trailingTrivia.source()
+            return result
+        default:
+            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline) }).joined()
+        }
     }
 
     // MARK: - API

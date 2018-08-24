@@ -77,6 +77,32 @@ extension TokenSyntax {
         }
     }
 
+    internal var syntaxHighlightingClass: String? {
+        switch tokenKind {
+        case .unknown, .eof:
+            return nil
+
+        case .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword, .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword, .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword, .__dso_handle__Keyword, .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword, .poundLineKeyword, .poundColumnKeyword, .poundFunctionKeyword, .atSign:
+            return "keyword"
+
+        case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword:
+            return "compilation‐condition"
+
+        case .arrow, .colon, .semicolon, .comma, .period, .equal, .prefixPeriod, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .ampersand, .postfixQuestionMark, .infixQuestionMark, .exclamationMark, .dollarIdentifier:
+            return "punctuation"
+
+        case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
+            // #warning(Needs further disambiguation.)
+            return "internal‐identifier"
+
+        case .integerLiteral, .floatingLiteral:
+            return "number"
+
+        case .stringLiteral:
+            return nil // Disected elsewhere.
+        }
+    }
+
     // MARK: - Short Cuts
 
     internal var isOperator: Bool {
