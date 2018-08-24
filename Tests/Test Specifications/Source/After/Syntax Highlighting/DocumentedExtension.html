@@ -21,38 +21,38 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-<span class="keyword">extension</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
+<span class="keyword">extension</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
 
     /// A read‐only computed property.
-    <span class="keyword">public</span> <span class="keyword">var</span> <span class="internal identifier">readOnlyComputedProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readOnlyComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">self</span>
     <span class="punctuation">}</span>
 
     /// A read‐only computed property with an internal setter.
-    <span class="keyword">public</span> <span class="keyword">internal</span><span class="punctuation">(</span><span class="keyword">set</span><span class="punctuation">)</span> <span class="keyword">var</span> <span class="internal identifier">readOnlyWithInternalSetter</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">internal</span><span class="punctuation">(</span><span class="keyword">set</span><span class="punctuation">)</span> <span class="keyword">var</span> <span class="external identifier">readOnlyWithInternalSetter</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
         <span class="punctuation">}</span>
         unknown <span class="punctuation">{</span>
-            <span class="keyword">self</span> <span class="punctuation">=</span> <span class="internal identifier">newValue</span>
+            <span class="keyword">self</span> <span class="punctuation">=</span> <span class="external identifier">newValue</span>
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 
     /// A read‐write computed property.
-    <span class="keyword">public</span> <span class="keyword">var</span> <span class="internal identifier">readWriteComputedProperty</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readWriteComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
         <span class="punctuation">}</span>
         unknown <span class="punctuation">{</span>
-            <span class="keyword">self</span> <span class="punctuation">=</span> <span class="internal identifier">newValue</span>
+            <span class="keyword">self</span> <span class="punctuation">=</span> <span class="external identifier">newValue</span>
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 // Nothing surfaced to the API.
-<span class="keyword">extension</span> <span class="internal identifier">AnySequence</span> <span class="punctuation">{</span>
+<span class="keyword">extension</span> <span class="external identifier">AnySequence</span> <span class="punctuation">{</span>
 
-    <span class="keyword">var</span> <span class="internal identifier">notPublic</span><span class="punctuation">:</span> <span class="internal identifier">Bool</span>
+    <span class="keyword">var</span> <span class="external identifier">notPublic</span><span class="punctuation">:</span> <span class="external identifier">Bool</span>
 <span class="punctuation">}</span>
 
 </code>

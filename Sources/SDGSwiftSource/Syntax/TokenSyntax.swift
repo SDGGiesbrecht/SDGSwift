@@ -14,6 +14,7 @@
 
 import SDGLogic
 import SDGMathematics
+import SDGCollections
 
 extension TokenSyntax {
 
@@ -77,7 +78,7 @@ extension TokenSyntax {
         }
     }
 
-    internal var syntaxHighlightingClass: String? {
+    internal func syntaxHighlightingClass(internalIdentifiers: Set<String>) -> String? {
         switch tokenKind {
         case .unknown, .eof:
             return nil
@@ -91,14 +92,16 @@ extension TokenSyntax {
         case .arrow, .colon, .semicolon, .comma, .period, .equal, .prefixPeriod, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .ampersand, .postfixQuestionMark, .infixQuestionMark, .exclamationMark, .dollarIdentifier:
             return "punctuation"
 
-        case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
-            if case .identifier(let name) = tokenKind {
-                if name == "get" ∨ name == "set" {
-                    return "keyword"
-                }
+        case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
+            if name == "get" ∨ name == "set" {
+                return "keyword"
             }
-            // #warning(Needs further disambiguation.)
-            return "internal identifier"
+
+            if name ∈ internalIdentifiers {
+                return "internal identifier"
+            } else {
+                return "external identifier"
+            }
 
         case .integerLiteral, .floatingLiteral:
             return "number"

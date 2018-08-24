@@ -43,6 +43,9 @@
     color: #000000;
 }
 
+.swift .external.identifier {
+    color: #5C2699;
+}
 .swift .internal.identifier {
     color: #3F6E74;
 }

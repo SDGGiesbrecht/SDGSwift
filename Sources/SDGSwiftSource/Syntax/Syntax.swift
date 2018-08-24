@@ -87,7 +87,7 @@ extension Syntax {
         return (try! StrictString(file: Resources.syntaxHighlighting, origin: nil)).dropping(through: "*/\n\n")
     }
 
-    public func syntaxHighlightedHTML(inline: Bool) -> String {
+    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
         var result = "<code class=\u{22}swift"
         if ¬inline {
             result += " blockquote"
@@ -96,7 +96,7 @@ extension Syntax {
         if ¬inline {
             result += "\n"
         }
-        result += nestedSyntaxHighlightedHTML(inline: inline)
+        result += nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
         if ¬inline {
             result += "\n"
         }
@@ -104,13 +104,13 @@ extension Syntax {
         return result
     }
 
-    private func nestedSyntaxHighlightedHTML(inline: Bool) -> String {
+    private func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
         switch self {
         case let token as TokenSyntax :
             var result = token.leadingTrivia.source()
 
             var source = token.text
-            if let `class` = token.syntaxHighlightingClass {
+            if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
                 source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                 source.append(contentsOf: "</span>")
             }
@@ -119,7 +119,7 @@ extension Syntax {
             result += token.trailingTrivia.source()
             return result
         default:
-            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline) }).joined()
+            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers) }).joined()
         }
     }
 
