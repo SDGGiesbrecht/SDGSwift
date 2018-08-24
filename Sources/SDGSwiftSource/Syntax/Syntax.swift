@@ -88,11 +88,11 @@ extension Syntax {
     }
 
     public func syntaxHighlightedHTML(inline: Bool) -> String {
-        var result = "<code class=\u{22}"
-        if inline {
-            result += "inline "
+        var result = "<code class=\u{22}swift"
+        if ¬inline {
+            result += " blockquote"
         }
-        result += "swift\u{22}>"
+        result += "\u{22}>"
         if ¬inline {
             result += "\n"
         }
