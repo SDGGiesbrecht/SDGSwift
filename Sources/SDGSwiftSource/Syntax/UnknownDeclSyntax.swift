@@ -338,7 +338,7 @@ extension UnknownDeclSyntax {
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    // MARK: - Variable Syntax
+    // MARK: - Subscript Syntax
 
     private var typeMethodKeyword: TokenKind? {
         return typePropertyKeyword
@@ -385,7 +385,7 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private func arguments(forSubscript: Bool) -> [ParameterAPI] {
+    internal func arguments(forSubscript: Bool) -> [ParameterAPI] {
         for child in children where type(of: child) == Syntax.self {
             let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
             if ¬possibleArgumentList.isEmpty {

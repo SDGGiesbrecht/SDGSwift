@@ -119,7 +119,15 @@ extension Syntax {
             result += token.trailingTrivia.source()
             return result
         default:
-            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers) }).joined()
+            var identifiers = internalIdentifiers
+            switch self {
+            case let function as FunctionDeclSyntax :
+                let parameters = function.signature.parameterList.map({ $0.localName.identifierText }).compactMap({ $0 })
+                identifiers ∪= Set(parameters)
+            default:
+                break
+            }
+            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: identifiers) }).joined()
         }
     }
 
