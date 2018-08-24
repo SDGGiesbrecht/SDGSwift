@@ -144,40 +144,27 @@ public class APIScope : APIElement {
         }
     }
 
+    public override var children: AnyBidirectionalCollection<APIElement> {
+        let joined = ([
+            cases,
+            subtypes,
+            typeProperties,
+            typeMethods,
+            initializers,
+            properties,
+            subscripts,
+            methods,
+            conformances
+            ] as [[APIElement]]).joined()
+        return AnyBidirectionalCollection(joined)
+    }
+
     // MARK: - Merging
 
     internal func moveConditionsToChildren() {
-        for subtype in subtypes {
-            prependCompilationCondition(compilationConditions, to: subtype)
-            subtype.constraints.append(contentsOf: constraints)
-        }
-        for property in typeProperties {
-            prependCompilationCondition(compilationConditions, to: property)
-            property.constraints.append(contentsOf: constraints)
-        }
-        for method in typeMethods {
-            prependCompilationCondition(compilationConditions, to: method)
-            method.constraints.append(contentsOf: constraints)
-        }
-        for initializer in initializers {
-            prependCompilationCondition(compilationConditions, to: initializer)
-            initializer.constraints.append(contentsOf: constraints)
-        }
-        for property in properties {
-            prependCompilationCondition(compilationConditions, to: property)
-            property.constraints.append(contentsOf: constraints)
-        }
-        for `subscript` in subscripts {
-            prependCompilationCondition(compilationConditions, to: `subscript`)
-            `subscript`.constraints.append(contentsOf: constraints)
-        }
-        for method in methods {
-            prependCompilationCondition(compilationConditions, to: method)
-            method.constraints.append(contentsOf: constraints)
-        }
-        for conformance in conformances {
-            prependCompilationCondition(compilationConditions, to: conformance)
-            conformance.constraints.append(contentsOf: constraints)
+        for child in children {
+            prependCompilationCondition(compilationConditions, to: child)
+            child.constraints.append(contentsOf: constraints)
         }
         compilationConditions = nil
         constraints = []
@@ -213,16 +200,6 @@ public class APIScope : APIElement {
     // MARK: - APIElement
 
     internal var scopeSummary: [String] {
-        var result: [String] = []
-        result += cases.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += typeMethods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += conformances.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        return result
+        return Array(children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined())
     }
 }

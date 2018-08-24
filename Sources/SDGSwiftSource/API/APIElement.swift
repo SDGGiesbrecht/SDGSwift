@@ -85,6 +85,10 @@ public class APIElement : Comparable, Hashable {
 
     public internal(set) var documentation: DocumentationSyntax?
 
+    public var children: AnyBidirectionalCollection<APIElement> {
+        return AnyBidirectionalCollection([])
+    }
+
     public var summary: [String] {
         primitiveMethod()
     }

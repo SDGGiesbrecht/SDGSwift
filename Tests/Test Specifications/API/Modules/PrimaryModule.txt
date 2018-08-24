@@ -1,4 +1,4 @@
-PrimaryModule
+PrimaryModule • .target(name: "PrimaryModule")
  Structure • struct Structure
   init() • init()
  (Bool)

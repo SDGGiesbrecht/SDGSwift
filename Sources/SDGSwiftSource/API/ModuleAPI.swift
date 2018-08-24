@@ -59,7 +59,7 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
-    public override var declaration: FunctionCallExprSyntax? {
+    public override var declaration: FunctionCallExprSyntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
                 base: SyntaxFactory.makeBlankExpr(),
@@ -70,7 +70,7 @@ public class ModuleAPI : APIElement {
                 SyntaxFactory.makeFunctionCallArgument(
                     label: SyntaxFactory.makeToken(.identifier("name")),
                     colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr("\u{22}\(name)\u{22}"),
+                    expression: SyntaxFactory.makeStringLiteralExpr(name),
                     trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen))
@@ -126,15 +126,18 @@ public class ModuleAPI : APIElement {
         }
     }
 
+    public override var children: AnyBidirectionalCollection<APIElement> {
+        let joined = ([
+            types,
+            extensions,
+            protocols,
+            functions,
+            globalVariables
+            ] as [[APIElement]]).joined()
+        return AnyBidirectionalCollection(joined)
+    }
+
     public override var summary: [String] {
-
-        var children: [[String]] = types.map({ $0.summary })
-        children += extensions.map({ $0.summary })
-        children += protocols.map({ $0.summary })
-        children += functions.map({ $0.summary })
-        children += globalVariables.map({ $0.summary })
-
-        let flattenedChildren = children.joined().map({ $0.prepending(" ") })
-        return [name] + flattenedChildren
+        return [name + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }
