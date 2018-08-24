@@ -37,11 +37,16 @@ public class ProtocolAPI : APIScope {
     }
 
     public override var declaration: String {
-        var result = "protocol " + name
-        if let constraints = constraintSyntax() {
-            result += constraints.source()
-        }
-        return result
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this yet.
+        return SyntaxFactory.makeStructDecl(
+            attributes: nil,
+            accessLevelModifier: nil,
+            structKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
+            identifier: SyntaxFactory.makeToken(.identifier(name)),
+            genericParameterClause: nil,
+            inheritanceClause: nil,
+            genericWhereClause: constraintSyntax(),
+            members: SyntaxFactory.makeBlankMemberDeclBlock()).source()
     }
 
     public override var summary: [String] {
