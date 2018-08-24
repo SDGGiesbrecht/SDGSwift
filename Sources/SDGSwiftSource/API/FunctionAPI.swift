@@ -109,6 +109,39 @@ public class FunctionAPI : APIElement {
             result += " \u{2D}> " + returnType
         }
         appendConstraintDescriptions(to: &result)
+
+        var modifiers: ModifierListSyntax?
+        if isMutating {
+            modifiers = SyntaxFactory.makeModifierList([
+                SyntaxFactory.makeDeclModifier(
+                    name: SyntaxFactory.makeToken(.identifier("mutating"), trailingTrivia: .spaces(1)),
+                    detail: SyntaxFactory.makeTokenList([]))
+                ])
+        }
+
+        var throwsKeyword: TokenSyntax?
+        if `throws` {
+            throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
+        }
+        /*
+        let syntax = SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: modifiers,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
+            identifier: SyntaxFactory.makeToken(.identifier(_name)),
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                leftParen: SyntaxFactory.makeToken(.leftParen),
+                parameterList: <#T##FunctionParameterListSyntax#>,
+                rightParen: SyntaxFactory.makeToken(.rightParen),
+                throwsOrRethrowsKeyword: throwsKeyword,
+                arrow: <#T##TokenSyntax?#>,
+                returnTypeAttributes: <#T##AttributeListSyntax?#>,
+                returnType: <#T##TypeSyntax?#>),
+            genericWhereClause: <#T##GenericWhereClauseSyntax?#>,
+            body: SyntaxFactory.makeBlankCodeBlock())
+
+        assert(syntax.source() == result, "\(syntax.source()) ≠ \(result)")*/
         return result
     }
 
