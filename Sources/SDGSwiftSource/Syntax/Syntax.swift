@@ -110,7 +110,7 @@ extension Syntax {
             if let extended = token.extended {
                 result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
             } else {
-                var source = token.text
+                var source = HTML.escape(token.text)
                 if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
                     source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                     source.append(contentsOf: "</span>")

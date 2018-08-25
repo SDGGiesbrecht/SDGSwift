@@ -77,7 +77,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         if kind == .commentURL ∨ kind == .linkURL {
             return "<a href=\u{22}\(text)\u{22} class=\u{22}url\u{22}>\(text)</a>"
         } else {
-            var source = _text
+            var source = HTML.escape(_text)
             if let `class` = syntaxHighlightingClass() {
                 source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                 source.append(contentsOf: "</span>")
