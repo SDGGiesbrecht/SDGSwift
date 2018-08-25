@@ -142,9 +142,32 @@ public class BlockCommentSyntax : ExtendedSyntax {
         } else {
             source += "\n<div class=\u{22}quarter‐indent\u{22}>\n"
         }
-        for element in content {
-            source += element.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+
+        if ¬inline {
+            source += "<p>"
         }
+        var previousNewline: Bool = false
+        for element in content {
+            if ¬inline,
+                let newlines = element as? ExtendedTokenSyntax,
+                newlines.kind == .newlines {
+                if previousNewline {
+                    source += "</p>\n<p>"
+                } else {
+                    source += "\n"
+                }
+                previousNewline = true
+            } else {
+                if element.text ≠ "" {
+                    previousNewline = false
+                }
+                source += element.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+            }
+        }
+        if ¬inline {
+            source += "</p>"
+        }
+
         if inline {
             source += " "
         } else {
