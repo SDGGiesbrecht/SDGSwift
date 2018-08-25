@@ -68,11 +68,8 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
             return "comment‐punctuation"
 
-        case .mark, .language:
+        case .mark, .language, .callout:
             return "comment‐keyword"
-
-        case .callout:
-            return "callout"
         }
     }
 
