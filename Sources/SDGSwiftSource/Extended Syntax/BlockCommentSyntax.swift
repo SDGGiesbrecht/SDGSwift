@@ -130,4 +130,13 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+        source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
+        source.append(contentsOf: "</span>")
+        return source
+    }
 }
