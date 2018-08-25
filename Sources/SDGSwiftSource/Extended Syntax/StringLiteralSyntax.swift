@@ -52,4 +52,13 @@ public class StringLiteralSyntax : ExtendedSyntax {
 
     /// The closing quotation mark.
     public let closingQuotationMark: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+        source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
+        source.append(contentsOf: "</span>")
+        return source
+    }
 }

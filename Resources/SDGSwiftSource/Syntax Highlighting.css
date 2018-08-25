@@ -55,6 +55,13 @@
     color: #0E0EFF;
 }
 
+.swift .string {
+    color: #C41A16;
+}
+.swift .string‐punctuation {
+    color: #62270B;
+}
+
 .swift .compilation‐condition {
     color: #643820;
 }

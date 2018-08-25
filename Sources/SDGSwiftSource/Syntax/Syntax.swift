@@ -107,12 +107,16 @@ extension Syntax {
         case let token as TokenSyntax :
             var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
 
-            var source = token.text
-            if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
-                source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
-                source.append(contentsOf: "</span>")
+            if let extended = token.extended {
+                result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+            } else {
+                var source = token.text
+                if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
+                    source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+                    source.append(contentsOf: "</span>")
+                }
+                result += source
             }
-            result += source
 
             result += token.trailingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
             return result
