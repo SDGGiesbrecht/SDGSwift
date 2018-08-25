@@ -27,7 +27,7 @@ public class VariableAPI : APIElement {
 
     internal let typePropertyKeyword: TokenKind?
     private let _name: String
-    private let type: TypeReferenceAPI?
+    public let type: TypeReferenceAPI?
     private let isSettable: Bool
 
     // MARK: - APIElement
