@@ -41,7 +41,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
             return ""
         case .documentationText, .callout:
-            return text
+            return HTML.escape(text)
         case .lineSeparator:
             return "<br>"
         }
