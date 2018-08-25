@@ -59,7 +59,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .whitespace:
             return nil // Ignored.
 
-        case .newlines, .source, .lineSeparator:
+        case .newlines, .commentURL, .source, .linkURL, .lineSeparator:
             return nil // Handled elsewhere.
 
         case .escape:
@@ -67,9 +67,6 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
         case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
             return "comment‐punctuation"
-
-        case .commentURL, .linkURL:
-            return "url"
 
         case .mark, .language:
             return "comment‐keyword"
@@ -80,12 +77,16 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     }
 
     internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
-        var source = _text
-        if let `class` = syntaxHighlightingClass() {
-            source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
-            source.append(contentsOf: "</span>")
+        if kind == .commentURL ∨ kind == .linkURL {
+            return "<a href=\u{22}\(text)\u{22} class=\u{22}url\u{22}>\(text)</a>"
+        } else {
+            var source = _text
+            if let `class` = syntaxHighlightingClass() {
+                source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+                source.append(contentsOf: "</span>")
+            }
+            return source
         }
-        return source
     }
 
     // MARK: - TextOutputStreamable
