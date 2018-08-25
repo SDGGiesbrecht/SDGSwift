@@ -102,7 +102,7 @@ extension Syntax {
         return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers), inline: inline)
     }
 
-    private func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
         switch self {
         case let token as TokenSyntax :
             var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)

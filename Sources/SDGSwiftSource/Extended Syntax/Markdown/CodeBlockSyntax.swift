@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 import SDGCollections
 import SDGText
 
@@ -82,4 +83,24 @@ public class CodeBlockSyntax : MarkdownSyntax {
 
     /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        if language?.text == "swift" ∨ language == nil {
+            return super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+        } else {
+            var result = openingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+            result.append(contentsOf: openingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            if let language = self.language {
+                result.append(contentsOf: language.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            }
+
+            result.append(contentsOf: source.unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+
+            result.append(contentsOf: closingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            result.append(contentsOf: closingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            return result
+        }
+    }
 }

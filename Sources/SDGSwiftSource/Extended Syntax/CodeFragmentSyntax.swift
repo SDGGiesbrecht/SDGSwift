@@ -132,4 +132,21 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             return []
         }
     }
+
+    // MARK: - ExtendedSyntax
+
+    internal func unknownSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+        source.prepend(contentsOf: "<span class=\u{22}code\u{22}>")
+        source.append(contentsOf: "</span>")
+        return source
+    }
+
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        if let syntax = try? self.syntax() {
+            return String(syntax.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers) }).joined())
+        } else {
+            return unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+        }
+    }
 }
