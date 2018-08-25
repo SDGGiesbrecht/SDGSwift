@@ -92,3 +92,10 @@
     font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     letter-spacing: 0;
 }
+
+.swift .url:link, .swift .url:visited {
+    text-decoration: none;
+}
+.swift .url:hover {
+    text-decoration: underline;
+}
