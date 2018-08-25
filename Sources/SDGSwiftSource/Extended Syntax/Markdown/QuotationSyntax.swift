@@ -51,4 +51,10 @@ public class QuotationSyntax : MarkdownSyntax {
 
     /// The indent after the number sign delimiter.
     public let indent: ExtendedTokenSyntax?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        return "blockquote"
+    }
 }
