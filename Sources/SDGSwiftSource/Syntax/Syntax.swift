@@ -131,24 +131,7 @@ extension Syntax {
             default:
                 break
             }
-            let result = children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: identifiers) }).joined()
-
-            if ¬inline {
-                switch self {
-                case let unknownDeclaration as UnknownDeclSyntax :
-                    if unknownDeclaration.isTypeSyntax
-                        ∨ unknownDeclaration.isExtensionSyntax
-                        ∨ unknownDeclaration.isProtocolSyntax
-                        ∨ unknownDeclaration.isFunctionSyntax
-                        ∨ unknownDeclaration.isInitializerSyntax
-                        ∨ unknownDeclaration.isSubscriptSyntax {
-                        return "<p>" + result + "</p>"
-                    }
-                default:
-                    break
-                }
-            }
-            return result
+            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: identifiers) }).joined()
         }
     }
 
