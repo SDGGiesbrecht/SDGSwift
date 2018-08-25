@@ -73,6 +73,10 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// let unmarked = true
     /// ```
     ///
+    /// ```other
+    /// This is unidentified.
+    /// ```
+    ///
     /// Here are **strong** and *emphasized*. (Or **strong** and *emphasized*.)
     ///
     /// There are also [links](somewhere.com).
