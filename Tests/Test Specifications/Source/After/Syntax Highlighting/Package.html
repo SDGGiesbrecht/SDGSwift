@@ -7,7 +7,7 @@
  <body>
 
 <code class="swift blockquote">
-<div class="comment"><span class="punctuation">/*</span>
+<div class="comment"><span class="comment‐punctuation">/*</span>
 <div class="quarter‐indent">
  <span class="text">Package.swift</span>
 
@@ -20,7 +20,7 @@
 
  <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
  <span class="text">See </span><span class="url">http://www.apache.org/licenses/LICENSE-2.0</span><span class="text"> for licence information.</span>
-<div><span class="punctuation">*/</span></div></div>
+<div><span class="comment‐punctuation">*/</span></div></div>
 </div>
 
 <span class="keyword">import</span> <span class="external identifier">PackageDescription</span>
@@ -28,9 +28,9 @@
 <span class="keyword">let</span> <span class="external identifier">package</span> <span class="punctuation">=</span> <span class="external identifier">Package</span><span class="punctuation">(</span>
     <span class="external identifier">name</span><span class="punctuation">:</span> "Package"<span class="punctuation">,</span>
     <span class="external identifier">products</span><span class="punctuation">:</span> <span class="punctuation">[</span>
-        <span class="punctuation">///</span> <span class="text">A library.</span>
-        <span class="punctuation">///</span>
-        <span class="punctuation">///</span> <span class="text">It does stuff.</span>
+        <span class="comment‐punctuation">///</span> <span class="text">A library.</span>
+        <span class="comment‐punctuation">///</span>
+        <span class="comment‐punctuation">///</span> <span class="text">It does stuff.</span>
         <span class="punctuation">.</span><span class="external identifier">library</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>"Library"<span class="punctuation">]</span><span class="punctuation">)</span>
     <span class="punctuation">]</span><span class="punctuation">,</span>
     <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
@@ -38,18 +38,18 @@
     <span class="punctuation">]</span><span class="punctuation">,</span>
     <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>
 
-        <div class="comment"><span class="punctuation">/**</span>
+        <div class="comment"><span class="comment‐punctuation">/**</span>
 <div class="quarter‐indent">
          <span class="text">A library.</span>
 
          <span class="text">It does stuff.</span>
        
-<div><span class="punctuation">*/</span></div></div>
+<div><span class="comment‐punctuation">*/</span></div></div>
 </div>
         <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Target"
             <span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
-        <span class="punctuation">///</span> <span class="text">A target.</span>
+        <span class="comment‐punctuation">///</span> <span class="text">A target.</span>
         <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Target"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
         <span class="punctuation">.</span><span class="external identifier">testTarget</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Tests"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Library"<span class="punctuation">,</span>

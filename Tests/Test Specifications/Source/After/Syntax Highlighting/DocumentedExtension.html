@@ -7,7 +7,7 @@
  <body>
 
 <code class="swift blockquote">
-<div class="comment"><span class="punctuation">/*</span>
+<div class="comment"><span class="comment‐punctuation">/*</span>
 <div class="quarter‐indent">
  <span class="text">DocumentedExtension.swift</span>
 
@@ -20,17 +20,17 @@
 
  <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
  <span class="text">See </span><span class="url">http://www.apache.org/licenses/LICENSE-2.0</span><span class="text"> for licence information.</span>
-<div><span class="punctuation">*/</span></div></div>
+<div><span class="comment‐punctuation">*/</span></div></div>
 </div>
 
 <span class="keyword">extension</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
 
-    <span class="punctuation">///</span> <span class="text">A read‐only computed property.</span>
+    <span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property.</span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readOnlyComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">self</span>
     <span class="punctuation">}</span>
 
-    <span class="punctuation">///</span> <span class="text">A read‐only computed property with an internal setter.</span>
+    <span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property with an internal setter.</span>
     <span class="keyword">public</span> <span class="keyword">internal</span><span class="punctuation">(</span><span class="keyword">set</span><span class="punctuation">)</span> <span class="keyword">var</span> <span class="external identifier">readOnlyWithInternalSetter</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -40,7 +40,7 @@
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 
-    <span class="punctuation">///</span> <span class="text">A read‐write computed property.</span>
+    <span class="comment‐punctuation">///</span> <span class="text">A read‐write computed property.</span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readWriteComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -51,7 +51,7 @@
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="punctuation">//</span> <span class="text">Nothing surfaced to the API.</span>
+<span class="comment‐punctuation">//</span> <span class="text">Nothing surfaced to the API.</span>
 <span class="keyword">extension</span> <span class="external identifier">AnySequence</span> <span class="punctuation">{</span>
 
     <span class="keyword">var</span> <span class="external identifier">notPublic</span><span class="punctuation">:</span> <span class="external identifier">Bool</span>

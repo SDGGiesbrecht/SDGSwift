@@ -7,7 +7,7 @@
  <body>
 
 <code class="swift blockquote">
-<div class="comment"><span class="punctuation">/*</span>
+<div class="comment"><span class="comment‐punctuation">/*</span>
 <div class="quarter‐indent">
  <span class="text">ConditionalCompilation.swift</span>
 
@@ -20,14 +20,14 @@
 
  <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
  <span class="text">See </span><span class="url">http://www.apache.org/licenses/LICENSE-2.0</span><span class="text"> for licence information.</span>
-<div><span class="punctuation">*/</span></div></div>
+<div><span class="comment‐punctuation">*/</span></div></div>
 </div>
 
 <span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span>
-<span class="punctuation">///</span> <span class="text">Falls on Newton.</span>
+<span class="comment‐punctuation">///</span> <span class="text">Falls on Newton.</span>
 <span class="keyword">func</span> <span class="external identifier">fallOnNewton</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#elseif</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">Linux</span><span class="punctuation">)</span>
-<span class="punctuation">///</span> <span class="text">Waddles.</span>
+<span class="comment‐punctuation">///</span> <span class="text">Waddles.</span>
 <span class="keyword">func</span> <span class="external identifier">waddle</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 
@@ -83,7 +83,7 @@
 
 <span class="compilation‐condition">#endif</span>
 
-<span class="compilation‐condition">#if</span>    <span class="comment"><span class="punctuation">/*</span>  <span class="text">This condition needs clean‐up.</span> <span class="punctuation">*/</span></span>      <span class="external identifier">NEEDING_CLEANUP</span> <span class="punctuation">//</span> <span class="text">...</span>
+<span class="compilation‐condition">#if</span>    <span class="comment"><span class="comment‐punctuation">/*</span>  <span class="text">This condition needs clean‐up.</span> <span class="comment‐punctuation">*/</span></span>      <span class="external identifier">NEEDING_CLEANUP</span> <span class="comment‐punctuation">//</span> <span class="text">...</span>
 <span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">CleanedUpCompilationCondition</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="compilation‐condition">#endif</span>
 

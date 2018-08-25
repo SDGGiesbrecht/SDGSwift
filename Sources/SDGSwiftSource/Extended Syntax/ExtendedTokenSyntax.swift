@@ -50,8 +50,8 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     internal func syntaxHighlightingClass() -> String? {
         switch kind {
 
-        case .quotationMark, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
-            return "punctuation"
+        case .quotationMark:
+            return "string‐punctuation"
 
         case .string, .commentText, .documentationText:
             return "text"
@@ -59,18 +59,20 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .whitespace:
             return nil // Ignored.
 
-        case .newlines:
-            // #warning(This may need disambiguation.)
-            return nil
+        case .newlines, .source, .lineSeparator:
+            return nil // Handled elsewhere.
+
+        case .escape:
+            return "punctuation"
+
+        case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
+            return "comment‐punctuation"
 
         case .commentURL, .linkURL:
             return "url"
 
         case .mark, .language:
-            return "keyword"
-
-        case .source, .lineSeparator:
-            return nil // Handled elsewhere.
+            return "comment‐keyword"
 
         case .callout:
             return "callout"
