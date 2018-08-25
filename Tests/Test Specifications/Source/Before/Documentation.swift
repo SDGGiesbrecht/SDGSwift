@@ -69,6 +69,10 @@ extension Structure {
     /// }
     /// ```
     ///
+    /// ```
+    /// let unmarked = true
+    /// ```
+    ///
     /// Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)
     ///
     /// There are also [links](somewhere.com).
