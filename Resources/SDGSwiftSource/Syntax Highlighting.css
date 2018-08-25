@@ -25,18 +25,6 @@
     padding: 0.35294em 0.94118em;
 }
 
-.swift p {
-    margin-top: 1em;
-    margin-bottom: 0;
-}
-.swift p:first-child {
-    margin-top: 0;
-}
-
-.swift .quarter‐indent {
-    margin: 0 0.5em;
-}
-
 /* Colour */
 
 .swift.blockquote {
