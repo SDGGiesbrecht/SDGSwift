@@ -89,6 +89,10 @@
     letter-spacing: 0;
 }
 
+.swift .callout {
+    font-weight: bold;
+}
+
 .swift .url:link, .swift .url:visited {
     text-decoration: none;
 }
