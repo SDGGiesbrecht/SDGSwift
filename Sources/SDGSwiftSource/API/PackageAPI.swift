@@ -53,7 +53,7 @@ public class PackageAPI : APIElement {
                 SyntaxFactory.makeFunctionCallArgument(
                     label: SyntaxFactory.makeToken(.identifier("name")),
                     colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr("\u{22}\(name)\u{22}"),
+                    expression: SyntaxFactory.makeStringLiteralExpr(name),
                     trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen))
