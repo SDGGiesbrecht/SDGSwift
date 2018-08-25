@@ -16,6 +16,7 @@
 
 .swift {
     display: inline;
+    white-space: pre-wrap;
 }
 .swift.blockquote {
     display: block;
