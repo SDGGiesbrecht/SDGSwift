@@ -105,13 +105,13 @@ extension Syntax {
     }
 
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers), inline: inline)
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers), inline: inline)
     }
 
-    private func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
+    private func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
         switch self {
         case let token as TokenSyntax :
-            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
 
             var source = token.text
             if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
@@ -120,7 +120,7 @@ extension Syntax {
             }
             result += source
 
-            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
             return result
         default:
             var identifiers = internalIdentifiers
@@ -131,7 +131,7 @@ extension Syntax {
             default:
                 break
             }
-            return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: identifiers) }).joined()
+            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers) }).joined()
         }
     }
 

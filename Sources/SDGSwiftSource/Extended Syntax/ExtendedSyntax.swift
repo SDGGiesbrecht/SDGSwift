@@ -68,11 +68,11 @@ public class ExtendedSyntax : TextOutputStreamable {
     // MARK: - Syntax Colouring
 
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers), inline: inline)
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers), inline: inline)
     }
 
-    internal func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
-        return children.map({ $0.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers) }).joined()
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers) }).joined()
     }
 
     // MARK: - TextOutputStreamable

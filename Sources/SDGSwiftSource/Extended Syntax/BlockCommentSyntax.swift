@@ -133,8 +133,8 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - ExtendedSyntax
 
-    internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
-        var source = super.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
         source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
         source.append(contentsOf: "</span>")
         return source
