@@ -25,6 +25,10 @@
     padding: 0.35294em 0.94118em;
 }
 
+.swift .quarter‐indent {
+    margin: 0 0.5em;
+}
+
 /* Colour */
 
 .swift.blockquote {
@@ -61,7 +65,7 @@
 .swift .comment {
     color: #007400;
 }
-.swift .comment > .punctuation {
+.swift .comment .punctuation {
     color: #003A00;
 }
 

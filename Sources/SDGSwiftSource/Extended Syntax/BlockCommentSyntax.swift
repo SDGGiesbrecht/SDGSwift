@@ -134,8 +134,32 @@ public class BlockCommentSyntax : ExtendedSyntax {
     // MARK: - ExtendedSyntax
 
     internal override func nestedSyntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String>) -> String {
-        var source = super.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
-        let element = text.scalars.contains(where: CharacterSet.newlines.contains) ? "div" : "span"
+        let inline = inline ∨ ¬text.scalars.contains(where: CharacterSet.newlines.contains)
+
+        var source = openingDelimiter.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+        if inline {
+            source += " "
+        } else {
+            source += "\n<div class=\u{22}quarter‐indent\u{22}>\n"
+        }
+        for element in content {
+            source += element.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+        }
+        if inline {
+            source += " "
+        } else {
+            source += "\n<div>"
+        }
+        source += closingDelimiter.nestedSyntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers)
+        if ¬inline {
+            source += "</div></div>\n"
+        }
+
+        var element = "span"
+        if ¬inline {
+            element = "div"
+        }
+
         source.prepend(contentsOf: "<\(element) class=\u{22}comment\u{22}>")
         source.append(contentsOf: "</\(element)>")
         return source
