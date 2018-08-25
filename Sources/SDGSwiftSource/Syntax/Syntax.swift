@@ -93,13 +93,7 @@ extension Syntax {
             result += " blockquote"
         }
         result += "\u{22}>"
-        if ¬inline {
-            result += "\n"
-        }
         result += syntaxHighlighting
-        if ¬inline {
-            result += "\n"
-        }
         result += "</code>"
         return result
     }

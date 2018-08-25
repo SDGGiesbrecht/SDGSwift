@@ -87,7 +87,7 @@ class SDGSwiftSourceAPITests : TestCase {
             try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Invariable Text", overwriteSpecificationInsteadOfFailing: false)
 
             let highlighted = sourceFile.syntaxHighlightedHTML(inline: false)
-            SDGPersistenceTestUtilities.compare(HTMLPage(content: highlighted, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: true)
+            SDGPersistenceTestUtilities.compare(HTMLPage(content: highlighted, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             // API
             let api = sourceFile.api().sorted()
