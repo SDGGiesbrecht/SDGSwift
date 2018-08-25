@@ -22,12 +22,12 @@
 
 <span class="keyword">extension</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
 
-    <span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property.</span>
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property.</span></span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readOnlyComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">self</span>
     <span class="punctuation">}</span>
 
-    <span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property with an internal setter.</span>
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A read‐only computed property with an internal setter.</span></span>
     <span class="keyword">public</span> <span class="keyword">internal</span><span class="punctuation">(</span><span class="keyword">set</span><span class="punctuation">)</span> <span class="keyword">var</span> <span class="external identifier">readOnlyWithInternalSetter</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -37,7 +37,7 @@
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 
-    <span class="comment‐punctuation">///</span> <span class="text">A read‐write computed property.</span>
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A read‐write computed property.</span></span>
     <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">readWriteComputedProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         unknown <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="keyword">self</span>
@@ -48,7 +48,7 @@
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="comment‐punctuation">//</span> <span class="text">Nothing surfaced to the API.</span>
+<span class="comment"><span class="comment‐punctuation">//</span> <span class="text">Nothing surfaced to the API.</span></span>
 <span class="keyword">extension</span> <span class="external identifier">AnySequence</span> <span class="punctuation">{</span>
 
     <span class="keyword">var</span> <span class="external identifier">notPublic</span><span class="punctuation">:</span> <span class="external identifier">Bool</span>

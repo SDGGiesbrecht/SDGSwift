@@ -25,9 +25,9 @@
 <span class="keyword">let</span> <span class="external identifier">package</span> <span class="punctuation">=</span> <span class="external identifier">Package</span><span class="punctuation">(</span>
     <span class="external identifier">name</span><span class="punctuation">:</span> "Package"<span class="punctuation">,</span>
     <span class="external identifier">products</span><span class="punctuation">:</span> <span class="punctuation">[</span>
-        <span class="comment‐punctuation">///</span> <span class="text">A library.</span>
-        <span class="comment‐punctuation">///</span>
-        <span class="comment‐punctuation">///</span> <span class="text">It does stuff.</span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A library.</span></span>
+        <span class="comment"><span class="comment‐punctuation">///</span></span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">It does stuff.</span></span>
         <span class="punctuation">.</span><span class="external identifier">library</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>"Library"<span class="punctuation">]</span><span class="punctuation">)</span>
     <span class="punctuation">]</span><span class="punctuation">,</span>
     <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
@@ -43,7 +43,7 @@
         <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Library"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Target"
             <span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
-        <span class="comment‐punctuation">///</span> <span class="text">A target.</span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A target.</span></span>
         <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Target"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
         <span class="punctuation">.</span><span class="external identifier">testTarget</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> "Tests"<span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
             "Library"<span class="punctuation">,</span>
