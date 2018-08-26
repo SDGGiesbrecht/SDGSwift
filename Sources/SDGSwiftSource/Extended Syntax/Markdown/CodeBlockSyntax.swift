@@ -103,4 +103,10 @@ public class CodeBlockSyntax : MarkdownSyntax {
             return result
         }
     }
+
+    // MARK: - ExtendedSyntax
+
+    public override func renderedHTML(internalIdentifiers: Set<String>) -> String {
+        return source.syntaxHighlightedHTML(inline: false, internalIdentifiers: internalIdentifiers)
+    }
 }
