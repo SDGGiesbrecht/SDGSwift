@@ -22,6 +22,17 @@ public enum SyntaxFragment {
     /// Isolated trivia.
     case trivia(TriviaPiece, Trivia, Trivia.Index)
 
+    // MARK: - Source
+
+    internal func source() -> String {
+        switch self {
+        case .syntax(let syntax):
+            return syntax.source()
+        case .trivia(let trivia, _, _):
+            return trivia.text
+        }
+    }
+
     // MARK: - Syntax Colouring
 
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {

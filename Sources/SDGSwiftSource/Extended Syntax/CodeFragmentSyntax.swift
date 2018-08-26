@@ -143,7 +143,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
-        if let syntax = try? self.syntax() {
+        if let syntax = try? self.syntax(),
+            syntax.map({ $0.source() }).joined() == text {
             return String(syntax.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers) }).joined())
         } else {
             return unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
