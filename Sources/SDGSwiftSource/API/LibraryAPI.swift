@@ -1,5 +1,5 @@
 /*
- ProductAPI.swift
+ LibraryAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProductAPI : APIElement {
+public class LibraryAPI : APIElement {
 
     // MARK: - Initialization
 

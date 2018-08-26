@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 
 import SDGSwiftPackageManager
@@ -25,6 +26,18 @@ public class PackageAPI : APIElement {
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
     public init(package: PackageModel.Package) throws {
         _name = package.name.decomposedStringWithCanonicalMapping
+
+        var libraries: [LibraryAPI] = []
+        for product in package.products where ¬product.name.hasPrefix("_") {
+            switch product.type {
+            case .library:
+                libraries.append(try LibraryAPI(name: product.name))
+            case .executable, .test:
+                continue
+            }
+        }
+        self.libraries = libraries
+
         super.init()
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
@@ -32,11 +45,15 @@ public class PackageAPI : APIElement {
 
         let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent
         documentation = declaration?.documentation
+
+
     }
 
     // MARK: - Properties
 
     private let _name: String
+
+    public let libraries: [LibraryAPI]
 
     // MARK: - APIElement
 
