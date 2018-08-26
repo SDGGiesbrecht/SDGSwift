@@ -14,9 +14,21 @@
 
 public class ParagraphSyntax : MarkdownSyntax {
 
+    // MARK: - Properties
+
+    internal var isCitation = false
+
     // MARK: - ExtendedSyntax
 
     internal override var renderedHtmlElement: String? {
         return "p"
+    }
+
+    internal override var renderedHTMLAttributes: [String: String] {
+        var result = super.renderedHTMLAttributes
+        if isCitation {
+            result["class"] = "citation"
+        }
+        return result
     }
 }

@@ -44,6 +44,12 @@ public class QuotationSyntax : MarkdownSyntax {
         }
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+
+        if let last = children.last,
+            let lastParagraph = last as? ParagraphSyntax,
+            lastParagraph.text.hasPrefix("―") {
+            lastParagraph.isCitation = true
+        }
     }
 
     /// The number sign delimiter.
