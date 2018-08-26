@@ -36,7 +36,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML() -> String {
+    public override func renderedHTML(internalIdentifiers: Set<String>) -> String {
         switch kind {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
             return ""
