@@ -18,9 +18,12 @@ public class LibraryAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String) throws {
+    internal init(name: String, manifest: Syntax) throws {
         _name = name.decomposedStringWithCanonicalMapping
         super.init()
+
+        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(name)\u{22}")?.parent
+        documentation = declaration?.documentation
     }
 
     // MARK: - Properties

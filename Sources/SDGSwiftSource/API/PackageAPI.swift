@@ -27,11 +27,14 @@ public class PackageAPI : APIElement {
     public init(package: PackageModel.Package) throws {
         _name = package.name.decomposedStringWithCanonicalMapping
 
+        let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
+        let manifest = try Syntax.parse(manifestURL)
+
         var libraries: [LibraryAPI] = []
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
             case .library:
-                libraries.append(try LibraryAPI(name: product.name))
+                libraries.append(try LibraryAPI(name: product.name, manifest: manifest))
             case .executable, .test:
                 continue
             }
@@ -40,13 +43,8 @@ public class PackageAPI : APIElement {
 
         super.init()
 
-        let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
-        let manifest = try Syntax.parse(manifestURL)
-
-        let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent
+        let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")
         documentation = declaration?.documentation
-
-
     }
 
     // MARK: - Properties
