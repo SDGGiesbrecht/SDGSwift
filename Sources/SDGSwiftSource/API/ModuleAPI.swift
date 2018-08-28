@@ -22,14 +22,16 @@ public class ModuleAPI : APIElement {
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
-    public init(module: PackageModel.Target) throws {
+    public init(module: PackageModel.Target, manifest: Syntax?) throws {
         _name = module.name.decomposedStringWithCanonicalMapping
         super.init()
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
-            let source = try Syntax.parse(sourceFile)
-            api += source.api()
+            try autoreleasepool {
+                let source = try Syntax.parse(sourceFile)
+                api += source.api()
+            }
         }
         api = APIElement.merge(elements: api)
 
@@ -51,6 +53,9 @@ public class ModuleAPI : APIElement {
                 }
             }
         }
+
+        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(name)\u{22}")?.parent
+        documentation = declaration?.documentation
     }
 
     // MARK: - Properties

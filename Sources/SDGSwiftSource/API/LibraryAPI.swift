@@ -12,14 +12,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+import SDGLogic
 import SDGCollections
+
+import SDGSwift
+import SDGSwiftPackageManager
+
+import SDGSwiftLocalizations
 
 public class LibraryAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, manifest: Syntax) throws {
-        _name = name.decomposedStringWithCanonicalMapping
+    internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+        _name = product.name.decomposedStringWithCanonicalMapping
+
+        var modules: [ModuleAPI] = []
+        for module in product.targets where ¬module.name.hasPrefix("_") {
+            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                return "Parsing “" + StrictString(module.name) + "”..."
+            }).resolved()))
+            modules.append(try ModuleAPI(module: module, manifest: manifest))
+        }
+        self.modules = modules
+
         super.init()
 
         let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(name)\u{22}")?.parent
@@ -29,6 +46,8 @@ public class LibraryAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
+
+    public let modules: [ModuleAPI]
 
     // MARK: - APIElement
 

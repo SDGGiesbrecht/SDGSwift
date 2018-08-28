@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 
+import SDGSwift
 import SDGSwiftPackageManager
 
 public class PackageAPI : APIElement {
@@ -24,7 +25,7 @@ public class PackageAPI : APIElement {
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
-    public init(package: PackageModel.Package) throws {
+    public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         _name = package.name.decomposedStringWithCanonicalMapping
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
@@ -34,7 +35,7 @@ public class PackageAPI : APIElement {
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
             case .library:
-                libraries.append(try LibraryAPI(name: product.name, manifest: manifest))
+                libraries.append(try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress))
             case .executable, .test:
                 continue
             }

@@ -48,10 +48,7 @@ public class MarkdownSyntax : ExtendedSyntax {
                     }
                     children.append(ExtendedTokenSyntax(text: newlines, kind: .newlines))
                 } else {
-                    if BuildConfiguration.current == .debug {
-                        print("Unexpected Markdown trivia: \(first)")
-                        break
-                    }
+                    break
                 }
             }
         }
