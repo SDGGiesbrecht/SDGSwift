@@ -63,7 +63,7 @@ public class ModuleAPI : APIElement {
     private let _name: String
 
     private var _types: [TypeAPI] = []
-    private var types: [TypeAPI] {
+    public var types: [TypeAPI] {
         get {
             return _types
         }
@@ -73,7 +73,7 @@ public class ModuleAPI : APIElement {
     }
 
     private var _extensions: [ExtensionAPI] = []
-    private var extensions: [ExtensionAPI] {
+    public var extensions: [ExtensionAPI] {
         get {
             return _extensions
         }
@@ -83,7 +83,7 @@ public class ModuleAPI : APIElement {
     }
 
     private var _protocols: [ProtocolAPI] = []
-    private var protocols: [ProtocolAPI] {
+    public var protocols: [ProtocolAPI] {
         get {
             return _protocols
         }
@@ -93,7 +93,7 @@ public class ModuleAPI : APIElement {
     }
 
     private var _functions: [FunctionAPI] = []
-    private var functions: [FunctionAPI] {
+    public var functions: [FunctionAPI] {
         get {
             return _functions
         }
@@ -103,7 +103,7 @@ public class ModuleAPI : APIElement {
     }
 
     private var _globalVariables: [VariableAPI] = []
-    private var globalVariables: [VariableAPI] {
+    public var globalVariables: [VariableAPI] {
         get {
             return _globalVariables
         }
