@@ -136,7 +136,29 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     // MARK: - ExtendedSyntax
 
     internal func unknownSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        var source: String
+
+        if context == self.source.text, // Not a of something bigger.
+            let selectorLink = symbolLinks[context] {
+            source = HTML.escape(context)
+
+            func mark(_ searchTerm: String, as class: String) {
+                source.replaceMatches(for: searchTerm, with: "</span><span class=\u{22}\(`class`)\u{22}>\(searchTerm)</span><span class=\u{22}internal identifier\u{22}>")
+            }
+            mark("(", as: "punctuation")
+            mark(")", as: "punctuation")
+            mark(":", as: "punctuation")
+            mark("_", as: "keyword")
+
+            source.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
+            source.append(contentsOf: "</span>")
+
+            source.prepend(contentsOf: "<a href=\u{22}\(selectorLink)\u{22}>")
+            source.append(contentsOf: "</a>")
+        } else {
+            source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        }
+
         source.prepend(contentsOf: "<span class=\u{22}code\u{22}>")
         source.append(contentsOf: "</span>")
         return source
