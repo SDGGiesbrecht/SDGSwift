@@ -15,3 +15,22 @@
 class Subclass : B̲a̲s̲e̲C̲l̲a̲s̲s̲ {
 
 }
+
+#if canImport(XCTest) && (!(os(iOS) || os(watchOS) || os(tvOS)) || targetEnvironment(simulator)) // ...
+// MARK: - ...
+import XCTest
+
+/// ...
+open class TestCase : XCTestCase {
+    
+    static var initialized = false
+    /// ...
+    open override func setUp() {
+        super.setUp()
+    }
+    
+    /// :nodoc:
+    public func testLinuxMainGenerationCompatibility() {}
+}
+
+#endif

@@ -15,3 +15,22 @@
 class ̲S̲u̲b̲c̲l̲a̲s̲s̲ ̲: ̲BaseClass ̲{
 
 }
+
+#if ̲canImport(XCTest) ̲&& ̲(!(os(iOS) ̲|| ̲os(watchOS) ̲|| ̲os(tvOS)) ̲|| ̲targetEnvironment(simulator)) ̲// ̲.̲.̲.̲
+// ̲MARK: - .̲.̲.̲
+import ̲XCTest
+
+/// ̲.̲.̲.̲
+open ̲class ̲T̲e̲s̲t̲C̲a̲s̲e̲ ̲: ̲XCTestCase ̲{
+ ̲ ̲ ̲ ̲
+ ̲ ̲ ̲ ̲static ̲var ̲i̲n̲i̲t̲i̲a̲l̲i̲z̲e̲d̲ ̲= ̲false
+ ̲ ̲ ̲ ̲/// ̲.̲.̲.̲
+ ̲ ̲ ̲ ̲open ̲override ̲func ̲s̲e̲t̲U̲p̲() ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲super.setUp()
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲
+ ̲ ̲ ̲ ̲/// ̲:̲n̲o̲d̲o̲c̲:̲
+ ̲ ̲ ̲ ̲public ̲func ̲t̲e̲s̲t̲L̲i̲n̲u̲x̲M̲a̲i̲n̲G̲e̲n̲e̲r̲a̲t̲i̲o̲n̲C̲o̲m̲p̲a̲t̲i̲b̲i̲l̲i̲t̲y̲() ̲{}
+}
+
+#endif

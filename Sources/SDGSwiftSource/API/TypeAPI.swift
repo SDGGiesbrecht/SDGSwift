@@ -20,8 +20,9 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         typeName = name
+        self.isOpen = isOpen
         self.keyword = keyword
         super.init(conformances: conformances, children: children)
         self.constraints = constraints
@@ -29,6 +30,7 @@ public class TypeAPI : APIScope {
 
     // MARK: - Properties
 
+    private let isOpen: Bool
     private let keyword: TokenKind
     internal let typeName: TypeReferenceAPI
 
@@ -39,10 +41,19 @@ public class TypeAPI : APIScope {
     }
 
     public override var declaration: DeclSyntax {
+        var accessLevelModifier: AccessLevelModifierSyntax?
+        if isOpen {
+            accessLevelModifier = SyntaxFactory.makeAccessLevelModifier(
+                name: SyntaxFactory.makeToken(.identifier("open"), trailingTrivia: .spaces(1)),
+                openParen: nil,
+                modifier: nil,
+                closeParen: nil)
+        }
+
         // #workaround(Swift 4.1.2, SwiftSyntax has no factory classes or enumerations yet.
         return SyntaxFactory.makeStructDecl(
             attributes: nil,
-            accessLevelModifier: nil,
+            accessLevelModifier: accessLevelModifier,
             structKeyword: SyntaxFactory.makeToken(keyword, trailingTrivia: .spaces(1)),
             identifier: typeName.nameDeclaration,
             genericParameterClause: typeName.genericParameterClauseDeclaration,

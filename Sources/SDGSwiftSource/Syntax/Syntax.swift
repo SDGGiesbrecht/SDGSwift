@@ -144,7 +144,7 @@ extension Syntax {
 
         let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
-                modifier.name.tokenKind == .publicKeyword {
+                modifier.name.tokenKind == .publicKeyword ∨ modifier.name.text == "open" {
                 return true
             }
             return false
@@ -155,6 +155,16 @@ extension Syntax {
         } else {
             return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
         }
+    }
+
+    internal func isOpen() -> Bool {
+        return children.contains(where: { node in
+            if let modifier = node as? DeclModifierSyntax,
+                modifier.name.text == "open" {
+                return true
+            }
+            return false
+        })
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
