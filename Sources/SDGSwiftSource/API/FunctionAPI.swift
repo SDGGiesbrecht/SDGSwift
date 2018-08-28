@@ -19,7 +19,8 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(isOpen: Bool, typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+        self.isOpen = isOpen
         self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
@@ -31,6 +32,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Properties
 
+    private let isOpen: Bool
     internal let typeMethodKeyword: TokenKind?
     private let isMutating: Bool
     private let _name: String
@@ -100,6 +102,12 @@ public class FunctionAPI : APIElement {
         if let typeKeyword = typeMethodKeyword {
             modifiers.append(SyntaxFactory.makeDeclModifier(
                 name: SyntaxFactory.makeToken(typeKeyword, trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
+        }
+
+        if isOpen {
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(.identifier("open"), trailingTrivia: .spaces(1)),
                 detail: SyntaxFactory.makeTokenList([])))
         }
 

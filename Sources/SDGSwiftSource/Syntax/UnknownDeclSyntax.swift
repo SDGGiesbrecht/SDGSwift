@@ -414,7 +414,7 @@ extension UnknownDeclSyntax {
             ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+            return FunctionAPI(isOpen: isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
