@@ -6,40 +6,54 @@
  </head>
  <body>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span>  <span class="external identifier">NEEDING_CLEANUP</span> </code>
 <code class="swift blockquote"><span class="keyword">struct</span> <span class="internal identifier">CleanedUpCompilationCondition</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="punctuation">(</span><span class="external identifier">LEVEL_ONE</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="punctuation">(</span><span class="external identifier">LEVEL_TWO</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">struct</span> <span class="internal identifier">DoublyNested</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">UIKit</span><span class="punctuation">)</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">Fallback</span></code>
 
 <code class="swift blockquote"><span class="keyword">struct</span> <span class="internal identifier">NestingStructure</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">UIKit</span><span class="punctuation">)</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">Fallback</span></code>
 
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">Universal</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">WithAppKit</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">UIKit</span><span class="punctuation">)</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">WithUIKit</span></code>
 
 <code class="swift blockquote"><span class="keyword">struct</span> <span class="internal identifier">PossiblyConforming</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">struct</span> <span class="internal identifier">ConditionalSubType</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">static</span> <span class="keyword">var</span> <span class="internal identifier">conditionalStaticProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">init</span><span class="punctuation">(</span><span class="internal identifier">conditionalInitializer</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">conditionalProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">conditionalSubscript</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="punctuation">(</span><span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">macOS</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="punctuation">(</span><span class="external identifier">ADDITIONAL_CONDITION</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">conditionalMethod</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
 
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">Universal</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">WithAppKit</span></code>
 
+<code class="swift blockquote"><span class="compilation‐condition">#if</span> <span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">AppKit</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="punctuation">(</span><span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">UIKit</span><span class="punctuation">)</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"><span class="keyword">typealias</span> <span class="internal identifier">WithUIKit</span></code>
 
  </body>
