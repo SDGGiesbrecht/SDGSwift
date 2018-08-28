@@ -149,24 +149,11 @@ public class APIScope : APIElement {
 
     internal func moveConditionsToChildren() {
         for child in children {
-            prependCompilationCondition(compilationConditions, to: child)
+            child.prependCompilationCondition(compilationConditions)
             child.constraints.append(contentsOf: constraints)
         }
         compilationConditions = nil
         constraints = []
-    }
-
-    private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
-        if var newCondition = addition {
-            if var existing = child?.compilationConditions {
-                existing.removeFirst(4) // “#if ”
-                newCondition.removeFirst(4)
-
-                child?.compilationConditions = "#if (" + newCondition + ") && (" + existing + ")"
-            } else {
-                child?.compilationConditions = addition
-            }
-        }
     }
 
     internal func merge(extension: ExtensionAPI) {

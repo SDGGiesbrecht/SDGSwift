@@ -85,7 +85,7 @@ public class APIElement : Comparable, Hashable {
             _constraints = newValue.map({ $0.normalized() }).sorted()
         }
     }
-    public internal(set) var compilationConditions: String?
+    public internal(set) var compilationConditions: Syntax?
 
     public internal(set) var documentation: DocumentationSyntax?
 
@@ -122,7 +122,28 @@ public class APIElement : Comparable, Hashable {
 
     internal func appendCompilationConditions(to description: inout String) {
         if let conditions = compilationConditions {
-            description += " • " + conditions
+            description += " • " + conditions.source()
+        }
+    }
+
+    internal func prependCompilationCondition(_ addition: Syntax?) {
+        if let new = addition {
+            if let existing = compilationConditions {
+                let existingCondition = Array(existing.tokens().dropFirst())
+                let newCondition = Array(new.tokens().dropFirst())
+                compilationConditions = SyntaxFactory.makeUnknownSyntax(tokens: [
+                    SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
+                    SyntaxFactory.makeToken(.leftParen)
+                    ] + newCondition + [
+                        SyntaxFactory.makeToken(.rightParen),
+                        SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                        SyntaxFactory.makeToken(.leftParen)
+                    ] + existingCondition + [
+                        SyntaxFactory.makeToken(.rightParen)
+                    ])
+            } else {
+                compilationConditions = new
+            }
         }
     }
 

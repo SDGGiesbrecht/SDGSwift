@@ -331,8 +331,8 @@ extension Syntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
-        var previousConditions: [String] = []
-        var currentCondition: String? = nil
+        var previousConditions: [Syntax] = []
+        var currentCondition: Syntax? = nil
         var universalSet: Set<APIElement> = []
         var filledUniversalSet: Bool = false
         var elseOccurred: Bool = false
@@ -361,35 +361,42 @@ extension Syntax {
                     break
                 }
             case let condition as UnknownExprSyntax :
-                currentCondition = condition.withTriviaReducedToSpaces().source()
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
             case let condition as IdentifierExprSyntax :
-                currentCondition = condition.withTriviaReducedToSpaces().source()
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
             case let condition as SequenceExprSyntax :
-                currentCondition = condition.withTriviaReducedToSpaces().source()
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
             default:
-                var composedConditions = "#if "
-                composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
+                var composedConditions: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
+
+                composedConditions.append(contentsOf: previousConditions.map({ [
+                    SyntaxFactory.makeToken(.prefixOperator("!")),
+                    SyntaxFactory.makeToken(.leftParen)
+                    ] + $0.tokens() + [
+                        SyntaxFactory.makeToken(.rightParen)
+                    ]
+                }).joined(separator: [
+                    SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                    ]))
+
                 if previousConditions.isEmpty {
-                    composedConditions.append(contentsOf: (currentCondition ?? "")) // @exempt(from: tests) Never nil in valid source.
+                    composedConditions.append(contentsOf: (currentCondition?.tokens() ?? [])) // @exempt(from: tests) Never nil in valid source.
                 } else {
                     if let current = currentCondition {
-                        composedConditions.append(contentsOf: " \u{26}& (" + current + ")")
+                        composedConditions.append(contentsOf: [
+                            SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                            SyntaxFactory.makeToken(.leftParen)
+                            ] + current.tokens() + [
+                                SyntaxFactory.makeToken(.rightParen)
+                            ])
                     }
                 }
                 for element in child.api() {
                     currentSet.insert(element)
-                    if var existing = element.compilationConditions {
-                        existing.removeFirst(4)
-                        var new = composedConditions
-                        new.removeFirst(4)
-                        existing.prepend("(")
-                        existing.append(")")
-                        existing.prepend(contentsOf: "(" + new + ") \u{26}& ")
-                        existing.prepend(contentsOf: "#if ")
-                        element.compilationConditions = existing
-                    } else {
-                        element.compilationConditions = composedConditions
-                    }
+                    element.prependCompilationCondition(SyntaxFactory.makeUnknownSyntax(tokens: composedConditions))
                     api.append(element)
                 }
             }
