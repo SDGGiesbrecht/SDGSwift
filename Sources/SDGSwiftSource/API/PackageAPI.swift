@@ -42,6 +42,14 @@ public class PackageAPI : APIElement {
         }
         self.libraries = libraries
 
+        var modules: [ModuleAPI] = []
+        for library in libraries {
+            for module in library.modules where ¬modules.contains(module) {
+                modules.append(module)
+            }
+        }
+        self.modules = modules
+
         super.init()
 
         let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")
@@ -53,6 +61,7 @@ public class PackageAPI : APIElement {
     private let _name: String
 
     public let libraries: [LibraryAPI]
+    public let modules: [ModuleAPI]
 
     // MARK: - APIElement
 
