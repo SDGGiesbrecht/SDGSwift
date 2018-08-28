@@ -34,7 +34,7 @@ public class FunctionAPI : APIElement {
     // MARK: - Properties
 
     private let isOpen: Bool
-    internal let typeMethodKeyword: TokenKind?
+    public let typeMethodKeyword: TokenKind?
     private let isMutating: Bool
     private let _name: String
     private let arguments: [ParameterAPI]
