@@ -42,7 +42,7 @@ public class InlineCodeSyntax : MarkdownSyntax {
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(internalIdentifiers: Set<String>) -> String {
-        return source.syntaxHighlightedHTML(inline: true, internalIdentifiers: internalIdentifiers)
+    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        return source.syntaxHighlightedHTML(inline: true, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
     }
 }

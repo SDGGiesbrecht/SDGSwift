@@ -36,7 +36,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(internalIdentifiers: Set<String>) -> String {
+    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch kind {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
             return ""
@@ -73,7 +73,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         }
     }
 
-    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         if kind == .commentURL ∨ kind == .linkURL {
             return "<a href=\u{22}\(text)\u{22} class=\u{22}url\u{22}>\(text)</a>"
         } else {

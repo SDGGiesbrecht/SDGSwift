@@ -98,27 +98,31 @@ extension Syntax {
         return result
     }
 
-    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers), inline: inline)
+    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
 
-    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch self {
         case let token as TokenSyntax :
-            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
 
             if let extended = token.extended {
-                result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+                result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
             } else {
                 var source = HTML.escape(token.text)
                 if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
                     source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                     source.append(contentsOf: "</span>")
                 }
+                if let url = symbolLinks[token.text] {
+                    source.prepend(contentsOf: "<a href=\u{22}\(url)\u{22}>")
+                    source.append(contentsOf: "</a>")
+                }
                 result += source
             }
 
-            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
             return result
         default:
             var identifiers = internalIdentifiers
@@ -129,7 +133,7 @@ extension Syntax {
             default:
                 break
             }
-            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers) }).joined()
+            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
         }
     }
 

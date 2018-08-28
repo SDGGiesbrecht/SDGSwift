@@ -44,7 +44,7 @@ public class ExtendedSyntax : TextOutputStreamable {
         return [:]
     }
 
-    public func renderedHTML(internalIdentifiers: Set<String>) -> String {
+    public func renderedHTML(internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         var result = ""
         if let element = renderedHtmlElement {
             result.append(contentsOf: "<" + element)
@@ -57,7 +57,7 @@ public class ExtendedSyntax : TextOutputStreamable {
             result.append(contentsOf: ">")
         }
         for child in children {
-            result.append(contentsOf: child.renderedHTML(internalIdentifiers: internalIdentifiers))
+            result.append(contentsOf: child.renderedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
         }
         if let element = renderedHtmlElement {
             result.append(contentsOf: "</" + element + ">")
@@ -67,12 +67,12 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     // MARK: - Syntax Colouring
 
-    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = []) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers), inline: inline)
+    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
 
-    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
-        return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers) }).joined()
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks) }).joined()
     }
 
     // MARK: - TextOutputStreamable

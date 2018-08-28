@@ -86,27 +86,27 @@ public class CodeBlockSyntax : MarkdownSyntax {
 
     // MARK: - ExtendedSyntax
 
-    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         if language?.text == "swift" ∨ language == nil {
-            return super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+            return super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
         } else {
-            var result = openingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
-            result.append(contentsOf: openingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            var result = openingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+            result.append(contentsOf: openingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
             if let language = self.language {
-                result.append(contentsOf: language.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+                result.append(contentsOf: language.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
             }
 
-            result.append(contentsOf: source.unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            result.append(contentsOf: source.unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
 
-            result.append(contentsOf: closingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
-            result.append(contentsOf: closingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers))
+            result.append(contentsOf: closingVerticalMargin.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
+            result.append(contentsOf: closingDelimiter.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
             return result
         }
     }
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(internalIdentifiers: Set<String>) -> String {
-        return source.syntaxHighlightedHTML(inline: false, internalIdentifiers: internalIdentifiers)
+    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        return source.syntaxHighlightedHTML(inline: false, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
     }
 }

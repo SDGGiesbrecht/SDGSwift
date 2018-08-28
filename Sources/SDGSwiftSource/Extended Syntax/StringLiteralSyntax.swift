@@ -55,8 +55,8 @@ public class StringLiteralSyntax : ExtendedSyntax {
 
     // MARK: - ExtendedSyntax
 
-    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>) -> String {
-        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers)
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
         source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
         source.append(contentsOf: "</span>")
         return source
