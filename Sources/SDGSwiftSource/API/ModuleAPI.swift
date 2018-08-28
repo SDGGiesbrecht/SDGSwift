@@ -23,8 +23,8 @@ public class ModuleAPI : APIElement {
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        _name = module.name.decomposedStringWithCanonicalMapping
-        super.init()
+        let name = module.name.decomposedStringWithCanonicalMapping
+        _name = name
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -34,6 +34,9 @@ public class ModuleAPI : APIElement {
             }
         }
         api = APIElement.merge(elements: api)
+
+        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(name)\u{22}")?.parent
+        super.init(documentation: declaration?.documentation)
 
         for element in api {
             switch element {
@@ -53,9 +56,6 @@ public class ModuleAPI : APIElement {
                 }
             }
         }
-
-        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(name)\u{22}")?.parent
-        documentation = declaration?.documentation
     }
 
     // MARK: - Properties

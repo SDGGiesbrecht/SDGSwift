@@ -26,7 +26,8 @@ public class LibraryAPI : APIElement {
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        _name = product.name.decomposedStringWithCanonicalMapping
+        let name = product.name.decomposedStringWithCanonicalMapping
+        _name = name
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
@@ -37,10 +38,8 @@ public class LibraryAPI : APIElement {
         }
         self.modules = modules
 
-        super.init()
-
         let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(name)\u{22}")?.parent
-        documentation = declaration?.documentation
+        super.init(documentation: declaration?.documentation)
     }
 
     // MARK: - Properties

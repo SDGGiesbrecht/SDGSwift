@@ -19,7 +19,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isOpen: Bool, typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(documentation: DocumentationSyntax?, isOpen: Bool, typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
         self.isOpen = isOpen
         self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
         self.isMutating = isMutating
@@ -28,6 +28,7 @@ public class FunctionAPI : APIElement {
         self.throws = `throws`
         self.returnType = returnType
         self.isOperator = isOperator
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties

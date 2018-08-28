@@ -17,6 +17,12 @@ import SDGLocalization
 
 public class APIElement : Comparable, Hashable {
 
+    // MARK: - Initialization
+
+    internal init(documentation: DocumentationSyntax?) {
+        self.documentation = documentation
+    }
+
     // MARK: - Static Methods
 
     internal static func merge(elements: [APIElement]) -> [APIElement] {
@@ -87,7 +93,7 @@ public class APIElement : Comparable, Hashable {
     }
     public internal(set) var compilationConditions: Syntax?
 
-    public internal(set) var documentation: DocumentationSyntax?
+    public let documentation: DocumentationSyntax?
 
     public var children: AnyBidirectionalCollection<APIElement> {
         return AnyBidirectionalCollection([])

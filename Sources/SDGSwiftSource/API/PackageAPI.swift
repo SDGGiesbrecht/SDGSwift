@@ -50,10 +50,9 @@ public class PackageAPI : APIElement {
         }
         self.modules = modules
 
-        super.init()
-
         let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")
-        documentation = declaration?.documentation
+        super.init(documentation: declaration?.documentation)
+
     }
 
     // MARK: - Properties

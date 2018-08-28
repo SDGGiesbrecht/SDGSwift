@@ -20,8 +20,8 @@ public class APIScope : APIElement {
 
     // MARK: - Initialization
 
-    internal init(conformances: [ConformanceAPI], children: [APIElement]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
-        super.init()
+    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElement]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+        super.init(documentation: documentation)
         self.conformances = conformances
         for element in children {
             switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.

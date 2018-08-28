@@ -18,9 +18,10 @@ public class CaseAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, associatedValues: [TypeReferenceAPI]) {
+    internal init(documentation: DocumentationSyntax?, name: String, associatedValues: [TypeReferenceAPI]) {
         _name = name.decomposedStringWithCanonicalMapping
         self.associatedValues = associatedValues
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties

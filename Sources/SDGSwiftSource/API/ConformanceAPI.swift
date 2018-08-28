@@ -18,6 +18,7 @@ public class ConformanceAPI : APIElement {
 
     internal init(protocolName: String) {
         self.protocolName = protocolName.decomposedStringWithCanonicalMapping
+        super.init(documentation: nil)
     }
 
     // MARK: - Properties

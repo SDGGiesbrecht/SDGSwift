@@ -16,11 +16,12 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typePropertyKeyword: TokenKind?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+    internal init(documentation: DocumentationSyntax?, typePropertyKeyword: TokenKind?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
         self.typePropertyKeyword = typePropertyKeyword
         _name = name.decomposedStringWithCanonicalMapping
         self.type = type
         self.isSettable = isSettable
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties

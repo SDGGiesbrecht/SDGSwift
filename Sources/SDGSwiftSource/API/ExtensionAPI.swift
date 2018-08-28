@@ -20,7 +20,7 @@ public class ExtensionAPI : APIScope {
 
     internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         self.type = type
-        super.init(conformances: conformances, children: children)
+        super.init(documentation: nil, conformances: conformances, children: children)
         self.constraints = constraints
     }
 

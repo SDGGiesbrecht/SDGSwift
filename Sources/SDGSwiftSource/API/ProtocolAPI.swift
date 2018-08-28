@@ -18,9 +18,9 @@ public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(name: String, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, name: String, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         _name = name.decomposedStringWithCanonicalMapping
-        super.init(conformances: conformances, children: children)
+        super.init(documentation: documentation, conformances: conformances, children: children)
         self.constraints = constraints
 
         for method in methods {

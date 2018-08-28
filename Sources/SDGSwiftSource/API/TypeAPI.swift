@@ -20,11 +20,11 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         typeName = name
         self.isOpen = isOpen
         self.keyword = keyword
-        super.init(conformances: conformances, children: children)
+        super.init(documentation: documentation, conformances: conformances, children: children)
         self.constraints = constraints
     }
 

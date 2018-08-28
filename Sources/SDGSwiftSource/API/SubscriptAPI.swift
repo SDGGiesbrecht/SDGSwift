@@ -19,10 +19,11 @@ public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(arguments: [ParameterAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
+    internal init(documentation: DocumentationSyntax?, arguments: [ParameterAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
         self.arguments = arguments
         self.returnType = returnType
         self.isSettable = isSettable
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties

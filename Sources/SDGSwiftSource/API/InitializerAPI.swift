@@ -19,10 +19,11 @@ public class InitializerAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(isFailable: Bool, arguments: [ParameterAPI], throws: Bool) {
+    internal init(documentation: DocumentationSyntax?, isFailable: Bool, arguments: [ParameterAPI], throws: Bool) {
         self.isFailable = isFailable
         self.arguments = arguments
         self.throws = `throws`
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
