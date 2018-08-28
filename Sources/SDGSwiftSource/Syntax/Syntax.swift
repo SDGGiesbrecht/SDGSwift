@@ -364,6 +364,8 @@ extension Syntax {
                 currentCondition = condition.withTriviaReducedToSpaces().source()
             case let condition as IdentifierExprSyntax :
                 currentCondition = condition.withTriviaReducedToSpaces().source()
+            case let condition as SequenceExprSyntax :
+                currentCondition = condition.withTriviaReducedToSpaces().source()
             default:
                 var composedConditions = "#if "
                 composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
