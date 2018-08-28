@@ -76,7 +76,7 @@ public class PackageAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return children.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
+        return libraries.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

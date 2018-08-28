@@ -73,7 +73,7 @@ public class LibraryAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return children.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
+        return modules.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {
