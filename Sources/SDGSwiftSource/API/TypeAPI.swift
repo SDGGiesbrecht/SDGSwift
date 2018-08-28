@@ -31,7 +31,7 @@ public class TypeAPI : APIScope {
     // MARK: - Properties
 
     private let isOpen: Bool
-    private let keyword: TokenKind
+    public let keyword: TokenKind
     internal let typeName: TypeReferenceAPI
 
     // MARK: - APIElement
