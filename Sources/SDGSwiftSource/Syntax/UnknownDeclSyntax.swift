@@ -332,7 +332,7 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
-            let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
+            let type = (child(at: nameToken.indexInParent + 2) as? TypeSyntax)?.reference
             return VariableAPI(documentation: documentation, typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.

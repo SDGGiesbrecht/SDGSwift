@@ -19,15 +19,17 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Initialization
 
-    internal init(name: String, genericArguments: [TypeReferenceAPI]) {
+    internal init(name: String, genericArguments: [TypeReferenceAPI], isOptional: Bool = false) {
         self.name = name.decomposedStringWithCanonicalMapping
         self.genericArguments = genericArguments
+        self.isOptional = isOptional
     }
 
     // MARK: - Properties
 
-    private var name: String
-    private var genericArguments: [TypeReferenceAPI]
+    internal let name: String
+    internal let genericArguments: [TypeReferenceAPI]
+    internal let isOptional: Bool
 
     // MARK: - Output
 
@@ -62,7 +64,7 @@ public struct TypeReferenceAPI : Comparable, Hashable {
             rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
     }
 
-    internal var declaration: SimpleTypeIdentifierSyntax {
+    internal var declaration: TypeSyntax {
 
         var genericArgumentClause: GenericArgumentClauseSyntax?
         if ¬genericArguments.isEmpty {
@@ -86,9 +88,17 @@ public struct TypeReferenceAPI : Comparable, Hashable {
                 rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
         }
 
-        return SyntaxFactory.makeSimpleTypeIdentifier(
+        let simple = SyntaxFactory.makeSimpleTypeIdentifier(
             name: nameDeclaration,
             genericArgumentClause: genericArgumentClause)
+
+        if isOptional {
+            return SyntaxFactory.makeOptionalType(
+                wrappedType: simple,
+                questionMark: SyntaxFactory.makeToken(.postfixQuestionMark))
+        } else {
+            return simple
+        }
     }
 
     internal var identifierList: Set<String> {

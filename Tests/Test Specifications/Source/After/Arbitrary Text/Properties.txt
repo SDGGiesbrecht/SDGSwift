@@ -6,4 +6,6 @@ extension ̲Int ̲{
  ̲ ̲ ̲ ̲public ̲let ̲`v̲a̲r̲`: ̲Int ̲= ̲0̲
 
  ̲ ̲ ̲ ̲public ̲static ̲let ̲s̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Int ̲= ̲0̲
+
+ ̲ ̲ ̲ ̲public ̲weak ̲var ̲o̲p̲t̲i̲o̲n̲a̲l̲: ̲SomeType?
 }
