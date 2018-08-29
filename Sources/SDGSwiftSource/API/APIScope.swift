@@ -56,7 +56,7 @@ public class APIScope : APIElement {
     // MARK: - Properties
 
     private var _cases: [CaseAPI] = []
-    private var cases: [CaseAPI] {
+    public private(set) var cases: [CaseAPI] {
         get {
             return _cases
         }
@@ -66,7 +66,7 @@ public class APIScope : APIElement {
     }
 
     private var _subtypes: [TypeAPI] = []
-    private var subtypes: [TypeAPI] {
+    public private(set) var subtypes: [TypeAPI] {
         get {
             return _subtypes
         }
@@ -76,7 +76,7 @@ public class APIScope : APIElement {
     }
 
     private var _typeProperties: [VariableAPI] = []
-    private var typeProperties: [VariableAPI] {
+    public private(set) var typeProperties: [VariableAPI] {
         get {
             return _typeProperties
         }
@@ -86,7 +86,7 @@ public class APIScope : APIElement {
     }
 
     private var _typeMethods: [FunctionAPI] = []
-    private var typeMethods: [FunctionAPI] {
+    public private(set) var typeMethods: [FunctionAPI] {
         get {
             return _typeMethods
         }
@@ -96,7 +96,7 @@ public class APIScope : APIElement {
     }
 
     private var _initializers: [InitializerAPI] = []
-    private var initializers: [InitializerAPI] {
+    public private(set) var initializers: [InitializerAPI] {
         get {
             return _initializers
         }
@@ -106,7 +106,7 @@ public class APIScope : APIElement {
     }
 
     private var _properties: [VariableAPI] = []
-    private var properties: [VariableAPI] {
+    public private(set) var properties: [VariableAPI] {
         get {
             return _properties
         }
@@ -116,7 +116,7 @@ public class APIScope : APIElement {
     }
 
     private var _subscripts: [SubscriptAPI] = []
-    private var subscripts: [SubscriptAPI] {
+    public private(set) var subscripts: [SubscriptAPI] {
         get {
             return _subscripts
         }
@@ -126,7 +126,7 @@ public class APIScope : APIElement {
     }
 
     private var _methods: [FunctionAPI] = []
-    internal var methods: [FunctionAPI] {
+    public private(set) var methods: [FunctionAPI] {
         get {
             return _methods
         }
@@ -136,7 +136,7 @@ public class APIScope : APIElement {
     }
 
     private var _conformances: [ConformanceAPI] = []
-    private var conformances: [ConformanceAPI] {
+    public private(set) var conformances: [ConformanceAPI] {
         get {
             return _conformances
         }
