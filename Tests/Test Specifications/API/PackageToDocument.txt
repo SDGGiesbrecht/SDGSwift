@@ -1,0 +1,12 @@
+PackageToDocument • Package(name: "PackageToDocument")
+ PrimaryProduct • .library(name: "PrimaryProduct")
+  PrimaryModule
+ PrimaryModule • .target(name: "PrimaryModule")
+  Structure • struct Structure
+   init() • init()
+  (Bool)
+   extensionProperty • var extensionProperty: Bool { get }
+   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }
+  Protocol • protocol Protocol
+  executeFunction() • func executeFunction()
+  globalVariable • var globalVariable: Bool { get set }

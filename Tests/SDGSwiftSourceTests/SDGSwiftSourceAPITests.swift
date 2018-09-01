@@ -28,12 +28,10 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testAPIParsing() throws {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent("PackageToDocument"))
-        let manifest = try Syntax.parse(package.location.appendingPathComponent("Package.swift"))
-        for target in try package.package().targets {
-            let specification = testSpecificationDirectory().appendingPathComponent("API/Modules/\(target.name).txt")
-            let parsed = try ModuleAPI(module: target, manifest: manifest).summary.joined(separator: "\n")
-            SDGPersistenceTestUtilities.compare(parsed, against: specification, overwriteSpecificationInsteadOfFailing: false)
-        }
+        let parsed = try PackageAPI(package: package.package())
+        let summary = parsed.summary.joined(separator: "\n")
+        let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
+        SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExtension() {

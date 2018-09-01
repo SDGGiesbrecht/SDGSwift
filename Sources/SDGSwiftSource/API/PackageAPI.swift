@@ -89,5 +89,7 @@ public class PackageAPI : APIElement {
 
     public override var summary: [String] {
         return [name + " • " + declaration.source()]
+            + libraries.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+            + modules.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }

@@ -80,5 +80,6 @@ public class LibraryAPI : APIElement {
 
     public override var summary: [String] {
         return [name + " • " + declaration.source()]
+            + modules.map({ $0.name.prepending(" ") })
     }
 }
