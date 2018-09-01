@@ -32,6 +32,8 @@ class SDGSwiftSourceAPITests : TestCase {
         let summary = parsed.summary.joined(separator: "\n")
         let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
         SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
+
+        XCTAssert("Structure" ∈ parsed.identifierList)
     }
 
     func testExtension() {
