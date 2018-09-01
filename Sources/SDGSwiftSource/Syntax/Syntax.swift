@@ -19,6 +19,7 @@ import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGPersistence
+import SDGLocalization
 
 extension Syntax {
 
@@ -84,7 +85,10 @@ extension Syntax {
     // MARK: - Syntax Highlighting
 
     public static var css: StrictString {
-        return (try! StrictString(file: Resources.syntaxHighlighting, origin: nil)).dropping(through: "*/\n\n")
+        guard let source = try? StrictString(file: Resources.syntaxHighlighting, origin: nil) else {
+            unreachable()
+        }
+        return source.dropping(through: "*/\n\n")
     }
 
     internal static func wrap(syntaxHighlighting: String, inline: Bool) -> String {

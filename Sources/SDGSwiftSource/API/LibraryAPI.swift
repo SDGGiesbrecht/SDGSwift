@@ -32,7 +32,10 @@ public class LibraryAPI : APIElement {
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                return "Parsing “" + StrictString(module.name) + "”..."
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Parsing “" + StrictString(module.name) + "”..."
+                }
             }).resolved()))
             modules.append(try ModuleAPI(module: module, manifest: manifest))
         }

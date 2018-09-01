@@ -22,13 +22,13 @@ import XCTest
 
 /// ...
 open class TestCase : XCTestCase {
-    
+
     static var initialized = false
     /// ...
     open override func setUp() {
         super.setUp()
     }
-    
+
     /// :nodoc:
     public func testLinuxMainGenerationCompatibility() {}
 }
