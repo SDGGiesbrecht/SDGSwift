@@ -141,7 +141,7 @@ public class APIElement : Comparable, Hashable {
                     SyntaxFactory.makeToken(.leftParen)
                     ] + newCondition + [
                         SyntaxFactory.makeToken(.rightParen),
-                        SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                        SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                         SyntaxFactory.makeToken(.leftParen)
                     ] + existingCondition + [
                         SyntaxFactory.makeToken(.rightParen)

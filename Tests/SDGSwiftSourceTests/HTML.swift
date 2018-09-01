@@ -14,7 +14,7 @@
 
 func HTMLPage(content: String, cssPath: String) -> String {
     return [
-        "<!DOCTYPE html>",
+        "<\u{21}DOCTYPE html>",
         "<html>",
         " <head>",
         "  <meta charset=\u{22}utf\u{2D}8\u{22}>",

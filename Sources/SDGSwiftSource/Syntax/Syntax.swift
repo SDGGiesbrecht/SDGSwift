@@ -383,7 +383,7 @@ extension Syntax {
                         SyntaxFactory.makeToken(.rightParen)
                     ]
                 }).joined(separator: [
-                    SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
                     ]))
 
                 if previousConditions.isEmpty {
@@ -391,7 +391,7 @@ extension Syntax {
                 } else {
                     if let current = currentCondition {
                         composedConditions.append(contentsOf: [
-                            SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                            SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                             SyntaxFactory.makeToken(.leftParen)
                             ] + current.tokens() + [
                                 SyntaxFactory.makeToken(.rightParen)
