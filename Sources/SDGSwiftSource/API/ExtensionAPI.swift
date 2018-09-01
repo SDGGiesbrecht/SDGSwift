@@ -30,6 +30,16 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Combining
 
+    public func isExtension(of type: TypeAPI) -> Bool {
+        return self.type == type.typeName
+    }
+    public func isExtension(of protocol: ProtocolAPI) -> Bool {
+        return self.type.declaration.source() == `protocol`.name
+    }
+    public func extendsSameType(as other: ExtensionAPI) -> Bool {
+        return type == other.type
+    }
+
     internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
         var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
 

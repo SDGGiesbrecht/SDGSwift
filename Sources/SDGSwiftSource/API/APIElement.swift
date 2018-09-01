@@ -49,12 +49,11 @@ public class APIElement : Comparable, Hashable {
 
         var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
-            let extensionType = `extension`.type
-            for type in types where extensionType == type.typeName {
+            for type in types where `extension`.isExtension(of: type) {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
-            for `protocol` in protocols where extensionType.declaration.source() == `protocol`.name {
+            for `protocol` in protocols where `extension`.isExtension(of: `protocol`) {
                 `protocol`.merge(extension: `extension`)
                 continue extensionIteration
             }
