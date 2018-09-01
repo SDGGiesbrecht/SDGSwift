@@ -36,6 +36,11 @@ class SDGSwiftSourceAPITests : TestCase {
         }
     }
 
+    func testExtension() {
+        XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
+        XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
+    }
+
     func testLineDeveloperCommentSyntax() throws {
         let syntax = try Syntax.parse("/\u{2F} Comment.")
         try SyntaxScanner().scan(syntax)
