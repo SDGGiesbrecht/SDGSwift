@@ -79,8 +79,8 @@ public class ExtensionAPI : APIScope {
 
     public override var summary: [String] {
         var result = "(" + name + ")"
-        if let constraints = constraintSyntax() { // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
-            result += constraints.source()
+        if let constraints = constraintSyntax() {
+            result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
         }
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary

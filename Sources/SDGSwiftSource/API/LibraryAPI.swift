@@ -31,13 +31,13 @@ public class LibraryAPI : APIElement {
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
-            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Parsing “" + StrictString(module.name) + "”..."
                 }
             }).resolved()))
-            modules.append(try ModuleAPI(module: module, manifest: manifest))
+            modules.append(try ModuleAPI(module: module, manifest: manifest)) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         }
         self.modules = modules
 

@@ -27,13 +27,18 @@ import SDGSwiftTestUtilities
 class SDGSwiftSourceAPITests : TestCase {
 
     func testAPIParsing() throws {
-        let package = PackageRepository(at: mocksDirectory.appendingPathComponent("PackageToDocument"))
-        let parsed = try PackageAPI(package: package.package())
-        let summary = parsed.summary.joined(separator: "\n")
-        let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
-        SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
+        for packageName in ["PackageToDocument", "PackageToDocument2"] {
+            let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
+            let parsed = try PackageAPI(package: package.package())
+            let summary = parsed.summary.joined(separator: "\n")
+            let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
+            SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
 
-        XCTAssert("Structure" ∈ parsed.identifierList)
+            if packageName == "PackageToDocument" {
+                XCTAssert("Structure" ∈ parsed.identifierList)
+            }
+        }
+
     }
 
     func testExtension() {
