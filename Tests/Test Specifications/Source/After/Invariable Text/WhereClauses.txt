@@ -2,3 +2,5 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection w̲h̲e̲r̲e̲ Index == Element,̲ Index
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ requiresReorderedConstraints(̲)̲
 ̲}̲
 ̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection :̲ ConditionalConformance w̲h̲e̲r̲e̲ Index == Element {̲}̲
+̲

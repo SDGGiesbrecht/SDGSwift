@@ -19,7 +19,7 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?) {
+    internal init(documentation: DocumentationSyntax?) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
         self.documentation = documentation
     }
 
