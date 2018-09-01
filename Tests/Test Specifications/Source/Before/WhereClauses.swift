@@ -2,4 +2,5 @@ extension Collection where Index == Element, Index : SignedNumeric, Index : Cust
     public func requiresReorderedConstraints()
 }
 
-extension Collection : ConditionalConformance where Index == Element {}
+extension Collection : ConditionalConformance where Index == Element, Index == Int {}
+
