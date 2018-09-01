@@ -28,7 +28,7 @@ public class ModuleAPI : APIElement {
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
-            try autoreleasepool {
+            try autoreleasepool { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 let source = try Syntax.parse(sourceFile)
                 api += source.api()
             }
@@ -39,7 +39,7 @@ public class ModuleAPI : APIElement {
         super.init(documentation: declaration?.documentation)
 
         for element in api {
-            switch element {
+            switch element { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             case let type as TypeAPI :
                 types.append(type)
             case let `protocol` as ProtocolAPI :
