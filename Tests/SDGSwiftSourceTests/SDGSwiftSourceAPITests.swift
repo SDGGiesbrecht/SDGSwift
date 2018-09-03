@@ -127,6 +127,16 @@ class SDGSwiftSourceAPITests : TestCase {
                 }
             }).compactMap({ $0 }).joined(separator: "\n\n")
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
+
+            if url.deletingPathExtension().lastPathComponent == "Documentation" {
+                let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
+                let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
+                let documentation = method.documentation!
+                let rendered = documentation.renderedHTML()
+
+                let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation.html")
+                SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
+            }
         }
     }
 }
