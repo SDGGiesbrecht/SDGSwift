@@ -112,8 +112,4 @@ public struct ParameterAPI {
             return []
         }
     }
-
-    internal var localIdentifierList: Set<String> {
-        return [name]
-    }
 }
