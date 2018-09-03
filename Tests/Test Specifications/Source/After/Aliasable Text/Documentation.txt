@@ -26,6 +26,12 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     ///
     /// ### Tertiary Heading
     ///
+    /// #### Level 4 Heading
+    ///
+    /// ##### Level 5 Heading
+    ///
+    /// ###### Level 6 Heading
+    ///
     /// Another Primary Heading
     /// =======================
     ///

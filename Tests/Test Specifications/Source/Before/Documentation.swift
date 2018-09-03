@@ -26,6 +26,12 @@ extension Structure {
     ///
     /// ### Tertiary Heading
     ///
+    /// #### Level 4 Heading
+    ///
+    /// ##### Level 5 Heading
+    ///
+    /// ###### Level 6 Heading
+    ///
     /// Another Primary Heading
     /// =======================
     ///

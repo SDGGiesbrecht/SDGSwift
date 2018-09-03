@@ -39,8 +39,8 @@ public class DocumentationSyntax : MarkdownSyntax {
         defer { cmark_node_free(tree) }
         super.init(node: tree, in: source)
 
-        for child in children { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            if let paragraph = child as? ParagraphSyntax, descriptionSection == nil {
+        for child in children {
+            if let paragraph = child as? ParagraphSyntax, descriptionSection == nil { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 descriptionSection = paragraph
             } else {
                 discussionEntries.append(child)
