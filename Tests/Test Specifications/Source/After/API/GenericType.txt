@@ -1,3 +1,4 @@
+DoubleGeneric<ThingA, ThingB> • struct DoubleGeneric<ThingA, ThingB>
 Generic<Thing> • struct Generic<Thing> where Thing : ConformanceRequiredByWhere, Thing : RequiredConformance
  DeclaredConformanceOne
  DeclaredConformanceTwo

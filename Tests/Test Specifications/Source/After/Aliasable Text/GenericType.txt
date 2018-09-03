@@ -1,3 +1,5 @@
 public struct Generic<Thing : R̲e̲q̲u̲i̲r̲e̲d̲C̲o̲n̲f̲o̲r̲m̲a̲n̲c̲e̲> : D̲e̲c̲l̲a̲r̲e̲d̲C̲o̲n̲f̲o̲r̲m̲a̲n̲c̲e̲O̲n̲e̲, D̲e̲c̲l̲a̲r̲e̲d̲C̲o̲n̲f̲o̲r̲m̲a̲n̲c̲e̲T̲w̲o̲ where T̲h̲i̲n̲g̲ : C̲o̲n̲f̲o̲r̲m̲a̲n̲c̲e̲R̲e̲q̲u̲i̲r̲e̲d̲B̲y̲W̲h̲e̲r̲e̲ {
 
 }
+
+public struct DoubleGeneric<ThingA, ThingB> {}

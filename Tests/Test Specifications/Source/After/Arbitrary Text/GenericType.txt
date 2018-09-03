@@ -1,3 +1,5 @@
 public ̲struct ̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲ ̲: ̲RequiredConformance> ̲: ̲DeclaredConformanceOne, ̲DeclaredConformanceTwo ̲where ̲Thing ̲: ̲ConformanceRequiredByWhere ̲{
 
 }
+
+public ̲struct ̲D̲o̲u̲b̲l̲e̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲A̲, ̲T̲h̲i̲n̲g̲B̲> ̲{}
