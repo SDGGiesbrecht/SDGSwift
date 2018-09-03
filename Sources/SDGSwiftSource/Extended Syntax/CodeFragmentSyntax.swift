@@ -138,7 +138,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     internal func unknownSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         var source: String
 
-        if context == self.source.text, // Not a of something bigger.
+        if context == self.source.text, // Not part of something bigger.
             let selectorLink = symbolLinks[context] {
             source = HTML.escape(context)
 

@@ -41,6 +41,14 @@ class SDGSwiftSourceAPITests : TestCase {
 
     }
 
+    func testCodeFragmentSyntax() throws {
+        let source = "/// `selector(style:notation:)`\nfunc function() {}"
+        let syntax = try Syntax.parse(source)
+        let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
+        XCTAssert(highlighted.contains("internal identifier"))
+        XCTAssert(highlighted.contains("domain.tld"))
+    }
+
     func testExtension() {
         XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
         XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
