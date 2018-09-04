@@ -225,12 +225,13 @@ extension Syntax {
             for index in leading.indices.lazy.reversed() {
                 let trivia = leading[index]
                 switch trivia {
-                case .docLineComment:
-                    let line = trivia.syntax(siblings: leading, index: index) as? LineDocumentationSyntax
-                    return line?.content.context as? DocumentationSyntax
-                case .docBlockComment:
-                    let block = trivia.syntax(siblings: leading, index: index) as? BlockDocumentationSyntax
-                    return block?.content.first as? DocumentationSyntax
+                case .docLineComment, .docBlockComment:
+                    let comment = trivia.syntax(siblings: leading, index: index)
+                    if let line = comment as? LineDocumentationSyntax {
+                        return line.content.context as? DocumentationSyntax
+                    } else if let block = comment as? BlockDocumentationSyntax {
+                        return block.content.first as? DocumentationSyntax
+                    }
                 default:
                     continue
                 }
