@@ -109,9 +109,6 @@ public enum ExtendedTokenKind {
     // MARK: - Properties
 
     public var textFreedom: TextFreedom {
-        if self == .source {
-            assertionFailure()
-        }
         switch self {
         case .string, .whitespace, .commentText, .documentationText:
             return .arbitrary

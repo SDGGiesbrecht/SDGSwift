@@ -6,4 +6,6 @@ extension I̲n̲t̲ {
     public let `var`: I̲n̲t̲ = 0
 
     public static let staticProperty: I̲n̲t̲ = 0
+
+    public w̲e̲a̲k̲ var optional: S̲o̲m̲e̲T̲y̲p̲e̲?
 }

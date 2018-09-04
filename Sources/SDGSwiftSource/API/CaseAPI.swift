@@ -18,9 +18,10 @@ public class CaseAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(name: String, associatedValues: [TypeReferenceAPI]) {
+    internal init(documentation: DocumentationSyntax?, name: String, associatedValues: [TypeReferenceAPI]) {
         _name = name.decomposedStringWithCanonicalMapping
         self.associatedValues = associatedValues
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -40,18 +41,28 @@ public class CaseAPI : APIElement {
         return result
     }
 
-    public override var declaration: String {
-        var result = "case " + _name
+    public override var declaration: Syntax {
+
+        var tokens: [TokenSyntax] = [
+            SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier(_name))
+        ]
         if ¬associatedValues.isEmpty {
-            result += "("
-            result += associatedValues.map({ $0.description }).joined(separator: ", ")
-            result += ")"
+            tokens.append(SyntaxFactory.makeToken(.leftParen))
+            tokens.append(contentsOf: associatedValues.map({ $0.declaration.tokens() }).joined(separator: [SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))]))
+            tokens.append(SyntaxFactory.makeToken(.rightParen))
         }
-        return result
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+    }
+
+    public override var identifierList: Set<String> {
+        return [_name]
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

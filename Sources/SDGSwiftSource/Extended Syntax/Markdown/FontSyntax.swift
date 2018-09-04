@@ -14,7 +14,32 @@
 
 public class FontSyntax : MarkdownSyntax {
 
+    // MARK: - Initialization
+
     internal init(node: cmark_node, in documentation: String, delimiter: String) {
-        super.init(node: node, in: documentation, precedingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)], followingChildren: [ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)])
+
+        let openingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
+        self.openingDelimiter = openingDelimiter
+
+        let closingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
+        self.closingDelimiter = closingDelimiter
+
+        super.init(node: node, in: documentation, precedingChildren: [openingDelimiter], followingChildren: [closingDelimiter])
+    }
+
+    // MARK: - Properties
+
+    public let openingDelimiter: ExtendedTokenSyntax
+
+    public let closingDelimiter: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        if openingDelimiter.text.count == 2 {
+            return "strong"
+        } else {
+            return "em"
+        }
     }
 }

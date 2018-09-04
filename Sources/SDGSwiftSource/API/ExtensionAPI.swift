@@ -20,7 +20,7 @@ public class ExtensionAPI : APIScope {
 
     internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         self.type = type
-        super.init(conformances: conformances, children: children)
+        super.init(documentation: nil, conformances: conformances, children: children)
         self.constraints = constraints
     }
 
@@ -29,6 +29,16 @@ public class ExtensionAPI : APIScope {
     internal let type: TypeReferenceAPI
 
     // MARK: - Combining
+
+    public func isExtension(of type: TypeAPI) -> Bool {
+        return self.type == type.typeName
+    }
+    public func isExtension(of protocol: ProtocolAPI) -> Bool {
+        return self.type.declaration.source() == `protocol`.name
+    }
+    public func extendsSameType(as other: ExtensionAPI) -> Bool {
+        return type == other.type
+    }
 
     internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
         var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
@@ -56,16 +66,22 @@ public class ExtensionAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return type.description
+        return type.declaration.source()
     }
 
-    public override var declaration: String? { // @exempt(from: tests) Should never occur.
+    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
         return nil
+    }
+
+    public override var identifierList: Set<String> {
+        return scopeIdentifierList
     }
 
     public override var summary: [String] {
         var result = "(" + name + ")"
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
+        }
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }

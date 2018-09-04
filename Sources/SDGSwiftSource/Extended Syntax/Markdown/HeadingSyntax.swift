@@ -18,11 +18,14 @@ import SDGCMarkShims
 
 public class HeadingSyntax : MarkdownSyntax {
 
+    // MARK: - Initialization
+
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
         var followingChildren: [ExtendedSyntax] = []
 
         let level = Int(cmark_node_get_header_level(node))
+        self.level = level
 
         let contentStart = node.lowerBound(in: documentation)
 
@@ -81,6 +84,10 @@ public class HeadingSyntax : MarkdownSyntax {
         super.init(node: node, in: documentation, precedingChildren: precedingChildren, followingChildren: followingChildren)
     }
 
+    // MARK: - Properties
+
+    private let level: Int
+
     /// The number sign delimiter.
     public let numberSignDelimiter: ExtendedTokenSyntax?
 
@@ -95,4 +102,23 @@ public class HeadingSyntax : MarkdownSyntax {
 
     /// Trailing newlines.
     public let trailingNewlines: ExtendedTokenSyntax?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        switch level {
+        case ...1:
+            return "h1"
+        case 2:
+            return "h2"
+        case 3:
+            return "h3"
+        case 4:
+            return "h4"
+        case 5:
+            return "h5"
+        default:
+            return "h6"
+        }
+    }
 }

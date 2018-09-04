@@ -44,6 +44,13 @@ public class QuotationSyntax : MarkdownSyntax {
         }
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+
+        if let last = children.last,
+            let lastParagraph = last as? ParagraphSyntax,
+            lastParagraph.text.hasPrefix("―") {
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            lastParagraph.isCitation = true
+        }
     }
 
     /// The number sign delimiter.
@@ -51,4 +58,10 @@ public class QuotationSyntax : MarkdownSyntax {
 
     /// The indent after the number sign delimiter.
     public let indent: ExtendedTokenSyntax?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        return "blockquote"
+    }
 }

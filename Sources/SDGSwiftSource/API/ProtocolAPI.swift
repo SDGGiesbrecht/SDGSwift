@@ -12,13 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(name: String, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, name: String, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
         _name = name.decomposedStringWithCanonicalMapping
-        super.init(conformances: conformances, children: children)
+        super.init(documentation: documentation, conformances: conformances, children: children)
         self.constraints = constraints
 
         for method in methods {
@@ -36,14 +38,25 @@ public class ProtocolAPI : APIScope {
         return _name.description
     }
 
-    public override var declaration: String {
-        var result = "protocol " + name
-        appendConstraintDescriptions(to: &result)
-        return result
+    public override var declaration: DeclSyntax {
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this yet.
+        return SyntaxFactory.makeStructDecl(
+            attributes: nil,
+            accessLevelModifier: nil,
+            structKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
+            identifier: SyntaxFactory.makeToken(.identifier(name)),
+            genericParameterClause: nil,
+            inheritanceClause: nil,
+            genericWhereClause: constraintSyntax(),
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return Set([_name]) ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }

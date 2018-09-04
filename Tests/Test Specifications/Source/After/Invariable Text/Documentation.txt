@@ -26,6 +26,12 @@
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ #̲#̲#̲ Tertiary Heading
 ̲    /̲/̲/̲
+̲    /̲/̲/̲ #̲#̲#̲#̲ Level 4 Heading
+̲    /̲/̲/̲
+̲    /̲/̲/̲ #̲#̲#̲#̲#̲ Level 5 Heading
+̲    /̲/̲/̲
+̲    /̲/̲/̲ #̲#̲#̲#̲#̲#̲ Level 6 Heading
+̲    /̲/̲/̲
 ̲    /̲/̲/̲ Another Primary Heading
 ̲    /̲/̲/̲ =̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲=̲
 ̲    /̲/̲/̲
@@ -69,6 +75,14 @@
 ̲    /̲/̲/̲ }̲
 ̲    /̲/̲/̲ `̲`̲`̲
 ̲    /̲/̲/̲
+̲    /̲/̲/̲ `̲`̲`̲
+̲    /̲/̲/̲ l̲e̲t̲ unmarked =̲ t̲r̲u̲e̲
+̲    /̲/̲/̲ `̲`̲`̲
+̲    /̲/̲/̲
+̲    /̲/̲/̲ `̲`̲`̲o̲t̲h̲e̲r̲
+̲    /̲/̲/̲ T̲h̲i̲s̲ ̲i̲s̲ ̲u̲n̲i̲d̲e̲n̲t̲i̲f̲i̲e̲d̲.̲
+̲    /̲/̲/̲ `̲`̲`̲
+̲    /̲/̲/̲
 ̲    /̲/̲/̲ Here are *̲*̲strong*̲*̲ and *̲emphasized*̲. (Or *̲*̲strong*̲*̲ and *̲emphasized*̲.)
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ There are also [̲links]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲)̲.
@@ -76,6 +90,8 @@
 ̲    /̲/̲/̲ And !̲[̲images]̲(̲s̲o̲m̲e̲w̲h̲e̲r̲e̲.̲c̲o̲m̲/̲i̲m̲a̲g̲e̲)̲.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ >̲ And someone said this.
+̲    /̲/̲/̲
+̲    /̲/̲/̲ >̲ ―Someone.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ Paragraphs
 ̲    /̲/̲/̲ may
@@ -109,6 +125,35 @@
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withSeparateParameters(̲parameterOne:̲ String,̲ parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ -̲>̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲
+̲
+̲    /̲*̲*̲
+̲     Documented with the block style.
+̲
+̲     Specified:
+̲
+̲     `̲`̲`̲s̲w̲i̲f̲t̲
+̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     `̲`̲`̲
+̲
+̲     Unspecified, Swift:
+̲
+̲     `̲`̲`̲
+̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     `̲`̲`̲
+̲
+̲     Unspecified, not Swift:
+̲
+̲     `̲`̲`̲
+̲     T̲h̲i̲s̲ ̲c̲a̲n̲n̲o̲t̲ ̲c̲o̲m̲p̲i̲l̲e̲.̲
+̲     `̲`̲`̲
+̲
+̲     Not Swift:
+̲
+̲     `̲`̲`̲n̲o̲t̲‐̲s̲w̲i̲f̲t̲
+̲     f̲u̲n̲c̲ ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(̲)̲
+̲     `̲`̲`̲
+̲    *̲/̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ documentedWithBlockStyle(̲)̲ {̲}̲
 ̲}̲
 ̲
 ̲/̲/̲/̲ A structure.

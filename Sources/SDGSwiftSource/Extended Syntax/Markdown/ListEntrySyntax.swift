@@ -111,4 +111,10 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     /// The indent after the bullet.
     public let indent: ExtendedTokenSyntax?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        return "li"
+    }
 }

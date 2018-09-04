@@ -120,7 +120,7 @@ extension UnknownDeclSyntax {
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            return TypeAPI(documentation: documentation, isOpen: isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -148,7 +148,7 @@ extension UnknownDeclSyntax {
         if let keyword = typeAliasKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
+            return TypeAPI(documentation: documentation, isOpen: false, keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -173,7 +173,7 @@ extension UnknownDeclSyntax {
         if let keyword = associatedTypeKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText {
-            return TypeAPI(keyword: keyword.text, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: conformances, constraints: constraints + self.constraints, children: [])
+            return TypeAPI(documentation: documentation, isOpen: false, keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: conformances, constraints: constraints + self.constraints, children: [])
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -202,7 +202,7 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
-            return ProtocolAPI(name: name, conformances: conformances, constraints: constraints, children: apiChildren())
+            return ProtocolAPI(documentation: documentation, name: name, conformances: conformances, constraints: constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -234,18 +234,18 @@ extension UnknownDeclSyntax {
             if arguments.first?.label?.hasPrefix("_") == true {
                 return nil
             }
-            return InitializerAPI(isFailable: isFailable, arguments: arguments, throws: `throws`)
+            return InitializerAPI(documentation: documentation, isFailable: isFailable, arguments: arguments, throws: `throws`)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Variable Syntax
 
-    private var typePropertyKeyword: String? {
+    private var typePropertyKeyword: TokenKind? {
         for child in children {
             if let modifier = child as? DeclModifierSyntax,
                 modifier.name.tokenKind == .staticKeyword ∨ modifier.name.tokenKind == .classKeyword {
-                return modifier.name.text
+                return modifier.name.tokenKind
             }
         }
         return nil
@@ -332,15 +332,15 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
-            let type = (child(at: nameToken.indexInParent + 2) as? SimpleTypeIdentifierSyntax)?.reference
-            return VariableAPI(typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
+            let type = (child(at: nameToken.indexInParent + 2) as? TypeSyntax)?.reference
+            return VariableAPI(documentation: documentation, typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
-    // MARK: - Variable Syntax
+    // MARK: - Subscript Syntax
 
-    private var typeMethodKeyword: String? {
+    private var typeMethodKeyword: TokenKind? {
         return typePropertyKeyword
     }
 
@@ -364,7 +364,7 @@ extension UnknownDeclSyntax {
         }
         if isSubscriptSyntax,
             let returnType = self.returnType {
-            return SubscriptAPI(arguments: arguments(forSubscript: true), returnType: returnType, isSettable: isSettable)
+            return SubscriptAPI(documentation: documentation, arguments: arguments(forSubscript: true), returnType: returnType, isSettable: isSettable)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -385,7 +385,7 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    private func arguments(forSubscript: Bool) -> [ParameterAPI] {
+    internal func arguments(forSubscript: Bool) -> [ParameterAPI] {
         for child in children where type(of: child) == Syntax.self {
             let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
             if ¬possibleArgumentList.isEmpty {
@@ -414,7 +414,7 @@ extension UnknownDeclSyntax {
             ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+            return FunctionAPI(documentation: documentation, isOpen: isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -457,7 +457,7 @@ extension UnknownDeclSyntax {
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
-            return CaseAPI(name: name, associatedValues: associatedValues)
+            return CaseAPI(documentation: documentation, name: name, associatedValues: associatedValues)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

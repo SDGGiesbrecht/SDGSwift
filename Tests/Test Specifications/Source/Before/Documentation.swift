@@ -26,6 +26,12 @@ extension Structure {
     ///
     /// ### Tertiary Heading
     ///
+    /// #### Level 4 Heading
+    ///
+    /// ##### Level 5 Heading
+    ///
+    /// ###### Level 6 Heading
+    ///
     /// Another Primary Heading
     /// =======================
     ///
@@ -69,6 +75,14 @@ extension Structure {
     /// }
     /// ```
     ///
+    /// ```
+    /// let unmarked = true
+    /// ```
+    ///
+    /// ```other
+    /// This is unidentified.
+    /// ```
+    ///
     /// Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)
     ///
     /// There are also [links](somewhere.com).
@@ -76,6 +90,8 @@ extension Structure {
     /// And ![images](somewhere.com/image).
     ///
     /// > And someone said this.
+    ///
+    /// > ―Someone.
     ///
     /// Paragraphs
     /// may
@@ -109,6 +125,35 @@ extension Structure {
     public func withSeparateParameters(parameterOne: String, parameterTwo: String) throws -> Bool {
         return false
     }
+
+    /**
+     Documented with the block style.
+
+     Specified:
+
+     ```swift
+     func doSomething()
+     ```
+
+     Unspecified, Swift:
+
+     ```
+     func doSomething()
+     ```
+
+     Unspecified, not Swift:
+
+     ```
+     This cannot compile.
+     ```
+
+     Not Swift:
+
+     ```not‐swift
+     func doSomething()
+     ```
+     */
+    public func documentedWithBlockStyle() {}
 }
 
 /// A structure.

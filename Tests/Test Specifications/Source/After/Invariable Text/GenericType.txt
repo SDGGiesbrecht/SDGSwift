@@ -2,3 +2,5 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Generic<̲Thing :̲ RequiredConformance>̲
 ̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ DoubleGeneric<̲ThingA,̲ ThingB>̲ {̲}̲
+̲

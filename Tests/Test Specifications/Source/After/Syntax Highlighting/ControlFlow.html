@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css">
+ </head>
+ <body>
+
+<code class="swift blockquote"><span class="comment"><span class="comment‐punctuation">/*</span>
+ <span class="text">ControlFlow.swift</span>
+
+ <span class="text">This source file is part of the SDGSwift open source project.</span>
+ <a href="https://sdggiesbrecht.github.io/SDGSwift/SDGSwift" class="url">https://sdggiesbrecht.github.io/SDGSwift/SDGSwift</a>
+
+ <span class="text">Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.</span>
+
+ <span class="text">Soli Deo gloria.</span>
+
+ <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
+ <span class="text">See </span><a href="http://www.apache.org/licenses/LICENSE-2.0" class="url">http://www.apache.org/licenses/LICENSE-2.0</a><span class="text"> for licence information.</span>
+ <span class="comment‐punctuation">*/</span></span>
+
+<span class="keyword">func</span> <span class="external identifier">main</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+
+    <span class="keyword">if</span> <span class="external identifier">number</span><span class="punctuation">.</span><span class="external identifier">isIrrational</span> <span class="punctuation">{</span>
+        <span class="external identifier">number</span><span class="punctuation">.</span><span class="external identifier">round</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span>
+
+    <span class="keyword">for</span> <span class="external identifier">element</span> <span class="keyword">in</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span> <span class="punctuation">{</span>
+
+    <span class="punctuation">}</span>
+
+    <span class="keyword">let</span> <span class="external identifier">trailingClosure</span> <span class="punctuation">=</span> <span class="punctuation">[</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">]</span><span class="punctuation">.</span><span class="external identifier">filter</span> <span class="punctuation">{</span> <span class="punctuation">(</span><span class="external identifier">number</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="keyword">in</span>
+        <span class="keyword">return</span> <span class="external identifier">number</span> <span class="external identifier">==</span> <span class="number">1</span>
+    <span class="punctuation">}</span>
+
+    <span class="keyword">let</span> <span class="external identifier">number</span> <span class="punctuation">=</span> <span class="number">1</span>
+    <span class="keyword">switch</span> <span class="external identifier">number</span> <span class="punctuation">{</span>
+    <span class="keyword">case</span> <span class="number">1</span><span class="punctuation">:</span>
+        <span class="external identifier">print</span><span class="punctuation">(</span><span class="string"><span class="string‐punctuation">"</span><span class="text">one</span><span class="string‐punctuation">"</span></span><span class="punctuation">)</span>
+    <span class="keyword">default</span><span class="punctuation">:</span>
+        <span class="external identifier">print</span><span class="punctuation">(</span><span class="string"><span class="string‐punctuation">"</span><span class="text">default</span><span class="string‐punctuation">"</span></span><span class="punctuation">)</span>
+    <span class="punctuation">}</span>
+
+    <span class="keyword">guard</span> <span class="external identifier">boolean</span> <span class="external identifier">==</span> <span class="keyword">true</span> <span class="keyword">else</span> <span class="punctuation">{</span>
+        <span class="external identifier">preconditionFailure</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span>
+
+    <span class="keyword">while</span> <span class="external identifier">something</span> <span class="punctuation">{</span>
+        <span class="comment"><span class="comment‐punctuation">//</span> <span class="text">Wait.</span></span>
+    <span class="punctuation">}</span>
+
+    <span class="keyword">repeat</span> <span class="punctuation">{</span>
+        <span class="external identifier">someTask</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span> <span class="keyword">while</span> <span class="external identifier">time</span> <span class="external identifier">&#x003C;</span> <span class="number">10</span>
+<span class="punctuation">}</span>
+</code>
+
+ </body>
+</html>

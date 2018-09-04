@@ -17,9 +17,9 @@ import Foundation
 import SDGLogic
 import SDGMathematics
 import SDGCollections
+import SDGText
 import SDGPersistence
-
-import SDGSwiftSyntaxShims
+import SDGLocalization
 
 extension Syntax {
 
@@ -82,6 +82,65 @@ extension Syntax {
         }
     }
 
+    // MARK: - Syntax Highlighting
+
+    public static var css: StrictString {
+        guard let source = try? StrictString(file: Resources.syntaxHighlighting, origin: nil) else {
+            unreachable()
+        }
+        return source.dropping(through: "*/\n\n")
+    }
+
+    internal static func wrap(syntaxHighlighting: String, inline: Bool) -> String {
+        var result = "<code class=\u{22}swift"
+        if ¬inline {
+            result += " blockquote"
+        }
+        result += "\u{22}>"
+        result += syntaxHighlighting
+        result += "</code>"
+        return result
+    }
+
+    public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
+        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
+    }
+
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        switch self {
+        case let token as TokenSyntax :
+            var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+
+            if let extended = token.extended {
+                result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+            } else {
+                var source = HTML.escape(token.text)
+                if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
+                    source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+                    source.append(contentsOf: "</span>")
+                }
+                if let url = symbolLinks[token.text] {
+                    source.prepend(contentsOf: "<a href=\u{22}\(url)\u{22}>")
+                    source.append(contentsOf: "</a>")
+                }
+                result += source
+            }
+
+            result += token.trailingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+            return result
+        default:
+            var identifiers = internalIdentifiers
+            switch self {
+            case let function as FunctionDeclSyntax :
+                let parameters = function.signature.parameterList.map({ $0.localName.identifierText }).compactMap({ $0 })
+                identifiers ∪= Set(parameters)
+            default:
+                break
+            }
+            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
+        }
+    }
+
     // MARK: - API
 
     internal func apiChildren() -> [APIElement] {
@@ -93,7 +152,7 @@ extension Syntax {
 
         let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
-                modifier.name.tokenKind == .publicKeyword {
+                modifier.name.tokenKind == .publicKeyword ∨ modifier.name.text == "open" {
                 return true
             }
             return false
@@ -104,6 +163,16 @@ extension Syntax {
         } else {
             return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
         }
+    }
+
+    internal func isOpen() -> Bool {
+        return children.contains(where: { node in
+            if let modifier = node as? DeclModifierSyntax,
+                modifier.name.text == "open" {
+                return true
+            }
+            return false
+        })
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
@@ -140,6 +209,47 @@ extension Syntax {
         default:
             return apiChildren()
         }
+    }
+
+    internal var firstToken: TokenSyntax? {
+        if let token = self as? TokenSyntax {
+            return token
+        } else {
+            return child(at: 0)?.firstToken
+        }
+    }
+
+    internal var documentation: DocumentationSyntax? {
+        if let token = firstToken {
+            let leading = token.leadingTrivia
+            for index in leading.indices.lazy.reversed() {
+                let trivia = leading[index]
+                switch trivia {
+                case .docLineComment, .docBlockComment:
+                    let comment = trivia.syntax(siblings: leading, index: index)
+                    if let line = comment as? LineDocumentationSyntax {
+                        return line.content.context as? DocumentationSyntax
+                    } else if let block = comment as? BlockDocumentationSyntax {
+                        return block.content.first as? DocumentationSyntax
+                    }
+                default:
+                    continue
+                }
+            }
+        }
+        return nil
+    }
+
+    internal func smallestSubnode(containing searchTerm: String) -> Syntax? {
+        guard source().contains(searchTerm) else {
+            return nil
+        }
+        for child in children {
+            if let found = child.smallestSubnode(containing: searchTerm) {
+                return found
+            }
+        }
+        return self
     }
 
     // MARK: - Argument List API
@@ -230,8 +340,8 @@ extension Syntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
-        var previousConditions: [String] = []
-        var currentCondition: String? = nil
+        var previousConditions: [Syntax] = []
+        var currentCondition: Syntax? = nil
         var universalSet: Set<APIElement> = []
         var filledUniversalSet: Bool = false
         var elseOccurred: Bool = false
@@ -260,33 +370,42 @@ extension Syntax {
                     break
                 }
             case let condition as UnknownExprSyntax :
-                currentCondition = condition.withTriviaReducedToSpaces().source()
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
             case let condition as IdentifierExprSyntax :
-                currentCondition = condition.withTriviaReducedToSpaces().source()
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+            case let condition as SequenceExprSyntax :
+                let tokens = condition.withTriviaReducedToSpaces().tokens()
+                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
             default:
-                var composedConditions = "#if "
-                composedConditions.append(contentsOf: previousConditions.map({ "\u{21}(" + $0 + ")" }).joined(separator: " \u{26}& "))
+                var composedConditions: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
+
+                composedConditions.append(contentsOf: previousConditions.map({ [
+                    SyntaxFactory.makeToken(.prefixOperator("!")),
+                    SyntaxFactory.makeToken(.leftParen)
+                    ] + $0.tokens() + [
+                        SyntaxFactory.makeToken(.rightParen)
+                    ]
+                }).joined(separator: [
+                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                    ]))
+
                 if previousConditions.isEmpty {
-                    composedConditions.append(contentsOf: (currentCondition ?? "")) // @exempt(from: tests) Never nil in valid source.
+                    composedConditions.append(contentsOf: (currentCondition?.tokens() ?? [])) // @exempt(from: tests) Never nil in valid source.
                 } else {
                     if let current = currentCondition {
-                        composedConditions.append(contentsOf: " \u{26}& (" + current + ")")
+                        composedConditions.append(contentsOf: [
+                            SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                            SyntaxFactory.makeToken(.leftParen)
+                            ] + current.tokens() + [
+                                SyntaxFactory.makeToken(.rightParen)
+                            ])
                     }
                 }
                 for element in child.api() {
                     currentSet.insert(element)
-                    if var existing = element.compilationConditions {
-                        existing.removeFirst(4)
-                        var new = composedConditions
-                        new.removeFirst(4)
-                        existing.prepend("(")
-                        existing.append(")")
-                        existing.prepend(contentsOf: "(" + new + ") \u{26}& ")
-                        existing.prepend(contentsOf: "#if ")
-                        element.compilationConditions = existing
-                    } else {
-                        element.compilationConditions = composedConditions
-                    }
+                    element.prependCompilationCondition(SyntaxFactory.makeUnknownSyntax(tokens: composedConditions))
                     api.append(element)
                 }
             }
@@ -299,5 +418,19 @@ extension Syntax {
             }
         }
         return api
+    }
+
+    // MARK: - Disection
+
+    internal func tokens() -> [TokenSyntax] {
+        var tokens: [TokenSyntax] = []
+        for child in children {
+            if let token = child as? TokenSyntax {
+                tokens.append(token)
+            } else {
+                tokens.append(contentsOf: child.tokens())
+            }
+        }
+        return tokens
     }
 }

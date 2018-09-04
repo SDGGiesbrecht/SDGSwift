@@ -14,4 +14,9 @@
 
 public class ListSyntax : MarkdownSyntax {
 
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+        return "ul"
+    }
 }

@@ -18,6 +18,7 @@ public class ConformanceAPI : APIElement {
 
     internal init(protocolName: String) {
         self.protocolName = protocolName.decomposedStringWithCanonicalMapping
+        super.init(documentation: nil)
     }
 
     // MARK: - Properties
@@ -30,13 +31,15 @@ public class ConformanceAPI : APIElement {
         return protocolName
     }
 
-    public override var declaration: String? { // @exempt(from: tests) Should never occur.
+    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
         return nil
     }
 
     public override var summary: [String] {
         var result = name
-        appendConstraintDescriptions(to: &result)
+        if let constraints = constraintSyntax() {
+            result += constraints.source()
+        }
         appendCompilationConditions(to: &result)
         return [result]
     }

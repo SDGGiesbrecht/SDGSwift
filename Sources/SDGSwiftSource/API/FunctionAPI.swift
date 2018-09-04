@@ -13,12 +13,14 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typeMethodKeyword: String?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+    internal init(documentation: DocumentationSyntax?, isOpen: Bool, typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
+        self.isOpen = isOpen
         self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
         self.isMutating = isMutating
         _name = name.decomposedStringWithCanonicalMapping
@@ -26,11 +28,13 @@ public class FunctionAPI : APIElement {
         self.throws = `throws`
         self.returnType = returnType
         self.isOperator = isOperator
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
 
-    internal let typeMethodKeyword: String?
+    private let isOpen: Bool
+    public let typeMethodKeyword: TokenKind?
     private let isMutating: Bool
     private let _name: String
     private let arguments: [ParameterAPI]
@@ -51,7 +55,7 @@ public class FunctionAPI : APIElement {
             if isProtocolRequirement {
                 for index in new.indices {
                     let overload = new[index]
-                    if overload.declaration == declaration {
+                    if overload.declaration.source() == declaration.source() {
                         hasDefaultImplementation = true
                         new.remove(at: index)
                         break
@@ -93,23 +97,76 @@ public class FunctionAPI : APIElement {
         return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
-    public override var declaration: String {
-        var result = ""
+    public override var declaration: FunctionDeclSyntax {
+
+        var modifiers: [DeclModifierSyntax] = []
         if let typeKeyword = typeMethodKeyword {
-            result += typeKeyword + " "
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(typeKeyword, trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
         }
+
+        if isOpen {
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(.identifier("open"), trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
+        }
+
         if isMutating {
-            result += "mutating "
+            modifiers.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(.identifier("mutating"), trailingTrivia: .spaces(1)),
+                detail: SyntaxFactory.makeTokenList([])))
         }
-        result += "func " + _name + "(" + arguments.map({ isOperator ? $0.operatorDeclarationForm : $0.functionDeclarationForm }).joined(separator: ", ") + ")"
+
+        var modifierList: ModifierListSyntax?
+        if ¬modifiers.isEmpty {
+            modifierList = SyntaxFactory.makeModifierList(modifiers)
+        }
+
+        var parameters: [FunctionParameterSyntax] = []
+        if ¬arguments.isEmpty {
+            for index in arguments.indices {
+                let argument = arguments[index]
+                if isOperator {
+                    parameters.append(argument.operatorDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+                } else {
+                    parameters.append(argument.functionDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
+                }
+            }
+        }
+
+        var throwsKeyword: TokenSyntax?
         if `throws` {
-            result += " throws"
+            throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
         }
-        if let returnType = self.returnType?.description, returnType ≠ "Void", returnType ≠ "()" {
-            result += " \u{2D}> " + returnType
+
+        var arrow: TokenSyntax?
+        var returnTypeSyntax: TypeSyntax?
+        if let returnType = self.returnType?.declaration, returnType.source() ≠ "Void", returnType.source() ≠ "()" {
+            arrow = SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+            returnTypeSyntax = returnType
         }
-        appendConstraintDescriptions(to: &result)
-        return result
+
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: modifierList,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
+            identifier: SyntaxFactory.makeToken(.identifier(_name)),
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                leftParen: SyntaxFactory.makeToken(.leftParen),
+                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
+                rightParen: SyntaxFactory.makeToken(.rightParen),
+                throwsOrRethrowsKeyword: throwsKeyword,
+                arrow: arrow,
+                returnTypeAttributes: nil,
+                returnType: returnTypeSyntax),
+            genericWhereClause: constraintSyntax(),
+            body: SyntaxFactory.makeBlankCodeBlock())
+    }
+
+    public override var identifierList: Set<String> {
+        return arguments.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {
@@ -121,11 +178,11 @@ public class FunctionAPI : APIElement {
                 result += "(required) "
             }
         }
-        result += name + " • " + declaration
+        result += name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         var resultSummary = [result]
         for overload in overloads {
-            var declaration = overload.declaration
+            var declaration = overload.declaration.source()
             overload.appendCompilationConditions(to: &declaration)
             resultSummary.append(declaration.prepending(" "))
         }

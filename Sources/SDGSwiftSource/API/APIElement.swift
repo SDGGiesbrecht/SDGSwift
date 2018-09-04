@@ -17,6 +17,12 @@ import SDGLocalization
 
 public class APIElement : Comparable, Hashable {
 
+    // MARK: - Initialization
+
+    internal init(documentation: DocumentationSyntax?) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+        self.documentation = documentation
+    }
+
     // MARK: - Static Methods
 
     internal static func merge(elements: [APIElement]) -> [APIElement] {
@@ -43,12 +49,11 @@ public class APIElement : Comparable, Hashable {
 
         var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
-            let extensionType = `extension`.type
-            for type in types where extensionType == type.typeName {
+            for type in types where `extension`.isExtension(of: type) {
                 type.merge(extension: `extension`)
                 continue extensionIteration
             }
-            for `protocol` in protocols where extensionType.description == `protocol`.name {
+            for `protocol` in protocols where `extension`.isExtension(of: `protocol`) {
                 `protocol`.merge(extension: `extension`)
                 continue extensionIteration
             }
@@ -68,8 +73,12 @@ public class APIElement : Comparable, Hashable {
         primitiveMethod()
     }
 
-    public var declaration: String? {
+    public var declaration: Syntax? {
         primitiveMethod()
+    }
+
+    public var identifierList: Set<String> {
+        return []
     }
 
     private var _constraints: [ConstraintAPI] = []
@@ -81,23 +90,65 @@ public class APIElement : Comparable, Hashable {
             _constraints = newValue.map({ $0.normalized() }).sorted()
         }
     }
-    public internal(set) var compilationConditions: String?
+    public internal(set) var compilationConditions: Syntax?
+
+    public let documentation: DocumentationSyntax?
+
+    public var children: AnyBidirectionalCollection<APIElement> {
+        return AnyBidirectionalCollection([])
+    }
 
     public var summary: [String] {
         primitiveMethod()
     }
 
+    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
+    ///
+    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
+    public var userInformation: Any?
+
     // MARK: - Description
 
-    internal func appendConstraintDescriptions(to description: inout String) {
-        if ¬constraints.isEmpty {
-            description += " where " + constraints.map({ $0.description }).joined(separator: ", ")
+    internal func constraintSyntax() -> GenericWhereClauseSyntax? {
+        guard ¬constraints.isEmpty else {
+            return nil
         }
+
+        var syntaxElements: [Syntax] = []
+        for index in constraints.indices {
+            let constraint = constraints[index]
+            syntaxElements.append(constraint.syntax(trailingComma: index ≠ constraints.index(before: constraints.endIndex)))
+        }
+
+        return SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            requirementList: SyntaxFactory.makeGenericRequirementList(syntaxElements))
     }
 
     internal func appendCompilationConditions(to description: inout String) {
         if let conditions = compilationConditions {
-            description += " • " + conditions
+            description += " • " + conditions.source()
+        }
+    }
+
+    internal func prependCompilationCondition(_ addition: Syntax?) {
+        if let new = addition {
+            if let existing = compilationConditions {
+                let existingCondition = Array(existing.tokens().dropFirst())
+                let newCondition = Array(new.tokens().dropFirst())
+                compilationConditions = SyntaxFactory.makeUnknownSyntax(tokens: [
+                    SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
+                    SyntaxFactory.makeToken(.leftParen)
+                    ] + newCondition + [
+                        SyntaxFactory.makeToken(.rightParen),
+                        SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                        SyntaxFactory.makeToken(.leftParen)
+                    ] + existingCondition + [
+                        SyntaxFactory.makeToken(.rightParen)
+                    ])
+            } else {
+                compilationConditions = new
+            }
         }
     }
 
@@ -106,7 +157,7 @@ public class APIElement : Comparable, Hashable {
     public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
         // #workaround(Swift 4.1.2, Order differs between operating systems.)
         if precedingValue.name == followingValue.name {
-            return (precedingValue.declaration ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration ?? "").scalars) // @exempt(from: tests) Empty declarations should never occur.
+            return (precedingValue.declaration?.source() ?? "").scalars.lexicographicallyPrecedes((followingValue.declaration?.source() ?? "").scalars) // @exempt(from: tests) Empty declarations should never occur.
         } else {
             return precedingValue.name.scalars.lexicographicallyPrecedes(followingValue.name.scalars)
         }
@@ -115,12 +166,12 @@ public class APIElement : Comparable, Hashable {
     // MARK: - Equatable
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool { // @exempt(from: tests) Apparently not actually used by the sorting algorithm.
-        return (precedingValue.name, precedingValue.declaration) == (followingValue.name, followingValue.declaration)
+        return (precedingValue.name, precedingValue.declaration?.source()) == (followingValue.name, followingValue.declaration?.source())
     }
 
     // MARK: - Hashable
 
     public var hashValue: Int {
-        return declaration?.hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
+        return declaration?.source().hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
     }
 }

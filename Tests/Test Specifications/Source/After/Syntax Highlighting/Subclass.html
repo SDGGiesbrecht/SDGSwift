@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css">
+ </head>
+ <body>
+
+<code class="swift blockquote"><span class="comment"><span class="comment‐punctuation">/*</span>
+ <span class="text">Subclass.swift</span>
+
+ <span class="text">This source file is part of the SDGSwift open source project.</span>
+ <a href="https://sdggiesbrecht.github.io/SDGSwift/SDGSwift" class="url">https://sdggiesbrecht.github.io/SDGSwift/SDGSwift</a>
+
+ <span class="text">Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.</span>
+
+ <span class="text">Soli Deo gloria.</span>
+
+ <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
+ <span class="text">See </span><a href="http://www.apache.org/licenses/LICENSE-2.0" class="url">http://www.apache.org/licenses/LICENSE-2.0</a><span class="text"> for licence information.</span>
+ <span class="comment‐punctuation">*/</span></span>
+
+<span class="keyword">class</span> <span class="external identifier">Subclass</span> <span class="punctuation">:</span> <span class="external identifier">BaseClass</span> <span class="punctuation">{</span>
+
+<span class="punctuation">}</span>
+
+<span class="compilation‐condition">#if</span> <span class="external identifier">canImport</span><span class="punctuation">(</span><span class="external identifier">XCTest</span><span class="punctuation">)</span> <span class="external identifier">&#x0026;&#x0026;</span> <span class="punctuation">(</span><span class="external identifier">!</span><span class="punctuation">(</span><span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">iOS</span><span class="punctuation">)</span> <span class="external identifier">||</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">watchOS</span><span class="punctuation">)</span> <span class="external identifier">||</span> <span class="external identifier">os</span><span class="punctuation">(</span><span class="external identifier">tvOS</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="external identifier">||</span> <span class="external identifier">targetEnvironment</span><span class="punctuation">(</span><span class="external identifier">simulator</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment"><span class="comment‐punctuation">//</span> <span class="text">...</span></span>
+<span class="comment"><span class="comment‐punctuation">//</span> <span class="comment‐keyword">MARK: - </span><span class="text">...</span></span>
+<span class="keyword">import</span> <span class="external identifier">XCTest</span>
+
+<span class="comment"><span class="comment‐punctuation">///</span> <span class="text">.</span><span class="text">.</span><span class="text">.</span></span>
+<span class="keyword">open</span> <span class="keyword">class</span> <span class="external identifier">TestCase</span> <span class="punctuation">:</span> <span class="external identifier">XCTestCase</span> <span class="punctuation">{</span>
+
+    <span class="keyword">static</span> <span class="keyword">var</span> <span class="external identifier">initialized</span> <span class="punctuation">=</span> <span class="keyword">false</span>
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">.</span><span class="text">.</span><span class="text">.</span></span>
+    <span class="keyword">open</span> <span class="external identifier">override</span> <span class="keyword">func</span> <span class="external identifier">setUp</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="keyword">super</span><span class="punctuation">.</span><span class="external identifier">setUp</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span>
+
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">:nodoc:</span></span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">testLinuxMainGenerationCompatibility</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="punctuation">}</span>
+
+<span class="compilation‐condition">#endif</span>
+</code>
+
+ </body>
+</html>

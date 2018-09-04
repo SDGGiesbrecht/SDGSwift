@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css">
+ </head>
+ <body>
+
+<code class="swift blockquote"><span class="keyword">protocol</span> <span class="internal identifier">Protocol</span></code>
+
+<code class="swift blockquote"><span class="keyword">associatedtype</span> <span class="internal identifier">AssociatedType</span></code>
+
+<code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
+
+<code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">getSetProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="keyword">set</span> <span class="punctuation">}</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">conditionallyProvidedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="keyword">where</span> <span class="internal identifier">AssociatedType</span> <span class="external identifier">==</span> <span class="external identifier">Int</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">providedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">requiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
+
+<code class="swift blockquote"><span class="keyword">protocol</span> <span class="internal identifier">ProtocolWithInheritanceAndConstraints</span> <span class="keyword">where</span> <span class="internal identifier">AssociatedType</span> <span class="punctuation">:</span> <span class="external identifier">OtherProtocol</span></code>
+
+ </body>
+</html>

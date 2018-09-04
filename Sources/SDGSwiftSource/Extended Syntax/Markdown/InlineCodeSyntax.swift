@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSyntaxShims
 import SDGCMarkShims
 
 public class InlineCodeSyntax : MarkdownSyntax {
@@ -24,7 +23,7 @@ public class InlineCodeSyntax : MarkdownSyntax {
         self.openingDelimiter = openingDelimiter
 
         let sourceText = node.literal ?? "" // @exempt(from: tests) Empty literal should never happen.
-        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText)
+        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText, isSwift: nil)
         self.source = source
 
         let closingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
@@ -40,4 +39,10 @@ public class InlineCodeSyntax : MarkdownSyntax {
     public let source: CodeFragmentSyntax
 
     public let closingDelimiter: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        return source.syntaxHighlightedHTML(inline: true, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+    }
 }

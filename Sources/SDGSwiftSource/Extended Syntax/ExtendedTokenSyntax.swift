@@ -34,6 +34,58 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     /// The kind of the token.
     public let kind: ExtendedTokenKind
 
+    // MARK: - ExtendedSyntax
+
+    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        switch kind {
+        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
+            return ""
+        case .documentationText, .callout:
+            return HTML.escape(text)
+        case .lineSeparator:
+            return "<br>"
+        }
+    }
+
+    internal func syntaxHighlightingClass() -> String? {
+        switch kind {
+
+        case .quotationMark:
+            return "string‐punctuation"
+
+        case .string, .commentText, .documentationText:
+            return "text"
+
+        case .whitespace:
+            return nil // Ignored.
+
+        case .newlines, .commentURL, .source, .linkURL, .lineSeparator:
+            return nil // Handled elsewhere.
+
+        case .escape:
+            return "punctuation"
+
+        case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
+            return "comment‐punctuation"
+
+        case .mark, .language, .callout:
+            return "comment‐keyword"
+        }
+    }
+
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        if kind == .commentURL ∨ kind == .linkURL {
+            return "<a href=\u{22}\(text)\u{22} class=\u{22}url\u{22}>\(text)</a>"
+        } else {
+            var source = HTML.escape(_text)
+            if let `class` = syntaxHighlightingClass() {
+                source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+                source.append(contentsOf: "</span>")
+            }
+            return source
+        }
+    }
+
     // MARK: - TextOutputStreamable
 
     public override func write<Target>(to target: inout Target) where Target : TextOutputStream {

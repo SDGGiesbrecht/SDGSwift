@@ -21,6 +21,9 @@ extension TypeSyntax {
         case let simple as SimpleTypeIdentifierSyntax :
             let genericArguments = simple.genericArgumentClause?.arguments.map({ $0.argumentType.reference }) ?? []
             return TypeReferenceAPI(name: simple.name.text, genericArguments: genericArguments)
+        case let optional as OptionalTypeSyntax :
+            let wrapped = optional.wrappedType.reference
+            return TypeReferenceAPI(name: wrapped.name, genericArguments: wrapped.genericArguments, isOptional: true)
         default:
             for child in children {
                 if let type = child as? TokenSyntax,

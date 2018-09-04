@@ -14,13 +14,14 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 public class APIScope : APIElement {
 
     // MARK: - Initialization
 
-    internal init(conformances: [ConformanceAPI], children: [APIElement]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
-        super.init()
+    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElement]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+        super.init(documentation: documentation)
         self.conformances = conformances
         for element in children {
             switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
@@ -55,7 +56,7 @@ public class APIScope : APIElement {
     // MARK: - Properties
 
     private var _cases: [CaseAPI] = []
-    private var cases: [CaseAPI] {
+    public private(set) var cases: [CaseAPI] {
         get {
             return _cases
         }
@@ -65,7 +66,7 @@ public class APIScope : APIElement {
     }
 
     private var _subtypes: [TypeAPI] = []
-    private var subtypes: [TypeAPI] {
+    public private(set) var subtypes: [TypeAPI] {
         get {
             return _subtypes
         }
@@ -75,7 +76,7 @@ public class APIScope : APIElement {
     }
 
     private var _typeProperties: [VariableAPI] = []
-    private var typeProperties: [VariableAPI] {
+    public private(set) var typeProperties: [VariableAPI] {
         get {
             return _typeProperties
         }
@@ -85,7 +86,7 @@ public class APIScope : APIElement {
     }
 
     private var _typeMethods: [FunctionAPI] = []
-    private var typeMethods: [FunctionAPI] {
+    public private(set) var typeMethods: [FunctionAPI] {
         get {
             return _typeMethods
         }
@@ -95,7 +96,7 @@ public class APIScope : APIElement {
     }
 
     private var _initializers: [InitializerAPI] = []
-    private var initializers: [InitializerAPI] {
+    public private(set) var initializers: [InitializerAPI] {
         get {
             return _initializers
         }
@@ -105,7 +106,7 @@ public class APIScope : APIElement {
     }
 
     private var _properties: [VariableAPI] = []
-    private var properties: [VariableAPI] {
+    public private(set) var properties: [VariableAPI] {
         get {
             return _properties
         }
@@ -115,7 +116,7 @@ public class APIScope : APIElement {
     }
 
     private var _subscripts: [SubscriptAPI] = []
-    private var subscripts: [SubscriptAPI] {
+    public private(set) var subscripts: [SubscriptAPI] {
         get {
             return _subscripts
         }
@@ -125,7 +126,7 @@ public class APIScope : APIElement {
     }
 
     private var _methods: [FunctionAPI] = []
-    internal var methods: [FunctionAPI] {
+    public private(set) var methods: [FunctionAPI] {
         get {
             return _methods
         }
@@ -135,7 +136,7 @@ public class APIScope : APIElement {
     }
 
     private var _conformances: [ConformanceAPI] = []
-    private var conformances: [ConformanceAPI] {
+    public private(set) var conformances: [ConformanceAPI] {
         get {
             return _conformances
         }
@@ -147,53 +148,12 @@ public class APIScope : APIElement {
     // MARK: - Merging
 
     internal func moveConditionsToChildren() {
-        for subtype in subtypes {
-            prependCompilationCondition(compilationConditions, to: subtype)
-            subtype.constraints.append(contentsOf: constraints)
-        }
-        for property in typeProperties {
-            prependCompilationCondition(compilationConditions, to: property)
-            property.constraints.append(contentsOf: constraints)
-        }
-        for method in typeMethods {
-            prependCompilationCondition(compilationConditions, to: method)
-            method.constraints.append(contentsOf: constraints)
-        }
-        for initializer in initializers {
-            prependCompilationCondition(compilationConditions, to: initializer)
-            initializer.constraints.append(contentsOf: constraints)
-        }
-        for property in properties {
-            prependCompilationCondition(compilationConditions, to: property)
-            property.constraints.append(contentsOf: constraints)
-        }
-        for `subscript` in subscripts {
-            prependCompilationCondition(compilationConditions, to: `subscript`)
-            `subscript`.constraints.append(contentsOf: constraints)
-        }
-        for method in methods {
-            prependCompilationCondition(compilationConditions, to: method)
-            method.constraints.append(contentsOf: constraints)
-        }
-        for conformance in conformances {
-            prependCompilationCondition(compilationConditions, to: conformance)
-            conformance.constraints.append(contentsOf: constraints)
+        for child in children {
+            child.prependCompilationCondition(compilationConditions)
+            child.constraints.append(contentsOf: constraints)
         }
         compilationConditions = nil
         constraints = []
-    }
-
-    private func prependCompilationCondition(_ addition: String?, to child: APIElement?) {
-        if var newCondition = addition {
-            if var existing = child?.compilationConditions {
-                existing.removeFirst(4) // “#if ”
-                newCondition.removeFirst(4)
-
-                child?.compilationConditions = "#if (" + newCondition + ") && (" + existing + ")"
-            } else {
-                child?.compilationConditions = addition
-            }
-        }
     }
 
     internal func merge(extension: ExtensionAPI) {
@@ -212,17 +172,26 @@ public class APIScope : APIElement {
 
     // MARK: - APIElement
 
+    internal var scopeIdentifierList: Set<String> {
+        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList }
+    }
+
+    public override var children: AnyBidirectionalCollection<APIElement> {
+        let joined = ([
+            cases,
+            subtypes,
+            typeProperties,
+            typeMethods,
+            initializers,
+            properties,
+            subscripts,
+            methods,
+            conformances
+            ] as [[APIElement]]).joined()
+        return AnyBidirectionalCollection(joined)
+    }
+
     internal var scopeSummary: [String] {
-        var result: [String] = []
-        result += cases.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += subtypes.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += typeProperties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += typeMethods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += initializers.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += properties.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += subscripts.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += methods.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        result += conformances.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-        return result
+        return Array(children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined())
     }
 }

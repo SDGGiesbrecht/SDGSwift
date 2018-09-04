@@ -38,12 +38,20 @@ public enum ConstraintAPI : Comparable {
 
     // MARK: - Properties
 
-    internal var description: String {
+    internal func syntax(trailingComma: Bool) -> Syntax {
         switch self {
         case .conformance(let type, let conformance):
-            return type.description + " : " + conformance.description
+            return SyntaxFactory.makeConformanceRequirement(
+                leftTypeIdentifier: type.declaration,
+                colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                rightTypeIdentifier: conformance.declaration,
+                trailingComma: trailingComma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
         case .sameType(let one, let two):
-            return one.description + " == " + two.description
+            return SyntaxFactory.makeSameTypeRequirement(
+                leftTypeIdentifier: one.declaration,
+                equalityToken: SyntaxFactory.makeToken(.spacedBinaryOperator("=="), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                rightTypeIdentifier: two.declaration,
+                trailingComma: trailingComma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
         }
     }
 
@@ -57,13 +65,13 @@ public enum ConstraintAPI : Comparable {
             return false
         default:
             // #workaround(Swift 4.1.2, Order differs between operating systems.)
-            return precedingValue.description.scalars.lexicographicallyPrecedes(followingValue.description.scalars)
+            return precedingValue.syntax(trailingComma: false).source().scalars.lexicographicallyPrecedes(followingValue.syntax(trailingComma: false).source().scalars)
         }
     }
 
     // MARK: - Equatable
 
     public static func == (precedingValue: ConstraintAPI, followingValue: ConstraintAPI) -> Bool { // @exempt(from: tests) Unreachable with valid source.
-        return precedingValue.description == followingValue.description
+        return precedingValue.syntax(trailingComma: false).source() == followingValue.syntax(trailingComma: false).source()
     }
 }

@@ -17,4 +17,15 @@ extension Trivia {
     public func source() -> String {
         return String(map({ $0.text }).joined())
     }
+
+    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        var result = ""
+        for index in indices {
+            let piece = self[index]
+
+            let extended = piece.syntax(siblings: self, index: index)
+            result += extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        }
+        return result
+    }
 }

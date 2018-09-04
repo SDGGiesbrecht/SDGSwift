@@ -6,4 +6,6 @@ extension Int {
     public let `var`: Int = 0
 
     public static let staticProperty: Int = 0
+
+    public weak var optional: SomeType?
 }

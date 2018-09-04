@@ -13,29 +13,96 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 public struct TypeReferenceAPI : Comparable, Hashable {
 
     // MARK: - Initialization
 
-    internal init(name: String, genericArguments: [TypeReferenceAPI]) {
+    internal init(name: String, genericArguments: [TypeReferenceAPI], isOptional: Bool = false) {
         self.name = name.decomposedStringWithCanonicalMapping
         self.genericArguments = genericArguments
+        self.isOptional = isOptional
     }
 
     // MARK: - Properties
 
-    private var name: String
-    private var genericArguments: [TypeReferenceAPI]
+    internal let name: String
+    internal let genericArguments: [TypeReferenceAPI]
+    internal let isOptional: Bool
 
     // MARK: - Output
 
-    internal var description: String {
-        var result = name
-        if ¬genericArguments.isEmpty {
-            result += "<" + genericArguments.map({ $0.description }).joined(separator: ", ") + ">"
+    internal var nameDeclaration: TokenSyntax {
+        return SyntaxFactory.makeToken(.identifier(name))
+    }
+
+    internal var genericParameterClauseDeclaration: GenericParameterClauseSyntax? {
+        if self.genericArguments.isEmpty {
+            return nil
         }
-        return result
+
+        var genericArguments: [GenericParameterSyntax] = []
+        for index in self.genericArguments.indices {
+            let argument = self.genericArguments[index]
+
+            var trailingComma: TokenSyntax?
+            if index ≠ self.genericArguments.index(before: self.genericArguments.endIndex) {
+                trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+            }
+
+            genericArguments.append(SyntaxFactory.makeGenericParameter(
+                name: argument.nameDeclaration,
+                colon: nil,
+                inheritedType: nil,
+                trailingComma: trailingComma))
+        }
+
+        return SyntaxFactory.makeGenericParameterClause(
+            leftAngleBracket: SyntaxFactory.makeToken(.leftAngle),
+            genericParameterList: SyntaxFactory.makeGenericParameterList(genericArguments),
+            rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
+    }
+
+    internal var declaration: TypeSyntax {
+
+        var genericArgumentClause: GenericArgumentClauseSyntax?
+        if ¬genericArguments.isEmpty {
+            var genericArguments: [GenericArgumentSyntax] = []
+            for index in self.genericArguments.indices {
+                let argument = self.genericArguments[index]
+
+                var trailingComma: TokenSyntax?
+                if index ≠ self.genericArguments.index(before: self.genericArguments.endIndex) {
+                    trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+                }
+
+                genericArguments.append(SyntaxFactory.makeGenericArgument(
+                    argumentType: argument.declaration,
+                    trailingComma: trailingComma))
+            }
+
+            genericArgumentClause = SyntaxFactory.makeGenericArgumentClause(
+                leftAngleBracket: SyntaxFactory.makeToken(.leftAngle),
+                arguments: SyntaxFactory.makeGenericArgumentList(genericArguments),
+                rightAngleBracket: SyntaxFactory.makeToken(.rightAngle))
+        }
+
+        let simple = SyntaxFactory.makeSimpleTypeIdentifier(
+            name: nameDeclaration,
+            genericArgumentClause: genericArgumentClause)
+
+        if isOptional {
+            return SyntaxFactory.makeOptionalType(
+                wrappedType: simple,
+                questionMark: SyntaxFactory.makeToken(.postfixQuestionMark))
+        } else {
+            return simple
+        }
+    }
+
+    internal var identifierList: Set<String> {
+        return genericArguments.reduce(into: Set([name])) { $0 ∪= $1.identifierList }
     }
 
     // MARK: - Comparable

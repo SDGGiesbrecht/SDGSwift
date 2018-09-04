@@ -61,4 +61,13 @@ public class LineCommentSyntax : ExtendedSyntax {
     public let indent: ExtendedTokenSyntax?
 
     internal var _content: ExtendedSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
+        source.append(contentsOf: "</span>")
+        return source
+    }
 }

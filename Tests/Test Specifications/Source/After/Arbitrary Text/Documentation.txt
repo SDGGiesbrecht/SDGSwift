@@ -26,6 +26,12 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲### ̲T̲e̲r̲t̲i̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲#### ̲L̲e̲v̲e̲l̲ ̲4̲ ̲H̲e̲a̲d̲i̲n̲g̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲##### ̲L̲e̲v̲e̲l̲ ̲5̲ ̲H̲e̲a̲d̲i̲n̲g̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲###### ̲L̲e̲v̲e̲l̲ ̲6̲ ̲H̲e̲a̲d̲i̲n̲g̲
+ ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲A̲n̲o̲t̲h̲e̲r̲ ̲P̲r̲i̲m̲a̲r̲y̲ ̲H̲e̲a̲d̲i̲n̲g̲
  ̲ ̲ ̲ ̲/// ̲=======================
  ̲ ̲ ̲ ̲///
@@ -69,6 +75,14 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲}
  ̲ ̲ ̲ ̲/// ̲```
  ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲```
+ ̲ ̲ ̲ ̲/// ̲let ̲u̲n̲m̲a̲r̲k̲e̲d̲ ̲= ̲true
+ ̲ ̲ ̲ ̲/// ̲```
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲```other
+ ̲ ̲ ̲ ̲/// ̲This is unidentified.
+ ̲ ̲ ̲ ̲/// ̲```
+ ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲H̲e̲r̲e̲ ̲a̲r̲e̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲ ̲(̲O̲r̲ ̲**s̲t̲r̲o̲n̲g̲** ̲a̲n̲d̲ ̲*e̲m̲p̲h̲a̲s̲i̲z̲e̲d̲*.̲)̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲T̲h̲e̲r̲e̲ ̲a̲r̲e̲ ̲a̲l̲s̲o̲ ̲[l̲i̲n̲k̲s̲](somewhere.com).̲
@@ -76,6 +90,8 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲A̲n̲d̲ ̲![i̲m̲a̲g̲e̲s̲](somewhere.com/image).̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲> ̲A̲n̲d̲ ̲s̲o̲m̲e̲o̲n̲e̲ ̲s̲a̲i̲d̲ ̲t̲h̲i̲s̲.̲
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲> ̲―̲S̲o̲m̲e̲o̲n̲e̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲P̲a̲r̲a̲g̲r̲a̲p̲h̲s̲
  ̲ ̲ ̲ ̲/// ̲m̲a̲y̲
@@ -109,6 +125,35 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲public ̲func ̲w̲i̲t̲h̲S̲e̲p̲a̲r̲a̲t̲e̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲(p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲/**
+ ̲ ̲ ̲ ̲ ̲D̲o̲c̲u̲m̲e̲n̲t̲e̲d̲ ̲w̲i̲t̲h̲ ̲t̲h̲e̲ ̲b̲l̲o̲c̲k̲ ̲s̲t̲y̲l̲e̲.̲
+
+ ̲ ̲ ̲ ̲ ̲S̲p̲e̲c̲i̲f̲i̲e̲d̲:̲
+
+ ̲ ̲ ̲ ̲ ̲```swift
+ ̲ ̲ ̲ ̲ ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲()
+ ̲ ̲ ̲ ̲ ̲```
+
+ ̲ ̲ ̲ ̲ ̲U̲n̲s̲p̲e̲c̲i̲f̲i̲e̲d̲,̲ ̲S̲w̲i̲f̲t̲:̲
+
+ ̲ ̲ ̲ ̲ ̲```
+ ̲ ̲ ̲ ̲ ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲()
+ ̲ ̲ ̲ ̲ ̲```
+
+ ̲ ̲ ̲ ̲ ̲U̲n̲s̲p̲e̲c̲i̲f̲i̲e̲d̲,̲ ̲n̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
+
+ ̲ ̲ ̲ ̲ ̲```
+ ̲ ̲ ̲ ̲ ̲This cannot compile.
+ ̲ ̲ ̲ ̲ ̲```
+
+ ̲ ̲ ̲ ̲ ̲N̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
+
+ ̲ ̲ ̲ ̲ ̲```not‐swift
+ ̲ ̲ ̲ ̲ ̲func doSomething()
+ ̲ ̲ ̲ ̲ ̲```
+ ̲ ̲ ̲ ̲*/
+ ̲ ̲ ̲ ̲public ̲func ̲d̲o̲c̲u̲m̲e̲n̲t̲e̲d̲W̲i̲t̲h̲B̲l̲o̲c̲k̲S̲t̲y̲l̲e̲() ̲{}
 }
 
 /// ̲A̲ ̲s̲t̲r̲u̲c̲t̲u̲r̲e̲.̲

@@ -16,18 +16,19 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(typePropertyKeyword: String?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
+    internal init(documentation: DocumentationSyntax?, typePropertyKeyword: TokenKind?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
         self.typePropertyKeyword = typePropertyKeyword
         _name = name.decomposedStringWithCanonicalMapping
         self.type = type
         self.isSettable = isSettable
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
 
-    internal let typePropertyKeyword: String?
+    public let typePropertyKeyword: TokenKind?
     private let _name: String
-    private let type: TypeReferenceAPI?
+    public let type: TypeReferenceAPI?
     private let isSettable: Bool
 
     // MARK: - APIElement
@@ -36,26 +37,40 @@ public class VariableAPI : APIElement {
         return _name
     }
 
-    public override var declaration: String {
-        var result = ""
+    public override var declaration: Syntax {
+
+        var tokens: [TokenSyntax] = []
         if let typePropertyKeyword = self.typePropertyKeyword {
-            result += typePropertyKeyword + " "
+            tokens.append(SyntaxFactory.makeToken(typePropertyKeyword, trailingTrivia: .spaces(1)))
         }
-        result += "var " + _name
+        tokens.append(contentsOf: [
+            SyntaxFactory.makeVarKeyword(trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier(_name))
+        ])
         if let type = self.type {
-            result += ": " + type.description
+            tokens.append(SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)))
+            tokens.append(contentsOf: type.declaration.tokens())
         }
-        appendConstraintDescriptions(to: &result)
-        result += " { get "
+
+        tokens.append(contentsOf: [
+            SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.identifier("get"))
+            ])
         if isSettable {
-            result += "set "
+            tokens.append(SyntaxFactory.makeToken(.identifier("set"), leadingTrivia: .spaces(1)))
         }
-        result += "}"
-        return result
+        tokens.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
+
+        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
+        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+    }
+
+    public override var identifierList: Set<String> {
+        return [name]
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration
+        var result = name + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

@@ -16,6 +16,12 @@ import XCTest
 
 extension SDGSwiftSourceAPITests {
     static let __allTests = [
+        ("testAPIParsing", testAPIParsing),
+        ("testCodeFragmentSyntax", testCodeFragmentSyntax),
+        ("testCSS", testCSS),
+        ("testExtension", testExtension),
+        ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
+        ("testLineDocumentationCommentSyntax", testLineDocumentationCommentSyntax),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testParsing", testParsing)
     ]

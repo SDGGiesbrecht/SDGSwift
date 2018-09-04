@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css">
+ </head>
+ <body>
+
+<code class="swift blockquote"><span class="comment"><span class="comment‐punctuation">/*</span>
+ <span class="text">Package.swift</span>
+
+ <span class="text">This source file is part of the SDGSwift open source project.</span>
+ <a href="https://sdggiesbrecht.github.io/SDGSwift/SDGSwift" class="url">https://sdggiesbrecht.github.io/SDGSwift/SDGSwift</a>
+
+ <span class="text">Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.</span>
+
+ <span class="text">Soli Deo gloria.</span>
+
+ <span class="text">Licensed under the Apache Licence, Version 2.0.</span>
+ <span class="text">See </span><a href="http://www.apache.org/licenses/LICENSE-2.0" class="url">http://www.apache.org/licenses/LICENSE-2.0</a><span class="text"> for licence information.</span>
+ <span class="comment‐punctuation">*/</span></span>
+
+<span class="keyword">import</span> <span class="external identifier">PackageDescription</span>
+
+<span class="keyword">let</span> <span class="external identifier">package</span> <span class="punctuation">=</span> <span class="external identifier">Package</span><span class="punctuation">(</span>
+    <span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Package</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span>
+    <span class="external identifier">products</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A library.</span></span>
+        <span class="comment"><span class="comment‐punctuation">///</span></span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">It does stuff.</span></span>
+        <span class="punctuation">.</span><span class="external identifier">library</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Library</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string"><span class="string‐punctuation">"</span><span class="text">Library</span><span class="string‐punctuation">"</span></span><span class="punctuation">]</span><span class="punctuation">)</span>
+    <span class="punctuation">]</span><span class="punctuation">,</span>
+    <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">https://domain.tld/Package</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">from</span><span class="punctuation">:</span> <span class="external identifier">Version</span><span class="punctuation">(</span><span class="number">1</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">)</span><span class="punctuation">)</span>
+    <span class="punctuation">]</span><span class="punctuation">,</span>
+    <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+
+        <span class="comment"><span class="comment‐punctuation">/**</span>
+         <span class="text">A library.</span>
+
+         <span class="text">It does stuff.</span>
+        <span class="comment‐punctuation">*/</span></span>
+        <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Library</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string"><span class="string‐punctuation">"</span><span class="text">Target</span><span class="string‐punctuation">"</span></span>
+            <span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
+        <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A target.</span></span>
+        <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Target</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">,</span>
+        <span class="punctuation">.</span><span class="external identifier">testTarget</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Tests</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string"><span class="string‐punctuation">"</span><span class="text">Library</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span><span class="string"><span class="string‐punctuation">"</span><span class="text">Target</span><span class="string‐punctuation">"</span></span>
+            <span class="punctuation">]</span><span class="punctuation">)</span>
+    <span class="punctuation">]</span>
+<span class="punctuation">)</span>
+</code>
+
+ </body>
+</html>

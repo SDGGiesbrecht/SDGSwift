@@ -54,5 +54,8 @@ configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
-// #workaround(workspace version 0.11.0, Jazzy’s redundant building is way too slow.)
+// #workaround(workspace version 0.11.1, Unicode rule trips over CSS source.)
+configuration.repository.ignoredPaths.insert("Resources/SDGSwiftSource/Syntax Highlighting.css")
+
+// #workaround(workspace version 0.11.1, Jazzy’s redundant building is way too slow.)
 configuration.documentation.api.generate = false

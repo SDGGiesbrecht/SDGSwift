@@ -13,26 +13,33 @@
  */
 
 import SDGControlFlow
+import SDGCollections
 
 import SDGSwiftPackageManager
 
-public struct ModuleAPI {
+public class ModuleAPI : APIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `Syntax.parse(_:)`.
-    public init(module: PackageModel.Target) throws {
-        name = module.name.decomposedStringWithCanonicalMapping
+    public init(module: PackageModel.Target, manifest: Syntax?) throws {
+        let name = module.name.decomposedStringWithCanonicalMapping
+        _name = name
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
-            let source = try Syntax.parse(sourceFile)
-            api += source.api()
+            try autoreleasepool { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+                let source = try Syntax.parse(sourceFile)
+                api += source.api()
+            }
         }
         api = APIElement.merge(elements: api)
 
+        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(name)\u{22}")?.parent
+        super.init(documentation: declaration?.documentation)
+
         for element in api {
-            switch element {
+            switch element { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             case let type as TypeAPI :
                 types.append(type)
             case let `protocol` as ProtocolAPI :
@@ -53,10 +60,10 @@ public struct ModuleAPI {
 
     // MARK: - Properties
 
-    private let name: String
+    private let _name: String
 
     private var _types: [TypeAPI] = []
-    private var types: [TypeAPI] {
+    public var types: [TypeAPI] {
         get {
             return _types
         }
@@ -66,7 +73,7 @@ public struct ModuleAPI {
     }
 
     private var _extensions: [ExtensionAPI] = []
-    private var extensions: [ExtensionAPI] {
+    public var extensions: [ExtensionAPI] {
         get {
             return _extensions
         }
@@ -76,7 +83,7 @@ public struct ModuleAPI {
     }
 
     private var _protocols: [ProtocolAPI] = []
-    private var protocols: [ProtocolAPI] {
+    public var protocols: [ProtocolAPI] {
         get {
             return _protocols
         }
@@ -86,7 +93,7 @@ public struct ModuleAPI {
     }
 
     private var _functions: [FunctionAPI] = []
-    private var functions: [FunctionAPI] {
+    public var functions: [FunctionAPI] {
         get {
             return _functions
         }
@@ -96,7 +103,7 @@ public struct ModuleAPI {
     }
 
     private var _globalVariables: [VariableAPI] = []
-    private var globalVariables: [VariableAPI] {
+    public var globalVariables: [VariableAPI] {
         get {
             return _globalVariables
         }
@@ -105,15 +112,45 @@ public struct ModuleAPI {
         }
     }
 
-    public var summary: String {
+    public override var children: AnyBidirectionalCollection<APIElement> {
+        let joined = ([
+            types,
+            extensions,
+            protocols,
+            functions,
+            globalVariables
+            ] as [[APIElement]]).joined()
+        return AnyBidirectionalCollection(joined)
+    }
 
-        var children: [[String]] = types.map({ $0.summary })
-        children += extensions.map({ $0.summary })
-        children += protocols.map({ $0.summary })
-        children += functions.map({ $0.summary })
-        children += globalVariables.map({ $0.summary })
+    // MARK: - APIElement
 
-        let flattenedChildren = children.joined().map({ $0.prepending(" ") })
-        return ([name] + flattenedChildren).joined(separator: "\n")
+    public override var name: String {
+        return _name
+    }
+
+    public override var declaration: FunctionCallExprSyntax {
+        return SyntaxFactory.makeFunctionCallExpr(
+            calledExpression: SyntaxFactory.makeMemberAccessExpr(
+                base: SyntaxFactory.makeBlankExpr(),
+                dot: SyntaxFactory.makeToken(.period),
+                name: SyntaxFactory.makeToken(.identifier("target"))),
+            leftParen: SyntaxFactory.makeToken(.leftParen),
+            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
+                SyntaxFactory.makeFunctionCallArgument(
+                    label: SyntaxFactory.makeToken(.identifier("name")),
+                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                    expression: SyntaxFactory.makeStringLiteralExpr(name),
+                    trailingComma: nil)
+                ]),
+            rightParen: SyntaxFactory.makeToken(.rightParen))
+    }
+
+    public override var identifierList: Set<String> {
+        return children.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
+    }
+
+    public override var summary: [String] {
+        return [name + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }
