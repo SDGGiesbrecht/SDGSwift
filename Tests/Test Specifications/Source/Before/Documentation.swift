@@ -123,6 +123,34 @@ extension Structure {
     public func withSeparateParameters(parameterOne: String, parameterTwo: String) throws -> Bool {
         return false
     }
+
+    /** Documented with the block style.
+
+     Specified:
+
+     ```swift
+     func doSomething()
+     ```
+
+     Unspecified, Swift:
+
+     ```
+     func doSomething()
+     ```
+
+     Unspecified, not Swift:
+
+     ```
+     This cannot compile.
+     ```
+
+     Not Swift:
+
+     ```not‐swift
+     func doSomething()
+     ```
+     */
+    public func documentedWithBlockStyle() {}
 }
 
 /// A structure.
