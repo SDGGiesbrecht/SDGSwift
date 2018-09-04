@@ -123,6 +123,35 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     public func withSeparateParameters(parameterOne: S̲t̲r̲i̲n̲g̲, parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }
+
+    /**
+     Documented with the block style.
+
+     Specified:
+
+     ```swift
+     func doSomething()
+     ```
+
+     Unspecified, Swift:
+
+     ```
+     func doSomething()
+     ```
+
+     Unspecified, not Swift:
+
+     ```
+     This cannot compile.
+     ```
+
+     Not Swift:
+
+     ```not‐swift
+     func doSomething()
+     ```
+    */
+    public func documentedWithBlockStyle() {}
 }
 
 /// A structure.

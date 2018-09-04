@@ -1,3 +1,4 @@
 (Structure)
+ documentedWithBlockStyle() • func documentedWithBlockStyle()
  performAction(on:with:) • func performAction(on parameterOne: String, with parameterTwo: String) throws -> Bool
  withSeparateParameters(parameterOne:parameterTwo:) • func withSeparateParameters(parameterOne: String, parameterTwo: String) throws -> Bool

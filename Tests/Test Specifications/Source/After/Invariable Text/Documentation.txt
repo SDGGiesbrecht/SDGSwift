@@ -123,6 +123,35 @@
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withSeparateParameters(̲parameterOne:̲ String,̲ parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ -̲>̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲
+̲
+̲    /̲*̲*̲
+̲     Documented with the block style.
+̲
+̲     Specified:
+̲
+̲     `̲`̲`̲s̲w̲i̲f̲t̲
+̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     `̲`̲`̲
+̲
+̲     Unspecified, Swift:
+̲
+̲     `̲`̲`̲
+̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     `̲`̲`̲
+̲
+̲     Unspecified, not Swift:
+̲
+̲     `̲`̲`̲
+̲     T̲h̲i̲s̲ ̲c̲a̲n̲n̲o̲t̲ ̲c̲o̲m̲p̲i̲l̲e̲.̲
+̲     `̲`̲`̲
+̲
+̲     Not Swift:
+̲
+̲     `̲`̲`̲n̲o̲t̲‐̲s̲w̲i̲f̲t̲
+̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     `̲`̲`̲
+̲    *̲/̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ documentedWithBlockStyle(̲)̲ {̲}̲
 ̲}̲
 ̲
 ̲/̲/̲/̲ A structure.
