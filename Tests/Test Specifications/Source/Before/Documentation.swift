@@ -91,6 +91,8 @@ extension Structure {
     ///
     /// > And someone said this.
     ///
+    /// > ―Someone.
+    ///
     /// Paragraphs
     /// may
     /// be
