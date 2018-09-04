@@ -49,6 +49,10 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(highlighted.contains("domain.tld"))
     }
 
+    func testCSS() {
+        XCTAssert(¬Syntax.css.contains("Apache"))
+    }
+
     func testExtension() {
         XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
         XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
