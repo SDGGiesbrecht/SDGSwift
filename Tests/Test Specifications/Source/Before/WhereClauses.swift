@@ -3,4 +3,3 @@ extension Collection where Index == Element, Index : SignedNumeric, Index : Cust
 }
 
 extension Collection : ConditionalConformance where Index == Element, Index == Int {}
-
