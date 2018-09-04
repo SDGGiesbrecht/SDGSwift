@@ -83,7 +83,7 @@
     <span class="comment"><span class="comment‐punctuation">///</span> <span class="punctuation">}</span></span>
     <span class="comment"><span class="comment‐punctuation">///</span> <span class="comment‐punctuation">```</span></span>
     <span class="comment"><span class="comment‐punctuation">///</span></span>
-    <span class="comment"><span class="comment‐punctuation">///</span> <span class="comment‐punctuation">```</span><span class="comment‐keyword"></span></span>
+    <span class="comment"><span class="comment‐punctuation">///</span> <span class="comment‐punctuation">```</span></span>
     <span class="comment"><span class="comment‐punctuation">///</span> <span class="keyword">let</span> <span class="external identifier">unmarked</span> <span class="punctuation">=</span> <span class="keyword">true</span></span>
     <span class="comment"><span class="comment‐punctuation">///</span> <span class="comment‐punctuation">```</span></span>
     <span class="comment"><span class="comment‐punctuation">///</span></span>
@@ -131,6 +131,35 @@
     <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">withSeparateParameters</span><span class="punctuation">(</span><span class="external identifier">parameterOne</span><span class="punctuation">:</span> <span class="external identifier">String</span><span class="punctuation">,</span> <span class="external identifier">parameterTwo</span><span class="punctuation">:</span> <span class="external identifier">String</span><span class="punctuation">)</span> <span class="keyword">throws</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">false</span>
     <span class="punctuation">}</span>
+
+    <span class="comment"><span class="comment‐punctuation">/**</span>
+     <span class="text">Documented with the block style.</span>
+
+     <span class="text">Specified:</span>
+
+     <span class="comment‐punctuation">```</span><span class="comment‐keyword">swift</span>
+     <span class="keyword">func</span> <span class="external identifier">doSomething</span><span class="punctuation">(</span><span class="punctuation">)</span>
+     <span class="comment‐punctuation">```</span>
+
+     <span class="text">Unspecified, Swift:</span>
+
+     <span class="comment‐punctuation">```</span>
+     <span class="keyword">func</span> <span class="external identifier">doSomething</span><span class="punctuation">(</span><span class="punctuation">)</span>
+     <span class="comment‐punctuation">```</span>
+
+     <span class="text">Unspecified, not Swift:</span>
+
+     <span class="comment‐punctuation">```</span>
+     <span class="code">This cannot compile.</span>
+     <span class="comment‐punctuation">```</span>
+
+     <span class="text">Not Swift:</span>
+
+     <span class="comment‐punctuation">```</span><span class="comment‐keyword">not‐swift</span>
+     <span class="code">func doSomething()</span>
+     <span class="comment‐punctuation">```</span>
+    <span class="comment‐punctuation">*/</span></span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">documentedWithBlockStyle</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 <span class="comment"><span class="comment‐punctuation">///</span> <span class="text">A structure.</span></span>
