@@ -23,7 +23,7 @@ public class InlineCodeSyntax : MarkdownSyntax {
         self.openingDelimiter = openingDelimiter
 
         let sourceText = node.literal ?? "" // @exempt(from: tests) Empty literal should never happen.
-        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText)
+        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText, isSwift: nil)
         self.source = source
 
         let closingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)

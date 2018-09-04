@@ -43,7 +43,7 @@ public class FragmentSyntax : ExtendedSyntax {
                 if let code = child as? CodeFragmentSyntax {
                     let newStart = code.context.scalars.index(code.range.lowerBound, offsetBy: childOffsets.lowerBound)
                     let newEnd = code.context.scalars.index(code.range.lowerBound, offsetBy: childOffsets.upperBound)
-                    cropped.append(CodeFragmentSyntax(range: newStart ..< newEnd, in: code.context))
+                    cropped.append(CodeFragmentSyntax(range: newStart ..< newEnd, in: code.context, isSwift: code.isSwift))
                 } else if let token = child as? ExtendedTokenSyntax {
                     var childText = childText
                     if childLength > upper {

@@ -148,7 +148,7 @@
 ̲     Not Swift:
 ̲
 ̲     `̲`̲`̲n̲o̲t̲‐̲s̲w̲i̲f̲t̲
-̲     f̲u̲n̲c̲ doSomething(̲)̲
+̲     f̲u̲n̲c̲ ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(̲)̲
 ̲     `̲`̲`̲
 ̲    *̲/̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ documentedWithBlockStyle(̲)̲ {̲}̲

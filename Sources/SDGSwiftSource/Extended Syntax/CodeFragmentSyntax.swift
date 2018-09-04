@@ -16,7 +16,9 @@ import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
 
-    init(range: Range<String.ScalarView.Index>, in source: String) {
+    init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
+        self.isSwift = isSwift
+
         self.context = source
         self.range = range
         let fragmentSource = String(source.scalars[range])
@@ -28,6 +30,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
 
     // MARK: - Properties
 
+    internal let isSwift: Bool?
     public let source: ExtendedTokenSyntax
 
     internal let context: String
@@ -35,9 +38,19 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     internal let range: Range<String.ScalarView.Index>
 
     /// The syntax of the source code contained in this token.
-    public func syntax() throws -> [SyntaxFragment] {
-        let parsed = try Syntax.parse(context)
-        return syntax(of: parsed)
+    public func syntax() throws -> [SyntaxFragment]? {
+        if isSwift == true {
+            let parsed = try Syntax.parse(context)
+            return syntax(of: parsed)
+        } else if isSwift == false {
+            return nil
+        } else {
+            if let parsed = try? Syntax.parse(context) {
+                return syntax(of: parsed)
+            } else {
+                return nil
+            }
+        }
     }
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
@@ -165,7 +178,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        if let syntax = try? self.syntax(),
+        if let tryResult = try? self.syntax(),
+            let syntax = tryResult,
             syntax.map({ $0.source() }).joined() == text {
             return String(syntax.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks) }).joined())
         } else {

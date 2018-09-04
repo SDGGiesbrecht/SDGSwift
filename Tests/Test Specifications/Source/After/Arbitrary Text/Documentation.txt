@@ -148,7 +148,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲ ̲N̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
 
  ̲ ̲ ̲ ̲ ̲```not‐swift
- ̲ ̲ ̲ ̲ ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲()
+ ̲ ̲ ̲ ̲ ̲func doSomething()
  ̲ ̲ ̲ ̲ ̲```
  ̲ ̲ ̲ ̲*/
  ̲ ̲ ̲ ̲public ̲func ̲d̲o̲c̲u̲m̲e̲n̲t̲e̲d̲W̲i̲t̲h̲B̲l̲o̲c̲k̲S̲t̲y̲l̲e̲() ̲{}

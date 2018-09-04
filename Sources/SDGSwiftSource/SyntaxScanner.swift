@@ -50,7 +50,7 @@ open class SyntaxScanner {
     public func scan(_ node: ExtendedSyntax) throws {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
-            let children = try? code.syntax() {
+            let children = try code.syntax() {
             for child in children {
                 switch child {
                 case .syntax(let node):

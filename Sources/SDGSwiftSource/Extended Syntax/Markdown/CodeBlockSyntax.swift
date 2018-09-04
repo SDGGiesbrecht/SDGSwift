@@ -40,9 +40,13 @@ public class CodeBlockSyntax : MarkdownSyntax {
         self.closingDelimiter = closingDelimiter
         followingChildren.prepend(closingDelimiter)
 
-        if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern) {
+        var isSwift: Bool?
+        if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern),
+            ¬language.range.isEmpty {
             // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            let token = ExtendedTokenSyntax(text: String(language.contents), kind: .language)
+            let languageIdentifier = String(language.contents)
+            isSwift = languageIdentifier == "swift"
+            let token = ExtendedTokenSyntax(text: languageIdentifier, kind: .language)
             contents.scalars.removeSubrange(language.range)
             self.language = token
             precedingChildren.append(token)
@@ -58,7 +62,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
         self.closingVerticalMargin = closingVerticalMargin
         followingChildren.prepend(closingVerticalMargin)
 
-        let source = CodeFragmentSyntax(range: contents.bounds, in: contents)
+        let source = CodeFragmentSyntax(range: contents.bounds, in: contents, isSwift: isSwift)
         self.source = source
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren + [source] + followingChildren)
