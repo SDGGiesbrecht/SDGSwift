@@ -3,4 +3,3 @@ extension ̲Collection ̲where ̲Index ̲== ̲Element, ̲Index ̲: ̲SignedNumer
 }
 
 extension ̲Collection ̲: ̲ConditionalConformance ̲where ̲Index ̲== ̲Element, ̲Index ̲== ̲Int ̲{}
-

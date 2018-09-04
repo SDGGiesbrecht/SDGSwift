@@ -4,4 +4,3 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection w̲h̲e̲r̲e̲ Index == Element,̲ Index
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection :̲ ConditionalConformance w̲h̲e̲r̲e̲ Index == Element,̲ Index == Int {̲}̲
 ̲
-̲
