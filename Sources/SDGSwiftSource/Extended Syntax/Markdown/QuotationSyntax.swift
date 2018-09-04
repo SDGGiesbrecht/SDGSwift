@@ -48,6 +48,7 @@ public class QuotationSyntax : MarkdownSyntax {
         if let last = children.last,
             let lastParagraph = last as? ParagraphSyntax,
             lastParagraph.text.hasPrefix("―") {
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             lastParagraph.isCitation = true
         }
     }
