@@ -124,7 +124,8 @@ extension Structure {
         return false
     }
 
-    /** Documented with the block style.
+    /**
+     Documented with the block style.
 
      Specified:
 
