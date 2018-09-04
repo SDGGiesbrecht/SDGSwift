@@ -107,7 +107,7 @@ extension TokenSyntax {
             return "number"
 
         case .stringLiteral:
-            return nil // Disected elsewhere.
+            return nil // Disected elsewhere. @exempt(from: tests)
         }
     }
 
