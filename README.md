@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) <!--Skip in Jazzy-->
+[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md)
 
 macOS • Linux
 
-APIs: [SDGSwift](https://sdggiesbrecht.github.io/SDGSwift/SDGSwift) • [SDGSwiftPackageManager](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftPackageManager) • [SDGXcode](https://sdggiesbrecht.github.io/SDGSwift/SDGXcode) • [SDGSwiftConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfiguration) • [SDGSwiftConfigurationLoading](https://sdggiesbrecht.github.io/SDGSwift/SDGSwiftConfigurationLoading) • [SampleConfiguration](https://sdggiesbrecht.github.io/SDGSwift/SampleConfiguration)
+[Documentation](https://sdggiesbrecht.github.io/SDGSwift/%F0%9F%87%A8%F0%9F%87%A6EN)
 
 # SDGSwift
 
@@ -30,7 +30,7 @@ SDGSwift enables use of the Swift compiler as a package dependency.
 - Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
 - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 
-(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
+(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).)
 
 ## Importing
 
