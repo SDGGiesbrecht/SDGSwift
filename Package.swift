@@ -16,31 +16,53 @@
 
 import PackageDescription
 
+/// SDGSwift enables use of the Swift compiler as a package dependency.
+///
+/// > [השֹּׁלֵחַ אִמְרָתוֹ אָרֶץ עַד־מְהֵרָה יָרוּץ דְּבָרוֹ׃](https://www.biblegateway.com/passage/?search=Psalm+147:15&version=WLC;NIV)
+/// >
+/// > [He sends His command to the earth; His word runs swiftly.](https://www.biblegateway.com/passage/?search=Psalm+147:15&version=WLC;NIV)
+/// >
+/// > ―a psalmist
+///
+/// ### Features
+///
+/// - Compiler operations such as building and testing: `SDGSwift`, `SDGXcode`
+/// - Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
+/// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 let package = Package(
     name: "SDGSwift",
     products: [
+        // @documentation(SDGSwift)
         /// A basic interface for the Swift compiler.
         ///
         /// This module includes development time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
         .library(name: "SDGSwift", targets: ["SDGSwift"]),
 
+        // @documentation(SDGSwiftPackageManager)
         /// Utilities for working with the Swift package manager.
         ///
         /// This module uses the Swift API and provides more fine‐grained access to the details of a package’s structure than is available from the command line.
         .library(name: "SDGSwiftPackageManager", targets: ["SDGSwiftPackageManager"]),
 
+        // @documentation(SDGSwiftSource)
         /// Utilities for working with Swift source code.
         // SDGSwiftSource is NOT YET READY FOR EXTERNAL USE. It is not a documented part of the package API, and the semantic versioning of releases does not take changes to it into account.
         // #workaround(Until SDGSwiftSource is ready to publish.)
         .library(name: /* NOT FOR EXTERNAL USE YET */"_SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
+        // @documentation(SDGXcode)
         /// Xcode‐related utilities for working with Swift packages.
         .library(name: "SDGXcode", targets: ["SDGXcode"]),
 
+        // @documentation(SDGSwiftConfiguration)
         /// Utilities for defining configuration files written in Swift (similar to package manifests).
         .library(name: "SDGSwiftConfiguration", targets: ["SDGSwiftConfiguration"]),
+
+        // @documentation(SDGSwiftConfigurationLoading)
         /// Utilities for loading configuration files written in Swift (similar to package manifests).
         .library(name: "SDGSwiftConfigurationLoading", targets: ["SDGSwiftConfigurationLoading"]),
+
+        // @documentation(SampleConfiguration)
         /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
         .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
@@ -51,6 +73,11 @@ let package = Package(
     targets: [
 
         // Products
+
+        // #documentation(SDGSwift)
+        /// A basic interface for the Swift compiler.
+        ///
+        /// This module includes development time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
         .target(name: "SDGSwift", dependencies: [
             "SDGSwiftLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
@@ -60,11 +87,19 @@ let package = Package(
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
+
+        // #documentation(SDGSwiftPackageManager)
+        /// Utilities for working with the Swift package manager.
+        ///
+        /// This module uses the Swift API and provides more fine‐grained access to the details of a package’s structure than is available from the command line.
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
+
+        // #documentation(SDGSwiftSource)
+        /// Utilities for working with Swift source code.
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",
@@ -79,6 +114,9 @@ let package = Package(
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
+
+        // #documentation(SDGXcode)
+        /// Xcode‐related utilities for working with Swift packages.
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
@@ -90,7 +128,13 @@ let package = Package(
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
+
+        // #documentation(SDGSwiftConfiguration)
+        /// Utilities for defining configuration files written in Swift (similar to package manifests).
         .target(name: "SDGSwiftConfiguration"),
+
+        // #documentation(SDGSwiftConfigurationLoading)
+        /// Utilities for loading configuration files written in Swift (similar to package manifests).
         .target(name: "SDGSwiftConfigurationLoading", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwiftConfiguration",
@@ -100,9 +144,13 @@ let package = Package(
             ]),
 
         // Samples
+
+        // #documentation(SampleConfiguration)
+        /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
         .target(name: "SampleConfiguration", dependencies: ["SDGSwiftConfiguration"]),
 
         // Internal
+
         .target(name: "SDGSwiftLocalizations", dependencies: [
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
