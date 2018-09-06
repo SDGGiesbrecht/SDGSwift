@@ -59,6 +59,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
         precedingChildren.append(openingVerticalMargin)
 
         if ¬contents.isEmpty {
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             let closingVerticalMargin = ExtendedTokenSyntax(text: String(contents.removeLast()), kind: .newlines)
             self.closingVerticalMargin = closingVerticalMargin
             followingChildren.prepend(closingVerticalMargin)
