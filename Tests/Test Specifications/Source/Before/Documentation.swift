@@ -83,6 +83,11 @@ extension Structure {
     /// This is unidentified.
     /// ```
     ///
+    /// And empty:
+    ///
+    /// ```swift
+    /// ```
+    ///
     /// Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)
     ///
     /// There are also [links](somewhere.com).
