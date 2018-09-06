@@ -58,9 +58,13 @@ public class CodeBlockSyntax : MarkdownSyntax {
         self.openingVerticalMargin = openingVerticalMargin
         precedingChildren.append(openingVerticalMargin)
 
-        let closingVerticalMargin = ExtendedTokenSyntax(text: String(contents.removeLast()), kind: .newlines)
-        self.closingVerticalMargin = closingVerticalMargin
-        followingChildren.prepend(closingVerticalMargin)
+        if ¬contents.isEmpty {
+            let closingVerticalMargin = ExtendedTokenSyntax(text: String(contents.removeLast()), kind: .newlines)
+            self.closingVerticalMargin = closingVerticalMargin
+            followingChildren.prepend(closingVerticalMargin)
+        } else {
+            self.closingVerticalMargin = nil
+        }
 
         let source = CodeFragmentSyntax(range: contents.bounds, in: contents, isSwift: isSwift)
         self.source = source
@@ -83,7 +87,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
     public let source: CodeFragmentSyntax
 
     /// The closing vertical margin (the newline between the delimiter and the content).
-    public let closingVerticalMargin: ExtendedTokenSyntax
+    public let closingVerticalMargin: ExtendedTokenSyntax?
 
     /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
