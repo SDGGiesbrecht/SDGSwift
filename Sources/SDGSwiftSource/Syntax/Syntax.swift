@@ -85,10 +85,7 @@ extension Syntax {
     // MARK: - Syntax Highlighting
 
     public static var css: StrictString {
-        guard let source = try? StrictString(file: Resources.syntaxHighlighting, origin: nil) else {
-            unreachable()
-        }
-        return source.dropping(through: "*/\n\n")
+        return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
     }
 
     internal static func wrap(syntaxHighlighting: String, inline: Bool) -> String {
