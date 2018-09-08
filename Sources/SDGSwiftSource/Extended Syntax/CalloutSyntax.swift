@@ -14,45 +14,6 @@
 
 public class CalloutSyntax : ExtendedSyntax {
 
-    // MARK: - Type Properties
-
-    // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
-    private static let casedCallouts: [String] = [
-        "Parameters",
-
-        "Attention",
-        "Author",
-        "Authors",
-        "Bug",
-        "Complexity",
-        "Copyright",
-        "Date",
-        "Experiment",
-        "Important",
-        "Invariant",
-        "LocalizationKey",
-        "MutatingVariant",
-        "NonmutatingVariant",
-        "Note",
-        "Postcondition",
-        "Precondition",
-        "Remark",
-        "Remarks",
-        "Returns",
-        "Requires",
-        "See",
-        "Since",
-        "Tag",
-        "ToDo",
-        "Throws",
-        "Version",
-        "Warning",
-        "Keyword",
-        "Recommended",
-        "RecommendedOver"
-    ]
-    internal static let allCallouts = Array([CalloutSyntax.casedCallouts, CalloutSyntax.casedCallouts.map({ $0.lowercased() })].joined())
-
     // MARK: - Initialization
 
     internal init(
