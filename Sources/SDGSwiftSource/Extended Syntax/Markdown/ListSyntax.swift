@@ -14,6 +14,19 @@
 
 public class ListSyntax : MarkdownSyntax {
 
+    // MARK: - Initialization
+
+    internal init(node: cmark_node, in documentation: String) {
+        super.init(node: node, in: documentation)
+
+        if let callout = children.first as? CalloutSyntax {
+            asCallout = callout
+        }
+    }
+
+    // Storage if it is really a callout instead.
+    internal var asCallout: CalloutSyntax? = nil
+
     // MARK: - ExtendedSyntax
 
     internal override var renderedHtmlElement: String? {
