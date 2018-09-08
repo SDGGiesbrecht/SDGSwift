@@ -65,7 +65,7 @@ public class ListEntrySyntax : MarkdownSyntax {
                         let colonIndex = children.index(where: { $0 === colon })!
                         let contentsIndex = children.index(after: colonIndex)
 
-                        self.callout = CalloutSyntax(
+                        asCallout = CalloutSyntax(
                             bullet: self.bullet,
                             indent: self.indent,
                             name: callout,
@@ -86,7 +86,7 @@ public class ListEntrySyntax : MarkdownSyntax {
     public let indent: ExtendedTokenSyntax?
 
     // Storage if it is really a callout instead.
-    internal var callout: CalloutSyntax? = nil
+    internal var asCallout: CalloutSyntax? = nil
 
     // MARK: - ExtendedSyntax
 

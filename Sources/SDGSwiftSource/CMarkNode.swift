@@ -104,7 +104,8 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_LIST :
             return ListSyntax(node: self, in: documentation)
         case CMARK_NODE_ITEM :
-            return ListEntrySyntax(node: self, in: documentation)
+            let list = ListEntrySyntax(node: self, in: documentation)
+            return list.asCallout ?? list
         case CMARK_NODE_CODE_BLOCK :
             return CodeBlockSyntax(node: self, in: documentation)
         case CMARK_NODE_PARAGRAPH :
