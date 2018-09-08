@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public class ListSyntax : MarkdownSyntax {
 
     // MARK: - Initialization
@@ -19,13 +21,35 @@ public class ListSyntax : MarkdownSyntax {
     internal init(node: cmark_node, in documentation: String) {
         super.init(node: node, in: documentation)
 
-        if let callout = children.first as? CalloutSyntax {
-            asCallout = callout
+        if children.contains(where: { $0 is CalloutSyntax }) {
+            var handlingCallouts: [ExtendedSyntax] = []
+            var currentList: [ExtendedSyntax] = []
+            for child in children {
+                if child is CalloutSyntax {
+                    if ¬currentList.isEmpty {
+                        handlingCallouts.append(ListSyntax(children: currentList))
+                        currentList = []
+                    }
+
+                    handlingCallouts.append(child)
+                } else {
+                    currentList.append(child)
+                }
+            }
+
+            if ¬currentList.isEmpty {
+                handlingCallouts.append(ListSyntax(children: currentList))
+            }
+            self.handlingCallouts = handlingCallouts
         }
     }
 
+    internal override init(children: [ExtendedSyntax]) {
+        super.init(children: children)
+    }
+
     // Storage if it is really a callout instead.
-    internal var asCallout: CalloutSyntax? = nil
+    internal var handlingCallouts: [ExtendedSyntax]? = nil
 
     // MARK: - ExtendedSyntax
 

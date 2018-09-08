@@ -55,7 +55,7 @@ public class MarkdownSyntax : ExtendedSyntax {
         // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
         if var child = cmark_node_first_child(node) {
-            children.append(child.syntax(in: documentation))
+            children.append(contentsOf: child.syntax(in: documentation))
             var end = child.upperBound(in: documentation)
             while let next = cmark_node_next(child) {
                 defer {
@@ -66,7 +66,7 @@ public class MarkdownSyntax : ExtendedSyntax {
                 if start > end {
                     assimilate(trivia: String(documentation.scalars[end ..< start]))
                 }
-                children.append(next.syntax(in: documentation))
+                children.append(contentsOf: next.syntax(in: documentation))
             }
             let endIndex = node.upperBound(in: documentation)
             if endIndex > end {
