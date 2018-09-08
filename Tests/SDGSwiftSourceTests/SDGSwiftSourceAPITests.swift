@@ -136,7 +136,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
                 let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
                 let documentation = method.documentation!
-                let rendered = documentation.renderedHTML()
+                let rendered = documentation.renderedHTML(localization: "en")
 
                 let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation.html")
                 SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)

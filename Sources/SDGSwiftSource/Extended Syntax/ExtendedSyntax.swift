@@ -44,7 +44,7 @@ public class ExtendedSyntax : TextOutputStreamable {
         return [:]
     }
 
-    public func renderedHTML(internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
+    public func renderedHTML(localization: String, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         var result = ""
         if let element = renderedHtmlElement {
             result.append(contentsOf: "<" + element)
@@ -57,7 +57,7 @@ public class ExtendedSyntax : TextOutputStreamable {
             result.append(contentsOf: ">")
         }
         for child in children {
-            result.append(contentsOf: child.renderedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
+            result.append(contentsOf: child.renderedHTML(localization: localization, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks))
         }
         if let element = renderedHtmlElement {
             result.append(contentsOf: "</" + element + ">")

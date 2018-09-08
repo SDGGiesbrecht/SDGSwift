@@ -36,14 +36,14 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+    public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch kind {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
             return ""
         case .documentationText:
             return HTML.escape(text)
         case .callout:
-            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escape(text) + "</p>"
+            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escape(String(Callout(text)!.localizedText(localization))) + "</p>"
         case .lineSeparator:
             return "<br>"
         }

@@ -95,7 +95,7 @@ public class CodeBlockSyntax : MarkdownSyntax {
 
     // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+    public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         return source.syntaxHighlightedHTML(inline: false, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
     }
 }
