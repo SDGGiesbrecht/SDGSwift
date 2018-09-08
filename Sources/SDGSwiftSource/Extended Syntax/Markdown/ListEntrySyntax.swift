@@ -19,43 +19,6 @@ import SDGText
 
 public class ListEntrySyntax : MarkdownSyntax {
 
-    // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
-    private static let casedCallouts: [String] = [
-        "Parameters",
-
-        "Attention",
-        "Author",
-        "Authors",
-        "Bug",
-        "Complexity",
-        "Copyright",
-        "Date",
-        "Experiment",
-        "Important",
-        "Invariant",
-        "LocalizationKey",
-        "MutatingVariant",
-        "NonmutatingVariant",
-        "Note",
-        "Postcondition",
-        "Precondition",
-        "Remark",
-        "Remarks",
-        "Returns",
-        "Requires",
-        "See",
-        "Since",
-        "Tag",
-        "ToDo",
-        "Throws",
-        "Version",
-        "Warning",
-        "Keyword",
-        "Recommended",
-        "RecommendedOver"
-    ]
-    private static let allCallouts = Array([ListEntrySyntax.casedCallouts, ListEntrySyntax.casedCallouts.map({ $0.lowercased() })].joined())
-
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
 
@@ -88,7 +51,7 @@ public class ListEntrySyntax : MarkdownSyntax {
                 let token = paragraph.children.first as? ExtendedTokenSyntax,
                 token.kind == .documentationText {
 
-                for callout in ListEntrySyntax.allCallouts {
+                for callout in CalloutSyntax.allCallouts {
                     if token.text.hasPrefix(callout + ": ") {
                         paragraph.children.removeFirst()
                         let callout = ExtendedTokenSyntax(text: callout, kind: .callout)
@@ -98,6 +61,16 @@ public class ListEntrySyntax : MarkdownSyntax {
                         let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
                         paragraph.children.prepend(remainderSyntax)
                         children.insert(contentsOf: [callout, colon], at: index)
+
+                        let colonIndex = children.index(where: { $0 === colon })!
+                        let contentsIndex = children.index(after: colonIndex)
+
+                        self.callout = CalloutSyntax(
+                            bullet: self.bullet,
+                            indent: self.indent,
+                            name: callout,
+                            colon: colon,
+                            contents: Array(children[contentsIndex...]))
                     }
                 }
             } else {
@@ -111,6 +84,9 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     /// The indent after the bullet.
     public let indent: ExtendedTokenSyntax?
+
+    // Storage if it is really a callout instead.
+    internal var callout: CalloutSyntax? = nil
 
     // MARK: - ExtendedSyntax
 
