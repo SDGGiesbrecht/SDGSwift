@@ -40,8 +40,10 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         switch kind {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
             return ""
-        case .documentationText, .callout:
+        case .documentationText:
             return HTML.escape(text)
+        case .callout:
+            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escape(text) + "</p>"
         case .lineSeparator:
             return "<br>"
         }

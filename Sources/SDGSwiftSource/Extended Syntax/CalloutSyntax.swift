@@ -100,4 +100,14 @@ public class CalloutSyntax : ExtendedSyntax {
 
     /// The contents of the callout.
     public let contents: [ExtendedSyntax]
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHTMLAttributes: [String: String] {
+        return ["class": "callout \(name.text.lowercased())"]
+    }
+
+    internal override var renderedHtmlElement: String? {
+        return "div"
+    }
 }
