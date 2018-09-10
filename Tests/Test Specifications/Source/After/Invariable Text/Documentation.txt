@@ -179,8 +179,8 @@
 ̲
 ̲    /̲/̲/̲ ...
 ̲    /̲/̲/̲
-̲    /̲/̲/̲ -̲ Parameter parameterOne: The first parameter.
-̲    /̲/̲/̲ -̲ Parameter parameterTwo: The second parameter.
+̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ The first parameter.
+̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ The second parameter.
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withSeparateParameters(̲parameterOne:̲ String,̲ parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ -̲>̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲

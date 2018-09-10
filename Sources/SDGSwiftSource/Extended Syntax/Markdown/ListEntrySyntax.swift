@@ -53,14 +53,40 @@ public class ListEntrySyntax : MarkdownSyntax {
                 token.kind == .documentationText,
                 let colonMatch = token.text.firstMatch(for: ":") {
 
-                let possibleCalloutText = String(token.text[..<colonMatch.range.lowerBound])
+                var possibleCalloutText = String(token.text[..<colonMatch.range.lowerBound])
+
+                var space: String?
+                var parameterName: String?
+                if possibleCalloutText.lowercased().hasPrefix("parameter "),
+                    let spaceMatch = possibleCalloutText.firstMatch(for: " "),
+                    spaceMatch.range.upperBound ≠ possibleCalloutText.endIndex {
+                    space = String(spaceMatch.contents)
+                    parameterName = String(possibleCalloutText[spaceMatch.range.upperBound...])
+                    possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
+                }
+
                 if Callout(possibleCalloutText) ≠ nil {
 
                     paragraph.children.removeFirst()
                     let callout = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
+                    var scalarCount = callout.text.scalars.count
+
+                    var spaceSyntax: ExtendedTokenSyntax?
+                    if let spaceString = space {
+                        spaceSyntax = ExtendedTokenSyntax(text: spaceString, kind: .whitespace)
+                        scalarCount += spaceString.scalars.count
+                    }
+                    var parameterSyntax: ExtendedTokenSyntax?
+                    if let parameter = parameterName {
+                        parameterSyntax = ExtendedTokenSyntax(text: parameter, kind: .parameter)
+                        scalarCount += parameter.scalars.count
+                    }
+
                     let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
+                    scalarCount += colon.text.scalars.count
+
                     var remainder = token.text
-                    remainder.scalars.removeFirst(callout.text.scalars.count + colon.text.scalars.count)
+                    remainder.scalars.removeFirst(scalarCount)
                     let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
                     paragraph.children.prepend(remainderSyntax)
                     children.insert(contentsOf: [callout, colon], at: index)
@@ -72,6 +98,8 @@ public class ListEntrySyntax : MarkdownSyntax {
                         bullet: self.bullet,
                         indent: self.indent,
                         name: callout,
+                        space: spaceSyntax,
+                        parameterName: parameterSyntax,
                         colon: colon,
                         contents: Array(children[contentsIndex...]))
 

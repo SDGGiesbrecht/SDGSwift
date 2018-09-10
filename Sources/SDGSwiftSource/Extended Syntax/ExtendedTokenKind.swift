@@ -100,6 +100,9 @@ public enum ExtendedTokenKind {
     /// A documentation callout.
     case callout
 
+    /// A parameter name used with the `Parameter` callout.
+    case parameter
+
     /// A colon.
     case colon
 
@@ -112,7 +115,7 @@ public enum ExtendedTokenKind {
         switch self {
         case .string, .whitespace, .commentText, .documentationText:
             return .arbitrary
-        case .quotationMark, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .callout, .colon, .lineSeparator:
+        case .quotationMark, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .callout, .parameter, .colon, .lineSeparator:
             return .invariable
         }
     }

@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SDGSwiftSyntaxShims
+
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
@@ -38,7 +40,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch kind {
-        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .colon:
+        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .parameter, .colon:
             return ""
         case .documentationText:
             return HTML.escape(text)
@@ -72,6 +74,9 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
         case .mark, .language, .callout:
             return "comment‐keyword"
+
+        case .parameter:
+            return "internal identifier"
         }
     }
 
