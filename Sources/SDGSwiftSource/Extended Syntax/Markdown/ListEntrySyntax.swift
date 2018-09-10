@@ -66,7 +66,7 @@ public class ListEntrySyntax : MarkdownSyntax {
                     children.insert(contentsOf: [callout, colon], at: index)
 
                     let colonIndex = children.index(where: { $0 === colon })!
-                    let contentsIndex = children.index(after: colonIndex)
+                    let contentsIndex = children.index(after: colonIndex) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
 
                     asCallout = CalloutSyntax(
                         bullet: self.bullet,

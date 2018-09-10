@@ -22,7 +22,7 @@ public class ListSyntax : MarkdownSyntax {
         super.init(node: node, in: documentation)
 
         if children.contains(where: { $0 is CalloutSyntax }) {
-            var handlingCallouts: [ExtendedSyntax] = []
+            var handlingCallouts: [ExtendedSyntax] = [] // @exempt(from: tests) False coverage result in Xcode 9.4.1)
             var currentList: [ExtendedSyntax] = []
             for child in children {
                 if child is CalloutSyntax {
@@ -44,7 +44,7 @@ public class ListSyntax : MarkdownSyntax {
         }
     }
 
-    internal override init(children: [ExtendedSyntax]) {
+    internal override init(children: [ExtendedSyntax]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
         super.init(children: children)
     }
 

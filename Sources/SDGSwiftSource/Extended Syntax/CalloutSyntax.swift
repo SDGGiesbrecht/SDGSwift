@@ -31,10 +31,10 @@ public class CalloutSyntax : ExtendedSyntax {
 
         var children: [ExtendedSyntax] = []
         if let theBullet = bullet {
-            children.append(theBullet)
+            children.append(theBullet) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
         }
         if let theIndent = indent {
-            children.append(theIndent)
+            children.append(theIndent) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
         }
         children.append(contentsOf: [
             name,
