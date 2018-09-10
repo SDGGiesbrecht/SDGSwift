@@ -49,7 +49,7 @@ public class ListSyntax : MarkdownSyntax {
     }
 
     // Storage if it is really a callout instead.
-    internal var handlingCallouts: [ExtendedSyntax]? = nil
+    internal var handlingCallouts: [ExtendedSyntax]?
 
     // MARK: - ExtendedSyntax
 

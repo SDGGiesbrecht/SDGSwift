@@ -90,7 +90,7 @@ public class ListEntrySyntax : MarkdownSyntax {
     public let indent: ExtendedTokenSyntax?
 
     // Storage if it is really a callout instead.
-    internal var asCallout: CalloutSyntax? = nil
+    internal var asCallout: CalloutSyntax?
 
     // MARK: - ExtendedSyntax
 
