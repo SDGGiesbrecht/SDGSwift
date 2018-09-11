@@ -14,47 +14,11 @@
 
 import Foundation
 
+import SDGLogic
 import SDGCollections
 import SDGText
 
 public class ListEntrySyntax : MarkdownSyntax {
-
-    // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
-    private static let casedCallouts: [String] = [
-        "Parameters",
-
-        "Attention",
-        "Author",
-        "Authors",
-        "Bug",
-        "Complexity",
-        "Copyright",
-        "Date",
-        "Experiment",
-        "Important",
-        "Invariant",
-        "LocalizationKey",
-        "MutatingVariant",
-        "NonmutatingVariant",
-        "Note",
-        "Postcondition",
-        "Precondition",
-        "Remark",
-        "Remarks",
-        "Returns",
-        "Requires",
-        "See",
-        "Since",
-        "Tag",
-        "ToDo",
-        "Throws",
-        "Version",
-        "Warning",
-        "Keyword",
-        "Recommended",
-        "RecommendedOver"
-    ]
-    private static let allCallouts = Array([ListEntrySyntax.casedCallouts, ListEntrySyntax.casedCallouts.map({ $0.lowercased() })].joined())
 
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
@@ -86,19 +50,60 @@ public class ListEntrySyntax : MarkdownSyntax {
                 continue
             } else if let paragraph = child as? ParagraphSyntax,
                 let token = paragraph.children.first as? ExtendedTokenSyntax,
-                token.kind == .documentationText {
+                token.kind == .documentationText,
+                let colonMatch = token.text.firstMatch(for: ":") {
 
-                for callout in ListEntrySyntax.allCallouts {
-                    if token.text.hasPrefix(callout + ": ") {
-                        paragraph.children.removeFirst()
-                        let callout = ExtendedTokenSyntax(text: callout, kind: .callout)
-                        let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
-                        var remainder = token.text
-                        remainder.scalars.removeFirst(callout.text.scalars.count + colon.text.scalars.count)
-                        let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
-                        paragraph.children.prepend(remainderSyntax)
-                        children.insert(contentsOf: [callout, colon], at: index)
+                var possibleCalloutText = String(token.text[..<colonMatch.range.lowerBound])
+
+                var space: String?
+                var parameterName: String?
+                if possibleCalloutText.lowercased().hasPrefix("parameter "),
+                    let spaceMatch = possibleCalloutText.firstMatch(for: " "),
+                    spaceMatch.range.upperBound ≠ possibleCalloutText.endIndex {
+                    space = String(spaceMatch.contents)
+                    parameterName = String(possibleCalloutText[spaceMatch.range.upperBound...])
+                    possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
+                }
+
+                if Callout(possibleCalloutText) ≠ nil {
+
+                    paragraph.children.removeFirst()
+                    let callout = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
+                    var scalarCount = callout.text.scalars.count
+
+                    var spaceSyntax: ExtendedTokenSyntax?
+                    if let spaceString = space {
+                        spaceSyntax = ExtendedTokenSyntax(text: spaceString, kind: .whitespace)
+                        scalarCount += spaceString.scalars.count
                     }
+                    var parameterSyntax: ExtendedTokenSyntax?
+                    if let parameter = parameterName {
+                        parameterSyntax = ExtendedTokenSyntax(text: parameter, kind: .parameter)
+                        scalarCount += parameter.scalars.count
+                    }
+
+                    let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
+                    scalarCount += colon.text.scalars.count
+
+                    var remainder = token.text
+                    remainder.scalars.removeFirst(scalarCount)
+                    let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
+                    paragraph.children.prepend(remainderSyntax)
+                    children.insert(contentsOf: [callout, colon], at: index)
+
+                    let colonIndex = children.index(where: { $0 === colon })!
+                    let contentsIndex = children.index(after: colonIndex) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+
+                    asCallout = CalloutSyntax(
+                        bullet: self.bullet,
+                        indent: self.indent,
+                        name: callout,
+                        space: spaceSyntax,
+                        parameterName: parameterSyntax,
+                        colon: colon,
+                        contents: Array(children[contentsIndex...]))
+
+                    break
                 }
             } else {
                 break
@@ -111,6 +116,9 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     /// The indent after the bullet.
     public let indent: ExtendedTokenSyntax?
+
+    // Storage if it is really a callout instead.
+    internal var asCallout: CalloutSyntax?
 
     // MARK: - ExtendedSyntax
 
