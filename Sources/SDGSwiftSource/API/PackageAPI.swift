@@ -24,12 +24,12 @@ public class PackageAPI : APIElement {
 
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
-    /// - Throws: Errors inherited from `Syntax.parse(_:)`.
+    /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         _name = package.name.decomposedStringWithCanonicalMapping
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
-        let manifest = try Syntax.parse(manifestURL)
+        let manifest = try SyntaxTreeParser.parse(manifestURL)
 
         var libraries: [LibraryAPI] = []
         for product in package.products where ¬product.name.hasPrefix("_") {
