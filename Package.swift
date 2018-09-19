@@ -105,7 +105,6 @@ let package = Package(
             "SDGSwift",
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
-            "SDGSwiftSyntaxShims",
             "SDGCMarkShims",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -156,12 +155,7 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
-        // These are duplicated from the Swift project itself, since stable releases do not expose the API yet.
-        .target(name: "SDGSwiftSyntaxShims", dependencies: [
-            "SDGSwift",
-            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
-            ], path: "Sources/Shims/SDGSwiftSyntaxShims"),
+        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
 
