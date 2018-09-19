@@ -67,10 +67,11 @@ public class PackageAPI : APIElement {
         return _name
     }
 
-    public override var declaration: FunctionCallExprSyntax {
+    public override var declaration: Syntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeIdentifierExpr(
-                identifier: SyntaxFactory.makeToken(.identifier("Package"))),
+                identifier: SyntaxFactory.makeToken(.identifier("Package")),
+                declNameArguments: nil),
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
                 SyntaxFactory.makeFunctionCallArgument(
@@ -79,7 +80,8 @@ public class PackageAPI : APIElement {
                     expression: SyntaxFactory.makeStringLiteralExpr(name),
                     trailingComma: nil)
                 ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen))
+            rightParen: SyntaxFactory.makeToken(.rightParen),
+            trailingClosure: nil)
     }
 
     public override var identifierList: Set<String> {
