@@ -39,7 +39,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
             switch sibling {
             case .spaces, .tabs:
                 continue
-            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number):
+            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number), .carriageReturns(let number), .carriageReturnLineFeeds(let number):
                 interveningNewlines += number
                 if interveningNewlines > 1 {
                     break search
@@ -47,7 +47,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
             case .docLineComment:
                 preceding.prepend(process(sibling: sibling))
                 interveningNewlines = 0
-            case .backticks, .lineComment, .blockComment, .docBlockComment:
+            case .backticks, .lineComment, .blockComment, .docBlockComment, .garbageText:
                 break search
             }
         }
@@ -59,7 +59,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
             switch sibling {
             case .spaces, .tabs:
                 continue
-            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number):
+            case .verticalTabs(let number), .formfeeds(let number), .newlines(let number), .carriageReturns(let number), .carriageReturnLineFeeds(let number):
                 interveningNewlines += number
                 if interveningNewlines > 1 {
                     break search
@@ -67,7 +67,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
             case .docLineComment:
                 following.append(process(sibling: sibling))
                 interveningNewlines = 0
-            case .backticks, .lineComment, .blockComment, .docBlockComment:
+            case .backticks, .lineComment, .blockComment, .docBlockComment, .garbageText:
                 break search
             }
         }
