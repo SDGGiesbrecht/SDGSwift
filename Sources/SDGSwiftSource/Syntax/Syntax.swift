@@ -32,18 +32,6 @@ extension Syntax {
     }
 
     internal func withTriviaReducedToSpaces() -> Syntax {
-        class TriviaNormalizer : SyntaxRewriter {
-            override func visit(_ token: TokenSyntax) -> Syntax {
-                var token = token
-                if ¬token.leadingTrivia.isEmpty {
-                    token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
-                }
-                if ¬token.trailingTrivia.isEmpty {
-                    token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
-                }
-                return token
-            }
-        }
         return TriviaNormalizer().visit(self)
     }
 
