@@ -292,7 +292,7 @@ extension UnknownDeclSyntax {
     private var hasSetter: Bool {
         for child in children {
             if let token = child as? TokenSyntax,
-                token.tokenKind == .unknown {
+                case .unknown = token.tokenKind {
                 return true
             }
         }
@@ -305,7 +305,7 @@ extension UnknownDeclSyntax {
             var unknownCount = 0
             for child in children {
                 if let token = child as? TokenSyntax,
-                    token.tokenKind == .unknown {
+                    case .unknown = token.tokenKind {
                     unknownCount += 1
                     if unknownCount > 1 {
                         return true
