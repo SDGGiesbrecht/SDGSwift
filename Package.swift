@@ -112,7 +112,8 @@ let package = Package(
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
-            .product(name: "SDGLocalization", package: "SDGCornerstone")
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
             ]),
 
         // #documentation(SDGXcode)
