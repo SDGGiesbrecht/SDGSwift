@@ -25,7 +25,7 @@ public class ListEntrySyntax : MarkdownSyntax {
 
         let contentStart = node.lowerBound(in: documentation)
         let contentEnd = node.upperBound(in: documentation)
-        if let whitespace = documentation.scalars.firstMatch(for: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 1 ..< Int.max), in: contentStart ..< contentEnd) {
+        if let whitespace = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 1 ..< Int.max)) {
             // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let bullet = ExtendedTokenSyntax(text: String(documentation.scalars[contentStart ..< whitespace.range.lowerBound]), kind: .bullet)

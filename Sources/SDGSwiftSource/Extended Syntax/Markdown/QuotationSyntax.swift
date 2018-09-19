@@ -24,11 +24,11 @@ public class QuotationSyntax : MarkdownSyntax {
         let contentStart = node.lowerBound(in: documentation)
 
         var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars.lastMatch(for: CharacterSet.newlinePattern, in: documentation.scalars.startIndex ..< contentStart) {
+        if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
             lineStart = newline.range.upperBound // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         }
 
-        if let delimiter = documentation.scalars.lastMatch(for: ">".scalars, in: lineStart ..< contentStart) {
+        if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: ">".scalars) {
             // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .quotationDelimiter)
