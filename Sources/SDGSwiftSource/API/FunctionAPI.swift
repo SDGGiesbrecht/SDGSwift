@@ -97,7 +97,7 @@ public class FunctionAPI : APIElement {
         return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
     }
 
-    public override var declaration: FunctionDeclSyntax {
+    public override var declaration: Syntax {
 
         var modifiers: [DeclModifierSyntax] = []
         if let typeKeyword = typeMethodKeyword {
