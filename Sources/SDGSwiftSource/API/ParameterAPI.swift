@@ -83,7 +83,9 @@ public struct ParameterAPI {
         var defaultValue: ExprSyntax?
         if hasDefault {
             defaultEquals = SyntaxFactory.makeToken(.equal, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-            defaultValue = SyntaxFactory.makeIdentifierExpr(identifier: SyntaxFactory.makeToken(.defaultKeyword))
+            defaultValue = SyntaxFactory.makeIdentifierExpr(
+                identifier: SyntaxFactory.makeToken(.defaultKeyword),
+                declNameArguments: nil)
         }
 
         var comma: TokenSyntax?
