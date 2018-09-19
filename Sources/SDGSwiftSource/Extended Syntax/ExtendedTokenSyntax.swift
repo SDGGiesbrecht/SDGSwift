@@ -14,8 +14,6 @@
 
 import SDGLogic
 
-import SDGSwiftSyntaxShims
-
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
