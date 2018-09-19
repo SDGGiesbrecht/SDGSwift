@@ -140,11 +140,11 @@ public class FunctionAPI : APIElement {
             throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
         }
 
-        var arrow: TokenSyntax?
-        var returnTypeSyntax: TypeSyntax?
+        var returnClause: ReturnClauseSyntax?
         if let returnType = self.returnType?.declaration, returnType.source() ≠ "Void", returnType.source() ≠ "()" {
-            arrow = SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-            returnTypeSyntax = returnType
+            returnClause = SyntaxFactory.makeReturnClause(
+                arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                returnType: returnType)
         }
 
         return SyntaxFactory.makeFunctionDecl(
@@ -154,13 +154,12 @@ public class FunctionAPI : APIElement {
             identifier: SyntaxFactory.makeToken(.identifier(_name)),
             genericParameterClause: nil,
             signature: SyntaxFactory.makeFunctionSignature(
-                leftParen: SyntaxFactory.makeToken(.leftParen),
-                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
-                rightParen: SyntaxFactory.makeToken(.rightParen),
+                input: SyntaxFactory.makeParameterClause(
+                    leftParen: SyntaxFactory.makeToken(.leftParen),
+                    parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
+                    rightParen: SyntaxFactory.makeToken(.rightParen)),
                 throwsOrRethrowsKeyword: throwsKeyword,
-                arrow: arrow,
-                returnTypeAttributes: nil,
-                returnType: returnTypeSyntax),
+                output: returnClause),
             genericWhereClause: constraintSyntax(),
             body: SyntaxFactory.makeBlankCodeBlock())
     }
