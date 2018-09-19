@@ -129,6 +129,10 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     return reduce(count: count) { .formfeeds($0) }
                 case .newlines(let count):
                     return reduce(count: count) { .newlines($0) }
+                case .carriageReturns(let count):
+                    return reduce(count: count) { .carriageReturns($0) }
+                case .carriageReturnLineFeeds(let count):
+                    return reduce(count: count) { .carriageReturnLineFeeds($0) }
                 case .backticks(let count):
                     return reduce(count: count) { .backticks($0) }
                 case .lineComment(let text):
@@ -139,6 +143,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     return reduce(text: text) { .docLineComment($0) }
                 case .docBlockComment(let text):
                     return reduce(text: text) { .docBlockComment($0) }
+                case .garbageText(let text):
+                    return reduce(text: text) { .garbageText($0) }
                 }
             }
         } else {
