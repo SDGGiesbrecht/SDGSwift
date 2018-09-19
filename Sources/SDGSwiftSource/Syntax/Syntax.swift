@@ -76,19 +76,8 @@ extension Syntax {
         return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
     }
 
-    internal static func wrap(syntaxHighlighting: String, inline: Bool) -> String {
-        var result = "<code class=\u{22}swift"
-        if ¬inline {
-            result += " blockquote"
-        }
-        result += "\u{22}>"
-        result += syntaxHighlighting
-        result += "</code>"
-        return result
-    }
-
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
+        return SyntaxHighlighter.frame(highlightedSyntax: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
 
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
