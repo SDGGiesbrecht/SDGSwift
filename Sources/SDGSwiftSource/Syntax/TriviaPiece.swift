@@ -20,7 +20,7 @@ extension TriviaPiece {
         switch self {
         case .spaces, .tabs:
             return ExtendedTokenSyntax(text: text, kind: .whitespace)
-        case .verticalTabs, .formfeeds, .newlines:
+        case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
             return ExtendedTokenSyntax(text: text, kind: .newlines)
         case .backticks:
             return ExtendedTokenSyntax(text: text, kind: .escape)
@@ -36,6 +36,8 @@ extension TriviaPiece {
             return LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
             return BlockDocumentationSyntax(source: text)
+        case .garbageText:
+            return ExtendedTokenSyntax(text: text, kind: .source)
         }
     }
 
