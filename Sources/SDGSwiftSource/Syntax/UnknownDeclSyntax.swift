@@ -38,7 +38,7 @@ extension UnknownDeclSyntax {
         var foundConformancesSection = false
         search: for child in children.reversed() {
             `switch`: switch child {
-            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax> :
+            case is MemberDeclBlockSyntax :
                 foundConformancesSection = true
             case is GenericWhereClauseSyntax :
                 break `switch`
