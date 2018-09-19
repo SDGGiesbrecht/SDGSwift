@@ -129,12 +129,13 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
-    public override var declaration: FunctionCallExprSyntax {
+    public override var declaration: Syntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
-                base: SyntaxFactory.makeBlankExpr(),
+                base: SyntaxFactory.makeBlankUnknownExpr(),
                 dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("target"))),
+                name: SyntaxFactory.makeToken(.identifier("target")),
+                declNameArguments: nil),
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
                 SyntaxFactory.makeFunctionCallArgument(
@@ -143,7 +144,8 @@ public class ModuleAPI : APIElement {
                     expression: SyntaxFactory.makeStringLiteralExpr(name),
                     trailingComma: nil)
                 ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen))
+            rightParen: SyntaxFactory.makeToken(.rightParen),
+            trailingClosure: nil)
     }
 
     public override var identifierList: Set<String> {
