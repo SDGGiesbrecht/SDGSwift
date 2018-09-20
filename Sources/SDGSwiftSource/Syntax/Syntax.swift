@@ -40,8 +40,9 @@ extension Syntax {
         if let parent = self.parent {
             var position = parent.location(in: source).lowerBound
             for index in 0 ..< indexInParent {
-                let sibling = parent.child(at: index)!
-                position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
+                if let sibling = parent.child(at: index) {
+                    position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
+                }
             }
             start = position
         } else {
