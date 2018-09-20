@@ -98,6 +98,7 @@ public enum Xcode {
         "chmod",
         "clang",
         "codesign",
+        "directory",
         "ditto",
         "export",
         "lipo",
