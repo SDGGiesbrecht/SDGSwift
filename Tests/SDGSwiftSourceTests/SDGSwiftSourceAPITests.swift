@@ -50,7 +50,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testCSS() {
-        XCTAssert(¬Syntax.css.contains("Apache"))
+        XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     }
 
     func testExtension() {

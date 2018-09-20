@@ -13,8 +13,13 @@
  */
 
 import SDGLogic
+import SDGText
 
-internal enum SyntaxHighlighter {
+public enum SyntaxHighlighter {
+
+    public static var css: StrictString {
+        return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
+    }
 
     internal static func frame(highlightedSyntax: String, inline: Bool) -> String {
         var result = "<code class=\u{22}swift"

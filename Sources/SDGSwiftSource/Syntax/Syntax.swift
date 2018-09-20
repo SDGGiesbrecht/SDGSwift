@@ -60,10 +60,6 @@ extension Syntax {
 
     // MARK: - Syntax Highlighting
 
-    public static var css: StrictString {
-        return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
-    }
-
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         return SyntaxHighlighter.frame(highlightedSyntax: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
