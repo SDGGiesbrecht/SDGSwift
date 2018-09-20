@@ -1,17 +1,21 @@
 $ xcodebuild build -sdk iphoneos -scheme Mock-Package
 ** BUILD SUCCEEDED **
-=== BUILD TARGET Mock OF PROJECT Mock WITH CONFIGURATION Debug ===
 Build settings from command line:
-Check dependencies
-CompileSwift [...]/Mock.swift
-CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
-Create product structure
-Ditto [...]/Mock-Swift.h
-Ditto [...]/Mock.swiftdoc
-Ditto [...]/Mock.swiftmodule
-Ditto [...]/module.modulemap
-Ld [...]/Mock normal arm64
-MergeSwiftModule [...]/Mock.swiftmodule
-ProcessInfoPlistFile [...]/Mock_Info.plist
-Touch [...]/Mock.framework
-Write auxiliary files
+CompileSwift [...]/Mock.swift (in target: Mock)
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler (in target: Mock)
+CreateBuildDirectory [...]/Intermediates.noindex (in target: Mock)
+CreateBuildDirectory [...]/Products (in target: Mock)
+Ditto [...]/Mock-Swift.h (in target: Mock)
+Ditto [...]/Mock.swiftdoc (in target: Mock)
+Ditto [...]/Mock.swiftmodule (in target: Mock)
+Ld [...]/Mock normal arm64 (in target: Mock)
+MergeSwiftModule [...]/MergeSwiftModule normal arm64 (in target: Mock)
+MkDir [...]/Headers (in target: Mock)
+MkDir [...]/Mock.framework (in target: Mock)
+ProcessInfoPlistFile [...]/Mock_Info.plist (in target: Mock)
+Touch [...]/Mock.framework (in target: Mock)
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target: Mock)
+WriteAuxiliaryFile [...]/Mock.LinkFileList (in target: Mock)
+note: Constructing build description
+note: Planning build
+note: Using new build system
