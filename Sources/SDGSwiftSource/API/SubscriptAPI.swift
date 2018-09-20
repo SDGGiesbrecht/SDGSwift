@@ -48,45 +48,40 @@ public class SubscriptAPI : APIElement {
             }
         }
 
-        var modifiers: [Syntax] = [
-            SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            SyntaxFactory.makeToken(.identifier("get"))
+        var accessorList: [AccessorDeclSyntax] = [
+            SyntaxFactory.makeAccessorDecl(
+                attributes: nil,
+                modifier: nil,
+                accessorKind: SyntaxFactory.makeContextualKeyword("get"),
+                parameter: nil,
+                body: nil)
         ]
         if isSettable {
-            modifiers.append(SyntaxFactory.makeToken(.identifier("set"), leadingTrivia: .spaces(1)))
+            accessorList.append(SyntaxFactory.makeAccessorDecl(
+                attributes: nil,
+                modifier: nil,
+                accessorKind: SyntaxFactory.makeToken(.contextualKeyword("set"), leadingTrivia: .spaces(1)),
+                parameter: nil,
+                body: nil))
         }
-        modifiers.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
 
-        // #workaround(Swift 4.1.2, SwiftSyntax has not builder for this.)
-        return SyntaxFactory.makeDeclList([
-
-            SyntaxFactory.makeFunctionDecl(
+        return SyntaxFactory.makeSubscriptDecl(
             attributes: nil,
             modifiers: nil,
-            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
-            identifier: SyntaxFactory.makeToken(.subscriptKeyword),
+            subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword),
             genericParameterClause: nil,
-            signature: SyntaxFactory.makeFunctionSignature(
+            indices: SyntaxFactory.makeParameterClause(
                 leftParen: SyntaxFactory.makeToken(.leftParen),
                 parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
-                rightParen: SyntaxFactory.makeToken(.rightParen),
-                throwsOrRethrowsKeyword: nil,
+                rightParen: SyntaxFactory.makeToken(.rightParen)),
+            result: SyntaxFactory.makeReturnClause(
                 arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                returnTypeAttributes: nil,
                 returnType: returnType.declaration),
-            genericWhereClause: nil,
-            body: SyntaxFactory.makeBlankCodeBlock()),
-
-            SyntaxFactory.makeFunctionDecl(
-                attributes: nil,
-                modifiers: SyntaxFactory.makeModifierList(modifiers),
-                funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
-                identifier: SyntaxFactory.makeToken(.identifier(""), presence: .missing),
-                genericParameterClause: nil,
-                signature: SyntaxFactory.makeBlankFunctionSignature(),
-                genericWhereClause: constraintSyntax(),
-                body: SyntaxFactory.makeBlankCodeBlock())
-            ])
+            genericWhereClause: constraintSyntax(),
+            accessor: SyntaxFactory.makeAccessorBlock(
+                leftBrace: SyntaxFactory.makeToken(.leftParen, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessorList),
+                rightBrace: SyntaxFactory.makeToken(.rightParen, leadingTrivia: .spaces(1))))
     }
 
     public override var identifierList: Set<String> {
