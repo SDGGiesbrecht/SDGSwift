@@ -236,10 +236,11 @@ public enum Xcode {
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
-        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // @exempt(from: tests)
+        guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
         }
+        let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
         let fileURLs: [URL] = try runCustomCoverageSubcommand([
             "view",
