@@ -38,14 +38,12 @@ public class ProtocolAPI : APIScope {
         return _name.description
     }
 
-    public override var declaration: DeclSyntax {
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this yet.
-        return SyntaxFactory.makeStructDecl(
+    public override var declaration: Syntax {
+        return SyntaxFactory.makeProtocolDecl(
             attributes: nil,
-            accessLevelModifier: nil,
-            structKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
+            modifiers: nil,
+            protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
             identifier: SyntaxFactory.makeToken(.identifier(name)),
-            genericParameterClause: nil,
             inheritanceClause: nil,
             genericWhereClause: constraintSyntax(),
             members: SyntaxFactory.makeBlankMemberDeclBlock())
