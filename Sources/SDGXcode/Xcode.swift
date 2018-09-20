@@ -91,6 +91,7 @@ public enum Xcode {
     private static let ignorableCommands: [String] = [
         "/bin/sh",
         "builtin\u{2D}copy",
+        "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
@@ -99,6 +100,7 @@ public enum Xcode {
         "codesign",
         "ditto",
         "export",
+        "lipo",
         "ln",
         "mkdir",
         "swift",
@@ -112,11 +114,16 @@ public enum Xcode {
         "CompileSwift",
         "Copying",
         "CopySwiftLibs",
+        "CreateBuildDirectory",
+        "CreateUniversalBinary",
         "Ditto",
         "Ld",
         "MergeSwiftModule",
+        "MkDir",
         "ProcessInfoPlistFile",
-        "Touch"
+        "SymLink",
+        "Touch",
+        "WriteAuxiliaryFile"
     ]
 
     private static let otherIgnored: [String] = [
