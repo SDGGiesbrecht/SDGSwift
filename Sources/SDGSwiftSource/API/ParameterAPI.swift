@@ -74,18 +74,21 @@ public struct ParameterAPI {
 
     private func declaration(externalName: TokenSyntax?, trailingComma: Bool) -> FunctionParameterSyntax {
 
-        var inOutKeyword: TokenSyntax?
+        var typeSyntax: TypeSyntax = type.declaration
         if isInOut {
-            inOutKeyword = SyntaxFactory.makeToken(.inoutKeyword, trailingTrivia: .spaces(1))
+            typeSyntax = SyntaxFactory.makeAttributedType(
+                specifier: SyntaxFactory.makeToken(.inoutKeyword, trailingTrivia: .spaces(1)),
+                attributes: nil,
+                baseType: typeSyntax)
         }
 
-        var defaultEquals: TokenSyntax?
-        var defaultValue: ExprSyntax?
+        var defaultArgument: InitializerClauseSyntax?
         if hasDefault {
-            defaultEquals = SyntaxFactory.makeToken(.equal, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-            defaultValue = SyntaxFactory.makeIdentifierExpr(
-                identifier: SyntaxFactory.makeToken(.defaultKeyword),
-                declNameArguments: nil)
+            defaultArgument = SyntaxFactory.makeInitializerClause(
+                equal: SyntaxFactory.makeToken(.equal, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                value: SyntaxFactory.makeIdentifierExpr(
+                    identifier: SyntaxFactory.makeToken(.defaultKeyword),
+                    declNameArguments: nil))
         }
 
         var comma: TokenSyntax?
@@ -94,16 +97,13 @@ public struct ParameterAPI {
         }
 
         return SyntaxFactory.makeFunctionParameter(
-            externalName: externalName,
-            localName: SyntaxFactory.makeToken(.identifier(name)),
+            attributes: nil,
+            firstName: externalName,
+            secondName: SyntaxFactory.makeToken(.identifier(name)),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            typeAnnotation: SyntaxFactory.makeTypeAnnotation(
-                attributes: SyntaxFactory.makeAttributeList([]),
-                inOutKeyword: inOutKeyword,
-                type: type.declaration),
+            type: typeSyntax,
             ellipsis: nil,
-            defaultEquals: defaultEquals,
-            defaultValue: defaultValue,
+            defaultArgument: defaultArgument,
             trailingComma: comma)
     }
 
