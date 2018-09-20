@@ -68,7 +68,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 11, 0))),
-        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0))),
+        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 1))),
         .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 40200, 0)))
     ],
     targets: [
