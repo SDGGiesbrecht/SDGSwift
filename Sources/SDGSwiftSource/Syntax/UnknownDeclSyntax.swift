@@ -112,7 +112,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var typeAPI: TypeAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = typeKeyword,
@@ -142,7 +142,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var typeAliasAPI: TypeAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = typeAliasKeyword,
@@ -195,7 +195,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var protocolAPI: ProtocolAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = protocolKeyword,
@@ -224,7 +224,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var initializerAPI: InitializerAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = initializerKeyword {
@@ -325,7 +325,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var variableAPI: VariableAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = variableKeyword,
@@ -359,7 +359,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var subscriptAPI: SubscriptAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if isSubscriptSyntax,
@@ -405,7 +405,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var functionAPI: FunctionAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = functionKeyword,

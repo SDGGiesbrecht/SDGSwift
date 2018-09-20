@@ -107,7 +107,7 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    internal func isPublic() -> Bool {
+    internal func _isPublic() -> Bool {
 
         let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
@@ -141,6 +141,8 @@ extension Syntax {
             return conditionallyCompiledChildren
         }
         switch self {
+        case let structure as StructDeclSyntax :
+            return structure.typeAPI.flatMap({ [$0] }) ?? []
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
