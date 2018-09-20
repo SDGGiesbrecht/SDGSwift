@@ -52,6 +52,7 @@ public struct TypeReferenceAPI : Comparable, Hashable {
             }
 
             genericArguments.append(SyntaxFactory.makeGenericParameter(
+                attributes: nil,
                 name: argument.nameDeclaration,
                 colon: nil,
                 inheritedType: nil,
