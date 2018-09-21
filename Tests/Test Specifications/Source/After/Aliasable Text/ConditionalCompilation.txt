@@ -33,10 +33,10 @@ public typealias Universal = B̲o̲o̲l̲
 
 public struct NestingStructure {
 
-    #if c̲a̲n̲I̲m̲p̲o̲r̲t̲(A̲p̲p̲K̲i̲t̲)
+    #if canImport(AppKit)
     public typealias WithAppKit = B̲o̲o̲l̲
     public typealias Universal = B̲o̲o̲l̲
-    #elseif c̲a̲n̲I̲m̲p̲o̲r̲t̲(U̲I̲K̲i̲t̲)
+    #elseif canImport(UIKit)
     public typealias WithUIKit = B̲o̲o̲l̲
     public typealias Universal = B̲o̲o̲l̲
     #else
