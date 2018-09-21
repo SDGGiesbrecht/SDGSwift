@@ -88,8 +88,8 @@ extension TokenSyntax {
                     switch ancestor {
                     case is IdentifierExprSyntax, is UnknownExprSyntax :
                         continue
-                    case let statement as UnknownStmtSyntax :
-                        if let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
+                    case is UnknownStmtSyntax, is UnknownSyntax :
+                        if let token = ancestor.children.first(where: { _ in true }) as? TokenSyntax,
                             token.tokenKind == .poundIfKeyword ∨ token.tokenKind == .poundElseifKeyword {
                             // Part of an “#if” statement.
                             return .invariable
