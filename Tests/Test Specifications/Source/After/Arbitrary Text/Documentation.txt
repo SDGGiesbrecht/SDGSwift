@@ -203,7 +203,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲ ̲U̲n̲s̲p̲e̲c̲i̲f̲i̲e̲d̲,̲ ̲n̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
 
  ̲ ̲ ̲ ̲ ̲```
- ̲ ̲ ̲ ̲ ̲This cannot compile.
+ ̲ ̲ ̲ ̲ ̲This ̲cannot ̲compile.
  ̲ ̲ ̲ ̲ ̲```
 
  ̲ ̲ ̲ ̲ ̲N̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
