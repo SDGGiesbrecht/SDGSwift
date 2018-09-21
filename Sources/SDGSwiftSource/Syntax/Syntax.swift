@@ -143,6 +143,8 @@ extension Syntax {
         switch self {
         case let structure as StructDeclSyntax :
             return structure.typeAPI.flatMap({ [$0] }) ?? []
+        case let `protocol` as ProtocolDeclSyntax :
+            return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
