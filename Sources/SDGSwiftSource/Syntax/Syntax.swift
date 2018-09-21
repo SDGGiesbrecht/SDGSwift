@@ -186,7 +186,7 @@ extension Syntax {
         if let token = self as? TokenSyntax {
             return token
         } else {
-            return child(at: 0)?.firstToken
+            return children.first(where: { _ in true })?.firstToken
         }
     }
 
