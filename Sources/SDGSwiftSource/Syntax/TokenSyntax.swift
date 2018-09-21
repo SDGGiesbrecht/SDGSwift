@@ -37,6 +37,11 @@ extension TokenSyntax {
                     // Variable declaration.
                     return .arbitrary
                 }
+                if let functionParameter = parent as? FunctionParameterSyntax,
+                    functionParameter.firstName == self ∨ functionParameter.secondName == self {
+                    // Function parameter declaration.
+                    return .arbitrary
+                }
                 if parent.isDecl == true {
                     if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
                         // Name of imported module.
