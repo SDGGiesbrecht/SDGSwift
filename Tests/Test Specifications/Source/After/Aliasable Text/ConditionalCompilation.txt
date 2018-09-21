@@ -21,14 +21,14 @@ func waddle() {}
 #endif
 
 #if canImport(AppKit)
-public typealias WithAppKit = Bool
-public typealias Universal = Bool
+public typealias WithAppKit = B̲o̲o̲l̲
+public typealias Universal = B̲o̲o̲l̲
 #elseif canImport(UIKit)
-public typealias WithUIKit = Bool
-public typealias Universal = Bool
+public typealias WithUIKit = B̲o̲o̲l̲
+public typealias Universal = B̲o̲o̲l̲
 #else
-public typealias Fallback = Bool
-public typealias Universal = Bool
+public typealias Fallback = B̲o̲o̲l̲
+public typealias Universal = B̲o̲o̲l̲
 #endif
 
 public struct NestingStructure {
@@ -47,19 +47,19 @@ public struct NestingStructure {
 
 public struct PossiblyConforming {}
 #if os(macOS)
-extension PossiblyConforming : ConditionallyAvailableProtocol {
+extension P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ : C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {
     public struct ConditionalSubType {}
-    public static var conditionalStaticProperty: Bool {
+    public static var conditionalStaticProperty: B̲o̲o̲l̲ {
         return true
     }
-    public init(conditionalInitializer: Bool) {
+    public init(conditionalInitializer: B̲o̲o̲l̲) {
         self.init()
     }
-    public var conditionalProperty: Bool {
+    public var conditionalProperty: B̲o̲o̲l̲ {
         return true
     }
-    public subscript(conditionalSubscript: Bool) -> Bool {
-        return conditionalSubscript
+    public subscript(conditionalSubscript: B̲o̲o̲l̲) -> B̲o̲o̲l̲ {
+        return c̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲
     }
     #if ADDITIONAL_CONDITION
     public func conditionalMethod() {}
@@ -67,7 +67,7 @@ extension PossiblyConforming : ConditionallyAvailableProtocol {
 }
 
 #if CUSTOM
-extension PossiblyConforming : AnotherConditionallyAvailableProtocol {}
+extension P̲o̲s̲s̲i̲b̲l̲y̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ : A̲n̲o̲t̲h̲e̲r̲C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲l̲y̲A̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {}
 #endif
 
 #endif
