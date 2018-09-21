@@ -32,6 +32,11 @@ extension TokenSyntax {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
+                if let enumerationCaseElement = parent as? EnumCaseElementSyntax,
+                    enumerationCaseElement.identifier == self {
+                    // Enumeration case declaration.
+                    return .arbitrary
+                }
                 if let identifierPattern = parent as? IdentifierPatternSyntax,
                     identifierPattern.identifier == self {
                     // Variable declaration.
