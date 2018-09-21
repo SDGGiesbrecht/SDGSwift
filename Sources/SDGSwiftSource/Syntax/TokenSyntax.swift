@@ -47,6 +47,11 @@ extension TokenSyntax {
                     // Function parameter declaration.
                     return .arbitrary
                 }
+                if let genericParameter = parent as? GenericParameterSyntax,
+                    genericParameter.name == self {
+                    // Generic member type declaration.
+                    return .arbitrary
+                }
                 if parent.isDecl == true {
                     if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
                         // Name of imported module.
