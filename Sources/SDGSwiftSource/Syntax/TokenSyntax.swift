@@ -100,6 +100,9 @@ extension TokenSyntax {
                 }
             }
 
+            if text == "init" {
+                return .invariable
+            }
             return .aliasable
         case .stringSegment, .integerLiteral, .floatingLiteral, .stringLiteral:
             return .arbitrary
