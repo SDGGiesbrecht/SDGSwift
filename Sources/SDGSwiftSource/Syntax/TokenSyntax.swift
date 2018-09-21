@@ -52,6 +52,16 @@ extension TokenSyntax {
                     // Generic member type declaration.
                     return .arbitrary
                 }
+                var previousAncestor: Syntax = self
+                for ancestor in ancestors() {
+                    defer { previousAncestor = ancestor }
+                    if let ifConfigurationClause = ancestor as? IfConfigClauseSyntax,
+                        let condition = ifConfigurationClause.condition,
+                        condition == previousAncestor {
+                        // #if condition
+                        return .invariable
+                    }
+                }
                 if parent.isDecl == true {
                     if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
                         // Name of imported module.
