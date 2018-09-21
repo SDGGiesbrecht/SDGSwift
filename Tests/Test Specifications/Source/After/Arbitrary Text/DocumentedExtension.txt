@@ -21,20 +21,20 @@ extension ̲Bool ̲{
 
  ̲ ̲ ̲ ̲/// ̲A̲ ̲r̲e̲a̲d̲‐̲o̲n̲l̲y̲ ̲c̲o̲m̲p̲u̲t̲e̲d̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲ ̲w̲i̲t̲h̲ ̲a̲n̲ ̲i̲n̲t̲e̲r̲n̲a̲l̲ ̲s̲e̲t̲t̲e̲r̲.̲
  ̲ ̲ ̲ ̲public ̲internal(set) ̲var ̲r̲e̲a̲d̲O̲n̲l̲y̲W̲i̲t̲h̲I̲n̲t̲e̲r̲n̲a̲l̲S̲e̲t̲t̲e̲r̲: ̲Bool ̲{
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self ̲= ̲newValue
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲/// ̲A̲ ̲r̲e̲a̲d̲‐̲w̲r̲i̲t̲e̲ ̲c̲o̲m̲p̲u̲t̲e̲d̲ ̲p̲r̲o̲p̲e̲r̲t̲y̲.̲
  ̲ ̲ ̲ ̲public ̲var ̲r̲e̲a̲d̲W̲r̲i̲t̲e̲C̲o̲m̲p̲u̲t̲e̲d̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲self
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲self ̲= ̲newValue
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
