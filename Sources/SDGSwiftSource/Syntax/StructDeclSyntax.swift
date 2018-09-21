@@ -25,7 +25,7 @@ extension StructDeclSyntax : AccessControlled {
 
         return TypeAPI(
             documentation: documentation,
-            isOpen: isOpen(),
+            isOpen: isOpen,
             keyword: structKeyword.tokenKind,
             name: TypeReferenceAPI(
                 name: identifier.text,

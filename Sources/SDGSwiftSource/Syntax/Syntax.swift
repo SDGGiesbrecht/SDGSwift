@@ -124,7 +124,7 @@ extension Syntax {
         }
     }
 
-    internal func isOpen() -> Bool {
+    internal func _isOpen() -> Bool {
         return children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
                 modifier.name.text == "open" {
@@ -149,6 +149,8 @@ extension Syntax {
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
             return variable.variableAPI.flatMap({ [$0] }) ?? []
+        case let function as FunctionDeclSyntax :
+            return function.functionAPI.flatMap({ [$0] }) ?? []
         case let `extension` as ExtensionDeclSyntax :
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
         case let unknown as UnknownDeclSyntax :

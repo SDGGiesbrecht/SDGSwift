@@ -120,7 +120,7 @@ extension UnknownDeclSyntax {
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(documentation: documentation, isOpen: isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            return TypeAPI(documentation: documentation, isOpen: _isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -414,7 +414,7 @@ extension UnknownDeclSyntax {
             ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(documentation: documentation, isOpen: isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+            return FunctionAPI(documentation: documentation, isOpen: _isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

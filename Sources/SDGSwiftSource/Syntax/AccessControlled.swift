@@ -28,4 +28,13 @@ extension AccessControlled {
             return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
         }
     }
+
+    internal var isOpen: Bool {
+        if let modifiers = self.modifiers,
+            modifiers.contains(where: { $0.name.text == "open" }) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
