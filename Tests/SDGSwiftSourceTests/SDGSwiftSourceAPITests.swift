@@ -133,14 +133,8 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
-                guard let `extension` = api.first(where: { $0 is ExtensionAPI }) as? ExtensionAPI else {
-                    XCTFail("Failed to locate extension.")
-                    return
-                }
-                guard let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") }) else {
-                    XCTFail("Failed to locate method.")
-                    return
-                }
+                let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
+                let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
                 let methods = [method, `extension`.methods.first(where: { $0.name.hasPrefix("withSeparateParameters") })!]
                 _ = method.documentation!.renderedHTML(localization: "zxx")
 
