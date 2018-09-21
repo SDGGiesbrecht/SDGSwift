@@ -48,10 +48,10 @@ struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
  ̲ ̲ ̲ ̲}
 
  ̲ ̲ ̲ ̲subscript(i̲n̲d̲e̲x̲: ̲Int) ̲-> ̲Int ̲{
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲get ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲index
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
- ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲unknown ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲set ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲property ̲= ̲true
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲}
  ̲ ̲ ̲ ̲}
