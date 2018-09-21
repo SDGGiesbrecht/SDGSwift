@@ -19,7 +19,7 @@ extension ExtensionDeclSyntax {
     internal var extensionAPI: ExtensionAPI? {
         let conformances = inheritanceClause?.conformances ?? []
         let children = apiChildren()
-        if ¬children.isEmpty ∨ ¬conformances.isEmpty {
+        guard ¬children.isEmpty ∨ ¬conformances.isEmpty else {
             return nil
         }
         return ExtensionAPI(
