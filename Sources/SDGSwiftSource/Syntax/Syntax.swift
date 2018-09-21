@@ -145,6 +145,8 @@ extension Syntax {
             return structure.typeAPI.flatMap({ [$0] }) ?? []
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
+        case let variable as VariableDeclSyntax :
+            return variable.variableAPI.flatMap({ [$0] }) ?? []
         case let `extension` as ExtensionDeclSyntax :
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
         case let unknown as UnknownDeclSyntax :

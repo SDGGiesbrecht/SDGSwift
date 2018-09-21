@@ -137,7 +137,10 @@ class SDGSwiftSourceAPITests : TestCase {
                     XCTFail("Failed to locate extension.")
                     return
                 }
-                let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
+                guard let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") }) else {
+                    XCTFail("Failed to locate method.")
+                    return
+                }
                 let methods = [method, `extension`.methods.first(where: { $0.name.hasPrefix("withSeparateParameters") })!]
                 _ = method.documentation!.renderedHTML(localization: "zxx")
 
