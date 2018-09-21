@@ -32,6 +32,11 @@ extension TokenSyntax {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
+                if let identifierPattern = parent as? IdentifierPatternSyntax,
+                    identifierPattern.identifier == self {
+                    // Variable declaration.
+                    return .arbitrary
+                }
                 if parent.isDecl == true {
                     if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
                         // Name of imported module.
