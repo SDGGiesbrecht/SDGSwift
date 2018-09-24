@@ -203,7 +203,7 @@
 ̲     Unspecified, not Swift:
 ̲
 ̲     `̲`̲`̲
-̲     T̲h̲i̲s̲ ̲c̲a̲n̲n̲o̲t̲ ̲c̲o̲m̲p̲i̲l̲e̲.̲
+̲     This cannot compile.̲
 ̲     `̲`̲`̲
 ̲
 ̲     Not Swift:

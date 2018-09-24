@@ -48,10 +48,10 @@ struct Structure {
     }
 
     subscript(index: I̲n̲t̲) -> I̲n̲t̲ {
-        unknown {
+        get {
             return i̲n̲d̲e̲x̲
         }
-        unknown {
+        set {
             p̲r̲o̲p̲e̲r̲t̲y̲ = true
         }
     }

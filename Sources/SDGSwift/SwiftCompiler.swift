@@ -24,7 +24,7 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let versions = Version(4, 1, 2) /* Travis CI */ ... Version(4, 1, 2) /* Current */
+    internal static let versions = Version(4, 2, 0) /* Travis CI */ ... Version(4, 2, 0) /* Current */
 
     internal static let standardLocations = [
         // Swift

@@ -38,8 +38,8 @@ public class CommentContentSyntax : ExtendedSyntax {
                 check(forHeading: "MARK:")
 
                 while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
-                    let start = line.scalars.lastMatch(for: " ".scalars, in: line.startIndex ..< `protocol`.lowerBound)?.range.upperBound ?? line.startIndex
-                    let end = line.scalars.firstMatch(for: " ".scalars, in: `protocol`.upperBound ..< line.scalars.endIndex)?.range.lowerBound ?? line.endIndex
+                    let start = line.scalars[line.startIndex ..< `protocol`.lowerBound].lastMatch(for: " ".scalars)?.range.upperBound ?? line.startIndex
+                    let end = line.scalars[`protocol`.upperBound ..< line.scalars.endIndex].firstMatch(for: " ".scalars)?.range.lowerBound ?? line.endIndex
 
                     if start ≠ line.startIndex {
                         children.append(ExtendedTokenSyntax(text: String(line[..<start]), kind: .commentText))

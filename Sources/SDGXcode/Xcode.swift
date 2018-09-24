@@ -29,7 +29,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let versions = Version(9, 4, 0) /* Travis CI */ ... Version(9, 4, 1) /* Current */
+    internal static let versions = Version(10, 0, 0) /* Travis CI */ ... Version(10, 0, 0) /* Current */
 
     internal static let standardLocations = [
         // Xcode
@@ -91,14 +91,17 @@ public enum Xcode {
     private static let ignorableCommands: [String] = [
         "/bin/sh",
         "builtin\u{2D}copy",
+        "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
         "chmod",
         "clang",
         "codesign",
+        "directory",
         "ditto",
         "export",
+        "lipo",
         "ln",
         "mkdir",
         "swift",
@@ -112,17 +115,26 @@ public enum Xcode {
         "CompileSwift",
         "Copying",
         "CopySwiftLibs",
+        "CreateBuildDirectory",
+        "CreateUniversalBinary",
         "Ditto",
         "Ld",
         "MergeSwiftModule",
+        "MkDir",
         "ProcessInfoPlistFile",
-        "Touch"
+        "SymLink",
+        "Touch",
+        "WriteAuxiliaryFile"
     ]
 
     private static let otherIgnored: [String] = [
         "Writing diagnostic log for test session to:",
         "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
-        "Beginning test session"
+        "Beginning test session",
+        ".xcresult",
+        "/Logs/",
+        "device_map.plist",
+        "IDETestOperationsObserverDebug"
     ]
 
     /// Abbreviates Xcode output to make it more readable.
@@ -224,10 +236,11 @@ public enum Xcode {
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
-        guard let archive = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xccovarchive" }) else { // @exempt(from: tests)
+        guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
         }
+        let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
         let fileURLs: [URL] = try runCustomCoverageSubcommand([
             "view",

@@ -5,15 +5,15 @@ public struct Subscripted {
     }
 
     public subscript(readWrite: S̲t̲r̲i̲n̲g̲) -> S̲t̲r̲i̲n̲g̲ {
-        unknown {
+        get {
             return r̲e̲a̲d̲W̲r̲i̲t̲e̲
         }
-        unknown {
+        set {
             s̲o̲m̲e̲t̲h̲i̲n̲g̲ = r̲e̲a̲d̲W̲r̲i̲t̲e̲
         }
     }
 
-    public subscript(x̲ x: I̲n̲t̲, y̲ y: I̲n̲t̲) -> I̲n̲t̲ {
+    public subscript(x x: I̲n̲t̲, y y: I̲n̲t̲) -> I̲n̲t̲ {
         return x̲ ×̲ y̲
     }
 

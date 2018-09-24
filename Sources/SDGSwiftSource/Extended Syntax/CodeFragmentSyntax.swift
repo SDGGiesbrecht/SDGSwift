@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
@@ -40,12 +41,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     /// The syntax of the source code contained in this token.
     public func syntax() throws -> [SyntaxFragment]? {
         if isSwift == true {
-            let parsed = try Syntax.parse(context)
+            let parsed = try SyntaxTreeParser.parse(context)
             return syntax(of: parsed)
         } else if isSwift == false {
             return nil
         } else {
-            if let parsed = try? Syntax.parse(context) {
+            if let parsed = try? SyntaxTreeParser.parse(context) {
                 return syntax(of: parsed)
             } else {
                 return nil
@@ -129,6 +130,10 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     return reduce(count: count) { .formfeeds($0) }
                 case .newlines(let count):
                     return reduce(count: count) { .newlines($0) }
+                case .carriageReturns(let count):
+                    return reduce(count: count) { .carriageReturns($0) }
+                case .carriageReturnLineFeeds(let count):
+                    return reduce(count: count) { .carriageReturnLineFeeds($0) }
                 case .backticks(let count):
                     return reduce(count: count) { .backticks($0) }
                 case .lineComment(let text):
@@ -139,6 +144,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     return reduce(text: text) { .docLineComment($0) }
                 case .docBlockComment(let text):
                     return reduce(text: text) { .docBlockComment($0) }
+                case .garbageText(let text):
+                    return reduce(text: text) { .garbageText($0) }
                 }
             }
         } else {
@@ -178,6 +185,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+
+        if context == self.source.text, // Not part of something bigger.
+            symbolLinks[context] ≠ nil {
+            return unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        }
+
         if let tryResult = try? self.syntax(),
             let syntax = tryResult,
             syntax.map({ $0.source() }).joined() == text {

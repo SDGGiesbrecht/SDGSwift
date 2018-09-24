@@ -18,8 +18,8 @@ public ̲protocol ̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{
  ̲ ̲ ̲ ̲func ̲p̲o̲s̲s̲i̲b̲l̲y̲R̲e̲q̲u̲i̲r̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲()
  ̲ ̲ ̲ ̲func ̲o̲v̲e̲r̲r̲i̲d̲e̲a̲b̲l̲e̲F̲u̲n̲c̲t̲i̲o̲n̲()
  ̲ ̲ ̲ ̲func ̲_̲h̲i̲d̲d̲e̲n̲F̲u̲n̲c̲t̲i̲o̲n̲()
- ̲ ̲ ̲ ̲var ̲g̲e̲t̲O̲n̲l̲y̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{ ̲unknown ̲}
- ̲ ̲ ̲ ̲var ̲g̲e̲t̲S̲e̲t̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{ ̲unknown ̲unknown ̲}
+ ̲ ̲ ̲ ̲var ̲g̲e̲t̲O̲n̲l̲y̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{ ̲get ̲}
+ ̲ ̲ ̲ ̲var ̲g̲e̲t̲S̲e̲t̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Bool ̲{ ̲get ̲set ̲}
 }
 
 extension ̲Protocol ̲{

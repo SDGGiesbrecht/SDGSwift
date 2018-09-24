@@ -21,7 +21,7 @@ public class ModuleAPI : APIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
-    /// - Throws: Errors inherited from `Syntax.parse(_:)`.
+    /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
         let name = module.name.decomposedStringWithCanonicalMapping
         _name = name
@@ -29,7 +29,7 @@ public class ModuleAPI : APIElement {
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             try autoreleasepool { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-                let source = try Syntax.parse(sourceFile)
+                let source = try SyntaxTreeParser.parse(sourceFile)
                 api += source.api()
             }
         }
@@ -129,12 +129,13 @@ public class ModuleAPI : APIElement {
         return _name
     }
 
-    public override var declaration: FunctionCallExprSyntax {
+    public override var declaration: Syntax {
         return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
-                base: SyntaxFactory.makeBlankExpr(),
+                base: SyntaxFactory.makeBlankUnknownExpr(),
                 dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("target"))),
+                name: SyntaxFactory.makeToken(.identifier("target")),
+                declNameArguments: nil),
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
                 SyntaxFactory.makeFunctionCallArgument(
@@ -143,7 +144,8 @@ public class ModuleAPI : APIElement {
                     expression: SyntaxFactory.makeStringLiteralExpr(name),
                     trailingComma: nil)
                 ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen))
+            rightParen: SyntaxFactory.makeToken(.rightParen),
+            trailingClosure: nil)
     }
 
     public override var identifierList: Set<String> {

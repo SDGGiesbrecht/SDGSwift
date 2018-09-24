@@ -43,14 +43,14 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testCodeFragmentSyntax() throws {
         let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() {}"
-        let syntax = try Syntax.parse(source)
+        let syntax = try SyntaxTreeParser.parse(source)
         let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
         XCTAssert(highlighted.contains("internal identifier"))
         XCTAssert(highlighted.contains("domain.tld"))
     }
 
     func testCSS() {
-        XCTAssert(¬Syntax.css.contains("Apache"))
+        XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     }
 
     func testExtension() {
@@ -59,7 +59,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testLineDeveloperCommentSyntax() throws {
-        let syntax = try Syntax.parse("/\u{2F} Comment.")
+        let syntax = try SyntaxTreeParser.parse("/\u{2F} Comment.")
         try SyntaxScanner().scan(syntax)
         XCTAssertNil(syntax.ancestors().makeIterator().next())
 
@@ -75,7 +75,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testLineDocumentationCommentSyntax() throws {
-        let syntax = try Syntax.parse("//\u{2F} Documentation.")
+        let syntax = try SyntaxTreeParser.parse("//\u{2F} Documentation.")
         class DocumentationScanner : SyntaxScanner {
             override func visit(_ node: ExtendedSyntax) -> Bool {
                 if let comment = node as? LineDocumentationSyntax {
@@ -89,7 +89,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testParsing() throws {
         for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
-            let sourceFile = try SourceFileSyntax.parse(url)
+            let sourceFile = try SyntaxTreeParser.parse(url)
 
             let originalSource = try String(from: url)
             var roundTripSource = ""

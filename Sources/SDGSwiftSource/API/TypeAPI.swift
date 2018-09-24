@@ -40,20 +40,17 @@ public class TypeAPI : APIScope {
         return typeName.declaration.source()
     }
 
-    public override var declaration: DeclSyntax {
-        var accessLevelModifier: AccessLevelModifierSyntax?
+    public override var declaration: Syntax {
+        var modifierList: [DeclModifierSyntax] = []
         if isOpen {
-            accessLevelModifier = SyntaxFactory.makeAccessLevelModifier(
-                name: SyntaxFactory.makeToken(.identifier("open"), trailingTrivia: .spaces(1)),
-                openParen: nil,
-                modifier: nil,
-                closeParen: nil)
+            modifierList.append(SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(.contextualKeyword("open"), trailingTrivia: .spaces(1)),
+                detail: nil))
         }
 
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory classes or enumerations yet.
         return SyntaxFactory.makeStructDecl(
             attributes: nil,
-            accessLevelModifier: accessLevelModifier,
+            modifiers: SyntaxFactory.makeModifierList(modifierList),
             structKeyword: SyntaxFactory.makeToken(keyword, trailingTrivia: .spaces(1)),
             identifier: typeName.nameDeclaration,
             genericParameterClause: typeName.genericParameterClauseDeclaration,

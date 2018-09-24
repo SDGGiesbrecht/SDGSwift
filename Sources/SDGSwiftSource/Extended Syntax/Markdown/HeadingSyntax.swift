@@ -30,11 +30,11 @@ public class HeadingSyntax : MarkdownSyntax {
         let contentStart = node.lowerBound(in: documentation)
 
         var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars.lastMatch(for: CharacterSet.newlinePattern, in: documentation.scalars.startIndex ..< contentStart) {
+        if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
             lineStart = newline.range.upperBound // @exempt(from: tests) False coverage result in Xcode 9.4.1.
         }
 
-        if let delimiter = documentation.scalars.lastMatch(for: String(repeating: "#", count: level).scalars, in: lineStart ..< contentStart) {
+        if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
             // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
@@ -53,13 +53,13 @@ public class HeadingSyntax : MarkdownSyntax {
             indent = nil
 
             let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
-            if let newline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: contentStart ..< contentEnd) {
+            if let newline = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
                 let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 followingChildren.append(newlineToken)
                 self.newline = newlineToken
 
                 var delimiterEnd = documentation.scalars.endIndex
-                if let nextNewline = documentation.scalars.firstMatch(for: CharacterSet.newlinePattern, in: newline.range.upperBound ..< documentation.scalars.endIndex) {
+                if let nextNewline = documentation.scalars[newline.range.upperBound ..< documentation.scalars.endIndex].firstMatch(for: CharacterSet.newlinePattern) {
                     delimiterEnd = nextNewline.range.lowerBound
                 }
                 let underline = ExtendedTokenSyntax(text: String(documentation.scalars[newline.range.upperBound ..< delimiterEnd]), kind: .headingDelimiter)

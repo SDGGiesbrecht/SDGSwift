@@ -38,13 +38,11 @@ public class InitializerAPI : APIElement {
         return "init(" + arguments.map({ $0.functionNameForm }).joined() + ")"
     }
 
-    public override var declaration: DeclSyntax {
+    public override var declaration: Syntax {
 
-        let failable: TokenSyntax
+        var failable: TokenSyntax?
         if isFailable {
             failable = SyntaxFactory.makeToken(.infixQuestionMark)
-        } else {
-            failable = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
         }
 
         var parameters: [FunctionParameterSyntax] = []
@@ -60,21 +58,17 @@ public class InitializerAPI : APIElement {
             throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
         }
 
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
-        return SyntaxFactory.makeFunctionDecl(
+        return SyntaxFactory.makeInitializerDecl(
             attributes: nil,
             modifiers: nil,
-            funcKeyword: SyntaxFactory.makeToken(.initKeyword),
-            identifier: failable,
+            initKeyword: SyntaxFactory.makeToken(.initKeyword),
+            optionalMark: failable,
             genericParameterClause: nil,
-            signature: SyntaxFactory.makeFunctionSignature(
+            parameters: SyntaxFactory.makeParameterClause(
                 leftParen: SyntaxFactory.makeToken(.leftParen),
                 parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
-                rightParen: SyntaxFactory.makeToken(.rightParen),
-                throwsOrRethrowsKeyword: throwsKeyword,
-                arrow: nil,
-                returnTypeAttributes: nil,
-                returnType: nil),
+                rightParen: SyntaxFactory.makeToken(.rightParen)),
+            throwsOrRethrowsKeyword: throwsKeyword,
             genericWhereClause: constraintSyntax(),
             body: SyntaxFactory.makeBlankCodeBlock())
     }

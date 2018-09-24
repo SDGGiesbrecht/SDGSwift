@@ -38,7 +38,7 @@ extension UnknownDeclSyntax {
         var foundConformancesSection = false
         search: for child in children.reversed() {
             `switch`: switch child {
-            case is MemberDeclBlockSyntax, is SyntaxCollection<DeclSyntax> :
+            case is MemberDeclBlockSyntax :
                 foundConformancesSection = true
             case is GenericWhereClauseSyntax :
                 break `switch`
@@ -112,7 +112,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var typeAPI: TypeAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = typeKeyword,
@@ -120,7 +120,7 @@ extension UnknownDeclSyntax {
             let name = nameToken.identifierText,
             ¬name.hasPrefix("_") {
             let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(documentation: documentation, isOpen: isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
+            return TypeAPI(documentation: documentation, isOpen: _isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
@@ -142,7 +142,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var typeAliasAPI: TypeAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = typeAliasKeyword,
@@ -195,7 +195,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var protocolAPI: ProtocolAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = protocolKeyword,
@@ -224,7 +224,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var initializerAPI: InitializerAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = initializerKeyword {
@@ -292,7 +292,7 @@ extension UnknownDeclSyntax {
     private var hasSetter: Bool {
         for child in children {
             if let token = child as? TokenSyntax,
-                token.tokenKind == .unknown {
+                case .unknown = token.tokenKind {
                 return true
             }
         }
@@ -305,7 +305,7 @@ extension UnknownDeclSyntax {
             var unknownCount = 0
             for child in children {
                 if let token = child as? TokenSyntax,
-                    token.tokenKind == .unknown {
+                    case .unknown = token.tokenKind {
                     unknownCount += 1
                     if unknownCount > 1 {
                         return true
@@ -325,7 +325,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var variableAPI: VariableAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = variableKeyword,
@@ -359,7 +359,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var subscriptAPI: SubscriptAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if isSubscriptSyntax,
@@ -405,7 +405,7 @@ extension UnknownDeclSyntax {
     }
 
     internal var functionAPI: FunctionAPI? {
-        if ¬isPublic() {
+        if ¬_isPublic() {
             return nil
         }
         if let keyword = functionKeyword,
@@ -414,7 +414,7 @@ extension UnknownDeclSyntax {
             ¬name.hasPrefix("_") {
             let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
             let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(documentation: documentation, isOpen: isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
+            return FunctionAPI(documentation: documentation, isOpen: _isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }

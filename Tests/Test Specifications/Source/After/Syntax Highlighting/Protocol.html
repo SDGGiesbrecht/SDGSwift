@@ -26,8 +26,8 @@
     <span class="keyword">func</span> <span class="external identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">_hiddenFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
-    <span class="keyword">var</span> <span class="external identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> unknown <span class="punctuation">}</span>
-    <span class="keyword">var</span> <span class="external identifier">getSetProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> unknown unknown <span class="punctuation">}</span>
+    <span class="keyword">var</span> <span class="external identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span>
+    <span class="keyword">var</span> <span class="external identifier">getSetProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="keyword">set</span> <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Protocol</span> <span class="punctuation">{</span>

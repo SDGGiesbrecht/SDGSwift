@@ -23,18 +23,6 @@ import SDGLocalization
 
 extension Syntax {
 
-    // MARK: - Parsing
-
-    public static func parse(_ source: String) throws -> SourceFileSyntax {
-        let temporary = FileManager.default.url(in: .temporary, at: UUID().uuidString + ".swift")
-        try? FileManager.default.removeItem(at: temporary)
-
-        try source.save(to: temporary)
-        defer { try? FileManager.default.removeItem(at: temporary) }
-
-        return try Syntax.parse(temporary)
-    }
-
     // MARK: - Properties
 
     public func source() -> String {
@@ -44,18 +32,6 @@ extension Syntax {
     }
 
     internal func withTriviaReducedToSpaces() -> Syntax {
-        class TriviaNormalizer : SyntaxRewriter {
-            override func visit(_ token: TokenSyntax) -> Syntax {
-                var token = token
-                if ¬token.leadingTrivia.isEmpty {
-                    token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
-                }
-                if ¬token.trailingTrivia.isEmpty {
-                    token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
-                }
-                return token
-            }
-        }
         return TriviaNormalizer().visit(self)
     }
 
@@ -64,8 +40,9 @@ extension Syntax {
         if let parent = self.parent {
             var position = parent.location(in: source).lowerBound
             for index in 0 ..< indexInParent {
-                let sibling = parent.child(at: index)!
-                position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
+                if let sibling = parent.child(at: index) {
+                    position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
+                }
             }
             start = position
         } else {
@@ -84,23 +61,8 @@ extension Syntax {
 
     // MARK: - Syntax Highlighting
 
-    public static var css: StrictString {
-        return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
-    }
-
-    internal static func wrap(syntaxHighlighting: String, inline: Bool) -> String {
-        var result = "<code class=\u{22}swift"
-        if ¬inline {
-            result += " blockquote"
-        }
-        result += "\u{22}>"
-        result += syntaxHighlighting
-        result += "</code>"
-        return result
-    }
-
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
-        return Syntax.wrap(syntaxHighlighting: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
+        return SyntaxHighlighter.frame(highlightedSyntax: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
 
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
@@ -129,7 +91,10 @@ extension Syntax {
             var identifiers = internalIdentifiers
             switch self {
             case let function as FunctionDeclSyntax :
-                let parameters = function.signature.parameterList.map({ $0.localName.identifierText }).compactMap({ $0 })
+                let parameters = function.signature.input.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
+                identifiers ∪= Set(parameters)
+            case let `subscript` as SubscriptDeclSyntax :
+                let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             default:
                 break
@@ -145,7 +110,7 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    internal func isPublic() -> Bool {
+    internal func _isPublic() -> Bool {
 
         let hasPublicKeyword = children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
@@ -162,7 +127,7 @@ extension Syntax {
         }
     }
 
-    internal func isOpen() -> Bool {
+    internal func _isOpen() -> Bool {
         return children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
                 modifier.name.text == "open" {
@@ -179,13 +144,39 @@ extension Syntax {
             return conditionallyCompiledChildren
         }
         switch self {
+        case let structure as StructDeclSyntax :
+            return structure.typeAPI.flatMap({ [$0] }) ?? []
+        case let `class` as ClassDeclSyntax :
+            return `class`.typeAPI.flatMap({ [$0] }) ?? []
+        case let enumeration as EnumDeclSyntax :
+            return enumeration.typeAPI.flatMap({ [$0] }) ?? []
+        case let typeAlias as TypealiasDeclSyntax :
+            return typeAlias.typeAPI.flatMap({ [$0] }) ?? []
+        case let associatedType as AssociatedtypeDeclSyntax :
+            return associatedType.typeAPI.flatMap({ [$0] }) ?? []
+        case let `protocol` as ProtocolDeclSyntax :
+            return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
+        case let `case` as EnumCaseDeclSyntax :
+            return `case`.caseAPI.flatMap({ [$0] }) ?? []
+        case let initializer as InitializerDeclSyntax :
+            return initializer.initializerAPI.flatMap({ [$0] }) ?? []
+        case let variable as VariableDeclSyntax :
+            return variable.variableAPI.flatMap({ [$0] }) ?? []
+        case let `subscript` as SubscriptDeclSyntax :
+            return `subscript`.subscriptAPI.flatMap({ [$0] }) ?? []
+        case let function as FunctionDeclSyntax :
+            return function.functionAPI.flatMap({ [$0] }) ?? []
+        case let `extension` as ExtensionDeclSyntax :
+            return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
+        case let conditionallyCompiledSection as IfConfigDeclSyntax :
+            return conditionallyCompiledSection.conditionalAPI
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isTypeAliasSyntax {
                 return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isAssociatedTypeSyntax {
-                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
+                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isProtocolSyntax {
                 return unknown.protocolAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {
@@ -197,7 +188,7 @@ extension Syntax {
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isCaseSyntax {
-                return unknown.caseAPI.flatMap({[$0]}) ?? [] // @exempt(from: tests) Never nil for valid source.
+                return unknown.caseAPI.flatMap({[$0]}) ?? []
             } else if unknown.isExtensionSyntax {
                 return unknown.extensionAPI.flatMap({ [$0] }) ?? []
             } else {
@@ -212,7 +203,7 @@ extension Syntax {
         if let token = self as? TokenSyntax {
             return token
         } else {
-            return child(at: 0)?.firstToken
+            return children.first(where: { _ in true })?.firstToken
         }
     }
 
@@ -323,11 +314,10 @@ extension Syntax {
     // MARK: - Compilation Conditions
 
     private var compilerIfKeyword: TokenSyntax? {
-        for child in children {
-            if let token = child as? TokenSyntax,
-                token.tokenKind == .poundIfKeyword {
-                return token
-            }
+        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
+            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
+            token.tokenKind == .poundIfKeyword {
+            return token
         }
         return nil
     }
@@ -337,84 +327,7 @@ extension Syntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
-        var previousConditions: [Syntax] = []
-        var currentCondition: Syntax? = nil
-        var universalSet: Set<APIElement> = []
-        var filledUniversalSet: Bool = false
-        var elseOccurred: Bool = false
-        var currentSet: Set<APIElement> = []
-        var api: [APIElement] = []
-        for child in children {
-            switch child {
-            case let token as TokenSyntax : // “#if”, “#elseif” or “#else”
-                switch token.tokenKind {
-                case .poundElseKeyword:
-                    elseOccurred = true
-                    fallthrough
-                case .poundElseifKeyword:
-                    defer { filledUniversalSet = true }
-                    if let current = currentCondition {
-                        previousConditions.append(current)
-                        currentCondition = nil
-                    }
-                    if ¬filledUniversalSet {
-                        universalSet = currentSet
-                    } else {
-                        universalSet ∩= currentSet
-                    }
-                    currentSet = []
-                default:
-                    break
-                }
-            case let condition as UnknownExprSyntax :
-                let tokens = condition.withTriviaReducedToSpaces().tokens()
-                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
-            case let condition as IdentifierExprSyntax :
-                let tokens = condition.withTriviaReducedToSpaces().tokens()
-                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
-            case let condition as SequenceExprSyntax :
-                let tokens = condition.withTriviaReducedToSpaces().tokens()
-                currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: tokens)
-            default:
-                var composedConditions: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
-
-                composedConditions.append(contentsOf: previousConditions.map({ [
-                    SyntaxFactory.makeToken(.prefixOperator("!")),
-                    SyntaxFactory.makeToken(.leftParen)
-                    ] + $0.tokens() + [
-                        SyntaxFactory.makeToken(.rightParen)
-                    ]
-                }).joined(separator: [
-                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-                    ]))
-
-                if previousConditions.isEmpty {
-                    composedConditions.append(contentsOf: (currentCondition?.tokens() ?? [])) // @exempt(from: tests) Never nil in valid source.
-                } else {
-                    if let current = currentCondition {
-                        composedConditions.append(contentsOf: [
-                            SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                            SyntaxFactory.makeToken(.leftParen)
-                            ] + current.tokens() + [
-                                SyntaxFactory.makeToken(.rightParen)
-                            ])
-                    }
-                }
-                for element in child.api() {
-                    currentSet.insert(element)
-                    element.prependCompilationCondition(SyntaxFactory.makeUnknownSyntax(tokens: composedConditions))
-                    api.append(element)
-                }
-            }
-        }
-        if elseOccurred {
-            for element in universalSet {
-                element.compilationConditions = nil
-                api = api.filter({ $0 ≠ element })
-                api.append(element)
-            }
-        }
-        return api
+        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? []
     }
 
     // MARK: - Disection

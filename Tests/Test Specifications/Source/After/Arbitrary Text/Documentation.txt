@@ -171,7 +171,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲- ̲Returns: ̲A̲ ̲B̲o̲o̲l̲e̲a̲n̲ ̲v̲a̲l̲u̲e̲.̲
  ̲ ̲ ̲ ̲///
  ̲ ̲ ̲ ̲/// ̲- ̲Throws: ̲A̲n̲ ̲e̲r̲r̲o̲r̲.̲
- ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(on ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲with ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
+ ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲w̲i̲t̲h̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
 
@@ -203,7 +203,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲ ̲U̲n̲s̲p̲e̲c̲i̲f̲i̲e̲d̲,̲ ̲n̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲
 
  ̲ ̲ ̲ ̲ ̲```
- ̲ ̲ ̲ ̲ ̲This cannot compile.
+ ̲ ̲ ̲ ̲ ̲This ̲cannot ̲compile.
  ̲ ̲ ̲ ̲ ̲```
 
  ̲ ̲ ̲ ̲ ̲N̲o̲t̲ ̲S̲w̲i̲f̲t̲:̲

@@ -171,7 +171,7 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// - Returns: A Boolean value.
     ///
     /// - Throws: An error.
-    public func performAction(o̲n̲ parameterOne: S̲t̲r̲i̲n̲g̲, w̲i̲t̲h̲ parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
+    public func performAction(on parameterOne: S̲t̲r̲i̲n̲g̲, with parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }
 
@@ -203,7 +203,7 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
      Unspecified, not Swift:
 
      ```
-     This cannot compile.
+     T̲h̲i̲s̲ c̲a̲n̲n̲o̲t̲ c̲o̲m̲p̲i̲l̲e̲.
      ```
 
      Not Swift:

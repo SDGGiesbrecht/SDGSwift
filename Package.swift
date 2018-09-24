@@ -1,4 +1,4 @@
-// swift-tools-version:4.1
+// swift-tools-version:4.2
 
 /*
  Package.swift
@@ -67,8 +67,10 @@ let package = Package(
         .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 10, 0))),
-        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 11, 0))),
+        // #warning(Pointing at branch.)
+        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0))),
+        .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 40200, 0)))
     ],
     targets: [
 
@@ -80,12 +82,12 @@ let package = Package(
         /// This module includes development time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
         .target(name: "SDGSwift", dependencies: [
             "SDGSwiftLocalizations",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGText", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // #documentation(SDGSwiftPackageManager)
@@ -95,7 +97,7 @@ let package = Package(
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
-            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            .product(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // #documentation(SDGSwiftSource)
@@ -104,15 +106,15 @@ let package = Package(
             "SDGSwift",
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
-            "SDGSwiftSyntaxShims",
             "SDGCMarkShims",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGText", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
             ]),
 
         // #documentation(SDGXcode)
@@ -120,13 +122,13 @@ let package = Package(
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGText", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // #documentation(SDGSwiftConfiguration)
@@ -139,8 +141,8 @@ let package = Package(
             "SDGSwiftLocalizations",
             "SDGSwiftConfiguration",
             "SDGSwift",
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
         // Samples
@@ -152,15 +154,10 @@ let package = Package(
         // Internal
 
         .target(name: "SDGSwiftLocalizations", dependencies: [
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
+            .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
-        // These are duplicated from the Swift project itself, since stable releases do not expose the API yet.
-        .target(name: "SDGSwiftSyntaxShims", dependencies: [
-            "SDGSwift",
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
-            ], path: "Sources/Shims/SDGSwiftSyntaxShims"),
+        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
 
@@ -168,63 +165,63 @@ let package = Package(
         .target(name: "SDGSwiftTestUtilities", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",
-            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ], path: "Tests/SDGSwiftTestUtilities"),
         .testTarget(name: "SDGSwiftTests", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwift",
             "SDGSwiftTestUtilities",
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             "SDGSwiftTestUtilities",
-            .productItem(name: "SDGText", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftSourceTests", dependencies: [
             "SDGSwiftLocalizations",
             "SDGSwiftSource",
             "SDGSwiftTestUtilities",
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGXcodeTests", dependencies: [
             "SDGXcode",
             "SDGSwift",
             "SDGSwiftLocalizations",
             "SDGSwiftTestUtilities",
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftConfigurationTests", dependencies: [
             "SDGSwiftConfiguration",
             "SDGSwiftConfigurationLoading",
             "SampleConfiguration",
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftDocumentationExampleTests", dependencies: [
             "SDGSwift",
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
     ]
 )
