@@ -145,6 +145,8 @@ extension Syntax {
             return structure.typeAPI.flatMap({ [$0] }) ?? []
         case let enumeration as EnumDeclSyntax :
             return enumeration.typeAPI.flatMap({ [$0] }) ?? []
+        case let associatedType as AssociatedtypeDeclSyntax :
+            return associatedType.typeAPI.flatMap({ [$0] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
             return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
         case let `case` as EnumCaseDeclSyntax :

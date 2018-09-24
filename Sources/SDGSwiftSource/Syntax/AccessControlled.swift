@@ -16,6 +16,7 @@ import SDGLogic
 
 internal protocol AccessControlled : Syntax {
     var modifiers: ModifierListSyntax? { get }
+    var isPublic: Bool { get }
 }
 
 extension AccessControlled {
