@@ -93,6 +93,9 @@ extension Syntax {
             case let function as FunctionDeclSyntax :
                 let parameters = function.signature.input.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
+            case let `subscript` as SubscriptDeclSyntax :
+                let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
+                identifiers ∪= Set(parameters)
             default:
                 break
             }
