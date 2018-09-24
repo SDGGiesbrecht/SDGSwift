@@ -147,6 +147,8 @@ extension Syntax {
             return enumeration.typeAPI.flatMap({ [$0] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
             return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
+        case let `case` as EnumCaseDeclSyntax :
+            return `case`.caseAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
