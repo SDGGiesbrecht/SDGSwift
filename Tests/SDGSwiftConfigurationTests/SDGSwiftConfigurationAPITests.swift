@@ -105,8 +105,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             remove(logEntry: "Linking")
             compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
         } catch {
-            // #warning(Not possible without 0.3 release.)
-            //XCTFail(error.localizedDescription)
+            XCTFail(error.localizedDescription)
         }
     }
 
