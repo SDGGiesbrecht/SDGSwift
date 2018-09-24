@@ -32,7 +32,6 @@ extension TokenSyntax {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
-
                 if let enumerationCaseElement = parent as? EnumCaseElementSyntax,
                     enumerationCaseElement.identifier == self {
                     // Enumeration case declaration.
@@ -54,6 +53,11 @@ extension TokenSyntax {
                     return .arbitrary
                 }
 
+                if let declarationModifier = parent as? DeclModifierSyntax,
+                    declarationModifier.name == self {
+                    // “open”, “mutating”, etc.
+                    return .invariable
+                }
                 if let accessPath = parent as? AccessPathComponentSyntax,
                     accessPath.name == self {
                     // Import statement.
