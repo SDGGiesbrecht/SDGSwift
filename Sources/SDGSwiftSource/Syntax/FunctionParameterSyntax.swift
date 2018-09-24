@@ -31,10 +31,17 @@ extension FunctionParameterSyntax {
                 label = nil
             }
         }
+
+        var isInOut = false
+        if let attributed = type as? AttributedTypeSyntax,
+            attributed.specifier?.tokenKind == .inoutKeyword {
+            isInOut = true
+        }
+
         return ParameterAPI(
             label: label,
             name: name,
-            isInOut: self.attributes?.contains(where: { $0.attributeName.tokenKind == .inoutKeyword }) == true,
+            isInOut: isInOut,
             type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // Guaranteed in valid source.
             hasDefault: defaultArgument ≠ nil)
     }
