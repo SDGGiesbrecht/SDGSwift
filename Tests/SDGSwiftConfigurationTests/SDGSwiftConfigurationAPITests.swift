@@ -99,6 +99,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
                     ]), with: "".scalars)
             }
             abbreviate(logEntry: "Fetching")
+            abbreviate(logEntry: "Completed resolution in")
             abbreviate(logEntry: "Cloning")
             abbreviate(logEntry: "Resolving")
             remove(logEntry: "Compile Swift Module") // These may occur out of order.
