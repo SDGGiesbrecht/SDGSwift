@@ -161,8 +161,8 @@ extension Syntax {
             return function.functionAPI.flatMap({ [$0] }) ?? []
         case let `extension` as ExtensionDeclSyntax :
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
-        case let conditionallyCompiledSection as IfConfigClauseSyntax :
-            return conditionallyCompiledSection.conditionallyCompiledChildren
+        case let conditionallyCompiledSection as IfConfigDeclSyntax :
+            return conditionallyCompiledSection.conditionalAPI
         case let unknown as UnknownDeclSyntax :
             if unknown.isTypeSyntax {
                 return unknown.typeAPI.flatMap({ [$0] }) ?? []
