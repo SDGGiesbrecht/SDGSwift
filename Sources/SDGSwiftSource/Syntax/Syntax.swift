@@ -307,11 +307,10 @@ extension Syntax {
     // MARK: - Compilation Conditions
 
     private var compilerIfKeyword: TokenSyntax? {
-        for child in children {
-            if let token = child as? TokenSyntax,
-                token.tokenKind == .poundIfKeyword {
-                return token
-            }
+        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
+            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
+            token.tokenKind == .poundIfKeyword {
+            return token
         }
         return nil
     }
@@ -321,6 +320,7 @@ extension Syntax {
     }
 
     internal var conditionallyCompiledChildren: [APIElement] {
+        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? []
         var previousConditions: [Syntax] = []
         var currentCondition: Syntax? = nil
         var universalSet: Set<APIElement> = []
