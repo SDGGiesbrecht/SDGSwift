@@ -48,7 +48,8 @@ extension Accessor {
             }
             if let accessors = self.accessors {
                 // Computed.
-                if accessors.accessorListOrStmtList is AccessorListSyntax {
+                if let list = accessors.accessorListOrStmtList as? AccessorListSyntax,
+                    list.count > 1 {
                     // Two accessors: get + set
                     return true
                 } else {
