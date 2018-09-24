@@ -1,5 +1,5 @@
 /*
- StructDeclSyntax.swift
+ EnumDeclSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -14,11 +14,15 @@
 
 import SDGLogic
 
-extension StructDeclSyntax : TypeDeclaration {
+extension EnumDeclSyntax : TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
     static var keyword: TokenKind {
-        return .structKeyword
+        return .enumKeyword
+    }
+
+    var genericParameterClause: GenericParameterClauseSyntax? {
+        return genericParameters
     }
 }
