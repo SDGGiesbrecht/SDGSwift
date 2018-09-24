@@ -19,13 +19,6 @@ matrix:
       osx_image: xcode10
       script:
         - "swift test"
-    - os: osx
-      env:
-        - JOB="macOS + Xcode"
-      osx_image: xcode10
-      script:
-        - "swift package generate-xcodeproj"
-        - "xcodebuild test -sdk macosx -scheme SDGSwift-Package >> /dev/null"
     - os: linux
       env:
         - JOB="Linux"
