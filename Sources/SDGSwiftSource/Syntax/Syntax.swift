@@ -145,12 +145,14 @@ extension Syntax {
             return structure.typeAPI.flatMap({ [$0] }) ?? []
         case let enumeration as EnumDeclSyntax :
             return enumeration.typeAPI.flatMap({ [$0] }) ?? []
+        case let typeAlias as TypealiasDeclSyntax :
+            return typeAlias.typeAPI.flatMap({ [$0] }) ?? []
         case let associatedType as AssociatedtypeDeclSyntax :
             return associatedType.typeAPI.flatMap({ [$0] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
             return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
         case let `case` as EnumCaseDeclSyntax :
-            return `case`.caseAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
+            return `case`.caseAPI.flatMap({ [$0] }) ?? []
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
@@ -165,7 +167,7 @@ extension Syntax {
             } else if unknown.isTypeAliasSyntax {
                 return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isAssociatedTypeSyntax {
-                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil for valid source.
+                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isProtocolSyntax {
                 return unknown.protocolAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isInitializerSyntax {
@@ -177,7 +179,7 @@ extension Syntax {
             } else if unknown.isFunctionSyntax {
                 return unknown.functionAPI.flatMap({ [$0] }) ?? []
             } else if unknown.isCaseSyntax {
-                return unknown.caseAPI.flatMap({[$0]}) ?? [] // @exempt(from: tests) Never nil for valid source.
+                return unknown.caseAPI.flatMap({[$0]}) ?? []
             } else if unknown.isExtensionSyntax {
                 return unknown.extensionAPI.flatMap({ [$0] }) ?? []
             } else {
