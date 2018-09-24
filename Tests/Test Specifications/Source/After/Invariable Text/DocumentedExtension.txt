@@ -21,20 +21,20 @@
 ̲
 ̲    /̲/̲/̲ A read‐only computed property with an internal setter.
 ̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲set)̲ v̲a̲r̲ readOnlyWithInternalSetter:̲ Bool {̲
-̲        u̲n̲k̲n̲o̲w̲n̲ {̲
+̲        g̲e̲t̲ {̲
 ̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲        }̲
-̲        u̲n̲k̲n̲o̲w̲n̲ {̲
+̲        s̲e̲t̲ {̲
 ̲            s̲e̲l̲f̲ =̲ newValue
 ̲        }̲
 ̲    }̲
 ̲
 ̲    /̲/̲/̲ A read‐write computed property.
 ̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ readWriteComputedProperty:̲ Bool {̲
-̲        u̲n̲k̲n̲o̲w̲n̲ {̲
+̲        g̲e̲t̲ {̲
 ̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲        }̲
-̲        u̲n̲k̲n̲o̲w̲n̲ {̲
+̲        s̲e̲t̲ {̲
 ̲            s̲e̲l̲f̲ =̲ newValue
 ̲        }̲
 ̲    }̲
