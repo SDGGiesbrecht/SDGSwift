@@ -32,6 +32,7 @@ extension TokenSyntax {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
+
                 if let enumerationCaseElement = parent as? EnumCaseElementSyntax,
                     enumerationCaseElement.identifier == self {
                     // Enumeration case declaration.
@@ -52,6 +53,12 @@ extension TokenSyntax {
                     // Generic member type declaration.
                     return .arbitrary
                 }
+
+                if let accessPath = parent as? AccessPathComponentSyntax,
+                    accessPath.name == self {
+                    // Import statement.
+                    return .invariable
+                }
                 var previousAncestor: Syntax = self
                 for ancestor in ancestors() {
                     defer { previousAncestor = ancestor }
@@ -62,11 +69,8 @@ extension TokenSyntax {
                         return .invariable
                     }
                 }
+
                 if parent.isDecl == true {
-                    if parent.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .importKeyword }) {
-                        // Name of imported module.
-                        return .invariable
-                    }
                     /// Declaration.
                     return .arbitrary
                 }
