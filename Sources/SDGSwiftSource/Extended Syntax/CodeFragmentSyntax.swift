@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
@@ -184,6 +185,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
+
+        if context == self.source.text, // Not part of something bigger.
+            symbolLinks[context] ≠ nil {
+            return unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        }
+
         if let tryResult = try? self.syntax(),
             let syntax = tryResult,
             syntax.map({ $0.source() }).joined() == text {
