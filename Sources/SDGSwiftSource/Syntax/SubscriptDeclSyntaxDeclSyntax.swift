@@ -1,5 +1,5 @@
 /*
- VariableDeclSyntax.swift
+ SubscriptDeclSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -14,32 +14,32 @@
 
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, FunctionLike, Member {
 
-    internal var variableAPI: VariableAPI? {
+    internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic {
             return nil
         }
-        guard let binding = bindings.first,
-            let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text,
-            ¬name.hasPrefix("_") else {
-            return nil
-        }
-        return VariableAPI(
+        return SubscriptAPI(
             documentation: documentation,
-            typePropertyKeyword: typeMemberKeyword,
-            name: name,
-            type: binding.typeAnnotation?.type.reference,
+            arguments: parameters(forSubscript: true),
+            returnType: result.returnType.reference,
             isSettable: isSettable)
     }
 
     // MARK: - Accessor
 
     var keyword: TokenSyntax {
-        return letOrVarKeyword
+        return subscriptKeyword
     }
 
     var accessors: AccessorBlockSyntax? {
-        return bindings.first?.accessor
+        return accessor
+    }
+
+    // MARK: - FunctionLike
+
+    var parameters: ParameterClauseSyntax {
+        return indices
     }
 }

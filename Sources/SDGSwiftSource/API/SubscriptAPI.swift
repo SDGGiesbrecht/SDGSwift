@@ -79,9 +79,9 @@ public class SubscriptAPI : APIElement {
                 returnType: returnType.declaration),
             genericWhereClause: constraintSyntax(),
             accessor: SyntaxFactory.makeAccessorBlock(
-                leftBrace: SyntaxFactory.makeToken(.leftParen, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                leftBrace: SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                 accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessorList),
-                rightBrace: SyntaxFactory.makeToken(.rightParen, leadingTrivia: .spaces(1))))
+                rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1))))
     }
 
     public override var identifierList: Set<String> {
