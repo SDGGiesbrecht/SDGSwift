@@ -20,12 +20,16 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
         if ¬isPublic {
             return nil
         }
+        let name = identifier.text
+        if name.hasPrefix("_") {
+            return nil
+        }
         return FunctionAPI(
             documentation: documentation,
             isOpen: isOpen,
             typeMethodKeyword: typeMemberKeyword,
             isMutating: modifiers?.contains(where: { $0.name.text == "mutating" }) == true,
-            name: identifier.text,
+            name: name,
             arguments: parameters(forSubscript: false),
             throws: signature.throwsOrRethrowsKeyword ≠ nil,
             returnType: signature.output?.returnType.reference,
