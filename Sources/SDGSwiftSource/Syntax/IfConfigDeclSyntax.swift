@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 extension IfConfigDeclSyntax {
 
@@ -29,47 +30,53 @@ extension IfConfigDeclSyntax {
             for apiElement in syntaxGroup.elements.apiChildren() {
                 apiGroup.elements.insert(apiElement)
 
-                var composedConditionTokens: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
-                var needsParentheses: Bool = false
-                for previousGroup in previousGroups {
-                    if previousGroup.elements.contains(apiElement) {
-                        needsParentheses = true
-                        composedConditionTokens.append(contentsOf: [
-                            SyntaxFactory.makeToken(.leftParen),
-                            ] + previousGroup.condition.tokens() + [
-                            SyntaxFactory.makeToken(.rightParen),
-                            SyntaxFactory.makeToken(.spacedBinaryOperator("||"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-                            ])
-                    } else {
-                        composedConditionTokens.append(contentsOf: [
-                            SyntaxFactory.makeToken(.prefixOperator("!")),
-                            SyntaxFactory.makeToken(.leftParen)
-                            ] + previousGroup.condition.tokens() + [
-                                SyntaxFactory.makeToken(.rightParen),
-                                SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-                            ])
-                    }
-                }
-
-                if currentCondition.tokens().isEmpty {
-                    composedConditionTokens.removeLast()
+                if syntaxGroup.poundKeyword.tokenKind == .poundElseKeyword,
+                    ¬previousGroups.contains(where: { apiElement ∉ $0.elements }) {
+                    combined[apiElement] = Optional<Syntax>.none
                 } else {
-                    if needsParentheses {
-                        composedConditionTokens.append(contentsOf: [
-                            SyntaxFactory.makeToken(.leftParen),
-                            ] + currentCondition.tokens() + [
-                                SyntaxFactory.makeToken(.rightParen)
-                            ])
-                    } else {
-                        composedConditionTokens.append(contentsOf: currentCondition.tokens())
+                    var composedConditionTokens: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
+                    var needsParentheses: Bool = false
+                    for previousGroup in previousGroups {
+                        needsParentheses = true
+                        if previousGroup.elements.contains(apiElement) {
+                            composedConditionTokens.append(contentsOf: [
+                                SyntaxFactory.makeToken(.leftParen),
+                                ] + previousGroup.condition.tokens() + [
+                                    SyntaxFactory.makeToken(.rightParen),
+                                    SyntaxFactory.makeToken(.spacedBinaryOperator("||"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                                ])
+                        } else {
+                            composedConditionTokens.append(contentsOf: [
+                                SyntaxFactory.makeToken(.prefixOperator("!")),
+                                SyntaxFactory.makeToken(.leftParen)
+                                ] + previousGroup.condition.tokens() + [
+                                    SyntaxFactory.makeToken(.rightParen),
+                                    SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                                ])
+                        }
                     }
-                }
 
-                var composedConditions: Syntax?
-                if ¬composedConditionTokens.isEmpty {
-                    composedConditions = SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
+                    if currentCondition.tokens().isEmpty,
+                        ¬composedConditionTokens.isEmpty {
+                        composedConditionTokens.removeLast()
+                    } else {
+                        if needsParentheses {
+                            composedConditionTokens.append(contentsOf: [
+                                SyntaxFactory.makeToken(.leftParen),
+                                ] + currentCondition.tokens() + [
+                                    SyntaxFactory.makeToken(.rightParen)
+                                ])
+                        } else {
+                            composedConditionTokens.append(contentsOf: currentCondition.tokens())
+                        }
+                    }
+
+                    var composedConditions: Syntax?
+                    if ¬composedConditionTokens.isEmpty {
+                        composedConditions = SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
+                    }
+                    combined[apiElement] = composedConditions
                 }
-                combined[apiElement] = composedConditions
             }
         }
 
