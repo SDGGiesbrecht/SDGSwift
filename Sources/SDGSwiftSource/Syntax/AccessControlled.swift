@@ -26,7 +26,7 @@ extension AccessControlled {
             modifiers.contains(where: { $0.name.tokenKind == .publicKeyword ∨ $0.name.text == "open" }) {
             return true
         } else {
-            return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
+            return ancestors().contains(where: { ($0 is ProtocolDeclSyntax) ∨ ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
         }
     }
 

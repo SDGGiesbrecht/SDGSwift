@@ -21,8 +21,10 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Member {
             return nil
         }
         guard let binding = bindings.first,
-            let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text,
-            ¬name.hasPrefix("_") else {
+            let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text else {
+            return nil
+        }
+        if name.hasPrefix("_") {
             return nil
         }
         return VariableAPI(
