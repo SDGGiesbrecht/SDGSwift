@@ -143,6 +143,8 @@ extension Syntax {
         switch self {
         case let structure as StructDeclSyntax :
             return structure.typeAPI.flatMap({ [$0] }) ?? []
+        case let `class` as ClassDeclSyntax :
+            return `class`.typeAPI.flatMap({ [$0] }) ?? []
         case let enumeration as EnumDeclSyntax :
             return enumeration.typeAPI.flatMap({ [$0] }) ?? []
         case let typeAlias as TypealiasDeclSyntax :
