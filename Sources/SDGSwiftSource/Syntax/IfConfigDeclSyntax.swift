@@ -38,20 +38,31 @@ extension IfConfigDeclSyntax {
                             SyntaxFactory.makeToken(.leftParen),
                             ] + previousGroup.condition.tokens() + [
                             SyntaxFactory.makeToken(.rightParen),
-                            SyntaxFactory.makeToken(.spacedBinaryOperator("||"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                            SyntaxFactory.makeToken(.spacedBinaryOperator("||"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                            ])
+                    } else {
+                        composedConditionTokens.append(contentsOf: [
+                            SyntaxFactory.makeToken(.prefixOperator("!")),
                             SyntaxFactory.makeToken(.leftParen)
+                            ] + previousGroup.condition.tokens() + [
+                                SyntaxFactory.makeToken(.rightParen),
+                                SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
                             ])
                     }
                 }
 
-                if needsParentheses {
-                    composedConditionTokens.append(contentsOf: [
-                        SyntaxFactory.makeToken(.leftParen),
-                        ] + currentCondition.tokens() + [
-                            SyntaxFactory.makeToken(.rightParen)
-                        ])
+                if currentCondition.tokens().isEmpty {
+                    composedConditionTokens.removeLast()
                 } else {
-                    composedConditionTokens.append(contentsOf: currentCondition.tokens())
+                    if needsParentheses {
+                        composedConditionTokens.append(contentsOf: [
+                            SyntaxFactory.makeToken(.leftParen),
+                            ] + currentCondition.tokens() + [
+                                SyntaxFactory.makeToken(.rightParen)
+                            ])
+                    } else {
+                        composedConditionTokens.append(contentsOf: currentCondition.tokens())
+                    }
                 }
 
                 var composedConditions: Syntax?
