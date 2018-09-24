@@ -21,12 +21,12 @@ class Subclass : B̲a̲s̲e̲C̲l̲a̲s̲s̲ {
 import XCTest
 
 /// ...
-open class TestCase : XCTestCase {
+open class TestCase : X̲C̲T̲e̲s̲t̲C̲a̲s̲e̲ {
 
     static var initialized = false
     /// ...
     open override func setUp() {
-        super.setUp()
+        super.s̲e̲t̲U̲p̲()
     }
 
     /// :nodoc:

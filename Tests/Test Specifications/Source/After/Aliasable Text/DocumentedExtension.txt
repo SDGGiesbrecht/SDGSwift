@@ -21,20 +21,20 @@ extension B̲o̲o̲l̲ {
 
     /// A read‐only computed property with an internal setter.
     public internal(s̲e̲t̲) var readOnlyWithInternalSetter: B̲o̲o̲l̲ {
-        unknown {
+        get {
             return self
         }
-        unknown {
+        set {
             self = n̲e̲w̲V̲a̲l̲u̲e̲
         }
     }
 
     /// A read‐write computed property.
     public var readWriteComputedProperty: B̲o̲o̲l̲ {
-        unknown {
+        get {
             return self
         }
-        unknown {
+        set {
             self = n̲e̲w̲V̲a̲l̲u̲e̲
         }
     }
