@@ -38,10 +38,10 @@ class SDGSwiftConfigurationAPITests : TestCase {
             // @example(configurationLoading)
             // These refer to a real, working sample product.
             // See its source for more details:
-            // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.1.10/Sources/SampleConfiguration
+            // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.3.0/Sources/SampleConfiguration
             let product = "SampleConfiguration"
             let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-            let version = Version(0, 1, 10)
+            let version = Version(0, 3, 0)
             let type = SampleConfiguration.self // Import it first if necessary.
 
             // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -99,14 +99,14 @@ class SDGSwiftConfigurationAPITests : TestCase {
                     ]), with: "".scalars)
             }
             abbreviate(logEntry: "Fetching")
+            abbreviate(logEntry: "Completed resolution in")
             abbreviate(logEntry: "Cloning")
             abbreviate(logEntry: "Resolving")
             remove(logEntry: "Compile Swift Module") // These may occur out of order.
             remove(logEntry: "Linking")
             compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
         } catch {
-            // #warning(Not possible without 0.3 release.)
-            //XCTFail(error.localizedDescription)
+            XCTFail(error.localizedDescription)
         }
     }
 
