@@ -30,6 +30,7 @@ class SDGSwiftSourceAPITests : TestCase {
         for packageName in ["PackageToDocument", "PackageToDocument2"] {
             let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
             let parsed = try PackageAPI(package: package.package())
+            XCTAssertNotNil(parsed.documentation)
             let summary = parsed.summary.joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
             SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
