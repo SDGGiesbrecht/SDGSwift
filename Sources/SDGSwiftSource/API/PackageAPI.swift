@@ -50,7 +50,8 @@ public class PackageAPI : APIElement {
         }
         self.modules = modules
 
-        let declaration = manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}")?.parent ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")?.parent // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+        let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+        let declaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
         super.init(documentation: declaration?.documentation)
     }
 
