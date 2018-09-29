@@ -67,7 +67,7 @@ let package = Package(
         .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .branch("no‐spaces"),//.upToNextMinor(from: Version(0, 11, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .branch("no‐spaces")),//.upToNextMinor(from: Version(0, 11, 0))),
         // #warning(Pointing at branch.)
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0))),
         .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 40200, 0)))
