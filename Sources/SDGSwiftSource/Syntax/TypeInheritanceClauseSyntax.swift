@@ -1,5 +1,5 @@
 /*
- TypeInheritanceClauseSnytax.swift
+ TypeInheritanceClauseSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift

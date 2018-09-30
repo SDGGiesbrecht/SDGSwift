@@ -149,7 +149,7 @@ extension TokenSyntax {
 
         case .stringQuote, .multilineStringQuote:
             return "string‐punctuation"
-            
+
         case .stringSegment:
             return "text"
 
