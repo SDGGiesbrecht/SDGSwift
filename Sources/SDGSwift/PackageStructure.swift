@@ -56,7 +56,8 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     public func build(_ version: Build, to destination: URL, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let temporaryCloneLocation = FileManager.default.url(in: .temporary, at: "Package Clones/" + url.lastPathComponent)
+        // #workaround(Swift 4.2, The linker has trouble on Linux when spaces occur in paths.)
+        let temporaryCloneLocation = FileManager.default.url(in: .temporary, at: "Package_Clones/" + url.lastPathComponent)
 
         reportProgress("")
 
