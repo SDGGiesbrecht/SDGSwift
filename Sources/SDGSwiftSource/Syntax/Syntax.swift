@@ -113,9 +113,6 @@ extension Syntax {
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-        if isConditionalCompilation { // UnknownStmtSyntax or UnknownDeclSyntax
-            return conditionallyCompiledChildren
-        }
         switch self {
         case let structure as StructDeclSyntax :
             return structure.typeAPI.flatMap({ [$0] }) ?? []
@@ -144,6 +141,9 @@ extension Syntax {
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
             return conditionallyCompiledSection.conditionalAPI
         default:
+            if isUnidentifiedConditionalCompilation {
+                return unidentifiedConditionallyCompiledChildren
+            }
             return apiChildren()
         }
     }
@@ -191,21 +191,17 @@ extension Syntax {
 
     // MARK: - Compilation Conditions
 
-    private var compilerIfKeyword: TokenSyntax? {
+    internal var isUnidentifiedConditionalCompilation: Bool {
         if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
             let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
             token.tokenKind == .poundIfKeyword {
-            return token
+            return true
         }
-        return nil
+        return false
     }
 
-    internal var isConditionalCompilation: Bool {
-        return compilerIfKeyword ≠ nil
-    }
-
-    internal var conditionallyCompiledChildren: [APIElement] {
-        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? []
+    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
+        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
     }
 
     // MARK: - Disection
