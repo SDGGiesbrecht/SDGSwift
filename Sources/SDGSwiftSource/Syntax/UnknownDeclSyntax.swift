@@ -258,16 +258,6 @@ extension UnknownDeclSyntax {
         return functionKeyword ≠ nil
     }
 
-    internal func arguments(forSubscript: Bool) -> [ParameterAPI] {
-        for child in children where type(of: child) == Syntax.self {
-            let possibleArgumentList = child.argumentListAPI(forSubscript: forSubscript)
-            if ¬possibleArgumentList.isEmpty {
-                return possibleArgumentList
-            }
-        }
-        return []
-    }
-
     private var returnType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? SimpleTypeIdentifierSyntax {

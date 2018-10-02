@@ -189,18 +189,6 @@ extension Syntax {
         return self
     }
 
-    // MARK: - Argument List API
-
-    internal func argumentListAPI(forSubscript: Bool) -> [ParameterAPI] {
-        var arguments: [ParameterAPI] = []
-        for child in children {
-            if let argument = child.parameterAPI(forSubscript: forSubscript) {
-                arguments.append(argument)
-            }
-        }
-        return arguments
-    }
-
     // MARK: - Argument API
 
     private var possibleArgumentLabel: TokenSyntax? {
