@@ -26,7 +26,7 @@ extension FunctionParameterSyntax {
         if let different = secondName?.text {
             name = different
         } else {
-            name = firstName?.text ?? "" // Guaranteed in valid source.
+            name = firstName?.text ?? "" // @exempt(from: tests) Guaranteed in valid source.
             if forSubscript {
                 label = nil
             }
@@ -42,7 +42,7 @@ extension FunctionParameterSyntax {
             label: label,
             name: name,
             isInOut: isInOut,
-            type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // Guaranteed in valid source.
+            type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // @exempt(from: tests) Guaranteed in valid source.
             hasDefault: defaultArgument ≠ nil)
     }
 }
