@@ -126,7 +126,7 @@ extension Syntax {
         case let typeAlias as TypealiasDeclSyntax :
             return typeAlias.typeAPI.flatMap({ [$0] }) ?? []
         case let associatedType as AssociatedtypeDeclSyntax :
-            return associatedType.typeAPI.flatMap({ [$0] }) ?? [] // @exempt(from: tests) Never nil.
+            return associatedType.typeAPI.flatMap({ [$0] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
             return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
         case let `case` as EnumCaseDeclSyntax :
