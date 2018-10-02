@@ -22,7 +22,7 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Member {
         }
         guard let binding = bindings.first,
             let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text else {
-            return nil
+                return nil // @exempt(from: tests) Unreachable with valid source.
         }
         if name.hasPrefix("_") {
             return nil
