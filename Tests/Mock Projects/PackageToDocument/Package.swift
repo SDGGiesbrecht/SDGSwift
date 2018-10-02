@@ -19,10 +19,18 @@ let package = Package(
     name: "PackageToDocument",
     products: [
         /// Library documentation.
-        .library(name: "PrimaryProduct", targets: ["PrimaryModule"])
+        .library(name: "PrimaryProduct", targets: ["PrimaryModule"]),
+
+        .executable(name: "executable", targets: ["executable"]),
+
+        .library(name: "_Hidden", targets: ["Hidden"])
     ],
     targets: [
+        .target(name: "executable"),
+
         /// Module documentation.
-        .target( name: "PrimaryModule", dependencies: [])
+        .target(name: "PrimaryModule", dependencies: []),
+
+        .target(name: "Hidden")
     ]
 )

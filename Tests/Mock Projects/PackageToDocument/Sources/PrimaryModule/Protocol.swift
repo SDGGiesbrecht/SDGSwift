@@ -13,5 +13,9 @@
  */
 
 public protocol Protocol {
+    associatedtype _HiddenAssociatedType
+}
+
+public protocol _HiddenProtocol {
 
 }

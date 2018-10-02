@@ -83,15 +83,6 @@ extension TokenSyntax {
                     return .aliasable
                 }
 
-                if (parent.child(at: indexInParent − 1) as? TokenSyntax)?.tokenKind == .forKeyword {
-                    // Loop variable declaration.
-                    return .arbitrary
-                }
-                if (parent.child(at: indexInParent + 1) as? TokenSyntax)?.tokenKind == .colon {
-                    // Closure argument declaration.
-                    return .arbitrary
-                }
-
                 for ancestor in ancestors() {
                     switch ancestor {
                     case is IdentifierExprSyntax, is UnknownExprSyntax :
@@ -149,7 +140,7 @@ extension TokenSyntax {
 
         case .stringQuote, .multilineStringQuote:
             return "string‐punctuation"
-            
+
         case .stringSegment:
             return "text"
 
@@ -166,28 +157,6 @@ extension TokenSyntax {
             return true
         default:
             return false
-        }
-    }
-
-    internal var identifierText: String? {
-        switch tokenKind {
-        case .identifier(let text):
-            return text
-        default:
-            return nil
-        }
-    }
-
-    internal var identifierOrOperatorText: String? {
-        if let identifier = identifierText {
-            return identifier
-        } else {
-            switch tokenKind {
-            case .prefixOperator(let text), .postfixOperator(let text), .spacedBinaryOperator(let text), .unspacedBinaryOperator(let text):
-                return text
-            default:
-                return nil // @exempt(from: tests) Never nil for valid source.
-            }
         }
     }
 }

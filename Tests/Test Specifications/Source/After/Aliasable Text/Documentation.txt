@@ -171,6 +171,10 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     /// - Returns: A Boolean value.
     ///
     /// - Throws: An error.
+    ///
+    /// - List item.
+    /// - Warning: Undefined callout in the middle of a list.
+    /// - List item.
     public func performAction(on parameterOne: S̲t̲r̲i̲n̲g̲, with parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }

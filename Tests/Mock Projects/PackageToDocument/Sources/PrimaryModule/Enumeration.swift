@@ -1,5 +1,5 @@
 /*
- Structure.swift
+ Enumeration.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct Structure {
-    public init() {}
-    public let _hiddenProperty = 0
+public enum Enumeration {
+    case _hidden
 }

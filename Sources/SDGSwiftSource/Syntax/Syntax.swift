@@ -91,10 +91,10 @@ extension Syntax {
             var identifiers = internalIdentifiers
             switch self {
             case let function as FunctionDeclSyntax :
-                let parameters = function.signature.input.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
+                let parameters = function.signature.input.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             case let `subscript` as SubscriptDeclSyntax :
-                let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.identifierText }).compactMap({ $0 })
+                let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             default:
                 break
@@ -110,39 +110,9 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    internal func _isPublic() -> Bool {
-
-        let hasPublicKeyword = children.contains(where: { node in
-            if let modifier = node as? DeclModifierSyntax,
-                modifier.name.tokenKind == .publicKeyword ∨ modifier.name.text == "open" {
-                return true
-            }
-            return false
-        })
-
-        if hasPublicKeyword {
-            return true
-        } else {
-            return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
-        }
-    }
-
-    internal func _isOpen() -> Bool {
-        return children.contains(where: { node in
-            if let modifier = node as? DeclModifierSyntax,
-                modifier.name.text == "open" {
-                return true
-            }
-            return false
-        })
-    }
-
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-        if isConditionalCompilation { // UnknownStmtSyntax or UnknownDeclSyntax
-            return conditionallyCompiledChildren
-        }
         switch self {
         case let structure as StructDeclSyntax :
             return structure.typeAPI.flatMap({ [$0] }) ?? []
@@ -170,31 +140,10 @@ extension Syntax {
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
             return conditionallyCompiledSection.conditionalAPI
-        case let unknown as UnknownDeclSyntax :
-            if unknown.isTypeSyntax {
-                return unknown.typeAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isTypeAliasSyntax {
-                return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isAssociatedTypeSyntax {
-                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isProtocolSyntax {
-                return unknown.protocolAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isInitializerSyntax {
-                return unknown.initializerAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isVariableSyntax {
-                return unknown.variableAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isSubscriptSyntax {
-                return unknown.subscriptAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isFunctionSyntax {
-                return unknown.functionAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isCaseSyntax {
-                return unknown.caseAPI.flatMap({[$0]}) ?? []
-            } else if unknown.isExtensionSyntax {
-                return unknown.extensionAPI.flatMap({ [$0] }) ?? []
-            } else {
-                return apiChildren()
-            }
         default:
+            if isUnidentifiedConditionalCompilation {
+                return unidentifiedConditionallyCompiledChildren
+            }
             return apiChildren()
         }
     }
@@ -240,94 +189,19 @@ extension Syntax {
         return self
     }
 
-    // MARK: - Argument List API
+    // MARK: - Compilation Conditions
 
-    internal func argumentListAPI(forSubscript: Bool) -> [ParameterAPI] {
-        var arguments: [ParameterAPI] = []
-        for child in children {
-            if let argument = child.parameterAPI(forSubscript: forSubscript) {
-                arguments.append(argument)
-            }
-        }
-        return arguments
-    }
-
-    // MARK: - Argument API
-
-    private var possibleArgumentLabel: TokenSyntax? {
-        for child in children {
-            if let token = child as? TokenSyntax,
-                token.identifierText ≠ nil {
-                return token
-            }
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
-    private var argumentType: TypeReferenceAPI? {
-        for child in children {
-            if let type = child as? TypeSyntax {
-                return type.reference
-            }
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
-    private var isInOut: Bool {
-        if let unknownType = children.first(where: ({ $0 is UnknownTypeSyntax })),
-            let type = unknownType as? UnknownTypeSyntax,
-            type.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .inoutKeyword }) {
+    internal var isUnidentifiedConditionalCompilation: Bool {
+        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
+            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
+            token.tokenKind == .poundIfKeyword {
             return true
         }
         return false
     }
 
-    private var hasDefault: Bool {
-        return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
-    }
-
-    private func parameterAPI(forSubscript: Bool) -> ParameterAPI? {
-        if let possibleLabelSyntax = possibleArgumentLabel,
-            let possibleLabel: String = possibleLabelSyntax.identifierText,
-            let type = argumentType {
-            var label: String? = possibleLabel
-
-            var name: String
-            if let differentName = (child(at: possibleLabelSyntax.indexInParent + 1) as? TokenSyntax)?.identifierText {
-                name = differentName
-            } else {
-                name = possibleLabel
-                if forSubscript {
-                    label = nil
-                }
-            }
-
-            if (child(at: possibleLabelSyntax.indexInParent − 1) as? TokenSyntax)?.tokenKind == .wildcardKeyword {
-                label = nil
-            }
-
-            return ParameterAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
-    // MARK: - Compilation Conditions
-
-    private var compilerIfKeyword: TokenSyntax? {
-        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
-            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
-            token.tokenKind == .poundIfKeyword {
-            return token
-        }
-        return nil
-    }
-
-    internal var isConditionalCompilation: Bool {
-        return compilerIfKeyword ≠ nil
-    }
-
-    internal var conditionallyCompiledChildren: [APIElement] {
-        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? []
+    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
+        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
     }
 
     // MARK: - Disection

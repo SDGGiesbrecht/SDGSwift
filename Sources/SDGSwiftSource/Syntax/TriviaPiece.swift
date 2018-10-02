@@ -29,15 +29,11 @@ extension TriviaPiece {
         case .blockComment:
             return BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
-            let text = self.text
-            if text.hasPrefix("/\u{2A}*") {
-                return TriviaPiece.docBlockComment(text).syntax(siblings: siblings, index: index)
-            }
             return LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
             return BlockDocumentationSyntax(source: text)
         case .garbageText:
-            return ExtendedTokenSyntax(text: text, kind: .source)
+            return ExtendedTokenSyntax(text: text, kind: .source) // @exempt(from: tests)
         }
     }
 

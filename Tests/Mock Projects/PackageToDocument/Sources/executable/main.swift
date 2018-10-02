@@ -1,5 +1,5 @@
 /*
- SimpleTypeIdentifierSyntax.swift
+ main.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,9 +12,4 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension SimpleTypeIdentifierSyntax {
-
-    internal var conformance: ConformanceAPI {
-        return ConformanceAPI(protocolName: name.text)
-    }
-}
+print("Hello, world!")

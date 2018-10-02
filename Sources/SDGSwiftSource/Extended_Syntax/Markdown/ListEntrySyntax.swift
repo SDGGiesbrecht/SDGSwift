@@ -26,7 +26,6 @@ public class ListEntrySyntax : MarkdownSyntax {
         let contentStart = node.lowerBound(in: documentation)
         let contentEnd = node.upperBound(in: documentation)
         if let whitespace = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 1 ..< Int.max)) {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let bullet = ExtendedTokenSyntax(text: String(documentation.scalars[contentStart ..< whitespace.range.lowerBound]), kind: .bullet)
             self.bullet = bullet
@@ -36,7 +35,7 @@ public class ListEntrySyntax : MarkdownSyntax {
             self.indent = space
             precedingChildren.append(space)
         } else {
-            bullet = nil
+            bullet = nil // @exempt(from: tests) Unreachable with valid syntax.
             indent = nil
         }
 
@@ -44,7 +43,7 @@ public class ListEntrySyntax : MarkdownSyntax {
 
         // Detect callouts.
         search: for index in children.indices {
-            let child = children[index] // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            let child = children[index]
             if let token = child as? ExtendedTokenSyntax,
                 token.kind ∈ Set([.bullet, .whitespace]) {
                 continue
@@ -92,7 +91,7 @@ public class ListEntrySyntax : MarkdownSyntax {
                     children.insert(contentsOf: [callout, colon], at: index)
 
                     let colonIndex = children.index(where: { $0 === colon })!
-                    let contentsIndex = children.index(after: colonIndex) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+                    let contentsIndex = children.index(after: colonIndex)
 
                     asCallout = CalloutSyntax(
                         bullet: self.bullet,

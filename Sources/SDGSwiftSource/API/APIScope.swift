@@ -46,7 +46,7 @@ public class APIScope : APIElement {
                     methods.append(method)
                 }
             default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug {
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified API element: \(Swift.type(of: element))")
                 }
             }

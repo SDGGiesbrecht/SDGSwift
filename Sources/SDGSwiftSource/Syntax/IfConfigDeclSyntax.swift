@@ -40,10 +40,10 @@ extension IfConfigDeclSyntax {
                         needsParentheses = true
                         if previousGroup.elements.contains(apiElement) {
                             composedConditionTokens.append(contentsOf: [
-                                SyntaxFactory.makeToken(.leftParen),
+                                SyntaxFactory.makeToken(.leftParen)
                                 ] + previousGroup.condition.tokens() + [
                                     SyntaxFactory.makeToken(.rightParen),
-                                    SyntaxFactory.makeToken(.spacedBinaryOperator("||"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{7C}|"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
                                 ])
                         } else {
                             composedConditionTokens.append(contentsOf: [
@@ -51,7 +51,7 @@ extension IfConfigDeclSyntax {
                                 SyntaxFactory.makeToken(.leftParen)
                                 ] + previousGroup.condition.tokens() + [
                                     SyntaxFactory.makeToken(.rightParen),
-                                    SyntaxFactory.makeToken(.spacedBinaryOperator("&&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
+                                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
                                 ])
                         }
                     }
@@ -62,7 +62,7 @@ extension IfConfigDeclSyntax {
                     } else {
                         if needsParentheses {
                             composedConditionTokens.append(contentsOf: [
-                                SyntaxFactory.makeToken(.leftParen),
+                                SyntaxFactory.makeToken(.leftParen)
                                 ] + currentCondition.tokens() + [
                                     SyntaxFactory.makeToken(.rightParen)
                                 ])

@@ -31,11 +31,10 @@ public class HeadingSyntax : MarkdownSyntax {
 
         var lineStart = documentation.scalars.startIndex
         if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
-            lineStart = newline.range.upperBound // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            lineStart = newline.range.upperBound
         }
 
         if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
@@ -54,7 +53,7 @@ public class HeadingSyntax : MarkdownSyntax {
 
             let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
             if let newline = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
-                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
                 followingChildren.append(newlineToken)
                 self.newline = newlineToken
 
@@ -72,11 +71,11 @@ public class HeadingSyntax : MarkdownSyntax {
                     self.trailingNewlines = trailingNewlines
                     followingChildren.append(trailingNewlines)
                 } else {
-                    self.trailingNewlines = nil
+                    self.trailingNewlines = nil // @exempt(from: tests) Unreachable with valid syntax.
                 }
 
             } else {
-                self.newline = nil
+                self.newline = nil // @exempt(from: tests) Unreachable with valid syntax.
                 underline = nil
                 trailingNewlines = nil
             }

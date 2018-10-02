@@ -2,6 +2,7 @@ PackageToDocument • Package(name: "PackageToDocument")
  PrimaryProduct • .library(name: "PrimaryProduct")
   PrimaryModule
  PrimaryModule • .target(name: "PrimaryModule")
+  Enumeration • enum Enumeration
   Structure • struct Structure
    init() • init()
   (Bool)

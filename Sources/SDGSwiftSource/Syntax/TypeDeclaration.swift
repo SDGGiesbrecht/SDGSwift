@@ -29,6 +29,11 @@ extension TypeDeclaration {
             return nil
         }
 
+        let name = identifier.text
+        if name.hasPrefix("_") {
+            return nil
+        }
+
         let (genericTypes, genericConstraints) = genericParameterClause?.typesAndConstraints ?? ([], [])
 
         return TypeAPI(
@@ -36,7 +41,7 @@ extension TypeDeclaration {
             isOpen: isOpen,
             keyword: Self.keyword,
             name: TypeReferenceAPI(
-                name: identifier.text,
+                name: name,
                 genericArguments: genericTypes),
             conformances: inheritanceClause?.conformances ?? [],
             constraints: genericConstraints + (genericWhereClause?.constraints ?? []),
