@@ -15,3 +15,7 @@
 public protocol Protocol {
 
 }
+
+public protocol _HiddenProtocol {
+
+}
