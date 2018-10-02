@@ -33,44 +33,6 @@ extension UnknownDeclSyntax {
         return typeKeyword ≠ nil
     }
 
-    private var conformances: [ConformanceAPI] {
-        var result: [ConformanceAPI] = []
-        var foundConformancesSection = false
-        search: for child in children.reversed() {
-            `switch`: switch child {
-            case is MemberDeclBlockSyntax :
-                foundConformancesSection = true
-            case is GenericWhereClauseSyntax :
-                break `switch`
-            case let type as SimpleTypeIdentifierSyntax :
-                if foundConformancesSection {
-                    if let `extension` = extensionKeyword {
-                        if type.indexInParent ≠ `extension`.indexInParent + 1 {
-                            result.append(type.conformance)
-                        } else {
-                            break search
-                        }
-                    } else {
-                        result.append(type.conformance)
-                    }
-                }
-            case let token as TokenSyntax :
-                if token.tokenKind == .comma
-                    ∨ token.tokenKind == .leftBrace
-                    ∨ token.tokenKind == .rightBrace {
-                    break `switch`
-                } else {
-                    fallthrough
-                }
-            default:
-                if foundConformancesSection {
-                    break search
-                }
-            }
-        }
-        return result
-    }
-
     private func genericArguments(of typeName: TokenSyntax) -> ([TypeReferenceAPI], [ConstraintAPI]) {
         guard let next = child(at: typeName.indexInParent + 1),
             (next as? TokenSyntax)?.tokenKind == .leftAngle else {
