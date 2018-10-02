@@ -189,30 +189,6 @@ extension Syntax {
         return self
     }
 
-    // MARK: - Argument API
-
-    private var argumentType: TypeReferenceAPI? {
-        for child in children {
-            if let type = child as? TypeSyntax {
-                return type.reference
-            }
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
-    private var isInOut: Bool {
-        if let unknownType = children.first(where: ({ $0 is UnknownTypeSyntax })),
-            let type = unknownType as? UnknownTypeSyntax,
-            type.children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .inoutKeyword }) {
-            return true
-        }
-        return false
-    }
-
-    private var hasDefault: Bool {
-        return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
-    }
-
     // MARK: - Compilation Conditions
 
     private var compilerIfKeyword: TokenSyntax? {
