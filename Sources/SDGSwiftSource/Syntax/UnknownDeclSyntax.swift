@@ -111,20 +111,6 @@ extension UnknownDeclSyntax {
         return []
     }
 
-    internal var typeAPI: TypeAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = typeKeyword,
-            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText,
-            ¬name.hasPrefix("_") {
-            let (genericArguments, constraints) = self.genericArguments(of: nameToken)
-            return TypeAPI(documentation: documentation, isOpen: _isOpen(), keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: genericArguments), conformances: conformances, constraints: constraints + self.constraints, children: apiChildren())
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
     // MARK: - Type Alias Syntax
 
     private var typeAliasKeyword: TokenSyntax? {
@@ -169,15 +155,6 @@ extension UnknownDeclSyntax {
         return associatedTypeKeyword ≠ nil
     }
 
-    internal var associatedTypeAPI: TypeAPI? {
-        if let keyword = associatedTypeKeyword,
-            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
-            return TypeAPI(documentation: documentation, isOpen: false, keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: conformances, constraints: constraints + self.constraints, children: [])
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
     // MARK: - Protocol Syntax
 
     private var protocolKeyword: TokenSyntax? {
@@ -192,19 +169,6 @@ extension UnknownDeclSyntax {
 
     internal var isProtocolSyntax: Bool {
         return protocolKeyword ≠ nil
-    }
-
-    internal var protocolAPI: ProtocolAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = protocolKeyword,
-            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText,
-            ¬name.hasPrefix("_") {
-            return ProtocolAPI(documentation: documentation, name: name, conformances: conformances, constraints: constraints, children: apiChildren())
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Initializer Syntax
@@ -476,17 +440,5 @@ extension UnknownDeclSyntax {
 
     internal var isExtensionSyntax: Bool {
         return extensionKeyword ≠ nil
-    }
-
-    internal var extensionAPI: ExtensionAPI? {
-        if let keyword = extensionKeyword,
-            let type = child(at: keyword.indexInParent + 1) as? SimpleTypeIdentifierSyntax {
-            let children = apiChildren()
-            let conformances = self.conformances
-            if ¬children.isEmpty ∨ ¬conformances.isEmpty {
-                return ExtensionAPI(type: type.reference, conformances: conformances, constraints: constraints, children: children)
-            }
-        } // @exempt(from: tests) Theoretically unreachable.
-        return nil
     }
 }
