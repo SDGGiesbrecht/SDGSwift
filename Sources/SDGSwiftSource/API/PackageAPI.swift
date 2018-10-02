@@ -33,7 +33,7 @@ public class PackageAPI : APIElement {
 
         var libraries: [LibraryAPI] = []
         for product in package.products where ¬product.name.hasPrefix("_") {
-            switch product.type { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            switch product.type {
             case .library:
                 libraries.append(try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress))
             case .executable, .test:
@@ -44,13 +44,13 @@ public class PackageAPI : APIElement {
 
         var modules: [ModuleAPI] = []
         for library in libraries {
-            for module in library.modules where ¬modules.contains(module) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            for module in library.modules where ¬modules.contains(module) {
                 modules.append(module)
             }
         }
         self.modules = modules
 
-        let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}")) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+        let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let declaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
         super.init(documentation: declaration?.documentation)
     }
