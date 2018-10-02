@@ -25,11 +25,10 @@ public class QuotationSyntax : MarkdownSyntax {
 
         var lineStart = documentation.scalars.startIndex
         if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
-            lineStart = newline.range.upperBound // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            lineStart = newline.range.upperBound
         }
 
         if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: ">".scalars) {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .quotationDelimiter)
             self.delimiter = delimiterSyntax
@@ -39,7 +38,7 @@ public class QuotationSyntax : MarkdownSyntax {
             self.indent = indent
             precedingChildren.append(indent)
         } else {
-            delimiter = nil
+            delimiter = nil // @exempt(from: tests) Unreachable with valid source.
             indent = nil
         }
 
@@ -48,7 +47,6 @@ public class QuotationSyntax : MarkdownSyntax {
         if let last = children.last,
             let lastParagraph = last as? ParagraphSyntax,
             lastParagraph.text.hasPrefix("―") {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             lastParagraph.isCitation = true
         }
     }
