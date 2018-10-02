@@ -110,10 +110,9 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     public static func < (precedingValue: TypeReferenceAPI, followingValue: TypeReferenceAPI) -> Bool {
         if precedingValue.name == followingValue.name {
-            return precedingValue.genericArguments.lexicographicallyPrecedes(followingValue.genericArguments) // @exempt(from: tests) Unreachable with valid source.
+            return precedingValue.declaration.source() < followingValue.declaration.source() // @exempt(from: tests) Unreachable with valid source.
         } else {
-            // #workaround(Swift 4.1.2, Order differs between operating systems.)
-            return precedingValue.name.scalars.lexicographicallyPrecedes(followingValue.name.scalars)
+            return precedingValue.name < followingValue.name
         }
     }
 
