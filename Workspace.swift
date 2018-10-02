@@ -53,3 +53,8 @@ configuration._validateSDGStandards()
 configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
+
+#if os(Linux)
+// #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
+configuration.testing.prohibitCompilerWarnings = false
+#endif
