@@ -17,22 +17,6 @@ import SDGLogic
 
 extension UnknownDeclSyntax {
 
-    // MARK: - Protocol Syntax
-
-    private var protocolKeyword: TokenSyntax? {
-        for child in children {
-            if let token = child as? TokenSyntax,
-                token.tokenKind == .protocolKeyword {
-                return token
-            }
-        }
-        return nil
-    }
-
-    internal var isProtocolSyntax: Bool {
-        return protocolKeyword ≠ nil
-    }
-
     // MARK: - Initializer Syntax
 
     private var initializerKeyword: TokenSyntax? {
