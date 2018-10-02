@@ -16,7 +16,7 @@ extension EnumCaseDeclSyntax {
 
     var caseAPI: CaseAPI? {
         guard let element = elements.first else {
-            return nil
+            return nil // @exempt(from: tests) Unreachable with valid source.
         }
 
         let name = element.identifier.text
