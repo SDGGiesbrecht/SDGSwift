@@ -29,8 +29,7 @@ public enum Build : Equatable, TextualPlaygroundDisplay {
 
     // MARK: - CustomStringConvertible
 
-    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
-    // @documentation(SDGCornerstone.CustomStringConvertible.description)
+    // #documentation(SDGCornerstone.CustomStringConvertible.description)
     /// A textual representation of the instance.
     public var description: String {
         switch self {
@@ -48,8 +47,7 @@ public enum Build : Equatable, TextualPlaygroundDisplay {
 
     // MARK: - Equatable
 
-    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
-    // @documentation(SDGCornerstone.Equatable.==)
+    // #documentation(SDGCornerstone.Equatable.==)
     /// Returns `true` if the two values are equal.
     ///
     /// - Parameters:

@@ -128,8 +128,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Comparable
 
-    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
-    // @documentation(SDGCornerstone.Comparable.<)
+    // #documentation(SDGCornerstone.Comparable.<)
     /// Returns `true` if the preceding value is less than the following value.
     ///
     /// - Parameters:
@@ -161,8 +160,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - ExpressibleByStringLiteral
 
-    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
-    // @documentation(SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:))
+    // #documentation(SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:))
     /// Creates an instance from a string literal.
     ///
     /// - Parameters:
@@ -181,8 +179,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Hashable
 
-    // #workaround(SDGCornerstone 0.10.1, Detatched until available again.)
-    // @documentation(SDGCornerstone.Hashable.hashValue)
+    // #documentation(SDGCornerstone.Hashable.hashValue)
     /// The hash value.
     public var hashValue: Int {
         return string().hashValue

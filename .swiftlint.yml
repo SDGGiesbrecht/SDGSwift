@@ -10,7 +10,7 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-# #workaround(workspace version 0.11.1, Until SwiftLint is deprecated.)
+# #workaround(workspace version 0.13.1, Until SwiftLint is deprecated.)
 
 excluded:
   # ••••••• Tool Compatibility •••••••
