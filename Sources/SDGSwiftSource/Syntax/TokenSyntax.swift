@@ -83,15 +83,6 @@ extension TokenSyntax {
                     return .aliasable
                 }
 
-                if (parent.child(at: indexInParent − 1) as? TokenSyntax)?.tokenKind == .forKeyword {
-                    // Loop variable declaration.
-                    return .arbitrary
-                }
-                if (parent.child(at: indexInParent + 1) as? TokenSyntax)?.tokenKind == .colon {
-                    // Closure argument declaration.
-                    return .arbitrary
-                }
-
                 for ancestor in ancestors() {
                     switch ancestor {
                     case is IdentifierExprSyntax, is UnknownExprSyntax :
