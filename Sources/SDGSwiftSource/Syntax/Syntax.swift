@@ -191,16 +191,6 @@ extension Syntax {
 
     // MARK: - Argument API
 
-    private var possibleArgumentLabel: TokenSyntax? {
-        for child in children {
-            if let token = child as? TokenSyntax,
-                token.identifierText ≠ nil {
-                return token
-            }
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
     private var argumentType: TypeReferenceAPI? {
         for child in children {
             if let type = child as? TypeSyntax {
@@ -221,31 +211,6 @@ extension Syntax {
 
     private var hasDefault: Bool {
         return children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .equal })
-    }
-
-    private func parameterAPI(forSubscript: Bool) -> ParameterAPI? {
-        if let possibleLabelSyntax = possibleArgumentLabel,
-            let possibleLabel: String = possibleLabelSyntax.identifierText,
-            let type = argumentType {
-            var label: String? = possibleLabel
-
-            var name: String
-            if let differentName = (child(at: possibleLabelSyntax.indexInParent + 1) as? TokenSyntax)?.identifierText {
-                name = differentName
-            } else {
-                name = possibleLabel
-                if forSubscript {
-                    label = nil
-                }
-            }
-
-            if (child(at: possibleLabelSyntax.indexInParent − 1) as? TokenSyntax)?.tokenKind == .wildcardKeyword {
-                label = nil
-            }
-
-            return ParameterAPI(label: label, name: name, isInOut: isInOut, type: type, hasDefault: hasDefault)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Compilation Conditions
