@@ -110,16 +110,6 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    internal func _isOpen() -> Bool {
-        return children.contains(where: { node in
-            if let modifier = node as? DeclModifierSyntax,
-                modifier.name.text == "open" {
-                return true
-            }
-            return false
-        })
-    }
-
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
