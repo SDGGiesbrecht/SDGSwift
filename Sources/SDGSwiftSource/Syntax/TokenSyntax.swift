@@ -159,26 +159,4 @@ extension TokenSyntax {
             return false
         }
     }
-
-    internal var identifierText: String? {
-        switch tokenKind {
-        case .identifier(let text):
-            return text
-        default:
-            return nil
-        }
-    }
-
-    internal var identifierOrOperatorText: String? {
-        if let identifier = identifierText {
-            return identifier
-        } else {
-            switch tokenKind {
-            case .prefixOperator(let text), .postfixOperator(let text), .spacedBinaryOperator(let text), .unspacedBinaryOperator(let text):
-                return text
-            default:
-                return nil // @exempt(from: tests) Never nil for valid source.
-            }
-        }
-    }
 }

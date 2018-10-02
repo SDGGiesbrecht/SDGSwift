@@ -303,9 +303,8 @@ extension UnknownDeclSyntax {
     internal var caseAPI: CaseAPI? {
         if let keyword = caseKeyword,
             let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText,
-            ¬name.hasPrefix("_") {
-            return CaseAPI(documentation: documentation, name: name, associatedValues: associatedValues)
+            ¬nameToken.text.hasPrefix("_") {
+            return CaseAPI(documentation: documentation, name: nameToken.text, associatedValues: associatedValues)
         }
         return nil // @exempt(from: tests) Theoretically unreachable.
     }
