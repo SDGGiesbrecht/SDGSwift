@@ -170,30 +170,6 @@ extension Syntax {
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
             return conditionallyCompiledSection.conditionalAPI
-        case let unknown as UnknownDeclSyntax :
-            if unknown.isTypeSyntax {
-                return unknown.typeAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isTypeAliasSyntax {
-                return unknown.typeAliasAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isAssociatedTypeSyntax {
-                return unknown.associatedTypeAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isProtocolSyntax {
-                return unknown.protocolAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isInitializerSyntax {
-                return unknown.initializerAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isVariableSyntax {
-                return unknown.variableAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isSubscriptSyntax {
-                return unknown.subscriptAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isFunctionSyntax {
-                return unknown.functionAPI.flatMap({ [$0] }) ?? []
-            } else if unknown.isCaseSyntax {
-                return unknown.caseAPI.flatMap({[$0]}) ?? []
-            } else if unknown.isExtensionSyntax {
-                return unknown.extensionAPI.flatMap({ [$0] }) ?? []
-            } else {
-                return apiChildren()
-            }
         default:
             return apiChildren()
         }
