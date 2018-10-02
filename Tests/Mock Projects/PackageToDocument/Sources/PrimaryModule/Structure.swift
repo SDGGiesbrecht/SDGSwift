@@ -14,4 +14,5 @@
 
 public struct Structure {
     public init() {}
+    public let _hiddenProperty = 0
 }
