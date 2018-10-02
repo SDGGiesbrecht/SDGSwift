@@ -89,18 +89,6 @@ extension UnknownDeclSyntax {
         return typeAliasKeyword ≠ nil
     }
 
-    internal var typeAliasAPI: TypeAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = typeAliasKeyword,
-            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText {
-            return TypeAPI(documentation: documentation, isOpen: false, keyword: keyword.tokenKind, name: TypeReferenceAPI(name: name, genericArguments: []), conformances: [], constraints: [], children: [])
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
     // MARK: - Associated Type Syntax
 
     private var associatedTypeKeyword: TokenSyntax? {
@@ -147,22 +135,6 @@ extension UnknownDeclSyntax {
 
     internal var isInitializerSyntax: Bool {
         return initializerKeyword ≠ nil
-    }
-
-    internal var initializerAPI: InitializerAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = initializerKeyword {
-            let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            let isFailable = (child(at: keyword.indexInParent + 1) as? TokenSyntax)?.tokenKind == .postfixQuestionMark
-            let arguments = self.arguments(forSubscript: false)
-            if arguments.first?.label?.hasPrefix("_") == true {
-                return nil
-            }
-            return InitializerAPI(documentation: documentation, isFailable: isFailable, arguments: arguments, throws: `throws`)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Variable Syntax
@@ -250,20 +222,6 @@ extension UnknownDeclSyntax {
         }
     }
 
-    internal var variableAPI: VariableAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = variableKeyword,
-            let nameToken = (self.child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierText,
-            ¬name.hasPrefix("_") {
-            let type = (child(at: nameToken.indexInParent + 2) as? TypeSyntax)?.reference
-            return VariableAPI(documentation: documentation, typePropertyKeyword: typePropertyKeyword, name: name, type: type, isSettable: isSettable)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
-    }
-
     // MARK: - Subscript Syntax
 
     private var typeMethodKeyword: TokenKind? {
@@ -282,17 +240,6 @@ extension UnknownDeclSyntax {
 
     internal var isSubscriptSyntax: Bool {
         return subscriptKeyword ≠ nil
-    }
-
-    internal var subscriptAPI: SubscriptAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if isSubscriptSyntax,
-            let returnType = self.returnType {
-            return SubscriptAPI(documentation: documentation, arguments: arguments(forSubscript: true), returnType: returnType, isSettable: isSettable)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Function Syntax
@@ -328,21 +275,6 @@ extension UnknownDeclSyntax {
             }
         }
         return nil
-    }
-
-    internal var functionAPI: FunctionAPI? {
-        if ¬_isPublic() {
-            return nil
-        }
-        if let keyword = functionKeyword,
-            let nameToken = (child(at: keyword.indexInParent + 1) as? TokenSyntax),
-            let name = nameToken.identifierOrOperatorText,
-            ¬name.hasPrefix("_") {
-            let isMutating = children.contains(where: { ($0 as? DeclModifierSyntax)?.name.identifierText == "mutating" })
-            let `throws` = children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .throwsKeyword })
-            return FunctionAPI(documentation: documentation, isOpen: _isOpen(), typeMethodKeyword: typeMethodKeyword, isMutating: isMutating, name: name, arguments: arguments(forSubscript: false), throws: `throws`, returnType: returnType, isOperator: nameToken.isOperator)
-        }
-        return nil // @exempt(from: tests) Theoretically unreachable.
     }
 
     // MARK: - Case Syntax

@@ -110,23 +110,6 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    internal func _isPublic() -> Bool {
-
-        let hasPublicKeyword = children.contains(where: { node in
-            if let modifier = node as? DeclModifierSyntax,
-                modifier.name.tokenKind == .publicKeyword ∨ modifier.name.text == "open" {
-                return true
-            }
-            return false
-        })
-
-        if hasPublicKeyword {
-            return true
-        } else {
-            return ancestors().contains(where: { ($0 as? UnknownDeclSyntax)?.isProtocolSyntax == true })
-        }
-    }
-
     internal func _isOpen() -> Bool {
         return children.contains(where: { node in
             if let modifier = node as? DeclModifierSyntax,
