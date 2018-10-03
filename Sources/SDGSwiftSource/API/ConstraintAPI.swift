@@ -64,8 +64,7 @@ public enum ConstraintAPI : Comparable {
         case (.sameType, .conformance):
             return false
         default:
-            // #workaround(Swift 4.1.2, Order differs between operating systems.)
-            return precedingValue.syntax(trailingComma: false).source().scalars.lexicographicallyPrecedes(followingValue.syntax(trailingComma: false).source().scalars)
+            return precedingValue.syntax(trailingComma: false).source() < followingValue.syntax(trailingComma: false).source()
         }
     }
 

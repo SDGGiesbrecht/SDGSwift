@@ -95,11 +95,7 @@ class SDGSwiftSourceAPITests : TestCase {
             let originalSource = try String(from: url)
             var roundTripSource = ""
             sourceFile.write(to: &roundTripSource)
-            if ¬roundTripSource.contains("unknown {")
-                ∧ ¬roundTripSource.contains("interpolated")
-                ∧ ¬roundTripSource.contains("{ unknown") { // #workaround(Swift 4.1.2, SwiftSyntax does not recognize getters and setters properly yet.)
-                XCTAssertEqual(roundTripSource, originalSource)
-            }
+            XCTAssertEqual(roundTripSource, originalSource)
 
             TextFreedomHighlighter.targetTestFreedom = .arbitrary
             try TextFreedomHighlighter().compare(syntax: sourceFile, parsedFrom: url, againstSpecification: "Arbitrary Text", overwriteSpecificationInsteadOfFailing: false)
