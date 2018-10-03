@@ -41,7 +41,6 @@ public enum SwiftCompiler {
     private static func compilerLocation(for swift: URL) -> URL {
         return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
     }
-    /// :nodoc:
     public static func _compilerLocation() throws -> URL {
         return compilerLocation(for: try location())
     }
@@ -49,7 +48,6 @@ public enum SwiftCompiler {
     private static func packageManagerLibraries(for swift: URL) -> URL {
         return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/swift/pm")
     }
-    /// :nodoc:
     public static func _packageManagerLibraries() throws -> URL {
         return packageManagerLibraries(for: try location())
     }
@@ -94,7 +92,6 @@ public enum SwiftCompiler {
         return try tool().executable
     }
 
-    /// :nodoc:
     public static func _ignoreProgress(_ output: String) {}
 
     /// Builds the package.
