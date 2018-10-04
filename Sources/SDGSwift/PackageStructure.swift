@@ -86,6 +86,7 @@ public struct Package : TransparentWrapper {
             let filename = component.lastPathComponent
 
             if filename ≠ "ModuleCache",
+                ¬filename.hasSuffix(".product"),
                 ¬filename.hasSuffix(".build"),
                 ¬filename.hasSuffix(".swiftdoc"),
                 ¬filename.hasSuffix(".swiftmodule") {
