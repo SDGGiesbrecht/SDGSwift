@@ -43,18 +43,43 @@ public class CaseAPI : APIElement {
 
     public override var declaration: Syntax {
 
-        var tokens: [TokenSyntax] = [
-            SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
-            SyntaxFactory.makeToken(.identifier(_name))
-        ]
+        var associatedValue: ParameterClauseSyntax?
         if ¬associatedValues.isEmpty {
-            tokens.append(SyntaxFactory.makeToken(.leftParen))
-            tokens.append(contentsOf: associatedValues.map({ $0.declaration.tokens() }).joined(separator: [SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))]))
-            tokens.append(SyntaxFactory.makeToken(.rightParen))
+            var associatedValueSyntax: [FunctionParameterSyntax] = []
+            let last = associatedValues.indices.last!
+            for index in associatedValues.indices {
+                let associated = associatedValues[index]
+                var trailingComma: TokenSyntax?
+                if index ≠ last {
+                    trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+                }
+                associatedValueSyntax.append(SyntaxFactory.makeFunctionParameter(
+                    attributes: nil,
+                    firstName: nil,
+                    secondName: nil,
+                    colon: nil,
+                    type: associated.declaration,
+                    ellipsis: nil,
+                    defaultArgument: nil,
+                    trailingComma: trailingComma))
+            }
+            associatedValue = SyntaxFactory.makeParameterClause(
+                leftParen: SyntaxFactory.makeToken(.leftParen),
+                parameterList: SyntaxFactory.makeFunctionParameterList(associatedValueSyntax),
+                rightParen: SyntaxFactory.makeToken(.rightParen))
         }
 
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
-        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+        return SyntaxFactory.makeEnumCaseDecl(
+            attributes: nil,
+            modifiers: nil,
+            caseKeyword: SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
+            elements: SyntaxFactory.makeEnumCaseElementList([
+                SyntaxFactory.makeEnumCaseElement(
+                    identifier: SyntaxFactory.makeToken(.identifier(_name)),
+                    associatedValue: associatedValue,
+                    rawValue: nil,
+                    trailingComma: nil)
+                ]))
     }
 
     public override var identifierList: Set<String> {
