@@ -116,12 +116,6 @@ public struct TypeReferenceAPI : Comparable, Hashable {
         }
     }
 
-    // MARK: - Equatable
-
-    public static func == (precedingValue: TypeReferenceAPI, followingValue: TypeReferenceAPI) -> Bool {
-        return (precedingValue.name, precedingValue.genericArguments) == (followingValue.name, followingValue.genericArguments)
-    }
-
     // MARK: - Hashable
 
     public var hashValue: Int {
