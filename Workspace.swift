@@ -58,3 +58,7 @@ configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 // #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
 configuration.testing.prohibitCompilerWarnings = false
 #endif
+
+// #workaround(workspace version 0.13.2, Rules are outdated.)
+configuration.proofreading.rules.remove(.documentationOfCompilationConditions)
+configuration.proofreading.rules.remove(.documentationOfExtensionConstraints)
