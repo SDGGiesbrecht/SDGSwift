@@ -115,10 +115,4 @@ public struct TypeReferenceAPI : Comparable, Hashable {
             return precedingValue.name < followingValue.name
         }
     }
-
-    // MARK: - Hashable
-
-    public var hashValue: Int {
-        return name.hashValue
-    }
 }

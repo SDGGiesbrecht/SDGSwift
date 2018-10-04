@@ -164,12 +164,4 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
         }
         self = result
     }
-
-    // MARK: - Hashable
-
-    // #documentation(SDGCornerstone.Hashable.hashValue)
-    /// The hash value.
-    public var hashValue: Int {
-        return string().hashValue
-    }
 }
