@@ -39,30 +39,32 @@ public class VariableAPI : APIElement {
 
     public override var declaration: Syntax {
 
-        var tokens: [TokenSyntax] = []
+        var modifiers: ModifierListSyntax?
         if let typePropertyKeyword = self.typePropertyKeyword {
-            tokens.append(SyntaxFactory.makeToken(typePropertyKeyword, trailingTrivia: .spaces(1)))
+            modifiers = SyntaxFactory.makeModifierList([SyntaxFactory.makeDeclModifier(
+                name: SyntaxFactory.makeToken(typePropertyKeyword, trailingTrivia: .spaces(1)),
+                detail: nil)])
         }
-        tokens.append(contentsOf: [
-            SyntaxFactory.makeVarKeyword(trailingTrivia: .spaces(1)),
-            SyntaxFactory.makeToken(.identifier(_name))
-        ])
+
+        var typeAnnotation: TypeAnnotationSyntax?
         if let type = self.type {
-            tokens.append(SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)))
-            tokens.append(contentsOf: type.declaration.tokens())
+            typeAnnotation = SyntaxFactory.makeTypeAnnotation(
+                colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                type: type.declaration)
         }
 
-        tokens.append(contentsOf: [
-            SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            SyntaxFactory.makeToken(.identifier("get"))
-            ])
-        if isSettable {
-            tokens.append(SyntaxFactory.makeToken(.identifier("set"), leadingTrivia: .spaces(1)))
-        }
-        tokens.append(SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
-
-        // #workaround(Swift 4.1.2, SwiftSyntax has no factory for this.)
-        return SyntaxFactory.makeUnknownSyntax(tokens: tokens)
+        return SyntaxFactory.makeVariableDecl(
+            attributes: nil,
+            modifiers: modifiers,
+            letOrVarKeyword: SyntaxFactory.makeVarKeyword(trailingTrivia: .spaces(1)),
+            bindings: SyntaxFactory.makePatternBindingList([
+                SyntaxFactory.makePatternBinding(
+                    pattern: SyntaxFactory.makeIdentifierPattern(identifier: SyntaxFactory.makeToken(.identifier(_name))),
+                    typeAnnotation: typeAnnotation,
+                    initializer: nil,
+                    accessor: SyntaxFactory.makeProtocolStyleAccessorBlock(settable: isSettable),
+                    trailingComma: nil)
+                ]))
     }
 
     public override var identifierList: Set<String> {

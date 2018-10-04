@@ -48,23 +48,6 @@ public class SubscriptAPI : APIElement {
             }
         }
 
-        var accessorList: [AccessorDeclSyntax] = [
-            SyntaxFactory.makeAccessorDecl(
-                attributes: nil,
-                modifier: nil,
-                accessorKind: SyntaxFactory.makeContextualKeyword("get"),
-                parameter: nil,
-                body: nil)
-        ]
-        if isSettable {
-            accessorList.append(SyntaxFactory.makeAccessorDecl(
-                attributes: nil,
-                modifier: nil,
-                accessorKind: SyntaxFactory.makeToken(.contextualKeyword("set"), leadingTrivia: .spaces(1)),
-                parameter: nil,
-                body: nil))
-        }
-
         return SyntaxFactory.makeSubscriptDecl(
             attributes: nil,
             modifiers: nil,
@@ -78,10 +61,7 @@ public class SubscriptAPI : APIElement {
                 arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                 returnType: returnType.declaration),
             genericWhereClause: constraintSyntax(),
-            accessor: SyntaxFactory.makeAccessorBlock(
-                leftBrace: SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessorList),
-                rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1))))
+            accessor: SyntaxFactory.makeProtocolStyleAccessorBlock(settable: isSettable))
     }
 
     public override var identifierList: Set<String> {
