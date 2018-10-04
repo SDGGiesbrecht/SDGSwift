@@ -33,7 +33,6 @@ extension OpaquePointer {
 }
 
 extension Optional where Wrapped == OpaquePointer {
-    // MARK: - where Wrapped == OpaquePointer
 
     internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
         var node = self
