@@ -146,18 +146,6 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
         return string()
     }
 
-    // MARK: - Equatable
-
-    // #documentation(SDGCornerstone.Equatable.==)
-    /// Returns `true` if the two values are equal.
-    ///
-    /// - Parameters:
-    ///     - precedingValue: A value to compare.
-    ///     - followingValue: Another value to compare.
-    public static func == (lhs: Version, rhs: Version) -> Bool {
-        return (lhs.major, lhs.minor, lhs.patch) == (rhs.major, rhs.minor, rhs.patch)
-    }
-
     // MARK: - ExpressibleByStringLiteral
 
     // #documentation(SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:))
@@ -175,13 +163,5 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
             }))
         }
         self = result
-    }
-
-    // MARK: - Hashable
-
-    // #documentation(SDGCornerstone.Hashable.hashValue)
-    /// The hash value.
-    public var hashValue: Int {
-        return string().hashValue
     }
 }

@@ -170,7 +170,7 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Hashable
 
-    public var hashValue: Int {
-        return declaration?.source().hashValue ?? name.hashValue // @exempt(from: tests) Fallback is theoretically unreachable.
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(declaration?.source() ?? name)
     }
 }
