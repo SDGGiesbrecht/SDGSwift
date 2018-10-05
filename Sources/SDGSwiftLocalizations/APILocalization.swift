@@ -14,15 +14,14 @@
 
 import SDGLocalization
 
-public enum APILocalization : String, InputLocalization {
+public enum APILocalization : String, CaseIterable, InputLocalization {
 
     // MARK: - Cases
 
     case englishCanada = "en\u{2D}CA"
 
-    public static let cases: [APILocalization] = [
-        .englishCanada
-    ]
+    // #workaround(SDGCornerstone 0.11.1, Not needed once CaseIterable is adopted.)
+    public static let cases: [APILocalization] = allCases
 
     // MARK: - Localization
 
