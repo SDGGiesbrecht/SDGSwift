@@ -14,7 +14,7 @@
 
 import SDGSwiftLocalizations
 
-public enum Callout : String {
+public enum Callout : String, CaseIterable {
 
     // MARK: - Cases
 
@@ -54,47 +54,11 @@ public enum Callout : String {
     case recommended = "Recommended"
     case recommendedOver = "RecommendedOver"
 
-    internal static let cases: [Callout] = [
-        parameter,
-        parameters,
-
-        attention,
-        author,
-        authors,
-        bug,
-        complexity,
-        copyright,
-        date,
-        experiment,
-        important,
-        invariant,
-        localizationKey,
-        mutatingVariant,
-        nonmutatingVariant,
-        note,
-        postcondition,
-        precondition,
-        remark,
-        remarks,
-        returns,
-        requires,
-        seeAlso,
-        since,
-        tag,
-        toDo,
-        `throws`,
-        version,
-        warning,
-        keyword,
-        recommended,
-        recommendedOver
-    ]
-
     // MARK: - Type Properties
 
     private static let lowercasedMapping: [String: Callout] = {
         var result: [String: Callout] = [:]
-        for `case` in cases {
+        for `case` in allCases {
             result[`case`.rawValue.lowercased()] = `case`
         }
         return result
