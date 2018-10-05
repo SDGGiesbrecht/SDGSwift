@@ -25,8 +25,6 @@ Copying [...]/libswiftRemoteMirror.dylib
 Copying [...]/libswiftXCTest.dylib
 Copying [...]/libswiftXPC.dylib
 Copying [...]/libswiftos.dylib
-CreateBuildDirectory [...]/Intermediates.noindex (in target: MockTests)
-CreateBuildDirectory [...]/Products (in target: MockTests)
 Ditto [...]/Mock-Swift.h (in target: Mock)
 Ditto [...]/Mock.swiftdoc (in target: Mock)
 Ditto [...]/Mock.swiftmodule (in target: Mock)
