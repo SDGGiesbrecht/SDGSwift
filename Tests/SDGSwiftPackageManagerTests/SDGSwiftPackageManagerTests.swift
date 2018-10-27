@@ -34,7 +34,7 @@ class SDGSwiftPackageManagerTests : TestCase {
     }
 
     func testInitialization() {
-        for localization in InterfaceLocalization.cases {
+        for localization in InterfaceLocalization.allCases {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                 do {
                     let location = FileManager.default.url(in: .temporary, at: "Initialized")
