@@ -64,11 +64,11 @@ public class ListEntrySyntax : MarkdownSyntax {
                     possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
                 }
 
-                if Callout(possibleCalloutText) ≠ nil {
+                if let callout = Callout(possibleCalloutText) {
 
                     paragraph.children.removeFirst()
-                    let callout = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
-                    var scalarCount = callout.text.scalars.count
+                    let calloutSyntax = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
+                    var scalarCount = calloutSyntax.text.scalars.count
 
                     var spaceSyntax: ExtendedTokenSyntax?
                     if let spaceString = space {
@@ -88,15 +88,19 @@ public class ListEntrySyntax : MarkdownSyntax {
                     remainder.scalars.removeFirst(scalarCount)
                     let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
                     paragraph.children.prepend(remainderSyntax)
-                    children.insert(contentsOf: [callout, colon], at: index)
+                    children.insert(contentsOf: [calloutSyntax, colon], at: index)
 
                     let colonIndex = children.index(where: { $0 === colon })!
                     let contentsIndex = children.index(after: colonIndex)
 
-                    asCallout = CalloutSyntax(
+                    var calloutType: CalloutSyntax.Type = CalloutSyntax.self
+                    if callout == .parameters {
+                        calloutType = ParametersCalloutSyntax.self
+                    }
+                    asCallout = calloutType.init(
                         bullet: self.bullet,
                         indent: self.indent,
-                        name: callout,
+                        name: calloutSyntax,
                         space: spaceSyntax,
                         parameterName: parameterSyntax,
                         colon: colon,

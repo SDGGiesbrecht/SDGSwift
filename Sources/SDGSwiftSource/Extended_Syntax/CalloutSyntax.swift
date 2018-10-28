@@ -16,7 +16,7 @@ public class CalloutSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(
+    internal required init(
         bullet: ExtendedTokenSyntax?,
         indent: ExtendedTokenSyntax?,
         name: ExtendedTokenSyntax,
