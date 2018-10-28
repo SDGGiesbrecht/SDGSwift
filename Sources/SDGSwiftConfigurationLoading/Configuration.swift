@@ -103,7 +103,7 @@ extension Configuration {
         } else {
 
             var possibleConfigurationFile: URL?
-            for localization in L.cases {
+            for localization in L.allCases {
                 let resolvedFileName = fileName.resolved(for: localization)
                 let url = directory.appendingPathComponent("\(resolvedFileName).swift")
                 if (try? url.checkResourceIsReachable()) == true {

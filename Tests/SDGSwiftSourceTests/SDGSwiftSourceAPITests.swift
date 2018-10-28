@@ -135,7 +135,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 let methods = [method, `extension`.methods.first(where: { $0.name.hasPrefix("withSeparateParameters") })!]
                 _ = method.documentation!.renderedHTML(localization: "zxx")
 
-                for localization in InterfaceLocalization.cases {
+                for localization in InterfaceLocalization.allCases {
                     let rendered = methods.map({ $0.documentation!.renderedHTML(localization: localization.code) }).joined(separator: "\n")
 
                     let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
