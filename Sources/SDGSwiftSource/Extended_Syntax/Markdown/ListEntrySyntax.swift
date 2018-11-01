@@ -41,6 +41,8 @@ public class ListEntrySyntax : MarkdownSyntax {
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
 
+        contents = Array(children.drop(while: { $0 === bullet ∨ $0 === indent }))
+
         // Detect callouts.
         search: for index in children.indices {
             let child = children[index]
@@ -119,6 +121,21 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     /// The indent after the bullet.
     public let indent: ExtendedTokenSyntax?
+
+    /// The list entry contents.
+    public internal(set) var contents: [ExtendedSyntax] = [] {
+        didSet {
+            var newChildren: [ExtendedSyntax] = []
+            if let bullet = self.bullet {
+                newChildren.append(bullet)
+            }
+            if let indent = self.indent {
+                newChildren.append(indent)
+            }
+            newChildren.append(contentsOf: contents)
+            children = newChildren
+        }
+    }
 
     // Storage if it is really a callout instead.
     internal var asCallout: CalloutSyntax?

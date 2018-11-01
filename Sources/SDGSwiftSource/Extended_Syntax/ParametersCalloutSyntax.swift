@@ -34,9 +34,35 @@ public class ParametersCalloutSyntax : CalloutSyntax {
         for element in contents {
             if let list = element as? ListSyntax {
                 for item in list.children {
-                    print(type(of: item))
-                    print(item)
-                    #warning("Working here.")
+                    if let entry = item as? ListEntrySyntax {
+                        var contents = entry.contents
+                        for index in contents.indices {
+                            let component = contents[index]
+                            if let paragraph = component as? ParagraphSyntax,
+                                let documentation = paragraph.children.first as? ExtendedTokenSyntax,
+                                documentation.kind == .documentationText,
+                                let colon = documentation.text.firstMatch(for: ":") {
+                                paragraph.children.removeFirst()
+
+                                var replacements: [ExtendedSyntax] = []
+                                let parameter = ExtendedTokenSyntax(text: String(documentation.text[..<colon.range.lowerBound]), kind: .parameter)
+                                replacements.append(parameter)
+
+                                let colonSyntax = ExtendedTokenSyntax(text: ":", kind: .colon)
+                                replacements.append(colonSyntax)
+
+                                var remainder = String(documentation.text[colon.range.upperBound...])
+                                if remainder.hasPrefix(" ") {
+                                    remainder.removeFirst()
+                                    replacements.append(ExtendedTokenSyntax(text: " ", kind: .whitespace))
+                                }
+
+                                replacements.append(ExtendedTokenSyntax(text: remainder, kind: .documentationText))
+                                contents.insert(contentsOf: replacements, at: index)
+                            }
+                        }
+                        entry.contents = contents
+                    }
                 }
             }
         }
