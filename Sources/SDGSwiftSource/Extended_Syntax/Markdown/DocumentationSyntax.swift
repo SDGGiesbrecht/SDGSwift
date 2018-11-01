@@ -46,7 +46,7 @@ public class DocumentationSyntax : MarkdownSyntax {
                 let callout = Callout(calloutSyntax.name.text) {
                 switch callout {
                 case .parameters:
-                    parameters = calloutSyntax
+                    parameters = calloutSyntax as? ParametersCalloutSyntax
                 case .parameter:
                     separateParameterEntries.append(calloutSyntax)
                 case .throws:
@@ -70,12 +70,11 @@ public class DocumentationSyntax : MarkdownSyntax {
 
     public private(set) var discussionEntries: [ExtendedSyntax] = []
 
-    private var parameters: CalloutSyntax?
+    private var parameters: ParametersCalloutSyntax?
     private var separateParameterEntries: [CalloutSyntax] = []
     public var normalizedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] {
         if let parameters = self.parameters {
-            #warning("Not implemented yet.")
-            return []
+            return parameters.list
         } else {
             return separateParameterEntries.map { entry in
                 return (parameter: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents)

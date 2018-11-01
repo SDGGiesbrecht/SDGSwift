@@ -57,8 +57,11 @@ public class ParametersCalloutSyntax : CalloutSyntax {
                                     replacements.append(ExtendedTokenSyntax(text: " ", kind: .whitespace))
                                 }
 
-                                replacements.append(ExtendedTokenSyntax(text: remainder, kind: .documentationText))
+                                let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
+                                replacements.append(remainderSyntax)
                                 contents.insert(contentsOf: replacements, at: index)
+
+                                self.list.append((parameter: parameter, description: Array(contents[index...]).prepending(remainderSyntax)))
                             }
                         }
                         entry.contents = contents
@@ -67,4 +70,8 @@ public class ParametersCalloutSyntax : CalloutSyntax {
             }
         }
     }
+
+    // MARK: - Parameters
+
+    internal private(set) var list: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
 }
