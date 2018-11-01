@@ -58,10 +58,15 @@ public class ParametersCalloutSyntax : CalloutSyntax {
                                 }
 
                                 let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
-                                replacements.append(remainderSyntax)
+                                let newParagraph = ParagraphSyntax(children: paragraph.children.prepending(remainderSyntax))
+                                replacements.append(newParagraph)
+
+                                self.list.append((parameter: parameter, description: Array(contents[contents.index(after: index)...]).prepending(newParagraph)))
+
+                                contents.remove(at: index)
                                 contents.insert(contentsOf: replacements, at: index)
 
-                                self.list.append((parameter: parameter, description: Array(contents[index...]).prepending(remainderSyntax)))
+                                break
                             }
                         }
                         entry.contents = contents
