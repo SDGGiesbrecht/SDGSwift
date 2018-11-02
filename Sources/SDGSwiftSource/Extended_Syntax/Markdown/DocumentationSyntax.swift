@@ -77,7 +77,7 @@ public class DocumentationSyntax : MarkdownSyntax {
             return parameters.list
         } else {
             return separateParameterEntries.map { entry in
-                return (parameter: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents)
+                return (parameter: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents) // @exempt(from: tests) Never nil in valid source.
             }
         }
     }
