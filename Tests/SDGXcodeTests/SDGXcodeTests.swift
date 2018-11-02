@@ -62,12 +62,16 @@ class SDGXcodeTests : TestCase {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.build(for: sdk) { outputLine in
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                            XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                            XCTAssert(abbreviated.count < 100
+                                ∨ abbreviated.contains("warning:")
+                                ∨ abbreviated.prefix(5).last == "\u{2D}", // Error in Xcode dependency.
+                                      "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
                     }
 
-                    let filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
+                    var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
+                    filtered = filtered.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
                     compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
                 } catch {
                     XCTFail("\(error)")
@@ -90,7 +94,10 @@ class SDGXcodeTests : TestCase {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.test(on: sdk) { outputLine in
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                            XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                            XCTAssert(abbreviated.count < 100
+                                ∨ abbreviated.contains("warning:")
+                                ∨ abbreviated.prefix(5).last == "\u{2D}", // Error in Xcode idependency.
+                                      "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
                     }

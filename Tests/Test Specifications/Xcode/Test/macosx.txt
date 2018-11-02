@@ -1,6 +1,7 @@
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
+-- ::.+ xcodebuild[:] MessageTracer: Falling back to default whitelist
 Build settings from command line:
 CompileSwift [...]/Mock.swift (in target: Mock)
 CompileSwift [...]/MockTests.swift (in target: MockTests)
