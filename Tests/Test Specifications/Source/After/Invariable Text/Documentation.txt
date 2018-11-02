@@ -165,8 +165,8 @@
 ̲    /̲/̲/̲ -̲ R̲e̲c̲o̲m̲m̲e̲n̲d̲e̲d̲O̲v̲e̲r̲:̲ ...
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲:̲
-̲    /̲/̲/̲     -̲ parameterOne: The first parameter.
-̲    /̲/̲/̲     -̲ parameterTwo: The second parameter.
+̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲:̲ The first parameter.
+̲    /̲/̲/̲     -̲ p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲:̲ The second parameter.
 ̲    /̲/̲/̲
 ̲    /̲/̲/̲ -̲ R̲e̲t̲u̲r̲n̲s̲:̲ A Boolean value.
 ̲    /̲/̲/̲

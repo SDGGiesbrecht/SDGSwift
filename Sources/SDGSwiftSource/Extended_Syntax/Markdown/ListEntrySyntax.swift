@@ -41,6 +41,8 @@ public class ListEntrySyntax : MarkdownSyntax {
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
 
+        contents = Array(children.drop(while: { $0 === bullet ∨ $0 === indent }))
+
         // Detect callouts.
         search: for index in children.indices {
             let child = children[index]
@@ -64,11 +66,11 @@ public class ListEntrySyntax : MarkdownSyntax {
                     possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
                 }
 
-                if Callout(possibleCalloutText) ≠ nil {
+                if let callout = Callout(possibleCalloutText) {
 
                     paragraph.children.removeFirst()
-                    let callout = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
-                    var scalarCount = callout.text.scalars.count
+                    let calloutSyntax = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
+                    var scalarCount = calloutSyntax.text.scalars.count
 
                     var spaceSyntax: ExtendedTokenSyntax?
                     if let spaceString = space {
@@ -88,15 +90,19 @@ public class ListEntrySyntax : MarkdownSyntax {
                     remainder.scalars.removeFirst(scalarCount)
                     let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
                     paragraph.children.prepend(remainderSyntax)
-                    children.insert(contentsOf: [callout, colon], at: index)
+                    children.insert(contentsOf: [calloutSyntax, colon], at: index)
 
                     let colonIndex = children.index(where: { $0 === colon })!
                     let contentsIndex = children.index(after: colonIndex)
 
-                    asCallout = CalloutSyntax(
+                    var calloutType: CalloutSyntax.Type = CalloutSyntax.self
+                    if callout == .parameters {
+                        calloutType = ParametersCalloutSyntax.self
+                    }
+                    asCallout = calloutType.init(
                         bullet: self.bullet,
                         indent: self.indent,
-                        name: callout,
+                        name: calloutSyntax,
                         space: spaceSyntax,
                         parameterName: parameterSyntax,
                         colon: colon,
@@ -115,6 +121,21 @@ public class ListEntrySyntax : MarkdownSyntax {
 
     /// The indent after the bullet.
     public let indent: ExtendedTokenSyntax?
+
+    /// The list entry contents.
+    public internal(set) var contents: [ExtendedSyntax] = [] {
+        didSet {
+            var newChildren: [ExtendedSyntax] = []
+            if let bullet = self.bullet {
+                newChildren.append(bullet)
+            }
+            if let indent = self.indent {
+                newChildren.append(indent)
+            }
+            newChildren.append(contentsOf: contents)
+            children = newChildren
+        }
+    }
 
     // Storage if it is really a callout instead.
     internal var asCallout: CalloutSyntax?

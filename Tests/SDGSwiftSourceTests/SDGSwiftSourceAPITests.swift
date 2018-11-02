@@ -39,7 +39,13 @@ class SDGSwiftSourceAPITests : TestCase {
                 XCTAssert("Structure" ∈ parsed.identifierList)
             }
         }
+    }
 
+    func testCallout() {
+        for localization in InterfaceLocalization.allCases {
+            let specification = Callout.allCases.map({ $0.localizedText(localization.code) }).joined(separator: "\n")
+            compare(String(specification), against: testSpecificationDirectory().appendingPathComponent("Localization/Callouts/\(localization.icon!).txt"), overwriteSpecificationInsteadOfFailing: false)
+        }
     }
 
     func testCodeFragmentSyntax() throws {
@@ -136,7 +142,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 _ = method.documentation!.renderedHTML(localization: "zxx")
 
                 for localization in InterfaceLocalization.allCases {
-                    let rendered = methods.map({ $0.documentation!.renderedHTML(localization: localization.code) }).joined(separator: "\n")
+                    let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
 
                     let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
                     SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)

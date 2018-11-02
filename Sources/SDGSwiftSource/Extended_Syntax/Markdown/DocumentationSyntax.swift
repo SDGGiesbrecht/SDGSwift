@@ -42,6 +42,22 @@ public class DocumentationSyntax : MarkdownSyntax {
         for child in children {
             if let paragraph = child as? ParagraphSyntax, descriptionSection == nil { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 descriptionSection = paragraph
+            } else if let calloutSyntax = child as? CalloutSyntax,
+                let callout = Callout(calloutSyntax.name.text) {
+                switch callout {
+                case .parameters:
+                    parameters = calloutSyntax as? ParametersCalloutSyntax
+                case .parameter:
+                    separateParameterEntries.append(calloutSyntax)
+                case .throws:
+                    throwsCallout = calloutSyntax
+                case .returns:
+                    returnsCallout = calloutSyntax
+                case .localizationKey, .keyword, .recommended, .recommendedOver:
+                    break
+                default:
+                    discussionEntries.append(child)
+                }
             } else {
                 discussionEntries.append(child)
             }
@@ -53,4 +69,20 @@ public class DocumentationSyntax : MarkdownSyntax {
     public private(set) var descriptionSection: ParagraphSyntax?
 
     public private(set) var discussionEntries: [ExtendedSyntax] = []
+
+    private var parameters: ParametersCalloutSyntax?
+    private var separateParameterEntries: [CalloutSyntax] = []
+    public var normalizedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] {
+        if let parameters = self.parameters {
+            return parameters.list
+        } else {
+            return separateParameterEntries.map { entry in
+                return (parameter: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents) // @exempt(from: tests) Never nil in valid source.
+            }
+        }
+    }
+
+    public private(set) var throwsCallout: CalloutSyntax?
+
+    public private(set) var returnsCallout: CalloutSyntax?
 }
