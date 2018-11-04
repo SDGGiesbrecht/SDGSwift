@@ -61,9 +61,11 @@ class SDGXcodeTests : TestCase {
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.build(for: sdk) { outputLine in
-                        if let abbreviated = Xcode.abbreviate(output: outputLine),
-                            ¬abbreviated.scalars.prefix(5).hasSuffix("\u{2D}".scalars) /* Ignore logs absent before Xcode 10.1. */ {
-                            XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                            XCTAssert(abbreviated.count < 100
+                                ∨ abbreviated.contains("warning:")
+                                ∨ abbreviated.contains("error:"),
+                                      "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
                     }
@@ -90,8 +92,7 @@ class SDGXcodeTests : TestCase {
                 do {
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     try mock.test(on: sdk) { outputLine in
-                        if let abbreviated = Xcode.abbreviate(output: outputLine),
-                            ¬abbreviated.scalars.prefix(5).hasSuffix("\u{2D}".scalars) /* Ignore logs absent before Xcode 10.1. */ {
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
                             XCTAssert(abbreviated.count < 100 ∨ abbreviated.contains("warning:"), "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }

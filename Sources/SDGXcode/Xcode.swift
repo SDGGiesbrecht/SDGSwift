@@ -145,6 +145,16 @@ public enum Xcode {
             return nil
         }
 
+        // Log style entry.
+        let logComponents: [String] = output.components(separatedBy: " ")
+        if logComponents.count ≥ 4,
+            logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
+            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+"] }),
+            let process = logComponents[2].prefix(upTo: "[")?.contents {
+            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+        }
+
+        // Command style entry.
         var indentation = ""
         var commandLine = output
         while commandLine.first == " " {
@@ -168,6 +178,7 @@ public enum Xcode {
             }
         }
 
+        // Other
         for ignored in otherIgnored {
             if output.contains(ignored) {
                 return nil
