@@ -18,9 +18,6 @@ Signing Identity:     "-"
 Touch [...]/Mock.framework (in target: Mock)
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target: Mock)
 WriteAuxiliaryFile [...]/Mock.LinkFileList (in target: Mock)
-codesign: [logging-persist] cannot open file at line 42249 of [95fbac39ba]
-codesign: [logging-persist] os_unix.c:42249: (0) open(/var/db/DetachedSignatures) - Undefined error: 0
 note: Constructing build description
 note: Planning build
 note: Using new build system
-xcodebuild: MessageTracer: Falling back to default whitelist

@@ -72,4 +72,3 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList (in target: MockTests)
 note: Constructing build description
 note: Planning build
 note: Using new build system
-xcodebuild: MessageTracer: Falling back to default whitelist

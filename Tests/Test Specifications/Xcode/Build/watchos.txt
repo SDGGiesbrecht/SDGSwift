@@ -25,4 +25,3 @@ note: Constructing build description
 note: Planning build
 note: Using new build system
 warning: Mock will not be code signed because its settings don't specify a development team. (in target 'Mock')
-xcodebuild: MessageTracer: Falling back to default whitelist
