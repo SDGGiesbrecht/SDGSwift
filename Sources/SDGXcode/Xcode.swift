@@ -144,6 +144,11 @@ public enum Xcode {
         if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
             return nil
         }
+        for ignored in otherIgnored {
+            if output.contains(ignored) {
+                return nil
+            }
+        }
 
         // Log style entry.
         let logComponents: [String] = output.components(separatedBy: " ")
@@ -179,12 +184,6 @@ public enum Xcode {
         }
 
         // Other
-        for ignored in otherIgnored {
-            if output.contains(ignored) {
-                return nil
-            }
-        }
-
         return output
     }
 
