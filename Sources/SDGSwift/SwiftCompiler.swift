@@ -26,17 +26,27 @@ public enum SwiftCompiler {
 
     internal static let versions = Version(4, 2, 1) /* Travis CI */ ... Version(4, 2, 1) /* Current */
 
-    internal static let standardLocations = [
-        // Swift
-        "/usr/bin/swift",
-        // Xcode
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
-        "/Library/Developer/Toolchains/swift\u{2D}\(versions.lowerBound.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-        NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(versions.lowerBound.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-        // Swift Version Manager
-        NSHomeDirectory() + "/.swiftenv/shims/swift",
-        NSHomeDirectory() + "/.swiftenv/versions/\(versions.lowerBound.string(droppingEmptyPatch: true))/usr/bin/swift"
-        ].lazy.map({ URL(fileURLWithPath: $0) })
+    private static func standardLocations(for version: Version) -> [URL] {
+        return [
+            // Swift
+            "/usr/bin/swift",
+            // Xcode
+            "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
+            "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
+            // Swift Version Manager
+            NSHomeDirectory() + "/.swiftenv/shims/swift",
+            NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
+            ].map({ URL(fileURLWithPath: $0) })
+    }
+
+    internal static let standardLocations: [URL] = {
+        var locations = SwiftCompiler.standardLocations(for: versions.lowerBound)
+        for location in SwiftCompiler.standardLocations(for: versions.upperBound) where ¬locations.contains(location) {
+            locations.append(location)
+        }
+        return locations
+    }()
 
     private static func compilerLocation(for swift: URL) -> URL {
         return swift.deletingLastPathComponent().appendingPathComponent("swiftc")

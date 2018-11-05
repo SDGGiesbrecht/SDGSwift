@@ -31,12 +31,22 @@ public enum Xcode {
 
     internal static let versions = Version(10, 1, 0) /* Travis CI */ ... Version(10, 1, 0) /* Current */
 
-    internal static let standardLocations = [
-        // Xcode
-        "/usr/bin/xcodebuild",
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
-        "/Applications/Xcode \(versions.lowerBound.string(droppingEmptyPatch: true)).app/Contents/Developer/usr/bin/xcodebuild"
-        ].lazy.map({ URL(fileURLWithPath: $0) })
+    private static func standardLocations(for version: Version) -> [URL] {
+        return [
+            // Xcode
+            "/usr/bin/xcodebuild",
+            "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+            "/Applications/Xcode \(version.string(droppingEmptyPatch: true)).app/Contents/Developer/usr/bin/xcodebuild"
+            ].lazy.map({ URL(fileURLWithPath: $0) })
+    }
+
+    internal static let standardLocations: [URL] = {
+        var locations = Xcode.standardLocations(for: versions.lowerBound)
+        for location in Xcode.standardLocations(for: versions.upperBound) where ¬locations.contains(location) {
+            locations.append(location)
+        }
+        return locations
+    }()
 
     private static func coverageToolLocation(for xcode: URL) -> URL {
         return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
