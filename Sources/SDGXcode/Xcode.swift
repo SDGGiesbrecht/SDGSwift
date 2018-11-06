@@ -29,7 +29,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let versions = Version(10, 0, 0) /* Travis CI */ ... Version(10, 1, 0) /* Current */
+    internal static let versions = Version(10, 1, 0) /* Travis CI */ ... Version(10, 1, 0) /* Current */
 
     private static func standardLocations(for version: Version) -> [URL] {
         return [
@@ -154,7 +154,22 @@ public enum Xcode {
         if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
             return nil
         }
+        for ignored in otherIgnored {
+            if output.contains(ignored) {
+                return nil
+            }
+        }
 
+        // Log style entry.
+        let logComponents: [String] = output.components(separatedBy: " ")
+        if logComponents.count ≥ 4,
+            logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
+            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+"] }),
+            let process = logComponents[2].prefix(upTo: "[")?.contents {
+            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+        }
+
+        // Command style entry.
         var indentation = ""
         var commandLine = output
         while commandLine.first == " " {
@@ -178,12 +193,7 @@ public enum Xcode {
             }
         }
 
-        for ignored in otherIgnored {
-            if output.contains(ignored) {
-                return nil
-            }
-        }
-
+        // Other
         return output
     }
 
