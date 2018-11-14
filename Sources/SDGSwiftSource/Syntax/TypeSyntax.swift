@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 extension TypeSyntax {
@@ -39,5 +40,22 @@ extension TypeSyntax {
             } // @exempt(from: tests) Unreachable with valid source.
             return TypeReferenceAPI(name: "?", genericArguments: []) // @exempt(from: tests)
         }
+    }
+
+    internal func normalized() -> TypeSyntax {
+        switch self {
+        case let simple as SimpleTypeIdentifierSyntax :
+            return SyntaxFactory.makeSimpleTypeIdentifier(
+                name: simple.name.generallyNormalized(),
+                genericArgumentClause: simple.genericArgumentClause?.normalized())
+        default:
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified type syntax class: \(type(of: self))")
+            }
+            return SyntaxFactory.makeSimpleTypeIdentifier(
+                name: SyntaxFactory.makeToken(.wildcardKeyword),
+                genericArgumentClause: nil)
+        }
+
     }
 }
