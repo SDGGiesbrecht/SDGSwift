@@ -21,7 +21,7 @@ extension EnumCaseElementSyntax {
             rawValue: nil,
             trailingComma: nil)
     }
-    
+
     internal func forName() -> EnumCaseElementSyntax {
         return SyntaxFactory.makeEnumCaseElement(
             identifier: identifier,

@@ -45,4 +45,16 @@ extension FunctionParameterSyntax {
             type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // @exempt(from: tests) Guaranteed in valid source.
             hasDefault: defaultArgument ≠ nil)
     }
+
+    internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            firstName: firstName?.generallyNormalized(trailingTrivia: .spaces(1)),
+            secondName: secondName?.generallyNormalized(),
+            colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+            type: type?.normalized(),
+            ellipsis: ellipsis?.generallyNormalized(),
+            defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
+            trailingComma: trailingComma?.generallyNormalized(leadingTrivia: .spaces(1)))
+    }
 }
