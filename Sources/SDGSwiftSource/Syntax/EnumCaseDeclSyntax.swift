@@ -37,4 +37,12 @@ extension EnumCaseDeclSyntax {
             caseKeyword: caseKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
             elements: elements.normalizedForAPIDeclaration())
     }
+
+    internal func name() -> EnumCaseDeclSyntax {
+        return SyntaxFactory.makeEnumCaseDecl(
+            attributes: nil,
+            modifiers: nil,
+            caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
+            elements: elements.forName())
+    }
 }

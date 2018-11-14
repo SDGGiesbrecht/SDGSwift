@@ -29,15 +29,8 @@ public class CaseAPI : APIElement {
 
     // MARK: - APIElement
 
-    private func declarationName() -> EnumCaseDeclSyntax {
-        return SyntaxFactory.makeEnumCaseDecl(
-            attributes: nil,
-            modifiers: nil,
-            caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
-            elements: _declaration.elements.forName())
-    }
     public override var name: String {
-        return declarationName().source()
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {
