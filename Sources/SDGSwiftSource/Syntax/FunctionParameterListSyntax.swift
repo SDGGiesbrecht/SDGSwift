@@ -17,4 +17,8 @@ extension FunctionParameterListSyntax {
     internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {
         return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForAssociatedValue() }))
     }
+
+    internal func forAssociatedValueName() -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forAssociatedValueName() }))
+    }
 }

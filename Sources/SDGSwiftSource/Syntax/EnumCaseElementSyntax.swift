@@ -25,7 +25,7 @@ extension EnumCaseElementSyntax {
     internal func forName() -> EnumCaseElementSyntax {
         return SyntaxFactory.makeEnumCaseElement(
             identifier: identifier,
-            associatedValue: nil,
+            associatedValue: associatedValue?.forAssociatedValueName(),
             rawValue: nil,
             trailingComma: nil)
     }

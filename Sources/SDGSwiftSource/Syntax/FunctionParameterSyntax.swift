@@ -57,4 +57,16 @@ extension FunctionParameterSyntax {
             defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
             trailingComma: trailingComma?.generallyNormalized(leadingTrivia: .spaces(1)))
     }
+
+    internal func forAssociatedValueName() -> FunctionParameterSyntax {
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: SyntaxFactory.makeToken(.wildcardKeyword),
+            secondName: nil,
+            colon: nil,
+            type: nil,
+            ellipsis: nil,
+            defaultArgument: nil,
+            trailingComma: trailingComma)
+    }
 }

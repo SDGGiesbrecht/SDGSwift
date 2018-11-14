@@ -16,8 +16,15 @@ extension ParameterClauseSyntax {
 
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
-            leftParen: SyntaxFactory.makeToken(.leftParen),
+            leftParen: leftParen.generallyNormalized(),
             parameterList: parameterList.normalizedForAssociatedValue(),
-            rightParen: SyntaxFactory.makeToken(.rightParen))
+            rightParen: rightParen.generallyNormalized())
+    }
+
+    internal func forAssociatedValueName() -> ParameterClauseSyntax {
+        return SyntaxFactory.makeParameterClause(
+            leftParen: leftParen,
+            parameterList: parameterList.forAssociatedValueName(),
+            rightParen: rightParen)
     }
 }
