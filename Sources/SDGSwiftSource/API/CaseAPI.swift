@@ -38,7 +38,7 @@ public class CaseAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return [name]
+        return [_declaration.elements.first!.identifier.text]
     }
 
     public override var summary: [String] {
