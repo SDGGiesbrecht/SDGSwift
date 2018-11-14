@@ -18,72 +18,34 @@ public class CaseAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, name: String, associatedValues: [TypeReferenceAPI]) {
-        _name = name.decomposedStringWithCanonicalMapping
-        self.associatedValues = associatedValues
+    internal init(documentation: DocumentationSyntax?, declaration: EnumCaseDeclSyntax) {
+        _declaration = declaration.normalizedAPIDeclaration()
         super.init(documentation: documentation)
     }
 
     // MARK: - Properties
 
-    private let _name: String
-    private let associatedValues: [TypeReferenceAPI]
+    private let _declaration: EnumCaseDeclSyntax
 
     // MARK: - APIElement
 
-    public override var name: String {
-        var result = _name
-        if ¬associatedValues.isEmpty {
-            result += "("
-            result += associatedValues.map({ _ in "_" }).joined(separator: ", ")
-            result += ")"
-        }
-        return result
-    }
-
-    public override var declaration: Syntax {
-
-        var associatedValue: ParameterClauseSyntax?
-        if ¬associatedValues.isEmpty {
-            var associatedValueSyntax: [FunctionParameterSyntax] = []
-            let last = associatedValues.indices.last!
-            for index in associatedValues.indices {
-                let associated = associatedValues[index]
-                var trailingComma: TokenSyntax?
-                if index ≠ last {
-                    trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
-                }
-                associatedValueSyntax.append(SyntaxFactory.makeFunctionParameter(
-                    attributes: nil,
-                    firstName: nil,
-                    secondName: nil,
-                    colon: nil,
-                    type: associated.declaration,
-                    ellipsis: nil,
-                    defaultArgument: nil,
-                    trailingComma: trailingComma))
-            }
-            associatedValue = SyntaxFactory.makeParameterClause(
-                leftParen: SyntaxFactory.makeToken(.leftParen),
-                parameterList: SyntaxFactory.makeFunctionParameterList(associatedValueSyntax),
-                rightParen: SyntaxFactory.makeToken(.rightParen))
-        }
-
+    private func declarationName() -> EnumCaseDeclSyntax {
         return SyntaxFactory.makeEnumCaseDecl(
             attributes: nil,
             modifiers: nil,
-            caseKeyword: SyntaxFactory.makeCaseKeyword(trailingTrivia: .spaces(1)),
-            elements: SyntaxFactory.makeEnumCaseElementList([
-                SyntaxFactory.makeEnumCaseElement(
-                    identifier: SyntaxFactory.makeToken(.identifier(_name)),
-                    associatedValue: associatedValue,
-                    rawValue: nil,
-                    trailingComma: nil)
-                ]))
+            caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
+            elements: _declaration.elements.forName())
+    }
+    public override var name: String {
+        return declarationName().source()
+    }
+
+    public override var declaration: Syntax {
+        return _declaration
     }
 
     public override var identifierList: Set<String> {
-        return [_name]
+        return [name]
     }
 
     public override var summary: [String] {
