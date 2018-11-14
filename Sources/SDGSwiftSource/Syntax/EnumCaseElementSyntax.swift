@@ -23,9 +23,13 @@ extension EnumCaseElementSyntax {
     }
 
     internal func forName() -> EnumCaseElementSyntax {
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        let newAssociatedValue = source().contains("(") ? associatedValue?.forAssociatedValueName() : nil
+
         return SyntaxFactory.makeEnumCaseElement(
             identifier: identifier,
-            associatedValue: associatedValue?.forAssociatedValueName(),
+            associatedValue: newAssociatedValue,
             rawValue: nil,
             trailingComma: nil)
     }
