@@ -12,20 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension EnumCaseDeclSyntax {
 
-    var caseAPI: CaseAPI? {
-        guard let element = elements.first else {
-            return nil // @exempt(from: tests) Unreachable with valid source.
+    internal func caseAPI() -> [CaseAPI] {
+        var list: [CaseAPI] = []
+        for element in elements where ¬element.identifier.text.hasPrefix("_") {
+            list.append(CaseAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeEnumCaseDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    caseKeyword: caseKeyword,
+                    elements: SyntaxFactory.makeEnumCaseElementList([element]))))
         }
+        return list
+    }
 
-        let name = element.identifier.text
-        if name.hasPrefix("_") {
-            return nil
-        }
-        return CaseAPI(
-            documentation: documentation,
-            name: name,
-            associatedValues: element.associatedValue?.parameterList.compactMap({ $0.type?.reference }) ?? [])
+    internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
+        return SyntaxFactory.makeEnumCaseDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(),
+            caseKeyword: caseKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
+            elements: elements.normalizedForAPIDeclaration())
     }
 }
