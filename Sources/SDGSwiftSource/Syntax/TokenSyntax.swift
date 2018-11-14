@@ -110,6 +110,8 @@ extension TokenSyntax {
         }
     }
 
+    // MARK: - Syntax Highlighting
+
     internal func syntaxHighlightingClass(internalIdentifiers: Set<String>) -> String? {
         switch tokenKind {
         case .eof, .unknown:
@@ -158,5 +160,11 @@ extension TokenSyntax {
         default:
             return false
         }
+    }
+
+    // MARK: - API
+
+    internal func generallyNormalized(leadingTrivia: Trivia = [], trailingTrivia: Trivia = []) -> TokenSyntax {
+        return SyntaxFactory.makeToken(tokenKind.normalized(), leadingTrivia: leadingTrivia, trailingTrivia: trailingTrivia)
     }
 }
