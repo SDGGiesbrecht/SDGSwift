@@ -127,7 +127,7 @@ extension Syntax {
         case let `protocol` as ProtocolDeclSyntax :
             return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
         case let `case` as EnumCaseDeclSyntax :
-            return `case`.caseAPI.flatMap({ [$0] }) ?? []
+            return `case`.caseAPI()
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
