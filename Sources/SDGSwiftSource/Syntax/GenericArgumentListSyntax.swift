@@ -14,7 +14,7 @@
 
 extension GenericArgumentListSyntax {
 
-    internal func normalized() -> GenericArgumentListSyntax {
+    internal func normalized() -> GenericArgumentListSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
         return SyntaxFactory.makeGenericArgumentList(map({ $0.normalized() }))
     }
 }

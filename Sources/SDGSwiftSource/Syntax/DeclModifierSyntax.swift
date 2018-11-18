@@ -21,6 +21,7 @@ extension DeclModifierSyntax {
         let modifier = name.text
         switch modifier {
         case "mutating":
+            // @exempt(from: tests) #workaround(Requires function refactor.)
             return SyntaxFactory.makeDeclModifier(
                 name: name.generallyNormalized(),
                 detail: nil)
@@ -53,7 +54,7 @@ extension DeclModifierSyntax {
         }
     }
 
-    internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool {
+    internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool { // @exempt(from: tests) #workaround(Requires function refactor.)
         return (lhs.group(), lhs.name.text) < (rhs.group(), rhs.name.text)
     }
 }

@@ -20,7 +20,7 @@ extension AttributeSyntax {
     internal func normalizedForAPIDeclaration() -> AttributeSyntax? {
         let attribute = attributeName.text
         if attribute.hasPrefix("_") {
-            return nil
+            return nil // @exempt(from: tests) #workaround(Requires function refactor.)
         }
 
         switch attribute {
@@ -29,33 +29,33 @@ extension AttributeSyntax {
             // #workaround(“available” should be parsed.)
             return normalized()
         case "escaping", "autoclosure", "discardableResult":
-            // Call site
+            // Call site // @exempt(from: tests) #workaround(Requires function refactor.)
             return normalized()
         case "objc", "nonobjc", "objcMembers":
-            // Objective‐C interface
+            // Objective‐C interface // @exempt(from: tests) #workaround(Requires function refactor.)
             // #workaround(“objcMembers” should be decomposed.)
             return normalized()
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
-            // Xcode interface
+            // Xcode interface // @exempt(from: tests) #workaround(Requires property refactor.)
             return normalized()
 
         case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
-            // Implementation details
+            // Implementation details // @exempt(from: tests) #workaround(Requires function refactor.)
             return nil
         case "NSCopying", "NSManaged" :
-            // Objective‐C implementation details
+            // Objective‐C implementation details // @exempt(from: tests) #workaround(Requires property refactor.)
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
                 attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
                 balancedTokens: SyntaxFactory.makeTokenList([])).normalized()
         case "testable":
-            // Not relevant to API symbols
+            // Not relevant to API symbols // @exempt(from: tests)
             return nil
         case "NSApplicationMain", "UIApplicationMain" :
-            // Not relevant to API.
+            // Not relevant to API // @exempt(from: tests)
             return nil
         case "requires_stored_property_inits", "warn_unqualified_access":
-            // Source checks
+            // Source checks // @exempt(from: tests)
             return nil
 
         default: // @exempt(from: tests) Should never occur.
@@ -105,7 +105,7 @@ extension AttributeSyntax {
         }
     }
 
-    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool {
+    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool { // @exempt(from: tests) #workaround(Requires function refactor.)
         return (lhs.group(), lhs.attributeName.text) < (rhs.group(), rhs.attributeName.text)
     }
 }

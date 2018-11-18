@@ -14,7 +14,7 @@
 
 extension InitializerClauseSyntax {
 
-    internal func normalizeForDefaultArgument() -> InitializerClauseSyntax {
+    internal func normalizeForDefaultArgument() -> InitializerClauseSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
         return SyntaxFactory.makeInitializerClause(
             equal: equal.generallyNormalized(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             value: SyntaxFactory.makeIdentifierExpr(

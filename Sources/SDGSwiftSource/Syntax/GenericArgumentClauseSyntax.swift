@@ -14,7 +14,7 @@
 
 extension GenericArgumentClauseSyntax {
 
-    internal func normalized() -> GenericArgumentClauseSyntax {
+    internal func normalized() -> GenericArgumentClauseSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
         return SyntaxFactory.makeGenericArgumentClause(
             leftAngleBracket: leftAngleBracket.generallyNormalized(),
             arguments: arguments.normalized(),
