@@ -16,7 +16,7 @@ extension GenericWhereClauseSyntax : List {
 
     internal func normalized() -> GenericWhereClauseSyntax {
         return SyntaxFactory.makeGenericWhereClause(
-            whereKeyword: whereKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
+            whereKeyword: whereKeyword.generallyNormalized(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             requirementList: requirementList.normalized())
     }
 

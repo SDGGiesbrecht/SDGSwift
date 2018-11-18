@@ -25,7 +25,7 @@ extension Optional : List where Wrapped : List {
         case .some(let instance):
             return instance.adding(addition)
         case .none:
-            return Wrapped(elementsOrEmpty: [addition])
+            return Wrapped(elementsOrNil: [addition])
         }
     }
 }
