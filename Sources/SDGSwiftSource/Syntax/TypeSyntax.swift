@@ -52,6 +52,16 @@ extension TypeSyntax {
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: simple.name.generallyNormalized(),
                 genericArgumentClause: newGenericArgumentClause)
+        case let member as MemberTypeIdentifierSyntax :
+
+            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            let newGenericArgumentClause = source().contains("<") ? member.genericArgumentClause?.normalized() : nil
+
+            return SyntaxFactory.makeMemberTypeIdentifier(
+                baseType: member.baseType.normalized(),
+                period: member.period.generallyNormalized(),
+                name: member.name.generallyNormalized(),
+                genericArgumentClause: newGenericArgumentClause)
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified type syntax class: \(type(of: self))")
