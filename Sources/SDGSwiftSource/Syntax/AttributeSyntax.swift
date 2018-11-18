@@ -92,7 +92,7 @@ extension AttributeSyntax {
             return .discardability
         case "objc", "nonobjc", "objcMembers":
             return .objectiveC
-        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
+        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
             return .interfaceBuilder
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
