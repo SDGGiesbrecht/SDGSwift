@@ -40,3 +40,7 @@ public enum EnumerationWithAvailablitiyRestrictions {
     @available(*, unavailable, renamed: "new") case old
     case new
 }
+
+public enum IndirectEnumeration {
+    indirect case indirectCase
+}

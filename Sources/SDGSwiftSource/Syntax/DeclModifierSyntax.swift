@@ -23,6 +23,8 @@ extension DeclModifierSyntax {
             return SyntaxFactory.makeDeclModifier(
                 name: name.generallyNormalized(),
                 detail: nil)
+        case "indirect":
+            return nil
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified modifier: \(modifier)")

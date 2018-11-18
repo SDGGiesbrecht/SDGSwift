@@ -9,6 +9,8 @@ EnumerationWithAssociatedValues • enum EnumerationWithAssociatedValues
 EnumerationWithAvailablitiyRestrictions • enum EnumerationWithAvailablitiyRestrictions
  new • case new
  old • @available(*, unavailable, renamed: "new") case old
+IndirectEnumeration • enum IndirectEnumeration
+ indirectCase • case indirectCase
 RawEnumeration • enum RawEnumeration
  a • case a
  b • case b
