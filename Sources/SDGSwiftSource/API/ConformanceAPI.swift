@@ -31,8 +31,8 @@ public class ConformanceAPI : APIElement {
         return type.source()
     }
 
-    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
-        return type
+    public override var declaration: Syntax? {
+        return nil
     }
 
     public override var summary: [String] {
