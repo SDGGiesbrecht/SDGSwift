@@ -45,9 +45,13 @@ extension TypeSyntax {
     internal func normalized() -> TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax :
+
+            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            let newGenericArgumentClause = source().contains("<") ? simple.genericArgumentClause?.normalized() : nil
+
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: simple.name.generallyNormalized(),
-                genericArgumentClause: simple.genericArgumentClause?.normalized())
+                genericArgumentClause: newGenericArgumentClause)
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified type syntax class: \(type(of: self))")
