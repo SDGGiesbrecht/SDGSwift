@@ -17,9 +17,7 @@ extension TypeInheritanceClauseSyntax {
     internal var conformances: [ConformanceAPI] {
         var result: [ConformanceAPI] = []
         for inheritance in inheritedTypeCollection {
-            if let simple = inheritance.typeName as? SimpleTypeIdentifierSyntax {
-                result.append(ConformanceAPI(protocolName: simple.name.text))
-            }
+            result.append(ConformanceAPI(type: inheritance.typeName))
         }
         return result
     }
