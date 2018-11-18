@@ -35,3 +35,8 @@ public enum EnumerationWithAssociatedValues {
     case one(B̲o̲o̲l̲)
     case two(B̲o̲o̲l̲, B̲o̲o̲l̲)
 }
+
+public enum EnumerationWithAvailablitiyRestrictions {
+    @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲, r̲e̲n̲a̲m̲e̲d̲: "new") case old
+    case new
+}

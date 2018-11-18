@@ -35,3 +35,8 @@ public enum EnumerationWithAssociatedValues {
     case one(Bool)
     case two(Bool, Bool)
 }
+
+public enum EnumerationWithAvailablitiyRestrictions {
+    @available(*, unavailable, renamed: "new") case old
+    case new
+}

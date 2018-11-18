@@ -15,6 +15,13 @@
 extension TokenListSyntax {
 
     internal func normalizedForAPIAttribute() -> TokenListSyntax {
-        return SyntaxFactory.makeTokenList(compactMap({ $0.generallyNormalized() }))
+        return SyntaxFactory.makeTokenList(compactMap({ token in
+            switch token.tokenKind {
+            case .colon, .comma, .rightParen:
+                return token.generallyNormalized(trailingTrivia: .spaces(1))
+            default:
+                return token.generallyNormalized()
+            }
+        }))
     }
 }
