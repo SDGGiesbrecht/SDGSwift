@@ -22,8 +22,14 @@ extension GenericParameterClauseSyntax {
         for parameter in genericParameterList {
             let type = TypeReferenceAPI(name: parameter.name.text, genericArguments: [])
             types.append(type)
-            if parameter.inheritedType ≠ nil {
-                constraints = constraints.adding(parameter)
+            if let inheritance = parameter.inheritedType {
+                constraints = constraints.adding(SyntaxFactory.makeConformanceRequirement(
+                    leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
+                        name: parameter.name,
+                        genericArgumentClause: nil),
+                    colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                    rightTypeIdentifier: inheritance,
+                    trailingComma: nil))
             }
         }
         return (types, constraints)

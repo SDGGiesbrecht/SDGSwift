@@ -55,21 +55,7 @@ extension GenericRequirementListSyntax : List {
     }
 
     internal func adding(_ addition: Syntax) -> GenericRequirementListSyntax {
-        if let genericParameter = addition as? GenericParameterSyntax {
-            if let inheritance = genericParameter.inheritedType {
-                return adding(SyntaxFactory.makeConformanceRequirement(
-                    leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
-                        name: genericParameter.name,
-                        genericArgumentClause: nil),
-                    colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                    rightTypeIdentifier: inheritance,
-                    trailingComma: nil))
-            } else {
-                return self
-            }
-        } else {
-            return SyntaxFactory.makeGenericRequirementList(Array(self).appending(addition)).normalized()
-        }
+        return SyntaxFactory.makeGenericRequirementList(Array(self).appending(addition)).normalized()
     }
 
     // MARK: - Mergeable
