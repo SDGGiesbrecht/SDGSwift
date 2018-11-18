@@ -17,6 +17,6 @@
 extension ExtensionAPI {
 
     convenience init(type: String) {
-        self.init(type: TypeReferenceAPI(name: type, genericArguments: []), conformances: [], constraints: [], children: [])
+        self.init(type: TypeReferenceAPI(name: type, genericArguments: []), conformances: [], constraints: nil, children: [])
     }
 }
