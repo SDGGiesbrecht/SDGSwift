@@ -83,7 +83,7 @@ extension AttributeSyntax {
         case escapability
         case autoclosure
     }
-    private func group() -> Group {
+    private func group() -> Group { // @exempt(from: tests) #workaround(Requires function refactor.)
         switch attributeName.text {
         case "available":
             return .availability

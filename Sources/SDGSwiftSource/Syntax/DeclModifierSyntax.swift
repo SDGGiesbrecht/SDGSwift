@@ -40,7 +40,7 @@ extension DeclModifierSyntax {
         case indirection
         case mutation
     }
-    private func group() -> Group {
+    private func group() -> Group { // @exempt(from: tests) #workaround(Requires function refactor.)
         switch name.text {
         case "indirect":
             return .indirection

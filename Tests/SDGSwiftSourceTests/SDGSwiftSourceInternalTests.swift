@@ -17,7 +17,7 @@ import SDGXCTestUtilities
 @testable import SDGSwiftSource
 
 class SDGSwiftSourceInternalTests : TestCase {
-    
+
     func testTokenNormalization() {
         let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),
