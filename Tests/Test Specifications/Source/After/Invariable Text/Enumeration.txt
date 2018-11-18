@@ -36,3 +36,12 @@
 ̲    c̲a̲s̲e̲ two(̲Bool,̲ Bool)̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ EnumerationWithAvailablitiyRestrictions {̲
+̲    @̲available(̲*,̲ unavailable,̲ renamed:̲ "̲new"̲)̲ c̲a̲s̲e̲ old
+̲    c̲a̲s̲e̲ new
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ IndirectEnumeration {̲
+̲    i̲n̲d̲i̲r̲e̲c̲t̲ c̲a̲s̲e̲ indirectCase
+̲}̲
+̲

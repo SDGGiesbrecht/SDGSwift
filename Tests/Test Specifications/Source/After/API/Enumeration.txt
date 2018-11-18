@@ -6,6 +6,11 @@ EnumerationWithAssociatedValues • enum EnumerationWithAssociatedValues
  none • case none
  one(_) • case one(Bool)
  two(_, _) • case two(Bool, Bool)
+EnumerationWithAvailablitiyRestrictions • enum EnumerationWithAvailablitiyRestrictions
+ new • case new
+ old • @available(*, unavailable, renamed: "new") case old
+IndirectEnumeration • enum IndirectEnumeration
+ indirectCase • case indirectCase
 RawEnumeration • enum RawEnumeration
  a • case a
  b • case b

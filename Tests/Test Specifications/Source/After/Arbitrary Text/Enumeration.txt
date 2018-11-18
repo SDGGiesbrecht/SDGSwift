@@ -35,3 +35,12 @@ public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲W̲i̲t̲h̲A̲s̲s̲o̲c̲i̲a
  ̲ ̲ ̲ ̲case ̲o̲n̲e̲(Bool)
  ̲ ̲ ̲ ̲case ̲t̲w̲o̲(Bool, ̲Bool)
 }
+
+public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲W̲i̲t̲h̲A̲v̲a̲i̲l̲a̲b̲l̲i̲t̲i̲y̲R̲e̲s̲t̲r̲i̲c̲t̲i̲o̲n̲s̲ ̲{
+ ̲ ̲ ̲ ̲@available(*, ̲unavailable, ̲renamed: ̲"n̲e̲w̲") ̲case ̲o̲l̲d̲
+ ̲ ̲ ̲ ̲case ̲n̲e̲w̲
+}
+
+public ̲enum ̲I̲n̲d̲i̲r̲e̲c̲t̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
+ ̲ ̲ ̲ ̲indirect ̲case ̲i̲n̲d̲i̲r̲e̲c̲t̲C̲a̲s̲e̲
+}

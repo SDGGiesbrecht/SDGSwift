@@ -45,4 +45,46 @@ extension FunctionParameterSyntax {
             type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // @exempt(from: tests) Guaranteed in valid source.
             hasDefault: defaultArgument ≠ nil)
     }
+
+    internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
+
+        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        let ellipsisToken: TokenSyntax?
+        if ellipsis?.tokenKind == .comma {
+            ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
+        } else {
+            ellipsisToken = ellipsis?.generallyNormalized()
+        }
+
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            firstName: firstName?.generallyNormalized(trailingTrivia: .spaces(1)),
+            secondName: secondName?.generallyNormalized(),
+            colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+            type: type?.normalized(),
+            ellipsis: ellipsisToken,
+            defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
+            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
+    }
+
+    internal func forAssociatedValueName() -> FunctionParameterSyntax {
+
+        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        let ellipsisToken: TokenSyntax?
+        if ellipsis?.tokenKind == .comma {
+            ellipsisToken = ellipsis
+        } else {
+            ellipsisToken = nil
+        }
+
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: SyntaxFactory.makeToken(.wildcardKeyword),
+            secondName: nil,
+            colon: nil,
+            type: nil,
+            ellipsis: ellipsisToken,
+            defaultArgument: nil,
+            trailingComma: trailingComma)
+    }
 }

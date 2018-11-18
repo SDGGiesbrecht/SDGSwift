@@ -43,6 +43,15 @@
     <span class="keyword">case</span> <span class="external identifier">one</span><span class="punctuation">(</span><span class="external identifier">Bool</span><span class="punctuation">)</span>
     <span class="keyword">case</span> <span class="external identifier">two</span><span class="punctuation">(</span><span class="external identifier">Bool</span><span class="punctuation">,</span> <span class="external identifier">Bool</span><span class="punctuation">)</span>
 <span class="punctuation">}</span>
+
+<span class="keyword">public</span> <span class="keyword">enum</span> <span class="external identifier">EnumerationWithAvailablitiyRestrictions</span> <span class="punctuation">{</span>
+    <span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">,</span> <span class="external identifier">renamed</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">new</span><span class="string‐punctuation">"</span></span><span class="punctuation">)</span> <span class="keyword">case</span> <span class="external identifier">old</span>
+    <span class="keyword">case</span> <span class="external identifier">new</span>
+<span class="punctuation">}</span>
+
+<span class="keyword">public</span> <span class="keyword">enum</span> <span class="external identifier">IndirectEnumeration</span> <span class="punctuation">{</span>
+    <span class="external identifier">indirect</span> <span class="keyword">case</span> <span class="external identifier">indirectCase</span>
+<span class="punctuation">}</span>
 </code>
 
  </body>
