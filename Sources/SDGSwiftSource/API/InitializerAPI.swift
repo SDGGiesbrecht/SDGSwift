@@ -69,7 +69,7 @@ public class InitializerAPI : APIElement {
                 parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
                 rightParen: SyntaxFactory.makeToken(.rightParen)),
             throwsOrRethrowsKeyword: throwsKeyword,
-            genericWhereClause: constraintSyntax(),
+            genericWhereClause: constraints,
             body: SyntaxFactory.makeBlankCodeBlock())
     }
 

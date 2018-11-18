@@ -150,10 +150,10 @@ public class APIScope : APIElement {
     internal func moveConditionsToChildren() {
         for child in children {
             child.prependCompilationCondition(compilationConditions)
-            child.constraints.append(contentsOf: constraints)
+            child.constraints = child.constraints.merged(with: constraints)
         }
         compilationConditions = nil
-        constraints = []
+        constraints = nil
     }
 
     internal func merge(extension: ExtensionAPI) {

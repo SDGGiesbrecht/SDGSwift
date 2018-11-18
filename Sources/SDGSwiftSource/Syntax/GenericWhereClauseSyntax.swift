@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension GenericWhereClauseSyntax {
+extension GenericWhereClauseSyntax : List {
 
     internal func normalized() -> GenericWhereClauseSyntax {
         return SyntaxFactory.makeGenericWhereClause(
@@ -30,5 +30,23 @@ extension GenericWhereClauseSyntax {
             }
         }
         return result
+    }
+
+    // MARK: - List
+
+    internal init(elementsOrEmpty elements: [Syntax]) {
+        self = SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, trailingTrivia: .spaces(1)),
+            requirementList: GenericRequirementListSyntax(elementsOrEmpty: elements))
+    }
+
+    internal func adding(_ addition: Syntax) -> GenericWhereClauseSyntax {
+        return withRequirementList(requirementList.adding(addition))
+    }
+
+    // MARK: - Mergeable
+
+    internal func merged(with other: GenericWhereClauseSyntax) -> GenericWhereClauseSyntax {
+        return withRequirementList(requirementList.merged(with: other.requirementList))
     }
 }

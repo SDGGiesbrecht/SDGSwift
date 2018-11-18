@@ -34,7 +34,7 @@ extension TypeDeclaration {
             return nil
         }
 
-        let (genericTypes, genericConstraints) = genericParameterClause?.typesAndConstraints ?? ([], [])
+        let (genericTypes, genericConstraints) = genericParameterClause?.typesAndConstraints ?? ([], nil)
 
         return TypeAPI(
             documentation: documentation,
@@ -44,7 +44,7 @@ extension TypeDeclaration {
                 name: name,
                 genericArguments: genericTypes),
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericConstraints + (genericWhereClause?.constraints ?? []),
+            constraints: genericConstraints.merged(with: genericWhereClause),
             children: apiChildren())
     }
 }

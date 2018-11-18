@@ -28,7 +28,7 @@ extension ProtocolDeclSyntax : AccessControlled {
             documentation: documentation,
             name: name,
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericWhereClause?.constraints ?? [],
+            constraints: genericWhereClause,
             children: apiChildren())
     }
 }

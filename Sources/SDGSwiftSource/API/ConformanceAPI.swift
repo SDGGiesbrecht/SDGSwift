@@ -37,7 +37,7 @@ public class ConformanceAPI : APIElement {
 
     public override var summary: [String] {
         var result = name
-        if let constraints = constraintSyntax() {
+        if let constraints = self.constraints {
             result += constraints.source()
         }
         appendCompilationConditions(to: &result)

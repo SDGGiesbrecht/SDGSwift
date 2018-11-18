@@ -12,17 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension GenericParameterClauseSyntax {
 
-    var typesAndConstraints: (types: [TypeReferenceAPI], constraints: [ConstraintAPI]) {
+    var typesAndConstraints: (types: [TypeReferenceAPI], constraints: GenericWhereClauseSyntax?) {
         var types: [TypeReferenceAPI] = []
-        var constraints: [ConstraintAPI] = []
+        var constraints: GenericWhereClauseSyntax?
         for parameter in genericParameterList {
             let type = TypeReferenceAPI(name: parameter.name.text, genericArguments: [])
             types.append(type)
-            if let inheritance = parameter.inheritedType {
-                constraints.append(ConstraintAPI.conformance(type, inheritance.reference))
-            }
+            constraints = constraints.adding(parameter)
         }
         return (types, constraints)
     }

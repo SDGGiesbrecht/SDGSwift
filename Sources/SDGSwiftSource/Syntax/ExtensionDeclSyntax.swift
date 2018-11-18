@@ -25,7 +25,7 @@ extension ExtensionDeclSyntax {
         return ExtensionAPI(
             type: extendedType.reference,
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericWhereClause?.constraints ?? [],
+            constraints: genericWhereClause,
             children: children)
     }
 }

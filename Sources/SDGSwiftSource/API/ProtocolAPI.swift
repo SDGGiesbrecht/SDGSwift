@@ -18,10 +18,10 @@ public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, name: String, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, name: String, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         _name = name.decomposedStringWithCanonicalMapping
         super.init(documentation: documentation, conformances: conformances, children: children)
-        self.constraints = constraints
+        self.constraints = constraints?.normalized()
 
         for method in methods {
             method.isProtocolRequirement = true // @exempt(from: tests) False coverage result in Xcode 9.4.1.
@@ -45,7 +45,7 @@ public class ProtocolAPI : APIScope {
             protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
             identifier: SyntaxFactory.makeToken(.identifier(name)),
             inheritanceClause: nil,
-            genericWhereClause: constraintSyntax(),
+            genericWhereClause: constraints,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 

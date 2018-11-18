@@ -20,12 +20,12 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         typeName = name
         self.isOpen = isOpen
         self.keyword = keyword
         super.init(documentation: documentation, conformances: conformances, children: children)
-        self.constraints = constraints
+        self.constraints = constraints?.normalized()
     }
 
     // MARK: - Properties
@@ -55,7 +55,7 @@ public class TypeAPI : APIScope {
             identifier: typeName.nameDeclaration,
             genericParameterClause: typeName.genericParameterClauseDeclaration,
             inheritanceClause: nil,
-            genericWhereClause: constraintSyntax(),
+            genericWhereClause: constraints,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 

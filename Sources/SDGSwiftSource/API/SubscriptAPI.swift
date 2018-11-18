@@ -60,7 +60,7 @@ public class SubscriptAPI : APIElement {
             result: SyntaxFactory.makeReturnClause(
                 arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                 returnType: returnType.declaration),
-            genericWhereClause: constraintSyntax(),
+            genericWhereClause: constraints,
             accessor: SyntaxFactory.makeProtocolStyleAccessorBlock(settable: isSettable))
     }
 
