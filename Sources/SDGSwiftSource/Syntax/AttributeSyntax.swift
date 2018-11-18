@@ -26,13 +26,13 @@ extension AttributeSyntax {
         switch attribute {
         case "available":
             // Availability
+            // #workaround(“available” should be parsed.)
             return normalized()
         case "escaping", "autoclosure", "discardableResult":
             // Call site
             return normalized()
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
-            // #workaround(“objc” should be inferred from other attributes.)
             // #workaround(“objcMembers” should be decomposed.)
             return normalized()
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
@@ -44,7 +44,10 @@ extension AttributeSyntax {
             return nil
         case "NSCopying", "NSManaged" :
             // Objective‐C implementation details
-            return nil
+            return SyntaxFactory.makeAttribute(
+                atSignToken: SyntaxFactory.makeToken(.atSign),
+                attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
+                balancedTokens: SyntaxFactory.makeTokenList([])).normalized()
         case "testable":
             // Not relevant to API symbols
             return nil
