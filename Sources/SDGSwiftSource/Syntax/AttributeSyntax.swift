@@ -70,7 +70,7 @@ extension AttributeSyntax {
             balancedTokens: balancedTokens.normalizedForAPIAttribute())
     }
 
-    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool { // @exempt(from: tests) Not yet reachable.
+    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool {
         // #warning(Should use a more logical order.)
         return lhs.attributeName.text < rhs.attributeName.text
     }
