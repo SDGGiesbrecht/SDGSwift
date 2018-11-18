@@ -18,7 +18,11 @@ import SDGMathematics
 extension GenericRequirementListSyntax : List {
 
     internal func normalized() -> GenericRequirementListSyntax {
-        let requirements = map({ $0.normalizedGenericRequirement() }).sorted(by: GenericRequirementListSyntax.arrangeGenericRequirements)
+        var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(by: GenericRequirementListSyntax.arrangeGenericRequirements)
+        if ¬requirements.isEmpty {
+            let last = requirements.removeLast()
+            requirements.append(last.normalizedGenericRequirement(comma: false))
+        }
         return SyntaxFactory.makeGenericRequirementList(requirements)
     }
 

@@ -207,8 +207,12 @@ extension Syntax {
 
     // MARK: - Generic Requirements
 
-    internal func normalizedGenericRequirement() -> Syntax {
+    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
         switch self {
+        case let conformance as ConformanceRequirementSyntax :
+            return conformance.normalized(comma: comma)
+        case let sameType as SameTypeRequirementSyntax :
+            return sameType.normalized(comma: comma)
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified generic requirement: \(Swift.type(of: self))")

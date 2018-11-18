@@ -20,18 +20,6 @@ extension GenericWhereClauseSyntax : List {
             requirementList: requirementList.normalized())
     }
 
-    internal var constraints: [ConstraintAPI] {
-        var result: [ConstraintAPI] = []
-        for requirement in requirementList {
-            if let constraint = requirement as? ConformanceRequirementSyntax {
-                result.append(constraint.constraint)
-            } else if let constraint = requirement as? SameTypeRequirementSyntax {
-                result.append(constraint.constraint)
-            }
-        }
-        return result
-    }
-
     // MARK: - List
 
     internal init(elementsOrEmpty elements: [Syntax]) {
