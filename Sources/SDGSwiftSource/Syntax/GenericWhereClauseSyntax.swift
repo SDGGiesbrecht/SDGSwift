@@ -14,6 +14,12 @@
 
 extension GenericWhereClauseSyntax {
 
+    internal func normalized() -> GenericWhereClauseSyntax {
+        return SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: whereKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
+            requirementList: requirementList.normalized())
+    }
+
     internal var constraints: [ConstraintAPI] {
         var result: [ConstraintAPI] = []
         for requirement in requirementList {

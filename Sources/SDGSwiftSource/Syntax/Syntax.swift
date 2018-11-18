@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGControlFlow
 import SDGLogic
 import SDGMathematics
 import SDGCollections
@@ -202,6 +203,18 @@ extension Syntax {
 
     internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
         return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
+    }
+
+    // MARK: - Generic Requirements
+
+    internal func normalizedGenericRequirement() -> Syntax {
+        switch self {
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified generic requirement: \(Swift.type(of: self))")
+            }
+            return self
+        }
     }
 
     // MARK: - Disection
