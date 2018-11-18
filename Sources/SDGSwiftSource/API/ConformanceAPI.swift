@@ -16,22 +16,22 @@ public class ConformanceAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(protocolName: String) {
-        self.protocolName = protocolName.decomposedStringWithCanonicalMapping
+    internal init(type: TypeSyntax) {
+        self.type = type.normalized()
         super.init(documentation: nil)
     }
 
     // MARK: - Properties
 
-    private var protocolName: String
+    private let type: TypeSyntax
 
     // MARK: - APIElement
 
     public override var name: String {
-        return protocolName
+        return type.source()
     }
 
-    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
+    public override var declaration: Syntax? {
         return nil
     }
 
