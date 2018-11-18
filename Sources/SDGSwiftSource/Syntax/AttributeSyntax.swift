@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGMathematics
 
 extension AttributeSyntax {
 
@@ -31,23 +32,23 @@ extension AttributeSyntax {
             return normalized()
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
-            // #warning(“objc” should be inferred from other attributes.)
-            // #warning(“objcMembers” should be decomposed.)
+            // #workaround(“objc” should be inferred from other attributes.)
+            // #workaround(“objcMembers” should be decomposed.)
             return normalized()
-        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
+        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
             // Xcode interface
             return normalized()
 
         case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
             // Implementation details
             return nil
-        case "NSCopying", "NSManaged":
+        case "NSCopying", "NSManaged" :
             // Objective‐C implementation details
             return nil
         case "testable":
             // Not relevant to API symbols
             return nil
-        case "NSApplicationMain", "UIApplicationMain":
+        case "NSApplicationMain", "UIApplicationMain" :
             // Not relevant to API.
             return nil
         case "requires_stored_property_inits", "warn_unqualified_access":
@@ -70,8 +71,38 @@ extension AttributeSyntax {
             balancedTokens: balancedTokens.normalizedForAPIAttribute())
     }
 
+    private enum Group : OrderedEnumeration {
+        case unknown
+        case availability
+        case interfaceBuilder
+        case objectiveC
+        case discardability
+        case escapability
+        case autoclosure
+    }
+    private func group() -> Group {
+        switch attributeName.text {
+        case "available":
+            return .availability
+        case "escaping":
+            return .escapability
+        case "autoclosure":
+            return .autoclosure
+        case "discardableResult":
+            return .discardability
+        case "objc", "nonobjc", "objcMembers":
+            return .objectiveC
+        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
+            return .interfaceBuilder
+        default:
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified attribute: \(attributeName.text)")
+            }
+            return .unknown
+        }
+    }
+
     internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool {
-        // #warning(Should use a more logical order.)
-        return lhs.attributeName.text < rhs.attributeName.text
+        return (lhs.group(), lhs.attributeName.text) < (rhs.group(), rhs.attributeName.text)
     }
 }
