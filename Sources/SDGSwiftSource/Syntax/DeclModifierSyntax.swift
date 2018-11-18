@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGMathematics
 
 extension DeclModifierSyntax {
 
@@ -33,8 +34,26 @@ extension DeclModifierSyntax {
         }
     }
 
+    private enum Group : OrderedEnumeration {
+        case unknown
+        case indirection
+        case mutation
+    }
+    private func group() -> Group {
+        switch name.text {
+        case "indirect":
+            return .indirection
+        case "mutating":
+            return .mutation
+        default:
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified modifier: \(name.text)")
+            }
+            return .unknown
+        }
+    }
+
     internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool {
-        // #warning(Should use a more logical order.)
-        return lhs.name.text < rhs.name.text
+        return (lhs.group(), lhs.name.text) < (rhs.group(), rhs.name.text)
     }
 }
