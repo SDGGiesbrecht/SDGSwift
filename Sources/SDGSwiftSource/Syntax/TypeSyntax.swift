@@ -27,13 +27,6 @@ extension TypeSyntax {
             return TypeReferenceAPI(name: wrapped.name, genericArguments: wrapped.genericArguments, isOptional: true)
         default:
             for child in children {
-                if let type = child as? TokenSyntax,
-                    type.text ≠ ".",
-                    type.tokenKind ≠ .inoutKeyword {
-                    return TypeReferenceAPI(name: type.text, genericArguments: [])
-                }
-            }
-            for child in children {
                 if let type = child as? SimpleTypeIdentifierSyntax {
                     return type.reference
                 }
