@@ -20,7 +20,7 @@ extension Optional : List where Wrapped : List {
         self = Wrapped(elementsOrEmpty: elements)
     }
 
-    func adding(_ addition: Optional<Wrapped>.Element) -> Optional<Wrapped> {
+    func adding(_ addition: Wrapped.Element) -> Wrapped? {
         switch self {
         case .some(let instance):
             return instance.adding(addition)
@@ -32,7 +32,7 @@ extension Optional : List where Wrapped : List {
 
 extension Optional : Mergeable where Wrapped : Mergeable {
 
-    internal func merged(with other: Optional<Wrapped>) -> Optional<Wrapped> {
+    internal func merged(with other: Wrapped?) -> Wrapped? {
         switch self {
         case .some(let instance):
             switch other {
