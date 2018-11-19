@@ -6,3 +6,4 @@ public struct DoubleGeneric<ThingA, ThingB> {}
 
 public struct StandardFormGeneric<Thing> where T̲h̲i̲n̲g̲ : E̲q̲u̲a̲t̲a̲b̲l̲e̲ {}
 public struct DeprecatedFormGeneric<Thing : E̲q̲u̲a̲t̲a̲b̲l̲e̲> {}
+public struct DoubledDeprecatedFormGeneric<ThingA : E̲q̲u̲a̲t̲a̲b̲l̲e̲, ThingB : E̲q̲u̲a̲t̲a̲b̲l̲e̲> {}

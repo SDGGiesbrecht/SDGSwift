@@ -6,3 +6,4 @@ public ̲struct ̲D̲o̲u̲b̲l̲e̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲A̲, ̲
 
 public ̲struct ̲S̲t̲a̲n̲d̲a̲r̲d̲F̲o̲r̲m̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲> ̲where ̲Thing ̲: ̲Equatable ̲{}
 public ̲struct ̲D̲e̲p̲r̲e̲c̲a̲t̲e̲d̲F̲o̲r̲m̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲ ̲: ̲Equatable> ̲{}
+public ̲struct ̲D̲o̲u̲b̲l̲e̲d̲D̲e̲p̲r̲e̲c̲a̲t̲e̲d̲F̲o̲r̲m̲G̲e̲n̲e̲r̲i̲c̲<T̲h̲i̲n̲g̲A̲ ̲: ̲Equatable, ̲T̲h̲i̲n̲g̲B̲ ̲: ̲Equatable> ̲{}
