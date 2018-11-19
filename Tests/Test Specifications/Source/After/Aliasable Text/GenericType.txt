@@ -3,3 +3,6 @@ public struct Generic<Thing : R̲e̲q̲u̲i̲r̲e̲d̲C̲o̲n̲f̲o̲r̲m̲a̲n�
 }
 
 public struct DoubleGeneric<ThingA, ThingB> {}
+
+public struct StandardFormGeneric<Thing> where T̲h̲i̲n̲g̲ : E̲q̲u̲a̲t̲a̲b̲l̲e̲ {}
+public struct DeprecatedFormGeneric<Thing : E̲q̲u̲a̲t̲a̲b̲l̲e̲> {}

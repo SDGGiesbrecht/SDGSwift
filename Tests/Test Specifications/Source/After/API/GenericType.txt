@@ -1,4 +1,6 @@
+DeprecatedFormGeneric<Thing> • struct DeprecatedFormGeneric<Thing> where Thing : Equatable
 DoubleGeneric<ThingA, ThingB> • struct DoubleGeneric<ThingA, ThingB>
 Generic<Thing> • struct Generic<Thing> where Thing : ConformanceRequiredByWhere, Thing : RequiredConformance
  DeclaredConformanceOne
  DeclaredConformanceTwo
+StandardFormGeneric<Thing> • struct StandardFormGeneric<Thing> where Thing : Equatable
