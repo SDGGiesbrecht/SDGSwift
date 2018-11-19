@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public struct TypeReferenceAPI : Comparable, Hashable {
+public struct TypeReferenceAPI : Hashable {
 
     // MARK: - Initialization
 
@@ -104,15 +104,5 @@ public struct TypeReferenceAPI : Comparable, Hashable {
 
     internal var identifierList: Set<String> {
         return genericArguments.reduce(into: Set([name])) { $0 ∪= $1.identifierList }
-    }
-
-    // MARK: - Comparable
-
-    public static func < (precedingValue: TypeReferenceAPI, followingValue: TypeReferenceAPI) -> Bool {
-        if precedingValue.name == followingValue.name {
-            return precedingValue.declaration.source() < followingValue.declaration.source() // @exempt(from: tests) Unreachable with valid source.
-        } else {
-            return precedingValue.name < followingValue.name
-        }
     }
 }
