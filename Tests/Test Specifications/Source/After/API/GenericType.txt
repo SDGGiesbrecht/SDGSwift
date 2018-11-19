@@ -4,5 +4,5 @@ DoubledDeprecatedFormGeneric<ThingA, ThingB> • struct DoubledDeprecatedFormGen
 Generic<Thing> • struct Generic<Thing> where Thing : ConformanceRequiredByWhere, Thing : RequiredConformance
  DeclaredConformanceOne
  DeclaredConformanceTwo
-NestedGenericConstraint<Thing> • struct NestedGenericConstraint<Thing> where Thing : Collection, Thing.Element : Equatable, Thing.Associated == Thing.Generic<Int>
+NestedGenericConstraint<Thing> • struct NestedGenericConstraint<Thing> where Thing : Collection, Thing.Element : Equatable, Generic<Int> == OtherThing, Thing.Associated == Thing.Generic<Int>
 StandardFormGeneric<Thing> • struct StandardFormGeneric<Thing> where Thing : Equatable
