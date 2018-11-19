@@ -7,3 +7,5 @@ public struct DoubleGeneric<ThingA, ThingB> {}
 public struct StandardFormGeneric<Thing> where T̲h̲i̲n̲g̲ : E̲q̲u̲a̲t̲a̲b̲l̲e̲ {}
 public struct DeprecatedFormGeneric<Thing : E̲q̲u̲a̲t̲a̲b̲l̲e̲> {}
 public struct DoubledDeprecatedFormGeneric<ThingA : E̲q̲u̲a̲t̲a̲b̲l̲e̲, ThingB : E̲q̲u̲a̲t̲a̲b̲l̲e̲> {}
+
+public struct NestedGenericConstraint<Thing> where T̲h̲i̲n̲g̲ : C̲o̲l̲l̲e̲c̲t̲i̲o̲n̲, T̲h̲i̲n̲g̲.E̲l̲e̲m̲e̲n̲t̲ : E̲q̲u̲a̲t̲a̲b̲l̲e̲, T̲h̲i̲n̲g̲.A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲ =̲=̲ T̲h̲i̲n̲g̲.G̲e̲n̲e̲r̲i̲c̲<I̲n̲t̲> {}

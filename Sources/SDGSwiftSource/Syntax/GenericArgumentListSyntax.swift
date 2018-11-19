@@ -12,9 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension GenericArgumentListSyntax {
 
-    internal func normalized() -> GenericArgumentListSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
-        return SyntaxFactory.makeGenericArgumentList(map({ $0.normalized() }))
+    internal func normalized() -> GenericArgumentListSyntax {
+        var arguments = map({ $0.normalized(comma: true) })
+        if ¬arguments.isEmpty {
+            let last = arguments.removeLast()
+            arguments.append(last.normalized(comma: false))
+        }
+        return SyntaxFactory.makeGenericArgumentList(arguments)
     }
 }

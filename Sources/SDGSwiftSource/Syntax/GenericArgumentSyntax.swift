@@ -14,9 +14,9 @@
 
 extension GenericArgumentSyntax {
 
-    internal func normalized() -> GenericArgumentSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
+    internal func normalized(comma: Bool) -> GenericArgumentSyntax { // @exempt(from: tests) #workaround(Requires function refactor.)
         return SyntaxFactory.makeGenericArgument(
             argumentType: argumentType.normalized(),
-            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
+            trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
     }
 }
