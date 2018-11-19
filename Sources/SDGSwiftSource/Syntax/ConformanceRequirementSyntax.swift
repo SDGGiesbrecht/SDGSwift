@@ -14,7 +14,11 @@
 
 extension ConformanceRequirementSyntax {
 
-    internal var constraint: ConstraintAPI {
-        return .conformance(leftTypeIdentifier.reference, rightTypeIdentifier.reference)
+    internal func normalized(comma: Bool) -> ConformanceRequirementSyntax {
+        return SyntaxFactory.makeConformanceRequirement(
+            leftTypeIdentifier: leftTypeIdentifier.normalized(),
+            colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            rightTypeIdentifier: rightTypeIdentifier.normalized(),
+            trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
     }
 }

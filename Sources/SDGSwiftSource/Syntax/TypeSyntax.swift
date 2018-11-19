@@ -27,13 +27,6 @@ extension TypeSyntax {
             return TypeReferenceAPI(name: wrapped.name, genericArguments: wrapped.genericArguments, isOptional: true)
         default:
             for child in children {
-                if let type = child as? TokenSyntax,
-                    type.text ≠ ".",
-                    type.tokenKind ≠ .inoutKeyword {
-                    return TypeReferenceAPI(name: type.text, genericArguments: [])
-                }
-            }
-            for child in children {
                 if let type = child as? SimpleTypeIdentifierSyntax {
                     return type.reference
                 }
@@ -45,9 +38,9 @@ extension TypeSyntax {
     internal func normalized() -> TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax :
-            return SyntaxFactory.makeSimpleTypeIdentifier(
-                name: simple.name.generallyNormalized(),
-                genericArgumentClause: simple.genericArgumentClause?.normalized())
+            return simple.normalized()
+        case let member as MemberTypeIdentifierSyntax :
+            return member.normalized()
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified type syntax class: \(type(of: self))")

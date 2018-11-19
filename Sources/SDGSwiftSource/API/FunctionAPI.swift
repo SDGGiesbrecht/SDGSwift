@@ -160,7 +160,7 @@ public class FunctionAPI : APIElement {
                     rightParen: SyntaxFactory.makeToken(.rightParen)),
                 throwsOrRethrowsKeyword: throwsKeyword,
                 output: returnClause),
-            genericWhereClause: constraintSyntax(),
+            genericWhereClause: constraints,
             body: SyntaxFactory.makeBlankCodeBlock())
     }
 

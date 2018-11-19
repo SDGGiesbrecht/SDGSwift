@@ -12,17 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension GenericWhereClauseSyntax {
+extension GenericWhereClauseSyntax : List {
 
-    internal var constraints: [ConstraintAPI] {
-        var result: [ConstraintAPI] = []
-        for requirement in requirementList {
-            if let constraint = requirement as? ConformanceRequirementSyntax {
-                result.append(constraint.constraint)
-            } else if let constraint = requirement as? SameTypeRequirementSyntax {
-                result.append(constraint.constraint)
-            }
-        }
-        return result
+    internal func normalized() -> GenericWhereClauseSyntax {
+        return SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: whereKeyword.generallyNormalized(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            requirementList: requirementList.normalized())
+    }
+
+    // MARK: - List
+
+    internal init(elementsOrEmpty elements: [Syntax]) {
+        self = SyntaxFactory.makeGenericWhereClause(
+            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, trailingTrivia: .spaces(1)),
+            requirementList: GenericRequirementListSyntax(elementsOrEmpty: elements))
+    }
+
+    internal func adding(_ addition: Syntax) -> GenericWhereClauseSyntax {
+        return withRequirementList(requirementList.adding(addition))
+    }
+
+    // MARK: - Mergeable
+
+    internal func merged(with other: GenericWhereClauseSyntax) -> GenericWhereClauseSyntax {
+        return withRequirementList(requirementList.merged(with: other.requirementList))
     }
 }

@@ -18,10 +18,10 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: [ConstraintAPI], children: [APIElement]) {
+    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         self.type = type
         super.init(documentation: nil, conformances: conformances, children: children)
-        self.constraints = constraints
+        self.constraints = constraints?.normalized()
     }
 
     // MARK: - Properties
@@ -79,7 +79,7 @@ public class ExtensionAPI : APIScope {
 
     public override var summary: [String] {
         var result = "(" + name + ")"
-        if let constraints = constraintSyntax() {
+        if let constraints = self.constraints {
             result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
         }
         appendCompilationConditions(to: &result)

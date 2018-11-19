@@ -1,4 +1,8 @@
+DeprecatedFormGeneric<Thing> • struct DeprecatedFormGeneric<Thing> where Thing : Equatable
 DoubleGeneric<ThingA, ThingB> • struct DoubleGeneric<ThingA, ThingB>
+DoubledDeprecatedFormGeneric<ThingA, ThingB> • struct DoubledDeprecatedFormGeneric<ThingA, ThingB> where ThingA : Equatable, ThingB : Equatable
 Generic<Thing> • struct Generic<Thing> where Thing : ConformanceRequiredByWhere, Thing : RequiredConformance
  DeclaredConformanceOne
  DeclaredConformanceTwo
+NestedGenericConstraint<Thing> • struct NestedGenericConstraint<Thing> where Thing : Collection, Thing.Element : Equatable, Generic<Int> == OtherThing, Thing.Associated == Thing.Generic<Int>
+StandardFormGeneric<Thing> • struct StandardFormGeneric<Thing> where Thing : Equatable

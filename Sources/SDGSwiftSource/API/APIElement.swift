@@ -81,15 +81,7 @@ public class APIElement : Comparable, Hashable {
         return []
     }
 
-    private var _constraints: [ConstraintAPI] = []
-    public internal(set) var constraints: [ConstraintAPI] {
-        get {
-            return _constraints
-        }
-        set {
-            _constraints = newValue.map({ $0.normalized() }).sorted()
-        }
-    }
+    public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 
     public let documentation: DocumentationSyntax?
@@ -108,22 +100,6 @@ public class APIElement : Comparable, Hashable {
     public var userInformation: Any?
 
     // MARK: - Description
-
-    internal func constraintSyntax() -> GenericWhereClauseSyntax? {
-        guard ¬constraints.isEmpty else {
-            return nil
-        }
-
-        var syntaxElements: [Syntax] = []
-        for index in constraints.indices {
-            let constraint = constraints[index]
-            syntaxElements.append(constraint.syntax(trailingComma: index ≠ constraints.index(before: constraints.endIndex)))
-        }
-
-        return SyntaxFactory.makeGenericWhereClause(
-            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            requirementList: SyntaxFactory.makeGenericRequirementList(syntaxElements))
-    }
 
     internal func appendCompilationConditions(to description: inout String) {
         if let conditions = compilationConditions {

@@ -1,5 +1,5 @@
 /*
- ExtensionAPI.swift
+ Mergeable.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import SDGSwiftSource
-
-extension ExtensionAPI {
-
-    convenience init(type: String) {
-        self.init(type: TypeReferenceAPI(name: type, genericArguments: []), conformances: [], constraints: nil, children: [])
-    }
+internal protocol Mergeable {
+    func merged(with other: Self) -> Self
 }

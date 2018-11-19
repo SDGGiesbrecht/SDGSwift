@@ -14,7 +14,15 @@
 
 extension SameTypeRequirementSyntax {
 
-    internal var constraint: ConstraintAPI {
-        return .sameType(leftTypeIdentifier.reference, rightTypeIdentifier.reference)
+    internal func normalized(comma: Bool) -> SameTypeRequirementSyntax {
+        var types = (leftTypeIdentifier.normalized(), rightTypeIdentifier.normalized())
+        if types.0.source() > types.1.source() {
+            swap(&types.0, &types.1)
+        }
+        return SyntaxFactory.makeSameTypeRequirement(
+            leftTypeIdentifier: types.0,
+            equalityToken: SyntaxFactory.makeToken(.spacedBinaryOperator("=="), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            rightTypeIdentifier: types.1,
+            trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
     }
 }
