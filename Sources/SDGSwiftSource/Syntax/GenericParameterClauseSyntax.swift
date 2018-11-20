@@ -16,7 +16,7 @@ import SDGLogic
 
 extension GenericParameterClauseSyntax {
 
-    var typesAndConstraints: (types: [TypeReferenceAPI], constraints: GenericWhereClauseSyntax?) {
+    internal var typesAndConstraints: (types: [TypeReferenceAPI], constraints: GenericWhereClauseSyntax?) {
         var types: [TypeReferenceAPI] = []
         var constraints: GenericWhereClauseSyntax?
         for parameter in genericParameterList {
@@ -33,5 +33,9 @@ extension GenericParameterClauseSyntax {
             }
         }
         return (types, constraints)
+    }
+
+    internal func normalizedForAPIDeclaration() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
+
     }
 }

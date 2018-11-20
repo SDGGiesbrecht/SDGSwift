@@ -28,7 +28,25 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
     }
 
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
+        var newGenericParemeterClause: GenericParameterClauseSyntax?
+        var newGenericWhereClause: GenericWhereClauseSyntax?
+        if let originalGenericParameterClause = genericParameterClause {
+            (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
+        }
 
+        if let originalGenericWhereClause = genericWhereClause {
+            newGenericWhereClause = newGenericWhereClause?.adding(originalGenericWhereClause)
+        }
+
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(),
+            funcKeyword: funcKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalized(),
+            genericParameterClause: newGenericParemeterClause,
+            signature: signature.normalizedForAPIDeclaration(),
+            genericWhereClause: newGenericWhereClause,
+            body: nil)
     }
 
     internal func overloadPattern() -> FunctionDeclSyntax {
