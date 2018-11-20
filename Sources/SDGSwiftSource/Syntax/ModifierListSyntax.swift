@@ -18,7 +18,7 @@ extension ModifierListSyntax {
         return SyntaxFactory.makeModifierList(compactMap({ $0.normalizedForAPIDeclaration() }).sorted(by: DeclModifierSyntax.arrange))
     }
 
-    internal func overloadPattern() -> ModifierListSyntax {
+    internal func forOverloadPattern() -> ModifierListSyntax {
 
     }
 }

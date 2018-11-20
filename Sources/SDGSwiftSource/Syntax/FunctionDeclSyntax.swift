@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
 
@@ -52,21 +53,29 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
     internal func overloadPattern() -> FunctionDeclSyntax {
         return SyntaxFactory.makeFunctionDecl(
             attributes: nil,
-            modifiers: modifiers?.overloadPattern(),
+            modifiers: modifiers?.forOverloadPattern(),
             funcKeyword: funcKeyword,
             identifier: identifier,
             genericParameterClause: nil,
-            signature: signature.overloadPattern(),
+            signature: signature.forOverloadPattern(),
             genericWhereClause: nil,
             body: nil)
     }
 
     internal func name() -> FunctionDeclSyntax {
-
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: nil,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
+            identifier: identifier,
+            genericParameterClause: nil,
+            signature: signature.forFunctionName(),
+            genericWhereClause: nil,
+            body: nil)
     }
 
     internal func identifierList() -> Set<String> {
-
+        return Set([identifier.text]) ∪ signature.identifierList()
     }
 
     // MARK: - FunctionLike

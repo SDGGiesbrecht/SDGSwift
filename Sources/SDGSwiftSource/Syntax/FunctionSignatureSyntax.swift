@@ -18,7 +18,15 @@ extension FunctionSignatureSyntax {
 
     }
 
-    internal func overloadPattern() -> FunctionSignatureSyntax {
+    internal func forOverloadPattern() -> FunctionSignatureSyntax {
+
+    }
+
+    internal func forFunctionName() -> FunctionSignatureSyntax {
+
+    }
+
+    internal func identifierList() -> Set<String> {
 
     }
 }
