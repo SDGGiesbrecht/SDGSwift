@@ -15,19 +15,28 @@
 extension ParameterClauseSyntax {
 
     internal func normalizedForFunctionDeclaration() -> ParameterClauseSyntax {
-
+        return SyntaxFactory.makeParameterClause(
+            leftParen: leftParen.generallyNormalized(),
+            parameterList: parameterList.normalizedForFunctionDeclaration(),
+            rightParen: rightParen.generallyNormalized())
     }
 
     internal func forOverloadPattern() -> ParameterClauseSyntax {
-
+        return SyntaxFactory.makeParameterClause(
+            leftParen: leftParen.generallyNormalized(),
+            parameterList: parameterList.forOverloadPattern(),
+            rightParen: rightParen.generallyNormalized())
     }
 
     internal func forFunctionName() -> ParameterClauseSyntax {
-
+        return SyntaxFactory.makeParameterClause(
+            leftParen: leftParen.generallyNormalized(),
+            parameterList: parameterList.forFunctionName(),
+            rightParen: rightParen.generallyNormalized())
     }
 
     internal func identifierListForFunction() -> Set<String> {
-
+        return parameterList.identifierListForFunction()
     }
 
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {

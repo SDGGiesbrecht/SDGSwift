@@ -14,6 +14,22 @@
 
 extension FunctionParameterListSyntax {
 
+    internal func normalizedForFunctionDeclaration() -> FunctionParameterListSyntax {
+
+    }
+
+    internal func forOverloadPattern() -> FunctionParameterListSyntax {
+
+    }
+
+    internal func forFunctionName() -> FunctionParameterListSyntax {
+
+    }
+
+    internal func identifierListForFunction() -> Set<String> {
+
+    }
+
     internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {
         return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForAssociatedValue() }))
     }
