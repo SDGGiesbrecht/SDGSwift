@@ -18,43 +18,68 @@ import SDGMathematics
 extension DeclModifierSyntax {
 
     internal func normalizedForAPIDeclaration() -> DeclModifierSyntax? {
-        let modifier = name.text
-        switch modifier {
-        case "mutating":
-            // @exempt(from: tests) #workaround(Requires function refactor.)
+        func normalize() -> DeclModifierSyntax {
             return SyntaxFactory.makeDeclModifier(
                 name: name.generallyNormalized(),
                 detail: nil)
-        case "indirect":
-            return nil
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified modifier: \(modifier)")
+        }
+        switch name.tokenKind {
+        case .staticKeyword, .classKeyword:
+            // Type membership.
+            return normalize()
+        default:
+            let conditionalKeyword = name.text
+            switch conditionalKeyword {
+            case "mutating":
+                return normalize()
+            case "indirect":
+                return nil
+            default: // @exempt(from: tests) Should never occur.
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified modifier: \(conditionalKeyword)")
+                }
+                return nil
             }
-            return nil
         }
     }
 
     private enum Group : OrderedEnumeration {
         case unknown
-        case indirection
+        case classMembership
+        case staticity
         case mutation
     }
     private func group() -> Group { // @exempt(from: tests) #workaround(Requires function refactor.)
-        switch name.text {
-        case "indirect":
-            return .indirection
-        case "mutating":
-            return .mutation
+        switch name.tokenKind {
+        case .staticKeyword:
+            return .staticity
+        case .classKeyword:
+            return .classMembership
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified modifier: \(name.text)")
+            switch name.text {
+            case "mutating":
+                return .mutation
+            default:
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified modifier: \(name.text)")
+                }
+                return .unknown
             }
-            return .unknown
         }
     }
 
     internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool { // @exempt(from: tests) #workaround(Requires function refactor.)
         return (lhs.group(), lhs.name.text) < (rhs.group(), rhs.name.text)
+    }
+
+    internal func forOverloadPattern() -> DeclModifierSyntax? {
+        switch name.tokenKind {
+        case .staticKeyword:
+             return self
+        case .classKeyword:
+            return withName(SyntaxFactory.makeToken(.staticKeyword, trailingTrivia: name.trailingTrivia))
+        default:
+            return nil
+        }
     }
 }

@@ -19,6 +19,6 @@ extension ModifierListSyntax {
     }
 
     internal func forOverloadPattern() -> ModifierListSyntax {
-
+        return SyntaxFactory.makeModifierList(filter({ $0.isRelevantToOverloadPattern }))
     }
 }
