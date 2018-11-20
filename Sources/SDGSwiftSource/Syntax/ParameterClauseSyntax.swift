@@ -18,6 +18,18 @@ extension ParameterClauseSyntax {
 
     }
 
+    internal func forOverloadPattern() -> ParameterClauseSyntax {
+
+    }
+
+    internal func forFunctionName() -> ParameterClauseSyntax {
+
+    }
+
+    internal func identifierListForFunction() -> Set<String> {
+
+    }
+
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: leftParen.generallyNormalized(),

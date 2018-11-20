@@ -22,14 +22,20 @@ extension FunctionSignatureSyntax {
     }
 
     internal func forOverloadPattern() -> FunctionSignatureSyntax {
-
+        return SyntaxFactory.makeFunctionSignature(
+            input: input.forOverloadPattern(),
+            throwsOrRethrowsKeyword: nil,
+            output: nil)
     }
 
     internal func forFunctionName() -> FunctionSignatureSyntax {
-
+        return SyntaxFactory.makeFunctionSignature(
+            input: input.forFunctionName(),
+            throwsOrRethrowsKeyword: nil,
+            output: nil)
     }
 
     internal func identifierList() -> Set<String> {
-
+        return input.identifierListForFunction()
     }
 }
