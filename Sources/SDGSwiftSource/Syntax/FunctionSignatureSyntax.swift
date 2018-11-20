@@ -15,7 +15,10 @@
 extension FunctionSignatureSyntax {
 
     internal func normalizedForAPIDeclaration() -> FunctionSignatureSyntax {
-
+        return SyntaxFactory.makeFunctionSignature(
+            input: input.normalizedForFunctionDeclaration(),
+            throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
+            output: output?.normalizedForFunctionDeclaration())
     }
 
     internal func forOverloadPattern() -> FunctionSignatureSyntax {

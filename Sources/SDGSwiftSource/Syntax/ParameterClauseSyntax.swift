@@ -14,6 +14,10 @@
 
 extension ParameterClauseSyntax {
 
+    internal func normalizedForFunctionDeclaration() -> ParameterClauseSyntax {
+
+    }
+
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: leftParen.generallyNormalized(),
