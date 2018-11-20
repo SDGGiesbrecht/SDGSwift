@@ -26,7 +26,7 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Properties
 
-    private let _declaration: FunctionDeclSyntax
+    internal let _declaration: FunctionDeclSyntax
 
     internal var isProtocolRequirement: Bool = false
     internal var hasDefaultImplementation: Bool = false

@@ -16,24 +16,31 @@ import SDGLogic
 
 extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
 
-    internal var functionAPI: FunctionAPI? {
+    internal func functionAPI() -> [FunctionAPI] {
         if ¬isPublic {
-            return nil
+            return []
         }
         let name = identifier.text
         if name.hasPrefix("_") {
-            return nil
+            return []
         }
-        return FunctionAPI(
-            documentation: documentation,
-            isOpen: isOpen,
-            typeMethodKeyword: typeMemberKeyword,
-            isMutating: modifiers?.contains(where: { $0.name.text == "mutating" }) == true,
-            name: name,
-            arguments: parameters(forSubscript: false),
-            throws: signature.throwsOrRethrowsKeyword ≠ nil,
-            returnType: signature.output?.returnType.reference,
-            isOperator: identifier.isOperator)
+        return [FunctionAPI(documentation: documentation, declaration: self)]
+    }
+
+    internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
+
+    }
+
+    internal func overloadPattern() -> FunctionDeclSyntax {
+
+    }
+
+    internal func name() -> FunctionDeclSyntax {
+
+    }
+
+    internal func identifierList() -> Set<String> {
+
     }
 
     // MARK: - FunctionLike

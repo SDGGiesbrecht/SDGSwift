@@ -136,7 +136,7 @@ extension Syntax {
         case let `subscript` as SubscriptDeclSyntax :
             return `subscript`.subscriptAPI.flatMap({ [$0] }) ?? []
         case let function as FunctionDeclSyntax :
-            return function.functionAPI.flatMap({ [$0] }) ?? []
+            return function.functionAPI()
         case let `extension` as ExtensionDeclSyntax :
             return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
