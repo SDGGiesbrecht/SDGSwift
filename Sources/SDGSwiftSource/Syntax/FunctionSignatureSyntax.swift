@@ -17,4 +17,8 @@ extension FunctionSignatureSyntax {
     internal func normalizedForAPIDeclaration() -> FunctionSignatureSyntax {
 
     }
+
+    internal func overloadPattern() -> FunctionSignatureSyntax {
+
+    }
 }

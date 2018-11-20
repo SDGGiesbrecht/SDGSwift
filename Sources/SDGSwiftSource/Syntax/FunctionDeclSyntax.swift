@@ -50,7 +50,15 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
     }
 
     internal func overloadPattern() -> FunctionDeclSyntax {
-
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: modifiers?.overloadPattern(),
+            funcKeyword: funcKeyword,
+            identifier: identifier,
+            genericParameterClause: nil,
+            signature: signature.overloadPattern(),
+            genericWhereClause: nil,
+            body: nil)
     }
 
     internal func name() -> FunctionDeclSyntax {
