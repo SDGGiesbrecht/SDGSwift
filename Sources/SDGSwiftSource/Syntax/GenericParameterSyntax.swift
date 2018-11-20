@@ -14,7 +14,24 @@
 
 extension GenericParameterSyntax {
 
-    internal func normalizedForAPIDeclaration() -> (GenericParameterSyntax, ConformanceRequirementSyntax?) {
-
+    internal func normalizedForAPIDeclaration(comma: Bool) -> (GenericParameterSyntax, ConformanceRequirementSyntax?) {
+        let normalizedName = self.name.generallyNormalized()
+        let parameter = SyntaxFactory.makeGenericParameter(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            name: normalizedName,
+            colon: nil,
+            inheritedType: nil,
+            trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
+        var requirement: ConformanceRequirementSyntax?
+        if let conformance = inheritedType {
+            requirement = SyntaxFactory.makeConformanceRequirement(
+                leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
+                    name: normalizedName,
+                    genericArgumentClause: nil),
+                colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                rightTypeIdentifier: conformance.normalized(),
+                trailingComma: nil)
+        }
+        return (parameter, requirement)
     }
 }
