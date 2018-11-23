@@ -61,7 +61,7 @@ extension FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: attributes?.normalizedForAPIDeclaration(),
             firstName: firstName?.generallyNormalized(),
-            secondName: secondName?.generallyNormalized(),
+            secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
             colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
             type: type?.normalized(),
             ellipsis: ellipsisToken,
