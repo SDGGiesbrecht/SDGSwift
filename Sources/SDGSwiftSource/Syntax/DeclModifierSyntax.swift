@@ -51,6 +51,7 @@ extension DeclModifierSyntax {
 
     private enum Group : OrderedEnumeration {
         case unknown
+        case accessControl
         case classMembership
         case staticity
         case mutation
@@ -63,6 +64,9 @@ extension DeclModifierSyntax {
             return .classMembership
         default:
             switch name.text {
+            case "open", "public", "internal", "fileprivate", "private":
+                // Access control.
+                return .accessControl
             case "mutating":
                 return .mutation
             default:
