@@ -48,20 +48,48 @@ extension FunctionParameterSyntax {
 
     // MARK: - Function Parameters
 
-    internal func normalizedForFunctionDeclaration(comma: Bool) -> FunctionParameterSyntax {
-
+    internal func normalizedForFunctionDeclaration() -> FunctionParameterSyntax {
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            firstName: firstName?.generallyNormalized(),
+            secondName: secondName?.generallyNormalized(),
+            colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+            type: type?.normalized(),
+            ellipsis: ellipsis?.generallyNormalized(),
+            defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
+            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 
     internal func forOverloadPattern() -> FunctionParameterSyntax {
-
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: firstName?.generallyNormalized(),
+            secondName: nil,
+            colon: colon,
+            type: nil,
+            ellipsis: ellipsis,
+            defaultArgument: nil,
+            trailingComma: trailingComma)
     }
 
     internal func forFunctionName() -> FunctionParameterSyntax {
-
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: firstName?.generallyNormalized(),
+            secondName: nil,
+            colon: colon?.generallyNormalized(),
+            type: nil,
+            ellipsis: nil,
+            defaultArgument: nil,
+            trailingComma: nil)
     }
 
     internal func identifierListForFunction() -> Set<String> {
-
+        var result: Set<String> = []
+        if let externalName = firstName {
+            result.insert(externalName.text)
+        }
+        return result
     }
 
     // MARK: - Associated Values

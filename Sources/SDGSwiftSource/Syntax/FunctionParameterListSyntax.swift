@@ -18,12 +18,7 @@ import SDGCollections
 extension FunctionParameterListSyntax {
 
     internal func normalizedForFunctionDeclaration() -> FunctionParameterListSyntax {
-        var parameters = map({ $0.normalizedForFunctionDeclaration(comma: true) })
-        if ¬parameters.isEmpty {
-            let last = parameters.removeLast()
-            parameters.append(last.normalizedForFunctionDeclaration(comma: false))
-        }
-        return SyntaxFactory.makeFunctionParameterList(parameters)
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForFunctionDeclaration() }))
     }
 
     internal func forOverloadPattern() -> FunctionParameterListSyntax {
