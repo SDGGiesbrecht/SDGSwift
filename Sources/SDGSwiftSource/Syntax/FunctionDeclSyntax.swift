@@ -28,7 +28,7 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
         return [FunctionAPI(documentation: documentation, declaration: self)]
     }
 
-    internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
+    internal func normalizedAPIDeclaration() -> (declaration: FunctionDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         var newGenericParemeterClause: GenericParameterClauseSyntax?
         var newGenericWhereClause: GenericWhereClauseSyntax?
         if let originalGenericParameterClause = genericParameterClause {
@@ -39,15 +39,16 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
             newGenericWhereClause = newGenericWhereClause?.adding(originalGenericWhereClause)
         }
 
-        return SyntaxFactory.makeFunctionDecl(
+        return (SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: identifier.isOperator),
             funcKeyword: funcKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalized(),
             genericParameterClause: newGenericParemeterClause,
             signature: signature.normalizedForAPIDeclaration(),
-            genericWhereClause: newGenericWhereClause,
-            body: nil)
+            genericWhereClause: nil,
+            body: nil),
+                newGenericWhereClause)
     }
 
     internal func overloadPattern() -> FunctionDeclSyntax {

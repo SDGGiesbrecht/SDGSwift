@@ -20,8 +20,10 @@ public class FunctionAPI : APIElement {
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: FunctionDeclSyntax) {
-        _declaration = declaration.normalizedAPIDeclaration()
+        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+        _declaration = normalizedDeclaration
         super.init(documentation: documentation)
+        constraints = constraints.merged(with: normalizedConstraints)
     }
 
     // MARK: - Properties
@@ -83,7 +85,7 @@ public class FunctionAPI : APIElement {
     }
 
     public override var declaration: Syntax {
-        return _declaration
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {
