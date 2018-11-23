@@ -20,7 +20,7 @@ extension DeclModifierSyntax {
     internal func normalizedForAPIDeclaration() -> DeclModifierSyntax? {
         func normalize() -> DeclModifierSyntax {
             return SyntaxFactory.makeDeclModifier(
-                name: name.generallyNormalized(),
+                name: name.generallyNormalized(trailingTrivia: .spaces(1)),
                 detail: nil)
         }
         switch name.tokenKind {
