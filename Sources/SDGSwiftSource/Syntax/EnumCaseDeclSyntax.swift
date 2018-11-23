@@ -33,7 +33,7 @@ extension EnumCaseDeclSyntax {
     internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
         return SyntaxFactory.makeEnumCaseDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
-            modifiers: modifiers?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             caseKeyword: caseKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
             elements: elements.normalizedForAPIDeclaration())
     }

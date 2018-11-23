@@ -41,7 +41,7 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
 
         return SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
-            modifiers: modifiers?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: identifier.isOperator),
             funcKeyword: funcKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalized(),
             genericParameterClause: newGenericParemeterClause,

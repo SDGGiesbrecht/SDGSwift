@@ -14,8 +14,8 @@
 
 extension ModifierListSyntax {
 
-    internal func normalizedForAPIDeclaration() -> ModifierListSyntax {
-        return SyntaxFactory.makeModifierList(compactMap({ $0.normalizedForAPIDeclaration() }).sorted(by: DeclModifierSyntax.arrange))
+    internal func normalizedForAPIDeclaration(operatorFunction: Bool) -> ModifierListSyntax {
+        return SyntaxFactory.makeModifierList(compactMap({ $0.normalizedForAPIDeclaration(operatorFunction: operatorFunction) }).sorted(by: DeclModifierSyntax.arrange))
     }
 
     internal func forOverloadPattern() -> ModifierListSyntax {

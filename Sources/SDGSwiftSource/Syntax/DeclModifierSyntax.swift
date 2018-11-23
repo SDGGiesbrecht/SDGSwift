@@ -17,7 +17,7 @@ import SDGMathematics
 
 extension DeclModifierSyntax {
 
-    internal func normalizedForAPIDeclaration() -> DeclModifierSyntax? {
+    internal func normalizedForAPIDeclaration(operatorFunction: Bool) -> DeclModifierSyntax? {
         func normalize() -> DeclModifierSyntax {
             return SyntaxFactory.makeDeclModifier(
                 name: name.generallyNormalized(trailingTrivia: .spaces(1)),
@@ -26,7 +26,7 @@ extension DeclModifierSyntax {
         switch name.tokenKind {
         case .staticKeyword, .classKeyword:
             // Type membership.
-            return normalize()
+            return operatorFunction ? nil : normalize()
         default:
             let conditionalKeyword = name.text
             switch conditionalKeyword {
