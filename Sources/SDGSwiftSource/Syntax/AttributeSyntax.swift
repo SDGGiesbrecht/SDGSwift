@@ -20,7 +20,7 @@ extension AttributeSyntax {
     internal func normalizedForAPIDeclaration() -> AttributeSyntax? {
         let attribute = attributeName.text
         if attribute.hasPrefix("_") {
-            return nil // @exempt(from: tests) #workaround(Requires function refactor.)
+            return nil
         }
 
         switch attribute {
@@ -29,10 +29,10 @@ extension AttributeSyntax {
             // #workaround(“available” should be parsed.)
             return normalized()
         case "escaping", "autoclosure", "discardableResult":
-            // Call site // @exempt(from: tests) #workaround(Requires function refactor.)
+            // Call site
             return normalized()
         case "objc", "nonobjc", "objcMembers":
-            // Objective‐C interface // @exempt(from: tests) #workaround(Requires function refactor.)
+            // Objective‐C interface
             // #workaround(“objcMembers” should be decomposed.)
             return normalized()
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
@@ -40,7 +40,7 @@ extension AttributeSyntax {
             return normalized()
 
         case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
-            // Implementation details // @exempt(from: tests) #workaround(Requires function refactor.)
+            // Implementation details
             return nil
         case "NSCopying", "NSManaged" :
             // Objective‐C implementation details // @exempt(from: tests) #workaround(Requires property refactor.)
@@ -83,7 +83,7 @@ extension AttributeSyntax {
         case escapability
         case autoclosure
     }
-    private func group() -> Group { // @exempt(from: tests) #workaround(Requires function refactor.)
+    private func group() -> Group {
         switch attributeName.text {
         case "available":
             return .availability
@@ -105,7 +105,7 @@ extension AttributeSyntax {
         }
     }
 
-    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool { // @exempt(from: tests) #workaround(Requires function refactor.)
+    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool {
         return (lhs.group(), lhs.attributeName.text) < (rhs.group(), rhs.attributeName.text)
     }
 }

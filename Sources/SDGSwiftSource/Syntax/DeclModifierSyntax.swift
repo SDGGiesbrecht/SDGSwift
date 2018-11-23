@@ -56,7 +56,7 @@ extension DeclModifierSyntax {
         case staticity
         case mutation
     }
-    private func group() -> Group { // @exempt(from: tests) #workaround(Requires function refactor.)
+    private func group() -> Group {
         switch name.tokenKind {
         case .staticKeyword:
             return .staticity
@@ -78,7 +78,7 @@ extension DeclModifierSyntax {
         }
     }
 
-    internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool { // @exempt(from: tests) #workaround(Requires function refactor.)
+    internal static func arrange(lhs: DeclModifierSyntax, rhs: DeclModifierSyntax) -> Bool {
         return (lhs.group(), lhs.name.text) < (rhs.group(), rhs.name.text)
     }
 
