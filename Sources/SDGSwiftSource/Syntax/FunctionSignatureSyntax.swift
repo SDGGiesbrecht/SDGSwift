@@ -21,9 +21,9 @@ extension FunctionSignatureSyntax {
             output: output?.normalizedForFunctionDeclaration())
     }
 
-    internal func forOverloadPattern() -> FunctionSignatureSyntax {
+    internal func forOverloadPattern(operator: Bool) -> FunctionSignatureSyntax {
         return SyntaxFactory.makeFunctionSignature(
-            input: input.forOverloadPattern(),
+            input: input.forOverloadPattern(operator: `operator`),
             throwsOrRethrowsKeyword: nil,
             output: nil)
     }

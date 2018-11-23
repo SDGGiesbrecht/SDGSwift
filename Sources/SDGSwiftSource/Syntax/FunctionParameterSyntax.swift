@@ -69,10 +69,10 @@ extension FunctionParameterSyntax {
             trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 
-    internal func forOverloadPattern() -> FunctionParameterSyntax {
+    internal func forOverloadPattern(operator: Bool) -> FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
-            firstName: firstName?.generallyNormalized(),
+            firstName: `operator` ? SyntaxFactory.makeToken(.identifier("_")) : firstName?.generallyNormalized(),
             secondName: nil,
             colon: colon,
             type: nil,

@@ -57,7 +57,7 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
             funcKeyword: funcKeyword,
             identifier: identifier,
             genericParameterClause: nil,
-            signature: signature.forOverloadPattern(),
+            signature: signature.forOverloadPattern(operator: identifier.isOperator),
             genericWhereClause: nil,
             body: nil)
     }

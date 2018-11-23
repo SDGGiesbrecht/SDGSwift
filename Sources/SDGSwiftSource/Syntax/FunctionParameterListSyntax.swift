@@ -21,8 +21,8 @@ extension FunctionParameterListSyntax {
         return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForFunctionDeclaration() }))
     }
 
-    internal func forOverloadPattern() -> FunctionParameterListSyntax {
-        return SyntaxFactory.makeFunctionParameterList(map({ $0.forOverloadPattern() }))
+    internal func forOverloadPattern(operator: Bool) -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forOverloadPattern(operator: `operator`) }))
     }
 
     internal func forFunctionName(operator: Bool) -> FunctionParameterListSyntax {

@@ -21,10 +21,10 @@ extension ParameterClauseSyntax {
             rightParen: rightParen.generallyNormalized())
     }
 
-    internal func forOverloadPattern() -> ParameterClauseSyntax {
+    internal func forOverloadPattern(operator: Bool) -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: leftParen.generallyNormalized(),
-            parameterList: parameterList.forOverloadPattern(),
+            parameterList: parameterList.forOverloadPattern(operator: `operator`),
             rightParen: rightParen.generallyNormalized())
     }
 
