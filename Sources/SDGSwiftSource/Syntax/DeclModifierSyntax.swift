@@ -30,6 +30,9 @@ extension DeclModifierSyntax {
         default:
             let conditionalKeyword = name.text
             switch conditionalKeyword {
+            case "open", "public", "internal", "fileprivate", "private":
+                // Access control.
+                return nil
             case "mutating":
                 return normalize()
             case "indirect":
