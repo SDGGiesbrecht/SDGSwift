@@ -69,7 +69,7 @@ extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
             funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
             identifier: identifier,
             genericParameterClause: nil,
-            signature: signature.forFunctionName(),
+            signature: signature.forFunctionName(operator: identifier.isOperator),
             genericWhereClause: nil,
             body: nil)
     }

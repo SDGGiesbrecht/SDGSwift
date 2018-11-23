@@ -28,9 +28,9 @@ extension FunctionSignatureSyntax {
             output: nil)
     }
 
-    internal func forFunctionName() -> FunctionSignatureSyntax {
+    internal func forFunctionName(operator: Bool) -> FunctionSignatureSyntax {
         return SyntaxFactory.makeFunctionSignature(
-            input: input.forFunctionName(),
+            input: input.forFunctionName(operator: `operator`),
             throwsOrRethrowsKeyword: nil,
             output: nil)
     }

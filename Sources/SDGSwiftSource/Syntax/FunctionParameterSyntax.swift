@@ -81,10 +81,10 @@ extension FunctionParameterSyntax {
             trailingComma: trailingComma)
     }
 
-    internal func forFunctionName() -> FunctionParameterSyntax {
+    internal func forFunctionName(operator: Bool) -> FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
-            firstName: firstName?.generallyNormalized(),
+            firstName: `operator` ? SyntaxFactory.makeToken(.identifier("_")) : firstName?.generallyNormalized(),
             secondName: nil,
             colon: colon?.generallyNormalized(),
             type: nil,

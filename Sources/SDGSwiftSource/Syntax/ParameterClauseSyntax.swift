@@ -28,10 +28,10 @@ extension ParameterClauseSyntax {
             rightParen: rightParen.generallyNormalized())
     }
 
-    internal func forFunctionName() -> ParameterClauseSyntax {
+    internal func forFunctionName(operator: Bool) -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: leftParen.generallyNormalized(),
-            parameterList: parameterList.forFunctionName(),
+            parameterList: parameterList.forFunctionName(operator: `operator`),
             rightParen: rightParen.generallyNormalized())
     }
 
