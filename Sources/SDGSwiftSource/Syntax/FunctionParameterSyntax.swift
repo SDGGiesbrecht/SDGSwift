@@ -46,6 +46,26 @@ extension FunctionParameterSyntax {
             hasDefault: defaultArgument ≠ nil)
     }
 
+    // MARK: - Function Parameters
+
+    internal func normalizedForFunctionDeclaration(comma: Bool) -> FunctionParameterSyntax {
+
+    }
+
+    internal func forOverloadPattern() -> FunctionParameterSyntax {
+
+    }
+
+    internal func forFunctionName() -> FunctionParameterSyntax {
+
+    }
+
+    internal func identifierListForFunction() -> Set<String> {
+
+    }
+
+    // MARK: - Associated Values
+
     internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
 
         // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)

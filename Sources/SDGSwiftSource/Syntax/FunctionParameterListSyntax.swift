@@ -12,22 +12,30 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
+
 extension FunctionParameterListSyntax {
 
     internal func normalizedForFunctionDeclaration() -> FunctionParameterListSyntax {
-
+        var parameters = map({ $0.normalizedForFunctionDeclaration(comma: true) })
+        if ¬parameters.isEmpty {
+            let last = parameters.removeLast()
+            parameters.append(last.normalizedForFunctionDeclaration(comma: false))
+        }
+        return SyntaxFactory.makeFunctionParameterList(parameters)
     }
 
     internal func forOverloadPattern() -> FunctionParameterListSyntax {
-
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forOverloadPattern() }))
     }
 
     internal func forFunctionName() -> FunctionParameterListSyntax {
-
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forFunctionName() }))
     }
 
     internal func identifierListForFunction() -> Set<String> {
-
+        return reduce(into: Set<String>()) { $0 ∪= $1.identifierListForFunction() }
     }
 
     internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {
