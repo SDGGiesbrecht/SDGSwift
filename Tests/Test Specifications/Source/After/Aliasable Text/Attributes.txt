@@ -11,8 +11,5 @@ public class ObjectiveCObject : N̲S̲O̲b̲j̲e̲c̲t̲ {
     @o̲b̲j̲c̲ public func objectiveCMethod() {}
     @n̲o̲n̲o̲b̲j̲c̲ public func swiftOnlyMethod() {}
 }
-@o̲b̲j̲c̲M̲e̲m̲b̲e̲r̲s̲ public class ObjectiveCMembers : N̲S̲O̲b̲j̲e̲c̲t̲ {
-    public func implicitObjectiveCMethod() {}
-}
 
 @i̲n̲l̲i̲n̲a̲b̲l̲e̲ public func inlineable() {}

@@ -11,8 +11,5 @@ public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲O̲b̲j̲e̲c̲t̲ ̲: ̲NSObject
  ̲ ̲ ̲ ̲@objc ̲public ̲func ̲o̲b̲j̲e̲c̲t̲i̲v̲e̲C̲M̲e̲t̲h̲o̲d̲() ̲{}
  ̲ ̲ ̲ ̲@nonobjc ̲public ̲func ̲s̲w̲i̲f̲t̲O̲n̲l̲y̲M̲e̲t̲h̲o̲d̲() ̲{}
 }
-@objcMembers ̲public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲M̲e̲m̲b̲e̲r̲s̲ ̲: ̲NSObject ̲{
- ̲ ̲ ̲ ̲public ̲func ̲i̲m̲p̲l̲i̲c̲i̲t̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲M̲e̲t̲h̲o̲d̲() ̲{}
-}
 
 @inlinable ̲public ̲func ̲i̲n̲l̲i̲n̲e̲a̲b̲l̲e̲() ̲{}
