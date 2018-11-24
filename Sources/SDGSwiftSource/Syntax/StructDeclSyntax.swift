@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension StructDeclSyntax : TypeDeclaration {
+extension StructDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 

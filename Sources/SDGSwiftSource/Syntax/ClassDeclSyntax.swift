@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension ClassDeclSyntax : TypeDeclaration {
+extension ClassDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 

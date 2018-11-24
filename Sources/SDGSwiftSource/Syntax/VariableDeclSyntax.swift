@@ -14,10 +14,10 @@
 
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, Member {
+extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
 
     internal var variableAPI: VariableAPI? {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return nil
         }
         guard let binding = bindings.first,

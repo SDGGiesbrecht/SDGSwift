@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-internal protocol TypeDeclaration : AccessControlled {
+internal protocol TypeDeclaration : AccessControlled, Attributed {
     static var keyword: TokenKind { get }
     var identifier: TokenSyntax { get }
     var genericParameterClause: GenericParameterClauseSyntax? { get }
@@ -25,7 +25,7 @@ internal protocol TypeDeclaration : AccessControlled {
 extension TypeDeclaration {
 
     internal var typeAPI: TypeAPI? {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return nil
         }
 

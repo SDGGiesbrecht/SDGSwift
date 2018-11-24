@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension EnumCaseDeclSyntax {
+extension EnumCaseDeclSyntax : AccessControlled, Attributed {
 
     internal func caseAPI() -> [CaseAPI] {
         var list: [CaseAPI] = []

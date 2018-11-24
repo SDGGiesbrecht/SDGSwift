@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ExtensionDeclSyntax {
+extension ExtensionDeclSyntax : AccessControlled, Attributed {
 
     internal var extensionAPI: ExtensionAPI? {
         let conformances = inheritanceClause?.conformances ?? []

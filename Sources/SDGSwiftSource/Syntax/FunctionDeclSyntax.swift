@@ -15,10 +15,10 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, FunctionLike, Member {
+extension FunctionDeclSyntax : AccessControlled, Attributed, FunctionLike, Member {
 
     internal func functionAPI() -> [FunctionAPI] {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return []
         }
         let name = identifier.text

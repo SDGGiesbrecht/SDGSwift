@@ -14,8 +14,29 @@
 
 import SDGControlFlow
 import SDGMathematics
+import SDGCollections
 
 extension AttributeSyntax {
+
+    internal func indicatesAbsence() -> Bool {
+        switch attributeName.text {
+        case "available":
+            return balancedTokens.contains(where: { token in
+                switch token.tokenKind {
+                case .identifier(let name):
+                    if name ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
+                        return true
+                    } else {
+                        return false
+                    }
+                default:
+                    return false
+                }
+            })
+        default:
+            return false
+        }
+    }
 
     internal func normalizedForAPIDeclaration() -> AttributeSyntax? {
         let attribute = attributeName.text

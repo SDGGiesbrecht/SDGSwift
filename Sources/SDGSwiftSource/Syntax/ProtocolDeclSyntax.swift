@@ -14,10 +14,10 @@
 
 import SDGLogic
 
-extension ProtocolDeclSyntax : AccessControlled {
+extension ProtocolDeclSyntax : AccessControlled, Attributed {
 
     internal var protocolAPI: ProtocolAPI? {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return nil
         }
         let name = identifier.text

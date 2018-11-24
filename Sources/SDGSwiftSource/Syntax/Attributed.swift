@@ -1,5 +1,5 @@
 /*
- EnumDeclSyntax.swift
+ Attributed.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,17 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+internal protocol Attributed : Syntax {
+    var attributes: AttributeListSyntax? { get }
+}
 
-extension EnumDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
-
-    // MARK: - TypeDeclaration
-
-    static var keyword: TokenKind {
-        return .enumKeyword
-    }
-
-    var genericParameterClause: GenericParameterClauseSyntax? {
-        return genericParameters
+extension Attributed {
+    internal func isUnavailable() -> Bool {
+        return attributes?.indicatesAbsence() == true
     }
 }

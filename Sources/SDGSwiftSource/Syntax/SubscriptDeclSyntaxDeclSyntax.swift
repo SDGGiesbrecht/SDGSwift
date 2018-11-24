@@ -14,10 +14,10 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, FunctionLike, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, FunctionLike, Member {
 
     internal var subscriptAPI: SubscriptAPI? {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return nil
         }
         return SubscriptAPI(

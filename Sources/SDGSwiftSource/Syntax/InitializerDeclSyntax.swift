@@ -14,10 +14,10 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, FunctionLike {
+extension InitializerDeclSyntax : AccessControlled, Attributed, FunctionLike {
 
     internal var initializerAPI: InitializerAPI? {
-        if ¬isPublic {
+        if ¬isPublic ∨ isUnavailable() {
             return nil
         }
         let arguments = parameters(forSubscript: false)
