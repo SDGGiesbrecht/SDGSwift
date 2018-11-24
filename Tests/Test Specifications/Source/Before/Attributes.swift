@@ -11,8 +11,5 @@ public class ObjectiveCObject : NSObject {
     @objc public func objectiveCMethod() {}
     @nonobjc public func swiftOnlyMethod() {}
 }
-@objcMembers public class ObjectiveCMembers : NSObject {
-    public func implicitObjectiveCMethod() {}
-}
 
 @inlinable public func inlineable() {}
