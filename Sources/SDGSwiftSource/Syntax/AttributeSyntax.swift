@@ -26,14 +26,12 @@ extension AttributeSyntax {
         switch attribute {
         case "available":
             // Availability
-            // #workaround(“available” should be parsed.)
             return normalized()
         case "escaping", "autoclosure", "discardableResult":
             // Call site
             return normalized()
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
-            // #workaround(“objcMembers” should be decomposed.)
             return normalized()
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
             // Xcode interface // @exempt(from: tests) #workaround(Requires property refactor.)

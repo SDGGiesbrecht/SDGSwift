@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css">
+ </head>
+ <body>
+
+<code class="swift blockquote"><span class="keyword">import</span> <span class="external identifier">Foundation</span>
+
+<span class="keyword">@</span><span class="external identifier">_specialize</span><span class="punctuation">(</span><span class="external identifier">kind</span><span class="punctuation">:</span> <span class="external identifier">full</span><span class="punctuation">,</span> <span class="keyword">where</span> <span class="external identifier">T</span> <span class="external identifier">==</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">withHiddenAttribute</span><span class="punctuation">&#x003C;</span><span class="external identifier">T</span><span class="punctuation">></span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">parameter</span><span class="punctuation">:</span> <span class="external identifier">T</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">unavailable</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">introduced</span><span class="punctuation">:</span> <span class="number">4.2</span><span class="punctuation">.</span><span class="number">1</span><span class="punctuation">)</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">introduced</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">deprecated</span><span class="punctuation">:</span> <span class="number">4.2</span><span class="punctuation">.</span><span class="number">1</span><span class="punctuation">)</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">deprecated</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">obsoleted</span><span class="punctuation">:</span> <span class="number">4.2</span><span class="punctuation">.</span><span class="number">1</span><span class="punctuation">)</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">obsoleted</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="external identifier">ObjectiveCObject</span> <span class="punctuation">:</span> <span class="external identifier">NSObject</span> <span class="punctuation">{</span>
+    <span class="keyword">@</span><span class="external identifier">objc</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">objectiveCMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="keyword">@</span><span class="external identifier">nonobjc</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">swiftOnlyMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="punctuation">}</span>
+<span class="keyword">@</span><span class="external identifier">objcMembers</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="external identifier">ObjectiveCMembers</span> <span class="punctuation">:</span> <span class="external identifier">NSObject</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">implicitObjectiveCMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="punctuation">}</span>
+
+<span class="keyword">@</span><span class="external identifier">inlinable</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">inlineable</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+</code>
+
+ </body>
+</html>

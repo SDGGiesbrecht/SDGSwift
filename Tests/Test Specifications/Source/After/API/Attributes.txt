@@ -1,0 +1,9 @@
+ObjectiveCMembers • class ObjectiveCMembers
+ implicitObjectiveCMethod() • @objc func implicitObjectiveCMethod()
+ NSObject
+ObjectiveCObject • class ObjectiveCObject
+ objectiveCMethod() • @objc func objectiveCMethod()
+ swiftOnlyMethod() • @nonobjc func swiftOnlyMethod()
+ NSObject
+inlineable() • func inlineable()
+introduced() • @available(*, introduced: 4.2.1) func introduced()

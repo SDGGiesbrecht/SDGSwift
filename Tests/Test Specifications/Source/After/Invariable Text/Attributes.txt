@@ -1,0 +1,19 @@
+i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
+̲
+̲@̲_specialize(̲kind:̲ full,̲ w̲h̲e̲r̲e̲ T == Int)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withHiddenAttribute<̲T>̲(̲_̲ parameter:̲ T)̲ {̲}̲
+̲
+̲@̲available(̲*,̲ unavailable)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ unavailable(̲)̲ {̲}̲
+̲@̲available(̲*,̲ introduced:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ introduced(̲)̲ {̲}̲
+̲@̲available(̲*,̲ deprecated:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ deprecated(̲)̲ {̲}̲
+̲@̲available(̲*,̲ obsoleted:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ obsoleted(̲)̲ {̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCObject :̲ NSObject {̲
+̲    @̲objc p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ objectiveCMethod(̲)̲ {̲}̲
+̲    @̲nonobjc p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ swiftOnlyMethod(̲)̲ {̲}̲
+̲}̲
+̲@̲objcMembers p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCMembers :̲ NSObject {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ implicitObjectiveCMethod(̲)̲ {̲}̲
+̲}̲
+̲
+̲@̲inlinable p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ inlineable(̲)̲ {̲}̲
+̲
