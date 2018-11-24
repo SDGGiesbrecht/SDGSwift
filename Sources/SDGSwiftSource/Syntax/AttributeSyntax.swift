@@ -66,10 +66,17 @@ extension AttributeSyntax {
     }
 
     private func normalized() -> AttributeSyntax {
-        return SyntaxFactory.makeAttribute(
-            atSignToken: SyntaxFactory.makeToken(.atSign),
-            attributeName: attributeName.generallyNormalized(),
-            balancedTokens: balancedTokens.normalizedForAPIAttribute())
+        if balancedTokens.isEmpty {
+            return SyntaxFactory.makeAttribute(
+                atSignToken: SyntaxFactory.makeToken(.atSign),
+                attributeName: attributeName.generallyNormalized(trailingTrivia: .spaces(1)),
+                balancedTokens: SyntaxFactory.makeTokenList([]))
+        } else {
+            return SyntaxFactory.makeAttribute(
+                atSignToken: SyntaxFactory.makeToken(.atSign),
+                attributeName: attributeName.generallyNormalized(),
+                balancedTokens: balancedTokens.normalizedForAPIAttribute())
+        }
     }
 
     private enum Group : OrderedEnumeration {
