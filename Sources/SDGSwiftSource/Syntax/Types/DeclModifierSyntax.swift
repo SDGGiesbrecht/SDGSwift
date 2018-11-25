@@ -55,7 +55,6 @@ extension DeclModifierSyntax {
     private enum Group : OrderedEnumeration {
         case unknown
         case accessControl
-        case subclassing
         case classMembership
         case staticity
         case mutation
@@ -71,9 +70,6 @@ extension DeclModifierSyntax {
             case "open", "public", "internal", "fileprivate", "private":
                 // Access control.
                 return .accessControl
-            case "override":
-                // Subclassing
-                return .subclassing
             case "mutating":
                 return .mutation
             default:

@@ -31,5 +31,5 @@ public func functionWith(defaultParameterOne: Bool = true, defaultParameterTwo: 
 public func function(withInOutParameter: inout Bool) {}
 
 open class TypeScope : Superclass {
-    open override mutating func allModifiers() {}
+    open override class static mutating func allModifiers() {}
 }
