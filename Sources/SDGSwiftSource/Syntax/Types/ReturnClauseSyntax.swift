@@ -16,7 +16,7 @@ extension ReturnClauseSyntax {
 
     internal func normalizedForFunctionDeclaration() -> ReturnClauseSyntax? {
         let result = SyntaxFactory.makeReturnClause(
-            arrow: arrow.generallyNormalized(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             returnType: returnType.normalized())
         if result.returnType.source() == "Void" {
             return nil

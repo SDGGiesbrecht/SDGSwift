@@ -20,7 +20,7 @@ extension SimpleTypeIdentifierSyntax {
         let newGenericArgumentClause = source().contains("<") ? genericArgumentClause?.normalized() : nil
 
         return SyntaxFactory.makeSimpleTypeIdentifier(
-            name: name.generallyNormalized(),
+            name: name.generallyNormalizedAndMissingInsteadOfNil(),
             genericArgumentClause: newGenericArgumentClause)
     }
 }

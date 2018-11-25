@@ -16,8 +16,8 @@ extension GenericArgumentClauseSyntax {
 
     internal func normalized() -> GenericArgumentClauseSyntax {
         return SyntaxFactory.makeGenericArgumentClause(
-            leftAngleBracket: leftAngleBracket.generallyNormalized(),
+            leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
             arguments: arguments.normalized(),
-            rightAngleBracket: rightAngleBracket.generallyNormalized())
+            rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil())
     }
 }

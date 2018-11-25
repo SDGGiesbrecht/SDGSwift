@@ -90,12 +90,12 @@ extension AttributeSyntax {
         if balancedTokens.isEmpty {
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: attributeName.generallyNormalized(trailingTrivia: .spaces(1)),
+                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
                 balancedTokens: SyntaxFactory.makeTokenList([]))
         } else {
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: attributeName.generallyNormalized(),
+                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
                 balancedTokens: balancedTokens.normalizedForAPIAttribute())
         }
     }

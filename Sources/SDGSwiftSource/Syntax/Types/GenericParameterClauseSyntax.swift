@@ -38,9 +38,9 @@ extension GenericParameterClauseSyntax {
     internal func normalizedForAPIDeclaration() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
         let (newParameters, newConstraints) = genericParameterList.normalizedForAPIDeclaration()
         let parameters = SyntaxFactory.makeGenericParameterClause(
-            leftAngleBracket: leftAngleBracket.generallyNormalized(),
+            leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterList: newParameters,
-            rightAngleBracket: rightAngleBracket.generallyNormalized())
+            rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil())
         var constraints: GenericWhereClauseSyntax?
         if let new = newConstraints {
             constraints = SyntaxFactory.makeGenericWhereClause(

@@ -20,16 +20,11 @@ extension GenericParameterListSyntax {
         var parameters: [GenericParameterSyntax] = []
         var requirements: [ConformanceRequirementSyntax] = []
         for parameter in self {
-            let (parameter, conformance) = parameter.normalizedForAPIDeclaration(comma: true)
+            let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
             parameters.append(parameter)
             if let requirement = conformance {
                 requirements.append(requirement)
             }
-        }
-        if ¬parameters.isEmpty {
-            let last = parameters.removeLast()
-            let (withoutComma, _) = last.normalizedForAPIDeclaration(comma: false)
-            parameters.append(withoutComma)
         }
         return (SyntaxFactory.makeGenericParameterList(parameters),
                 requirements.isEmpty ? nil : SyntaxFactory.makeGenericRequirementList(requirements))

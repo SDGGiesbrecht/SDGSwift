@@ -16,23 +16,23 @@ extension ParameterClauseSyntax {
 
     internal func normalizedForFunctionDeclaration() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalized(),
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
             parameterList: parameterList.normalizedForFunctionDeclaration(),
-            rightParen: rightParen.generallyNormalized())
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
     }
 
     internal func forOverloadPattern(operator: Bool) -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalized(),
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
             parameterList: parameterList.forOverloadPattern(operator: `operator`),
-            rightParen: rightParen.generallyNormalized())
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
     }
 
     internal func forFunctionName(operator: Bool) -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalized(),
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
             parameterList: parameterList.forFunctionName(operator: `operator`),
-            rightParen: rightParen.generallyNormalized())
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
     }
 
     internal func identifierListForFunction() -> Set<String> {
@@ -41,9 +41,9 @@ extension ParameterClauseSyntax {
 
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalized(),
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
             parameterList: parameterList.normalizedForAssociatedValue(),
-            rightParen: rightParen.generallyNormalized())
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
     }
 
     internal func forAssociatedValueName() -> ParameterClauseSyntax {

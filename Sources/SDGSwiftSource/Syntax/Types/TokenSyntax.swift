@@ -164,7 +164,14 @@ extension TokenSyntax {
 
     // MARK: - API
 
-    internal func generallyNormalized(leadingTrivia: Trivia = [], trailingTrivia: Trivia = []) -> TokenSyntax {
+    internal func generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: Trivia = [], trailingTrivia: Trivia = []) -> TokenSyntax {
         return SyntaxFactory.makeToken(tokenKind.normalized(), leadingTrivia: leadingTrivia, trailingTrivia: trailingTrivia)
+    }
+
+    internal func generallyNormalized(leadingTrivia: Trivia = [], trailingTrivia: Trivia = []) -> TokenSyntax? {
+        if ¬isPresent {
+            return nil
+        }
+        return generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: leadingTrivia, trailingTrivia: trailingTrivia)
     }
 }

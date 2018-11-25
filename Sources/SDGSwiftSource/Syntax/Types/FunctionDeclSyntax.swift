@@ -42,8 +42,8 @@ extension FunctionDeclSyntax : AccessControlled, Attributed, Member {
         return (SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: identifier.isOperator),
-            funcKeyword: funcKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
-            identifier: identifier.generallyNormalized(),
+            funcKeyword: funcKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
             signature: signature.normalizedForAPIDeclaration(),
             genericWhereClause: nil,

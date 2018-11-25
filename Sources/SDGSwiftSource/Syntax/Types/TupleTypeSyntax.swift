@@ -21,9 +21,9 @@ extension TupleTypeSyntax {
                 genericArgumentClause: nil)
         } else {
             return SyntaxFactory.makeTupleType(
-                leftParen: leftParen.generallyNormalized(),
+                leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
                 elements: elements.normalized(),
-                rightParen: rightParen.generallyNormalized())
+                rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
         }
     }
 }

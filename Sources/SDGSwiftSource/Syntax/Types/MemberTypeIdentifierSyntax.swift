@@ -16,7 +16,7 @@ extension MemberTypeIdentifierSyntax {
 
     internal func normalized() -> TypeSyntax {
 
-        let newName = self.name.generallyNormalized()
+        let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
         let newGenericArgumentClause = source().contains("<") ? genericArgumentClause?.normalized() : nil
 
@@ -28,7 +28,7 @@ extension MemberTypeIdentifierSyntax {
         } else {
             return SyntaxFactory.makeMemberTypeIdentifier(
                 baseType: baseType.normalized(),
-                period: period.generallyNormalized(),
+                period: period.generallyNormalizedAndMissingInsteadOfNil(),
                 name: newName,
                 genericArgumentClause: newGenericArgumentClause)
         }

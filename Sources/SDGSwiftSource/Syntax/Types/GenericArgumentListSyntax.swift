@@ -17,11 +17,6 @@ import SDGLogic
 extension GenericArgumentListSyntax {
 
     internal func normalized() -> GenericArgumentListSyntax {
-        var arguments = map({ $0.normalized(comma: true) })
-        if ¬arguments.isEmpty {
-            let last = arguments.removeLast()
-            arguments.append(last.normalized(comma: false))
-        }
-        return SyntaxFactory.makeGenericArgumentList(arguments)
+        return SyntaxFactory.makeGenericArgumentList(map({ $0.normalized() }))
     }
 }

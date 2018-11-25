@@ -37,7 +37,7 @@ class SDGSwiftSourceInternalTests : TestCase {
         ]
         for kind in tokens {
             let token = SyntaxFactory.makeToken(kind)
-            XCTAssert(token.generallyNormalized().text.scalars.elementsEqual(token.text.decomposedStringWithCanonicalMapping.scalars), "Token kind not normalized.")
+            XCTAssert(token.generallyNormalizedAndMissingInsteadOfNil().text.scalars.elementsEqual(token.text.decomposedStringWithCanonicalMapping.scalars), "Token kind not normalized.")
         }
     }
 }

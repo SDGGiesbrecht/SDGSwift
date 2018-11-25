@@ -16,11 +16,11 @@ extension FunctionTypeSyntax {
 
     internal func normalized() -> FunctionTypeSyntax {
         return SyntaxFactory.makeFunctionType(
-            leftParen: leftParen.generallyNormalized(),
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
             arguments: arguments.normalized(),
-            rightParen: rightParen.generallyNormalized(),
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil(),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
-            arrow: arrow.generallyNormalized(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             returnType: returnType.normalized())
     }
 

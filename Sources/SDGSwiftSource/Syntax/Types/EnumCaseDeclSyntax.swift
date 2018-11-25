@@ -34,7 +34,7 @@ extension EnumCaseDeclSyntax : AccessControlled, Attributed {
         return SyntaxFactory.makeEnumCaseDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-            caseKeyword: caseKeyword.generallyNormalized(trailingTrivia: .spaces(1)),
+            caseKeyword: caseKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             elements: elements.normalizedForAPIDeclaration())
     }
 

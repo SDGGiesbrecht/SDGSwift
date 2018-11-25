@@ -16,7 +16,7 @@ extension EnumCaseElementSyntax {
 
     internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
         return SyntaxFactory.makeEnumCaseElement(
-            identifier: identifier.generallyNormalized(),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             associatedValue: associatedValue?.normalizedForAssociatedValue(),
             rawValue: nil,
             trailingComma: nil)
