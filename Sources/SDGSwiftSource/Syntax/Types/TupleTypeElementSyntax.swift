@@ -14,15 +14,27 @@
 
 extension TupleTypeElementSyntax {
 
-    internal func normalized(comma: Bool) -> TupleTypeElementSyntax {
+    internal func normalized() -> TupleTypeElementSyntax {
+
+        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        let ellipsisToken: TokenSyntax?
+        if ellipsis?.tokenKind == .comma {
+            ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
+        } else {
+            ellipsisToken = ellipsis?.generallyNormalized()
+        }
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        let newInitializer = source().contains("=") ? initializer?.normalizeForDefaultArgument() : nil
+
         return SyntaxFactory.makeTupleTypeElement(
             inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
             name: name?.generallyNormalized(),
             secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
             colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
             type: type.normalized(),
-            ellipsis: ellipsis?.generallyNormalized(),
-            initializer: initializer?.normalizeForDefaultArgument(),
-            trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil)
+            ellipsis: ellipsisToken,
+            initializer: newInitializer,
+            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 }

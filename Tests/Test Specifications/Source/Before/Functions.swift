@@ -38,3 +38,7 @@ public func nonstandardGenerics<T : Equatable>(_ parameter: T) {}
 
 public func nonstandardVoidReturn() -> Void {}
 public func withVoid(_ closure: () -> ()) {}
+
+public func tupleReturn() -> (String, Int) {
+    return ("", 0)
+}

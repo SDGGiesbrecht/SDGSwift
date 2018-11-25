@@ -17,11 +17,6 @@ import SDGLogic
 extension TupleTypeElementListSyntax {
 
     internal func normalized() -> TupleTypeElementListSyntax {
-        var elements = map({ $0.normalized(comma: true) })
-        if ¬elements.isEmpty {
-            let last = elements.removeLast()
-            elements.append(last.normalized(comma: false))
-        }
-        return SyntaxFactory.makeTupleTypeElementList(elements)
+        return SyntaxFactory.makeTupleTypeElementList(map({ $0.normalized() }))
     }
 }
