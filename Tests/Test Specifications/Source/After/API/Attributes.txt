@@ -1,4 +1,5 @@
 ObjectiveCObject • class ObjectiveCObject
+ everything(_:) • @available(*, introduced: 4.2.1) @objc @discardableResult func everything(_ closure: @escaping @autoclosure () -> Void)
  objectiveCMethod() • @objc func objectiveCMethod()
  swiftOnlyMethod() • @nonobjc func swiftOnlyMethod()
  NSObject

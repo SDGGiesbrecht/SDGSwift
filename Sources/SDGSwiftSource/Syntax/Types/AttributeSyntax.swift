@@ -122,6 +122,7 @@ extension AttributeSyntax {
         case "objc", "nonobjc", "objcMembers":
             return .objectiveC
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
+            // Objective‐C implementation details // @exempt(from: tests) #workaround(Requires property refactor.)
             return .interfaceBuilder
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)

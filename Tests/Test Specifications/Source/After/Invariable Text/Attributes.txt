@@ -18,3 +18,7 @@ i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ auto(̲closure:̲ @̲autoclosure (̲)̲ -̲>̲ Void)̲ {̲}̲
 ̲@̲discardableResult p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ discardableResult(̲)̲ -̲>̲ Bool
 ̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ ObjectiveCObject {̲
+̲    @̲available(̲*,̲ introduced:̲ 4.2.̲1)̲ @̲objc @̲discardableResult p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ everything(̲_̲ closure:̲ @̲escaping @̲autoclosure (̲)̲ -̲>̲ Void)̲ {̲}̲
+̲}̲
+̲

@@ -17,3 +17,7 @@ public class ObjectiveCObject : NSObject {
 public func escaping(closure: @escaping () -> Void) {}
 public func auto(closure: @autoclosure () -> Void) {}
 @discardableResult public func discardableResult() -> Bool
+
+extension ObjectiveCObject {
+    @available(*, introduced: 4.2.1) @objc @discardableResult public func everything(_ closure: @escaping @autoclosure () -> Void) {}
+}
