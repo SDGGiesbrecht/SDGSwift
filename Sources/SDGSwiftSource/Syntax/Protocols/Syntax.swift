@@ -145,6 +145,10 @@ extension Syntax {
             if isUnidentifiedConditionalCompilation {
                 return unidentifiedConditionallyCompiledChildren
             }
+            if let unknown = (self as? UnknownDeclSyntax)?.unknownAPI(),
+                ¬unknown.isEmpty {
+                return unknown
+            }
             return apiChildren()
         }
     }

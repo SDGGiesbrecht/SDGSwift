@@ -4,3 +4,4 @@ ObjectiveCObject • class ObjectiveCObject
  NSObject
 inlineable() • func inlineable()
 introduced() • @available(*, introduced: 4.2.1) func introduced()
+withHiddenAttribute(_:) • func withHiddenAttribute<T>(_ parameter: T)
