@@ -29,3 +29,7 @@ public func doSomething(_ unnamedParameter: I̲n̲t̲) {}
 public func functionWith(defaultParameterOne: B̲o̲o̲l̲ = true, defaultParameterTwo: B̲o̲o̲l̲ = false) {}
 
 public func function(withInOutParameter: inout B̲o̲o̲l̲) {}
+
+open class TypeScope : S̲u̲p̲e̲r̲c̲l̲a̲s̲s̲ {
+    open override mutating func allModifiers() {}
+}

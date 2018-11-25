@@ -29,3 +29,7 @@ public ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(_ ̲u̲n̲n̲a̲m̲e̲d̲P̲a�
 public ̲func ̲f̲u̲n̲c̲t̲i̲o̲n̲W̲i̲t̲h̲(d̲e̲f̲a̲u̲l̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲Bool ̲= ̲true, ̲d̲e̲f̲a̲u̲l̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲Bool ̲= ̲false) ̲{}
 
 public ̲func ̲f̲u̲n̲c̲t̲i̲o̲n̲(w̲i̲t̲h̲I̲n̲O̲u̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲inout ̲Bool) ̲{}
+
+open ̲class ̲T̲y̲p̲e̲S̲c̲o̲p̲e̲ ̲: ̲Superclass ̲{
+ ̲ ̲ ̲ ̲open ̲override ̲mutating ̲func ̲a̲l̲l̲M̲o̲d̲i̲f̲i̲e̲r̲s̲() ̲{}
+}

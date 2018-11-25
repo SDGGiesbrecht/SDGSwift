@@ -1,3 +1,6 @@
+TypeScope • open class TypeScope
+ allModifiers() • open mutating func allModifiers()
+ Superclass
 doSomething(_:) • func doSomething(_ unnamedParameter: Int)
  func doSomething(_ unnamedParameter: String)
 function(withInOutParameter:) • func function(withInOutParameter: inout Bool)

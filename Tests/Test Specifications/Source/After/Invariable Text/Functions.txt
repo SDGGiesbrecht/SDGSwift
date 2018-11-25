@@ -30,3 +30,7 @@
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ function(̲withInOutParameter:̲ i̲n̲o̲u̲t̲ Bool)̲ {̲}̲
 ̲
+̲o̲p̲e̲n̲ c̲l̲a̲s̲s̲ TypeScope :̲ Superclass {̲
+̲    o̲p̲e̲n̲ o̲v̲e̲r̲r̲i̲d̲e̲ m̲u̲t̲a̲t̲i̲n̲g̲ f̲u̲n̲c̲ allModifiers(̲)̲ {̲}̲
+̲}̲
+̲
