@@ -43,6 +43,8 @@ extension TypeSyntax {
             return member.normalized()
         case let attributed as AttributedTypeSyntax :
             return attributed.normalized()
+        case let function as FunctionTypeSyntax :
+            return function.normalized()
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified type syntax class: \(type(of: self))")
