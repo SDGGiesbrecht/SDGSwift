@@ -23,14 +23,15 @@ extension SyntaxChildren {
     }
 
     private func first(_ kindCheck: (TokenKind) -> Bool) -> TokenSyntax? {
-        return first(where: { token in
+        let found = first(where: { token in
             if let kind = (token as? TokenSyntax)?.tokenKind,
                 kindCheck(kind) {
                 return true
             } else {
                 return false
             }
-        }) as? TokenSyntax
+        })
+        return found as? TokenSyntax
     }
     internal func firstIdentifier() -> TokenSyntax? {
         return first() {

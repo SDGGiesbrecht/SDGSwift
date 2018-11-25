@@ -21,12 +21,12 @@ extension UnknownDeclSyntax {
                 attributes: children.first(AttributeListSyntax.self),
                 modifiers: children.first(ModifierListSyntax.self),
                 funcKeyword: children.first(.funcKeyword)!,
-                identifier: children.firstIdentifier() ?? SyntaxFactory.makeToken(.identifier(""), presence: .missing),
+                identifier: children.firstIdentifier() ?? SyntaxFactory.makeToken(.identifier(""), presence: .missing), // @exempt(from: tests) Should not occur anyway.
                 genericParameterClause: children.first(GenericParameterClauseSyntax.self),
-                signature: children.first(FunctionSignatureSyntax.self) ?? SyntaxFactory.makeBlankFunctionSignature(),
+                signature: children.first(FunctionSignatureSyntax.self) ?? SyntaxFactory.makeBlankFunctionSignature(), // @exempt(from: tests) Should not occur anyway.
                 genericWhereClause: children.first(GenericWhereClauseSyntax.self),
                 body: SyntaxFactory.makeBlankCodeBlock())
         }
-        return replacement?.api() ?? []
+        return replacement?.api() ?? [] // @exempt(from: tests) Should not occur anyway.
     }
 }

@@ -25,7 +25,7 @@ extension TupleTypeElementSyntax {
         }
 
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        let newInitializer = source().contains("=") ? initializer?.normalizeForDefaultArgument() : nil
+        let newInitializer = source().contains("=") ? initializer?.normalizeForDefaultArgument() : nil // @exempt(from: tests) Unknown where this would be present.
 
         return SyntaxFactory.makeTupleTypeElement(
             inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
