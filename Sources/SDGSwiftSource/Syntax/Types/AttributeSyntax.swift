@@ -41,7 +41,7 @@ extension AttributeSyntax {
     internal func normalizedForAPIDeclaration() -> AttributeSyntax? {
         let attribute = attributeName.text
         if attribute.hasPrefix("_") {
-            return nil
+            return nil // @exempt(from: tests) Currently unreachable because SwiftSyntax does not properly detect these in 0.40200.0).
         }
 
         switch attribute {
