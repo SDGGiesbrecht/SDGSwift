@@ -44,7 +44,7 @@ extension GenericParameterClauseSyntax {
         var constraints: GenericWhereClauseSyntax?
         if let new = newConstraints {
             constraints = SyntaxFactory.makeGenericWhereClause(
-                whereKeyword: SyntaxFactory.makeToken(.whereKeyword, trailingTrivia: .spaces(1)),
+                whereKeyword: SyntaxFactory.makeToken(.whereKeyword, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
                 requirementList: new)
         }
         return (parameters, constraints)

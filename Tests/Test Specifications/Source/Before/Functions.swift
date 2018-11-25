@@ -33,3 +33,5 @@ public func function(withInOutParameter: inout Bool) {}
 open class TypeScope : Superclass {
     open override class static mutating func allModifiers() {}
 }
+
+public func nonstandardGenerics<T : Equatable>(_ parameter: T) {}
