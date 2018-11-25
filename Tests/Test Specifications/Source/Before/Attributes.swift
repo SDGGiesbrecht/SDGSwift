@@ -13,3 +13,7 @@ public class ObjectiveCObject : NSObject {
 }
 
 @inlinable public func inlineable() {}
+
+public func escaping(closure: @escaping () -> Void) {}
+public func auto(closure: @autoclosure () -> Void) {}
+@discardableResult public func discardableResult() -> Bool
