@@ -39,3 +39,7 @@
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardVoidReturn(̲)̲ -̲>̲ Void {̲}̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withVoid(̲_̲ closure:̲ (̲)̲ -̲>̲ (̲)̲)̲ {̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ tupleReturn(̲)̲ -̲>̲ (̲String,̲ Int)̲ {̲
+̲    r̲e̲t̲u̲r̲n̲ (̲"̲"̲,̲ 0)̲
+̲}̲
+̲

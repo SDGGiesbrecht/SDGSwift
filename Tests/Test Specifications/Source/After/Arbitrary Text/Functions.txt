@@ -38,3 +38,7 @@ public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲G̲e̲n̲e̲r̲i̲c̲s̲<T̲ ̲
 
 public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲V̲o̲i̲d̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Void ̲{}
 public ̲func ̲w̲i̲t̲h̲V̲o̲i̲d̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲() ̲-> ̲()) ̲{}
+
+public ̲func ̲t̲u̲p̲l̲e̲R̲e̲t̲u̲r̲n̲() ̲-> ̲(String, ̲Int) ̲{
+ ̲ ̲ ̲ ̲return ̲("", ̲0̲)
+}

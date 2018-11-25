@@ -7,4 +7,5 @@ function(withInOutParameter:) • func function(withInOutParameter: inout Bool)
 functionWith(defaultParameterOne:defaultParameterTwo:) • func functionWith(defaultParameterOne: Bool = default, defaultParameterTwo: Bool = default)
 nonstandardGenerics(_:) • func nonstandardGenerics<T>(_ parameter: T) where T : Equatable
 nonstandardVoidReturn() • func nonstandardVoidReturn()
+tupleReturn() • func tupleReturn() -> (String, Int)
 withVoid(_:) • func withVoid(_ closure: () -> Void)

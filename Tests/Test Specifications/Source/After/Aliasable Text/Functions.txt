@@ -38,3 +38,7 @@ public func nonstandardGenerics<T : E̲q̲u̲a̲t̲a̲b̲l̲e̲>(_ parameter: T�
 
 public func nonstandardVoidReturn() -> V̲o̲i̲d̲ {}
 public func withVoid(_ closure: () -> ()) {}
+
+public func tupleReturn() -> (S̲t̲r̲i̲n̲g̲, I̲n̲t̲) {
+    return ("", 0)
+}
