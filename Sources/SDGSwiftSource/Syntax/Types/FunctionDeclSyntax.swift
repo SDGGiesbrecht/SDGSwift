@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, Attributed, FunctionLike, Member {
+extension FunctionDeclSyntax : AccessControlled, Attributed, Member {
 
     internal func functionAPI() -> [FunctionAPI] {
         if ¬isPublic ∨ isUnavailable() {
@@ -77,11 +77,5 @@ extension FunctionDeclSyntax : AccessControlled, Attributed, FunctionLike, Membe
 
     internal func identifierList() -> Set<String> {
         return Set([identifier.text]) ∪ signature.identifierList()
-    }
-
-    // MARK: - FunctionLike
-
-    internal var parameters: ParameterClauseSyntax {
-        return signature.input
     }
 }
