@@ -36,8 +36,8 @@
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardGenerics<̲T :̲ Equatable>̲(̲_̲ parameter:̲ T)̲ {̲}̲
 ̲
-̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardVoidReturn(̲)̲ -̲>̲ Void {̲}̲
-̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withVoid(̲_̲ closure:̲ (̲)̲ -̲>̲ (̲)̲)̲ {̲}̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardVoidReturn(̲)̲ -̲>̲ Void {̲}̲ /̲/̲ swiftlint:disable:this redundant_void_return
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withVoid(̲_̲ closure:̲ (̲)̲ -̲>̲ (̲)̲)̲ {̲}̲ /̲/̲ swiftlint:disable:this void_return
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ tupleReturn(̲)̲ -̲>̲ (̲String,̲ Int)̲ {̲
 ̲    r̲e̲t̲u̲r̲n̲ (̲"̲"̲,̲ 0)̲

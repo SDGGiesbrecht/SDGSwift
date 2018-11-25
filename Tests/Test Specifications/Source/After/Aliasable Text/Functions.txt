@@ -36,8 +36,8 @@ open class TypeScope : S̲u̲p̲e̲r̲c̲l̲a̲s̲s̲ {
 
 public func nonstandardGenerics<T : E̲q̲u̲a̲t̲a̲b̲l̲e̲>(_ parameter: T̲) {}
 
-public func nonstandardVoidReturn() -> V̲o̲i̲d̲ {}
-public func withVoid(_ closure: () -> ()) {}
+public func nonstandardVoidReturn() -> V̲o̲i̲d̲ {} // swiftlint:disable:this redundant_void_return
+public func withVoid(_ closure: () -> ()) {} // swiftlint:disable:this void_return
 
 public func tupleReturn() -> (S̲t̲r̲i̲n̲g̲, I̲n̲t̲) {
     return ("", 0)
