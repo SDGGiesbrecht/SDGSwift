@@ -58,3 +58,5 @@ configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 // #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
 configuration.testing.prohibitCompilerWarnings = false
 #endif
+
+// #workaround(workspace 0.14.2, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
