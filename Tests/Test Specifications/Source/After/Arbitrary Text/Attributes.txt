@@ -1,0 +1,23 @@
+import ̲Foundation
+
+@_specialize(kind: ̲full, ̲where ̲T ̲== ̲Int) ̲public ̲func ̲w̲i̲t̲h̲H̲i̲d̲d̲e̲n̲A̲t̲t̲r̲i̲b̲u̲t̲e̲<T̲>(_ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲T) ̲{}
+
+@available(*, ̲unavailable) ̲public ̲func ̲u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲() ̲{}
+@available(*, ̲introduced: ̲4̲.̲2̲.1̲) ̲public ̲func ̲i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲() ̲{}
+@available(*, ̲deprecated: ̲4̲.̲2̲.1̲) ̲public ̲func ̲d̲e̲p̲r̲e̲c̲a̲t̲e̲d̲() ̲{}
+@available(*, ̲obsoleted: ̲4̲.̲2̲.1̲) ̲public ̲func ̲o̲b̲s̲o̲l̲e̲t̲e̲d̲() ̲{}
+
+public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲O̲b̲j̲e̲c̲t̲ ̲: ̲NSObject ̲{
+ ̲ ̲ ̲ ̲@objc ̲public ̲func ̲o̲b̲j̲e̲c̲t̲i̲v̲e̲C̲M̲e̲t̲h̲o̲d̲() ̲{}
+ ̲ ̲ ̲ ̲@nonobjc ̲public ̲func ̲s̲w̲i̲f̲t̲O̲n̲l̲y̲M̲e̲t̲h̲o̲d̲() ̲{}
+}
+
+@inlinable ̲public ̲func ̲i̲n̲l̲i̲n̲e̲a̲b̲l̲e̲() ̲{}
+
+public ̲func ̲e̲s̲c̲a̲p̲i̲n̲g̲(c̲l̲o̲s̲u̲r̲e̲: ̲@escaping ̲() ̲-> ̲Void) ̲{}
+public ̲func ̲a̲u̲t̲o̲(c̲l̲o̲s̲u̲r̲e̲: ̲@autoclosure ̲() ̲-> ̲Void) ̲{}
+@discardableResult ̲public ̲func ̲d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲() ̲-> ̲Bool
+
+extension ̲ObjectiveCObject ̲{
+ ̲ ̲ ̲ ̲@available(*, ̲introduced: ̲4̲.̲2̲.1̲) ̲@objc ̲@discardableResult ̲public ̲func ̲e̲v̲e̲r̲y̲t̲h̲i̲n̲g̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲@escaping ̲@autoclosure ̲() ̲-> ̲Void) ̲{}
+}

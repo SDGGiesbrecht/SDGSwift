@@ -30,3 +30,16 @@
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ function(̲withInOutParameter:̲ i̲n̲o̲u̲t̲ Bool)̲ {̲}̲
 ̲
+̲o̲p̲e̲n̲ c̲l̲a̲s̲s̲ TypeScope :̲ Superclass {̲
+̲    o̲p̲e̲n̲ o̲v̲e̲r̲r̲i̲d̲e̲ c̲l̲a̲s̲s̲ s̲t̲a̲t̲i̲c̲ m̲u̲t̲a̲t̲i̲n̲g̲ f̲u̲n̲c̲ allModifiers(̲)̲ {̲}̲
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardGenerics<̲T :̲ Equatable>̲(̲_̲ parameter:̲ T)̲ {̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardVoidReturn(̲)̲ -̲>̲ Void {̲}̲ /̲/̲ swiftlint:disable:this redundant_void_return
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withVoid(̲_̲ closure:̲ (̲)̲ -̲>̲ (̲)̲)̲ {̲}̲ /̲/̲ swiftlint:disable:this void_return
+̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ tupleReturn(̲)̲ -̲>̲ (̲String,̲ Int)̲ {̲
+̲    r̲e̲t̲u̲r̲n̲ (̲"̲"̲,̲ 0)̲
+̲}̲
+̲

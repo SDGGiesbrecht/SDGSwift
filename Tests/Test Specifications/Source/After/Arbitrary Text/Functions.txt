@@ -29,3 +29,16 @@ public ̲func ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(_ ̲u̲n̲n̲a̲m̲e̲d̲P̲a�
 public ̲func ̲f̲u̲n̲c̲t̲i̲o̲n̲W̲i̲t̲h̲(d̲e̲f̲a̲u̲l̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲Bool ̲= ̲true, ̲d̲e̲f̲a̲u̲l̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲Bool ̲= ̲false) ̲{}
 
 public ̲func ̲f̲u̲n̲c̲t̲i̲o̲n̲(w̲i̲t̲h̲I̲n̲O̲u̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲inout ̲Bool) ̲{}
+
+open ̲class ̲T̲y̲p̲e̲S̲c̲o̲p̲e̲ ̲: ̲Superclass ̲{
+ ̲ ̲ ̲ ̲open ̲override ̲class ̲static ̲mutating ̲func ̲a̲l̲l̲M̲o̲d̲i̲f̲i̲e̲r̲s̲() ̲{}
+}
+
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲G̲e̲n̲e̲r̲i̲c̲s̲<T̲ ̲: ̲Equatable>(_ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲T) ̲{}
+
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲V̲o̲i̲d̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Void ̲{} ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲r̲e̲d̲u̲n̲d̲a̲n̲t̲_̲v̲o̲i̲d̲_̲r̲e̲t̲u̲r̲n̲
+public ̲func ̲w̲i̲t̲h̲V̲o̲i̲d̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲() ̲-> ̲()) ̲{} ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲v̲o̲i̲d̲_̲r̲e̲t̲u̲r̲n̲
+
+public ̲func ̲t̲u̲p̲l̲e̲R̲e̲t̲u̲r̲n̲() ̲-> ̲(String, ̲Int) ̲{
+ ̲ ̲ ̲ ̲return ̲("", ̲0̲)
+}

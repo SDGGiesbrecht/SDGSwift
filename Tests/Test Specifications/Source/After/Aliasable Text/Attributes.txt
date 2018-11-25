@@ -1,0 +1,23 @@
+import Foundation
+
+@_̲s̲p̲e̲c̲i̲a̲l̲i̲z̲e̲(k̲i̲n̲d̲: f̲u̲l̲l̲, where T̲ =̲=̲ I̲n̲t̲) public func withHiddenAttribute<T>(_ parameter: T̲) {}
+
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) public func unavailable() {}
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.2.1) public func introduced() {}
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, d̲e̲p̲r̲e̲c̲a̲t̲e̲d̲: 4.2.1) public func deprecated() {}
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, o̲b̲s̲o̲l̲e̲t̲e̲d̲: 4.2.1) public func obsoleted() {}
+
+public class ObjectiveCObject : N̲S̲O̲b̲j̲e̲c̲t̲ {
+    @o̲b̲j̲c̲ public func objectiveCMethod() {}
+    @n̲o̲n̲o̲b̲j̲c̲ public func swiftOnlyMethod() {}
+}
+
+@i̲n̲l̲i̲n̲a̲b̲l̲e̲ public func inlineable() {}
+
+public func escaping(closure: @e̲s̲c̲a̲p̲i̲n̲g̲ () -> V̲o̲i̲d̲) {}
+public func auto(closure: @a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ () -> V̲o̲i̲d̲) {}
+@d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ public func discardableResult() -> B̲o̲o̲l̲
+
+extension O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲O̲b̲j̲e̲c̲t̲ {
+    @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.2.1) @o̲b̲j̲c̲ @d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ public func everything(_ closure: @e̲s̲c̲a̲p̲i̲n̲g̲ @a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ () -> V̲o̲i̲d̲) {}
+}

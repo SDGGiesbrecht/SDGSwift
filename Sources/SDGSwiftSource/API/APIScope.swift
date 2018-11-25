@@ -40,7 +40,7 @@ public class APIScope : APIElement {
             case let `subscript` as SubscriptAPI :
                 subscripts.append(`subscript`)
             case let method as FunctionAPI :
-                if method.typeMethodKeyword ≠ nil {
+                if method._declaration.typeMemberKeyword ≠ nil {
                     typeMethods.append(method)
                 } else {
                     methods.append(method)

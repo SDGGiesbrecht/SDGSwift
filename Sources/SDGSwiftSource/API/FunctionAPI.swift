@@ -19,29 +19,16 @@ public class FunctionAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, isOpen: Bool, typeMethodKeyword: TokenKind?, isMutating: Bool, name: String, arguments: [ParameterAPI], throws: Bool, returnType: TypeReferenceAPI?, isOperator: Bool) {
-        self.isOpen = isOpen
-        self.typeMethodKeyword = isOperator ? nil : typeMethodKeyword // @exempt(from: tests) False coverage in Xcode 9.4.1.
-        self.isMutating = isMutating
-        _name = name.decomposedStringWithCanonicalMapping
-        self.arguments = arguments
-        self.throws = `throws`
-        self.returnType = returnType
-        self.isOperator = isOperator
+    internal init(documentation: DocumentationSyntax?, declaration: FunctionDeclSyntax) {
+        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+        _declaration = normalizedDeclaration
         super.init(documentation: documentation)
+        constraints = constraints.merged(with: normalizedConstraints)
     }
 
     // MARK: - Properties
 
-    private let isOpen: Bool
-    public let typeMethodKeyword: TokenKind?
-    private let isMutating: Bool
-    private let _name: String
-    private let arguments: [ParameterAPI]
-    private let `throws`: Bool
-    private let returnType: TypeReferenceAPI?
-
-    private let isOperator: Bool
+    internal let _declaration: FunctionDeclSyntax
 
     internal var isProtocolRequirement: Bool = false
     internal var hasDefaultImplementation: Bool = false
@@ -72,7 +59,7 @@ public class FunctionAPI : APIElement {
         var sorted: [String: [FunctionAPI]] = [:]
 
         for function in functions {
-            sorted[(function.typeMethodKeyword ≠ nil ? "static " : "") + function.name, default: []].append(function)
+            sorted[function._declaration.overloadPattern().source(), default: []].append(function)
         }
 
         var result: [FunctionAPI] = []
@@ -94,78 +81,15 @@ public class FunctionAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name + "(" + arguments.map({ isOperator ? $0.operatorNameForm : $0.functionNameForm }).joined() + ")"
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {
-
-        var modifiers: [DeclModifierSyntax] = []
-        if let typeKeyword = typeMethodKeyword {
-            modifiers.append(SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(typeKeyword, trailingTrivia: .spaces(1)),
-                detail: SyntaxFactory.makeTokenList([])))
-        }
-
-        if isOpen {
-            modifiers.append(SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(.identifier("open"), trailingTrivia: .spaces(1)),
-                detail: SyntaxFactory.makeTokenList([])))
-        }
-
-        if isMutating {
-            modifiers.append(SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(.identifier("mutating"), trailingTrivia: .spaces(1)),
-                detail: SyntaxFactory.makeTokenList([])))
-        }
-
-        var modifierList: ModifierListSyntax?
-        if ¬modifiers.isEmpty {
-            modifierList = SyntaxFactory.makeModifierList(modifiers)
-        }
-
-        var parameters: [FunctionParameterSyntax] = []
-        if ¬arguments.isEmpty {
-            for index in arguments.indices {
-                let argument = arguments[index]
-                if isOperator {
-                    parameters.append(argument.operatorDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
-                } else {
-                    parameters.append(argument.functionDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
-                }
-            }
-        }
-
-        var throwsKeyword: TokenSyntax?
-        if `throws` {
-            throwsKeyword = SyntaxFactory.makeToken(.throwsKeyword, leadingTrivia: .spaces(1))
-        }
-
-        var returnClause: ReturnClauseSyntax?
-        if let returnType = self.returnType?.declaration, returnType.source() ≠ "Void", returnType.source() ≠ "()" {
-            returnClause = SyntaxFactory.makeReturnClause(
-                arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                returnType: returnType)
-        }
-
-        return SyntaxFactory.makeFunctionDecl(
-            attributes: nil,
-            modifiers: modifierList,
-            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
-            identifier: SyntaxFactory.makeToken(.identifier(_name)),
-            genericParameterClause: nil,
-            signature: SyntaxFactory.makeFunctionSignature(
-                input: SyntaxFactory.makeParameterClause(
-                    leftParen: SyntaxFactory.makeToken(.leftParen),
-                    parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
-                    rightParen: SyntaxFactory.makeToken(.rightParen)),
-                throwsOrRethrowsKeyword: throwsKeyword,
-                output: returnClause),
-            genericWhereClause: constraints,
-            body: SyntaxFactory.makeBlankCodeBlock())
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {
-        return arguments.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
+        return _declaration.identifierList()
     }
 
     public override var summary: [String] {

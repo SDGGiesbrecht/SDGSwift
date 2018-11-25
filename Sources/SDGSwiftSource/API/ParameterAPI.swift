@@ -40,27 +40,11 @@ public struct ParameterAPI {
         return (label ?? "_") + ":"
     }
 
-    internal var operatorNameForm: String {
-        return "_:"
-    }
-
     internal var subscriptNameForm: String {
         return functionNameForm
     }
 
     internal func functionDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
-        var externalName: TokenSyntax?
-        if label ≠ name {
-            if let external = label {
-                externalName = SyntaxFactory.makeToken(.identifier(external), trailingTrivia: .spaces(1))
-            } else {
-                externalName = SyntaxFactory.makeToken(.wildcardKeyword, trailingTrivia: .spaces(1))
-            }
-        }
-        return declaration(externalName: externalName, trailingComma: trailingComma)
-    }
-
-    internal func operatorDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
         return declaration(externalName: nil, trailingComma: trailingComma)
     }
 

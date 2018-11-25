@@ -29,3 +29,16 @@ public func doSomething(_ unnamedParameter: Int) {}
 public func functionWith(defaultParameterOne: Bool = true, defaultParameterTwo: Bool = false) {}
 
 public func function(withInOutParameter: inout Bool) {}
+
+open class TypeScope : Superclass {
+    open override class static mutating func allModifiers() {}
+}
+
+public func nonstandardGenerics<T : Equatable>(_ parameter: T) {}
+
+public func nonstandardVoidReturn() -> Void {} // swiftlint:disable:this redundant_void_return
+public func withVoid(_ closure: () -> ()) {} // swiftlint:disable:this void_return
+
+public func tupleReturn() -> (String, Int) {
+    return ("", 0)
+}
