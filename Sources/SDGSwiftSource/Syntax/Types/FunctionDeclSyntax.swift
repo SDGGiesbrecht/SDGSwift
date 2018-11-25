@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, Attributed, Member {
+extension FunctionDeclSyntax : AccessControlled, Attributed, Generic, Member {
 
     internal func functionAPI() -> [FunctionAPI] {
         if ¬isPublic ∨ isUnavailable() {
@@ -29,16 +29,7 @@ extension FunctionDeclSyntax : AccessControlled, Attributed, Member {
     }
 
     internal func normalizedAPIDeclaration() -> (declaration: FunctionDeclSyntax, constraints: GenericWhereClauseSyntax?) {
-        var newGenericParemeterClause: GenericParameterClauseSyntax?
-        var newGenericWhereClause: GenericWhereClauseSyntax?
-        if let originalGenericParameterClause = genericParameterClause {
-            (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
-        }
-
-        if let originalGenericWhereClause = genericWhereClause {
-            newGenericWhereClause = newGenericWhereClause?.adding(originalGenericWhereClause)
-        }
-
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: identifier.isOperator),
