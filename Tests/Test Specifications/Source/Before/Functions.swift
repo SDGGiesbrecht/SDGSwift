@@ -36,8 +36,8 @@ open class TypeScope : Superclass {
 
 public func nonstandardGenerics<T : Equatable>(_ parameter: T) {}
 
-public func nonstandardVoidReturn() -> Void {}
-public func withVoid(_ closure: () -> ()) {}
+public func nonstandardVoidReturn() -> Void {} // swiftlint:disable:this redundant_void_return
+public func withVoid(_ closure: () -> ()) {} // swiftlint:disable:this void_return
 
 public func tupleReturn() -> (String, Int) {
     return ("", 0)

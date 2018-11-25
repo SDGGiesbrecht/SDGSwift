@@ -34,7 +34,7 @@ extension SyntaxChildren {
         return found as? TokenSyntax
     }
     internal func firstIdentifier() -> TokenSyntax? {
-        return first() {
+        return first {
             if case .identifier = $0 {
                 return true
             } else {
