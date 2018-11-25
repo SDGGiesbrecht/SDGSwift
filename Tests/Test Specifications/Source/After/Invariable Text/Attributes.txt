@@ -14,3 +14,7 @@ i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲
 ̲@̲inlinable p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ inlineable(̲)̲ {̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ escaping(̲closure:̲ @̲escaping (̲)̲ -̲>̲ Void)̲ {̲}̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ auto(̲closure:̲ @̲autoclosure (̲)̲ -̲>̲ Void)̲ {̲}̲
+̲@̲discardableResult p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ discardableResult(̲)̲ -̲>̲ Bool
+̲

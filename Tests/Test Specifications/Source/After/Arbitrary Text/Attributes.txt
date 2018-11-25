@@ -13,3 +13,7 @@ public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲O̲b̲j̲e̲c̲t̲ ̲: ̲NSObject
 }
 
 @inlinable ̲public ̲func ̲i̲n̲l̲i̲n̲e̲a̲b̲l̲e̲() ̲{}
+
+public ̲func ̲e̲s̲c̲a̲p̲i̲n̲g̲(c̲l̲o̲s̲u̲r̲e̲: ̲@escaping ̲() ̲-> ̲Void) ̲{}
+public ̲func ̲a̲u̲t̲o̲(c̲l̲o̲s̲u̲r̲e̲: ̲@autoclosure ̲() ̲-> ̲Void) ̲{}
+@discardableResult ̲public ̲func ̲d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲() ̲-> ̲Bool

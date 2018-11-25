@@ -2,6 +2,9 @@ ObjectiveCObject • class ObjectiveCObject
  objectiveCMethod() • @objc func objectiveCMethod()
  swiftOnlyMethod() • @nonobjc func swiftOnlyMethod()
  NSObject
+auto(closure:) • func auto(closure: @autoclosure () -> Void)
+discardableResult() • @discardableResult func discardableResult() -> Bool
+escaping(closure:) • func escaping(closure: @escaping () -> Void)
 inlineable() • func inlineable()
 introduced() • @available(*, introduced: 4.2.1) func introduced()
 withHiddenAttribute(_:) • func withHiddenAttribute<T>(_ parameter: T)

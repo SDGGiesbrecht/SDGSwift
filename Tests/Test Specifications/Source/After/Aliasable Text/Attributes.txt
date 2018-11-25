@@ -13,3 +13,7 @@ public class ObjectiveCObject : N̲S̲O̲b̲j̲e̲c̲t̲ {
 }
 
 @i̲n̲l̲i̲n̲a̲b̲l̲e̲ public func inlineable() {}
+
+public func escaping(closure: @e̲s̲c̲a̲p̲i̲n̲g̲ () -> V̲o̲i̲d̲) {}
+public func auto(closure: @a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ () -> V̲o̲i̲d̲) {}
+@d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ public func discardableResult() -> B̲o̲o̲l̲
