@@ -44,10 +44,6 @@ public struct ParameterAPI {
         return functionNameForm
     }
 
-    internal func functionDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
-        return declaration(externalName: nil, trailingComma: trailingComma)
-    }
-
     internal func subscriptDeclarationForm(trailingComma: Bool) -> FunctionParameterSyntax {
         var externalName: TokenSyntax?
         if let external = label {

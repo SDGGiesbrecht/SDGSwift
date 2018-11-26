@@ -42,19 +42,6 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic, Functio
                 newGenericWhereClause)
     }
 
-    internal func overloadPattern() -> InitializerDeclSyntax {
-        return SyntaxFactory.makeInitializerDecl(
-            attributes: nil,
-            modifiers: nil,
-            initKeyword: initKeyword,
-            optionalMark: nil,
-            genericParameterClause: nil,
-            parameters: parameters.forOverloadPattern(operator: false),
-            throwsOrRethrowsKeyword: nil,
-            genericWhereClause: nil,
-            body: nil)
-    }
-
     internal func name() -> InitializerDeclSyntax {
         return SyntaxFactory.makeInitializerDecl(
             attributes: nil,
