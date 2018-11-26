@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, Attributed, FunctionLike {
+extension InitializerDeclSyntax : AccessControlled, Attributed, Generic, FunctionLike {
 
     internal var initializerAPI: InitializerAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -24,10 +24,38 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, FunctionLike {
         if arguments.first?.label?.hasPrefix("_") == true {
             return nil
         }
-        return InitializerAPI(
-            documentation: documentation,
-            isFailable: optionalMark ≠ nil,
-            arguments: arguments,
-            throws: throwsOrRethrowsKeyword ≠ nil)
+        return InitializerAPI(documentation: documentation, declaration: self)
+    }
+
+    internal func normalizedAPIDeclaration() -> (declaration: InitializerDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeInitializerDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            initKeyword: initKeyword.generallyNormalizedAndMissingInsteadOfNil(),
+            optionalMark: optionalMark?.generallyNormalized(),
+            genericParameterClause: newGenericParemeterClause,
+            parameters: parameters.normalizedForFunctionDeclaration(),
+            throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
+            genericWhereClause: newGenericWhereClause,
+            body: nil),
+                newGenericWhereClause)
+    }
+
+    internal func name() -> InitializerDeclSyntax {
+        return SyntaxFactory.makeInitializerDecl(
+            attributes: nil,
+            modifiers: nil,
+            initKeyword: initKeyword,
+            optionalMark: nil,
+            genericParameterClause: nil,
+            parameters: parameters.forFunctionName(operator: false),
+            throwsOrRethrowsKeyword: nil,
+            genericWhereClause: nil,
+            body: nil)
+    }
+
+    internal func identifierList() -> Set<String> {
+        return parameters.identifierListForFunction()
     }
 }
