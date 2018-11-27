@@ -26,8 +26,9 @@ public class LibraryAPI : APIElement {
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let name = product.name.decomposedStringWithCanonicalMapping
-        _name = name
+        let (_declaration, _name) = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
+        self._declaration = _declaration
+        self._name = _name
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
@@ -41,13 +42,14 @@ public class LibraryAPI : APIElement {
         }
         self.modules = modules
 
-        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(name)\u{22}")?.parent
+        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(_name)\u{22}")?.parent
         super.init(documentation: declaration?.documentation)
     }
 
     // MARK: - Properties
 
     private let _name: String
+    private let _declaration: FunctionCallExprSyntax
 
     public let modules: [ModuleAPI]
 
@@ -58,22 +60,7 @@ public class LibraryAPI : APIElement {
     }
 
     public override var declaration: Syntax {
-        return SyntaxFactory.makeFunctionCallExpr(
-            calledExpression: SyntaxFactory.makeMemberAccessExpr(
-                base: SyntaxFactory.makeBlankUnknownExpr(),
-                dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("library")),
-                declNameArguments: nil),
-            leftParen: SyntaxFactory.makeToken(.leftParen),
-            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-                SyntaxFactory.makeFunctionCallArgument(
-                    label: SyntaxFactory.makeToken(.identifier("name")),
-                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr(name),
-                    trailingComma: nil)
-                ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen),
-            trailingClosure: nil)
+        return _declaration
     }
 
     public override var identifierList: Set<String> {
