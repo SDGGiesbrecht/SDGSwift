@@ -23,8 +23,9 @@ public class ModuleAPI : APIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        let name = module.name.decomposedStringWithCanonicalMapping
-        _name = name
+        let (_declaration, _name) = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
+        self._declaration = _declaration
+        self._name = _name
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -35,7 +36,7 @@ public class ModuleAPI : APIElement {
         }
         api = APIElement.merge(elements: api)
 
-        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(name)\u{22}")?.parent
+        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(_name)\u{22}")?.parent
         super.init(documentation: declaration?.documentation)
 
         for element in api {
@@ -61,6 +62,7 @@ public class ModuleAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
+    private let _declaration: FunctionCallExprSyntax
 
     private var _types: [TypeAPI] = []
     public var types: [TypeAPI] {
@@ -130,22 +132,7 @@ public class ModuleAPI : APIElement {
     }
 
     public override var declaration: Syntax {
-        return SyntaxFactory.makeFunctionCallExpr(
-            calledExpression: SyntaxFactory.makeMemberAccessExpr(
-                base: SyntaxFactory.makeBlankUnknownExpr(),
-                dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("target")),
-                declNameArguments: nil),
-            leftParen: SyntaxFactory.makeToken(.leftParen),
-            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-                SyntaxFactory.makeFunctionCallArgument(
-                    label: SyntaxFactory.makeToken(.identifier("name")),
-                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr(name),
-                    trailingComma: nil)
-                ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen),
-            trailingClosure: nil)
+        return _declaration
     }
 
     public override var identifierList: Set<String> {

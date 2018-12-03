@@ -17,13 +17,21 @@ import SDGLocalization
 extension FunctionCallExprSyntax {
 
     internal static func normalizedLibraryDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(entry: "library", name: name)
+    }
+
+    internal static func normalizedModuleDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(entry: "target", name: name)
+    }
+
+    private static func normalizedManifest(entry: String, name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
         let normalizedName = name.decomposedStringWithCanonicalMapping
 
         let declaration = SyntaxFactory.makeFunctionCallExpr(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
                 base: SyntaxFactory.makeBlankUnknownExpr(),
                 dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("library")),
+                name: SyntaxFactory.makeToken(.identifier(entry)),
                 declNameArguments: nil),
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
@@ -36,6 +44,6 @@ extension FunctionCallExprSyntax {
             rightParen: SyntaxFactory.makeToken(.rightParen),
             trailingClosure: nil)
 
-        return (declaration, name)
+        return (declaration, normalizedName)
     }
 }
