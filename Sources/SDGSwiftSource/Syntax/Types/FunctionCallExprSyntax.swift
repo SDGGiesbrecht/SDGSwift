@@ -16,15 +16,37 @@ import SDGLocalization
 
 extension FunctionCallExprSyntax {
 
-    internal static func normalizedLibraryDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
-        let normalizedName = name.decomposedStringWithCanonicalMapping
+    internal static func normalizedPackageDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(
+            calledExpression:  SyntaxFactory.makeIdentifierExpr(
+                identifier: SyntaxFactory.makeToken(.identifier("Package")),
+                declNameArguments: nil),
+            name: name)
+    }
 
-        let declaration = SyntaxFactory.makeFunctionCallExpr(
+    internal static func normalizedLibraryDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(memberEntry: "library", name: name)
+    }
+
+    internal static func normalizedModuleDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(memberEntry: "target", name: name)
+    }
+
+    private static func normalizedManifest(memberEntry entry: String, name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        return normalizedManifest(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
                 base: SyntaxFactory.makeBlankUnknownExpr(),
                 dot: SyntaxFactory.makeToken(.period),
-                name: SyntaxFactory.makeToken(.identifier("library")),
+                name: SyntaxFactory.makeToken(.identifier(entry)),
                 declNameArguments: nil),
+            name: name)
+    }
+
+    private static func normalizedManifest(calledExpression: ExprSyntax, name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+        let normalizedName = name.decomposedStringWithCanonicalMapping
+
+        let declaration = SyntaxFactory.makeFunctionCallExpr(
+            calledExpression: calledExpression,
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
                 SyntaxFactory.makeFunctionCallArgument(
@@ -36,6 +58,6 @@ extension FunctionCallExprSyntax {
             rightParen: SyntaxFactory.makeToken(.rightParen),
             trailingClosure: nil)
 
-        return (declaration, name)
+        return (declaration, normalizedName)
     }
 }

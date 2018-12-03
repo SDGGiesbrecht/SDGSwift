@@ -26,7 +26,9 @@ public class PackageAPI : APIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        _name = package.name.decomposedStringWithCanonicalMapping
+        let (_declaration, _name) = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        self._declaration = _declaration
+        self._name = _name
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
@@ -58,6 +60,7 @@ public class PackageAPI : APIElement {
     // MARK: - Properties
 
     private let _name: String
+    private let _declaration: FunctionCallExprSyntax
 
     public let libraries: [LibraryAPI]
     public let modules: [ModuleAPI]
@@ -69,20 +72,7 @@ public class PackageAPI : APIElement {
     }
 
     public override var declaration: Syntax {
-        return SyntaxFactory.makeFunctionCallExpr(
-            calledExpression: SyntaxFactory.makeIdentifierExpr(
-                identifier: SyntaxFactory.makeToken(.identifier("Package")),
-                declNameArguments: nil),
-            leftParen: SyntaxFactory.makeToken(.leftParen),
-            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-                SyntaxFactory.makeFunctionCallArgument(
-                    label: SyntaxFactory.makeToken(.identifier("name")),
-                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr(name),
-                    trailingComma: nil)
-                ]),
-            rightParen: SyntaxFactory.makeToken(.rightParen),
-            trailingClosure: nil)
+        return _declaration
     }
 
     public override var identifierList: Set<String> {
