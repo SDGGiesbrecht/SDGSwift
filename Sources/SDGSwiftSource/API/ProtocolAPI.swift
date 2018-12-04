@@ -18,39 +18,33 @@ public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, name: String, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        _name = name.decomposedStringWithCanonicalMapping
+    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElement]) {
+        let normalized = declaration.normalizedAPIDeclaration()
+        _declaration = normalized.declaration
         super.init(documentation: documentation, conformances: conformances, children: children)
-        self.constraints = constraints?.normalized()
+        constraints = constraints.merged(with: normalized.constraints)
 
         for method in methods {
-            method.isProtocolRequirement = true // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            method.isProtocolRequirement = true
         }
     }
 
     // MARK: - Properties
 
-    private let _name: String
+    private let _declaration: ProtocolDeclSyntax
 
     // MARK: - APIElement
 
     public override var name: String {
-        return _name.description
+        return _declaration.identifier.text
     }
 
     public override var declaration: Syntax {
-        return SyntaxFactory.makeProtocolDecl(
-            attributes: nil,
-            modifiers: nil,
-            protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, trailingTrivia: .spaces(1)),
-            identifier: SyntaxFactory.makeToken(.identifier(name)),
-            inheritanceClause: nil,
-            genericWhereClause: constraints,
-            members: SyntaxFactory.makeBlankMemberDeclBlock())
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {
-        return Set([_name]) ∪ scopeIdentifierList
+        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {
