@@ -36,7 +36,7 @@ public class ProtocolAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return _declaration.identifier.text
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {

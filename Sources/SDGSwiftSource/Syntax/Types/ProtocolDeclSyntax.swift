@@ -41,4 +41,15 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
             members: SyntaxFactory.makeBlankMemberDeclBlock()),
                 genericWhereClause?.normalized())
     }
+
+    internal func name() -> ProtocolDeclSyntax {
+        return SyntaxFactory.makeProtocolDecl(
+            attributes: nil,
+            modifiers: nil,
+            protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, presence: .missing),
+            identifier: identifier,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
 }
