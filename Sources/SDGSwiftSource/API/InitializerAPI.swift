@@ -37,7 +37,7 @@ public class InitializerAPI : APIElement {
     }
 
     public override var declaration: Syntax {
-        return _declaration
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {

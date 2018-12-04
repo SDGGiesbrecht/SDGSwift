@@ -20,15 +20,36 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
         if ¬isPublic ∨ isUnavailable() {
             return nil
         }
-        let name = identifier.text
-        if name.hasPrefix("_") {
+        if identifier.text.hasPrefix("_") {
             return nil
         }
         return ProtocolAPI(
             documentation: documentation,
-            name: name,
+            declaration: self,
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericWhereClause,
             children: apiChildren())
+    }
+
+    internal func normalizedAPIDeclaration() -> (declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+        return (SyntaxFactory.makeProtocolDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            protocolKeyword: protocolKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock()),
+                genericWhereClause?.normalized())
+    }
+
+    internal func name() -> ProtocolDeclSyntax {
+        return SyntaxFactory.makeProtocolDecl(
+            attributes: nil,
+            modifiers: nil,
+            protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, presence: .missing),
+            identifier: identifier,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 }
