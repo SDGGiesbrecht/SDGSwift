@@ -14,12 +14,6 @@
 
 extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
 
-    // MARK: - AccessControlled
-
-    internal var isPublic: Bool {
-        return true
-    }
-
     // MARK: - TypeDeclaration
 
     static var keyword: TokenKind {
