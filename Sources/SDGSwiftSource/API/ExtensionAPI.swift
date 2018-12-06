@@ -31,7 +31,7 @@ public class ExtensionAPI : APIScope {
     // MARK: - Combining
 
     public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type == type.typeName
+        return self.type.name == type.name
     }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
         return self.type.declaration.source() == `protocol`.name

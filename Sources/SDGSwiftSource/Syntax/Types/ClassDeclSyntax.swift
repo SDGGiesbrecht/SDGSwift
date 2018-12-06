@@ -12,11 +12,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension ClassDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
+extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .classKeyword
+    internal func normalizedAPIDeclaration() -> (declaration: ClassDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeClassDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            classKeyword: classKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            genericParameterClause: newGenericParemeterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock()),
+                newGenericWhereClause)
+    }
+
+    internal func name() -> ClassDeclSyntax {
+        return SyntaxFactory.makeClassDecl(
+            attributes: nil,
+            modifiers: nil,
+            classKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
+            identifier: identifier,
+            genericParameterClause: genericParameterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 }

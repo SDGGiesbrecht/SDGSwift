@@ -16,7 +16,6 @@ import SDGLogic
 
 internal protocol AccessControlled : Syntax {
     var modifiers: ModifierListSyntax? { get }
-    var isPublic: Bool { get }
 }
 
 extension AccessControlled {
@@ -27,15 +26,6 @@ extension AccessControlled {
             return true
         } else {
             return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
-        }
-    }
-
-    internal var isOpen: Bool {
-        if let modifiers = self.modifiers,
-            modifiers.contains(where: { $0.name.text == "open" }) {
-            return true
-        } else {
-            return false
         }
     }
 }

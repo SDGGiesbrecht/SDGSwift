@@ -13,13 +13,16 @@
  */
 
 import SDGLogic
+import SDGCollections
 
-internal protocol TypeDeclaration : AccessControlled, Attributed {
-    static var keyword: TokenKind { get }
+internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
     var identifier: TokenSyntax { get }
-    var genericParameterClause: GenericParameterClauseSyntax? { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
-    var genericWhereClause: GenericWhereClauseSyntax? { get }
+
+    func withGenericWhereClause(_ newChild: GenericWhereClauseSyntax?) -> Self
+
+    func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
+    func name() -> Self
 }
 
 extension TypeDeclaration {
@@ -29,22 +32,28 @@ extension TypeDeclaration {
             return nil
         }
 
-        let name = identifier.text
-        if name.hasPrefix("_") {
+        if identifier.text.hasPrefix("_") {
             return nil
         }
 
-        let (genericTypes, genericConstraints) = genericParameterClause?.typesAndConstraints ?? ([], nil)
-
         return TypeAPI(
             documentation: documentation,
-            isOpen: isOpen,
-            keyword: Self.keyword,
-            name: TypeReferenceAPI(
-                name: name,
-                genericArguments: genericTypes),
+            declaration: self,
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericConstraints.merged(with: genericWhereClause),
             children: apiChildren())
+    }
+
+    internal func identifierList() -> Set<String> {
+        var result: Set<String> = [identifier.text]
+        if let genericParameters = genericParameterClause {
+
+            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            if ¬genericParameters.source().contains("<") {
+                return result
+            }
+
+            result ∪= genericParameters.identifierList()
+        }
+        return result
     }
 }

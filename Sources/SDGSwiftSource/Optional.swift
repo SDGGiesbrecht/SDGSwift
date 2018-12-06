@@ -12,24 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension Optional : List where Wrapped : List {
-
-    typealias Element = Wrapped.Element
-
-    init(elementsOrEmpty elements: [Wrapped.Element]) {
-        self = Wrapped(elementsOrEmpty: elements)
-    }
-
-    func adding(_ addition: Wrapped.Element) -> Wrapped? {
-        switch self {
-        case .some(let instance):
-            return instance.adding(addition)
-        case .none:
-            return Wrapped(elementsOrNil: [addition])
-        }
-    }
-}
-
 extension Optional : Mergeable where Wrapped : Mergeable {
 
     internal func merged(with other: Wrapped?) -> Wrapped? {

@@ -20,47 +20,29 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, isOpen: Bool, keyword: TokenKind, name: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        typeName = name
-        self.isOpen = isOpen
-        self.keyword = keyword
+    internal init<T>(documentation: DocumentationSyntax?, declaration: T, conformances: [ConformanceAPI], children: [APIElement]) where T : TypeDeclaration {
+        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+        _declaration = normalizedDeclaration
         super.init(documentation: documentation, conformances: conformances, children: children)
-        self.constraints = constraints?.normalized()
+        constraints = constraints.merged(with: normalizedConstraints)
     }
 
     // MARK: - Properties
 
-    private let isOpen: Bool
-    public let keyword: TokenKind
-    internal let typeName: TypeReferenceAPI
+    private let _declaration: TypeDeclaration
 
     // MARK: - APIElement
 
     public override var name: String {
-        return typeName.declaration.source()
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {
-        var modifierList: [DeclModifierSyntax] = []
-        if isOpen {
-            modifierList.append(SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(.contextualKeyword("open"), trailingTrivia: .spaces(1)),
-                detail: nil))
-        }
-
-        return SyntaxFactory.makeStructDecl(
-            attributes: nil,
-            modifiers: SyntaxFactory.makeModifierList(modifierList),
-            structKeyword: SyntaxFactory.makeToken(keyword, trailingTrivia: .spaces(1)),
-            identifier: typeName.nameDeclaration,
-            genericParameterClause: typeName.genericParameterClauseDeclaration,
-            inheritanceClause: nil,
-            genericWhereClause: constraints,
-            members: SyntaxFactory.makeBlankMemberDeclBlock())
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {
-        return typeName.identifierList ∪ scopeIdentifierList
+        return _declaration.identifierList() ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {

@@ -14,15 +14,37 @@
 
 import SDGLogic
 
-extension EnumDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
+extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .enumKeyword
+    internal var genericParameterClause: GenericParameterClauseSyntax? {
+        return genericParameters
     }
 
-    var genericParameterClause: GenericParameterClauseSyntax? {
-        return genericParameters
+    internal func normalizedAPIDeclaration() -> (declaration: EnumDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeEnumDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            enumKeyword: enumKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            genericParameters: newGenericParemeterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock()),
+                newGenericWhereClause)
+    }
+
+    internal func name() -> EnumDeclSyntax {
+        return SyntaxFactory.makeEnumDecl(
+            attributes: nil,
+            modifiers: nil,
+            enumKeyword: SyntaxFactory.makeToken(.enumKeyword, presence: .missing),
+            identifier: identifier,
+            genericParameters: genericParameterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 }

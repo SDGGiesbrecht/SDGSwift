@@ -12,24 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension GenericWhereClauseSyntax : List {
+extension GenericWhereClauseSyntax : Mergeable {
 
     internal func normalized() -> GenericWhereClauseSyntax {
         return SyntaxFactory.makeGenericWhereClause(
             whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             requirementList: requirementList.normalized())
-    }
-
-    // MARK: - List
-
-    internal init(elementsOrEmpty elements: [Syntax]) {
-        self = SyntaxFactory.makeGenericWhereClause(
-            whereKeyword: SyntaxFactory.makeToken(.whereKeyword, trailingTrivia: .spaces(1)),
-            requirementList: GenericRequirementListSyntax(elementsOrEmpty: elements))
-    }
-
-    internal func adding(_ addition: Syntax) -> GenericWhereClauseSyntax {
-        return withRequirementList(requirementList.adding(addition))
     }
 
     // MARK: - Mergeable
