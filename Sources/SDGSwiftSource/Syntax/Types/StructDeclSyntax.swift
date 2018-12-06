@@ -47,8 +47,4 @@ extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarat
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
-
-    internal func identifierList() -> Set<String> {
-        return [identifier.text]
-    }
 }

@@ -47,8 +47,4 @@ extension TypealiasDeclSyntax : Generic, TypeDeclaration {
             initializer: nil,
             genericWhereClause: nil)
     }
-
-    internal func identifierList() -> Set<String> {
-        return [identifier.text]
-    }
 }

@@ -45,8 +45,4 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarati
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
-
-    internal func identifierList() -> Set<String> {
-        return [identifier.text]
-    }
 }

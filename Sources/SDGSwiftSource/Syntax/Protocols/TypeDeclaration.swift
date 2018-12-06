@@ -13,19 +13,17 @@
  */
 
 import SDGLogic
+import SDGCollections
 
-internal protocol TypeDeclaration : AccessControlled, Attributed {
+internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
     static var keyword: TokenKind { get }
     var identifier: TokenSyntax { get }
-    var genericParameterClause: GenericParameterClauseSyntax? { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
-    var genericWhereClause: GenericWhereClauseSyntax? { get }
 
     func withGenericWhereClause(_ newChild: GenericWhereClauseSyntax?) -> Self
 
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
-    func identifierList() -> Set<String>
 }
 
 extension TypeDeclaration {
@@ -44,5 +42,13 @@ extension TypeDeclaration {
             declaration: self,
             conformances: inheritanceClause?.conformances ?? [],
             children: apiChildren())
+    }
+
+    internal func identifierList() -> Set<String> {
+        var result: Set<String> = [identifier.text]
+        if let genericParameters = genericParameterClause {
+            result ∪= genericParameters.identifierList()
+        }
+        return result
     }
 }

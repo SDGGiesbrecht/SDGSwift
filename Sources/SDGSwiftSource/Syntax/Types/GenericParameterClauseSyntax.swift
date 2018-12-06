@@ -49,4 +49,8 @@ extension GenericParameterClauseSyntax {
         }
         return (parameters, constraints)
     }
+
+    internal func identifierList() -> Set<String> {
+        return Set(genericParameterList.map({ $0.name.text }))
+    }
 }

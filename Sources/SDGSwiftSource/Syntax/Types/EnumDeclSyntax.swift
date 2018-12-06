@@ -51,8 +51,4 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
-
-    internal func identifierList() -> Set<String> {
-        return [identifier.text]
-    }
 }
