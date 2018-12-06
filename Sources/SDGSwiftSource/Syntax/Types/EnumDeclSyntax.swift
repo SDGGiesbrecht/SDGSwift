@@ -18,15 +18,15 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
+    internal static var keyword: TokenKind {
         return .enumKeyword
     }
 
-    var genericParameterClause: GenericParameterClauseSyntax? {
+    internal var genericParameterClause: GenericParameterClauseSyntax? {
         return genericParameters
     }
 
-    func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeEnumDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -40,7 +40,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
                 newGenericWhereClause)
     }
 
-    func name() -> TypeDeclaration {
+    internal func name() -> TypeDeclaration {
         return SyntaxFactory.makeEnumDecl(
             attributes: nil,
             modifiers: nil,
@@ -52,7 +52,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
             members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 
-    func identifierList() -> Set<String> {
+    internal func identifierList() -> Set<String> {
         return [identifier.text]
     }
 }

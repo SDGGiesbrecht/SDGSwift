@@ -14,11 +14,41 @@
 
 import SDGLogic
 
-extension StructDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
+extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
     static var keyword: TokenKind {
         return .structKeyword
+    }
+
+    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeStructDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            structKeyword: structKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            genericParameterClause: newGenericParemeterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock()),
+                newGenericWhereClause)
+    }
+
+    internal func name() -> TypeDeclaration {
+        return SyntaxFactory.makeStructDecl(
+            attributes: nil,
+            modifiers: nil,
+            structKeyword: SyntaxFactory.makeToken(.structKeyword, presence: .missing),
+            identifier: identifier,
+            genericParameterClause: nil,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    internal func identifierList() -> Set<String> {
+        return [identifier.text]
     }
 }
