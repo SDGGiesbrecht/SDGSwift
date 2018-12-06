@@ -35,7 +35,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Function
             indices: indices.normalizedForFunctionDeclaration(),
             result: result.normalizedForSubscriptDeclaration(),
             genericWhereClause: nil,
-            accessor: accessor?.normalizedForAPIDeclaration()),
+            accessor: accessorListForAPIDeclaration()),
                 newGenericWhereClause)
     }
 
