@@ -27,6 +27,6 @@ extension GenericParameterListSyntax {
             }
         }
         return (SyntaxFactory.makeGenericParameterList(parameters),
-                requirements.isEmpty ? nil : SyntaxFactory.makeGenericRequirementList(requirements))
+                requirements.isEmpty ? nil : SyntaxFactory.makeGenericRequirementList(requirements).normalized())
     }
 }
