@@ -27,7 +27,7 @@ extension Generic {
         }
 
         if let originalGenericWhereClause = genericWhereClause {
-            newGenericWhereClause = newGenericWhereClause?.adding(originalGenericWhereClause)
+            newGenericWhereClause = newGenericWhereClause?.merged(with: originalGenericWhereClause)
         }
         return (newGenericParemeterClause, newGenericWhereClause)
     }
