@@ -20,7 +20,7 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarati
         return .classKeyword
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: ClassDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeClassDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -34,7 +34,7 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarati
                 newGenericWhereClause)
     }
 
-    internal func name() -> TypeDeclaration {
+    internal func name() -> ClassDeclSyntax {
         return SyntaxFactory.makeClassDecl(
             attributes: nil,
             modifiers: nil,

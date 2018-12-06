@@ -30,7 +30,7 @@ extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, TypeDeclarati
         return nil
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: AssociatedtypeDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         return (SyntaxFactory.makeAssociatedtypeDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
@@ -42,7 +42,7 @@ extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, TypeDeclarati
                 genericWhereClause?.normalized())
     }
 
-    internal func name() -> TypeDeclaration {
+    internal func name() -> AssociatedtypeDeclSyntax {
         return SyntaxFactory.makeAssociatedtypeDecl(
             attributes: nil,
             modifiers: nil,

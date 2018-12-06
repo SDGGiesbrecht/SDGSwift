@@ -26,7 +26,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
         return genericParameters
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: EnumDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeEnumDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -40,7 +40,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
                 newGenericWhereClause)
     }
 
-    internal func name() -> TypeDeclaration {
+    internal func name() -> EnumDeclSyntax {
         return SyntaxFactory.makeEnumDecl(
             attributes: nil,
             modifiers: nil,

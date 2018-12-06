@@ -22,7 +22,7 @@ extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarat
         return .structKeyword
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: StructDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeStructDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -36,7 +36,7 @@ extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarat
                 newGenericWhereClause)
     }
 
-    internal func name() -> TypeDeclaration {
+    internal func name() -> StructDeclSyntax {
         return SyntaxFactory.makeStructDecl(
             attributes: nil,
             modifiers: nil,

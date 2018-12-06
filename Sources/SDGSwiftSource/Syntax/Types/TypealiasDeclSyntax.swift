@@ -24,7 +24,7 @@ extension TypealiasDeclSyntax : Generic, TypeDeclaration {
         return nil
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> (declaration: TypealiasDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeTypealiasDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -37,7 +37,7 @@ extension TypealiasDeclSyntax : Generic, TypeDeclaration {
                 newGenericWhereClause)
     }
 
-    internal func name() -> TypeDeclaration {
+    internal func name() -> TypealiasDeclSyntax {
         return SyntaxFactory.makeTypealiasDecl(
             attributes: nil,
             modifiers: nil,

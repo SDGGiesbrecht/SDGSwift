@@ -23,8 +23,8 @@ internal protocol TypeDeclaration : AccessControlled, Attributed {
 
     func withGenericWhereClause(_ newChild: GenericWhereClauseSyntax?) -> Self
 
-    func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?)
-    func name() -> TypeDeclaration
+    func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
+    func name() -> Self
     func identifierList() -> Set<String>
 }
 

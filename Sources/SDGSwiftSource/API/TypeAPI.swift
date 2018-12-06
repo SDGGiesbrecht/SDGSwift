@@ -20,7 +20,7 @@ public class TypeAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: TypeDeclaration, conformances: [ConformanceAPI], children: [APIElement]) {
+    internal init<T>(documentation: DocumentationSyntax?, declaration: T, conformances: [ConformanceAPI], children: [APIElement]) where T : TypeDeclaration {
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         super.init(documentation: documentation, conformances: conformances, children: children)
