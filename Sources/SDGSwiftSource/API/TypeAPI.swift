@@ -42,7 +42,7 @@ public class TypeAPI : APIScope {
     }
 
     public override var identifierList: Set<String> {
-        return _declaration.identifierList()
+        return _declaration.identifierList() ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {

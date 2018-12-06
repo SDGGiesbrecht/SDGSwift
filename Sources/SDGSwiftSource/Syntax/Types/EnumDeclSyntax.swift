@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension EnumDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
+extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
@@ -24,5 +24,35 @@ extension EnumDeclSyntax : AccessControlled, Attributed, TypeDeclaration {
 
     var genericParameterClause: GenericParameterClauseSyntax? {
         return genericParameters
+    }
+
+    func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeEnumDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            enumKeyword: enumKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            genericParameters: newGenericParemeterClause,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock()),
+                newGenericWhereClause)
+    }
+
+    func name() -> TypeDeclaration {
+        return SyntaxFactory.makeEnumDecl(
+            attributes: nil,
+            modifiers: nil,
+            enumKeyword: SyntaxFactory.makeToken(.enumKeyword, presence: .missing),
+            identifier: identifier,
+            genericParameters: nil,
+            inheritanceClause: nil,
+            genericWhereClause: nil,
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    func identifierList() -> Set<String> {
+        return [identifier.text]
     }
 }
