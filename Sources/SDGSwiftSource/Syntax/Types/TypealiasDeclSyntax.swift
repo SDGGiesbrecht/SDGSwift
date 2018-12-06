@@ -43,7 +43,7 @@ extension TypealiasDeclSyntax : Generic, TypeDeclaration {
             modifiers: nil,
             typealiasKeyword: SyntaxFactory.makeToken(.typealiasKeyword, presence: .missing),
             identifier: identifier,
-            genericParameterClause: nil,
+            genericParameterClause: genericParameterClause,
             initializer: nil,
             genericWhereClause: nil)
     }

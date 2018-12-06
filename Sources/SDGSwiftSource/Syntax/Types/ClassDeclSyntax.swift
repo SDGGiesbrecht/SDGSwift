@@ -40,7 +40,7 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarati
             modifiers: nil,
             classKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
             identifier: identifier,
-            genericParameterClause: nil,
+            genericParameterClause: genericParameterClause,
             inheritanceClause: nil,
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())

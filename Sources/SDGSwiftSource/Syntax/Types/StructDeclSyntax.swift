@@ -42,7 +42,7 @@ extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarat
             modifiers: nil,
             structKeyword: SyntaxFactory.makeToken(.structKeyword, presence: .missing),
             identifier: identifier,
-            genericParameterClause: nil,
+            genericParameterClause: genericParameterClause,
             inheritanceClause: nil,
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())

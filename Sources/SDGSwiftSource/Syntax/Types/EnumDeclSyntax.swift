@@ -46,7 +46,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
             modifiers: nil,
             enumKeyword: SyntaxFactory.makeToken(.enumKeyword, presence: .missing),
             identifier: identifier,
-            genericParameters: nil,
+            genericParameters: genericParameterClause,
             inheritanceClause: nil,
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
