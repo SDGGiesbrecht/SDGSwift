@@ -101,6 +101,18 @@ extension FunctionParameterSyntax {
         return result
     }
 
+    internal func forSubscriptName() -> FunctionParameterSyntax {
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: secondName?.isPresent == true ? firstName : nil,
+            secondName: nil,
+            colon: colon?.generallyNormalized(),
+            type: nil,
+            ellipsis: nil,
+            defaultArgument: nil,
+            trailingComma: nil)
+    }
+
     // MARK: - Associated Values
 
     internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {

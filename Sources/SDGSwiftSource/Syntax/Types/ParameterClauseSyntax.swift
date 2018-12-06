@@ -42,7 +42,7 @@ extension ParameterClauseSyntax {
     internal func forSuperscriptName() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: SyntaxFactory.makeToken(.leftSquareBracket),
-            parameterList: parameterList.forFunctionName(operator: false),
+            parameterList: parameterList.forSubscriptName(),
             rightParen: SyntaxFactory.makeToken(.rightSquareBracket))
     }
 

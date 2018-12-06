@@ -33,6 +33,10 @@ extension FunctionParameterListSyntax {
         return reduce(into: Set<String>()) { $0 ∪= $1.identifierListForFunction() }
     }
 
+    internal func forSubscriptName() -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forSubscriptName() }))
+    }
+
     internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {
         return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForAssociatedValue() }))
     }
