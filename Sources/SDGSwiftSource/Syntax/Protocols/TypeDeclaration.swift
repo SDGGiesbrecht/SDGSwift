@@ -20,6 +20,10 @@ internal protocol TypeDeclaration : AccessControlled, Attributed {
     var genericParameterClause: GenericParameterClauseSyntax? { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
     var genericWhereClause: GenericWhereClauseSyntax? { get }
+
+    func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?)
+    func name() -> TypeDeclaration
+    func identifierList() -> Set<String>
 }
 
 extension TypeDeclaration {
