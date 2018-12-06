@@ -45,14 +45,9 @@ public struct TypeReferenceAPI : Hashable {
             for index in self.genericArguments.indices {
                 let argument = self.genericArguments[index]
 
-                var trailingComma: TokenSyntax?
-                if index ≠ self.genericArguments.index(before: self.genericArguments.endIndex) {
-                    trailingComma = SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
-                }
-
                 genericArguments.append(SyntaxFactory.makeGenericArgument(
                     argumentType: argument.declaration,
-                    trailingComma: trailingComma))
+                    trailingComma: nil))
             }
 
             genericArgumentClause = SyntaxFactory.makeGenericArgumentClause(
