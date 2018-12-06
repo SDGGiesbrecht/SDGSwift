@@ -225,6 +225,18 @@ extension Syntax {
         }
     }
 
+    // MARK: - Accessors
+
+    internal func normalizedAccessorListForAPIDeclaration() -> Syntax {
+        switch self {
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified accessor list: \(Swift.type(of: self))")
+            }
+            return self
+        }
+    }
+
     // MARK: - Disection
 
     internal func tokens() -> [TokenSyntax] {
