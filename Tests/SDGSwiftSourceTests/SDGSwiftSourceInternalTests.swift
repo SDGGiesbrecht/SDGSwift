@@ -19,7 +19,7 @@ import SDGXCTestUtilities
 class SDGSwiftSourceInternalTests : TestCase {
 
     func testList() {
-        XCTAssertNil(GenericWhereClauseSyntax(elementsOrNil: []))
+        XCTAssertNil(GenericRequirementListSyntax(elementsOrNil: []))
     }
 
     func testTokenNormalization() {
