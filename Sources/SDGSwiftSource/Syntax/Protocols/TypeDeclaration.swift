@@ -33,21 +33,14 @@ extension TypeDeclaration {
             return nil
         }
 
-        let name = identifier.text
-        if name.hasPrefix("_") {
+        if identifier.text.hasPrefix("_") {
             return nil
         }
 
-        let (genericTypes, genericConstraints) = genericParameterClause?.typesAndConstraints ?? ([], nil)
-
         return TypeAPI(
             documentation: documentation,
-            isOpen: isOpen,
-            name: TypeReferenceAPI(
-                name: name,
-                genericArguments: genericTypes),
+            declaration: self,
             conformances: inheritanceClause?.conformances ?? [],
-            constraints: genericConstraints.merged(with: genericWhereClause),
             children: apiChildren())
     }
 }
