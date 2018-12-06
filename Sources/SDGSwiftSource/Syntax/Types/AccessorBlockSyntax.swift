@@ -16,8 +16,8 @@ extension AccessorBlockSyntax {
 
     internal func normalizedForAPIDeclaration() -> AccessorBlockSyntax {
         return SyntaxFactory.makeAccessorBlock(
-            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(),
+            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             accessorListOrStmtList: accessorListOrStmtList.normalizedAccessorListForAPIDeclaration(),
-            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil())
+            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)))
     }
 }
