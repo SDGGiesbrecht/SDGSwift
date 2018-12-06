@@ -104,7 +104,7 @@ extension FunctionParameterSyntax {
     internal func forSubscriptName() -> FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
-            firstName: secondName?.isPresent == true ? firstName : nil,
+            firstName: secondName?.isPresent == true ? firstName : SyntaxFactory.makeToken(.wildcardKeyword),
             secondName: nil,
             colon: colon?.generallyNormalized(),
             type: nil,
