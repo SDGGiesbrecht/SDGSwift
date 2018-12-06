@@ -43,7 +43,6 @@ extension TypeDeclaration {
         return TypeAPI(
             documentation: documentation,
             isOpen: isOpen,
-            keyword: Self.keyword,
             name: TypeReferenceAPI(
                 name: name,
                 genericArguments: genericTypes),
