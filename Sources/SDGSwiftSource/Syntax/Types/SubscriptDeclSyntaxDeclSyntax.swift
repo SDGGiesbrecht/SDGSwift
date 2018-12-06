@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, FunctionLike, Generic, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic, Member {
 
     internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -63,11 +63,5 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Function
 
     var accessors: AccessorBlockSyntax? {
         return accessor
-    }
-
-    // MARK: - FunctionLike
-
-    var parameters: ParameterClauseSyntax {
-        return indices
     }
 }
