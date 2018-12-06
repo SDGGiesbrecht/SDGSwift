@@ -29,4 +29,31 @@ extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, TypeDeclarati
     var genericParameterClause: GenericParameterClauseSyntax? {
         return nil
     }
+
+    internal func normalizedAPIDeclaration() -> (declaration: TypeDeclaration, constraints: GenericWhereClauseSyntax?) {
+        return (SyntaxFactory.makeAssociatedtypeDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            associatedtypeKeyword: associatedtypeKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            inheritanceClause: nil,
+            initializer: nil,
+            genericWhereClause: nil),
+                genericWhereClause?.normalized())
+    }
+
+    internal func name() -> TypeDeclaration {
+        return SyntaxFactory.makeAssociatedtypeDecl(
+            attributes: nil,
+            modifiers: nil,
+            associatedtypeKeyword: SyntaxFactory.makeToken(.associatedtypeKeyword, presence: .missing),
+            identifier: identifier,
+            inheritanceClause: nil,
+            initializer: nil,
+            genericWhereClause: nil)
+    }
+
+    internal func identifierList() -> Set<String> {
+        return [identifier.text]
+    }
 }
