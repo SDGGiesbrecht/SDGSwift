@@ -16,10 +16,6 @@ extension TypealiasDeclSyntax : Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .typealiasKeyword
-    }
-
     var inheritanceClause: TypeInheritanceClauseSyntax? {
         return nil
     }

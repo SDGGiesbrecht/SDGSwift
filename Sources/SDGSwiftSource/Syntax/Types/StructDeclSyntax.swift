@@ -18,10 +18,6 @@ extension StructDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarat
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .structKeyword
-    }
-
     internal func normalizedAPIDeclaration() -> (declaration: StructDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeStructDecl(

@@ -18,10 +18,6 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaratio
 
     // MARK: - TypeDeclaration
 
-    internal static var keyword: TokenKind {
-        return .enumKeyword
-    }
-
     internal var genericParameterClause: GenericParameterClauseSyntax? {
         return genericParameters
     }

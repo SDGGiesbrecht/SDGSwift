@@ -16,10 +16,6 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclarati
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .classKeyword
-    }
-
     internal func normalizedAPIDeclaration() -> (declaration: ClassDeclSyntax, constraints: GenericWhereClauseSyntax?) {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return (SyntaxFactory.makeClassDecl(

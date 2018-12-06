@@ -16,7 +16,6 @@ import SDGLogic
 import SDGCollections
 
 internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
-    static var keyword: TokenKind { get }
     var identifier: TokenSyntax { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 

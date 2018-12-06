@@ -20,7 +20,6 @@ class SDGSwiftSourceInternalTests : TestCase {
 
     func testList() {
         XCTAssertNil(GenericWhereClauseSyntax(elementsOrNil: []))
-        XCTAssert(GenericWhereClauseSyntax?(elementsOrEmpty: [])?.source() == "where ")
     }
 
     func testTokenNormalization() {

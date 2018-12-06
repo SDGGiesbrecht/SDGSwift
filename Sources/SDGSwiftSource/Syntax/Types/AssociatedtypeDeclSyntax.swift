@@ -16,10 +16,6 @@ extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, TypeDeclarati
 
     // MARK: - TypeDeclaration
 
-    static var keyword: TokenKind {
-        return .associatedtypeKeyword
-    }
-
     var genericParameterClause: GenericParameterClauseSyntax? {
         return nil
     }
