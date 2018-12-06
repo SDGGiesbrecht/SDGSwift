@@ -45,7 +45,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Function
             modifiers: nil,
             subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, presence: .missing),
             genericParameterClause: nil,
-            indices: indices.forFunctionName(operator: false),
+            indices: indices.forSuperscriptName(),
             result: SyntaxFactory.makeBlankReturnClause(),
             genericWhereClause: nil,
             accessor: nil)
