@@ -25,10 +25,7 @@ extension Generic {
         if let originalGenericParameterClause = genericParameterClause {
             (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
         }
-
-        if let originalGenericWhereClause = genericWhereClause {
-            newGenericWhereClause = newGenericWhereClause?.merged(with: originalGenericWhereClause)
-        }
+        newGenericWhereClause = newGenericWhereClause.merged(with: genericWhereClause)
         return (newGenericParemeterClause, newGenericWhereClause)
     }
 }
