@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, FunctionLike, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic, Member {
 
     internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -22,9 +22,37 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Function
         }
         return SubscriptAPI(
             documentation: documentation,
-            arguments: parameters(forSubscript: true),
-            returnType: result.returnType.reference,
-            isSettable: isSettable)
+            declaration: self)
+    }
+
+    internal func normalizedAPIDeclaration() -> (declaration: SubscriptDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+        return (SyntaxFactory.makeSubscriptDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            subscriptKeyword: subscriptKeyword.generallyNormalizedAndMissingInsteadOfNil(),
+            genericParameterClause: newGenericParemeterClause,
+            indices: indices.normalizedForFunctionDeclaration(),
+            result: result.normalizedForSubscriptDeclaration(),
+            genericWhereClause: nil,
+            accessor: accessorListForAPIDeclaration()),
+                newGenericWhereClause)
+    }
+
+    internal func name() -> SubscriptDeclSyntax {
+        return SyntaxFactory.makeSubscriptDecl(
+            attributes: nil,
+            modifiers: nil,
+            subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, presence: .missing),
+            genericParameterClause: nil,
+            indices: indices.forSuperscriptName(),
+            result: SyntaxFactory.makeBlankReturnClause(),
+            genericWhereClause: nil,
+            accessor: nil)
+    }
+
+    internal func identifierList() -> Set<String> {
+        return indices.identifierListForFunction()
     }
 
     // MARK: - Accessor
@@ -35,11 +63,5 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Function
 
     var accessors: AccessorBlockSyntax? {
         return accessor
-    }
-
-    // MARK: - FunctionLike
-
-    var parameters: ParameterClauseSyntax {
-        return indices
     }
 }
