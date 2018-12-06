@@ -38,7 +38,7 @@ public class TypeAPI : APIScope {
     }
 
     public override var declaration: Syntax {
-        return _declaration
+        return _declaration.withGenericWhereClause(constraints)
     }
 
     public override var identifierList: Set<String> {
