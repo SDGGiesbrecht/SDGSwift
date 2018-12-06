@@ -18,10 +18,6 @@ import SDGXCTestUtilities
 
 class SDGSwiftSourceInternalTests : TestCase {
 
-    func testList() {
-        XCTAssertNil(GenericRequirementListSyntax(elementsOrNil: []))
-    }
-
     func testTokenNormalization() {
         let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),

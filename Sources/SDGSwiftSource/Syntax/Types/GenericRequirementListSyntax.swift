@@ -15,7 +15,7 @@
 import SDGControlFlow
 import SDGMathematics
 
-extension GenericRequirementListSyntax : List {
+extension GenericRequirementListSyntax : Mergeable {
 
     internal func normalized() -> GenericRequirementListSyntax {
         var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(by: GenericRequirementListSyntax.arrangeGenericRequirements)
@@ -46,16 +46,6 @@ extension GenericRequirementListSyntax : List {
     }
     private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
         return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
-    }
-
-    // MARK: - List
-
-    internal init(elementsOrEmpty elements: [Syntax]) {
-        self = SyntaxFactory.makeGenericRequirementList(elements)
-    }
-
-    internal func adding(_ addition: Syntax) -> GenericRequirementListSyntax {
-        return SyntaxFactory.makeGenericRequirementList(Array(self).appending(addition)).normalized()
     }
 
     // MARK: - Mergeable
