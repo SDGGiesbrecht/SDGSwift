@@ -62,4 +62,27 @@ extension Accessor {
             }
         }
     }
+
+    internal func accessorListForAPIDeclaration() -> AccessorBlockSyntax {
+        var accessors: [AccessorDeclSyntax] = [
+            SyntaxFactory.makeAccessorDecl(
+                attributes: nil,
+                modifier: nil,
+                accessorKind: SyntaxFactory.makeToken(.contextualKeyword("get")),
+                parameter: nil,
+                body: nil)
+        ]
+        if isSettable {
+            accessors.append(SyntaxFactory.makeAccessorDecl(
+                attributes: nil,
+                modifier: nil,
+                accessorKind: SyntaxFactory.makeToken(.contextualKeyword("set"), leadingTrivia: .spaces(1)),
+                parameter: nil,
+                body: nil))
+        }
+        return SyntaxFactory.makeAccessorBlock(
+            leftBrace: SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessors),
+            rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
+    }
 }

@@ -14,14 +14,13 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, Attributed, Generic, FunctionLike {
+extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
 
     internal var initializerAPI: InitializerAPI? {
         if ¬isPublic ∨ isUnavailable() {
             return nil
         }
-        let arguments = parameters(forSubscript: false)
-        if arguments.first?.label?.hasPrefix("_") == true {
+        if parameters.parameterList.first?.firstName?.text.hasPrefix("_") == true {
             return nil
         }
         return InitializerAPI(documentation: documentation, declaration: self)

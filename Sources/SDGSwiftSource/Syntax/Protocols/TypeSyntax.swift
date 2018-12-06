@@ -26,11 +26,6 @@ extension TypeSyntax {
             let wrapped = optional.wrappedType.reference
             return TypeReferenceAPI(name: wrapped.name, genericArguments: wrapped.genericArguments, isOptional: true)
         default:
-            for child in children {
-                if let type = child as? SimpleTypeIdentifierSyntax {
-                    return type.reference
-                }
-            } // @exempt(from: tests) Unreachable with valid source.
             return TypeReferenceAPI(name: "?", genericArguments: []) // @exempt(from: tests)
         }
     }

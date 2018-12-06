@@ -19,53 +19,29 @@ public class SubscriptAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, arguments: [ParameterAPI], returnType: TypeReferenceAPI, isSettable: Bool) {
-        self.arguments = arguments
-        self.returnType = returnType
-        self.isSettable = isSettable
+    internal init(documentation: DocumentationSyntax?, declaration: SubscriptDeclSyntax) {
+        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+        _declaration = normalizedDeclaration
         super.init(documentation: documentation)
+        constraints = constraints.merged(with: normalizedConstraints)
     }
 
     // MARK: - Properties
 
-    private let arguments: [ParameterAPI]
-    private let returnType: TypeReferenceAPI
-    private var isSettable: Bool
+    private let _declaration: SubscriptDeclSyntax
 
     // MARK: - APIElement
 
     public override var name: String {
-        return "[" + arguments.map({ $0.subscriptNameForm }).joined() + "]"
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {
-
-        var parameters: [FunctionParameterSyntax] = []
-        if ¬arguments.isEmpty {
-            for index in arguments.indices {
-                let argument = arguments[index]
-                parameters.append(argument.subscriptDeclarationForm(trailingComma: index ≠ arguments.index(before: arguments.endIndex)))
-            }
-        }
-
-        return SyntaxFactory.makeSubscriptDecl(
-            attributes: nil,
-            modifiers: nil,
-            subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword),
-            genericParameterClause: nil,
-            indices: SyntaxFactory.makeParameterClause(
-                leftParen: SyntaxFactory.makeToken(.leftParen),
-                parameterList: SyntaxFactory.makeFunctionParameterList(parameters),
-                rightParen: SyntaxFactory.makeToken(.rightParen)),
-            result: SyntaxFactory.makeReturnClause(
-                arrow: SyntaxFactory.makeToken(.arrow, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                returnType: returnType.declaration),
-            genericWhereClause: constraints,
-            accessor: SyntaxFactory.makeProtocolStyleAccessorBlock(settable: isSettable))
+        return _declaration
     }
 
     public override var identifierList: Set<String> {
-        return arguments.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
+        return _declaration.identifierList()
     }
 
     public override var summary: [String] {

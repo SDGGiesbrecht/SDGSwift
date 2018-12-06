@@ -16,36 +16,6 @@ import SDGLogic
 
 extension FunctionParameterSyntax {
 
-    internal func parameterAPI(forSubscript: Bool) -> ParameterAPI {
-        var label: String?
-        if let possibleLabel = firstName,
-            possibleLabel.tokenKind ≠ .wildcardKeyword {
-            label = possibleLabel.text
-        }
-        var name: String
-        if let different = secondName?.text {
-            name = different
-        } else {
-            name = firstName?.text ?? "" // @exempt(from: tests) Guaranteed in valid source.
-            if forSubscript {
-                label = nil
-            }
-        }
-
-        var isInOut = false
-        if let attributed = type as? AttributedTypeSyntax,
-            attributed.specifier?.tokenKind == .inoutKeyword {
-            isInOut = true
-        }
-
-        return ParameterAPI(
-            label: label,
-            name: name,
-            isInOut: isInOut,
-            type: self.type?.reference ?? TypeReferenceAPI(name: "", genericArguments: []), // @exempt(from: tests) Guaranteed in valid source.
-            hasDefault: defaultArgument ≠ nil)
-    }
-
     // MARK: - Function Parameters
 
     internal func normalizedForFunctionDeclaration() -> FunctionParameterSyntax {
@@ -99,6 +69,18 @@ extension FunctionParameterSyntax {
             result.insert(externalName.text)
         }
         return result
+    }
+
+    internal func forSubscriptName() -> FunctionParameterSyntax {
+        return SyntaxFactory.makeFunctionParameter(
+            attributes: nil,
+            firstName: secondName?.isPresent == true ? firstName : SyntaxFactory.makeToken(.wildcardKeyword),
+            secondName: nil,
+            colon: colon?.generallyNormalized(),
+            type: nil,
+            ellipsis: nil,
+            defaultArgument: nil,
+            trailingComma: nil)
     }
 
     // MARK: - Associated Values

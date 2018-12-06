@@ -39,6 +39,13 @@ extension ParameterClauseSyntax {
         return parameterList.identifierListForFunction()
     }
 
+    internal func forSuperscriptName() -> ParameterClauseSyntax {
+        return SyntaxFactory.makeParameterClause(
+            leftParen: SyntaxFactory.makeToken(.leftSquareBracket),
+            parameterList: parameterList.forSubscriptName(),
+            rightParen: SyntaxFactory.makeToken(.rightSquareBracket))
+    }
+
     internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
         return SyntaxFactory.makeParameterClause(
             leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
