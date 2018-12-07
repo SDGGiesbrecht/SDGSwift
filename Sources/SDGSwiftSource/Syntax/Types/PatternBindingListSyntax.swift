@@ -15,10 +15,10 @@
 extension PatternBindingListSyntax {
 
     internal func normalizedForVariableAPIDeclaration() -> PatternBindingListSyntax {
-
+        return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration() }))
     }
 
     internal func forVariableName() -> PatternBindingListSyntax {
-
+        return SyntaxFactory.makePatternBindingList(map({ $0.forVariableName() }))
     }
 }
