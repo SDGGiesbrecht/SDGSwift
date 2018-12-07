@@ -132,7 +132,7 @@ extension Syntax {
         case let initializer as InitializerDeclSyntax :
             return initializer.initializerAPI.flatMap({ [$0] }) ?? []
         case let variable as VariableDeclSyntax :
-            return variable.variableAPI.flatMap({ [$0] }) ?? []
+            return variable.variableAPI()
         case let `subscript` as SubscriptDeclSyntax :
             return `subscript`.subscriptAPI.flatMap({ [$0] }) ?? []
         case let function as FunctionDeclSyntax :
