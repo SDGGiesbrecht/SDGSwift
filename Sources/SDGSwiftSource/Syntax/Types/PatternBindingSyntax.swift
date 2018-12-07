@@ -26,7 +26,7 @@ extension PatternBindingSyntax {
     internal func forVariableName() -> PatternBindingSyntax {
         return SyntaxFactory.makePatternBinding(
             pattern: pattern.variableBindingForName(),
-            typeAnnotation: typeAnnotation?.forVariableBindingForName(),
+            typeAnnotation: nil,
             initializer: nil,
             accessor: nil,
             trailingComma: nil)
