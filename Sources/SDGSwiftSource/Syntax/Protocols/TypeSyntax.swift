@@ -36,6 +36,8 @@ extension TypeSyntax {
             return simple.normalized()
         case let member as MemberTypeIdentifierSyntax :
             return member.normalized()
+        case let optional as OptionalTypeSyntax :
+            return optional.normalized()
         case let tuple as TupleTypeSyntax :
             return tuple.normalized()
         case let function as FunctionTypeSyntax :
