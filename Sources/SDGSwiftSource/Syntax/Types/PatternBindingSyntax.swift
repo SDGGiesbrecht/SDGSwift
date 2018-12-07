@@ -18,7 +18,7 @@ extension PatternBindingSyntax {
         return pattern.flattenedForAPI().map { (pattern, indexPath) in
             return SyntaxFactory.makePatternBinding(
                 pattern: pattern,
-                typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
+                typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(extractingFromIndexPath: indexPath),
                 initializer: nil,
                 accessor: accessor,
                 trailingComma: nil)

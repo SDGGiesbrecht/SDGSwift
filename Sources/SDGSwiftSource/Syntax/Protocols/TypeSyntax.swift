@@ -17,7 +17,7 @@ import SDGLogic
 
 extension TypeSyntax {
 
-    internal func normalized() -> TypeSyntax {
+    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax :
             return simple.normalized()
@@ -26,7 +26,7 @@ extension TypeSyntax {
         case let optional as OptionalTypeSyntax :
             return optional.normalized()
         case let tuple as TupleTypeSyntax :
-            return tuple.normalized()
+            return tuple.normalized(extractingFromIndexPath: indexPath)
         case let function as FunctionTypeSyntax :
             return function.normalized()
         case let attributed as AttributedTypeSyntax :
