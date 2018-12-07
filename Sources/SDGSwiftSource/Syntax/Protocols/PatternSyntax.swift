@@ -12,13 +12,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 extension PatternSyntax {
 
     public func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
-
+        switch self {
+        case let identifier as IdentifierPatternSyntax :
+            return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified pattern: \(Swift.type(of: self))")
+            }
+            return self
+        }
     }
 
     public func variableBindingForName() -> PatternSyntax {
-
+        switch self {
+        case let identifier as IdentifierPatternSyntax :
+            return identifier.variableBindingIdentifierForName()
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified pattern: \(Swift.type(of: self))")
+            }
+            return self
+        }
     }
 }
