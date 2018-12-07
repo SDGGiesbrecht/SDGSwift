@@ -24,6 +24,10 @@ extension PatternSyntax {
             if ¬identifier.identifier.text.hasPrefix("_") {
                 list.append(identifier)
             }
+        case let tuple as TuplePatternSyntax :
+            for element in tuple.elements {
+                list.append(contentsOf: element.pattern.flattenedForAPI())
+            }
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified binding pattern: \(Swift.type(of: self))")

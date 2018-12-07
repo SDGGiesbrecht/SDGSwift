@@ -1,6 +1,8 @@
 (Int)
  staticProperty • static var staticProperty: Int { get }
  constantWithInferredType • var constantWithInferredType { get }
+ groupedInteger • var groupedInteger: Int { get }
+ groupedString • var groupedString: String { get }
  optional • weak var optional: SomeType? { get set }
  var • var var: Int { get }
 ObjectiveCClass • class ObjectiveCClass
