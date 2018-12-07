@@ -15,10 +15,12 @@
 extension IdentifierPatternSyntax {
 
     internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
-
+        return SyntaxFactory.makeIdentifierPattern(
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil())
     }
 
     internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
-
+        return SyntaxFactory.makeIdentifierPattern(
+            identifier: identifier)
     }
 }
