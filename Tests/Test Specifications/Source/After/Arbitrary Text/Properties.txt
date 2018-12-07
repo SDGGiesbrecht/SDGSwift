@@ -13,5 +13,6 @@ extension ̲Int ̲{
 }
 
 public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲C̲l̲a̲s̲s̲ ̲: ̲NSObject ̲{
- ̲ ̲ ̲ ̲@IBOutlet ̲public ̲weak ̲static ̲var ̲d̲e̲l̲e̲g̲a̲t̲e̲: ̲NSObject?
+ ̲ ̲ ̲ ̲@available(*, ̲introduced: ̲4̲.̲2̲.1̲) ̲@IBOutlet ̲public ̲weak ̲static ̲var ̲d̲e̲l̲e̲g̲a̲t̲e̲: ̲NSObject?
+ ̲ ̲ ̲ ̲@NSCopying ̲public ̲var ̲c̲o̲p̲y̲i̲n̲g̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲NSString
 }

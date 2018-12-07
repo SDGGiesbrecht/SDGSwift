@@ -13,5 +13,6 @@ extension Int {
 }
 
 public class ObjectiveCClass : NSObject {
-    @IBOutlet public weak static var delegate: NSObject?
+    @available(*, introduced: 4.2.1) @IBOutlet public weak static var delegate: NSObject?
+    @NSCopying public var copyingProperty: NSString
 }

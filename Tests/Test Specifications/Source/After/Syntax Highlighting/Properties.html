@@ -21,7 +21,8 @@
 <span class="punctuation">}</span>
 
 <span class="keyword">public</span> <span class="keyword">class</span> <span class="external identifier">ObjectiveCClass</span> <span class="punctuation">:</span> <span class="external identifier">NSObject</span> <span class="punctuation">{</span>
-    <span class="keyword">@</span><span class="external identifier">IBOutlet</span> <span class="keyword">public</span> <span class="external identifier">weak</span> <span class="keyword">static</span> <span class="keyword">var</span> <span class="external identifier">delegate</span><span class="punctuation">:</span> <span class="external identifier">NSObject</span><span class="punctuation">?</span>
+    <span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">introduced</span><span class="punctuation">:</span> <span class="number">4.2</span><span class="punctuation">.</span><span class="number">1</span><span class="punctuation">)</span> <span class="keyword">@</span><span class="external identifier">IBOutlet</span> <span class="keyword">public</span> <span class="external identifier">weak</span> <span class="keyword">static</span> <span class="keyword">var</span> <span class="external identifier">delegate</span><span class="punctuation">:</span> <span class="external identifier">NSObject</span><span class="punctuation">?</span>
+    <span class="keyword">@</span><span class="external identifier">NSCopying</span> <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">copyingProperty</span><span class="punctuation">:</span> <span class="external identifier">NSString</span>
 <span class="punctuation">}</span>
 </code>
 
