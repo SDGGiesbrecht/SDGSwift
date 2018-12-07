@@ -12,35 +12,52 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
 
-    internal var variableAPI: VariableAPI? {
+    internal func variableAPI() -> [VariableAPI] {
         if ¬isPublic ∨ isUnavailable() {
-            return nil
+            return []
         }
-        guard let binding = bindings.first,
-            let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text else {
-                return nil // @exempt(from: tests) Unreachable with valid source.
+
+        var list: [VariableAPI] = []
+        for binding in bindings {
+            switch binding.pattern {
+            case let identifier as IdentifierPatternSyntax :
+                if ¬identifier.identifier.text.hasPrefix("_") {
+                    list.append(VariableAPI(
+                        documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                        declaration: SyntaxFactory.makeVariableDecl(
+                            attributes: attributes,
+                            modifiers: modifiers,
+                            letOrVarKeyword: letOrVarKeyword,
+                            bindings: SyntaxFactory.makePatternBindingList([binding]))))
+                }
+            default: // @exempt(from: tests) Should never occur.
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified binding pattern: \(Swift.type(of: binding))")
+                }
+            }
         }
-        if name.hasPrefix("_") {
-            return nil
-        }
-        return VariableAPI(
-            documentation: documentation,
-            typePropertyKeyword: typeMemberKeyword,
-            name: name,
-            type: binding.typeAnnotation?.type.reference,
-            isSettable: isSettable)
+        return list
     }
 
     internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
-
+        return SyntaxFactory.makeVariableDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
+            bindings: bindings.normalizedForVariableAPIDeclaration())
     }
 
     internal func name() -> VariableDeclSyntax {
-
+        return SyntaxFactory.makeVariableDecl(
+            attributes: nil,
+            modifiers: nil,
+            letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, presence: .missing),
+            bindings: bindings.forVariableName())
     }
 
     // MARK: - Accessor
