@@ -8,6 +8,8 @@ extension Int {
     public static let staticProperty: Int = 0
 
     public weak var optional: SomeType?
+
+    public let (groupedInteger, groupedString) : (Int, String) = (0, "")
 }
 
 public class ObjectiveCClass : NSObject {

@@ -14,6 +14,16 @@
 
 extension PatternBindingListSyntax {
 
+    internal func flattenedForAPI() -> [PatternBindingListSyntax] {
+        var result: [PatternBindingListSyntax] = []
+        for binding in self {
+            for flattened in binding.flattenedForAPI() {
+                result.append(SyntaxFactory.makePatternBindingList([flattened]))
+            }
+        }
+        return result
+    }
+
     internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax) -> PatternBindingListSyntax {
         return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) }))
     }

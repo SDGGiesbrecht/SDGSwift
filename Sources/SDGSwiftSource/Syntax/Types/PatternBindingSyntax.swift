@@ -14,7 +14,25 @@
 
 extension PatternBindingSyntax {
 
+    internal func flattenedForAPI() -> [PatternBindingSyntax] {
+        return pattern.flattenedForAPI().map { pattern in
+            return SyntaxFactory.makePatternBinding(
+                pattern: pattern,
+                typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
+                initializer: nil,
+                accessor: accessor,
+                trailingComma: nil)
+        }
+    }
+
     internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax) -> PatternBindingSyntax {
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        var typeAnnotation = self.typeAnnotation
+        if typeAnnotation?.source() == "" {
+            typeAnnotation = nil
+        }
+
         return SyntaxFactory.makePatternBinding(
             pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
             typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),

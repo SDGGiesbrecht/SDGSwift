@@ -8,6 +8,8 @@ extension ̲Int ̲{
  ̲ ̲ ̲ ̲public ̲static ̲let ̲s̲t̲a̲t̲i̲c̲P̲r̲o̲p̲e̲r̲t̲y̲: ̲Int ̲= ̲0̲
 
  ̲ ̲ ̲ ̲public ̲weak ̲var ̲o̲p̲t̲i̲o̲n̲a̲l̲: ̲SomeType?
+
+ ̲ ̲ ̲ ̲public ̲let ̲(g̲r̲o̲u̲p̲e̲d̲I̲n̲t̲e̲g̲e̲r̲, ̲g̲r̲o̲u̲p̲e̲d̲S̲t̲r̲i̲n̲g̲) ̲: ̲(Int, ̲String) ̲= ̲(0̲, ̲"")
 }
 
 public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲C̲l̲a̲s̲s̲ ̲: ̲NSObject ̲{

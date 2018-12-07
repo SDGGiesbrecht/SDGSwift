@@ -8,6 +8,8 @@ extension I̲n̲t̲ {
     public static let staticProperty: I̲n̲t̲ = 0
 
     public weak var optional: S̲o̲m̲e̲T̲y̲p̲e̲?
+
+    public let (groupedInteger, groupedString) : (I̲n̲t̲, S̲t̲r̲i̲n̲g̲) = (0, "")
 }
 
 public class ObjectiveCClass : N̲S̲O̲b̲j̲e̲c̲t̲ {

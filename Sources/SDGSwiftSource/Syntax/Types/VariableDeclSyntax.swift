@@ -23,23 +23,14 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
         }
 
         var list: [VariableAPI] = []
-        for binding in bindings {
-            switch binding.pattern {
-            case let identifier as IdentifierPatternSyntax :
-                if ¬identifier.identifier.text.hasPrefix("_") {
-                    list.append(VariableAPI(
-                        documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
-                        declaration: SyntaxFactory.makeVariableDecl(
-                            attributes: attributes,
-                            modifiers: modifiers,
-                            letOrVarKeyword: letOrVarKeyword,
-                            bindings: SyntaxFactory.makePatternBindingList([binding]))))
-                }
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified binding pattern: \(Swift.type(of: binding))")
-                }
-            }
+        for separate in bindings.flattenedForAPI() {
+            list.append(VariableAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeVariableDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    letOrVarKeyword: letOrVarKeyword,
+                    bindings: separate)))
         }
         return list
     }
@@ -67,6 +58,13 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
     }
 
     var accessors: AccessorBlockSyntax? {
-        return bindings.first?.accessor
+        let result = bindings.first?.accessor
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        if result?.source() == "" {
+            return nil
+        }
+
+        return result
     }
 }

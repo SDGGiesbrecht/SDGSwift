@@ -13,10 +13,26 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 extension PatternSyntax {
 
-    public func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
+    internal func flattenedForAPI() -> [IdentifierPatternSyntax] {
+        var list: [IdentifierPatternSyntax] = []
+        switch self {
+        case let identifier as IdentifierPatternSyntax :
+            if ¬identifier.identifier.text.hasPrefix("_") {
+                list.append(identifier)
+            }
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified binding pattern: \(Swift.type(of: self))")
+            }
+        }
+        return list
+    }
+
+    internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax :
             return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
@@ -28,7 +44,7 @@ extension PatternSyntax {
         }
     }
 
-    public func variableBindingForName() -> PatternSyntax {
+    internal func variableBindingForName() -> PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax :
             return identifier.variableBindingIdentifierForName()
