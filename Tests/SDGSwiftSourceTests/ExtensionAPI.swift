@@ -17,6 +17,12 @@
 extension ExtensionAPI {
 
     convenience init(type: String) {
-        self.init(type: TypeReferenceAPI(name: type, genericArguments: []), conformances: [], constraints: nil, children: [])
+        self.init(
+            type: SyntaxFactory.makeSimpleTypeIdentifier(
+                name: SyntaxFactory.makeToken(.identifier(type)),
+                genericArgumentClause: nil),
+            conformances: [],
+            constraints: nil,
+            children: [])
     }
 }
