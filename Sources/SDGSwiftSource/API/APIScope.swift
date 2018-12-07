@@ -32,7 +32,7 @@ public class APIScope : APIElement {
             case let initializer as InitializerAPI :
                 initializers.append(initializer)
             case let property as VariableAPI :
-                if property.typePropertyKeyword ≠ nil {
+                if property._declaration.typeMemberKeyword ≠ nil {
                     typeProperties.append(property)
                 } else {
                     properties.append(property)

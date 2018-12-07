@@ -23,7 +23,7 @@ public class VariableAPI : APIElement {
 
     // MARK: - Properties
 
-    private let _declaration: VariableDeclSyntax
+    internal let _declaration: VariableDeclSyntax
 
     // MARK: - APIElement
 
