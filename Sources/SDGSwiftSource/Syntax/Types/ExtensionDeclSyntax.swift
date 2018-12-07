@@ -23,7 +23,7 @@ extension ExtensionDeclSyntax : AccessControlled, Attributed {
             return nil
         }
         return ExtensionAPI(
-            type: extendedType.reference,
+            type: extendedType,
             conformances: inheritanceClause?.conformances ?? [],
             constraints: genericWhereClause,
             children: children)

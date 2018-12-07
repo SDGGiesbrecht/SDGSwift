@@ -17,27 +17,16 @@ import SDGLogic
 
 extension TypeSyntax {
 
-    internal var reference: TypeReferenceAPI {
-        switch self {
-        case let simple as SimpleTypeIdentifierSyntax :
-            let genericArguments = simple.genericArgumentClause?.arguments.map({ $0.argumentType.reference }) ?? []
-            return TypeReferenceAPI(name: simple.name.text, genericArguments: genericArguments)
-        case let optional as OptionalTypeSyntax :
-            let wrapped = optional.wrappedType.reference
-            return TypeReferenceAPI(name: wrapped.name, genericArguments: wrapped.genericArguments, isOptional: true)
-        default:
-            return TypeReferenceAPI(name: "?", genericArguments: []) // @exempt(from: tests)
-        }
-    }
-
-    internal func normalized() -> TypeSyntax {
+    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax :
             return simple.normalized()
         case let member as MemberTypeIdentifierSyntax :
             return member.normalized()
+        case let optional as OptionalTypeSyntax :
+            return optional.normalized()
         case let tuple as TupleTypeSyntax :
-            return tuple.normalized()
+            return tuple.normalized(extractingFromIndexPath: indexPath)
         case let function as FunctionTypeSyntax :
             return function.normalized()
         case let attributed as AttributedTypeSyntax :

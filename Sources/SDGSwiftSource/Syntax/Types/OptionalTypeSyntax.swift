@@ -1,5 +1,5 @@
 /*
- SyntaxFactory.swift
+ OptionalTypeSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,9 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension SyntaxFactory {
+extension OptionalTypeSyntax {
 
-    public static func makeToken(_ kind: TokenKind, leadingTrivia: Trivia = [], trailingTrivia: Trivia = []) -> TokenSyntax {
-        return SyntaxFactory.makeToken(kind, presence: .present, leadingTrivia: leadingTrivia, trailingTrivia: trailingTrivia)
+    internal func normalized() -> OptionalTypeSyntax {
+        return SyntaxFactory.makeOptionalType(
+            wrappedType: wrappedType.normalized(),
+            questionMark: questionMark.generallyNormalizedAndMissingInsteadOfNil())
     }
 }

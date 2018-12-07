@@ -43,6 +43,8 @@ extension DeclModifierSyntax {
                 return normalize()
             case "indirect":
                 return nil
+            case "weak":
+                return normalize()
             default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified modifier: \(conditionalKeyword)")
@@ -55,6 +57,7 @@ extension DeclModifierSyntax {
     private enum Group : OrderedEnumeration {
         case unknown
         case accessControl
+        case memoryManagement
         case classMembership
         case staticity
         case mutation
@@ -70,6 +73,8 @@ extension DeclModifierSyntax {
             case "open", "public", "internal", "fileprivate", "private":
                 // Access control.
                 return .accessControl
+            case "weak":
+                return .memoryManagement
             case "mutating":
                 return .mutation
             default:

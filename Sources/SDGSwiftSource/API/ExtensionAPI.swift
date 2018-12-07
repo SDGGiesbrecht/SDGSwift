@@ -18,33 +18,33 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: TypeReferenceAPI, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        self.type = type
+    internal init(type: TypeSyntax, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
+        self.type = type.normalized()
         super.init(documentation: nil, conformances: conformances, children: children)
         self.constraints = constraints?.normalized()
     }
 
     // MARK: - Properties
 
-    internal let type: TypeReferenceAPI
+    internal let type: TypeSyntax
 
     // MARK: - Combining
 
     public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.name == type.name
+        return self.type.source() == type.name
     }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
-        return self.type.declaration.source() == `protocol`.name
+        return self.type.source() == `protocol`.name
     }
     public func extendsSameType(as other: ExtensionAPI) -> Bool {
-        return type == other.type
+        return type.source() == other.type.source()
     }
 
     internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
-        var sorted: [TypeReferenceAPI: [ExtensionAPI]] = [:]
+        var sorted: [String: [ExtensionAPI]] = [:]
 
         for `extension` in extensions {
-            sorted[`extension`.type, default: []].append(`extension`)
+            sorted[`extension`.type.source(), default: []].append(`extension`)
         }
 
         var result: [ExtensionAPI] = []
@@ -66,7 +66,7 @@ public class ExtensionAPI : APIScope {
     // MARK: - APIElement
 
     public override var name: String {
-        return type.declaration.source()
+        return type.source()
     }
 
     public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.

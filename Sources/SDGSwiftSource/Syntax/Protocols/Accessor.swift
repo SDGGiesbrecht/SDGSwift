@@ -23,7 +23,7 @@ extension Accessor {
 
     private var hasReducedSetterAccessLevel: Bool {
         guard let modifiers = self.modifiers else {
-            return false
+            return false // @exempt(from: tests) SwiftSyntax seems to prefer empty over nil.
         }
         for modifier in modifiers {
             if let detail = modifier.detail {

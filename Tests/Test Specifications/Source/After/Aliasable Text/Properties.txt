@@ -8,4 +8,11 @@ extension I̲n̲t̲ {
     public static let staticProperty: I̲n̲t̲ = 0
 
     public weak var optional: S̲o̲m̲e̲T̲y̲p̲e̲?
+
+    public let (groupedInteger, groupedString) : (I̲n̲t̲, S̲t̲r̲i̲n̲g̲) = (0, "")
+}
+
+public class ObjectiveCClass : N̲S̲O̲b̲j̲e̲c̲t̲ {
+    @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.2.1) @I̲B̲O̲u̲t̲l̲e̲t̲ public weak static var delegate: N̲S̲O̲b̲j̲e̲c̲t̲?
+    @N̲S̲C̲o̲p̲y̲i̲n̲g̲ public var copyingProperty: N̲S̲S̲t̲r̲i̲n̲g̲
 }

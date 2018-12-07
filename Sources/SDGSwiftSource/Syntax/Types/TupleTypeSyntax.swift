@@ -14,7 +14,12 @@
 
 extension TupleTypeSyntax {
 
-    internal func normalized() -> TypeSyntax {
+    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
+        if let index = indexPath.first,
+            elements.indices.contains(index) {
+            return elements[index].type.normalized(extractingFromIndexPath: Array(indexPath.dropFirst()))
+        }
+
         if elements.isEmpty {
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: SyntaxFactory.makeToken(.identifier("Void")),

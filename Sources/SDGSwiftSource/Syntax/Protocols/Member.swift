@@ -21,7 +21,7 @@ internal protocol Member : Syntax {
 extension Member {
     internal var typeMemberKeyword: TokenKind? {
         guard let modifiers = self.modifiers else {
-            return nil
+            return nil // @exempt(from: tests) SwiftSyntax seems to prefer empty over nil.
         }
         for modifier in modifiers {
             let tokenKind = modifier.name.tokenKind

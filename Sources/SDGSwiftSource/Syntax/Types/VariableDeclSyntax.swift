@@ -12,27 +12,43 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 
 extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
 
-    internal var variableAPI: VariableAPI? {
+    internal func variableAPI() -> [VariableAPI] {
         if ¬isPublic ∨ isUnavailable() {
-            return nil
+            return []
         }
-        guard let binding = bindings.first,
-            let name = (binding.pattern as? IdentifierPatternSyntax)?.identifier.text else {
-                return nil // @exempt(from: tests) Unreachable with valid source.
+
+        var list: [VariableAPI] = []
+        for separate in bindings.flattenedForAPI() {
+            list.append(VariableAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeVariableDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    letOrVarKeyword: letOrVarKeyword,
+                    bindings: separate)))
         }
-        if name.hasPrefix("_") {
-            return nil
-        }
-        return VariableAPI(
-            documentation: documentation,
-            typePropertyKeyword: typeMemberKeyword,
-            name: name,
-            type: binding.typeAnnotation?.type.reference,
-            isSettable: isSettable)
+        return list
+    }
+
+    internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
+        return SyntaxFactory.makeVariableDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
+            bindings: bindings.normalizedForVariableAPIDeclaration(accessor: accessorListForAPIDeclaration()))
+    }
+
+    internal func name() -> VariableDeclSyntax {
+        return SyntaxFactory.makeVariableDecl(
+            attributes: nil,
+            modifiers: nil,
+            letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, presence: .missing),
+            bindings: bindings.forVariableName())
     }
 
     // MARK: - Accessor
@@ -42,6 +58,13 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
     }
 
     var accessors: AccessorBlockSyntax? {
-        return bindings.first?.accessor
+        let result = bindings.first?.accessor
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        if result?.source() == "" {
+            return nil
+        }
+
+        return result
     }
 }
