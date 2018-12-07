@@ -49,7 +49,7 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
-            bindings: bindings.normalizedForVariableAPIDeclaration())
+            bindings: bindings.normalizedForVariableAPIDeclaration(accessor: accessorListForAPIDeclaration()))
     }
 
     internal func name() -> VariableDeclSyntax {
