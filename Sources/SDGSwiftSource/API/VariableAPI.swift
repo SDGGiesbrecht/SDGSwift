@@ -16,55 +16,23 @@ public class VariableAPI : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, typePropertyKeyword: TokenKind?, name: String, type: TypeReferenceAPI?, isSettable: Bool) {
-        self.typePropertyKeyword = typePropertyKeyword
-        _name = name.decomposedStringWithCanonicalMapping
-        self.type = type
-        self.isSettable = isSettable
+    internal init(documentation: DocumentationSyntax?, declaration: VariableDeclSyntax) {
+        _declaration = declaration.normalizedAPIDeclaration()
         super.init(documentation: documentation)
     }
 
     // MARK: - Properties
 
-    public let typePropertyKeyword: TokenKind?
-    private let _name: String
-    public let type: TypeReferenceAPI?
-    private let isSettable: Bool
+    private let _declaration: VariableDeclSyntax
 
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return _declaration.name().source()
     }
 
     public override var declaration: Syntax {
-
-        var modifiers: ModifierListSyntax?
-        if let typePropertyKeyword = self.typePropertyKeyword {
-            modifiers = SyntaxFactory.makeModifierList([SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(typePropertyKeyword, trailingTrivia: .spaces(1)),
-                detail: nil)])
-        }
-
-        var typeAnnotation: TypeAnnotationSyntax?
-        if let type = self.type {
-            typeAnnotation = SyntaxFactory.makeTypeAnnotation(
-                colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                type: type.declaration)
-        }
-
-        return SyntaxFactory.makeVariableDecl(
-            attributes: nil,
-            modifiers: modifiers,
-            letOrVarKeyword: SyntaxFactory.makeVarKeyword(trailingTrivia: .spaces(1)),
-            bindings: SyntaxFactory.makePatternBindingList([
-                SyntaxFactory.makePatternBinding(
-                    pattern: SyntaxFactory.makeIdentifierPattern(identifier: SyntaxFactory.makeToken(.identifier(_name))),
-                    typeAnnotation: typeAnnotation,
-                    initializer: nil,
-                    accessor: SyntaxFactory.makeProtocolStyleAccessorBlock(settable: isSettable),
-                    trailingComma: nil)
-                ]))
+        return _declaration
     }
 
     public override var identifierList: Set<String> {

@@ -35,6 +35,14 @@ extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
             isSettable: isSettable)
     }
 
+    internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
+
+    }
+
+    internal func name() -> VariableDeclSyntax {
+
+    }
+
     // MARK: - Accessor
 
     var keyword: TokenSyntax {
