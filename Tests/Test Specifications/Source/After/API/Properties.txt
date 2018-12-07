@@ -1,5 +1,5 @@
 (Int)
  staticProperty • static var staticProperty: Int { get }
  constantWithInferredType • var constantWithInferredType { get }
- optional • var optional: SomeType? { get set }
+ optional • weak var optional: SomeType? { get set }
  var • var var: Int { get }
