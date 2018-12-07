@@ -43,6 +43,8 @@ extension DeclModifierSyntax {
                 return normalize()
             case "indirect":
                 return nil
+            case "weak":
+                return normalize()
             default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified modifier: \(conditionalKeyword)")
@@ -58,6 +60,7 @@ extension DeclModifierSyntax {
         case classMembership
         case staticity
         case mutation
+        case memoryManagement
     }
     private func group() -> Group {
         switch name.tokenKind {
@@ -72,6 +75,8 @@ extension DeclModifierSyntax {
                 return .accessControl
             case "mutating":
                 return .mutation
+            case "weak":
+                return .memoryManagement
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified modifier: \(name.text)")
