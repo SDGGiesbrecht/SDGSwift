@@ -17,16 +17,24 @@ import SDGLogic
 
 extension PatternSyntax {
 
-    internal func flattenedForAPI() -> [IdentifierPatternSyntax] {
-        var list: [IdentifierPatternSyntax] = []
+    internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
+        var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
         switch self {
         case let identifier as IdentifierPatternSyntax :
             if ¬identifier.identifier.text.hasPrefix("_") {
-                list.append(identifier)
+                list.append((identifier: identifier, indexPath: []))
             }
         case let tuple as TuplePatternSyntax :
+            var index = 0
             for element in tuple.elements {
-                list.append(contentsOf: element.pattern.flattenedForAPI())
+                defer { index += 1 }
+                let nested = element.pattern.flattenedForAPI()
+                let indexed = nested.map { (entry: (identifier: IdentifierPatternSyntax, indexPath: [Int])) -> (identifier: IdentifierPatternSyntax, indexPath: [Int]) in
+                    var mutable = entry
+                    mutable.indexPath.prepend(index)
+                    return mutable
+                }
+                list.append(contentsOf: indexed)
             }
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)

@@ -15,7 +15,7 @@
 extension PatternBindingSyntax {
 
     internal func flattenedForAPI() -> [PatternBindingSyntax] {
-        return pattern.flattenedForAPI().map { pattern in
+        return pattern.flattenedForAPI().map { (pattern, indexPath) in
             return SyntaxFactory.makePatternBinding(
                 pattern: pattern,
                 typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
