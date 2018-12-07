@@ -15,10 +15,8 @@
 extension TypeAnnotationSyntax {
 
     public func normalizedForVariableBindingForAPIDeclaration() -> TypeAnnotationSyntax {
-
-    }
-
-    public func forVariableBindingForName() -> TypeAnnotationSyntax {
-
+        return SyntaxFactory.makeTypeAnnotation(
+            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            type: type.normalized())
     }
 }
