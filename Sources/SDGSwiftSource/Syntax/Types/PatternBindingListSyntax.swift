@@ -14,8 +14,8 @@
 
 extension PatternBindingListSyntax {
 
-    internal func normalizedForVariableAPIDeclaration() -> PatternBindingListSyntax {
-        return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration() }))
+    internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax) -> PatternBindingListSyntax {
+        return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) }))
     }
 
     internal func forVariableName() -> PatternBindingListSyntax {
