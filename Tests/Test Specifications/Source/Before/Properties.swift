@@ -9,3 +9,7 @@ extension Int {
 
     public weak var optional: SomeType?
 }
+
+public class ObjectiveCClass : NSObject {
+    @IBOutlet public weak static var delegate: NSObject?
+}

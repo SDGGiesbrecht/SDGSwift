@@ -9,3 +9,7 @@ extension I̲n̲t̲ {
 
     public weak var optional: S̲o̲m̲e̲T̲y̲p̲e̲?
 }
+
+public class ObjectiveCClass : N̲S̲O̲b̲j̲e̲c̲t̲ {
+    @I̲B̲O̲u̲t̲l̲e̲t̲ public weak static var delegate: N̲S̲O̲b̲j̲e̲c̲t̲?
+}

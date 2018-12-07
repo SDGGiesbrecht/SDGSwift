@@ -3,3 +3,6 @@
  constantWithInferredType • var constantWithInferredType { get }
  optional • weak var optional: SomeType? { get set }
  var • var var: Int { get }
+ObjectiveCClass • class ObjectiveCClass
+ delegate • @IBOutlet weak static var delegate: NSObject? { get set }
+ NSObject

@@ -10,3 +10,7 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
 ̲    p̲u̲b̲l̲i̲c̲ w̲e̲a̲k̲ v̲a̲r̲ optional:̲ SomeType?̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCClass :̲ NSObject {̲
+̲    @̲IBOutlet p̲u̲b̲l̲i̲c̲ w̲e̲a̲k̲ s̲t̲a̲t̲i̲c̲ v̲a̲r̲ delegate:̲ NSObject?̲
+̲}̲
+̲
