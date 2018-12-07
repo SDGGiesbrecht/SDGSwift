@@ -14,9 +14,21 @@
 
 extension PatternBindingSyntax {
 
-    internal func normalizedForVariableAPIDeclaration() -> PatternBindingSyntax {
+    internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax) -> PatternBindingSyntax {
+        return SyntaxFactory.makePatternBinding(
+            pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
+            typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
+            initializer: nil,
+            accessor: accessor,
+            trailingComma: nil)
     }
 
     internal func forVariableName() -> PatternBindingSyntax {
+        return SyntaxFactory.makePatternBinding(
+            pattern: pattern.variableBindingForName(),
+            typeAnnotation: typeAnnotation?.forVariableBindingForName(),
+            initializer: nil,
+            accessor: nil,
+            trailingComma: nil)
     }
 }
