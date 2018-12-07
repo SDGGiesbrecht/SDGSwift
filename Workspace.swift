@@ -59,4 +59,4 @@ configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 configuration.testing.prohibitCompilerWarnings = false
 #endif
 
-// #workaround(workspace 0.14.2, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
+// #workaround(workspace version 0.14.2, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)

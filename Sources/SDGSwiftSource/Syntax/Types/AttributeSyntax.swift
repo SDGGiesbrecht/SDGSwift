@@ -55,14 +55,14 @@ extension AttributeSyntax {
             // Objective‐C interface
             return normalized()
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
-            // Xcode interface // @exempt(from: tests) #workaround(Requires property refactor.)
+            // Xcode interface
             return normalized()
 
         case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
             // Implementation details
             return nil
         case "NSCopying", "NSManaged" :
-            // Objective‐C implementation details // @exempt(from: tests) #workaround(Requires property refactor.)
+            // Objective‐C implementation details
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
                 attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
@@ -122,7 +122,7 @@ extension AttributeSyntax {
         case "objc", "nonobjc", "objcMembers":
             return .objectiveC
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
-            // Objective‐C implementation details // @exempt(from: tests) #workaround(Requires property refactor.)
+            // Objective‐C implementation details
             return .interfaceBuilder
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
