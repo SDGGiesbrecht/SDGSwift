@@ -106,39 +106,39 @@ extension Syntax {
 
     // MARK: - API
 
-    internal func apiChildren() -> [APIElement] {
+    internal func apiChildren() -> [APIElementEnumeration] {
         let elements = Array(children.map({ $0.api() }).joined())
         return APIElement.merge(elements: elements)
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
-    public func api() -> [APIElement] {
+    public func api() -> [APIElementEnumeration] {
         switch self {
         case let structure as StructDeclSyntax :
-            return structure.typeAPI.flatMap({ [$0] }) ?? []
+            return structure.typeAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let `class` as ClassDeclSyntax :
-            return `class`.typeAPI.flatMap({ [$0] }) ?? []
+            return `class`.typeAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let enumeration as EnumDeclSyntax :
-            return enumeration.typeAPI.flatMap({ [$0] }) ?? []
+            return enumeration.typeAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let typeAlias as TypealiasDeclSyntax :
-            return typeAlias.typeAPI.flatMap({ [$0] }) ?? []
+            return typeAlias.typeAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let associatedType as AssociatedtypeDeclSyntax :
-            return associatedType.typeAPI.flatMap({ [$0] }) ?? []
+            return associatedType.typeAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
-            return `protocol`.protocolAPI.flatMap({ [$0] }) ?? []
+            return `protocol`.protocolAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let `case` as EnumCaseDeclSyntax :
-            return `case`.caseAPI()
+            return `case`.caseAPI().map({ APIElementEnumeration(element: $0) })
         case let initializer as InitializerDeclSyntax :
-            return initializer.initializerAPI.flatMap({ [$0] }) ?? []
+            return initializer.initializerAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let variable as VariableDeclSyntax :
-            return variable.variableAPI()
+            return variable.variableAPI().map({ APIElementEnumeration(element: $0) })
         case let `subscript` as SubscriptDeclSyntax :
-            return `subscript`.subscriptAPI.flatMap({ [$0] }) ?? []
+            return `subscript`.subscriptAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let function as FunctionDeclSyntax :
-            return function.functionAPI()
+            return function.functionAPI().flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let `extension` as ExtensionDeclSyntax :
-            return `extension`.extensionAPI.flatMap({ [$0] }) ?? []
+            return `extension`.extensionAPI.flatMap({ [APIElementEnumeration(element: $0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
             return conditionallyCompiledSection.conditionalAPI
         default:
@@ -205,7 +205,7 @@ extension Syntax {
         return false
     }
 
-    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
+    internal var unidentifiedConditionallyCompiledChildren: [APIElementEnumeration] {
         return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
     }
 

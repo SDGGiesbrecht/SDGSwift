@@ -17,15 +17,15 @@ import SDGCollections
 
 extension FunctionDeclSyntax : AccessControlled, Attributed, Generic, Member {
 
-    internal func functionAPI() -> [FunctionAPI] {
+    internal func functionAPI() -> FunctionAPI? {
         if ¬isPublic ∨ isUnavailable() {
-            return []
+            return nil
         }
         let name = identifier.text
         if name.hasPrefix("_") {
-            return []
+            return nil
         }
-        return [FunctionAPI(documentation: documentation, declaration: self)]
+        return FunctionAPI(documentation: documentation, declaration: self)
     }
 
     internal func normalizedAPIDeclaration() -> (declaration: FunctionDeclSyntax, constraints: GenericWhereClauseSyntax?) {

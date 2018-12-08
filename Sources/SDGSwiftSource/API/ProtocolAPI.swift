@@ -18,7 +18,7 @@ public class ProtocolAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElementEnumeration]) {
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
         super.init(documentation: documentation, conformances: conformances, children: children)

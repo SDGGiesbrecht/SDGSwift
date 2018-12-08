@@ -25,22 +25,22 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Static Methods
 
-    internal static func merge(elements: [APIElement]) -> [APIElement] {
+    internal static func merge(elements: [APIElementEnumeration]) -> [APIElementEnumeration] {
 
         var extensions: [ExtensionAPI] = []
         var functions: [FunctionAPI] = []
         var types: [TypeAPI] = []
         var protocols: [ProtocolAPI] = []
-        var other: [APIElement] = []
+        var other: [APIElementEnumeration] = []
         for element in elements {
             switch element {
-            case let `extension` as ExtensionAPI :
+            case .extension(let `extension`):
                 extensions.append(`extension`)
-            case let type as TypeAPI :
+            case .type(let type) :
                 types.append(type)
-            case let `protocol` as ProtocolAPI :
+            case .protocol(let `protocol`):
                 protocols.append(`protocol`)
-            case let function as FunctionAPI :
+            case .function(let function):
                 functions.append(function)
             default:
                 other.append(element)
@@ -60,11 +60,11 @@ public class APIElement : Comparable, Hashable {
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)
         }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).map({ APIElementEnumeration(element: $0) }))
 
         functions = FunctionAPI.groupIntoOverloads(functions)
 
-        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
+        return types.map({ APIElementEnumeration(element: $0) }) + protocols.map({ APIElementEnumeration(element: $0) }) + functions.map({ APIElementEnumeration(element: $0) }) + other
     }
 
     // MARK: - Properties

@@ -117,10 +117,10 @@ class SDGSwiftSourceAPITests : TestCase {
 
             // API
             let api = sourceFile.api().sorted()
-            let summary = api.map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+            let summary = api.map({ $0.summary().joined(separator: "\n") }).joined(separator: "\n")
             SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
 
-            let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList }
+            let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
             let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ element in
                 if let declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
 
@@ -136,16 +136,24 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
-                let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
-                let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
-                let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
-                _ = method.documentation!.renderedHTML(localization: "zxx")
+                search: for element in api {
+                    `switch`: switch element {
+                    case .extension(let `extension`):
+                        let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
+                        let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
+                        _ = method.documentation!.renderedHTML(localization: "zxx")
 
-                for localization in InterfaceLocalization.allCases {
-                    let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
+                        for localization in InterfaceLocalization.allCases {
+                            let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
 
-                    let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
-                    SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
+                            let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
+                            SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
+                        }
+
+                        break search
+                    default:
+                        break `switch`
+                    }
                 }
             }
         }

@@ -17,14 +17,14 @@ import SDGCollections
 
 extension IfConfigDeclSyntax {
 
-    internal var conditionalAPI: [APIElement] {
-        var combined: [APIElement: Syntax?] = [:]
-        var previousGroups: [(condition: Syntax, elements: Set<APIElement>)] = []
+    internal var conditionalAPI: [APIElementEnumeration] {
+        var combined: [APIElementEnumeration: Syntax?] = [:]
+        var previousGroups: [(condition: Syntax, elements: Set<APIElementEnumeration>)] = []
 
         for syntaxGroup in clauses {
             let currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? [])
 
-            var apiGroup: (condition: Syntax, elements: Set<APIElement>) = (currentCondition, [])
+            var apiGroup: (condition: Syntax, elements: Set<APIElementEnumeration>) = (currentCondition, [])
             defer { previousGroups.append(apiGroup) }
 
             for apiElement in syntaxGroup.elements.apiChildren() {
@@ -80,7 +80,7 @@ extension IfConfigDeclSyntax {
             }
         }
 
-        var result: [APIElement] = []
+        var result: [APIElementEnumeration] = []
         for element in combined.keys.sorted() {
             let condition: Syntax? = combined[element]!
             element.prependCompilationCondition(condition)

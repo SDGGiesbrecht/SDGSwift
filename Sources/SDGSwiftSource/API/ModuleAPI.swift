@@ -25,9 +25,9 @@ public class ModuleAPI : APIElement {
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
         _declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
 
-        var api: [APIElement] = []
+        var api: [APIElementEnumeration] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
-            try autoreleasepool { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            try autoreleasepool {
                 let source = try SyntaxTreeParser.parse(sourceFile)
                 api += source.api()
             }
@@ -38,21 +38,19 @@ public class ModuleAPI : APIElement {
         super.init(documentation: declaration?.documentation)
 
         for element in api {
-            switch element { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            case let type as TypeAPI :
+            switch element {
+            case .type(let type):
                 types.append(type)
-            case let `protocol` as ProtocolAPI :
+            case .protocol(let `protocol`):
                 protocols.append(`protocol`)
-            case let `extension` as ExtensionAPI :
+            case .extension(let `extension`):
                 `extensions`.append(`extension`)
-            case let function as FunctionAPI :
+            case .function(let function):
                 functions.append(function)
-            case let globalVariable as VariableAPI :
+            case .variable(let globalVariable):
                 globalVariables.append(globalVariable)
-            default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
-                    print("Unidentified API element: \(Swift.type(of: element))")
-                }
+            case .package, .library, .module, .case, .initializer, .subscript, .conformance: // @exempt(from: tests) Invalid in global scope.
+                break
             }
         }
     }

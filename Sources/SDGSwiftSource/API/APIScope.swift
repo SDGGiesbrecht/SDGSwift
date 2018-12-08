@@ -20,35 +20,33 @@ public class APIScope : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElement]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElementEnumeration]) {
         super.init(documentation: documentation)
         self.conformances = conformances
         for element in children {
-            switch element { // @exempt(from: tests) False coverage in Xcode 9.4.1.
-            case let `case` as CaseAPI :
+            switch element {
+            case .case(let `case`):
                 cases.append(`case`)
-            case let subtype as TypeAPI :
+            case .type(let subtype):
                 subtypes.append(subtype)
-            case let initializer as InitializerAPI :
+            case .initializer(let initializer):
                 initializers.append(initializer)
-            case let property as VariableAPI :
+            case .variable(let property) :
                 if property._declaration.typeMemberKeyword ≠ nil {
                     typeProperties.append(property)
                 } else {
                     properties.append(property)
                 }
-            case let `subscript` as SubscriptAPI :
+            case .subscript(let `subscript`):
                 subscripts.append(`subscript`)
-            case let method as FunctionAPI :
+            case .function(let method) :
                 if method._declaration.typeMemberKeyword ≠ nil {
                     typeMethods.append(method)
                 } else {
                     methods.append(method)
                 }
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified API element: \(Swift.type(of: element))")
-                }
+            case .package, .library, .module, .protocol, .extension, .conformance: // @exempt(from: tests) Invalid in nested scope.
+                break
             }
         }
     }

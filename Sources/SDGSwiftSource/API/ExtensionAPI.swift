@@ -18,7 +18,7 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - Initialization
 
-    internal init(type: TypeSyntax, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
+    internal init(type: TypeSyntax, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElementEnumeration]) {
         self.type = type.normalized()
         super.init(documentation: nil, conformances: conformances, children: children)
         self.constraints = constraints?.normalized()
