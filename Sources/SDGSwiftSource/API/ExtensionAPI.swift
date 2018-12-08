@@ -31,7 +31,7 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
     // MARK: - Combining
 
     public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.source() == type.name.source()
+        return self.type.source() == type.genericName.source()
     }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
         return self.type.source() == `protocol`.name.source()
@@ -65,16 +65,12 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public var name: Syntax {
-        return type
-    }
-
     public override var identifierList: Set<String> {
         return scopeIdentifierList
     }
 
     public override var summary: [String] {
-        var result = "(" + name.source() + ")"
+        var result = "(" + genericName.source() + ")"
         if let constraints = self.constraints {
             result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
         }

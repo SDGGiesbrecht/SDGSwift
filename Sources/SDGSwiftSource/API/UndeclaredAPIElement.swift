@@ -13,7 +13,7 @@
  */
 
 internal protocol UndeclaredAPIElement : APIElementProtocol {
-
+    var type: TypeSyntax { get }
 }
 
 extension UndeclaredAPIElement {
@@ -24,5 +24,9 @@ extension UndeclaredAPIElement {
 
     public var possibleDeclaration: Syntax? {
         return nil
+    }
+
+    public var genericName: Syntax {
+        return type
     }
 }

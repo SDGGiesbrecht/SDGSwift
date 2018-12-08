@@ -23,6 +23,7 @@ public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
         self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
+        name = normalizedDeclaration.name()
         super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
@@ -32,10 +33,6 @@ public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
     private let _declaration: InitializerDeclSyntax
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return _declaration.name()
-    }
 
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
@@ -56,4 +53,6 @@ public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
     public var declaration: InitializerDeclSyntax {
         return _declaration.withGenericWhereClause(constraints)
     }
+
+    public let name: InitializerDeclSyntax
 }

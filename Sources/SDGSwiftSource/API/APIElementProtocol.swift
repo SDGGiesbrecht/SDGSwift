@@ -15,7 +15,7 @@
 public protocol APIElementProtocol : Comparable {
     var documentation: DocumentationSyntax? { get }
     var possibleDeclaration: Syntax? { get }
-    var name: Syntax { get }
+    var genericName: Syntax { get }
 }
 
 extension APIElementProtocol {
@@ -23,7 +23,7 @@ extension APIElementProtocol {
     // MARK: - Comparable
 
     internal func comparisonIdentity() -> (String, String) {
-        return (name.source(), possibleDeclaration?.source() ?? "")
+        return (genericName.source(), possibleDeclaration?.source() ?? "")
     }
 
     public static func < (precedingValue: Self, followingValue: Self) -> Bool {

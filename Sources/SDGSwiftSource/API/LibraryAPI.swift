@@ -26,7 +26,9 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        self.declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
+        let declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
+        self.declaration = declaration
+        name = declaration.libraryName()
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
@@ -40,8 +42,8 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
         }
         self.modules = modules
 
-        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
-        self.documentation = declaration?.documentation
+        let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
+        self.documentation = manifestDeclaration?.documentation
         super.init()
     }
 
@@ -50,10 +52,6 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
     public let modules: [ModuleAPI]
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return declaration.libraryName()
-    }
 
     public override var identifierList: Set<String> {
         return modules.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
@@ -71,4 +69,6 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: FunctionCallExprSyntax
+
+    public let name: TokenSyntax
 }

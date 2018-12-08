@@ -23,6 +23,7 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
         self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
+        name = normalizedDeclaration.name()
         super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
@@ -81,10 +82,6 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public var name: Syntax {
-        return _declaration.name()
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
     }
@@ -118,4 +115,6 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
     public var declaration: FunctionDeclSyntax {
         return _declaration.withGenericWhereClause(constraints)
     }
+
+    public let name: FunctionDeclSyntax
 }

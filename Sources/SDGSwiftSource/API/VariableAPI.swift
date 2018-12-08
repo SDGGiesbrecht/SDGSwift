@@ -18,15 +18,13 @@ public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
 
     internal init(documentation: DocumentationSyntax?, declaration: VariableDeclSyntax) {
         self.documentation = documentation
-        self.declaration = declaration.normalizedAPIDeclaration()
+        let declaration = declaration.normalizedAPIDeclaration()
+        self.declaration = declaration
+        self.name = declaration.name()
         super.init()
     }
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return declaration.name()
-    }
 
     public override var identifierList: Set<String> {
         return [name.source()]
@@ -45,4 +43,6 @@ public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: VariableDeclSyntax
+
+    public let name: VariableDeclSyntax
 }

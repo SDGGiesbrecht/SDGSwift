@@ -20,15 +20,13 @@ public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
 
     internal init(documentation: DocumentationSyntax?, declaration: EnumCaseDeclSyntax) {
         self.documentation = documentation
-        self.declaration = declaration.normalizedAPIDeclaration()
+        let _declaration = declaration.normalizedAPIDeclaration()
+        self.declaration = _declaration
+        name = _declaration.name()
         super.init()
     }
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return declaration.name()
-    }
 
     public override var identifierList: Set<String> {
         return [declaration.elements.first!.identifier.text]
@@ -47,4 +45,5 @@ public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: EnumCaseDeclSyntax
+    public let name: EnumCaseDeclSyntax
 }

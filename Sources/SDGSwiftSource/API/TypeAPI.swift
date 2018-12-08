@@ -24,6 +24,7 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
         self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
+        genericName = normalizedDeclaration.name()
         super.init(conformances: conformances, children: children)
         constraints = constraints.merged(with: normalizedConstraints)
     }
@@ -34,16 +35,12 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public var name: Syntax {
-        return _declaration.name()
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList() ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {
-        var result = name.source() + " • " + genericDeclaration.source()
+        var result = genericName.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }
@@ -57,4 +54,6 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
     public var genericDeclaration: Syntax {
         return _declaration.withGenericWhereClause(constraints)
     }
+
+    public let genericName: Syntax
 }

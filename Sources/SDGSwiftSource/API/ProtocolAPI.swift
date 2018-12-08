@@ -22,6 +22,7 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
         self.documentation = documentation
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
+        name = normalized.declaration.name()
         super.init(conformances: conformances, children: children)
         constraints = constraints.merged(with: normalized.constraints)
 
@@ -35,10 +36,6 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
     private let _declaration: ProtocolDeclSyntax
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return _declaration.name()
-    }
 
     public override var identifierList: Set<String> {
         return Set([_declaration.identifier.text]) ∪ scopeIdentifierList
@@ -59,4 +56,6 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
     public var declaration: ProtocolDeclSyntax {
         return _declaration.withGenericWhereClause(constraints)
     }
+
+    public let name: ProtocolDeclSyntax
 }

@@ -26,7 +26,9 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        self.declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        self.declaration = declaration
+        name = declaration.packageName()
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
@@ -51,8 +53,8 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
         self.modules = modules
 
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
-        let declaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        self.documentation = declaration?.documentation
+        let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
+        self.documentation = manifestDeclaration?.documentation
         super.init()
     }
 
@@ -62,10 +64,6 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
     public let modules: [ModuleAPI]
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return declaration.packageName()
-    }
 
     public override var identifierList: Set<String> {
         return libraries.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
@@ -84,4 +82,6 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: FunctionCallExprSyntax
+
+    public let name: TokenSyntax
 }

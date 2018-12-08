@@ -23,7 +23,9 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        self.declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
+        let declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
+        self.declaration = declaration
+        name = declaration.moduleName()
 
         var api: [APIElementKind] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -34,8 +36,8 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
         }
         api = APIElement.merge(elements: api)
 
-        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        self.documentation = declaration?.documentation
+        let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
+        self.documentation = manifestDeclaration?.documentation
         super.init()
 
         for element in api {
@@ -121,10 +123,6 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public var name: Syntax {
-        return declaration.moduleName()
-    }
-
     public override var identifierList: Set<String> {
         return children.map({ $0.identifierList }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
@@ -140,4 +138,6 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: FunctionCallExprSyntax
+
+    public let name: TokenSyntax
 }

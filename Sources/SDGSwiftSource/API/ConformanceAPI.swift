@@ -23,16 +23,12 @@ public class ConformanceAPI : APIElement, UndeclaredAPIElement {
 
     // MARK: - Properties
 
-    private let type: TypeSyntax
+    internal let type: TypeSyntax
 
     // MARK: - APIElement
 
-    public var name: Syntax {
-        return type
-    }
-
     public override var summary: [String] {
-        var result = name.source()
+        var result = genericName.source()
         if let constraints = self.constraints {
             result += constraints.source()
         }

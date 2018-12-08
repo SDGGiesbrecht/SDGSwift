@@ -23,6 +23,7 @@ public class SubscriptAPI : APIElement, UniquelyDeclaredAPIElement {
         self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
+        name = normalizedDeclaration.name()
         super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
@@ -32,10 +33,6 @@ public class SubscriptAPI : APIElement, UniquelyDeclaredAPIElement {
     private let _declaration: SubscriptDeclSyntax
 
     // MARK: - APIElement
-
-    public var name: Syntax {
-        return _declaration.name()
-    }
 
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
@@ -56,4 +53,6 @@ public class SubscriptAPI : APIElement, UniquelyDeclaredAPIElement {
     public var declaration: SubscriptDeclSyntax {
         return _declaration.withGenericWhereClause(constraints)
     }
+
+    public let name: SubscriptDeclSyntax
 }

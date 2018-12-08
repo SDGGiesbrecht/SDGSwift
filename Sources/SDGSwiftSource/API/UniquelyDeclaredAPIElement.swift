@@ -14,12 +14,18 @@
 
 internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
     associatedtype Declaration : Syntax
+    associatedtype Name : Syntax
     var declaration: Declaration { get }
+    var name: Name { get }
 }
 
 extension UniquelyDeclaredAPIElement {
 
     public var genericDeclaration: Syntax {
         return declaration
+    }
+
+    public var genericName: Syntax {
+        return name
     }
 }
