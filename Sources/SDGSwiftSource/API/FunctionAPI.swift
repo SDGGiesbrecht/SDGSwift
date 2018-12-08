@@ -80,8 +80,8 @@ public class FunctionAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.name().source()
+    public override var name: Syntax {
+        return _declaration.name()
     }
 
     public override var declaration: Syntax {
@@ -101,7 +101,7 @@ public class FunctionAPI : APIElement {
                 result += "(required) "
             }
         }
-        result += name + " • " + declaration.source()
+        result += name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         var resultSummary = [result]
         for overload in overloads {

@@ -52,8 +52,8 @@ public class LibraryAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.libraryName().source()
+    public override var name: Syntax {
+        return _declaration.libraryName()
     }
 
     public override var declaration: Syntax {
@@ -65,7 +65,7 @@ public class LibraryAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration.source()]
-            + modules.map({ $0.name.prepending(" ") })
+        return [name.source() + " • " + declaration.source()]
+            + modules.map({ $0.name.source().prepending(" ") })
     }
 }

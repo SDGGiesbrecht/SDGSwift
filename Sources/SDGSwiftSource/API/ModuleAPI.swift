@@ -124,8 +124,8 @@ public class ModuleAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.moduleName().source()
+    public override var name: Syntax {
+        return _declaration.moduleName()
     }
 
     public override var declaration: Syntax {
@@ -133,10 +133,10 @@ public class ModuleAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return children.map({ $0.identifierList }).reduce(into: Set([name]), { $0 ∪= $1 })
+        return children.map({ $0.identifierList }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        return [name.source() + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
 }

@@ -31,10 +31,10 @@ public class ExtensionAPI : APIScope {
     // MARK: - Combining
 
     public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.source() == type.name
+        return self.type.source() == type.name.source()
     }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
-        return self.type.source() == `protocol`.name
+        return self.type.source() == `protocol`.name.source()
     }
     public func extendsSameType(as other: ExtensionAPI) -> Bool {
         return type.source() == other.type.source()
@@ -65,8 +65,8 @@ public class ExtensionAPI : APIScope {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return type.source()
+    public override var name: Syntax {
+        return type
     }
 
     public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
@@ -78,7 +78,7 @@ public class ExtensionAPI : APIScope {
     }
 
     public override var summary: [String] {
-        var result = "(" + name + ")"
+        var result = "(" + name.source() + ")"
         if let constraints = self.constraints {
             result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
         }

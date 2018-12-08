@@ -1,8 +1,8 @@
 TypeScope • open class TypeScope
  allModifiers() • open class static mutating func allModifiers()
  Superclass
-doSomething(_:) • func doSomething(_ unnamedParameter: Int)
- func doSomething(_ unnamedParameter: String)
+doSomething(_:) • func doSomething(_ unnamedParameter: String)
+ func doSomething(_ unnamedParameter: Int)
 function(withInOutParameter:) • func function(withInOutParameter: inout Bool)
 functionWith(defaultParameterOne:defaultParameterTwo:) • func functionWith(defaultParameterOne: Bool = default, defaultParameterTwo: Bool = default)
 nonstandardGenerics(_:) • func nonstandardGenerics<T>(_ parameter: T) where T : Equatable

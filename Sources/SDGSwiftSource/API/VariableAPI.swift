@@ -27,8 +27,8 @@ public class VariableAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.name().source()
+    public override var name: Syntax {
+        return _declaration.name()
     }
 
     public override var declaration: Syntax {
@@ -36,11 +36,11 @@ public class VariableAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return [name]
+        return [name.source()]
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration.source()
+        var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
     }

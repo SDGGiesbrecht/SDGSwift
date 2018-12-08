@@ -64,8 +64,8 @@ public class PackageAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.packageName().source()
+    public override var name: Syntax {
+        return _declaration.packageName()
     }
 
     public override var declaration: Syntax {
@@ -77,7 +77,7 @@ public class PackageAPI : APIElement {
     }
 
     public override var summary: [String] {
-        return [name + " • " + declaration.source()]
+        return [name.source() + " • " + declaration.source()]
             + libraries.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
             + modules.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }

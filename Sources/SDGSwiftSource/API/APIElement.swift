@@ -69,7 +69,7 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Properties
 
-    public var name: String {
+    public var name: Syntax {
         primitiveMethod()
     }
 
@@ -134,19 +134,19 @@ public class APIElement : Comparable, Hashable {
         if precedingValue.name == followingValue.name {
             return (precedingValue.declaration?.source() ?? "") < (followingValue.declaration?.source() ?? "") // @exempt(from: tests) Empty declarations should never occur.
         } else {
-            return precedingValue.name < followingValue.name
+            return precedingValue.name.source() < followingValue.name.source()
         }
     }
 
     // MARK: - Equatable
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
-        return (precedingValue.name, precedingValue.declaration?.source()) == (followingValue.name, followingValue.declaration?.source())
+        return (precedingValue.name.source(), precedingValue.declaration?.source()) == (followingValue.name.source(), followingValue.declaration?.source())
     }
 
     // MARK: - Hashable
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(declaration?.source() ?? name)
+        hasher.combine(declaration?.source() ?? name.source())
     }
 }

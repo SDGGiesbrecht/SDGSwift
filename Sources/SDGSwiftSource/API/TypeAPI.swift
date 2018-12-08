@@ -33,8 +33,8 @@ public class TypeAPI : APIScope {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return _declaration.name().source()
+    public override var name: Syntax {
+        return _declaration.name()
     }
 
     public override var declaration: Syntax {
@@ -46,7 +46,7 @@ public class TypeAPI : APIScope {
     }
 
     public override var summary: [String] {
-        var result = name + " • " + declaration.source()
+        var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }

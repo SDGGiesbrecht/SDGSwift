@@ -27,8 +27,8 @@ public class ConformanceAPI : APIElement {
 
     // MARK: - APIElement
 
-    public override var name: String {
-        return type.source()
+    public override var name: Syntax {
+        return type
     }
 
     public override var declaration: Syntax? {
@@ -36,7 +36,7 @@ public class ConformanceAPI : APIElement {
     }
 
     public override var summary: [String] {
-        var result = name
+        var result = name.source()
         if let constraints = self.constraints {
             result += constraints.source()
         }

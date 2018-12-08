@@ -137,8 +137,8 @@ class SDGSwiftSourceAPITests : TestCase {
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
                 let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
-                let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
-                let methods = [method, `extension`.methods.first(where: { $0.name.hasPrefix("withSeparateParameters") })!]
+                let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
+                let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
                 _ = method.documentation!.renderedHTML(localization: "zxx")
 
                 for localization in InterfaceLocalization.allCases {
