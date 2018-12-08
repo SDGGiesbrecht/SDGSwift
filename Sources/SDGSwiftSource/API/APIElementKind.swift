@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-public enum APIElementEnumeration : Comparable, Hashable {
+public enum APIElementKind : Comparable, Hashable {
 
     // MARK: - Initialization
 
@@ -105,8 +105,8 @@ public enum APIElementEnumeration : Comparable, Hashable {
         return element.compilationConditions
     }
 
-    public var children: AnyBidirectionalCollection<APIElementEnumeration> {
-        return AnyBidirectionalCollection(element.children.map({ APIElementEnumeration(element: $0) }))
+    public var children: AnyBidirectionalCollection<APIElementKind> {
+        return AnyBidirectionalCollection(element.children.map({ APIElementKind(element: $0) }))
     }
 
     public func identifierList() -> Set<String> {
@@ -123,7 +123,7 @@ public enum APIElementEnumeration : Comparable, Hashable {
 
     // MARK: - Comparable
 
-    public static func < (precedingValue: APIElementEnumeration, followingValue: APIElementEnumeration) -> Bool {
+    public static func < (precedingValue: APIElementKind, followingValue: APIElementKind) -> Bool {
         return precedingValue.element < followingValue.element
     }
 }

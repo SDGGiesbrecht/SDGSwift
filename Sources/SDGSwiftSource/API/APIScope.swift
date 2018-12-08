@@ -20,7 +20,7 @@ public class APIScope : APIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElementEnumeration]) {
+    internal init(documentation: DocumentationSyntax?, conformances: [ConformanceAPI], children: [APIElementKind]) {
         super.init(documentation: documentation)
         self.conformances = conformances
         for element in children {

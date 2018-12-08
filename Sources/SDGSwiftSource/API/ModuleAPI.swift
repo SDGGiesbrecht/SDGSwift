@@ -25,7 +25,7 @@ public class ModuleAPI : APIElement {
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
         _declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
 
-        var api: [APIElementEnumeration] = []
+        var api: [APIElementKind] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             try autoreleasepool {
                 let source = try SyntaxTreeParser.parse(sourceFile)

@@ -14,7 +14,7 @@
 
 extension UnknownDeclSyntax {
 
-    internal func unknownAPI() -> [APIElementEnumeration] {
+    internal func unknownAPI() -> [APIElementKind] {
         var replacement: Syntax?
         if children.contains(where: { ($0 as? TokenSyntax)?.tokenKind == .funcKeyword }) {
             replacement = SyntaxFactory.makeFunctionDecl(

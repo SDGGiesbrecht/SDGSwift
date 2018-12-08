@@ -1,5 +1,5 @@
 /*
- APIElementEnumeration.swift
+ APIElementStructure.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,11 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSource
+public struct APIElementStructure {
 
-extension APIElementKind {
-
-    var flattenedTree: [APIElementKind] {
-        return [self] + children.map({ $0.flattenedTree }).joined()
-    }
 }
