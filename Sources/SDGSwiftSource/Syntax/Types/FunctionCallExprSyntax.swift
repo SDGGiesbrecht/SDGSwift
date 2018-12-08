@@ -16,7 +16,7 @@ import SDGLocalization
 
 extension FunctionCallExprSyntax {
 
-    internal static func normalizedPackageDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+    internal static func normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
         return normalizedManifest(
             calledExpression:  SyntaxFactory.makeIdentifierExpr(
                 identifier: SyntaxFactory.makeToken(.identifier("Package")),
@@ -24,15 +24,15 @@ extension FunctionCallExprSyntax {
             name: name)
     }
 
-    internal static func normalizedLibraryDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+    internal static func normalizedLibraryDeclaration(name: String) -> FunctionCallExprSyntax {
         return normalizedManifest(memberEntry: "library", name: name)
     }
 
-    internal static func normalizedModuleDeclaration(name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+    internal static func normalizedModuleDeclaration(name: String) -> FunctionCallExprSyntax {
         return normalizedManifest(memberEntry: "target", name: name)
     }
 
-    private static func normalizedManifest(memberEntry entry: String, name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
+    private static func normalizedManifest(memberEntry entry: String, name: String) -> FunctionCallExprSyntax {
         return normalizedManifest(
             calledExpression: SyntaxFactory.makeMemberAccessExpr(
                 base: SyntaxFactory.makeBlankUnknownExpr(),
@@ -42,22 +42,37 @@ extension FunctionCallExprSyntax {
             name: name)
     }
 
-    private static func normalizedManifest(calledExpression: ExprSyntax, name: String) -> (declaration: FunctionCallExprSyntax, name: String) {
-        let normalizedName = name.decomposedStringWithCanonicalMapping
-
-        let declaration = SyntaxFactory.makeFunctionCallExpr(
+    private static func normalizedManifest(calledExpression: ExprSyntax, name: String) -> FunctionCallExprSyntax {
+        return SyntaxFactory.makeFunctionCallExpr(
             calledExpression: calledExpression,
             leftParen: SyntaxFactory.makeToken(.leftParen),
             argumentList: SyntaxFactory.makeFunctionCallArgumentList([
                 SyntaxFactory.makeFunctionCallArgument(
                     label: SyntaxFactory.makeToken(.identifier("name")),
                     colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-                    expression: SyntaxFactory.makeStringLiteralExpr(normalizedName),
+                    expression: SyntaxFactory.makeStringLiteralExpr(name.decomposedStringWithCanonicalMapping),
                     trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen),
             trailingClosure: nil)
+    }
 
-        return (declaration, normalizedName)
+    internal func packageName() -> TokenSyntax {
+        return manifestEntryName()
+    }
+
+    internal func libraryName() -> TokenSyntax {
+        return manifestEntryName()
+    }
+
+    internal func moduleName() -> TokenSyntax {
+        return manifestEntryName()
+    }
+
+    private func manifestEntryName() -> TokenSyntax {
+        guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax else {
+            unreachable()
+        }
+        return literal.stringLiteral
     }
 }

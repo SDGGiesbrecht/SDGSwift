@@ -26,9 +26,7 @@ public class PackageAPI : APIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let (_declaration, _name) = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
-        self._declaration = _declaration
-        self._name = _name
+        _declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
@@ -59,7 +57,6 @@ public class PackageAPI : APIElement {
 
     // MARK: - Properties
 
-    private let _name: String
     private let _declaration: FunctionCallExprSyntax
 
     public let libraries: [LibraryAPI]
@@ -68,7 +65,7 @@ public class PackageAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return _declaration.packageName().source()
     }
 
     public override var declaration: Syntax {

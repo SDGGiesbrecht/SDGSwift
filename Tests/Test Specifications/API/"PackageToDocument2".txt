@@ -1,0 +1,6 @@
+"PackageToDocument2" • Package(name: "PackageToDocument2")
+ "PrimaryProduct" • .library(name: "PrimaryProduct")
+  "PrimaryModule"
+ "PrimaryModule" • .target(name: "PrimaryModule")
+  (Bool)
+   extensionProperty • var extensionProperty: Bool { get }

@@ -23,9 +23,7 @@ public class ModuleAPI : APIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        let (_declaration, _name) = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
-        self._declaration = _declaration
-        self._name = _name
+        _declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -36,7 +34,7 @@ public class ModuleAPI : APIElement {
         }
         api = APIElement.merge(elements: api)
 
-        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(_name)\u{22}")?.parent
+        let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
         super.init(documentation: declaration?.documentation)
 
         for element in api {
@@ -61,7 +59,6 @@ public class ModuleAPI : APIElement {
 
     // MARK: - Properties
 
-    private let _name: String
     private let _declaration: FunctionCallExprSyntax
 
     private var _types: [TypeAPI] = []
@@ -128,7 +125,7 @@ public class ModuleAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return _declaration.moduleName().source()
     }
 
     public override var declaration: Syntax {
@@ -136,7 +133,7 @@ public class ModuleAPI : APIElement {
     }
 
     public override var identifierList: Set<String> {
-        return children.map({ $0.identifierList }).reduce(into: Set([_name]), { $0 ∪= $1 })
+        return children.map({ $0.identifierList }).reduce(into: Set([name]), { $0 ∪= $1 })
     }
 
     public override var summary: [String] {

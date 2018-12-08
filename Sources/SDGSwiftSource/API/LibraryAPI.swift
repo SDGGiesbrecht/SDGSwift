@@ -26,29 +26,26 @@ public class LibraryAPI : APIElement {
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let (_declaration, _name) = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
-        self._declaration = _declaration
-        self._name = _name
+        _declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
-            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Parsing “" + StrictString(module.name) + "”..."
                 }
             }).resolved()))
-            modules.append(try ModuleAPI(module: module, manifest: manifest)) // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            modules.append(try ModuleAPI(module: module, manifest: manifest))
         }
         self.modules = modules
 
-        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(_name)\u{22}")?.parent
+        let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         super.init(documentation: declaration?.documentation)
     }
 
     // MARK: - Properties
 
-    private let _name: String
     private let _declaration: FunctionCallExprSyntax
 
     public let modules: [ModuleAPI]
@@ -56,7 +53,7 @@ public class LibraryAPI : APIElement {
     // MARK: - APIElement
 
     public override var name: String {
-        return _name
+        return _declaration.libraryName().source()
     }
 
     public override var declaration: Syntax {
