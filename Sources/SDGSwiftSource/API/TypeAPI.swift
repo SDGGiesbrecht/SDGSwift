@@ -38,16 +38,12 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
         return _declaration.name()
     }
 
-    public var declaration: Syntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList() ∪ scopeIdentifierList
     }
 
     public override var summary: [String] {
-        var result = name.source() + " • " + declaration.source()
+        var result = name.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }
@@ -55,4 +51,10 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public var genericDeclaration: Syntax {
+        return _declaration.withGenericWhereClause(constraints)
+    }
 }

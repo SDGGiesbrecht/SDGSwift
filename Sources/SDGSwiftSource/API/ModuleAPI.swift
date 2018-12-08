@@ -17,13 +17,13 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public class ModuleAPI : APIElement, DeclaredAPIElement {
+public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        _declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
+        self.declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
 
         var api: [APIElementKind] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -57,8 +57,6 @@ public class ModuleAPI : APIElement, DeclaredAPIElement {
     }
 
     // MARK: - Properties
-
-    private let _declaration: FunctionCallExprSyntax
 
     private var _types: [TypeAPI] = []
     public var types: [TypeAPI] {
@@ -124,11 +122,7 @@ public class ModuleAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElement
 
     public var name: Syntax {
-        return _declaration.moduleName()
-    }
-
-    public var declaration: Syntax {
-        return _declaration
+        return declaration.moduleName()
     }
 
     public override var identifierList: Set<String> {
@@ -142,4 +136,8 @@ public class ModuleAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public let declaration: FunctionCallExprSyntax
 }

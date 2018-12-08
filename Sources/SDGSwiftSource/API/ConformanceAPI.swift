@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class ConformanceAPI : APIElement, APIElementProtocol {
+public class ConformanceAPI : APIElement, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -31,10 +31,6 @@ public class ConformanceAPI : APIElement, APIElementProtocol {
         return type
     }
 
-    public var declaration: Syntax? {
-        return nil
-    }
-
     public override var summary: [String] {
         var result = name.source()
         if let constraints = self.constraints {
@@ -42,11 +38,5 @@ public class ConformanceAPI : APIElement, APIElementProtocol {
         }
         appendCompilationConditions(to: &result)
         return [result]
-    }
-
-    // MARK: - APIElementProtocol
-
-    public var documentation: DocumentationSyntax? {
-        return nil
     }
 }

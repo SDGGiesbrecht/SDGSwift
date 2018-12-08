@@ -14,7 +14,7 @@
 
 import SDGControlFlow
 
-public class ExtensionAPI : APIScope, APIElementProtocol {
+public class ExtensionAPI : APIScope, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -69,10 +69,6 @@ public class ExtensionAPI : APIScope, APIElementProtocol {
         return type
     }
 
-    public var declaration: Syntax? { // @exempt(from: tests) Should never occur.
-        return nil
-    }
-
     public override var identifierList: Set<String> {
         return scopeIdentifierList
     }
@@ -84,11 +80,5 @@ public class ExtensionAPI : APIScope, APIElementProtocol {
         }
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
-    }
-
-    // MARK: - APIElementProtocol
-
-    public var documentation: DocumentationSyntax? {
-        return nil
     }
 }

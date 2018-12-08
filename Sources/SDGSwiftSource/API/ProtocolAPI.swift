@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProtocolAPI : APIScope, DeclaredAPIElement {
+public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -40,10 +40,6 @@ public class ProtocolAPI : APIScope, DeclaredAPIElement {
         return _declaration.name()
     }
 
-    public var declaration: Syntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
-
     public override var identifierList: Set<String> {
         return Set([_declaration.identifier.text]) ∪ scopeIdentifierList
     }
@@ -57,4 +53,10 @@ public class ProtocolAPI : APIScope, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public var declaration: ProtocolDeclSyntax {
+        return _declaration.withGenericWhereClause(constraints)
+    }
 }

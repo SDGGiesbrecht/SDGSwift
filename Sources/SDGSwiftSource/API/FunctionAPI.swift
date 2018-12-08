@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class FunctionAPI : APIElement, DeclaredAPIElement {
+public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -85,10 +85,6 @@ public class FunctionAPI : APIElement, DeclaredAPIElement {
         return _declaration.name()
     }
 
-    public var declaration: Syntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
     }
@@ -116,4 +112,10 @@ public class FunctionAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public var declaration: FunctionDeclSyntax {
+        return _declaration.withGenericWhereClause(constraints)
+    }
 }

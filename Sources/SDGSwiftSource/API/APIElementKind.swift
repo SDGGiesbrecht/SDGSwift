@@ -106,11 +106,11 @@ public enum APIElementKind : Comparable, Hashable {
         case .module(let module):
             return module.declaration
         case .type(let type):
-            return type.declaration
+            return type.genericDeclaration
         case .protocol(let `protocol`):
             return `protocol`.declaration
         case .extension(let `extension`):
-            return `extension`.declaration
+            return `extension`.possibleDeclaration
         case .case(let `case`):
             return `case`.declaration
         case .initializer(let initializer):
@@ -122,7 +122,7 @@ public enum APIElementKind : Comparable, Hashable {
         case .function(let function):
             return function.declaration
         case .conformance(let conformance):
-            return conformance.declaration
+            return conformance.possibleDeclaration
         }
     }
 

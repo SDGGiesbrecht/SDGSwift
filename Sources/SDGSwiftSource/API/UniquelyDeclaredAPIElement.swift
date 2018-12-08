@@ -1,5 +1,5 @@
 /*
- DeclaredAPIElement.swift
+ UniquelyDeclaredAPIElement.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,13 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol DeclaredAPIElement : APIElementProtocol {
-    var genericDeclaration: Syntax { get }
+internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
+    associatedtype Declaration : Syntax
+    var declaration: Declaration { get }
 }
 
-extension DeclaredAPIElement {
+extension UniquelyDeclaredAPIElement {
 
-    public var possibleDeclaration: Syntax? {
-        return genericDeclaration
+    public var genericDeclaration: Syntax {
+        return declaration
     }
 }

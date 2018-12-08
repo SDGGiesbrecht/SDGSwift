@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public class PackageAPI : APIElement, DeclaredAPIElement {
+public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -26,7 +26,7 @@ public class PackageAPI : APIElement, DeclaredAPIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        _declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        self.declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
@@ -58,19 +58,13 @@ public class PackageAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Properties
 
-    private let _declaration: FunctionCallExprSyntax
-
     public let libraries: [LibraryAPI]
     public let modules: [ModuleAPI]
 
     // MARK: - APIElement
 
     public var name: Syntax {
-        return _declaration.packageName()
-    }
-
-    public var declaration: Syntax {
-        return _declaration
+        return declaration.packageName()
     }
 
     public override var identifierList: Set<String> {
@@ -86,4 +80,8 @@ public class PackageAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public let declaration: FunctionCallExprSyntax
 }

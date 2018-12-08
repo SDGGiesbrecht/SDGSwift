@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class InitializerAPI : APIElement, DeclaredAPIElement {
+public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -37,10 +37,6 @@ public class InitializerAPI : APIElement, DeclaredAPIElement {
         return _declaration.name()
     }
 
-    public var declaration: Syntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
     }
@@ -54,4 +50,10 @@ public class InitializerAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public var declaration: InitializerDeclSyntax {
+        return _declaration.withGenericWhereClause(constraints)
+    }
 }

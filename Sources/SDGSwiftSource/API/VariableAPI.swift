@@ -12,28 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement, DeclaredAPIElement {
+public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: VariableDeclSyntax) {
         self.documentation = documentation
-        _declaration = declaration.normalizedAPIDeclaration()
+        self.declaration = declaration.normalizedAPIDeclaration()
         super.init()
     }
-
-    // MARK: - Properties
-
-    internal let _declaration: VariableDeclSyntax
 
     // MARK: - APIElement
 
     public var name: Syntax {
-        return _declaration.name()
-    }
-
-    public var declaration: Syntax {
-        return _declaration
+        return declaration.name()
     }
 
     public override var identifierList: Set<String> {
@@ -49,4 +41,8 @@ public class VariableAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public let declaration: VariableDeclSyntax
 }

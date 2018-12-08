@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class SubscriptAPI : APIElement, DeclaredAPIElement {
+public class SubscriptAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -37,10 +37,6 @@ public class SubscriptAPI : APIElement, DeclaredAPIElement {
         return _declaration.name()
     }
 
-    public var declaration: Syntax {
-        return _declaration
-    }
-
     public override var identifierList: Set<String> {
         return _declaration.identifierList()
     }
@@ -54,4 +50,10 @@ public class SubscriptAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public var declaration: SubscriptDeclSyntax {
+        return _declaration.withGenericWhereClause(constraints)
+    }
 }

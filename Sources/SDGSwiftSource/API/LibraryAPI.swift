@@ -21,12 +21,12 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public class LibraryAPI : APIElement, DeclaredAPIElement {
+public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        _declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
+        self.declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
@@ -47,18 +47,12 @@ public class LibraryAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Properties
 
-    private let _declaration: FunctionCallExprSyntax
-
     public let modules: [ModuleAPI]
 
     // MARK: - APIElement
 
     public var name: Syntax {
-        return _declaration.libraryName()
-    }
-
-    public var declaration: Syntax {
-        return _declaration
+        return declaration.libraryName()
     }
 
     public override var identifierList: Set<String> {
@@ -73,4 +67,8 @@ public class LibraryAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public let declaration: FunctionCallExprSyntax
 }

@@ -14,32 +14,24 @@
 
 import SDGLogic
 
-public class CaseAPI : APIElement, DeclaredAPIElement {
+public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: EnumCaseDeclSyntax) {
         self.documentation = documentation
-        _declaration = declaration.normalizedAPIDeclaration()
+        self.declaration = declaration.normalizedAPIDeclaration()
         super.init()
     }
-
-    // MARK: - Properties
-
-    private let _declaration: EnumCaseDeclSyntax
 
     // MARK: - APIElement
 
     public var name: Syntax {
-        return _declaration.name()
-    }
-
-    public var declaration: Syntax {
-        return _declaration
+        return declaration.name()
     }
 
     public override var identifierList: Set<String> {
-        return [_declaration.elements.first!.identifier.text]
+        return [declaration.elements.first!.identifier.text]
     }
 
     public override var summary: [String] {
@@ -51,4 +43,8 @@ public class CaseAPI : APIElement, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    // MARK: - DeclaredAPIElement
+
+    public let declaration: EnumCaseDeclSyntax
 }
