@@ -27,11 +27,11 @@ public class ConformanceAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return type
     }
 
-    public override var declaration: Syntax? {
+    public var declaration: Syntax? {
         return nil
     }
 

@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public class PackageAPI : APIElement, APIElementProtocol {
+public class PackageAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -65,11 +65,11 @@ public class PackageAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.packageName()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration
     }
 

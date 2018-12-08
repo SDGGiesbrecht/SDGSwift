@@ -21,7 +21,7 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public class LibraryAPI : APIElement, APIElementProtocol {
+public class LibraryAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -53,11 +53,11 @@ public class LibraryAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.libraryName()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration
     }
 

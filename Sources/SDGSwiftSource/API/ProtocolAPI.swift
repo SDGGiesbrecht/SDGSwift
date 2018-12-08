@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProtocolAPI : APIScope, APIElementProtocol {
+public class ProtocolAPI : APIScope, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -36,11 +36,11 @@ public class ProtocolAPI : APIScope, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.name()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration.withGenericWhereClause(constraints)
     }
 

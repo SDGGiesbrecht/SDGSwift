@@ -65,11 +65,11 @@ public class ExtensionAPI : APIScope, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return type
     }
 
-    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
+    public var declaration: Syntax? { // @exempt(from: tests) Should never occur.
         return nil
     }
 

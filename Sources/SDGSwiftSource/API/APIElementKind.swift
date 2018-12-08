@@ -98,11 +98,65 @@ public enum APIElementKind : Comparable, Hashable {
     // MARK: - Methods
 
     public var declaration: Syntax? {
-        return element.declaration
+        switch self {
+        case .package(let package):
+            return package.declaration
+        case .library(let library):
+            return library.declaration
+        case .module(let module):
+            return module.declaration
+        case .type(let type):
+            return type.declaration
+        case .protocol(let `protocol`):
+            return `protocol`.declaration
+        case .extension(let `extension`):
+            return `extension`.declaration
+        case .case(let `case`):
+            return `case`.declaration
+        case .initializer(let initializer):
+            return initializer.declaration
+        case .variable(let variable):
+            return variable.declaration
+        case .subscript(let `subscript`):
+            return `subscript`.declaration
+        case .function(let function):
+            return function.declaration
+        case .conformance(let conformance):
+            return conformance.declaration
+        }
     }
 
     public var compilationConditions: Syntax? {
         return element.compilationConditions
+    }
+
+    public var name: Syntax {
+        switch self {
+        case .package(let package):
+            return package.name
+        case .library(let library):
+            return library.name
+        case .module(let module):
+            return module.name
+        case .type(let type):
+            return type.name
+        case .protocol(let `protocol`):
+            return `protocol`.name
+        case .extension(let `extension`):
+            return `extension`.name
+        case .case(let `case`):
+            return `case`.name
+        case .initializer(let initializer):
+            return initializer.name
+        case .variable(let variable):
+            return variable.name
+        case .subscript(let `subscript`):
+            return `subscript`.name
+        case .function(let function):
+            return function.name
+        case .conformance(let conformance):
+            return conformance.name
+        }
     }
 
     public var children: AnyBidirectionalCollection<APIElementKind> {
@@ -123,7 +177,48 @@ public enum APIElementKind : Comparable, Hashable {
 
     // MARK: - Comparable
 
+    internal func comparisonIdentity() -> (String, String) {
+        switch self {
+        case .package(let package):
+            return package.comparisonIdentity()
+        case .library(let library):
+            return library.comparisonIdentity()
+        case .module(let module):
+            return module.comparisonIdentity()
+        case .type(let type):
+            return type.comparisonIdentity()
+        case .protocol(let `protocol`):
+            return `protocol`.comparisonIdentity()
+        case .extension(let `extension`):
+            return `extension`.comparisonIdentity()
+        case .case(let `case`):
+            return `case`.comparisonIdentity()
+        case .initializer(let initializer):
+            return initializer.comparisonIdentity()
+        case .variable(let variable):
+            return variable.comparisonIdentity()
+        case .subscript(let `subscript`):
+            return `subscript`.comparisonIdentity()
+        case .function(let function):
+            return function.comparisonIdentity()
+        case .conformance(let conformance):
+            return conformance.comparisonIdentity()
+        }
+    }
+
     public static func < (precedingValue: APIElementKind, followingValue: APIElementKind) -> Bool {
-        return precedingValue.element < followingValue.element
+        return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
+    }
+
+    // MARK: - Equatable
+
+    public static func == (precedingValue: APIElementKind, followingValue: APIElementKind) -> Bool {
+        return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
+    }
+
+    // MARK: - Hashable
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(declaration?.source() ?? name.source())
     }
 }

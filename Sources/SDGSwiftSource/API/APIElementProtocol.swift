@@ -12,10 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol APIElementProtocol {
+public protocol APIElementProtocol : Comparable {
     var documentation: DocumentationSyntax? { get }
+    var declaration: Syntax? { get }
+    var name: Syntax { get }
 }
 
 extension APIElementProtocol {
 
+    // MARK: - Comparable
+
+    internal func comparisonIdentity() -> (String, String) {
+        return (name.source(), declaration?.source() ?? "")
+    }
+
+    public static func < (precedingValue: Self, followingValue: Self) -> Bool {
+        return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
+    }
+
+    // MARK: - Equatable
+
+    public static func == (precedingValue: Self, followingValue: Self) -> Bool {
+        return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
+    }
 }

@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGLocalization
 
-public class APIElement : Comparable, Hashable {
+public class APIElement {
 
     // MARK: - Initialization
 
@@ -68,14 +68,6 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Properties
 
-    public var name: Syntax {
-        primitiveMethod()
-    }
-
-    public var declaration: Syntax? {
-        primitiveMethod()
-    }
-
     public var identifierList: Set<String> {
         return []
     }
@@ -123,27 +115,5 @@ public class APIElement : Comparable, Hashable {
                 compilationConditions = new
             }
         }
-    }
-
-    // MARK: - Comparable
-
-    public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
-        if precedingValue.name == followingValue.name {
-            return (precedingValue.declaration?.source() ?? "") < (followingValue.declaration?.source() ?? "") // @exempt(from: tests) Empty declarations should never occur.
-        } else {
-            return precedingValue.name.source() < followingValue.name.source()
-        }
-    }
-
-    // MARK: - Equatable
-
-    public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
-        return (precedingValue.name.source(), precedingValue.declaration?.source()) == (followingValue.name.source(), followingValue.declaration?.source())
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(declaration?.source() ?? name.source())
     }
 }

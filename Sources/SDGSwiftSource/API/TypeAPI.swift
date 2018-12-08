@@ -16,7 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public class TypeAPI : APIScope, APIElementProtocol {
+public class TypeAPI : APIScope, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -34,11 +34,11 @@ public class TypeAPI : APIScope, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.name()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration.withGenericWhereClause(constraints)
     }
 

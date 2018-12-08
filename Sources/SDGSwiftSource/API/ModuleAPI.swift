@@ -17,7 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public class ModuleAPI : APIElement, APIElementProtocol {
+public class ModuleAPI : APIElement, DeclaredAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
@@ -123,11 +123,11 @@ public class ModuleAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.moduleName()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration
     }
 

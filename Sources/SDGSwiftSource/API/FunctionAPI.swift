@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class FunctionAPI : APIElement, APIElementProtocol {
+public class FunctionAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -81,11 +81,11 @@ public class FunctionAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.name()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration.withGenericWhereClause(constraints)
     }
 

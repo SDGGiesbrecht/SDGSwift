@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class SubscriptAPI : APIElement, APIElementProtocol {
+public class SubscriptAPI : APIElement, DeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -33,11 +33,11 @@ public class SubscriptAPI : APIElement, APIElementProtocol {
 
     // MARK: - APIElement
 
-    public override var name: Syntax {
+    public var name: Syntax {
         return _declaration.name()
     }
 
-    public override var declaration: Syntax {
+    public var declaration: Syntax {
         return _declaration
     }
 
