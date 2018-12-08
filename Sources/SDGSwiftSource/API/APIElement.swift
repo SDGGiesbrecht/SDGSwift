@@ -19,8 +19,7 @@ public class APIElement : Comparable, Hashable {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?) {
-        self.documentation = documentation
+    internal init() {
     }
 
     // MARK: - Static Methods
@@ -83,8 +82,6 @@ public class APIElement : Comparable, Hashable {
 
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
-
-    public let documentation: DocumentationSyntax?
 
     public var children: AnyBidirectionalCollection<APIElement> {
         return AnyBidirectionalCollection([])

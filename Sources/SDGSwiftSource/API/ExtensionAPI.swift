@@ -14,13 +14,13 @@
 
 import SDGControlFlow
 
-public class ExtensionAPI : APIScope {
+public class ExtensionAPI : APIScope, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(type: TypeSyntax, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElementKind]) {
         self.type = type.normalized()
-        super.init(documentation: nil, conformances: conformances, children: children)
+        super.init(conformances: conformances, children: children)
         self.constraints = constraints?.normalized()
     }
 
@@ -84,5 +84,11 @@ public class ExtensionAPI : APIScope {
         }
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
+    }
+
+    // MARK: - APIElementProtocol
+
+    public var documentation: DocumentationSyntax? {
+        return nil
     }
 }

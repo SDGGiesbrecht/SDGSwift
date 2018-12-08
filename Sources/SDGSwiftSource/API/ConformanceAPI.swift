@@ -12,13 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class ConformanceAPI : APIElement {
+public class ConformanceAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(type: TypeSyntax) {
         self.type = type.normalized()
-        super.init(documentation: nil)
+        super.init()
     }
 
     // MARK: - Properties
@@ -42,5 +42,11 @@ public class ConformanceAPI : APIElement {
         }
         appendCompilationConditions(to: &result)
         return [result]
+    }
+
+    // MARK: - APIElementProtocol
+
+    public var documentation: DocumentationSyntax? {
+        return nil
     }
 }

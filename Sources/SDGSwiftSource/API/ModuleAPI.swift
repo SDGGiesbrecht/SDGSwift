@@ -17,7 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public class ModuleAPI : APIElement {
+public class ModuleAPI : APIElement, APIElementProtocol {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
@@ -35,7 +35,8 @@ public class ModuleAPI : APIElement {
         api = APIElement.merge(elements: api)
 
         let declaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        super.init(documentation: declaration?.documentation)
+        self.documentation = declaration?.documentation
+        super.init()
 
         for element in api {
             switch element {
@@ -137,4 +138,8 @@ public class ModuleAPI : APIElement {
     public override var summary: [String] {
         return [name.source() + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

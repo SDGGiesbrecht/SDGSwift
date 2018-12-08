@@ -14,13 +14,14 @@
 
 import SDGLogic
 
-public class CaseAPI : APIElement {
+public class CaseAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: EnumCaseDeclSyntax) {
+        self.documentation = documentation
         _declaration = declaration.normalizedAPIDeclaration()
-        super.init(documentation: documentation)
+        super.init()
     }
 
     // MARK: - Properties
@@ -46,4 +47,8 @@ public class CaseAPI : APIElement {
         appendCompilationConditions(to: &result)
         return [result]
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

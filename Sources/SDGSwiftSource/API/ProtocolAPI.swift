@@ -14,14 +14,15 @@
 
 import SDGCollections
 
-public class ProtocolAPI : APIScope {
+public class ProtocolAPI : APIScope, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElementKind]) {
+        self.documentation = documentation
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
-        super.init(documentation: documentation, conformances: conformances, children: children)
+        super.init(conformances: conformances, children: children)
         constraints = constraints.merged(with: normalized.constraints)
 
         for method in methods {
@@ -52,4 +53,8 @@ public class ProtocolAPI : APIScope {
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

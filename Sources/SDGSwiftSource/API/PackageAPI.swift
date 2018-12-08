@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public class PackageAPI : APIElement {
+public class PackageAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
@@ -52,7 +52,8 @@ public class PackageAPI : APIElement {
 
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let declaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        super.init(documentation: declaration?.documentation)
+        self.documentation = declaration?.documentation
+        super.init()
     }
 
     // MARK: - Properties
@@ -81,4 +82,8 @@ public class PackageAPI : APIElement {
             + libraries.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
             + modules.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

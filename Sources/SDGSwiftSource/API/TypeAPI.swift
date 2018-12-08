@@ -16,14 +16,15 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public class TypeAPI : APIScope {
+public class TypeAPI : APIScope, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init<T>(documentation: DocumentationSyntax?, declaration: T, conformances: [ConformanceAPI], children: [APIElementKind]) where T : TypeDeclaration {
+        self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
-        super.init(documentation: documentation, conformances: conformances, children: children)
+        super.init(conformances: conformances, children: children)
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -50,4 +51,8 @@ public class TypeAPI : APIScope {
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

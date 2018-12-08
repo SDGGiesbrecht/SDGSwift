@@ -15,14 +15,15 @@
 import SDGLogic
 import SDGCollections
 
-public class FunctionAPI : APIElement {
+public class FunctionAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: FunctionDeclSyntax) {
+        self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
-        super.init(documentation: documentation)
+        super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -111,4 +112,8 @@ public class FunctionAPI : APIElement {
         }
         return resultSummary
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

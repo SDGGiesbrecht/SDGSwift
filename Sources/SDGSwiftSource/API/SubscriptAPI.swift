@@ -15,14 +15,15 @@
 import SDGLogic
 import SDGCollections
 
-public class SubscriptAPI : APIElement {
+public class SubscriptAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: SubscriptDeclSyntax) {
+        self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
-        super.init(documentation: documentation)
+        super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -49,4 +50,8 @@ public class SubscriptAPI : APIElement {
         appendCompilationConditions(to: &result)
         return [result]
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

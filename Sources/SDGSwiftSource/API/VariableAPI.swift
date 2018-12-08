@@ -12,13 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement {
+public class VariableAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, declaration: VariableDeclSyntax) {
+        self.documentation = documentation
         _declaration = declaration.normalizedAPIDeclaration()
-        super.init(documentation: documentation)
+        super.init()
     }
 
     // MARK: - Properties
@@ -44,4 +45,8 @@ public class VariableAPI : APIElement {
         appendCompilationConditions(to: &result)
         return [result]
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }

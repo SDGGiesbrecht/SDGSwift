@@ -21,7 +21,7 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public class LibraryAPI : APIElement {
+public class LibraryAPI : APIElement, APIElementProtocol {
 
     // MARK: - Initialization
 
@@ -41,7 +41,8 @@ public class LibraryAPI : APIElement {
         self.modules = modules
 
         let declaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
-        super.init(documentation: declaration?.documentation)
+        self.documentation = declaration?.documentation
+        super.init()
     }
 
     // MARK: - Properties
@@ -68,4 +69,8 @@ public class LibraryAPI : APIElement {
         return [name.source() + " • " + declaration.source()]
             + modules.map({ $0.name.source().prepending(" ") })
     }
+
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
 }
