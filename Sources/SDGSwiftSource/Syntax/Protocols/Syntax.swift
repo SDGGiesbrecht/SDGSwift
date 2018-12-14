@@ -108,7 +108,7 @@ extension Syntax {
 
     internal func apiChildren() -> [APIElementKind] {
         let elements = Array(children.map({ $0.api() }).joined())
-        return APIElement.merge(elements: elements)
+        return APIElementKind.merge(elements: elements)
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())

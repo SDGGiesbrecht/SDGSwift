@@ -34,7 +34,7 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
                 api += source.api()
             }
         }
-        api = APIElement.merge(elements: api)
+        api = APIElementKind.merge(elements: api)
 
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
         self.documentation = manifestDeclaration?.documentation

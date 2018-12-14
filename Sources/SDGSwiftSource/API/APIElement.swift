@@ -22,50 +22,6 @@ public class APIElement {
     internal init() {
     }
 
-    // MARK: - Static Methods
-
-    internal static func merge(elements: [APIElementKind]) -> [APIElementKind] {
-
-        var extensions: [ExtensionAPI] = []
-        var functions: [FunctionAPI] = []
-        var types: [TypeAPI] = []
-        var protocols: [ProtocolAPI] = []
-        var other: [APIElementKind] = []
-        for element in elements {
-            switch element {
-            case .extension(let `extension`):
-                extensions.append(`extension`)
-            case .type(let type) :
-                types.append(type)
-            case .protocol(let `protocol`):
-                protocols.append(`protocol`)
-            case .function(let function):
-                functions.append(function)
-            default:
-                other.append(element)
-            }
-        }
-
-        var unmergedExtensions: [ExtensionAPI] = []
-        extensionIteration: for `extension` in extensions {
-            for type in types where `extension`.isExtension(of: type) {
-                type.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            for `protocol` in protocols where `extension`.isExtension(of: `protocol`) {
-                `protocol`.merge(extension: `extension`)
-                continue extensionIteration
-            }
-            `extension`.moveConditionsToChildren()
-            unmergedExtensions.append(`extension`)
-        }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).map({ APIElementKind(element: $0) }))
-
-        functions = FunctionAPI.groupIntoOverloads(functions)
-
-        return types.map({ APIElementKind(element: $0) }) + protocols.map({ APIElementKind(element: $0) }) + functions.map({ APIElementKind(element: $0) }) + other
-    }
-
     // MARK: - Properties
 
     public var identifierList: Set<String> {
