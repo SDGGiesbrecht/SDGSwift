@@ -37,10 +37,6 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList
-    }
-
     public override var summary: [String] {
         var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
@@ -50,6 +46,10 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList()
+    }
 
     // MARK: - DeclaredAPIElement
 

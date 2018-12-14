@@ -24,10 +24,6 @@ public class APIElement {
 
     // MARK: - Properties
 
-    public var identifierList: Set<String> {
-        return []
-    }
-
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 

@@ -207,12 +207,37 @@ public enum APIElementKind : Comparable, Hashable {
         return AnyBidirectionalCollection(element.children.map({ APIElementKind(element: $0) }))
     }
 
-    public func identifierList() -> Set<String> {
-        return element.identifierList
-    }
-
     public func summary() -> [String] {
         return element.summary
+    }
+
+    public func identifierList() -> Set<String> {
+        switch self {
+        case .package(let package):
+            return package.identifierList()
+        case .library(let library):
+            return library.identifierList()
+        case .module(let module):
+            return module.identifierList()
+        case .type(let type):
+            return type.identifierList()
+        case .protocol(let `protocol`):
+            return `protocol`.identifierList()
+        case .extension(let `extension`):
+            return `extension`.identifierList()
+        case .case(let `case`):
+            return `case`.identifierList()
+        case .initializer(let initializer):
+            return initializer.identifierList()
+        case .variable(let variable):
+            return variable.identifierList()
+        case .subscript(let `subscript`):
+            return `subscript`.identifierList()
+        case .function(let function):
+            return function.identifierList()
+        case .conformance(let conformance):
+            return conformance.identifierList()
+        }
     }
 
     internal func prependCompilationCondition(_ addition: Syntax?) {

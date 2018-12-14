@@ -35,10 +35,6 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return _declaration.identifierList() ∪ scopeIdentifierList
-    }
-
     public override var summary: [String] {
         var result = genericName.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
@@ -48,6 +44,10 @@ public class TypeAPI : APIScope, DeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return _declaration.identifierList() ∪ scopeIdentifierList()
+    }
 
     // MARK: - DeclaredAPIElement
 

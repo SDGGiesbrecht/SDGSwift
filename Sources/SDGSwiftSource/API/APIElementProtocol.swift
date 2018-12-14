@@ -16,6 +16,7 @@ public protocol APIElementProtocol : Comparable {
     var documentation: DocumentationSyntax? { get }
     var possibleDeclaration: Syntax? { get }
     var genericName: Syntax { get }
+    func identifierList() -> Set<String>
 }
 
 extension APIElementProtocol {

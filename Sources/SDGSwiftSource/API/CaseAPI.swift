@@ -28,10 +28,6 @@ public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return [declaration.elements.first!.identifier.text]
-    }
-
     public override var summary: [String] {
         var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
@@ -41,6 +37,10 @@ public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return [declaration.elements.first!.identifier.text]
+    }
 
     // MARK: - DeclaredAPIElement
 

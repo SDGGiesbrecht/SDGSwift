@@ -36,7 +36,7 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
 
             if packageName == "PackageToDocument" {
-                XCTAssert("Structure" ∈ parsed.identifierList)
+                XCTAssert("Structure" ∈ parsed.identifierList())
             }
         }
     }

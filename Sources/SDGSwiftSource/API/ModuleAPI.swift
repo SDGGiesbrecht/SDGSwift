@@ -123,10 +123,6 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return children.map({ $0.identifierList }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
-    }
-
     public override var summary: [String] {
         return [name.source() + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
     }
@@ -134,6 +130,10 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return children.map({ APIElementKind(element: $0).identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
+    }
 
     // MARK: - DeclaredAPIElement
 

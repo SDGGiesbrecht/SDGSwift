@@ -65,10 +65,6 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return libraries.map({ $0.identifierList }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
-
     public override var summary: [String] {
         return [name.source() + " • " + declaration.source()]
             + libraries.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
@@ -78,6 +74,10 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return libraries.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
+    }
 
     // MARK: - DeclaredAPIElement
 

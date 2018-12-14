@@ -35,4 +35,10 @@ public class ConformanceAPI : APIElement, UndeclaredAPIElement {
         appendCompilationConditions(to: &result)
         return [result]
     }
+
+    // MARK: - APIElementProtocol
+
+    public func identifierList() -> Set<String> {
+        return []
+    }
 }

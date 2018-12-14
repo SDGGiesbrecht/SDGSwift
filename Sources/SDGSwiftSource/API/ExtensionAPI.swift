@@ -65,10 +65,6 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return scopeIdentifierList
-    }
-
     public override var summary: [String] {
         var result = "(" + genericName.source() + ")"
         if let constraints = self.constraints {
@@ -76,5 +72,11 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
         }
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
+    }
+
+    // MARK: - APIElementProtocol
+
+    public func identifierList() -> Set<String> {
+        return scopeIdentifierList()
     }
 }

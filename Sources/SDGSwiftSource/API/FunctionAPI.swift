@@ -82,10 +82,6 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var identifierList: Set<String> {
-        return _declaration.identifierList()
-    }
-
     public override var summary: [String] {
         var result = ""
         if isProtocolRequirement {
@@ -109,6 +105,10 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+
+    public func identifierList() -> Set<String> {
+        return _declaration.identifierList()
+    }
 
     // MARK: - DeclaredAPIElement
 
