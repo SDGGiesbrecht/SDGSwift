@@ -171,7 +171,7 @@ public class APIScope : APIElement {
     // MARK: - APIElement
 
     internal func scopeIdentifierList() -> Set<String> {
-        return children.map({ APIElementKind(element: $0) }).reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
+        return children.map({ APIElementKind($0) }).reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
     }
 
     public override var children: AnyBidirectionalCollection<APIElement> {

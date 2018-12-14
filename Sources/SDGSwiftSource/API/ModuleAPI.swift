@@ -132,7 +132,7 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
     public let documentation: DocumentationSyntax?
 
     public func identifierList() -> Set<String> {
-        return children.map({ APIElementKind(element: $0).identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
+        return children.map({ APIElementKind($0).identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
 
     // MARK: - DeclaredAPIElement

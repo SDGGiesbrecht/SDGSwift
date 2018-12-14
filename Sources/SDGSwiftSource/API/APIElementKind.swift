@@ -53,16 +53,20 @@ public enum APIElementKind : Comparable, Hashable {
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)
         }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).map({ APIElementKind(element: $0) }))
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).lazy.map({ APIElementKind($0) }))
 
         functions = FunctionAPI.groupIntoOverloads(functions)
 
-        return types.map({ APIElementKind(element: $0) }) + protocols.map({ APIElementKind(element: $0) }) + functions.map({ APIElementKind(element: $0) }) + other
+        var result = types.map({ APIElementKind($0) })
+        result.append(contentsOf: protocols.lazy.map({ APIElementKind($0) }))
+        result.append(contentsOf: functions.lazy.map({ APIElementKind($0) }))
+        result.append(contentsOf: other)
+        return result
     }
 
     // MARK: - Initialization
 
-    internal init(element: APIElement) {
+    internal init(_ element: APIElement) {
         switch element {
         case let package as PackageAPI :
             self = .package(package)
@@ -204,7 +208,7 @@ public enum APIElementKind : Comparable, Hashable {
     }
 
     public var children: AnyBidirectionalCollection<APIElementKind> {
-        return AnyBidirectionalCollection(element.children.map({ APIElementKind(element: $0) }))
+        return AnyBidirectionalCollection(element.children.map({ APIElementKind($0) }))
     }
 
     public func summary() -> [String] {
