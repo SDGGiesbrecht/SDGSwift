@@ -13,10 +13,25 @@
  */
 
 internal protocol MutableAPIScope : APIScopeProtocol, MutableAPIElement {
-    var children: [APIElement] { get set }
+    var _children: [APIElement] { get set }
 }
 
 extension MutableAPIScope {
+
+    // MARK: - APIScope
+
+    internal static func normalize(children: [APIElement]) -> [APIElement] {
+        return children.sorted()
+    }
+
+    public var children: [APIElement] {
+        get {
+            return _children
+        }
+        set {
+            _children = Self.normalize(children: newValue)
+        }
+    }
 
     // MARK: - Merging
 

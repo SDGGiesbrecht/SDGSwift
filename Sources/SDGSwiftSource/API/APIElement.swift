@@ -91,21 +91,6 @@ public enum APIElement : Comparable, Hashable {
     case function(FunctionAPI)
     case conformance(ConformanceAPI)
 
-    // MARK: - Initialization
-
-    internal init(_ element: APIScope) {
-        switch element {
-        case let type as TypeAPI :
-            self = .type(type)
-        case let `protocol` as ProtocolAPI :
-            self = .protocol(`protocol`)
-        case let `extension` as ExtensionAPI :
-            self = .extension(`extension`)
-        default:
-            unreachable()
-        }
-    }
-
     // MARK: - Methods
 
     public var declaration: Syntax? {
@@ -394,13 +379,13 @@ public enum APIElement : Comparable, Hashable {
             self = APIElement.module(module)
         case .type(var type):
             type.prependCompilationCondition(addition)
-            self = APIElement(type)
+            self = APIElement.type(type)
         case .protocol(var `protocol`):
             `protocol`.prependCompilationCondition(addition)
-            self = APIElement(`protocol`)
+            self = APIElement.protocol(`protocol`)
         case .extension(var `extension`):
             `extension`.prependCompilationCondition(addition)
-            self = APIElement(`extension`)
+            self = APIElement.extension(`extension`)
         case .case(var `case`):
             `case`.prependCompilationCondition(addition)
             self = APIElement.case(`case`)

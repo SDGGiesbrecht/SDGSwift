@@ -14,14 +14,13 @@
 
 import SDGControlFlow
 
-public class ExtensionAPI : APIScope, MutableAPIScope, UndeclaredAPIElement {
+public class ExtensionAPI : MutableAPIScope, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
     internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         self.type = type.normalized()
-        super.init()
-        self.children = children
+        _children = ExtensionAPI.normalize(children: children)
         self.constraints = constraints?.normalized()
     }
 
@@ -65,7 +64,14 @@ public class ExtensionAPI : APIScope, MutableAPIScope, UndeclaredAPIElement {
         return result
     }
 
-    // MARK: - APIElement
+    // MARK: - APIElementProtocol
+
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
+
+    public func identifierList() -> Set<String> {
+        return scopeIdentifierList()
+    }
 
     public func summary() -> [String] {
         var result = "(" + genericName.source() + ")"
@@ -76,9 +82,7 @@ public class ExtensionAPI : APIScope, MutableAPIScope, UndeclaredAPIElement {
         return [result] + scopeSummary
     }
 
-    // MARK: - APIElementProtocol
+    // MARK: - MutableAPIScope
 
-    public func identifierList() -> Set<String> {
-        return scopeIdentifierList()
-    }
+    internal var _children: [APIElement] = []
 }

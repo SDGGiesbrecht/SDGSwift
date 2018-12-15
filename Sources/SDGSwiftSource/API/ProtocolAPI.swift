@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProtocolAPI : APIScope, MutableAPIScope, UniquelyDeclaredAPIElement {
+public class ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -23,8 +23,7 @@ public class ProtocolAPI : APIScope, MutableAPIScope, UniquelyDeclaredAPIElement
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
         name = normalized.declaration.name()
-        super.init()
-        self.children = children
+        _children = ProtocolAPI.normalize(children: children)
         constraints = constraints.merged(with: normalized.constraints)
 
         for method in methods {
@@ -36,7 +35,15 @@ public class ProtocolAPI : APIScope, MutableAPIScope, UniquelyDeclaredAPIElement
 
     private let _declaration: ProtocolDeclSyntax
 
-    // MARK: - APIElement
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
+
+    public func identifierList() -> Set<String> {
+        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList()
+    }
 
     public func summary() -> [String] {
         var result = name.source() + " • " + declaration.source()
@@ -44,13 +51,9 @@ public class ProtocolAPI : APIScope, MutableAPIScope, UniquelyDeclaredAPIElement
         return [result] + scopeSummary
     }
 
-    // MARK: - APIElementProtocol
+    // MARK: - MutableAPIScope
 
-    public let documentation: DocumentationSyntax?
-
-    public func identifierList() -> Set<String> {
-        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList()
-    }
+    internal var _children: [APIElement] = []
 
     // MARK: - DeclaredAPIElement
 

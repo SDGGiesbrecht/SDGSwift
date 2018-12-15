@@ -16,7 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public class TypeAPI : APIScope, MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
+public class TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
 
     // MARK: - Initialization
 
@@ -25,8 +25,7 @@ public class TypeAPI : APIScope, MutableAPIScope, DeclaredAPIElement, MutableAPI
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
-        super.init()
-        self.children = children
+        _children = TypeAPI.normalize(children: children)
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -34,20 +33,20 @@ public class TypeAPI : APIScope, MutableAPIScope, DeclaredAPIElement, MutableAPI
 
     private let _declaration: TypeDeclaration
 
-    // MARK: - APIElement
+    // MARK: - APIElementProtocol
+
+    public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
+
+    public func identifierList() -> Set<String> {
+        return _declaration.identifierList() ∪ scopeIdentifierList()
+    }
 
     public func summary() -> [String] {
         var result = genericName.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary
-    }
-
-    // MARK: - APIElementProtocol
-
-    public let documentation: DocumentationSyntax?
-
-    public func identifierList() -> Set<String> {
-        return _declaration.identifierList() ∪ scopeIdentifierList()
     }
 
     // MARK: - DeclaredAPIElement
@@ -57,4 +56,8 @@ public class TypeAPI : APIScope, MutableAPIScope, DeclaredAPIElement, MutableAPI
     }
 
     public let genericName: Syntax
+
+    // MARK: - MutableAPIScope
+
+    internal var _children: [APIElement] = []
 }
