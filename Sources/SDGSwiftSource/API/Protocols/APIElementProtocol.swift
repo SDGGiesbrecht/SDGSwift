@@ -28,14 +28,6 @@ public protocol APIElementProtocol : class {
 
 extension APIElementProtocol {
 
-    // MARK: - Description
-
-    internal func appendCompilationConditions(to description: inout String) {
-        if let conditions = compilationConditions {
-            description += " • " + conditions.source()
-        }
-    }
-
     // MARK: - Children
 
     private func filtered<T>(_ filter: (APIElement) -> T?) -> AnyBidirectionalCollection<T> {
@@ -157,13 +149,21 @@ extension APIElementProtocol {
         }
     }
 
-    // MARK: - APIElement
+    // MARK: - Identifiers
 
     internal func scopeIdentifierList() -> Set<String> {
         return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
     }
 
+    // MARK: - Summary
+
     internal func scopeSummary() -> [String] {
         return Array(children.lazy.map({ $0.summary().lazy.map({ $0.prepending(" ") }) }).joined())
+    }
+
+    internal func appendCompilationConditions(to description: inout String) {
+        if let conditions = compilationConditions {
+            description += " • " + conditions.source()
+        }
     }
 }
