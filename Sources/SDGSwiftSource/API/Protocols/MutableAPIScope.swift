@@ -38,29 +38,23 @@ extension MutableAPIScope {
 
     // MARK: - Merging
 
-    internal mutating func moveConditionsToChildren() {
-        var result: [APIElement] = []
+    internal func moveConditionsToChildren() {
         for child in children {
-            var mutable = child
-            mutable.prependCompilationCondition(compilationConditions)
+            child.prependCompilationCondition(compilationConditions)
             // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
             if constraints?.source().isEmpty ≠ false {
-                if mutable.constraints?.source().isEmpty ≠ false {
-                    mutable.constraints = mutable.constraints.merged(with: constraints)
+                if child.constraints?.source().isEmpty ≠ false {
+                    child.element.constraints = child.constraints.merged(with: constraints)
                 } else {
-                    mutable.constraints = constraints
+                    child.element.constraints = constraints
                 }
             }
-            result.append(mutable)
         }
         compilationConditions = nil
         constraints = nil
-        children = result
     }
 
-    internal mutating func merge(extension: ExtensionAPI) {
-        var `extension` = `extension`
-
+    internal func merge(extension: ExtensionAPI) {
         `extension`.moveConditionsToChildren()
         children.append(contentsOf: `extension`.children)
         children = FunctionAPI.groupIntoOverloads(children)

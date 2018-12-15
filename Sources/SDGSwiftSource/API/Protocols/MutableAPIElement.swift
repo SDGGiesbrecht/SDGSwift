@@ -19,7 +19,7 @@ internal protocol MutableAPIElement : APIElementProtocol {
 
 extension MutableAPIElement {
 
-    internal mutating func prependCompilationCondition(_ addition: Syntax?) {
+    internal func prependCompilationCondition(_ addition: Syntax?) {
         if let new = addition {
             if let existing = compilationConditions {
                 let existingCondition = Array(existing.tokens().dropFirst())

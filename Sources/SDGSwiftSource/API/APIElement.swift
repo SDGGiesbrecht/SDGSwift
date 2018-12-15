@@ -45,8 +45,6 @@ public enum APIElement : Comparable, Hashable {
 
         var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
-            var `extension` = `extension`
-
             for index in types.indices {
                 let type = types[index]
                 if `extension`.isExtension(of: type) {
@@ -91,7 +89,7 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Methods
 
-    private var element: MutableAPIElement {
+    internal var element: MutableAPIElement {
         get {
             switch self {
             case .package(let package):
@@ -158,13 +156,8 @@ public enum APIElement : Comparable, Hashable {
         return element.possibleDeclaration
     }
 
-    public internal(set) var constraints: GenericWhereClauseSyntax? {
-        get {
-            return element.constraints
-        }
-        set {
-            element.constraints = newValue
-        }
+    public var constraints: GenericWhereClauseSyntax? {
+        return element.constraints
     }
 
     public internal(set) var compilationConditions: Syntax? {
@@ -196,11 +189,8 @@ public enum APIElement : Comparable, Hashable {
         return element.identifierList()
     }
 
-    internal mutating func prependCompilationCondition(_ addition: Syntax?) {
+    internal func prependCompilationCondition(_ addition: Syntax?) {
         element.prependCompilationCondition(addition)
-    }
-    internal func prependingCompilationCondition(_ addition: Syntax?) -> APIElement {
-        return nonmutatingVariant(of: { $0.prependCompilationCondition($1) }, on: self, with: addition)
     }
 
     // MARK: - Comparable

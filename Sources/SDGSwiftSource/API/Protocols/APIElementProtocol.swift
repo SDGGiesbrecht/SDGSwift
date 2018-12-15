@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol APIElementProtocol {
+public protocol APIElementProtocol : class {
     var documentation: DocumentationSyntax? { get }
     var possibleDeclaration: Syntax? { get }
     var constraints: GenericWhereClauseSyntax? { get }
