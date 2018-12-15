@@ -21,8 +21,7 @@ public final class ProtocolAPI : _APIElementBase, MutableAPIScope, UniquelyDecla
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, name: ProtocolDeclSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
-        _children = ProtocolAPI.normalize(children: children)
-        super.init(documentation: documentation)
+        super.init(documentation: documentation, children: children)
 
         for child in children {
             switch child {
@@ -45,10 +44,6 @@ public final class ProtocolAPI : _APIElementBase, MutableAPIScope, UniquelyDecla
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary()
     }
-
-    // MARK: - MutableAPIScope
-
-    internal var _children: [APIElement] = []
 
     // MARK: - DeclaredAPIElement
 

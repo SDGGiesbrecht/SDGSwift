@@ -111,7 +111,7 @@ public final class ModuleAPI : _APIElementBase, UniquelyDeclaredManifestAPIEleme
         }
     }
 
-    public var children: [APIElement] {
+    public var symbols: [APIElement] {
         let joined = [
             types.map({ APIElement.type($0) }),
             extensions.map({ APIElement.extension($0) }),
@@ -125,13 +125,13 @@ public final class ModuleAPI : _APIElementBase, UniquelyDeclaredManifestAPIEleme
     // MARK: - APIElement
 
     public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()] + children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
+        return [name.source() + " • " + declaration.source()] + symbols.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
     }
 
     // MARK: - APIElementProtocol
 
     public func identifierList() -> Set<String> {
-        return children.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
+        return symbols.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
 
     // MARK: - DeclaredAPIElement

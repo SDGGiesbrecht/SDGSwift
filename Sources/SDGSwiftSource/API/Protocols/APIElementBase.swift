@@ -16,8 +16,11 @@ public class _APIElementBase {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?) {
+    internal init(documentation: DocumentationSyntax?, constraints: GenericWhereClauseSyntax? = nil, compilationConditions: Syntax? = nil, children: [APIElement] = []) {
         self.documentation = documentation
+        self.compilationConditions = compilationConditions
+        self.constraints = constraints
+        self.children = children
     }
 
     // MARK: - Properties
@@ -34,4 +37,13 @@ public class _APIElementBase {
     }
 
     public internal(set) var compilationConditions: Syntax? = nil
+
+    private var _children: [APIElement] = []
+    public internal(set) var children: [APIElement] {
+        get {
+            return _children
+        } set {
+            _children = newValue.sorted()
+        }
+    }
 }

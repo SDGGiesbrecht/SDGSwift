@@ -24,8 +24,7 @@ public final class TypeAPI : _APIElementBase, MutableAPIScope, DeclaredAPIElemen
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
-        _children = TypeAPI.normalize(children: children)
-        super.init(documentation: documentation)
+        super.init(documentation: documentation, children: children)
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -52,8 +51,4 @@ public final class TypeAPI : _APIElementBase, MutableAPIScope, DeclaredAPIElemen
     }
 
     public let genericName: Syntax
-
-    // MARK: - MutableAPIScope
-
-    internal var _children: [APIElement] = []
 }

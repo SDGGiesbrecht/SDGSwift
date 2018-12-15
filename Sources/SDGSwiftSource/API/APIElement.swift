@@ -135,11 +135,7 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public var children: [APIElement] {
-        if let scope = genericElement as? APIScope {
-            return scope.children
-        } else {
-            return []
-        }
+        return genericElement.children
     }
 
     public func summary() -> [String] {

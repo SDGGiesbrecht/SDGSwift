@@ -20,8 +20,7 @@ public final class ExtensionAPI : _APIElementBase, MutableAPIScope, UndeclaredAP
 
     internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         self.type = type.normalized()
-        _children = ExtensionAPI.normalize(children: children)
-        super.init(documentation: nil)
+        super.init(documentation: nil, children: children)
         self.constraints = constraints
     }
 
@@ -79,8 +78,4 @@ public final class ExtensionAPI : _APIElementBase, MutableAPIScope, UndeclaredAP
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary()
     }
-
-    // MARK: - MutableAPIScope
-
-    internal var _children: [APIElement] = []
 }

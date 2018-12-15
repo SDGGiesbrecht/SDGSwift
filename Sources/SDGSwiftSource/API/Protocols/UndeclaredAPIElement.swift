@@ -18,10 +18,6 @@ internal protocol UndeclaredAPIElement : MutableAPIElement, SortableAPIElement {
 
 extension UndeclaredAPIElement {
 
-    public var documentation: DocumentationSyntax? {
-        return nil
-    }
-
     public var possibleDeclaration: Syntax? {
         return nil
     }

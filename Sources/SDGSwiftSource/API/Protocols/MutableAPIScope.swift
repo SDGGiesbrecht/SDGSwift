@@ -15,26 +15,11 @@
 import SDGControlFlow
 import SDGLogic
 
-internal protocol MutableAPIScope : APIScope, MutableAPIElement {
-    var _children: [APIElement] { get set }
+internal protocol MutableAPIScope : MutableAPIElement {
+    var children: [APIElement] { get set }
 }
 
 extension MutableAPIScope {
-
-    // MARK: - APIScope
-
-    internal static func normalize(children: [APIElement]) -> [APIElement] {
-        return children.sorted()
-    }
-
-    public var children: [APIElement] {
-        get {
-            return _children
-        }
-        set {
-            _children = Self.normalize(children: newValue)
-        }
-    }
 
     // MARK: - Merging
 
