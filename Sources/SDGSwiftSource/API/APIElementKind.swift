@@ -349,7 +349,18 @@ public enum APIElementKind : Comparable, Hashable {
     }
 
     public var children: [APIElementKind] {
-        return element.children
+        switch self {
+        case .package, .library, .case, .initializer, .variable, .subscript, .function, .conformance:
+            return []
+        case .module(let module):
+            return module.children
+        case .type(let type):
+            return type.children
+        case .protocol(let `protocol`):
+            return `protocol`.children
+        case .extension(let `extension`):
+            return `extension`.children
+        }
     }
 
     public func summary() -> [String] {

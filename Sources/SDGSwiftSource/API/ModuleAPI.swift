@@ -110,7 +110,7 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
         }
     }
 
-    public override var children: [APIElementKind] {
+    public var children: [APIElementKind] {
         let joined = ([
             types,
             extensions,

@@ -177,7 +177,7 @@ public class APIScope : APIElement {
     }
 
     private var _children: [APIElementKind] = []
-    public override var children: [APIElementKind] {
+    public var children: [APIElementKind] {
         get {
             return _children
         }

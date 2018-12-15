@@ -24,10 +24,6 @@ public class APIElement {
 
     // MARK: - Properties
 
-    public var children: [APIElementKind] {
-        return []
-    }
-
     public var summary: [String] {
         primitiveMethod()
     }
