@@ -20,8 +20,8 @@ public class APIScope {
 
     // MARK: - Initialization
 
-    internal init(conformances: [ConformanceAPI], children: [APIElementKind]) {
-        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElementKind.conformance($0) }))
+    internal init(conformances: [ConformanceAPI], children: [APIElement]) {
+        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
     }
 
     // MARK: - Properties
@@ -29,7 +29,7 @@ public class APIScope {
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 
-    private func filtered<T>(_ filter: (APIElementKind) -> T?) -> AnyBidirectionalCollection<T> {
+    private func filtered<T>(_ filter: (APIElement) -> T?) -> AnyBidirectionalCollection<T> {
         return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
     }
 
@@ -151,10 +151,10 @@ public class APIScope {
     // MARK: - Merging
 
     internal func moveConditionsToChildren() {
-        var result: [APIElementKind] = []
+        var result: [APIElement] = []
         for child in children {
             var mutable = child
-            mutable.prependCompilationCondition(APIElementKind(self).compilationConditions)
+            mutable.prependCompilationCondition(APIElement(self).compilationConditions)
             mutable.constraints = child.constraints.merged(with: constraints)
             result.append(mutable)
         }
@@ -175,8 +175,8 @@ public class APIScope {
         return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
     }
 
-    private var _children: [APIElementKind] = []
-    public var children: [APIElementKind] {
+    private var _children: [APIElement] = []
+    public var children: [APIElement] {
         get {
             return _children
         }

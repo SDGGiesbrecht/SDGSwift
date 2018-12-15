@@ -27,14 +27,14 @@ public class ModuleAPI : UniquelyDeclaredAPIElement {
         self.declaration = declaration
         name = declaration.moduleName()
 
-        var api: [APIElementKind] = []
+        var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             try autoreleasepool {
                 let source = try SyntaxTreeParser.parse(sourceFile)
                 api += source.api()
             }
         }
-        api = APIElementKind.merge(elements: api)
+        api = APIElement.merge(elements: api)
 
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
         self.documentation = manifestDeclaration?.documentation
@@ -109,13 +109,13 @@ public class ModuleAPI : UniquelyDeclaredAPIElement {
         }
     }
 
-    public var children: [APIElementKind] {
+    public var children: [APIElement] {
         let joined = [
-            types.map({ APIElementKind.type($0) }),
-            extensions.map({ APIElementKind.extension($0) }),
-            protocols.map({ APIElementKind.protocol($0) }),
-            functions.map({ APIElementKind.function($0) }),
-            globalVariables.map({ APIElementKind.variable($0) })
+            types.map({ APIElement.type($0) }),
+            extensions.map({ APIElement.extension($0) }),
+            protocols.map({ APIElement.protocol($0) }),
+            functions.map({ APIElement.function($0) }),
+            globalVariables.map({ APIElement.variable($0) })
             ].joined()
         return Array(joined)
     }

@@ -18,7 +18,7 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElementKind]) {
+    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElement]) {
         self.documentation = documentation
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration

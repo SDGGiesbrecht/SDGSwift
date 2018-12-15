@@ -106,39 +106,39 @@ extension Syntax {
 
     // MARK: - API
 
-    internal func apiChildren() -> [APIElementKind] {
+    internal func apiChildren() -> [APIElement] {
         let elements = Array(children.map({ $0.api() }).joined())
-        return APIElementKind.merge(elements: elements)
+        return APIElement.merge(elements: elements)
     }
 
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
-    public func api() -> [APIElementKind] {
+    public func api() -> [APIElement] {
         switch self {
         case let structure as StructDeclSyntax :
-            return structure.typeAPI.flatMap({ [APIElementKind.type($0)] }) ?? []
+            return structure.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
         case let `class` as ClassDeclSyntax :
-            return `class`.typeAPI.flatMap({ [APIElementKind.type($0)] }) ?? []
+            return `class`.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
         case let enumeration as EnumDeclSyntax :
-            return enumeration.typeAPI.flatMap({ [APIElementKind.type($0)] }) ?? []
+            return enumeration.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
         case let typeAlias as TypealiasDeclSyntax :
-            return typeAlias.typeAPI.flatMap({ [APIElementKind.type($0)] }) ?? []
+            return typeAlias.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
         case let associatedType as AssociatedtypeDeclSyntax :
-            return associatedType.typeAPI.flatMap({ [APIElementKind.type($0)] }) ?? []
+            return associatedType.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
         case let `protocol` as ProtocolDeclSyntax :
-            return `protocol`.protocolAPI.flatMap({ [APIElementKind.protocol($0)] }) ?? []
+            return `protocol`.protocolAPI.flatMap({ [APIElement.protocol($0)] }) ?? []
         case let `case` as EnumCaseDeclSyntax :
-            return `case`.caseAPI().map({ APIElementKind.case($0) })
+            return `case`.caseAPI().map({ APIElement.case($0) })
         case let initializer as InitializerDeclSyntax :
-            return initializer.initializerAPI.flatMap({ [APIElementKind.initializer($0)] }) ?? []
+            return initializer.initializerAPI.flatMap({ [APIElement.initializer($0)] }) ?? []
         case let variable as VariableDeclSyntax :
-            return variable.variableAPI().map({ APIElementKind.variable($0) })
+            return variable.variableAPI().map({ APIElement.variable($0) })
         case let `subscript` as SubscriptDeclSyntax :
-            return `subscript`.subscriptAPI.flatMap({ [APIElementKind.subscript($0)] }) ?? []
+            return `subscript`.subscriptAPI.flatMap({ [APIElement.subscript($0)] }) ?? []
         case let function as FunctionDeclSyntax :
-            return function.functionAPI().flatMap({ [APIElementKind.function($0)] }) ?? []
+            return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
         case let `extension` as ExtensionDeclSyntax :
-            return `extension`.extensionAPI.flatMap({ [APIElementKind.extension($0)] }) ?? []
+            return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax :
             return conditionallyCompiledSection.conditionalAPI
         default:
@@ -205,7 +205,7 @@ extension Syntax {
         return false
     }
 
-    internal var unidentifiedConditionallyCompiledChildren: [APIElementKind] {
+    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
         return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
     }
 

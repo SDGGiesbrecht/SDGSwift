@@ -79,9 +79,9 @@ public class FunctionAPI : UniquelyDeclaredAPIElement {
         return result
     }
 
-    internal static func groupIntoOverloads(_ elements: [APIElementKind]) -> [APIElementKind] {
+    internal static func groupIntoOverloads(_ elements: [APIElement]) -> [APIElement] {
         var functions: [FunctionAPI] = []
-        var result: [APIElementKind] = []
+        var result: [APIElement] = []
         result.reserveCapacity(elements.count)
         for element in elements {
             switch element {
@@ -92,7 +92,7 @@ public class FunctionAPI : UniquelyDeclaredAPIElement {
             }
         }
         functions = FunctionAPI.groupIntoOverloads(functions)
-        result.append(contentsOf: functions.lazy.map({ APIElementKind.function($0) }))
+        result.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
         return result
     }
 

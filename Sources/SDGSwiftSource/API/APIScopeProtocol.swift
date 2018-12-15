@@ -13,5 +13,5 @@
  */
 
 internal protocol APIScopeProtocol : APIElementProtocol {
-    var children: [APIElementKind] { get }
+    var children: [APIElement] { get }
 }
