@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol DeclaredAPIElement : APIElementProtocol {
+public protocol DeclaredAPIElement : SortableAPIElement {
     var genericDeclaration: Syntax { get }
 }
 

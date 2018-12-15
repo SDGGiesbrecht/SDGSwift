@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol APIElementProtocol : Comparable {
+public protocol APIElementProtocol {
     var documentation: DocumentationSyntax? { get }
     var possibleDeclaration: Syntax? { get }
     var constraints: GenericWhereClauseSyntax? { get }
@@ -30,21 +30,5 @@ extension APIElementProtocol {
         if let conditions = compilationConditions {
             description += " • " + conditions.source()
         }
-    }
-
-    // MARK: - Comparable
-
-    internal func comparisonIdentity() -> (String, String) {
-        return (genericName.source(), possibleDeclaration?.source() ?? "")
-    }
-
-    public static func < (precedingValue: Self, followingValue: Self) -> Bool {
-        return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
-    }
-
-    // MARK: - Equatable
-
-    public static func == (precedingValue: Self, followingValue: Self) -> Bool {
-        return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
     }
 }

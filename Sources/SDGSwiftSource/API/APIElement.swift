@@ -91,6 +91,69 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Methods
 
+    private var element: MutableAPIElement {
+        get {
+            switch self {
+            case .package(let package):
+                return package
+            case .library(let library):
+                return library
+            case .module(let module):
+                return module
+            case .type(let type):
+                return type
+            case .protocol(let `protocol`):
+                return `protocol`
+            case .extension(let `extension`):
+                return `extension`
+            case .case(let `case`):
+                return `case`
+            case .initializer(let initializer):
+                return initializer
+            case .variable(let variable):
+                return variable
+            case .subscript(let `subscript`):
+                return `subscript`
+            case .function(let function):
+                return function
+            case .conformance(let conformance):
+                return conformance
+            }
+        }
+        set {
+            switch newValue {
+            case let package as PackageAPI :
+                self = .package(package)
+            case let library as LibraryAPI :
+                self = .library(library)
+            case let module as ModuleAPI :
+                self = .module(module)
+            case let type as TypeAPI :
+                self = .type(type)
+            case let `protocol` as ProtocolAPI :
+                self = .protocol(`protocol`)
+            case let `extension` as ExtensionAPI :
+                self = .extension(`extension`)
+            case let `case` as CaseAPI :
+                self = .case(`case`)
+            case let initializer as InitializerAPI :
+                self = .initializer(initializer)
+            case let variable as VariableAPI :
+                self = .variable(variable)
+            case let `subscript` as SubscriptAPI :
+                self = .subscript(`subscript`)
+            case let function as FunctionAPI :
+                self = .function(function)
+            case let conformance as ConformanceAPI :
+                self = .conformance(conformance)
+            default: // @exempt(from: tests) Should never occur.
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified API class: \(Swift.type(of: newValue))")
+                }
+            }
+        }
+    }
+
     public var declaration: Syntax? {
         switch self {
         case .package(let package):
@@ -120,145 +183,21 @@ public enum APIElement : Comparable, Hashable {
         }
     }
 
-    public var constraints: GenericWhereClauseSyntax? {
+    public internal(set) var constraints: GenericWhereClauseSyntax? {
         get {
-            switch self {
-            case .package(let package):
-                return package.constraints
-            case .library(let library):
-                return library.constraints
-            case .module(let module):
-                return module.constraints
-            case .type(let type):
-                return type.constraints
-            case .protocol(let `protocol`):
-                return `protocol`.constraints
-            case .extension(let `extension`):
-                return `extension`.constraints
-            case .case(let `case`):
-                return `case`.constraints
-            case .initializer(let initializer):
-                return initializer.constraints
-            case .variable(let variable):
-                return variable.constraints
-            case .subscript(let `subscript`):
-                return `subscript`.constraints
-            case .function(let function):
-                return function.constraints
-            case .conformance(let conformance):
-                return conformance.constraints
-            }
+            return element.constraints
         }
         set {
-            switch self {
-            case .package(var package):
-                package.constraints = newValue
-                self = APIElement.package(package)
-            case .library(var library):
-                library.constraints = newValue
-                self = APIElement.library(library)
-            case .module(var module):
-                module.constraints = newValue
-                self = APIElement.module(module)
-            case .type(var type):
-                type.constraints = newValue
-                self = APIElement.type(type)
-            case .protocol(var `protocol`):
-                `protocol`.constraints = newValue
-                self = APIElement.protocol(`protocol`)
-            case .extension(var `extension`):
-                `extension`.constraints = newValue
-                self = APIElement.extension(`extension`)
-            case .case(var `case`):
-                `case`.constraints = newValue
-                self = APIElement.case(`case`)
-            case .initializer(var initializer):
-                initializer.constraints = newValue
-                self = APIElement.initializer(initializer)
-            case .variable(var variable):
-                variable.constraints = newValue
-                self = APIElement.variable(variable)
-            case .subscript(var `subscript`):
-                `subscript`.constraints = newValue
-                self = APIElement.subscript(`subscript`)
-            case .function(var function):
-                function.constraints = newValue
-                self = APIElement.function(function)
-            case .conformance(var conformance):
-                conformance.constraints = newValue
-                self = APIElement.conformance(conformance)
-            }
+            element.constraints = newValue
         }
     }
 
-    public var compilationConditions: Syntax? {
+    public internal(set) var compilationConditions: Syntax? {
         get {
-            switch self {
-            case .package(let package):
-                return package.compilationConditions
-            case .library(let library):
-                return library.compilationConditions
-            case .module(let module):
-                return module.compilationConditions
-            case .type(let type):
-                return type.compilationConditions
-            case .protocol(let `protocol`):
-                return `protocol`.compilationConditions
-            case .extension(let `extension`):
-                return `extension`.compilationConditions
-            case .case(let `case`):
-                return `case`.compilationConditions
-            case .initializer(let initializer):
-                return initializer.compilationConditions
-            case .variable(let variable):
-                return variable.compilationConditions
-            case .subscript(let `subscript`):
-                return `subscript`.compilationConditions
-            case .function(let function):
-                return function.compilationConditions
-            case .conformance(let conformance):
-                return conformance.compilationConditions
-            }
+            return element.compilationConditions
         }
         set {
-            switch self {
-            case .package(var package):
-                package.compilationConditions = newValue
-                self = APIElement.package(package)
-            case .library(var library):
-                library.compilationConditions = newValue
-                self = APIElement.library(library)
-            case .module(var module):
-                module.compilationConditions = newValue
-                self = APIElement.module(module)
-            case .type(var type):
-                type.compilationConditions = newValue
-                self = APIElement.type(type)
-            case .protocol(var `protocol`):
-                `protocol`.compilationConditions = newValue
-                self = APIElement.protocol(`protocol`)
-            case .extension(var `extension`):
-                `extension`.compilationConditions = newValue
-                self = APIElement.extension(`extension`)
-            case .case(var `case`):
-                `case`.compilationConditions = newValue
-                self = APIElement.case(`case`)
-            case .initializer(var initializer):
-                initializer.compilationConditions = newValue
-                self = APIElement.initializer(initializer)
-            case .variable(var variable):
-                variable.compilationConditions = newValue
-                self = APIElement.variable(variable)
-            case .subscript(var `subscript`):
-                `subscript`.compilationConditions = newValue
-                self = APIElement.subscript(`subscript`)
-            case .function(var function):
-                function.compilationConditions = newValue
-                self = APIElement.function(function)
-            case .conformance(var conformance):
-                conformance.compilationConditions = newValue
-                self = APIElement.conformance(conformance)
-            }
+            element.compilationConditions = newValue
         }
     }
 
@@ -292,76 +231,19 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public var children: [APIElement] {
-        switch self {
-        case .package, .library, .case, .initializer, .variable, .subscript, .function, .conformance:
+        if let scope = element as? APIScope {
+            return scope.children
+        } else {
             return []
-        case .module(let module):
-            return module.children
-        case .type(let type):
-            return type.children
-        case .protocol(let `protocol`):
-            return `protocol`.children
-        case .extension(let `extension`):
-            return `extension`.children
         }
     }
 
     public func summary() -> [String] {
-        switch self {
-        case .package(let package):
-            return package.summary()
-        case .library(let library):
-            return library.summary()
-        case .module(let module):
-            return module.summary()
-        case .type(let type):
-            return type.summary()
-        case .protocol(let `protocol`):
-            return `protocol`.summary()
-        case .extension(let `extension`):
-            return `extension`.summary()
-        case .case(let `case`):
-            return `case`.summary()
-        case .initializer(let initializer):
-            return initializer.summary()
-        case .variable(let variable):
-            return variable.summary()
-        case .subscript(let `subscript`):
-            return `subscript`.summary()
-        case .function(let function):
-            return function.summary()
-        case .conformance(let conformance):
-            return conformance.summary()
-        }
+        return element.summary()
     }
 
     public func identifierList() -> Set<String> {
-        switch self {
-        case .package(let package):
-            return package.identifierList()
-        case .library(let library):
-            return library.identifierList()
-        case .module(let module):
-            return module.identifierList()
-        case .type(let type):
-            return type.identifierList()
-        case .protocol(let `protocol`):
-            return `protocol`.identifierList()
-        case .extension(let `extension`):
-            return `extension`.identifierList()
-        case .case(let `case`):
-            return `case`.identifierList()
-        case .initializer(let initializer):
-            return initializer.identifierList()
-        case .variable(let variable):
-            return variable.identifierList()
-        case .subscript(let `subscript`):
-            return `subscript`.identifierList()
-        case .function(let function):
-            return function.identifierList()
-        case .conformance(let conformance):
-            return conformance.identifierList()
-        }
+        return element.identifierList()
     }
 
     internal mutating func prependCompilationCondition(_ addition: Syntax?) {
