@@ -21,7 +21,7 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public final class LibraryAPI : _APIElementBase, UniquelyDeclaredManifestAPIElement {
+public final class LibraryAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 

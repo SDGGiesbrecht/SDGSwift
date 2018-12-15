@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class FunctionAPI : _APIElementBase, UniquelyDeclaredSyntaxAPIElement {
+public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

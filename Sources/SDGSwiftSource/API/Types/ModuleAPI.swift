@@ -17,7 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public final class ModuleAPI : _APIElementBase, UniquelyDeclaredManifestAPIElement {
+public final class ModuleAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///

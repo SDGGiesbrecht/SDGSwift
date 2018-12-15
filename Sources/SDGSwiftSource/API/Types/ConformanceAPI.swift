@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class ConformanceAPI : _APIElementBase, UndeclaredAPIElement {
+public final class ConformanceAPI : _APIElementBase, SortableAPIElement, UndeclaredAPIElement {
 
     // MARK: - Initialization
 

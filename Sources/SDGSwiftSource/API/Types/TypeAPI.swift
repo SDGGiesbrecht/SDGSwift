@@ -16,7 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement {
+public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement,  SortableAPIElement {
 
     // MARK: - Initialization
 
