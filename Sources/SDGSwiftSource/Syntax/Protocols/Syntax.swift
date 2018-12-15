@@ -209,6 +209,21 @@ extension Syntax {
         return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
     }
 
+    internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
+        let existingCondition = Array(tokens().dropFirst())
+        let newCondition = Array(addition.tokens().dropFirst())
+        return SyntaxFactory.makeUnknownSyntax(tokens: [
+            SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.leftParen)
+            ] + newCondition + [
+                SyntaxFactory.makeToken(.rightParen),
+                SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+                SyntaxFactory.makeToken(.leftParen)
+            ] + existingCondition + [
+                SyntaxFactory.makeToken(.rightParen)
+            ])
+    }
+
     // MARK: - Generic Requirements
 
     internal func normalizedGenericRequirement(comma: Bool) -> Syntax {

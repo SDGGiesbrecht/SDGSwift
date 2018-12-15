@@ -29,3 +29,20 @@ extension Optional : Mergeable where Wrapped : Mergeable {
         }
     }
 }
+
+extension Optional where Wrapped == Syntax {
+
+    internal mutating func prependCompilationConditions(_ addition: Syntax?) {
+        switch self {
+        case .some(let instance):
+            switch addition {
+            case .some(let additionInstance):
+                self = .some(instance.prependingCompilationConditions(additionInstance))
+            case .none:
+                break
+            }
+        case .none:
+            self = addition
+        }
+    }
+}

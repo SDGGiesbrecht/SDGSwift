@@ -25,7 +25,7 @@ extension MutableAPIScope {
 
     internal func moveConditionsToChildren() {
         for child in children {
-            child.genericElement.prependCompilationCondition(compilationConditions)
+            child.genericElement.compilationConditions.prependCompilationConditions(compilationConditions)
             // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
             if constraints?.source().isEmpty ≠ false {
                 if child.constraints?.source().isEmpty ≠ false {
