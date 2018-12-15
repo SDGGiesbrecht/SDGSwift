@@ -22,174 +22,171 @@ public class APIScope : APIElement {
 
     internal init(conformances: [ConformanceAPI], children: [APIElementKind]) {
         super.init()
-        self.conformances = conformances
-        for element in children {
-            switch element {
-            case .case(let `case`):
-                cases.append(`case`)
-            case .type(let subtype):
-                subtypes.append(subtype)
-            case .initializer(let initializer):
-                initializers.append(initializer)
-            case .variable(let property) :
-                if property.declaration.typeMemberKeyword ≠ nil {
-                    typeProperties.append(property)
-                } else {
-                    properties.append(property)
-                }
-            case .subscript(let `subscript`):
-                subscripts.append(`subscript`)
-            case .function(let method) :
-                if method._declaration.typeMemberKeyword ≠ nil {
-                    typeMethods.append(method)
-                } else {
-                    methods.append(method)
-                }
-            case .package, .library, .module, .protocol, .extension, .conformance: // @exempt(from: tests) Invalid in nested scope.
-                break
-            }
-        }
+        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElementKind($0) }))
     }
 
     // MARK: - Properties
 
-    private var _cases: [CaseAPI] = []
-    public private(set) var cases: [CaseAPI] {
-        get {
-            return _cases
-        }
-        set {
-            _cases = newValue.sorted()
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
+
+    private func filtered<T>(_ filter: (APIElementKind) -> T?) -> AnyBidirectionalCollection<T> {
+        return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
+    }
+
+    public var cases: AnyBidirectionalCollection<CaseAPI> {
+        return filtered { (element) -> CaseAPI? in
+            switch element {
+            case .case(let `case`):
+                return `case`
+            default:
+                return nil
+            }
         }
     }
 
-    private var _subtypes: [TypeAPI] = []
-    public private(set) var subtypes: [TypeAPI] {
-        get {
-            return _subtypes
-        }
-        set {
-            _subtypes = newValue.sorted()
-        }
-    }
-
-    private var _typeProperties: [VariableAPI] = []
-    public private(set) var typeProperties: [VariableAPI] {
-        get {
-            return _typeProperties
-        }
-        set {
-            _typeProperties = newValue.sorted()
+    public var subtypes: AnyBidirectionalCollection<TypeAPI> {
+        return filtered { (element) -> TypeAPI? in
+            switch element {
+            case .type(let type):
+                return type
+            default:
+                return nil
+            }
         }
     }
 
-    private var _typeMethods: [FunctionAPI] = []
-    public private(set) var typeMethods: [FunctionAPI] {
-        get {
-            return _typeMethods
-        }
-        set {
-            _typeMethods = newValue.sorted()
-        }
-    }
-
-    private var _initializers: [InitializerAPI] = []
-    public private(set) var initializers: [InitializerAPI] {
-        get {
-            return _initializers
-        }
-        set {
-            _initializers = newValue.sorted()
+    public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
+        return filtered { (element) -> VariableAPI? in
+            switch element {
+            case .variable(let property):
+                if property.declaration.typeMemberKeyword ≠ nil {
+                    return property
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
         }
     }
 
-    private var _properties: [VariableAPI] = []
-    public private(set) var properties: [VariableAPI] {
-        get {
-            return _properties
-        }
-        set {
-            _properties = newValue.sorted()
-        }
-    }
-
-    private var _subscripts: [SubscriptAPI] = []
-    public private(set) var subscripts: [SubscriptAPI] {
-        get {
-            return _subscripts
-        }
-        set {
-            _subscripts = newValue.sorted()
+    public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
+        return filtered { (element) -> FunctionAPI? in
+            switch element {
+            case .function(let method):
+                if method.declaration.typeMemberKeyword ≠ nil {
+                    return method
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
         }
     }
 
-    private var _methods: [FunctionAPI] = []
-    public private(set) var methods: [FunctionAPI] {
-        get {
-            return _methods
-        }
-        set {
-            _methods = newValue.sorted()
+    public var initializers: AnyBidirectionalCollection<InitializerAPI> {
+        return filtered { (element) -> InitializerAPI? in
+            switch element {
+            case .initializer(let initializer):
+                return initializer
+            default:
+                return nil
+            }
         }
     }
 
-    private var _conformances: [ConformanceAPI] = []
-    public private(set) var conformances: [ConformanceAPI] {
-        get {
-            return _conformances
+    public var properties: AnyBidirectionalCollection<VariableAPI> {
+        return filtered { (element) -> VariableAPI? in
+            switch element {
+            case .variable(let property):
+                if property.declaration.typeMemberKeyword == nil {
+                    return property
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
         }
-        set {
-            _conformances = newValue.sorted()
+    }
+
+    public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
+        return filtered { (element) -> SubscriptAPI? in
+            switch element {
+            case .subscript(let `subscript`):
+                return `subscript`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var methods: AnyBidirectionalCollection<FunctionAPI> {
+        return filtered { (element) -> FunctionAPI? in
+            switch element {
+            case .function(let method):
+                if method.declaration.typeMemberKeyword == nil {
+                    return method
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
+        return filtered { (element) -> ConformanceAPI? in
+            switch element {
+            case .conformance(let conformance):
+                return conformance
+            default:
+                return nil
+            }
         }
     }
 
     // MARK: - Merging
 
     internal func moveConditionsToChildren() {
+        var result: [APIElementKind] = []
         for child in children {
-            child.prependCompilationCondition(compilationConditions)
-            child.constraints = child.constraints.merged(with: constraints)
+            var mutable = child
+            mutable.prependCompilationCondition(APIElementKind(self).compilationConditions)
+            mutable.constraints = child.constraints.merged(with: constraints)
+            result.append(mutable)
         }
         compilationConditions = nil
         constraints = nil
+        children = result
     }
 
     internal func merge(extension: ExtensionAPI) {
         `extension`.moveConditionsToChildren()
-        subtypes.append(contentsOf: `extension`.subtypes)
-        typeProperties.append(contentsOf: `extension`.typeProperties)
-        typeMethods.append(contentsOf: `extension`.typeMethods)
-        initializers.append(contentsOf: `extension`.initializers)
-        properties.append(contentsOf: `extension`.properties)
-        subscripts.append(contentsOf: `extension`.subscripts)
-        methods.append(contentsOf: `extension`.methods)
-        conformances.append(contentsOf: `extension`.conformances)
-
-        methods = FunctionAPI.groupIntoOverloads(methods)
+        children.append(contentsOf: `extension`.children)
+        children = FunctionAPI.groupIntoOverloads(children)
     }
 
     // MARK: - APIElement
 
     internal func scopeIdentifierList() -> Set<String> {
-        return children.map({ APIElementKind($0) }).reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
+        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
     }
 
-    public override var children: AnyBidirectionalCollection<APIElement> {
-        let joined = ([
-            cases,
-            subtypes,
-            typeProperties,
-            typeMethods,
-            initializers,
-            properties,
-            subscripts,
-            methods,
-            conformances
-            ] as [[APIElement]]).joined()
-        return AnyBidirectionalCollection(joined)
+    private var _children: [APIElementKind] = []
+    public override var children: [APIElementKind] {
+        get {
+            return _children
+        }
+        set {
+            _children = newValue.sorted()
+        }
     }
 
     internal var scopeSummary: [String] {
-        return Array(children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined())
+        return Array(children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined())
     }
 }

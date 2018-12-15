@@ -1,3 +1,7 @@
+ObjectiveCClass • class ObjectiveCClass
+ delegate • @available(*, introduced: 4.2.1) @IBOutlet weak static var delegate: NSObject? { get set }
+ copyingProperty • @objc var copyingProperty: NSString { get set }
+ NSObject
 (Int)
  staticProperty • static var staticProperty: Int { get }
  constantWithInferredType • var constantWithInferredType { get }
@@ -5,7 +9,3 @@
  groupedString • var groupedString: String { get }
  optional • weak var optional: SomeType? { get set }
  var • var var: Int { get }
-ObjectiveCClass • class ObjectiveCClass
- delegate • @available(*, introduced: 4.2.1) @IBOutlet weak static var delegate: NSObject? { get set }
- copyingProperty • @objc var copyingProperty: NSString { get set }
- NSObject

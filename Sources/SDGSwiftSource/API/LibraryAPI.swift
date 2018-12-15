@@ -61,6 +61,8 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
         return modules.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })

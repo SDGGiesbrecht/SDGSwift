@@ -43,6 +43,8 @@ public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
         return _declaration.identifierList()

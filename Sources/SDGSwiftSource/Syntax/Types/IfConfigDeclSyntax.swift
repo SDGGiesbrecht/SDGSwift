@@ -83,8 +83,7 @@ extension IfConfigDeclSyntax {
         var result: [APIElementKind] = []
         for element in combined.keys.sorted() {
             let condition: Syntax? = combined[element]!
-            element.prependCompilationCondition(condition)
-            result.append(element)
+            result.append(element.prependingCompilationCondition(condition))
         }
         return result
     }

@@ -110,29 +110,31 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
         }
     }
 
-    public override var children: AnyBidirectionalCollection<APIElement> {
+    public override var children: [APIElementKind] {
         let joined = ([
             types,
             extensions,
             protocols,
             functions,
             globalVariables
-            ] as [[APIElement]]).joined()
-        return AnyBidirectionalCollection(joined)
+            ] as [[APIElement]]).joined().map({ APIElementKind($0) })
+        return Array(joined)
     }
 
     // MARK: - APIElement
 
     public override var summary: [String] {
-        return [name.source() + " • " + declaration.source()] + children.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+        return [name.source() + " • " + declaration.source()] + children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
     }
 
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
-        return children.map({ APIElementKind($0).identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
+        return children.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
 
     // MARK: - DeclaredAPIElement

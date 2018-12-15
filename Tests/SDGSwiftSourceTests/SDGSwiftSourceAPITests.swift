@@ -118,7 +118,7 @@ class SDGSwiftSourceAPITests : TestCase {
             // API
             let api = sourceFile.api().sorted()
             let summary = api.map({ $0.summary().joined(separator: "\n") }).joined(separator: "\n")
-            SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
+            SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: true)
 
             let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
             let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ element in
@@ -133,7 +133,7 @@ class SDGSwiftSourceAPITests : TestCase {
                     return nil
                 }
             }).compactMap({ $0 }).joined(separator: "\n\n")
-            SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
+            SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: true)
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
                 search: for element in api {

@@ -38,6 +38,9 @@ public class ConformanceAPI : APIElement, UndeclaredAPIElement {
 
     // MARK: - APIElementProtocol
 
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
+
     public func identifierList() -> Set<String> {
         return []
     }

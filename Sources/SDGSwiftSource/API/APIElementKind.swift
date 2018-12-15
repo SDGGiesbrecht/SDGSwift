@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+import SDGLogic
+import SDGMathematics
 import SDGLocalization
 
 public enum APIElementKind : Comparable, Hashable {
@@ -174,8 +177,146 @@ public enum APIElementKind : Comparable, Hashable {
         }
     }
 
+    public var constraints: GenericWhereClauseSyntax? {
+        get {
+            switch self {
+            case .package(let package):
+                return package.constraints
+            case .library(let library):
+                return library.constraints
+            case .module(let module):
+                return module.constraints
+            case .type(let type):
+                return type.constraints
+            case .protocol(let `protocol`):
+                return `protocol`.constraints
+            case .extension(let `extension`):
+                return `extension`.constraints
+            case .case(let `case`):
+                return `case`.constraints
+            case .initializer(let initializer):
+                return initializer.constraints
+            case .variable(let variable):
+                return variable.constraints
+            case .subscript(let `subscript`):
+                return `subscript`.constraints
+            case .function(let function):
+                return function.constraints
+            case .conformance(let conformance):
+                return conformance.constraints
+            }
+        }
+        set {
+            switch self {
+            case .package(let package):
+                package.constraints = newValue
+                self = APIElementKind(package)
+            case .library(let library):
+                library.constraints = newValue
+                self = APIElementKind(library)
+            case .module(let module):
+                module.constraints = newValue
+                self = APIElementKind(module)
+            case .type(let type):
+                type.constraints = newValue
+                self = APIElementKind(type)
+            case .protocol(let `protocol`):
+                `protocol`.constraints = newValue
+                self = APIElementKind(`protocol`)
+            case .extension(let `extension`):
+                `extension`.constraints = newValue
+                self = APIElementKind(`extension`)
+            case .case(let `case`):
+                `case`.constraints = newValue
+                self = APIElementKind(`case`)
+            case .initializer(let initializer):
+                initializer.constraints = newValue
+                self = APIElementKind(initializer)
+            case .variable(let variable):
+                variable.constraints = newValue
+                self = APIElementKind(variable)
+            case .subscript(let `subscript`):
+                `subscript`.constraints = newValue
+                self = APIElementKind(`subscript`)
+            case .function(let function):
+                function.constraints = newValue
+                self = APIElementKind(function)
+            case .conformance(let conformance):
+                conformance.constraints = newValue
+                self = APIElementKind(conformance)
+            }
+        }
+    }
+
     public var compilationConditions: Syntax? {
-        return element.compilationConditions
+        get {
+            switch self {
+            case .package(let package):
+                return package.compilationConditions
+            case .library(let library):
+                return library.compilationConditions
+            case .module(let module):
+                return module.compilationConditions
+            case .type(let type):
+                return type.compilationConditions
+            case .protocol(let `protocol`):
+                return `protocol`.compilationConditions
+            case .extension(let `extension`):
+                return `extension`.compilationConditions
+            case .case(let `case`):
+                return `case`.compilationConditions
+            case .initializer(let initializer):
+                return initializer.compilationConditions
+            case .variable(let variable):
+                return variable.compilationConditions
+            case .subscript(let `subscript`):
+                return `subscript`.compilationConditions
+            case .function(let function):
+                return function.compilationConditions
+            case .conformance(let conformance):
+                return conformance.compilationConditions
+            }
+        }
+        set {
+            switch self {
+            case .package(let package):
+                package.compilationConditions = newValue
+                self = APIElementKind(package)
+            case .library(let library):
+                library.compilationConditions = newValue
+                self = APIElementKind(library)
+            case .module(let module):
+                module.compilationConditions = newValue
+                self = APIElementKind(module)
+            case .type(let type):
+                type.compilationConditions = newValue
+                self = APIElementKind(type)
+            case .protocol(let `protocol`):
+                `protocol`.compilationConditions = newValue
+                self = APIElementKind(`protocol`)
+            case .extension(let `extension`):
+                `extension`.compilationConditions = newValue
+                self = APIElementKind(`extension`)
+            case .case(let `case`):
+                `case`.compilationConditions = newValue
+                self = APIElementKind(`case`)
+            case .initializer(let initializer):
+                initializer.compilationConditions = newValue
+                self = APIElementKind(initializer)
+            case .variable(let variable):
+                variable.compilationConditions = newValue
+                self = APIElementKind(variable)
+            case .subscript(let `subscript`):
+                `subscript`.compilationConditions = newValue
+                self = APIElementKind(`subscript`)
+            case .function(let function):
+                function.compilationConditions = newValue
+                self = APIElementKind(function)
+            case .conformance(let conformance):
+                conformance.compilationConditions = newValue
+                self = APIElementKind(conformance)
+            }
+        }
     }
 
     public var name: Syntax {
@@ -207,8 +348,8 @@ public enum APIElementKind : Comparable, Hashable {
         }
     }
 
-    public var children: AnyBidirectionalCollection<APIElementKind> {
-        return AnyBidirectionalCollection(element.children.map({ APIElementKind($0) }))
+    public var children: [APIElementKind] {
+        return element.children
     }
 
     public func summary() -> [String] {
@@ -244,38 +385,107 @@ public enum APIElementKind : Comparable, Hashable {
         }
     }
 
-    internal func prependCompilationCondition(_ addition: Syntax?) {
-        element.prependCompilationCondition(addition)
+    internal mutating func prependCompilationCondition(_ addition: Syntax?) {
+        switch self {
+        case .package(var package):
+            package.prependCompilationCondition(addition)
+            self = APIElementKind(package)
+        case .library(var library):
+            library.prependCompilationCondition(addition)
+            self = APIElementKind(library)
+        case .module(var module):
+            module.prependCompilationCondition(addition)
+            self = APIElementKind(module)
+        case .type(var type):
+            type.prependCompilationCondition(addition)
+            self = APIElementKind(type)
+        case .protocol(var `protocol`):
+            `protocol`.prependCompilationCondition(addition)
+            self = APIElementKind(`protocol`)
+        case .extension(var `extension`):
+            `extension`.prependCompilationCondition(addition)
+            self = APIElementKind(`extension`)
+        case .case(var `case`):
+            `case`.prependCompilationCondition(addition)
+            self = APIElementKind(`case`)
+        case .initializer(var initializer):
+            initializer.prependCompilationCondition(addition)
+            self = APIElementKind(initializer)
+        case .variable(var variable):
+            variable.prependCompilationCondition(addition)
+            self = APIElementKind(variable)
+        case .subscript(var `subscript`):
+            `subscript`.prependCompilationCondition(addition)
+            self = APIElementKind(`subscript`)
+        case .function(var function):
+            function.prependCompilationCondition(addition)
+            self = APIElementKind(function)
+        case .conformance(var conformance):
+            conformance.prependCompilationCondition(addition)
+            self = APIElementKind(conformance)
+        }
     }
+    internal func prependingCompilationCondition(_ addition: Syntax?) -> APIElementKind {
+        return nonmutatingVariant(of: { $0.prependCompilationCondition($1) }, on: self, with: addition)
+    }
+
 
     // MARK: - Comparable
 
-    internal func comparisonIdentity() -> (String, String) {
+    private enum Group : OrderedEnumeration {
+        case package
+        case library
+        case module
+        case type
+        case `protocol`
+        case `extension`
+        case `case`
+        case typeProperty
+        case typeMethod
+        case initializer
+        case variable
+        case `subscript`
+        case function
+        case conformance
+    }
+
+    private func comparisonIdentity() -> (Group, String, String) {
+        func flatten(_ group: Group, _ properties: (name: String, declaration: String)) -> (Group, String, String) {
+            return (group, properties.name, properties.declaration)
+        }
         switch self {
         case .package(let package):
-            return package.comparisonIdentity()
+            return flatten(.package, package.comparisonIdentity())
         case .library(let library):
-            return library.comparisonIdentity()
+            return flatten(.library, library.comparisonIdentity())
         case .module(let module):
-            return module.comparisonIdentity()
+            return flatten(.module, module.comparisonIdentity())
         case .type(let type):
-            return type.comparisonIdentity()
+            return flatten(.type, type.comparisonIdentity())
         case .protocol(let `protocol`):
-            return `protocol`.comparisonIdentity()
+            return flatten(.protocol, `protocol`.comparisonIdentity())
         case .extension(let `extension`):
-            return `extension`.comparisonIdentity()
+            return flatten(.extension, `extension`.comparisonIdentity())
         case .case(let `case`):
-            return `case`.comparisonIdentity()
+            return flatten(.case, `case`.comparisonIdentity())
         case .initializer(let initializer):
-            return initializer.comparisonIdentity()
+            return flatten(.initializer, initializer.comparisonIdentity())
         case .variable(let variable):
-            return variable.comparisonIdentity()
+            if variable.declaration.typeMemberKeyword ≠ nil {
+                return flatten(.typeProperty, variable.comparisonIdentity())
+            } else {
+                return flatten(.variable, variable.comparisonIdentity())
+            }
         case .subscript(let `subscript`):
-            return `subscript`.comparisonIdentity()
+            return flatten(.subscript, `subscript`.comparisonIdentity())
         case .function(let function):
-            return function.comparisonIdentity()
+            if function.declaration.typeMemberKeyword ≠ nil {
+                return flatten(.typeMethod, function.comparisonIdentity())
+            } else {
+                return flatten(.function, function.comparisonIdentity())
+            }
         case .conformance(let conformance):
-            return conformance.comparisonIdentity()
+            return flatten(.conformance, conformance.comparisonIdentity())
         }
     }
 

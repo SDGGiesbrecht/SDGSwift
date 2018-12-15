@@ -15,11 +15,21 @@
 public protocol APIElementProtocol : Comparable {
     var documentation: DocumentationSyntax? { get }
     var possibleDeclaration: Syntax? { get }
+    var constraints: GenericWhereClauseSyntax? { get }
+    var compilationConditions: Syntax? { get }
     var genericName: Syntax { get }
     func identifierList() -> Set<String>
 }
 
 extension APIElementProtocol {
+
+    // MARK: - Description
+
+    internal func appendCompilationConditions(to description: inout String) {
+        if let conditions = compilationConditions {
+            description += " • " + conditions.source()
+        }
+    }
 
     // MARK: - Comparable
 

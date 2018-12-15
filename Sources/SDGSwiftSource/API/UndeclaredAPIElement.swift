@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UndeclaredAPIElement : APIElementProtocol {
+internal protocol UndeclaredAPIElement : MutableAPIElement {
     var type: TypeSyntax { get }
 }
 

@@ -80,6 +80,23 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
         return result
     }
 
+    internal static func groupIntoOverloads(_ elements: [APIElementKind]) -> [APIElementKind] {
+        var functions: [FunctionAPI] = []
+        var result: [APIElementKind] = []
+        result.reserveCapacity(elements.count)
+        for element in elements {
+            switch element {
+            case .function(let function):
+                functions.append(function)
+            default:
+                result.append(element)
+            }
+        }
+        functions = FunctionAPI.groupIntoOverloads(functions)
+        result.append(contentsOf: functions.lazy.map({ APIElementKind($0) }))
+        return result
+    }
+
     // MARK: - APIElement
 
     public override var summary: [String] {
@@ -105,6 +122,8 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
+    public internal(set) var constraints: GenericWhereClauseSyntax?
+    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
         return _declaration.identifierList()

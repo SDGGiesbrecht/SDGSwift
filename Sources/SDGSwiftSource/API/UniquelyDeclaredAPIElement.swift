@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
+internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement, MutableAPIElement {
     associatedtype Declaration : Syntax
     associatedtype Name : Syntax
     var declaration: Declaration { get }
