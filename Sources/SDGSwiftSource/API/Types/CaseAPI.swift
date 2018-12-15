@@ -14,14 +14,14 @@
 
 import SDGLogic
 
-public final class CaseAPI : UniquelyDeclaredSyntaxAPIElement {
+public final class CaseAPI : APIElementBase, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax, name: EnumCaseDeclSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - APIElement
@@ -34,7 +34,6 @@ public final class CaseAPI : UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 

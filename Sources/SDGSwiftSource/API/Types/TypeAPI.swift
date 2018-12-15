@@ -16,17 +16,17 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public final class TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
+public final class TypeAPI : APIElementBase, MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
 
     // MARK: - Initialization
 
     internal init<T>(documentation: DocumentationSyntax?, declaration: T, children: [APIElement]) where T : TypeDeclaration {
-        self.documentation = documentation
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
         _children = TypeAPI.normalize(children: children)
         constraints = constraints.merged(with: normalizedConstraints)
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -35,7 +35,6 @@ public final class TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElem
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 

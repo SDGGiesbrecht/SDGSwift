@@ -14,7 +14,7 @@
 
 import SDGControlFlow
 
-public final class ExtensionAPI : MutableAPIScope, UndeclaredAPIElement {
+public final class ExtensionAPI : APIElementBase, MutableAPIScope, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -22,6 +22,7 @@ public final class ExtensionAPI : MutableAPIScope, UndeclaredAPIElement {
         self.type = type.normalized()
         _children = ExtensionAPI.normalize(children: children)
         self.constraints = constraints?.normalized()
+        super.init(documentation: nil)
     }
 
     // MARK: - Properties

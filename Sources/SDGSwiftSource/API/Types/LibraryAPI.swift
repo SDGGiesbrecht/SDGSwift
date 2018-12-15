@@ -21,7 +21,7 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public final class LibraryAPI : UniquelyDeclaredManifestAPIElement {
+public final class LibraryAPI : APIElementBase, UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
@@ -43,9 +43,9 @@ public final class LibraryAPI : UniquelyDeclaredManifestAPIElement {
     }
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -61,7 +61,6 @@ public final class LibraryAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 

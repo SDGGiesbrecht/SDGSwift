@@ -12,14 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class VariableAPI : UniquelyDeclaredSyntaxAPIElement {
+public final class VariableAPI : APIElementBase, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: VariableDeclSyntax, name: VariableDeclSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - APIElement
@@ -31,8 +31,6 @@ public final class VariableAPI : UniquelyDeclaredSyntaxAPIElement {
     }
 
     // MARK: - APIElementProtocol
-
-    public let documentation: DocumentationSyntax?
 
     public func identifierList() -> Set<String> {
         return [name.source()]

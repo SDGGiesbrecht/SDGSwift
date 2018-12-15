@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public final class PackageAPI : UniquelyDeclaredManifestAPIElement {
+public final class PackageAPI : APIElementBase, UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
@@ -54,9 +54,9 @@ public final class PackageAPI : UniquelyDeclaredManifestAPIElement {
     }
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -74,7 +74,6 @@ public final class PackageAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 

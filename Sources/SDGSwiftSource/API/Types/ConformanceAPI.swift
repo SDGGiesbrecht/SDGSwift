@@ -12,12 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class ConformanceAPI : UndeclaredAPIElement {
+public final class ConformanceAPI : APIElementBase, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
     internal init(type: TypeSyntax) {
         self.type = type.normalized()
+        super.init(documentation: nil)
     }
 
     // MARK: - Properties

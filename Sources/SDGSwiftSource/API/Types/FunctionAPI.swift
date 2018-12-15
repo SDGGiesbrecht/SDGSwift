@@ -15,14 +15,14 @@
 import SDGLogic
 import SDGCollections
 
-public final class FunctionAPI : ConstrainedAPIElement {
+public final class FunctionAPI : APIElementBase, ConstrainedAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionDeclSyntax, name: FunctionDeclSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -116,7 +116,6 @@ public final class FunctionAPI : ConstrainedAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {

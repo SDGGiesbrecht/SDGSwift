@@ -15,14 +15,14 @@
 import SDGLogic
 import SDGCollections
 
-public final class SubscriptAPI : ConstrainedAPIElement {
+public final class SubscriptAPI : APIElementBase, ConstrainedAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: SubscriptDeclSyntax, name: SubscriptDeclSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
+        super.init(documentation: documentation)
     }
 
     // MARK: - APIElement
@@ -35,7 +35,6 @@ public final class SubscriptAPI : ConstrainedAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {

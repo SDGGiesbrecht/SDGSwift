@@ -14,15 +14,15 @@
 
 import SDGCollections
 
-public final class ProtocolAPI : MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
+public final class ProtocolAPI : APIElementBase, MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, name: ProtocolDeclSyntax, children: [APIElement]) {
-        self.documentation = documentation
         self.declaration = declaration
         self.name = name
         _children = ProtocolAPI.normalize(children: children)
+        super.init(documentation: documentation)
 
         for child in children {
             switch child {
@@ -36,7 +36,6 @@ public final class ProtocolAPI : MutableAPIScope, UniquelyDeclaredSyntaxAPIEleme
 
     // MARK: - APIElementProtocol
 
-    public let documentation: DocumentationSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 
