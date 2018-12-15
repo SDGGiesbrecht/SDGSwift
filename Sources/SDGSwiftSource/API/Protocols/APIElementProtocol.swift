@@ -162,8 +162,18 @@ extension APIElementProtocol {
     }
 
     internal func appendCompilationConditions(to description: inout String) {
+        // #warning(Move this.)
         if let conditions = compilationConditions {
             description += " • " + conditions.source()
         }
+    }
+
+    public func summary() -> [String] {
+        var result = genericName.source()
+        if let declaration = possibleDeclaration?.source() {
+            result += " • " + declaration
+        }
+        appendCompilationConditions(to: &result)
+        return [result]
     }
 }

@@ -16,22 +16,6 @@ import SDGLogic
 
 public final class CaseAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
-    // MARK: - Initialization
-
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax, name: EnumCaseDeclSyntax, children: [APIElement]) {
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-    }
-
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        return [result]
-    }
-
     // MARK: - APIElementProtocol
 
     public func identifierList() -> Set<String> {
@@ -42,4 +26,12 @@ public final class CaseAPI : _APIElementBase, SortableAPIElement, UniquelyDeclar
 
     public internal(set) var declaration: EnumCaseDeclSyntax
     public let name: EnumCaseDeclSyntax
+
+    // MARK: - UniquelyDeclaredAPIElement
+
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax, name: EnumCaseDeclSyntax, children: [APIElement]) {
+        self.declaration = declaration
+        self.name = name
+        super.init(documentation: documentation)
+    }
 }
