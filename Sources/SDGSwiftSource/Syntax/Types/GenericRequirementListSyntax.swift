@@ -50,7 +50,7 @@ extension GenericRequirementListSyntax : Mergeable {
 
     // MARK: - Mergeable
 
-    internal func merged(with other: GenericRequirementListSyntax) -> GenericRequirementListSyntax {
-        return SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
+    internal mutating func merge(with other: GenericRequirementListSyntax) {
+        self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
     }
 }

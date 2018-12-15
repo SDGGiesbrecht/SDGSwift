@@ -23,6 +23,9 @@ public final class SubscriptAPI : _APIElementBase, UniquelyDeclaredSyntaxAPIElem
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
+
+        constraints.merge(with: declaration.genericWhereClause)
+        self.declaration = declaration.withGenericWhereClause(nil)
     }
 
     // MARK: - APIElement

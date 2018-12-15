@@ -31,7 +31,7 @@ extension Generic {
             genericWhereClause = self.genericWhereClause
         }
 
-        newGenericWhereClause = newGenericWhereClause.merged(with: genericWhereClause?.normalized())
+        newGenericWhereClause.merge(with: genericWhereClause?.normalized())
         return (newGenericParemeterClause, newGenericWhereClause)
     }
 }

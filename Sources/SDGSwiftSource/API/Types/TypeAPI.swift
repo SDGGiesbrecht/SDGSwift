@@ -25,7 +25,7 @@ public final class TypeAPI : _APIElementBase, MutableAPIScope, DeclaredAPIElemen
         _declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
         super.init(documentation: documentation, children: children)
-        constraints = constraints.merged(with: normalizedConstraints)
+        constraints.merge(with: normalizedConstraints)
     }
 
     // MARK: - Properties

@@ -29,7 +29,7 @@ extension MutableAPIScope {
             // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
             if constraints?.source().isEmpty ≠ false {
                 if child.constraints?.source().isEmpty ≠ false {
-                    child.genericElement.constraints = child.constraints.merged(with: constraints)
+                    child.genericElement.constraints.merge(with: constraints)
                 } else {
                     child.genericElement.constraints = constraints
                 }
