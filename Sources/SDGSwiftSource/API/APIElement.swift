@@ -155,32 +155,7 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public var declaration: Syntax? {
-        switch self {
-        case .package(let package):
-            return package.declaration
-        case .library(let library):
-            return library.declaration
-        case .module(let module):
-            return module.declaration
-        case .type(let type):
-            return type.genericDeclaration
-        case .protocol(let `protocol`):
-            return `protocol`.declaration
-        case .extension(let `extension`):
-            return `extension`.possibleDeclaration
-        case .case(let `case`):
-            return `case`.declaration
-        case .initializer(let initializer):
-            return initializer.declaration
-        case .variable(let variable):
-            return variable.declaration
-        case .subscript(let `subscript`):
-            return `subscript`.declaration
-        case .function(let function):
-            return function.declaration
-        case .conformance(let conformance):
-            return conformance.possibleDeclaration
-        }
+        return element.possibleDeclaration
     }
 
     public internal(set) var constraints: GenericWhereClauseSyntax? {
@@ -202,32 +177,7 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public var name: Syntax {
-        switch self {
-        case .package(let package):
-            return package.name
-        case .library(let library):
-            return library.name
-        case .module(let module):
-            return module.name
-        case .type(let type):
-            return type.genericName
-        case .protocol(let `protocol`):
-            return `protocol`.name
-        case .extension(let `extension`):
-            return `extension`.genericName
-        case .case(let `case`):
-            return `case`.name
-        case .initializer(let initializer):
-            return initializer.name
-        case .variable(let variable):
-            return variable.name
-        case .subscript(let `subscript`):
-            return `subscript`.name
-        case .function(let function):
-            return function.name
-        case .conformance(let conformance):
-            return conformance.genericName
-        }
+        return element.genericName
     }
 
     public var children: [APIElement] {
