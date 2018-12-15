@@ -49,7 +49,7 @@ public class _APIElementBase {
         }
     }
 
-    // MARK: - Conditions
+    // MARK: - Merging
 
     internal func moveConditionsToChildren() {
         for child in children {
@@ -65,5 +65,11 @@ public class _APIElementBase {
         }
         compilationConditions = nil
         constraints = nil
+    }
+
+    internal func merge(extension: ExtensionAPI) {
+        `extension`.moveConditionsToChildren()
+        children.append(contentsOf: `extension`.children)
+        children = FunctionAPI.groupIntoOverloads(children)
     }
 }

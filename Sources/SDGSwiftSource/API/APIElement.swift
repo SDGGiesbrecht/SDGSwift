@@ -45,19 +45,13 @@ public enum APIElement : Comparable, Hashable {
 
         var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
-            for index in types.indices {
-                let type = types[index]
-                if `extension`.isExtension(of: type) {
-                    types[index] = type.merging(extension: `extension`)
-                    continue extensionIteration
-                }
+            for type in types where `extension`.isExtension(of: type) {
+                type.merge(extension: `extension`)
+                continue extensionIteration
             }
-            for index in protocols.indices {
-                let `protocol` = protocols[index]
-                if `extension`.isExtension(of: `protocol`) {
-                    protocols[index] = `protocol`.merging(extension: `extension`)
-                    continue extensionIteration
-                }
+            for `protocol` in protocols where `extension`.isExtension(of: `protocol`) {
+                `protocol`.merge(extension: `extension`)
+                continue extensionIteration
             }
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)

@@ -14,7 +14,7 @@
 
 import SDGControlFlow
 
-public final class ExtensionAPI : _APIElementBase, MutableAPIScope, UndeclaredAPIElement {
+public final class ExtensionAPI : _APIElementBase, APIElementProtocol, UndeclaredAPIElement {
 
     // MARK: - Initialization
 
