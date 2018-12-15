@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public final class ProtocolAPI : APIElementBase, MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
+public final class ProtocolAPI : _APIElementBase, MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

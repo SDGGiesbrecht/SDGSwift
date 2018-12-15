@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public final class CaseAPI : APIElementBase, UniquelyDeclaredSyntaxAPIElement {
+public final class CaseAPI : _APIElementBase, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

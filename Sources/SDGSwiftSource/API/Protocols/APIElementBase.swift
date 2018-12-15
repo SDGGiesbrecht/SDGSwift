@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class APIElementBase {
+public class _APIElementBase {
 
     // MARK: - Initialization
 
-    init(documentation: DocumentationSyntax?) {
+    internal init(documentation: DocumentationSyntax?) {
         self.documentation = documentation
     }
 

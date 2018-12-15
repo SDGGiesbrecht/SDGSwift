@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public final class PackageAPI : APIElementBase, UniquelyDeclaredManifestAPIElement {
+public final class PackageAPI : _APIElementBase, UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 

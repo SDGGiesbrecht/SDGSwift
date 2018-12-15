@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class InitializerAPI : APIElementBase, ConstrainedAPIElement {
+public final class InitializerAPI : _APIElementBase, ConstrainedAPIElement {
 
     // MARK: - Initialization
 
