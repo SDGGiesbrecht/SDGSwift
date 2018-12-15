@@ -28,16 +28,6 @@ public class APIScope {
     public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 
-    // MARK: - Merging
-
-    internal func merge(extension: ExtensionAPI) {
-        var `extension` = `extension`
-
-        `extension`.moveConditionsToChildren()
-        children.append(contentsOf: `extension`.children)
-        children = FunctionAPI.groupIntoOverloads(children)
-    }
-
     // MARK: - APIElement
 
     internal func scopeIdentifierList() -> Set<String> {

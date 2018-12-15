@@ -52,8 +52,9 @@ public class ExtensionAPI : APIScope, MutableAPIScope, UndeclaredAPIElement {
         for (_, group) in sorted {
             var merged: ExtensionAPI?
             for `extension` in group {
-                if let existing = merged {
+                if var existing = merged {
                     existing.merge(extension: `extension`)
+                    merged = existing
                 } else {
                     merged = `extension`
                 }

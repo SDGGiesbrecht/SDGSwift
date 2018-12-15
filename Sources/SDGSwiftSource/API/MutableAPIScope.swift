@@ -32,4 +32,12 @@ extension MutableAPIScope {
         constraints = nil
         children = result
     }
+
+    internal mutating func merge(extension: ExtensionAPI) {
+        var `extension` = `extension`
+
+        `extension`.moveConditionsToChildren()
+        children.append(contentsOf: `extension`.children)
+        children = FunctionAPI.groupIntoOverloads(children)
+    }
 }
