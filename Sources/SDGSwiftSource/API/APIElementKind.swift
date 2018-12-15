@@ -364,7 +364,32 @@ public enum APIElementKind : Comparable, Hashable {
     }
 
     public func summary() -> [String] {
-        return element.summary
+        switch self {
+        case .package(let package):
+            return package.summary()
+        case .library(let library):
+            return library.summary()
+        case .module(let module):
+            return module.summary()
+        case .type(let type):
+            return type.summary()
+        case .protocol(let `protocol`):
+            return `protocol`.summary()
+        case .extension(let `extension`):
+            return `extension`.summary()
+        case .case(let `case`):
+            return `case`.summary()
+        case .initializer(let initializer):
+            return initializer.summary()
+        case .variable(let variable):
+            return variable.summary()
+        case .subscript(let `subscript`):
+            return `subscript`.summary()
+        case .function(let function):
+            return function.summary()
+        case .conformance(let conformance):
+            return conformance.summary()
+        }
     }
 
     public func identifierList() -> Set<String> {

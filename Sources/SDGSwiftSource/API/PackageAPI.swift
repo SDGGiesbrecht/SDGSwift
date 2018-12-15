@@ -65,10 +65,10 @@ public class PackageAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()]
-            + libraries.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
-            + modules.map({ $0.summary.map({ $0.prepending(" ") }) }).joined()
+            + libraries.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
+            + modules.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
     }
 
     // MARK: - APIElementProtocol

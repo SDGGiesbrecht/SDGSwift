@@ -123,7 +123,7 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()] + children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
     }
 

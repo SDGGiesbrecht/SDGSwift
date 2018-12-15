@@ -27,7 +27,7 @@ public class ConformanceAPI : APIElement, UndeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         var result = genericName.source()
         if let constraints = self.constraints {
             result += constraints.source()

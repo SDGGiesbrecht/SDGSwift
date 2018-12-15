@@ -53,7 +53,7 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()]
             + modules.map({ $0.name.source().prepending(" ") })
     }

@@ -35,7 +35,7 @@ public class TypeAPI : APIScope, DeclaredAPIElement, MutableAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         var result = genericName.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
         return [result] + scopeSummary

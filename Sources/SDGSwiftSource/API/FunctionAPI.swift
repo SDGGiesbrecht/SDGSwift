@@ -99,7 +99,7 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         var result = ""
         if isProtocolRequirement {
             if hasDefaultImplementation {

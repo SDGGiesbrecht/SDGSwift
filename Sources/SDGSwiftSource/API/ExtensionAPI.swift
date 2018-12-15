@@ -65,7 +65,7 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         var result = "(" + genericName.source() + ")"
         if let constraints = self.constraints {
             result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.

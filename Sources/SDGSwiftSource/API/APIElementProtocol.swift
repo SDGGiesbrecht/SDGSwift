@@ -19,6 +19,7 @@ public protocol APIElementProtocol : Comparable {
     var compilationConditions: Syntax? { get }
     var genericName: Syntax { get }
     func identifierList() -> Set<String>
+    func summary() -> [String]
 }
 
 extension APIElementProtocol {

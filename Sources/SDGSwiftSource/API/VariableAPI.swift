@@ -26,7 +26,7 @@ public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
 
     // MARK: - APIElement
 
-    public override var summary: [String] {
+    public func summary() -> [String] {
         var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
         return [result]
