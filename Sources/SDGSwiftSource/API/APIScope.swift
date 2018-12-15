@@ -30,10 +30,6 @@ public class APIScope {
 
     // MARK: - APIElement
 
-    internal func scopeIdentifierList() -> Set<String> {
-        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
-    }
-
     private var _children: [APIElement] = []
     public var children: [APIElement] {
         get {
@@ -42,9 +38,5 @@ public class APIScope {
         set {
             _children = newValue.sorted()
         }
-    }
-
-    internal var scopeSummary: [String] {
-        return Array(children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined())
     }
 }
