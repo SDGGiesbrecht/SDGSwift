@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
+public class ProtocolAPI : APIScope, APIScopeProtocol, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 

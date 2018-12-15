@@ -12,6 +12,132 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol APIScopeProtocol : APIElementProtocol {
+import SDGLogic
+
+public protocol APIScopeProtocol : APIElementProtocol {
     var children: [APIElement] { get }
+}
+
+extension APIScopeProtocol {
+
+    // MARK: - Children
+
+    private func filtered<T>(_ filter: (APIElement) -> T?) -> AnyBidirectionalCollection<T> {
+        return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
+    }
+
+    public var cases: AnyBidirectionalCollection<CaseAPI> {
+        return filtered { (element) -> CaseAPI? in
+            switch element {
+            case .case(let `case`):
+                return `case`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var subtypes: AnyBidirectionalCollection<TypeAPI> {
+        return filtered { (element) -> TypeAPI? in
+            switch element {
+            case .type(let type):
+                return type
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
+        return filtered { (element) -> VariableAPI? in
+            switch element {
+            case .variable(let property):
+                if property.declaration.typeMemberKeyword ≠ nil {
+                    return property
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
+        return filtered { (element) -> FunctionAPI? in
+            switch element {
+            case .function(let method):
+                if method.declaration.typeMemberKeyword ≠ nil {
+                    return method
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var initializers: AnyBidirectionalCollection<InitializerAPI> {
+        return filtered { (element) -> InitializerAPI? in
+            switch element {
+            case .initializer(let initializer):
+                return initializer
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var properties: AnyBidirectionalCollection<VariableAPI> {
+        return filtered { (element) -> VariableAPI? in
+            switch element {
+            case .variable(let property):
+                if property.declaration.typeMemberKeyword == nil {
+                    return property
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
+        return filtered { (element) -> SubscriptAPI? in
+            switch element {
+            case .subscript(let `subscript`):
+                return `subscript`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var methods: AnyBidirectionalCollection<FunctionAPI> {
+        return filtered { (element) -> FunctionAPI? in
+            switch element {
+            case .function(let method):
+                if method.declaration.typeMemberKeyword == nil {
+                    return method
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
+        return filtered { (element) -> ConformanceAPI? in
+            switch element {
+            case .conformance(let conformance):
+                return conformance
+            default:
+                return nil
+            }
+        }
+    }
 }
