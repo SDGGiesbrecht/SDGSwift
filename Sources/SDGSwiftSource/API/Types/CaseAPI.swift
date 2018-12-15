@@ -16,12 +16,6 @@ import SDGLogic
 
 public final class CaseAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return [declaration.elements.first!.identifier.text]
-    }
-
     // MARK: - DeclaredAPIElement
 
     public internal(set) var declaration: EnumCaseDeclSyntax

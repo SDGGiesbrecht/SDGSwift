@@ -35,6 +35,25 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attri
         return list
     }
 
+    // MARK: - Accessor
+
+    var keyword: TokenSyntax {
+        return letOrVarKeyword
+    }
+
+    var accessors: AccessorBlockSyntax? {
+        let result = bindings.first?.accessor
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        if result?.source() == "" {
+            return nil
+        }
+
+        return result
+    }
+
+    // MARK: - APIDeclaration
+
     internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
         return SyntaxFactory.makeVariableDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -51,20 +70,12 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attri
             bindings: bindings.forVariableName())
     }
 
-    // MARK: - Accessor
-
-    var keyword: TokenSyntax {
-        return letOrVarKeyword
-    }
-
-    var accessors: AccessorBlockSyntax? {
-        let result = bindings.first?.accessor
-
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        if result?.source() == "" {
-            return nil
+    internal func identifierList() -> Set<String> {
+        let identifiers = bindings.lazy.map { binding in
+            return binding.pattern.flattenedForAPI().lazy.map { flattened in
+                return flattened.identifier.identifier.text
+            }
         }
-
-        return result
+        return Set(identifiers.joined())
     }
 }

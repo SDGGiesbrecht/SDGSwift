@@ -33,6 +33,8 @@ extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Con
             children: children)
     }
 
+    // MARK: - APIDeclaration
+
     internal func normalizedAPIDeclaration() -> ProtocolDeclSyntax {
         return SyntaxFactory.makeProtocolDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -53,5 +55,9 @@ extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Con
             inheritanceClause: nil,
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    internal func identifierList() -> Set<String> {
+        return [identifier.text]
     }
 }

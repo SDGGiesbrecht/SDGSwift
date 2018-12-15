@@ -47,4 +47,8 @@ extension EnumCaseDeclSyntax : AccessControlled, APIDeclaration, Attributed {
             caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
             elements: elements.forName())
     }
+
+    internal func identifierList() -> Set<String> {
+        return Set(elements.lazy.map({ $0.identifier.text }))
+    }
 }

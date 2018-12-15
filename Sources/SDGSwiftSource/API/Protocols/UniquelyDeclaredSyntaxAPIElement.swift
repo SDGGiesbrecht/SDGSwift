@@ -22,4 +22,10 @@ extension UniquelyDeclaredSyntaxAPIElement {
         let normalized = declaration.normalizedAPIDeclaration()
         self.init(documentation: documentation, alreadyNormalizedDeclaration: normalized, name: normalized.name(), children: children)
     }
+
+    // MARK: - UniquelyDeclaredAPIElement
+
+    public func identifierList() -> Set<String> {
+        return declaration.identifierList()
+    }
 }
