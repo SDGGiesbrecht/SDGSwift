@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class SubscriptAPI : _APIElementBase, ConstrainedAPIElement {
+public final class SubscriptAPI : _APIElementBase, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

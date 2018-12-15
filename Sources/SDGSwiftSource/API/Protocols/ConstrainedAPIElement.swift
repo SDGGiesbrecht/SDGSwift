@@ -11,20 +11,3 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
-
-internal protocol ConstrainedAPIElement : UniquelyDeclaredSyntaxAPIElement
-where Declaration : Constrained {
-    var declaration: Declaration { get set }
-}
-
-extension ConstrainedAPIElement {
-
-    public var constraints: GenericWhereClauseSyntax? {
-        get {
-            return declaration.genericWhereClause
-        }
-        set {
-            declaration = declaration.withGenericWhereClause(newValue)
-        }
-    }
-}
