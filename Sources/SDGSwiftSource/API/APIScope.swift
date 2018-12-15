@@ -20,8 +20,7 @@ public class APIScope {
 
     // MARK: - Initialization
 
-    internal init(children: [APIElement]) {
-        self.children = children
+    internal init() {
     }
 
     // MARK: - Properties

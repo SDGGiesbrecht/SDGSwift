@@ -23,7 +23,8 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
         name = normalized.declaration.name()
-        super.init(children: children)
+        super.init()
+        self.children = children
         constraints = constraints.merged(with: normalized.constraints)
 
         for method in methods {

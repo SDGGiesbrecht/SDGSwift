@@ -20,7 +20,8 @@ public class ExtensionAPI : APIScope, UndeclaredAPIElement {
 
     internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         self.type = type.normalized()
-        super.init(children: children)
+        super.init()
+        self.children = children
         self.constraints = constraints?.normalized()
     }
 
