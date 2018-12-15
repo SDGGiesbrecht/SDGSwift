@@ -15,7 +15,7 @@
 import SDGControlFlow
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, Attributed, Member {
+extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Member {
 
     internal func variableAPI() -> [VariableAPI] {
         if ¬isPublic ∨ isUnavailable() {

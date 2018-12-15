@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Constrained, Generic, Member {
 
     internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -25,18 +25,17 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic,
             declaration: self)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: SubscriptDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> SubscriptDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeSubscriptDecl(
+        return SyntaxFactory.makeSubscriptDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             subscriptKeyword: subscriptKeyword.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
             indices: indices.normalizedForFunctionDeclaration(),
             result: result.normalizedForSubscriptDeclaration(),
-            genericWhereClause: nil,
-            accessor: accessorListForAPIDeclaration()),
-                newGenericWhereClause)
+            genericWhereClause: newGenericWhereClause,
+            accessor: accessorListForAPIDeclaration())
     }
 
     internal func name() -> SubscriptDeclSyntax {

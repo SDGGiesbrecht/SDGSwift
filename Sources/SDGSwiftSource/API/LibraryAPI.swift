@@ -21,14 +21,13 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public struct LibraryAPI : UniquelyDeclaredAPIElement {
+public struct LibraryAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
     internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let declaration = FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
-        self.declaration = declaration
-        name = declaration.libraryName()
+        let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
+        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
         var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
@@ -41,14 +40,17 @@ public struct LibraryAPI : UniquelyDeclaredAPIElement {
             modules.append(try ModuleAPI(module: module, manifest: manifest))
         }
         self.modules = modules
+    }
 
-        let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
-        self.documentation = manifestDeclaration?.documentation
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+        self.documentation = documentation
+        self.declaration = declaration
+        self.name = name
     }
 
     // MARK: - Properties
 
-    public let modules: [ModuleAPI]
+    public internal(set) var modules: [ModuleAPI] = []
 
     // MARK: - APIElement
 
@@ -70,6 +72,5 @@ public struct LibraryAPI : UniquelyDeclaredAPIElement {
     // MARK: - DeclaredAPIElement
 
     public let declaration: FunctionCallExprSyntax
-
     public let name: TokenSyntax
 }

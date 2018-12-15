@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 internal protocol MutableAPIScope : APIScope, MutableAPIElement {
     var _children: [APIElement] { get set }
@@ -42,7 +43,14 @@ extension MutableAPIScope {
         for child in children {
             var mutable = child
             mutable.prependCompilationCondition(compilationConditions)
-            mutable.constraints = child.constraints.merged(with: constraints)
+            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            if constraints?.source().isEmpty ≠ false {
+                if mutable.constraints?.source().isEmpty ≠ false {
+                    mutable.constraints = mutable.constraints.merged(with: constraints)
+                } else {
+                    mutable.constraints = constraints
+                }
+            }
             result.append(mutable)
         }
         compilationConditions = nil

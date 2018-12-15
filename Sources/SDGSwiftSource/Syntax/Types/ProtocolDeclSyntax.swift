@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ProtocolDeclSyntax : AccessControlled, Attributed {
+extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained {
 
     internal var protocolAPI: ProtocolAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -33,16 +33,15 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
             children: children)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?) {
-        return (SyntaxFactory.makeProtocolDecl(
+    internal func normalizedAPIDeclaration() -> ProtocolDeclSyntax {
+        return SyntaxFactory.makeProtocolDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             protocolKeyword: protocolKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             inheritanceClause: nil,
-            genericWhereClause: nil,
-            members: SyntaxFactory.makeBlankMemberDeclBlock()),
-                genericWhereClause?.normalized())
+            genericWhereClause: genericWhereClause?.normalized(),
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 
     internal func name() -> ProtocolDeclSyntax {

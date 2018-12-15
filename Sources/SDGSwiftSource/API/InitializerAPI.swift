@@ -15,21 +15,15 @@
 import SDGLogic
 import SDGCollections
 
-public struct InitializerAPI : UniquelyDeclaredAPIElement {
+public struct InitializerAPI : ConstrainedAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: InitializerDeclSyntax) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: InitializerDeclSyntax, name: InitializerDeclSyntax, children: [APIElement]) {
         self.documentation = documentation
-        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
-        _declaration = normalizedDeclaration
-        name = normalizedDeclaration.name()
-        constraints = constraints.merged(with: normalizedConstraints)
+        self.declaration = declaration
+        self.name = name
     }
-
-    // MARK: - Properties
-
-    private let _declaration: InitializerDeclSyntax
 
     // MARK: - APIElement
 
@@ -42,18 +36,16 @@ public struct InitializerAPI : UniquelyDeclaredAPIElement {
     // MARK: - APIElementProtocol
 
     public let documentation: DocumentationSyntax?
-    public internal(set) var constraints: GenericWhereClauseSyntax?
     public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
-        return _declaration.identifierList()
+        return declaration.identifierList()
     }
 
     // MARK: - DeclaredAPIElement
 
-    public var declaration: InitializerDeclSyntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
+    internal typealias Declaration = InitializerDeclSyntax
 
+    public internal(set) var declaration: InitializerDeclSyntax
     public let name: InitializerDeclSyntax
 }

@@ -12,9 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol Generic : Syntax {
+internal protocol Generic : Constrained {
     var genericParameterClause: GenericParameterClauseSyntax? { get }
-    var genericWhereClause: GenericWhereClauseSyntax? { get }
 }
 
 extension Generic {

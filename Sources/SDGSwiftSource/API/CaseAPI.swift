@@ -14,15 +14,14 @@
 
 import SDGLogic
 
-public struct CaseAPI : UniquelyDeclaredAPIElement {
+public struct CaseAPI : UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: EnumCaseDeclSyntax) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax, name: EnumCaseDeclSyntax, children: [APIElement]) {
         self.documentation = documentation
-        let _declaration = declaration.normalizedAPIDeclaration()
-        self.declaration = _declaration
-        name = _declaration.name()
+        self.declaration = declaration
+        self.name = name
     }
 
     // MARK: - APIElement
@@ -45,6 +44,6 @@ public struct CaseAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - DeclaredAPIElement
 
-    public let declaration: EnumCaseDeclSyntax
+    public internal(set) var declaration: EnumCaseDeclSyntax
     public let name: EnumCaseDeclSyntax
 }

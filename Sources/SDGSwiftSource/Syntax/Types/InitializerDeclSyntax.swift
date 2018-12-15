@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
+extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic {
 
     internal var initializerAPI: InitializerAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -26,9 +26,9 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
         return InitializerAPI(documentation: documentation, declaration: self)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: InitializerDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+    internal func normalizedAPIDeclaration() -> InitializerDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeInitializerDecl(
+        return SyntaxFactory.makeInitializerDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             initKeyword: initKeyword.generallyNormalizedAndMissingInsteadOfNil(),
@@ -37,8 +37,7 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
             parameters: parameters.normalizedForFunctionDeclaration(),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
             genericWhereClause: newGenericWhereClause,
-            body: nil),
-                newGenericWhereClause)
+            body: nil)
     }
 
     internal func name() -> InitializerDeclSyntax {

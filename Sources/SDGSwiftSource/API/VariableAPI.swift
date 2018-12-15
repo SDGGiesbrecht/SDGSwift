@@ -12,15 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct VariableAPI : UniquelyDeclaredAPIElement {
+public struct VariableAPI : UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: VariableDeclSyntax) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: VariableDeclSyntax, name: VariableDeclSyntax, children: [APIElement]) {
         self.documentation = documentation
-        let declaration = declaration.normalizedAPIDeclaration()
         self.declaration = declaration
-        self.name = declaration.name()
+        self.name = name
     }
 
     // MARK: - APIElement

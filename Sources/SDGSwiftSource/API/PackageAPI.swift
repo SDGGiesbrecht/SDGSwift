@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public struct PackageAPI : UniquelyDeclaredAPIElement {
+public struct PackageAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
@@ -26,14 +26,14 @@ public struct PackageAPI : UniquelyDeclaredAPIElement {
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
-        self.declaration = declaration
-        name = declaration.packageName()
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
 
-        var libraries: [LibraryAPI] = []
+        let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
+        let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
+        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name))
+
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
             case .library:
@@ -42,25 +42,24 @@ public struct PackageAPI : UniquelyDeclaredAPIElement {
                 continue
             }
         }
-        self.libraries = libraries
 
-        var modules: [ModuleAPI] = []
         for library in libraries {
             for module in library.modules where ¬modules.contains(module) {
                 modules.append(module)
             }
         }
-        self.modules = modules
+    }
 
-        let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
-        let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        self.documentation = manifestDeclaration?.documentation
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+        self.documentation = documentation
+        self.declaration = declaration
+        self.name = name
     }
 
     // MARK: - Properties
 
-    public let libraries: [LibraryAPI]
-    public let modules: [ModuleAPI]
+    public internal(set) var libraries: [LibraryAPI] = []
+    public internal(set) var modules: [ModuleAPI] = []
 
     // MARK: - APIElement
 

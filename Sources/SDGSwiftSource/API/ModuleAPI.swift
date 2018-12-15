@@ -17,15 +17,14 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public struct ModuleAPI : UniquelyDeclaredAPIElement {
+public struct ModuleAPI : UniquelyDeclaredManifestAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public init(module: PackageModel.Target, manifest: Syntax?) throws {
-        let declaration = FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name)
-        self.declaration = declaration
-        name = declaration.moduleName()
+        let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
+        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name))
 
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
@@ -35,9 +34,6 @@ public struct ModuleAPI : UniquelyDeclaredAPIElement {
             }
         }
         api = APIElement.merge(elements: api)
-
-        let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        self.documentation = manifestDeclaration?.documentation
 
         for element in api {
             switch element {
@@ -55,6 +51,12 @@ public struct ModuleAPI : UniquelyDeclaredAPIElement {
                 break
             }
         }
+    }
+
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+        self.documentation = documentation
+        self.declaration = declaration
+        self.name = name
     }
 
     // MARK: - Properties

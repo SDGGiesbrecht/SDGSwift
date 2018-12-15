@@ -15,6 +15,7 @@
 internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement, MutableAPIElement {
     associatedtype Declaration : Syntax
     associatedtype Name : Syntax
+    init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: Declaration, name: Name, children: [APIElement])
     var declaration: Declaration { get }
     var name: Name { get }
 }

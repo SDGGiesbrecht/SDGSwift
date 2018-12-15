@@ -14,15 +14,14 @@
 
 import SDGCollections
 
-public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
+public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, name: ProtocolDeclSyntax, children: [APIElement]) {
         self.documentation = documentation
-        let normalized = declaration.normalizedAPIDeclaration()
-        _declaration = normalized.declaration
-        name = normalized.declaration.name()
+        self.declaration = declaration
+        self.name = name
         _children = ProtocolAPI.normalize(children: children).map { child in
             if case .function(var function) = child {
                 function.isProtocolRequirement = true
@@ -31,12 +30,7 @@ public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
                 return child
             }
         }
-        constraints = constraints.merged(with: normalized.constraints)
     }
-
-    // MARK: - Properties
-
-    private let _declaration: ProtocolDeclSyntax
 
     // MARK: - APIElementProtocol
 
@@ -45,7 +39,7 @@ public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
     public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
-        return Set([_declaration.identifier.text]) ∪ scopeIdentifierList()
+        return Set([declaration.identifier.text]) ∪ scopeIdentifierList()
     }
 
     public func summary() -> [String] {
@@ -60,9 +54,6 @@ public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - DeclaredAPIElement
 
-    public var declaration: ProtocolDeclSyntax {
-        return _declaration.withGenericWhereClause(constraints)
-    }
-
+    public internal(set) var declaration: ProtocolDeclSyntax
     public let name: ProtocolDeclSyntax
 }

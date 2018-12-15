@@ -57,19 +57,7 @@ extension FunctionCallExprSyntax {
             trailingClosure: nil)
     }
 
-    internal func packageName() -> TokenSyntax {
-        return manifestEntryName()
-    }
-
-    internal func libraryName() -> TokenSyntax {
-        return manifestEntryName()
-    }
-
-    internal func moduleName() -> TokenSyntax {
-        return manifestEntryName()
-    }
-
-    private func manifestEntryName() -> TokenSyntax {
+    internal func manifestEntryName() -> TokenSyntax {
         guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax else {
             unreachable()
         }
