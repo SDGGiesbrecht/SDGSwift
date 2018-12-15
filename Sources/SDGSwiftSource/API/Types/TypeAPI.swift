@@ -25,8 +25,8 @@ public final class TypeAPI : APIElementBase, MutableAPIScope, DeclaredAPIElement
         _declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
         _children = TypeAPI.normalize(children: children)
-        constraints = constraints.merged(with: normalizedConstraints)
         super.init(documentation: documentation)
+        constraints = constraints.merged(with: normalizedConstraints)
     }
 
     // MARK: - Properties
@@ -34,9 +34,6 @@ public final class TypeAPI : APIElementBase, MutableAPIScope, DeclaredAPIElement
     private let _declaration: TypeDeclaration
 
     // MARK: - APIElementProtocol
-
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
         return _declaration.identifierList() ∪ scopeIdentifierList()

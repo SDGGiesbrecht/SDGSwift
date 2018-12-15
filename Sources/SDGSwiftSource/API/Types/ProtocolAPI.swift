@@ -36,9 +36,6 @@ public final class ProtocolAPI : APIElementBase, MutableAPIScope, UniquelyDeclar
 
     // MARK: - APIElementProtocol
 
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
     public func identifierList() -> Set<String> {
         return Set([declaration.identifier.text]) ∪ scopeIdentifierList()
     }

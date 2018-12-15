@@ -34,9 +34,6 @@ public final class CaseAPI : APIElementBase, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
     public func identifierList() -> Set<String> {
         return [declaration.elements.first!.identifier.text]
     }

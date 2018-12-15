@@ -23,4 +23,15 @@ public class APIElementBase {
     // MARK: - Properties
 
     public let documentation: DocumentationSyntax?
+
+    private var _constraints: GenericWhereClauseSyntax? = nil
+    public internal(set) var constraints: GenericWhereClauseSyntax? {
+        get {
+            return _constraints
+        } set {
+            _constraints = newValue?.normalized()
+        }
+    }
+
+    public internal(set) var compilationConditions: Syntax? = nil
 }

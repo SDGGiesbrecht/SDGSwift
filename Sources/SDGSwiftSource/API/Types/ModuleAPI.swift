@@ -130,9 +130,6 @@ public final class ModuleAPI : APIElementBase, UniquelyDeclaredManifestAPIElemen
 
     // MARK: - APIElementProtocol
 
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
     public func identifierList() -> Set<String> {
         return children.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }

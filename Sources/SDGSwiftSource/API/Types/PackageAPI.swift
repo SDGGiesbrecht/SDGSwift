@@ -74,9 +74,6 @@ public final class PackageAPI : APIElementBase, UniquelyDeclaredManifestAPIEleme
 
     // MARK: - APIElementProtocol
 
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
     public func identifierList() -> Set<String> {
         return libraries.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }

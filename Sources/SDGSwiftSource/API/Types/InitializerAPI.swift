@@ -35,8 +35,6 @@ public final class InitializerAPI : APIElementBase, ConstrainedAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public internal(set) var compilationConditions: Syntax?
-
     public func identifierList() -> Set<String> {
         return declaration.identifierList()
     }

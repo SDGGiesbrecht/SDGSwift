@@ -39,8 +39,5 @@ public final class VariableAPI : APIElementBase, UniquelyDeclaredSyntaxAPIElemen
     // MARK: - DeclaredAPIElement
 
     public let declaration: VariableDeclSyntax
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
     public let name: VariableDeclSyntax
 }

@@ -21,8 +21,8 @@ public final class ExtensionAPI : APIElementBase, MutableAPIScope, UndeclaredAPI
     internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
         self.type = type.normalized()
         _children = ExtensionAPI.normalize(children: children)
-        self.constraints = constraints?.normalized()
         super.init(documentation: nil)
+        self.constraints = constraints
     }
 
     // MARK: - Properties
@@ -66,9 +66,6 @@ public final class ExtensionAPI : APIElementBase, MutableAPIScope, UndeclaredAPI
     }
 
     // MARK: - APIElementProtocol
-
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
 
     public func identifierList() -> Set<String> {
         return scopeIdentifierList()
