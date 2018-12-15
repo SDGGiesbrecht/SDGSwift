@@ -45,6 +45,8 @@ public enum APIElement : Comparable, Hashable {
 
         var unmergedExtensions: [ExtensionAPI] = []
         extensionIteration: for `extension` in extensions {
+            var `extension` = `extension`
+
             for type in types where `extension`.isExtension(of: type) {
                 type.merge(extension: `extension`)
                 continue extensionIteration

@@ -30,20 +30,9 @@ public class APIScope {
 
     // MARK: - Merging
 
-    internal func moveConditionsToChildren() {
-        var result: [APIElement] = []
-        for child in children {
-            var mutable = child
-            mutable.prependCompilationCondition(APIElement(self).compilationConditions)
-            mutable.constraints = child.constraints.merged(with: constraints)
-            result.append(mutable)
-        }
-        compilationConditions = nil
-        constraints = nil
-        children = result
-    }
-
     internal func merge(extension: ExtensionAPI) {
+        var `extension` = `extension`
+
         `extension`.moveConditionsToChildren()
         children.append(contentsOf: `extension`.children)
         children = FunctionAPI.groupIntoOverloads(children)
