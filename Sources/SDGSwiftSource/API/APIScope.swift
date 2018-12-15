@@ -1,5 +1,5 @@
 /*
- APIScopeProtocol.swift
+ APIScope.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -15,11 +15,11 @@
 import SDGLogic
 import SDGCollections
 
-public protocol APIScopeProtocol : APIElementProtocol {
+public protocol APIScope : APIElementProtocol {
     var children: [APIElement] { get }
 }
 
-extension APIScopeProtocol {
+extension APIScope {
 
     // MARK: - Children
 

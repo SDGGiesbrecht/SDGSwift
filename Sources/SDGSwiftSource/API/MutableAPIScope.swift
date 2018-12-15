@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol MutableAPIScope : APIScopeProtocol, MutableAPIElement {
+internal protocol MutableAPIScope : APIScope, MutableAPIElement {
     var _children: [APIElement] { get set }
 }
 
