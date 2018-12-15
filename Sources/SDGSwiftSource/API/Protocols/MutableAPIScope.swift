@@ -40,13 +40,13 @@ extension MutableAPIScope {
 
     internal func moveConditionsToChildren() {
         for child in children {
-            child.prependCompilationCondition(compilationConditions)
+            child.genericElement.prependCompilationCondition(compilationConditions)
             // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
             if constraints?.source().isEmpty ≠ false {
                 if child.constraints?.source().isEmpty ≠ false {
-                    child.element.constraints = child.constraints.merged(with: constraints)
+                    child.genericElement.constraints = child.constraints.merged(with: constraints)
                 } else {
-                    child.element.constraints = constraints
+                    child.genericElement.constraints = constraints
                 }
             }
         }

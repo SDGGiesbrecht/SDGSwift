@@ -89,92 +89,53 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Methods
 
-    internal var element: MutableAPIElement {
-        get {
-            switch self {
-            case .package(let package):
-                return package
-            case .library(let library):
-                return library
-            case .module(let module):
-                return module
-            case .type(let type):
-                return type
-            case .protocol(let `protocol`):
-                return `protocol`
-            case .extension(let `extension`):
-                return `extension`
-            case .case(let `case`):
-                return `case`
-            case .initializer(let initializer):
-                return initializer
-            case .variable(let variable):
-                return variable
-            case .subscript(let `subscript`):
-                return `subscript`
-            case .function(let function):
-                return function
-            case .conformance(let conformance):
-                return conformance
-            }
-        }
-        set {
-            switch newValue {
-            case let package as PackageAPI :
-                self = .package(package)
-            case let library as LibraryAPI :
-                self = .library(library)
-            case let module as ModuleAPI :
-                self = .module(module)
-            case let type as TypeAPI :
-                self = .type(type)
-            case let `protocol` as ProtocolAPI :
-                self = .protocol(`protocol`)
-            case let `extension` as ExtensionAPI :
-                self = .extension(`extension`)
-            case let `case` as CaseAPI :
-                self = .case(`case`)
-            case let initializer as InitializerAPI :
-                self = .initializer(initializer)
-            case let variable as VariableAPI :
-                self = .variable(variable)
-            case let `subscript` as SubscriptAPI :
-                self = .subscript(`subscript`)
-            case let function as FunctionAPI :
-                self = .function(function)
-            case let conformance as ConformanceAPI :
-                self = .conformance(conformance)
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified API class: \(Swift.type(of: newValue))")
-                }
-            }
+    internal var genericElement: MutableAPIElement {
+        switch self {
+        case .package(let package):
+            return package
+        case .library(let library):
+            return library
+        case .module(let module):
+            return module
+        case .type(let type):
+            return type
+        case .protocol(let `protocol`):
+            return `protocol`
+        case .extension(let `extension`):
+            return `extension`
+        case .case(let `case`):
+            return `case`
+        case .initializer(let initializer):
+            return initializer
+        case .variable(let variable):
+            return variable
+        case .subscript(let `subscript`):
+            return `subscript`
+        case .function(let function):
+            return function
+        case .conformance(let conformance):
+            return conformance
         }
     }
 
     public var declaration: Syntax? {
-        return element.possibleDeclaration
+        return genericElement.possibleDeclaration
     }
 
     public var constraints: GenericWhereClauseSyntax? {
-        return element.constraints
+        return genericElement.constraints
     }
 
-    public internal(set) var compilationConditions: Syntax? {
-        get {
-            return element.compilationConditions
-        }
-        set {
-            element.compilationConditions = newValue
-        }
+    public var compilationConditions: Syntax? {
+        return genericElement.compilationConditions
     }
 
     public var name: Syntax {
-        return element.genericName
+        return genericElement.genericName
     }
 
     public var children: [APIElement] {
-        if let scope = element as? APIScope {
+        if let scope = genericElement as? APIScope {
             return scope.children
         } else {
             return []
@@ -182,15 +143,11 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public func summary() -> [String] {
-        return element.summary()
+        return genericElement.summary()
     }
 
     public func identifierList() -> Set<String> {
-        return element.identifierList()
-    }
-
-    internal func prependCompilationCondition(_ addition: Syntax?) {
-        element.prependCompilationCondition(addition)
+        return genericElement.identifierList()
     }
 
     // MARK: - Comparable
