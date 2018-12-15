@@ -18,21 +18,24 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public struct PackageAPI : UniquelyDeclaredManifestAPIElement {
+public final class PackageAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
-    public init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parse(manifestURL)
 
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name))
+
+        // #workaround(Does not use UniquelyDeclaredManifestAPIElement yet.)
+        let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        self.init(documentation: manifestDeclaration?.documentation, alreadyNormalizedDeclaration: declaration, name: declaration.manifestEntryName(), children: [])
 
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
