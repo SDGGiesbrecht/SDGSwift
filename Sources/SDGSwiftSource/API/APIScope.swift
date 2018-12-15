@@ -20,8 +20,8 @@ public class APIScope {
 
     // MARK: - Initialization
 
-    internal init(conformances: [ConformanceAPI], children: [APIElement]) {
-        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+    internal init(children: [APIElement]) {
+        self.children = children
     }
 
     // MARK: - Properties

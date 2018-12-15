@@ -23,11 +23,14 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
         if identifier.text.hasPrefix("_") {
             return nil
         }
+        var children = apiChildren()
+        if let conformances = inheritanceClause?.conformances {
+            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
         return ProtocolAPI(
             documentation: documentation,
             declaration: self,
-            conformances: inheritanceClause?.conformances ?? [],
-            children: apiChildren())
+            children: children)
     }
 
     internal func normalizedAPIDeclaration() -> (declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?) {

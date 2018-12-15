@@ -18,12 +18,12 @@ public class ProtocolAPI : APIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, conformances: [ConformanceAPI], children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, declaration: ProtocolDeclSyntax, children: [APIElement]) {
         self.documentation = documentation
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
         name = normalized.declaration.name()
-        super.init(conformances: conformances, children: children)
+        super.init(children: children)
         constraints = constraints.merged(with: normalized.constraints)
 
         for method in methods {
