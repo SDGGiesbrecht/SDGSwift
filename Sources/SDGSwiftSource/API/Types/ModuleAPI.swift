@@ -17,12 +17,12 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public struct ModuleAPI : UniquelyDeclaredManifestAPIElement {
+public final class ModuleAPI : UniquelyDeclaredManifestAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
-    public init(module: PackageModel.Target, manifest: Syntax?) throws {
+    public convenience init(module: PackageModel.Target, manifest: Syntax?) throws {
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
         self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name))
 

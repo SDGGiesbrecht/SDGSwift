@@ -21,11 +21,11 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public struct LibraryAPI : UniquelyDeclaredManifestAPIElement {
+public final class LibraryAPI : UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
-    internal init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
