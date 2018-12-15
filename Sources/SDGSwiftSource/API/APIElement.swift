@@ -21,11 +21,4 @@ public class APIElement {
 
     internal init() {
     }
-
-    // MARK: - Properties
-
-    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
-    ///
-    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
-    public var userInformation: Any?
 }
