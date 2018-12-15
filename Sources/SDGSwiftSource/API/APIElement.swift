@@ -89,7 +89,36 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Methods
 
-    internal var genericElement: MutableAPIElement {
+    internal var elementBase: _APIElementBase {
+        switch self {
+        case .package(let package):
+            return package
+        case .library(let library):
+            return library
+        case .module(let module):
+            return module
+        case .type(let type):
+            return type
+        case .protocol(let `protocol`):
+            return `protocol`
+        case .extension(let `extension`):
+            return `extension`
+        case .case(let `case`):
+            return `case`
+        case .initializer(let initializer):
+            return initializer
+        case .variable(let variable):
+            return variable
+        case .subscript(let `subscript`):
+            return `subscript`
+        case .function(let function):
+            return function
+        case .conformance(let conformance):
+            return conformance
+        }
+    }
+
+    internal var elementProtocol: APIElementProtocol {
         switch self {
         case .package(let package):
             return package
@@ -119,31 +148,31 @@ public enum APIElement : Comparable, Hashable {
     }
 
     public var declaration: Syntax? {
-        return genericElement.possibleDeclaration
+        return elementProtocol.possibleDeclaration
     }
 
     public var constraints: GenericWhereClauseSyntax? {
-        return genericElement.constraints
+        return elementProtocol.constraints
     }
 
     public var compilationConditions: Syntax? {
-        return genericElement.compilationConditions
+        return elementProtocol.compilationConditions
     }
 
     public var name: Syntax {
-        return genericElement.genericName
+        return elementProtocol.genericName
     }
 
     public var children: [APIElement] {
-        return genericElement.children
+        return elementProtocol.children
     }
 
     public func summary() -> [String] {
-        return genericElement.summary()
+        return elementProtocol.summary()
     }
 
     public func identifierList() -> Set<String> {
-        return genericElement.identifierList()
+        return elementProtocol.identifierList()
     }
 
     // MARK: - Comparable

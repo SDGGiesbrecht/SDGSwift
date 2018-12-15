@@ -15,29 +15,13 @@
 import SDGControlFlow
 import SDGLogic
 
-internal protocol MutableAPIScope : MutableAPIElement {
+internal protocol MutableAPIScope : APIElementProtocol {
     var children: [APIElement] { get set }
 }
 
 extension MutableAPIScope {
 
     // MARK: - Merging
-
-    internal func moveConditionsToChildren() {
-        for child in children {
-            child.genericElement.compilationConditions.prependCompilationConditions(compilationConditions)
-            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-            if constraints?.source().isEmpty ≠ false {
-                if child.constraints?.source().isEmpty ≠ false {
-                    child.genericElement.constraints.merge(with: constraints)
-                } else {
-                    child.genericElement.constraints = constraints
-                }
-            }
-        }
-        compilationConditions = nil
-        constraints = nil
-    }
 
     internal func merge(extension: ExtensionAPI) {
         `extension`.moveConditionsToChildren()
