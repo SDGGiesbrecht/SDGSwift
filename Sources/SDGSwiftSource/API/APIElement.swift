@@ -60,11 +60,10 @@ public enum APIElement : Comparable, Hashable {
 
         functions = FunctionAPI.groupIntoOverloads(functions)
 
-        var result = types.map({ APIElement.type($0) })
-        result.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
-        result.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
-        result.append(contentsOf: other)
-        return result
+        other.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
+        other.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
+        other.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
+        return other
     }
 
     // MARK: - Cases
