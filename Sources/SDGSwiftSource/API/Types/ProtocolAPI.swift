@@ -22,12 +22,14 @@ public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredSyntaxAPIElement {
         self.documentation = documentation
         self.declaration = declaration
         self.name = name
-        _children = ProtocolAPI.normalize(children: children).map { child in
-            if case .function(var function) = child {
+        _children = ProtocolAPI.normalize(children: children)
+
+        for child in children {
+            switch child {
+            case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .conformance:
+                break
+            case .function(let function):
                 function.isProtocolRequirement = true
-                return .function(function)
-            } else {
-                return child
             }
         }
     }

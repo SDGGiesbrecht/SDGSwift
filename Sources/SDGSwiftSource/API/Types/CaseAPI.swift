@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public struct CaseAPI : UniquelyDeclaredSyntaxAPIElement {
+public final class CaseAPI : UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

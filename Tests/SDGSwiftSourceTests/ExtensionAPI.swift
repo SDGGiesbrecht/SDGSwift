@@ -16,7 +16,7 @@
 
 extension ExtensionAPI {
 
-    init(type: String) {
+    convenience init(type: String) {
         self.init(
             type: SyntaxFactory.makeSimpleTypeIdentifier(
                 name: SyntaxFactory.makeToken(.identifier(type)),

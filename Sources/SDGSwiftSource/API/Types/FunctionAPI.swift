@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public struct FunctionAPI : ConstrainedAPIElement {
+public final class FunctionAPI : ConstrainedAPIElement {
 
     // MARK: - Initialization
 
@@ -63,9 +63,8 @@ public struct FunctionAPI : ConstrainedAPIElement {
         for (_, group) in sorted {
             var merged: FunctionAPI?
             for function in group.sorted() {
-                if var existing = merged {
+                if let existing = merged {
                     existing.overloads.append(function)
-                    merged = existing
                 } else {
                     merged = function
                 }

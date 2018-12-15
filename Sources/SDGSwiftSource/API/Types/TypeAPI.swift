@@ -16,7 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public struct TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
+public final class TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
 
     // MARK: - Initialization
 

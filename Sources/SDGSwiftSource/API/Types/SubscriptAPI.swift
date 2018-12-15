@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public struct SubscriptAPI : ConstrainedAPIElement {
+public final class SubscriptAPI : ConstrainedAPIElement {
 
     // MARK: - Initialization
 
