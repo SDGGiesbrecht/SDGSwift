@@ -48,18 +48,16 @@ public enum APIElement : Comparable, Hashable {
             var `extension` = `extension`
 
             for index in types.indices {
-                var type = types[index]
+                let type = types[index]
                 if `extension`.isExtension(of: type) {
-                    type.merge(extension: `extension`)
-                    types[index] = type
+                    types[index] = type.merging(extension: `extension`)
                     continue extensionIteration
                 }
             }
             for index in protocols.indices {
-                var `protocol` = protocols[index]
+                let `protocol` = protocols[index]
                 if `extension`.isExtension(of: `protocol`) {
-                    `protocol`.merge(extension: `extension`)
-                    protocols[index] = `protocol`
+                    protocols[index] = `protocol`.merging(extension: `extension`)
                     continue extensionIteration
                 }
             }

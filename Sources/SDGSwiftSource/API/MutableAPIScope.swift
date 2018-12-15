@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 internal protocol MutableAPIScope : APIScope, MutableAPIElement {
     var _children: [APIElement] { get set }
 }
@@ -54,5 +56,9 @@ extension MutableAPIScope {
         `extension`.moveConditionsToChildren()
         children.append(contentsOf: `extension`.children)
         children = FunctionAPI.groupIntoOverloads(children)
+    }
+
+    internal func merging(extension: ExtensionAPI) -> Self {
+        return nonmutatingVariant(of: { $0.merge(extension: $1) }, on: self, with: `extension`)
     }
 }
