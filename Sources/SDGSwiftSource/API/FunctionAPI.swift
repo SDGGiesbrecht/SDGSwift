@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class FunctionAPI : UniquelyDeclaredAPIElement {
+public struct FunctionAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -67,8 +67,9 @@ public class FunctionAPI : UniquelyDeclaredAPIElement {
         for (_, group) in sorted {
             var merged: FunctionAPI?
             for function in group.sorted() {
-                if let existing = merged {
+                if var existing = merged {
                     existing.overloads.append(function)
+                    merged = existing
                 } else {
                     merged = function
                 }

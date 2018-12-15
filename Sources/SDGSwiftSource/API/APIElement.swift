@@ -153,40 +153,40 @@ public enum APIElement : Comparable, Hashable {
         }
         set {
             switch self {
-            case .package(let package):
+            case .package(var package):
                 package.constraints = newValue
                 self = APIElement.package(package)
-            case .library(let library):
+            case .library(var library):
                 library.constraints = newValue
                 self = APIElement.library(library)
-            case .module(let module):
+            case .module(var module):
                 module.constraints = newValue
                 self = APIElement.module(module)
-            case .type(let type):
+            case .type(var type):
                 type.constraints = newValue
                 self = APIElement.type(type)
-            case .protocol(let `protocol`):
+            case .protocol(var `protocol`):
                 `protocol`.constraints = newValue
                 self = APIElement.protocol(`protocol`)
-            case .extension(let `extension`):
+            case .extension(var `extension`):
                 `extension`.constraints = newValue
                 self = APIElement.extension(`extension`)
-            case .case(let `case`):
+            case .case(var `case`):
                 `case`.constraints = newValue
                 self = APIElement.case(`case`)
-            case .initializer(let initializer):
+            case .initializer(var initializer):
                 initializer.constraints = newValue
                 self = APIElement.initializer(initializer)
-            case .variable(let variable):
+            case .variable(var variable):
                 variable.constraints = newValue
                 self = APIElement.variable(variable)
-            case .subscript(let `subscript`):
+            case .subscript(var `subscript`):
                 `subscript`.constraints = newValue
                 self = APIElement.subscript(`subscript`)
-            case .function(let function):
+            case .function(var function):
                 function.constraints = newValue
                 self = APIElement.function(function)
-            case .conformance(let conformance):
+            case .conformance(var conformance):
                 conformance.constraints = newValue
                 self = APIElement.conformance(conformance)
             }
@@ -224,40 +224,40 @@ public enum APIElement : Comparable, Hashable {
         }
         set {
             switch self {
-            case .package(let package):
+            case .package(var package):
                 package.compilationConditions = newValue
                 self = APIElement.package(package)
-            case .library(let library):
+            case .library(var library):
                 library.compilationConditions = newValue
                 self = APIElement.library(library)
-            case .module(let module):
+            case .module(var module):
                 module.compilationConditions = newValue
                 self = APIElement.module(module)
-            case .type(let type):
+            case .type(var type):
                 type.compilationConditions = newValue
                 self = APIElement.type(type)
-            case .protocol(let `protocol`):
+            case .protocol(var `protocol`):
                 `protocol`.compilationConditions = newValue
                 self = APIElement.protocol(`protocol`)
-            case .extension(let `extension`):
+            case .extension(var `extension`):
                 `extension`.compilationConditions = newValue
                 self = APIElement.extension(`extension`)
-            case .case(let `case`):
+            case .case(var `case`):
                 `case`.compilationConditions = newValue
                 self = APIElement.case(`case`)
-            case .initializer(let initializer):
+            case .initializer(var initializer):
                 initializer.compilationConditions = newValue
                 self = APIElement.initializer(initializer)
-            case .variable(let variable):
+            case .variable(var variable):
                 variable.compilationConditions = newValue
                 self = APIElement.variable(variable)
-            case .subscript(let `subscript`):
+            case .subscript(var `subscript`):
                 `subscript`.compilationConditions = newValue
                 self = APIElement.subscript(`subscript`)
-            case .function(let function):
+            case .function(var function):
                 function.compilationConditions = newValue
                 self = APIElement.function(function)
-            case .conformance(let conformance):
+            case .conformance(var conformance):
                 conformance.compilationConditions = newValue
                 self = APIElement.conformance(conformance)
             }

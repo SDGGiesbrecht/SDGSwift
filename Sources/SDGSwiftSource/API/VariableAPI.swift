@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : UniquelyDeclaredAPIElement {
+public struct VariableAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 

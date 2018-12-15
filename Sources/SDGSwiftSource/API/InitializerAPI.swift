@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class InitializerAPI : UniquelyDeclaredAPIElement {
+public struct InitializerAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 

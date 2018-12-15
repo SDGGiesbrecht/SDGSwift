@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class SubscriptAPI : UniquelyDeclaredAPIElement {
+public struct SubscriptAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 

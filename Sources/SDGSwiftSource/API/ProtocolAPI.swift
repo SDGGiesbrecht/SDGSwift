@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-public class ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
+public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -23,12 +23,15 @@ public class ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
         let normalized = declaration.normalizedAPIDeclaration()
         _declaration = normalized.declaration
         name = normalized.declaration.name()
-        _children = ProtocolAPI.normalize(children: children)
-        constraints = constraints.merged(with: normalized.constraints)
-
-        for method in methods {
-            method.isProtocolRequirement = true
+        _children = ProtocolAPI.normalize(children: children).map { child in
+            if case .function(var function) = child {
+                function.isProtocolRequirement = true
+                return .function(function)
+            } else {
+                return child
+            }
         }
+        constraints = constraints.merged(with: normalized.constraints)
     }
 
     // MARK: - Properties

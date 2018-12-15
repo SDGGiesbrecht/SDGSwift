@@ -18,7 +18,7 @@ import SDGCollections
 import SDGSwift
 import SDGSwiftPackageManager
 
-public class PackageAPI : UniquelyDeclaredAPIElement {
+public struct PackageAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 

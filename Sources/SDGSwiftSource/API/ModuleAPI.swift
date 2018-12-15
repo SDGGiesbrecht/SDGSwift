@@ -17,7 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public class ModuleAPI : UniquelyDeclaredAPIElement {
+public struct ModuleAPI : UniquelyDeclaredAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///

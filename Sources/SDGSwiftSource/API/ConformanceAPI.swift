@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class ConformanceAPI : UndeclaredAPIElement {
+public struct ConformanceAPI : UndeclaredAPIElement {
 
     // MARK: - Initialization
 

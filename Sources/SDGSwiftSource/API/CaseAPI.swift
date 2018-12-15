@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public class CaseAPI : UniquelyDeclaredAPIElement {
+public struct CaseAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
