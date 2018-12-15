@@ -197,49 +197,11 @@ public enum APIElement : Comparable, Hashable {
     }
 
     internal mutating func prependCompilationCondition(_ addition: Syntax?) {
-        switch self {
-        case .package(var package):
-            package.prependCompilationCondition(addition)
-            self = APIElement.package(package)
-        case .library(var library):
-            library.prependCompilationCondition(addition)
-            self = APIElement.library(library)
-        case .module(var module):
-            module.prependCompilationCondition(addition)
-            self = APIElement.module(module)
-        case .type(var type):
-            type.prependCompilationCondition(addition)
-            self = APIElement.type(type)
-        case .protocol(var `protocol`):
-            `protocol`.prependCompilationCondition(addition)
-            self = APIElement.protocol(`protocol`)
-        case .extension(var `extension`):
-            `extension`.prependCompilationCondition(addition)
-            self = APIElement.extension(`extension`)
-        case .case(var `case`):
-            `case`.prependCompilationCondition(addition)
-            self = APIElement.case(`case`)
-        case .initializer(var initializer):
-            initializer.prependCompilationCondition(addition)
-            self = APIElement.initializer(initializer)
-        case .variable(var variable):
-            variable.prependCompilationCondition(addition)
-            self = APIElement.variable(variable)
-        case .subscript(var `subscript`):
-            `subscript`.prependCompilationCondition(addition)
-            self = APIElement.subscript(`subscript`)
-        case .function(var function):
-            function.prependCompilationCondition(addition)
-            self = APIElement.function(function)
-        case .conformance(var conformance):
-            conformance.prependCompilationCondition(addition)
-            self = APIElement.conformance(conformance)
-        }
+        element.prependCompilationCondition(addition)
     }
     internal func prependingCompilationCondition(_ addition: Syntax?) -> APIElement {
         return nonmutatingVariant(of: { $0.prependCompilationCondition($1) }, on: self, with: addition)
     }
-
 
     // MARK: - Comparable
 
