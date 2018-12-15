@@ -56,48 +56,15 @@ public enum APIElementKind : Comparable, Hashable {
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)
         }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).lazy.map({ APIElementKind($0) }))
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).lazy.map({ APIElementKind.extension($0) }))
 
         functions = FunctionAPI.groupIntoOverloads(functions)
 
-        var result = types.map({ APIElementKind($0) })
-        result.append(contentsOf: protocols.lazy.map({ APIElementKind($0) }))
-        result.append(contentsOf: functions.lazy.map({ APIElementKind($0) }))
+        var result = types.map({ APIElementKind.type($0) })
+        result.append(contentsOf: protocols.lazy.map({ APIElementKind.protocol($0) }))
+        result.append(contentsOf: functions.lazy.map({ APIElementKind.function($0) }))
         result.append(contentsOf: other)
         return result
-    }
-
-    // MARK: - Initialization
-
-    internal init(_ element: APIElement) {
-        switch element {
-        case let package as PackageAPI :
-            self = .package(package)
-        case let library as LibraryAPI :
-            self = .library(library)
-        case let module as ModuleAPI :
-            self = .module(module)
-        case let type as TypeAPI :
-            self = .type(type)
-        case let `protocol` as ProtocolAPI :
-            self = .protocol(`protocol`)
-        case let `extension` as ExtensionAPI :
-            self = .extension(`extension`)
-        case let `case` as CaseAPI :
-            self = .case(`case`)
-        case let initializer as InitializerAPI :
-            self = .initializer(initializer)
-        case let variable as VariableAPI :
-            self = .variable(variable)
-        case let `subscript` as SubscriptAPI :
-            self = .subscript(`subscript`)
-        case let function as FunctionAPI :
-            self = .function(function)
-        case let conformance as ConformanceAPI :
-            self = .conformance(conformance)
-        default:
-            unreachable()
-        }
     }
 
     // MARK: - Cases
@@ -115,34 +82,18 @@ public enum APIElementKind : Comparable, Hashable {
     case function(FunctionAPI)
     case conformance(ConformanceAPI)
 
-    // MARK: - Properties
+    // MARK: - Initialization
 
-    private var element: APIElement {
-        switch self {
-        case .package(let package):
-            return package
-        case .library(let library):
-            return library
-        case .module(let module):
-            return module
-        case .type(let type):
-            return type
-        case .protocol(let `protocol`):
-            return `protocol`
-        case .extension(let `extension`):
-            return `extension`
-        case .case(let `case`):
-            return `case`
-        case .initializer(let initializer):
-            return initializer
-        case .variable(let variable):
-            return variable
-        case .subscript(let `subscript`):
-            return `subscript`
-        case .function(let function):
-            return function
-        case .conformance(let conformance):
-            return conformance
+    internal init(_ element: APIScope) {
+        switch element {
+        case let type as TypeAPI :
+            self = .type(type)
+        case let `protocol` as ProtocolAPI :
+            self = .protocol(`protocol`)
+        case let `extension` as ExtensionAPI :
+            self = .extension(`extension`)
+        default:
+            unreachable()
         }
     }
 
@@ -210,40 +161,40 @@ public enum APIElementKind : Comparable, Hashable {
             switch self {
             case .package(let package):
                 package.constraints = newValue
-                self = APIElementKind(package)
+                self = APIElementKind.package(package)
             case .library(let library):
                 library.constraints = newValue
-                self = APIElementKind(library)
+                self = APIElementKind.library(library)
             case .module(let module):
                 module.constraints = newValue
-                self = APIElementKind(module)
+                self = APIElementKind.module(module)
             case .type(let type):
                 type.constraints = newValue
-                self = APIElementKind(type)
+                self = APIElementKind.type(type)
             case .protocol(let `protocol`):
                 `protocol`.constraints = newValue
-                self = APIElementKind(`protocol`)
+                self = APIElementKind.protocol(`protocol`)
             case .extension(let `extension`):
                 `extension`.constraints = newValue
-                self = APIElementKind(`extension`)
+                self = APIElementKind.extension(`extension`)
             case .case(let `case`):
                 `case`.constraints = newValue
-                self = APIElementKind(`case`)
+                self = APIElementKind.case(`case`)
             case .initializer(let initializer):
                 initializer.constraints = newValue
-                self = APIElementKind(initializer)
+                self = APIElementKind.initializer(initializer)
             case .variable(let variable):
                 variable.constraints = newValue
-                self = APIElementKind(variable)
+                self = APIElementKind.variable(variable)
             case .subscript(let `subscript`):
                 `subscript`.constraints = newValue
-                self = APIElementKind(`subscript`)
+                self = APIElementKind.subscript(`subscript`)
             case .function(let function):
                 function.constraints = newValue
-                self = APIElementKind(function)
+                self = APIElementKind.function(function)
             case .conformance(let conformance):
                 conformance.constraints = newValue
-                self = APIElementKind(conformance)
+                self = APIElementKind.conformance(conformance)
             }
         }
     }
@@ -281,40 +232,40 @@ public enum APIElementKind : Comparable, Hashable {
             switch self {
             case .package(let package):
                 package.compilationConditions = newValue
-                self = APIElementKind(package)
+                self = APIElementKind.package(package)
             case .library(let library):
                 library.compilationConditions = newValue
-                self = APIElementKind(library)
+                self = APIElementKind.library(library)
             case .module(let module):
                 module.compilationConditions = newValue
-                self = APIElementKind(module)
+                self = APIElementKind.module(module)
             case .type(let type):
                 type.compilationConditions = newValue
-                self = APIElementKind(type)
+                self = APIElementKind.type(type)
             case .protocol(let `protocol`):
                 `protocol`.compilationConditions = newValue
-                self = APIElementKind(`protocol`)
+                self = APIElementKind.protocol(`protocol`)
             case .extension(let `extension`):
                 `extension`.compilationConditions = newValue
-                self = APIElementKind(`extension`)
+                self = APIElementKind.extension(`extension`)
             case .case(let `case`):
                 `case`.compilationConditions = newValue
-                self = APIElementKind(`case`)
+                self = APIElementKind.case(`case`)
             case .initializer(let initializer):
                 initializer.compilationConditions = newValue
-                self = APIElementKind(initializer)
+                self = APIElementKind.initializer(initializer)
             case .variable(let variable):
                 variable.compilationConditions = newValue
-                self = APIElementKind(variable)
+                self = APIElementKind.variable(variable)
             case .subscript(let `subscript`):
                 `subscript`.compilationConditions = newValue
-                self = APIElementKind(`subscript`)
+                self = APIElementKind.subscript(`subscript`)
             case .function(let function):
                 function.compilationConditions = newValue
-                self = APIElementKind(function)
+                self = APIElementKind.function(function)
             case .conformance(let conformance):
                 conformance.compilationConditions = newValue
-                self = APIElementKind(conformance)
+                self = APIElementKind.conformance(conformance)
             }
         }
     }
@@ -425,13 +376,13 @@ public enum APIElementKind : Comparable, Hashable {
         switch self {
         case .package(var package):
             package.prependCompilationCondition(addition)
-            self = APIElementKind(package)
+            self = APIElementKind.package(package)
         case .library(var library):
             library.prependCompilationCondition(addition)
-            self = APIElementKind(library)
+            self = APIElementKind.library(library)
         case .module(var module):
             module.prependCompilationCondition(addition)
-            self = APIElementKind(module)
+            self = APIElementKind.module(module)
         case .type(var type):
             type.prependCompilationCondition(addition)
             self = APIElementKind(type)
@@ -443,22 +394,22 @@ public enum APIElementKind : Comparable, Hashable {
             self = APIElementKind(`extension`)
         case .case(var `case`):
             `case`.prependCompilationCondition(addition)
-            self = APIElementKind(`case`)
+            self = APIElementKind.case(`case`)
         case .initializer(var initializer):
             initializer.prependCompilationCondition(addition)
-            self = APIElementKind(initializer)
+            self = APIElementKind.initializer(initializer)
         case .variable(var variable):
             variable.prependCompilationCondition(addition)
-            self = APIElementKind(variable)
+            self = APIElementKind.variable(variable)
         case .subscript(var `subscript`):
             `subscript`.prependCompilationCondition(addition)
-            self = APIElementKind(`subscript`)
+            self = APIElementKind.subscript(`subscript`)
         case .function(var function):
             function.prependCompilationCondition(addition)
-            self = APIElementKind(function)
+            self = APIElementKind.function(function)
         case .conformance(var conformance):
             conformance.prependCompilationCondition(addition)
-            self = APIElementKind(conformance)
+            self = APIElementKind.conformance(conformance)
         }
     }
     internal func prependingCompilationCondition(_ addition: Syntax?) -> APIElementKind {

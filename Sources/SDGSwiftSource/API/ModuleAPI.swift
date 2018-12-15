@@ -17,7 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
-public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
+public class ModuleAPI : UniquelyDeclaredAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
     ///
@@ -38,7 +38,6 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
 
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
         self.documentation = manifestDeclaration?.documentation
-        super.init()
 
         for element in api {
             switch element {
@@ -111,13 +110,13 @@ public class ModuleAPI : APIElement, UniquelyDeclaredAPIElement {
     }
 
     public var children: [APIElementKind] {
-        let joined = ([
-            types,
-            extensions,
-            protocols,
-            functions,
-            globalVariables
-            ] as [[APIElement]]).joined().map({ APIElementKind($0) })
+        let joined = [
+            types.map({ APIElementKind.type($0) }),
+            extensions.map({ APIElementKind.extension($0) }),
+            protocols.map({ APIElementKind.protocol($0) }),
+            functions.map({ APIElementKind.function($0) }),
+            globalVariables.map({ APIElementKind.variable($0) })
+            ].joined()
         return Array(joined)
     }
 

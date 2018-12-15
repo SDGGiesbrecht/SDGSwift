@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
+public class CaseAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -23,7 +23,6 @@ public class CaseAPI : APIElement, UniquelyDeclaredAPIElement {
         let _declaration = declaration.normalizedAPIDeclaration()
         self.declaration = _declaration
         name = _declaration.name()
-        super.init()
     }
 
     // MARK: - APIElement

@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
+public class FunctionAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -24,7 +24,6 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         name = normalizedDeclaration.name()
-        super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
 
@@ -93,7 +92,7 @@ public class FunctionAPI : APIElement, UniquelyDeclaredAPIElement {
             }
         }
         functions = FunctionAPI.groupIntoOverloads(functions)
-        result.append(contentsOf: functions.lazy.map({ APIElementKind($0) }))
+        result.append(contentsOf: functions.lazy.map({ APIElementKind.function($0) }))
         return result
     }
 

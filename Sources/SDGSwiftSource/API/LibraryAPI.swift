@@ -21,7 +21,7 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
+public class LibraryAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -44,7 +44,6 @@ public class LibraryAPI : APIElement, UniquelyDeclaredAPIElement {
 
         let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         self.documentation = manifestDeclaration?.documentation
-        super.init()
     }
 
     // MARK: - Properties

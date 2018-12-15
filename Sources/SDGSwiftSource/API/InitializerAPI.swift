@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
+public class InitializerAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -24,7 +24,6 @@ public class InitializerAPI : APIElement, UniquelyDeclaredAPIElement {
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         _declaration = normalizedDeclaration
         name = normalizedDeclaration.name()
-        super.init()
         constraints = constraints.merged(with: normalizedConstraints)
     }
 

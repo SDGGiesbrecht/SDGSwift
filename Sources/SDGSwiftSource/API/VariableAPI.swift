@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
+public class VariableAPI : UniquelyDeclaredAPIElement {
 
     // MARK: - Initialization
 
@@ -21,7 +21,6 @@ public class VariableAPI : APIElement, UniquelyDeclaredAPIElement {
         let declaration = declaration.normalizedAPIDeclaration()
         self.declaration = declaration
         self.name = declaration.name()
-        super.init()
     }
 
     // MARK: - APIElement

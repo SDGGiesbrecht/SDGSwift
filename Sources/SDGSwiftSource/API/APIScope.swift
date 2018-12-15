@@ -16,13 +16,12 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public class APIScope : APIElement {
+public class APIScope {
 
     // MARK: - Initialization
 
     internal init(conformances: [ConformanceAPI], children: [APIElementKind]) {
-        super.init()
-        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElementKind($0) }))
+        self.children = children.appending(contentsOf: conformances.lazy.map({ APIElementKind.conformance($0) }))
     }
 
     // MARK: - Properties
