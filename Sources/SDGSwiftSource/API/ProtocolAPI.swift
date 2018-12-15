@@ -51,7 +51,7 @@ public struct ProtocolAPI : MutableAPIScope, UniquelyDeclaredAPIElement {
     public func summary() -> [String] {
         var result = name.source() + " • " + declaration.source()
         appendCompilationConditions(to: &result)
-        return [result] + scopeSummary
+        return [result] + scopeSummary()
     }
 
     // MARK: - MutableAPIScope

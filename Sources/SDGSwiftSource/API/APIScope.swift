@@ -148,7 +148,7 @@ extension APIScope {
         return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
     }
 
-    internal var scopeSummary: [String] {
+    internal func scopeSummary() -> [String] {
         return Array(children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined())
     }
 }

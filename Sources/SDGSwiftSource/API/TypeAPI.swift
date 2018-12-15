@@ -46,7 +46,7 @@ public struct TypeAPI : MutableAPIScope, DeclaredAPIElement, MutableAPIElement {
     public func summary() -> [String] {
         var result = genericName.source() + " • " + genericDeclaration.source()
         appendCompilationConditions(to: &result)
-        return [result] + scopeSummary
+        return [result] + scopeSummary()
     }
 
     // MARK: - DeclaredAPIElement

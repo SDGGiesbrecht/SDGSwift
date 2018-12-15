@@ -79,7 +79,7 @@ public struct ExtensionAPI : MutableAPIScope, UndeclaredAPIElement {
             result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
         }
         appendCompilationConditions(to: &result)
-        return [result] + scopeSummary
+        return [result] + scopeSummary()
     }
 
     // MARK: - MutableAPIScope
