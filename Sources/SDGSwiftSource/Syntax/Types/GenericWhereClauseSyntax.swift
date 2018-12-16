@@ -16,11 +16,11 @@ import SDGLogic
 
 extension GenericWhereClauseSyntax : Mergeable {
 
-    internal func normalized() -> GenericWhereClauseSyntax {
+    internal func normalized() -> GenericWhereClauseSyntax? {
 
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
         if source().isEmpty {
-            return self
+            return nil
         }
 
         return SyntaxFactory.makeGenericWhereClause(
