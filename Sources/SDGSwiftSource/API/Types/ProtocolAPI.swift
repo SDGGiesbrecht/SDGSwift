@@ -24,12 +24,7 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloa
         super.init(documentation: documentation, children: children)
 
         for child in children {
-            switch child {
-            case .package, .library, .module, .type, .extension, .protocol, .case, .initializer, .variable, .subscript, .conformance:
-                break
-            case .function(let function):
-                function.isProtocolRequirement = true
-            }
+            child.elementBase.isProtocolRequirement = true
         }
     }
 
