@@ -14,13 +14,35 @@
 
 extension SimpleTypeIdentifierSyntax {
 
-    internal func normalized() -> SimpleTypeIdentifierSyntax {
+    internal func normalized() -> TypeSyntax {
 
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
         let newGenericArgumentClause = source().contains("<") ? genericArgumentClause?.normalized() : nil
 
-        return SyntaxFactory.makeSimpleTypeIdentifier(
+        let result = SyntaxFactory.makeSimpleTypeIdentifier(
             name: name.generallyNormalizedAndMissingInsteadOfNil(),
             genericArgumentClause: newGenericArgumentClause)
+
+        if result.name.text == "Array",
+            let elements = newGenericArgumentClause?.arguments,
+            elements.count == 1,
+            let element = elements.first?.argumentType {
+            return SyntaxFactory.makeArrayType(
+                leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
+                elementType: element,
+                rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket))
+        } else if result.name.text == "Dictionary",
+            let elements = newGenericArgumentClause?.arguments,
+            elements.count == 2,
+            let key = elements.first?.argumentType,
+            let value = elements.dropFirst().first?.argumentType {
+            return SyntaxFactory.makeDictionaryType(
+                leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
+                keyType: key,
+                colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                valueType: value,
+                rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket))
+        }
+        return result
     }
 }
