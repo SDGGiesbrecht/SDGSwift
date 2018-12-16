@@ -65,8 +65,8 @@ public class _APIElementBase {
         for child in children {
             child.elementBase.compilationConditions.prependCompilationConditions(compilationConditions)
             // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-            if constraints?.source().isEmpty ≠ false {
-                if child.constraints?.source().isEmpty ≠ false {
+            if constraints?.source().isEmpty == false {
+                if child.constraints?.source().isEmpty == false {
                     child.elementBase.constraints.merge(with: constraints)
                 } else {
                     child.elementBase.constraints = constraints
