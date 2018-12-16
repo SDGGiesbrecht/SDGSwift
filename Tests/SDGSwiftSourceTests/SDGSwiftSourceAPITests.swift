@@ -41,7 +41,6 @@ class SDGSwiftSourceAPITests : TestCase {
 
             let rootElement = APIElement.package(parsed)
             for element in rootElement.flattenedTree() {
-                var element = element
                 element.userInformation = true
             }
             for element in rootElement.flattenedTree() {

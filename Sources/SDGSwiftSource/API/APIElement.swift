@@ -172,7 +172,7 @@ public enum APIElement : Comparable, Hashable {
         get {
             return elementBase.userInformation
         }
-        set {
+        nonmutating set {
             elementBase.userInformation = newValue
         }
     }
