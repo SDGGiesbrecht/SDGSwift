@@ -41,6 +41,15 @@ extension PatternBindingSyntax {
             trailingComma: nil)
     }
 
+    internal func forOverloadPattern() -> PatternBindingSyntax {
+        return SyntaxFactory.makePatternBinding(
+            pattern: pattern.variableBindingForOverloadPattern(),
+            typeAnnotation: nil,
+            initializer: nil,
+            accessor: nil,
+            trailingComma: nil)
+    }
+
     internal func forVariableName() -> PatternBindingSyntax {
         return SyntaxFactory.makePatternBinding(
             pattern: pattern.variableBindingForName(),

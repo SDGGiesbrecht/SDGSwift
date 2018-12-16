@@ -14,21 +14,30 @@
 ̲
 ̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ Protocol {̲
 ̲    a̲s̲s̲o̲c̲i̲a̲t̲e̲d̲t̲y̲p̲e̲ AssociatedType
+̲    a̲s̲s̲o̲c̲i̲a̲t̲e̲d̲t̲y̲p̲e̲ OverridableAssociatedType
+̲    i̲n̲i̲t̲(̲overridableInitializer:̲ Bool)̲
 ̲    f̲u̲n̲c̲ requiredFunction(̲)̲
 ̲    f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
 ̲    f̲u̲n̲c̲ overrideableFunction(̲)̲
 ̲    f̲u̲n̲c̲ _hiddenFunction(̲)̲
 ̲    v̲a̲r̲ getOnlyProperty:̲ Bool {̲ g̲e̲t̲ }̲
 ̲    v̲a̲r̲ getSetProperty:̲ Bool {̲ g̲e̲t̲ s̲e̲t̲ }̲
+̲    v̲a̲r̲ overridableProperty:̲ Bool {̲ g̲e̲t̲ }̲
+̲    s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲overridableSubscript:̲ Bool)̲ -̲>̲ Bool {̲ g̲e̲t̲ }̲
 ̲}̲
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol {̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ OverridableAssociatedType =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲(̲overridableInitializer:̲ Bool)̲ {̲}̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overrideableFunction(̲)̲ {̲}̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ providedFunction(̲)̲ {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ overridableProperty:̲ Bool {̲ r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲ }̲
+̲    p̲u̲b̲l̲i̲c̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲overridableSubscript:̲ Bool)̲ -̲>̲ Bool {̲ r̲e̲t̲u̲r̲n̲ t̲r̲u̲e̲ }̲
 ̲}̲
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Protocol w̲h̲e̲r̲e̲ S̲e̲l̲f̲ :̲ OtherProtocol {̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ possiblyRequiredFunction(̲)̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ functionWithNestedGenerics<̲T>̲(̲_̲ parameter:̲ T)̲ w̲h̲e̲r̲e̲ T :̲ Equatable
 ̲}̲
 ̲
 ̲p̲r̲o̲t̲o̲c̲o̲l̲ InternalProtocol {̲}̲

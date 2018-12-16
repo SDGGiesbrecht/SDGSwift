@@ -19,8 +19,6 @@ internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
     var identifier: TokenSyntax { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 
-    func withGenericWhereClause(_ newChild: GenericWhereClauseSyntax?) -> Self
-
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
 }
@@ -36,11 +34,14 @@ extension TypeDeclaration {
             return nil
         }
 
+        var children = apiChildren()
+        if let conformances = inheritanceClause?.conformances {
+            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
         return TypeAPI(
             documentation: documentation,
             declaration: self,
-            conformances: inheritanceClause?.conformances ?? [],
-            children: apiChildren())
+            children: children)
     }
 
     internal func identifierList() -> Set<String> {

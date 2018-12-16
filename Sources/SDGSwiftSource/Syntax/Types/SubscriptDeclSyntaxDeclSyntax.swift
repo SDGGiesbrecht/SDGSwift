@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Constrained, Generic, Member, OverloadableAPIDeclaration {
 
     internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -25,18 +25,29 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic,
             declaration: self)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: SubscriptDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+    // MARK: - Accessor
+
+    var keyword: TokenSyntax {
+        return subscriptKeyword
+    }
+
+    var accessors: AccessorBlockSyntax? {
+        return accessor
+    }
+
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> SubscriptDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeSubscriptDecl(
+        return SyntaxFactory.makeSubscriptDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             subscriptKeyword: subscriptKeyword.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
             indices: indices.normalizedForFunctionDeclaration(),
             result: result.normalizedForSubscriptDeclaration(),
-            genericWhereClause: nil,
-            accessor: accessorListForAPIDeclaration()),
-                newGenericWhereClause)
+            genericWhereClause: newGenericWhereClause,
+            accessor: accessorListForAPIDeclaration())
     }
 
     internal func name() -> SubscriptDeclSyntax {
@@ -55,13 +66,17 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, Attributed, Generic,
         return indices.identifierListForFunction()
     }
 
-    // MARK: - Accessor
+    // MARK: - OverloadableAPIDeclaration
 
-    var keyword: TokenSyntax {
-        return subscriptKeyword
-    }
-
-    var accessors: AccessorBlockSyntax? {
-        return accessor
+    internal func overloadPattern() -> SubscriptDeclSyntax {
+        return SyntaxFactory.makeSubscriptDecl(
+            attributes: nil,
+            modifiers: nil,
+            subscriptKeyword: subscriptKeyword,
+            genericParameterClause: nil,
+            indices: indices.forOverloadPattern(operator: false),
+            result: SyntaxFactory.makeBlankReturnClause(),
+            genericWhereClause: nil,
+            accessor: nil)
     }
 }

@@ -14,21 +14,30 @@
 
 public protocol Protocol {
     associatedtype AssociatedType
+    associatedtype OverridableAssociatedType
+    init(overridableInitializer: Bool)
     func requiredFunction()
     func possiblyRequiredFunction()
     func overrideableFunction()
     func _hiddenFunction()
     var getOnlyProperty: Bool { get }
     var getSetProperty: Bool { get set }
+    var overridableProperty: Bool { get }
+    subscript(overridableSubscript: Bool) -> Bool { get }
 }
 
 extension Protocol {
+    public typealias OverridableAssociatedType = Bool
+    public init(overridableInitializer: Bool) {}
     public func overrideableFunction() {}
     public func providedFunction() {}
+    public var overridableProperty: Bool { return true }
+    public subscript(overridableSubscript: Bool) -> Bool { return true }
 }
 
 extension Protocol where Self : OtherProtocol {
     public func possiblyRequiredFunction()
+    public func functionWithNestedGenerics<T>(_ parameter: T) where T : Equatable
 }
 
 protocol InternalProtocol {}

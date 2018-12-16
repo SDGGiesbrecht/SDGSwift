@@ -17,14 +17,15 @@ import SDGLogic
 extension ExtensionDeclSyntax : AccessControlled, Attributed {
 
     internal var extensionAPI: ExtensionAPI? {
-        let conformances = inheritanceClause?.conformances ?? []
-        let children = apiChildren()
-        guard ¬children.isEmpty ∨ ¬conformances.isEmpty else {
+        var children = apiChildren()
+        if let conformances = inheritanceClause?.conformances {
+            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
+        guard ¬children.isEmpty else {
             return nil
         }
         return ExtensionAPI(
             type: extendedType,
-            conformances: inheritanceClause?.conformances ?? [],
             constraints: genericWhereClause,
             children: children)
     }

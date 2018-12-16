@@ -21,7 +21,6 @@ extension ExtensionAPI {
             type: SyntaxFactory.makeSimpleTypeIdentifier(
                 name: SyntaxFactory.makeToken(.identifier(type)),
                 genericArgumentClause: nil),
-            conformances: [],
             constraints: nil,
             children: [])
     }

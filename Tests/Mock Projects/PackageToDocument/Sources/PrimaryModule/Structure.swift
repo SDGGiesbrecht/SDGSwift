@@ -12,7 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct Structure {
+public struct Structure : Error {
+    public static let staticProperty: Bool = false
+    public static func staticMethod() {}
     public init() {}
+    public let property: Bool = false
     public let _hiddenProperty = 0
+    public subscript(`subscript`: Int) -> Bool { return false }
+    public func method() {}
 }

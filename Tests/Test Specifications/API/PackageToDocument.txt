@@ -3,11 +3,18 @@ PackageToDocument • Package(name: "PackageToDocument")
   PrimaryModule
  PrimaryModule • .target(name: "PrimaryModule")
   Enumeration • enum Enumeration
+   visible • case visible
   Structure • struct Structure
+   staticProperty • static var staticProperty: Bool { get }
+   staticMethod() • static func staticMethod()
    init() • init()
+   property • var property: Bool { get }
+   [_:] • subscript(subscript: Int) -> Bool { get }
+   method() • func method()
+   Error
   (Bool)
    extensionProperty • var extensionProperty: Bool { get }
    propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }
   Protocol • protocol Protocol
-  executeFunction() • func executeFunction()
   globalVariable • var globalVariable: Bool { get set }
+  executeFunction() • func executeFunction()

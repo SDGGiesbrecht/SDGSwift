@@ -31,13 +31,36 @@ class SDGSwiftSourceAPITests : TestCase {
             let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
             let parsed = try PackageAPI(package: package.package())
             XCTAssertNotNil(parsed.documentation)
-            let summary = parsed.summary.joined(separator: "\n")
+            let summary = parsed.summary().joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
             SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
 
             if packageName == "PackageToDocument" {
-                XCTAssert("Structure" ∈ parsed.identifierList)
+                XCTAssert("Structure" ∈ parsed.identifierList())
             }
+
+            let rootElement = APIElement.package(parsed)
+            for element in rootElement.flattenedTree() {
+                element.userInformation = true
+            }
+            for element in rootElement.flattenedTree() {
+                XCTAssertEqual(element.userInformation as? Bool, true)
+                _ = element.libraries
+                _ = element.modules
+                _ = element.types
+                _ = element.extensions
+                _ = element.protocols
+                _ = element.cases
+                _ = element.typeProperties
+                _ = element.typeMethods
+                _ = element.initializers
+                _ = element.properties
+                _ = element.subscripts
+                _ = element.methods
+                _ = element.conformances
+            }
+            XCTAssertFalse(rootElement < rootElement)
+            XCTAssertTrue(parsed == parsed)
         }
     }
 
@@ -117,18 +140,22 @@ class SDGSwiftSourceAPITests : TestCase {
 
             // API
             let api = sourceFile.api().sorted()
-            let summary = api.map({ $0.summary.joined(separator: "\n") }).joined(separator: "\n")
+            let summary = api.map({ $0.summary().joined(separator: "\n") }).joined(separator: "\n")
             SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: false)
 
-            let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList }
-            let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ element in
-                if let declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+            let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
+            let syntaxHighlighting = api.map({ $0.flattenedTree() }).joined().map({ element in
+                if var declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+
+                    if let constraints = element.constraints?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+                        declaration += "\n" + constraints
+                    }
 
                     if let conditions = element.compilationConditions?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
-                        return conditions + "\n" + declaration
-                    } else {
-                        return declaration
+                        declaration = conditions + "\n" + declaration
                     }
+
+                    return declaration
                 } else {
                     return nil
                 }
@@ -136,16 +163,24 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
-                let `extension` = api.first(where: { $0 is ExtensionAPI }) as! ExtensionAPI
-                let method = `extension`.methods.first(where: { $0.name.hasPrefix("performAction") })!
-                let methods = [method, `extension`.methods.first(where: { $0.name.hasPrefix("withSeparateParameters") })!]
-                _ = method.documentation!.renderedHTML(localization: "zxx")
+                search: for element in api {
+                    `switch`: switch element {
+                    case .extension(let `extension`):
+                        let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
+                        let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
+                        _ = method.documentation!.renderedHTML(localization: "zxx")
 
-                for localization in InterfaceLocalization.allCases {
-                    let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
+                        for localization in InterfaceLocalization.allCases {
+                            let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
 
-                    let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
-                    SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
+                            let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
+                            SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
+                        }
+
+                        break search
+                    default:
+                        break `switch`
+                    }
                 }
             }
         }

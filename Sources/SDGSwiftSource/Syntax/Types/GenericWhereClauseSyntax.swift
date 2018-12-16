@@ -12,9 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension GenericWhereClauseSyntax : Mergeable {
 
-    internal func normalized() -> GenericWhereClauseSyntax {
+    internal func normalized() -> GenericWhereClauseSyntax? {
+
+        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        if source().isEmpty {
+            return nil
+        }
+
         return SyntaxFactory.makeGenericWhereClause(
             whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             requirementList: requirementList.normalized())
@@ -22,7 +30,9 @@ extension GenericWhereClauseSyntax : Mergeable {
 
     // MARK: - Mergeable
 
-    internal func merged(with other: GenericWhereClauseSyntax) -> GenericWhereClauseSyntax {
-        return withRequirementList(requirementList.merged(with: other.requirementList))
+    internal mutating func merge(with other: GenericWhereClauseSyntax) {
+        var requirementList = self.requirementList
+        requirementList.merge(with: other.requirementList)
+        self = withRequirementList(requirementList)
     }
 }

@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension EnumCaseDeclSyntax : AccessControlled, Attributed {
+extension EnumCaseDeclSyntax : AccessControlled, APIDeclaration, Attributed {
 
     internal func caseAPI() -> [CaseAPI] {
         var list: [CaseAPI] = []
@@ -30,6 +30,8 @@ extension EnumCaseDeclSyntax : AccessControlled, Attributed {
         return list
     }
 
+    // MARK: - APIDeclaration
+
     internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
         return SyntaxFactory.makeEnumCaseDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
@@ -44,5 +46,9 @@ extension EnumCaseDeclSyntax : AccessControlled, Attributed {
             modifiers: nil,
             caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
             elements: elements.forName())
+    }
+
+    internal func identifierList() -> Set<String> {
+        return Set(elements.lazy.map({ $0.identifier.text }))
     }
 }

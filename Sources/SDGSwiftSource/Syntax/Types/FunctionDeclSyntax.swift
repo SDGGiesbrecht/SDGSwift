@@ -15,42 +15,31 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, Attributed, Generic, Member {
+extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, Member, OverloadableAPIDeclaration {
 
-    internal func functionAPI() -> [FunctionAPI] {
+    internal func functionAPI() -> FunctionAPI? {
         if ¬isPublic ∨ isUnavailable() {
-            return []
+            return nil
         }
         let name = identifier.text
         if name.hasPrefix("_") {
-            return []
+            return nil
         }
-        return [FunctionAPI(documentation: documentation, declaration: self)]
+        return FunctionAPI(documentation: documentation, declaration: self)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: FunctionDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeFunctionDecl(
+        return SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: identifier.isOperator),
             funcKeyword: funcKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
             signature: signature.normalizedForAPIDeclaration(),
-            genericWhereClause: nil,
-            body: nil),
-                newGenericWhereClause)
-    }
-
-    internal func overloadPattern() -> FunctionDeclSyntax {
-        return SyntaxFactory.makeFunctionDecl(
-            attributes: nil,
-            modifiers: modifiers?.forOverloadPattern(),
-            funcKeyword: funcKeyword,
-            identifier: identifier,
-            genericParameterClause: nil,
-            signature: signature.forOverloadPattern(operator: identifier.isOperator),
-            genericWhereClause: nil,
+            genericWhereClause: newGenericWhereClause,
             body: nil)
     }
 
@@ -68,5 +57,19 @@ extension FunctionDeclSyntax : AccessControlled, Attributed, Generic, Member {
 
     internal func identifierList() -> Set<String> {
         return Set([identifier.text]) ∪ signature.identifierList()
+    }
+
+    // MARK: - OverloadableAPIDeclaration
+
+    internal func overloadPattern() -> FunctionDeclSyntax {
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: modifiers?.forOverloadPattern(),
+            funcKeyword: funcKeyword,
+            identifier: identifier,
+            genericParameterClause: nil,
+            signature: signature.forOverloadPattern(operator: identifier.isOperator),
+            genericWhereClause: nil,
+            body: nil)
     }
 }

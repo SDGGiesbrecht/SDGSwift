@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ProtocolDeclSyntax : AccessControlled, Attributed {
+extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained {
 
     internal var protocolAPI: ProtocolAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -23,23 +23,27 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
         if identifier.text.hasPrefix("_") {
             return nil
         }
+        var children = apiChildren()
+        if let conformances = inheritanceClause?.conformances {
+            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
         return ProtocolAPI(
             documentation: documentation,
             declaration: self,
-            conformances: inheritanceClause?.conformances ?? [],
-            children: apiChildren())
+            children: children)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?) {
-        return (SyntaxFactory.makeProtocolDecl(
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> ProtocolDeclSyntax {
+        return SyntaxFactory.makeProtocolDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             protocolKeyword: protocolKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             inheritanceClause: nil,
-            genericWhereClause: nil,
-            members: SyntaxFactory.makeBlankMemberDeclBlock()),
-                genericWhereClause?.normalized())
+            genericWhereClause: genericWhereClause?.normalized(),
+            members: SyntaxFactory.makeBlankMemberDeclBlock())
     }
 
     internal func name() -> ProtocolDeclSyntax {
@@ -51,5 +55,9 @@ extension ProtocolDeclSyntax : AccessControlled, Attributed {
             inheritanceClause: nil,
             genericWhereClause: nil,
             members: SyntaxFactory.makeBlankMemberDeclBlock())
+    }
+
+    internal func identifierList() -> Set<String> {
+        return [identifier.text]
     }
 }

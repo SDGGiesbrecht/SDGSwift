@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
+extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, OverloadableAPIDeclaration {
 
     internal var initializerAPI: InitializerAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -26,9 +26,11 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
         return InitializerAPI(documentation: documentation, declaration: self)
     }
 
-    internal func normalizedAPIDeclaration() -> (declaration: InitializerDeclSyntax, constraints: GenericWhereClauseSyntax?) {
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> InitializerDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeInitializerDecl(
+        return SyntaxFactory.makeInitializerDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             initKeyword: initKeyword.generallyNormalizedAndMissingInsteadOfNil(),
@@ -37,8 +39,7 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
             parameters: parameters.normalizedForFunctionDeclaration(),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
             genericWhereClause: newGenericWhereClause,
-            body: nil),
-                newGenericWhereClause)
+            body: nil)
     }
 
     internal func name() -> InitializerDeclSyntax {
@@ -56,5 +57,20 @@ extension InitializerDeclSyntax : AccessControlled, Attributed, Generic {
 
     internal func identifierList() -> Set<String> {
         return parameters.identifierListForFunction()
+    }
+
+    // MARK: - OverloadableAPIDeclaration
+
+    internal func overloadPattern() -> InitializerDeclSyntax {
+        return SyntaxFactory.makeInitializerDecl(
+            attributes: nil,
+            modifiers: nil,
+            initKeyword: initKeyword,
+            optionalMark: nil,
+            genericParameterClause: nil,
+            parameters: parameters.forOverloadPattern(operator: false),
+            throwsOrRethrowsKeyword: nil,
+            genericWhereClause: nil,
+            body: nil)
     }
 }

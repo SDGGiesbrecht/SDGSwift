@@ -12,36 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
+import SDGMathematics
 import SDGLocalization
 
-public class APIElement : Comparable, Hashable {
-
-    // MARK: - Initialization
-
-    internal init(documentation: DocumentationSyntax?) { // @exempt(from: tests) False coverage result in Xcode 9.4.1)
-        self.documentation = documentation
-    }
+public enum APIElement : Comparable, Hashable {
 
     // MARK: - Static Methods
 
     internal static func merge(elements: [APIElement]) -> [APIElement] {
 
         var extensions: [ExtensionAPI] = []
-        var functions: [FunctionAPI] = []
         var types: [TypeAPI] = []
         var protocols: [ProtocolAPI] = []
         var other: [APIElement] = []
         for element in elements {
             switch element {
-            case let `extension` as ExtensionAPI :
+            case .extension(let `extension`):
                 extensions.append(`extension`)
-            case let type as TypeAPI :
+            case .type(let type):
                 types.append(type)
-            case let `protocol` as ProtocolAPI :
+            case .protocol(let `protocol`):
                 protocols.append(`protocol`)
-            case let function as FunctionAPI :
-                functions.append(function)
             default:
                 other.append(element)
             }
@@ -60,93 +53,254 @@ public class APIElement : Comparable, Hashable {
             `extension`.moveConditionsToChildren()
             unmergedExtensions.append(`extension`)
         }
-        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions))
+        other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).lazy.map({ APIElement.extension($0) }))
 
-        functions = FunctionAPI.groupIntoOverloads(functions)
+        other.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
+        other.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
 
-        return types as [APIElement] + protocols as [APIElement] + functions as [APIElement] + other
+        return _APIElementBase.groupIntoOverloads(other)
     }
 
-    // MARK: - Properties
+    // MARK: - Cases
 
-    public var name: String {
-        primitiveMethod()
-    }
+    case package(PackageAPI)
+    case library(LibraryAPI)
+    case module(ModuleAPI)
+    case type(TypeAPI)
+    case `protocol`(ProtocolAPI)
+    case `extension`(ExtensionAPI)
+    case `case`(CaseAPI)
+    case initializer(InitializerAPI)
+    case variable(VariableAPI)
+    case `subscript`(SubscriptAPI)
+    case function(FunctionAPI)
+    case conformance(ConformanceAPI)
 
-    public var declaration: Syntax? {
-        primitiveMethod()
-    }
+    // MARK: - Methods
 
-    public var identifierList: Set<String> {
-        return []
-    }
-
-    public internal(set) var constraints: GenericWhereClauseSyntax?
-    public internal(set) var compilationConditions: Syntax?
-
-    public let documentation: DocumentationSyntax?
-
-    public var children: AnyBidirectionalCollection<APIElement> {
-        return AnyBidirectionalCollection([])
-    }
-
-    public var summary: [String] {
-        primitiveMethod()
-    }
-
-    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
-    ///
-    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
-    public var userInformation: Any?
-
-    // MARK: - Description
-
-    internal func appendCompilationConditions(to description: inout String) {
-        if let conditions = compilationConditions {
-            description += " • " + conditions.source()
+    internal var elementBase: _APIElementBase {
+        switch self {
+        case .package(let package):
+            return package
+        case .library(let library):
+            return library
+        case .module(let module):
+            return module
+        case .type(let type):
+            return type
+        case .extension(let `extension`):
+            return `extension`
+        case .protocol(let `protocol`):
+            return `protocol`
+        case .case(let `case`):
+            return `case`
+        case .initializer(let initializer):
+            return initializer
+        case .variable(let variable):
+            return variable
+        case .subscript(let `subscript`):
+            return `subscript`
+        case .function(let function):
+            return function
+        case .conformance(let conformance):
+            return conformance
         }
     }
 
-    internal func prependCompilationCondition(_ addition: Syntax?) {
-        if let new = addition {
-            if let existing = compilationConditions {
-                let existingCondition = Array(existing.tokens().dropFirst())
-                let newCondition = Array(new.tokens().dropFirst())
-                compilationConditions = SyntaxFactory.makeUnknownSyntax(tokens: [
-                    SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
-                    SyntaxFactory.makeToken(.leftParen)
-                    ] + newCondition + [
-                        SyntaxFactory.makeToken(.rightParen),
-                        SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-                        SyntaxFactory.makeToken(.leftParen)
-                    ] + existingCondition + [
-                        SyntaxFactory.makeToken(.rightParen)
-                    ])
-            } else {
-                compilationConditions = new
-            }
+    internal var elementProtocol: APIElementProtocol {
+        switch self {
+        case .package(let package):
+            return package
+        case .library(let library):
+            return library
+        case .module(let module):
+            return module
+        case .type(let type):
+            return type
+        case .extension(let `extension`):
+            return `extension`
+        case .protocol(let `protocol`):
+            return `protocol`
+        case .case(let `case`):
+            return `case`
+        case .initializer(let initializer):
+            return initializer
+        case .variable(let variable):
+            return variable
+        case .subscript(let `subscript`):
+            return `subscript`
+        case .function(let function):
+            return function
+        case .conformance(let conformance):
+            return conformance
+        }
+    }
+
+    public var declaration: Syntax? {
+        return elementProtocol.possibleDeclaration
+    }
+
+    public var constraints: GenericWhereClauseSyntax? {
+        return elementProtocol.constraints
+    }
+
+    public var compilationConditions: Syntax? {
+        return elementProtocol.compilationConditions
+    }
+
+    public var name: Syntax {
+        return elementProtocol.genericName
+    }
+
+    public var children: [APIElement] {
+        return elementProtocol.children
+    }
+
+    public var libraries: AnyBidirectionalCollection<LibraryAPI> {
+        return elementProtocol.libraries
+    }
+
+    public var modules: AnyBidirectionalCollection<ModuleAPI> {
+        return elementProtocol.modules
+    }
+
+    public var types: AnyBidirectionalCollection<TypeAPI> {
+        return elementProtocol.types
+    }
+
+    public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
+        return elementProtocol.extensions
+    }
+
+    public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
+        return elementProtocol.protocols
+    }
+
+    public var cases: AnyBidirectionalCollection<CaseAPI> {
+        return elementProtocol.cases
+    }
+
+    public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
+        return elementProtocol.typeProperties
+    }
+
+    public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
+        return elementProtocol.typeMethods
+    }
+
+    public var initializers: AnyBidirectionalCollection<InitializerAPI> {
+        return elementProtocol.initializers
+    }
+
+    public var properties: AnyBidirectionalCollection<VariableAPI> {
+        return elementProtocol.properties
+    }
+
+    public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
+        return elementProtocol.subscripts
+    }
+
+    public var methods: AnyBidirectionalCollection<FunctionAPI> {
+        return elementProtocol.methods
+    }
+
+    public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
+        return elementProtocol.conformances
+    }
+
+    public func summary() -> [String] {
+        return elementProtocol.summary()
+    }
+
+    public func identifierList() -> Set<String> {
+        return elementProtocol.identifierList()
+    }
+
+    // #documentation(SDGSwiftSource.APIElement.userInformation)
+    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
+    ///
+    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
+    public var userInformation: Any? {
+        get {
+            return elementBase.userInformation
+        }
+        nonmutating set {
+            elementBase.userInformation = newValue
         }
     }
 
     // MARK: - Comparable
 
-    public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
-        if precedingValue.name == followingValue.name {
-            return (precedingValue.declaration?.source() ?? "") < (followingValue.declaration?.source() ?? "") // @exempt(from: tests) Empty declarations should never occur.
-        } else {
-            return precedingValue.name < followingValue.name
+    private enum Group : OrderedEnumeration {
+        case package
+        case library
+        case module
+        case type
+        case `extension`
+        case `protocol`
+        case `case`
+        case typeProperty
+        case typeMethod
+        case initializer
+        case variable
+        case `subscript`
+        case function
+        case conformance
+    }
+
+    private func comparisonIdentity() -> (Group, String, String) {
+        func flatten(_ group: Group, _ properties: (name: String, declaration: String)) -> (Group, String, String) {
+            return (group, properties.name, properties.declaration)
         }
+        switch self {
+        case .package(let package):
+            return flatten(.package, package.comparisonIdentity())
+        case .library(let library):
+            return flatten(.library, library.comparisonIdentity())
+        case .module(let module):
+            return flatten(.module, module.comparisonIdentity())
+        case .type(let type):
+            return flatten(.type, type.comparisonIdentity())
+        case .extension(let `extension`):
+            return flatten(.extension, `extension`.comparisonIdentity())
+        case .protocol(let `protocol`):
+            return flatten(.protocol, `protocol`.comparisonIdentity())
+        case .case(let `case`):
+            return flatten(.case, `case`.comparisonIdentity())
+        case .initializer(let initializer):
+            return flatten(.initializer, initializer.comparisonIdentity())
+        case .variable(let variable):
+            if variable.declaration.typeMemberKeyword ≠ nil {
+                return flatten(.typeProperty, variable.comparisonIdentity())
+            } else {
+                return flatten(.variable, variable.comparisonIdentity())
+            }
+        case .subscript(let `subscript`):
+            return flatten(.subscript, `subscript`.comparisonIdentity())
+        case .function(let function):
+            if function.declaration.typeMemberKeyword ≠ nil {
+                return flatten(.typeMethod, function.comparisonIdentity())
+            } else {
+                return flatten(.function, function.comparisonIdentity())
+            }
+        case .conformance(let conformance):
+            return flatten(.conformance, conformance.comparisonIdentity())
+        }
+    }
+
+    public static func < (precedingValue: APIElement, followingValue: APIElement) -> Bool {
+        return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
     }
 
     // MARK: - Equatable
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
-        return (precedingValue.name, precedingValue.declaration?.source()) == (followingValue.name, followingValue.declaration?.source())
+        return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
     }
 
     // MARK: - Hashable
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(declaration?.source() ?? name)
+        hasher.combine(declaration?.source() ?? name.source())
     }
 }

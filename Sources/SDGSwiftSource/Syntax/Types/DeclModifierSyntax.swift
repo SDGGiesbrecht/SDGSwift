@@ -39,7 +39,7 @@ extension DeclModifierSyntax {
             case "override":
                 // Subclassing
                 return nil
-            case "mutating":
+            case "mutating", "nonmutating":
                 return normalize()
             case "indirect":
                 return nil
@@ -75,7 +75,7 @@ extension DeclModifierSyntax {
                 return .accessControl
             case "weak":
                 return .memoryManagement
-            case "mutating":
+            case "mutating", "nonmutating":
                 return .mutation
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)

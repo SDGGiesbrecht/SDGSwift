@@ -22,21 +22,30 @@
 
 <span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">Protocol</span> <span class="punctuation">{</span>
     <span class="keyword">associatedtype</span> <span class="external identifier">AssociatedType</span>
+    <span class="keyword">associatedtype</span> <span class="external identifier">OverridableAssociatedType</span>
+    <span class="keyword">init</span><span class="punctuation">(</span><span class="external identifier">overridableInitializer</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">requiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">func</span> <span class="external identifier">_hiddenFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
     <span class="keyword">var</span> <span class="external identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span>
     <span class="keyword">var</span> <span class="external identifier">getSetProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="keyword">set</span> <span class="punctuation">}</span>
+    <span class="keyword">var</span> <span class="external identifier">overridableProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span>
+    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="external identifier">overridableSubscript</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Protocol</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="external identifier">OverridableAssociatedType</span> <span class="punctuation">=</span> <span class="external identifier">Bool</span>
+    <span class="keyword">public</span> <span class="keyword">init</span><span class="punctuation">(</span><span class="external identifier">overridableInitializer</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
     <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">overrideableFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
     <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">providedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">overridableProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">return</span> <span class="keyword">true</span> <span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="external identifier">overridableSubscript</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">return</span> <span class="keyword">true</span> <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Protocol</span> <span class="keyword">where</span> <span class="keyword">Self</span> <span class="punctuation">:</span> <span class="external identifier">OtherProtocol</span> <span class="punctuation">{</span>
     <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">possiblyRequiredFunction</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">functionWithNestedGenerics</span><span class="punctuation">&#x003C;</span><span class="external identifier">T</span><span class="punctuation">></span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">parameter</span><span class="punctuation">:</span> <span class="external identifier">T</span><span class="punctuation">)</span> <span class="keyword">where</span> <span class="external identifier">T</span> <span class="punctuation">:</span> <span class="external identifier">Equatable</span>
 <span class="punctuation">}</span>
 
 <span class="keyword">protocol</span> <span class="external identifier">InternalProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>

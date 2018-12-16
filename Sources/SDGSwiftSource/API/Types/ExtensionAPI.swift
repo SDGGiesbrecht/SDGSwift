@@ -14,27 +14,23 @@
 
 import SDGControlFlow
 
-public class ExtensionAPI : APIScope {
+public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, UndeclaredAPIElementProtocol {
 
     // MARK: - Initialization
 
-    internal init(type: TypeSyntax, conformances: [ConformanceAPI], constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        self.type = type.normalized()
-        super.init(documentation: nil, conformances: conformances, children: children)
-        self.constraints = constraints?.normalized()
+    internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
+        super.init(type: type)
+        self.constraints = constraints
+        self.children = children
     }
-
-    // MARK: - Properties
-
-    internal let type: TypeSyntax
 
     // MARK: - Combining
 
     public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.source() == type.name
+        return self.type.source() == type.genericName.source()
     }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
-        return self.type.source() == `protocol`.name
+        return self.type.source() == `protocol`.name.source()
     }
     public func extendsSameType(as other: ExtensionAPI) -> Bool {
         return type.source() == other.type.source()
@@ -53,6 +49,7 @@ public class ExtensionAPI : APIScope {
             for `extension` in group {
                 if let existing = merged {
                     existing.merge(extension: `extension`)
+                    merged = existing
                 } else {
                     merged = `extension`
                 }
@@ -63,26 +60,9 @@ public class ExtensionAPI : APIScope {
         return result
     }
 
-    // MARK: - APIElement
+    // MARK: - APIElementProtocol
 
-    public override var name: String {
-        return type.source()
-    }
-
-    public override var declaration: Syntax? { // @exempt(from: tests) Should never occur.
-        return nil
-    }
-
-    public override var identifierList: Set<String> {
-        return scopeIdentifierList
-    }
-
-    public override var summary: [String] {
-        var result = "(" + name + ")"
-        if let constraints = self.constraints {
-            result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
-        }
-        appendCompilationConditions(to: &result)
-        return [result] + scopeSummary
+    public var summaryName: String {
+        return "(" + genericName.source() + ")"
     }
 }
