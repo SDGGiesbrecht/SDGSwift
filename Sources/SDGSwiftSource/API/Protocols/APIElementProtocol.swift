@@ -78,6 +78,9 @@ extension APIElementProtocol {
         if let declaration = possibleDeclaration?.source() {
             entry += " • " + declaration
         }
+        if let constraints = constraints {
+            entry += constraints.source()
+        }
         appendCompilationConditions(to: &entry)
         return [entry] + summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }

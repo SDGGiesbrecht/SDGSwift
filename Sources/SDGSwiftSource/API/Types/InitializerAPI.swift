@@ -19,10 +19,11 @@ public final class InitializerAPI : _APIElementBase, SortableAPIElement, Uniquel
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: InitializerDeclSyntax, name: InitializerDeclSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: InitializerDeclSyntax, constraints: GenericWhereClauseSyntax?, name: InitializerDeclSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
+        self.constraints = constraints
     }
 
     // MARK: - DeclaredAPIElement

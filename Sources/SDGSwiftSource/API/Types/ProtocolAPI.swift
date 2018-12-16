@@ -18,10 +18,11 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloa
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, name: ProtocolDeclSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?, name: ProtocolDeclSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation, children: children)
+        self.constraints = constraints
 
         for child in children {
             child.elementBase.isProtocolRequirement = true

@@ -19,8 +19,6 @@ internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
     var identifier: TokenSyntax { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 
-    func withGenericWhereClause(_ newChild: GenericWhereClauseSyntax?) -> Self
-
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
 }

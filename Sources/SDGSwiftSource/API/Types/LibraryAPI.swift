@@ -40,10 +40,11 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         }
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
+        self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

@@ -36,7 +36,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
         // #workaround(Swift 4.2.1, Using UniquelyDeclaredManifestAPIElement currently causes a segmentation fault.)
         // self.init(documentation: manifestDeclaration?.documentation, declaration: declaration)
-        self.init(documentation: manifestDeclaration?.documentation, alreadyNormalizedDeclaration: declaration, name: declaration.manifestEntryName(), children: [])
+        self.init(documentation: manifestDeclaration?.documentation, alreadyNormalizedDeclaration: declaration, constraints: nil, name: declaration.manifestEntryName(), children: [])
 
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
@@ -54,10 +54,11 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         }
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
+        self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

@@ -15,7 +15,7 @@
 internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
     associatedtype Declaration : Syntax
     associatedtype Name : Syntax
-    init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: Declaration, name: Name, children: [APIElement])
+    init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: Declaration, constraints: GenericWhereClauseSyntax?, name: Name, children: [APIElement])
     var declaration: Declaration { get }
     var name: Name { get }
 }

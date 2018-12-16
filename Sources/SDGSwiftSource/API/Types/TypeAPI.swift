@@ -25,7 +25,7 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
         self.declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
         super.init(documentation: documentation, children: children)
-        constraints.merge(with: normalizedConstraints)
+        self.constraints = normalizedConstraints
     }
 
     // MARK: - Properties
@@ -41,7 +41,7 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     // MARK: - DeclaredAPIElement
 
     public var genericDeclaration: Syntax {
-        return declaration.withGenericWhereClause(constraints)
+        return declaration
     }
 
     public let genericName: Syntax

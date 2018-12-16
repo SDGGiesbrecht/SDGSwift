@@ -37,10 +37,11 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
         children.append(contentsOf: api)
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
+        self.constraints = constraints
     }
 
     // MARK: - DeclaredAPIElement

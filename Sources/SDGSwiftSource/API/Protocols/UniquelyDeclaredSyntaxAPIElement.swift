@@ -20,12 +20,22 @@ extension UniquelyDeclaredSyntaxAPIElement {
 
     internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
         let normalized = declaration.normalizedAPIDeclaration()
-        self.init(documentation: documentation, alreadyNormalizedDeclaration: normalized, name: normalized.name(), children: children)
+        self.init(documentation: documentation, alreadyNormalizedDeclaration: normalized, constraints: nil, name: normalized.name(), children: children)
     }
 
     // MARK: - UniquelyDeclaredAPIElement
 
     public func shallowIdentifierList() -> Set<String> {
         return declaration.identifierList()
+    }
+}
+
+extension UniquelyDeclaredSyntaxAPIElement where Declaration : Constrained, Self : _APIElementBase {
+
+    internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
+        var normalized = declaration.normalizedAPIDeclaration()
+        let constraints = normalized.genericWhereClause
+        normalized = normalized.withGenericWhereClause(nil)
+        self.init(documentation: documentation, alreadyNormalizedDeclaration: normalized, constraints: constraints, name: normalized.name(), children: children)
     }
 }
