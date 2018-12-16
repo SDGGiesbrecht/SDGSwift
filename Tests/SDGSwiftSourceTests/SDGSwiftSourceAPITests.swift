@@ -46,6 +46,7 @@ class SDGSwiftSourceAPITests : TestCase {
             for element in rootElement.flattenedTree() {
                 XCTAssertEqual(element.userInformation as? Bool, true)
             }
+            XCTAssertFalse(rootElement < rootElement)
         }
     }
 
