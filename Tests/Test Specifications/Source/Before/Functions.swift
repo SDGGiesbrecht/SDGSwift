@@ -42,3 +42,17 @@ public func withVoid(_ closure: () -> ()) {} // swiftlint:disable:this void_retu
 public func tupleReturn() -> (String, Int) {
     return ("", 0)
 }
+
+public func arrayReturn() -> [Bool] {
+    return []
+}
+public func nonstandardArrayReturn() -> Array<Bool> {
+    return []
+}
+
+public func dictionaryReturn() -> [Bool: Bool] {
+    return []
+}
+public func nonstandardDictionaryReturn() -> Dictionary<Bool, Bool> {
+    return []
+}
