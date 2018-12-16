@@ -49,6 +49,6 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     // MARK: - OverloadableAPIElement
 
     internal func genericOverloadPattern() -> Syntax {
-        return declaration
+        return genericName
     }
 }

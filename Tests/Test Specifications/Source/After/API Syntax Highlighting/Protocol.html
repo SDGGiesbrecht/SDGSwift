@@ -10,9 +10,17 @@
 
 <code class="swift blockquote"><span class="keyword">associatedtype</span> <span class="internal identifier">AssociatedType</span></code>
 
+<code class="swift blockquote"><span class="keyword">associatedtype</span> <span class="internal identifier">OverridableAssociatedType</span></code>
+
+<code class="swift blockquote"><span class="keyword">init</span><span class="punctuation">(</span><span class="internal identifier">overridableInitializer</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span></code>
+
 <code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">getOnlyProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
 
 <code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">getSetProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="keyword">set</span> <span class="punctuation">}</span></code>
+
+<code class="swift blockquote"><span class="keyword">var</span> <span class="internal identifier">overridableProperty</span><span class="punctuation">:</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
+
+<code class="swift blockquote"><span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">overridableSubscript</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span></code>
 
 <code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">conditionallyProvidedFunction</span><span class="punctuation">(</span><span class="punctuation">)</span></code>
 <code class="swift blockquote"> <span class="keyword">where</span> <span class="internal identifier">AssociatedType</span> <span class="external identifier">==</span> <span class="external identifier">Int</span></code>

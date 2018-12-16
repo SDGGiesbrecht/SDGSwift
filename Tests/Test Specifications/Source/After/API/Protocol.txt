@@ -1,7 +1,12 @@
 Protocol • protocol Protocol
  AssociatedType • associatedtype AssociatedType
+ OverridableAssociatedType • associatedtype OverridableAssociatedType
+  typealias OverridableAssociatedType
+ (customizable) init(overridableInitializer:) • init(overridableInitializer: Bool)
  (required) getOnlyProperty • var getOnlyProperty: Bool { get }
  (required) getSetProperty • var getSetProperty: Bool { get set }
+ (customizable) overridableProperty • var overridableProperty: Bool { get }
+ (customizable) [_:] • subscript(overridableSubscript: Bool) -> Bool { get }
  conditionallyProvidedFunction() • func conditionallyProvidedFunction() where AssociatedType == Int
  functionWithNestedGenerics(_:) • func functionWithNestedGenerics<T>(_ parameter: T) where Self : OtherProtocol, T : Equatable
  (customizable) overrideableFunction() • func overrideableFunction()

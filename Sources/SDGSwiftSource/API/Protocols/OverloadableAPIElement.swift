@@ -37,6 +37,7 @@ extension OverloadableAPIElement {
                         let declaration = possibleDeclaration,
                         overloadDeclaration.source() == declaration.source(),
                         overload.constraints?.source() == constraints?.source() {
+
                         hasDefaultImplementation = true
                         new.remove(at: index)
                         break
