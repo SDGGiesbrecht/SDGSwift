@@ -38,6 +38,15 @@ class SDGSwiftSourceAPITests : TestCase {
             if packageName == "PackageToDocument" {
                 XCTAssert("Structure" ∈ parsed.identifierList())
             }
+
+            let rootElement = APIElement.package(parsed)
+            for element in rootElement.flattenedTree() {
+                var element = element
+                element.userInformation = true
+            }
+            for element in rootElement.flattenedTree() {
+                XCTAssertEqual(element.userInformation as? Bool, true)
+            }
         }
     }
 
@@ -121,7 +130,7 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(summary, against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt"), overwriteSpecificationInsteadOfFailing: true)
 
             let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
-            let syntaxHighlighting = api.map({ $0.flattenedTree }).joined().map({ element in
+            let syntaxHighlighting = api.map({ $0.flattenedTree() }).joined().map({ element in
                 if let declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
 
                     if let conditions = element.compilationConditions?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
