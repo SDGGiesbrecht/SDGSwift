@@ -88,10 +88,10 @@ public enum APIElement : Comparable, Hashable {
             return module
         case .type(let type):
             return type
-        case .protocol(let `protocol`):
-            return `protocol`
         case .extension(let `extension`):
             return `extension`
+        case .protocol(let `protocol`):
+            return `protocol`
         case .case(let `case`):
             return `case`
         case .initializer(let initializer):
@@ -117,10 +117,10 @@ public enum APIElement : Comparable, Hashable {
             return module
         case .type(let type):
             return type
-        case .protocol(let `protocol`):
-            return `protocol`
         case .extension(let `extension`):
             return `extension`
+        case .protocol(let `protocol`):
+            return `protocol`
         case .case(let `case`):
             return `case`
         case .initializer(let initializer):
@@ -171,8 +171,8 @@ public enum APIElement : Comparable, Hashable {
         case library
         case module
         case type
-        case `protocol`
         case `extension`
+        case `protocol`
         case `case`
         case typeProperty
         case typeMethod
@@ -196,10 +196,10 @@ public enum APIElement : Comparable, Hashable {
             return flatten(.module, module.comparisonIdentity())
         case .type(let type):
             return flatten(.type, type.comparisonIdentity())
-        case .protocol(let `protocol`):
-            return flatten(.protocol, `protocol`.comparisonIdentity())
         case .extension(let `extension`):
             return flatten(.extension, `extension`.comparisonIdentity())
+        case .protocol(let `protocol`):
+            return flatten(.protocol, `protocol`.comparisonIdentity())
         case .case(let `case`):
             return flatten(.case, `case`.comparisonIdentity())
         case .initializer(let initializer):

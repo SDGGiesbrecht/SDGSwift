@@ -29,7 +29,6 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
-        var modules: [ModuleAPI] = []
         for module in product.targets where ¬module.name.hasPrefix("_") {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -37,9 +36,8 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
                     return "Parsing “" + StrictString(module.name) + "”..."
                 }
             }).resolved()))
-            modules.append(try ModuleAPI(module: module, manifest: manifest))
+            children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
         }
-        self.modules = modules
     }
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, name: TokenSyntax, children: [APIElement]) {
@@ -48,15 +46,7 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         super.init(documentation: documentation)
     }
 
-    // MARK: - Properties
-
-    public internal(set) var modules: [ModuleAPI] = []
-
     // MARK: - APIElementProtocol
-
-    public func shallowIdentifierList() -> Set<String> {
-        return modules.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
 
     public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()]

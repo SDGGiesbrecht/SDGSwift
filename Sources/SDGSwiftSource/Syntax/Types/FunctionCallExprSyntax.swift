@@ -61,6 +61,6 @@ extension FunctionCallExprSyntax {
         guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax else {
             unreachable()
         }
-        return literal.stringLiteral
+        return SyntaxFactory.makeStringSegment(String(literal.stringLiteral.text.dropFirst().dropLast()))
     }
 }

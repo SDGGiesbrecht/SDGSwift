@@ -21,4 +21,10 @@ extension UniquelyDeclaredManifestAPIElement {
     internal init(documentation: DocumentationSyntax?, declaration: Declaration) {
         self.init(documentation: documentation, alreadyNormalizedDeclaration: declaration, name: declaration.manifestEntryName(), children: [])
     }
+
+    // MARK: - APIElementProtocol
+
+    public func shallowIdentifierList() -> Set<String> {
+        return []
+    }
 }

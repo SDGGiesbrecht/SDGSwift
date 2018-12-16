@@ -40,7 +40,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {
             case .library:
-                libraries.append(try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress))
+                children.append(.library(try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress)))
             case .executable, .test:
                 continue
             }
@@ -48,7 +48,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
         for library in libraries {
             for module in library.modules where ¬modules.contains(module) {
-                modules.append(module)
+                children.append(.module(module))
             }
         }
     }
@@ -59,16 +59,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         super.init(documentation: documentation)
     }
 
-    // MARK: - Properties
-
-    public internal(set) var libraries: [LibraryAPI] = []
-    public internal(set) var modules: [ModuleAPI] = []
-
     // MARK: - APIElementProtocol
-
-    public func shallowIdentifierList() -> Set<String> {
-        return libraries.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
-    }
 
     public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()]

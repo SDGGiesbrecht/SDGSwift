@@ -25,7 +25,7 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloa
 
         for child in children {
             switch child {
-            case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .conformance:
+            case .package, .library, .module, .type, .extension, .protocol, .case, .initializer, .variable, .subscript, .conformance:
                 break
             case .function(let function):
                 function.isProtocolRequirement = true

@@ -89,22 +89,66 @@ extension APIElementProtocol {
         return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
     }
 
-    public var cases: AnyBidirectionalCollection<CaseAPI> {
-        return filtered { (element) -> CaseAPI? in
+    public var libraries: AnyBidirectionalCollection<LibraryAPI> {
+        return filtered { (element) -> LibraryAPI? in
             switch element {
-            case .case(let `case`):
-                return `case`
+            case .library(let library):
+                return library
             default:
                 return nil
             }
         }
     }
 
-    public var subtypes: AnyBidirectionalCollection<TypeAPI> {
+    public var modules: AnyBidirectionalCollection<ModuleAPI> {
+        return filtered { (element) -> ModuleAPI? in
+            switch element {
+            case .module(let module):
+                return module
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var types: AnyBidirectionalCollection<TypeAPI> {
         return filtered { (element) -> TypeAPI? in
             switch element {
             case .type(let type):
                 return type
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
+        return filtered { (element) -> ExtensionAPI? in
+            switch element {
+            case .extension(let `extension`):
+                return `extension`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
+        return filtered { (element) -> ProtocolAPI? in
+            switch element {
+            case .protocol(let `protocol`):
+                return `protocol`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var cases: AnyBidirectionalCollection<CaseAPI> {
+        return filtered { (element) -> CaseAPI? in
+            switch element {
+            case .case(let `case`):
+                return `case`
             default:
                 return nil
             }
