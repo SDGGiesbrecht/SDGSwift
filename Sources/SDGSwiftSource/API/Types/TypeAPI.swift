@@ -38,12 +38,6 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
         return declaration.identifierList()
     }
 
-    public func summary() -> [String] {
-        var result = genericName.source() + " • " + genericDeclaration.source()
-        appendCompilationConditions(to: &result)
-        return [result] + scopeSummary()
-    }
-
     // MARK: - DeclaredAPIElement
 
     public var genericDeclaration: Syntax {

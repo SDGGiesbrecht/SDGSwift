@@ -28,6 +28,7 @@ public protocol APIElementProtocol : class {
     var summaryName: String { get }
     var isProtocolRequirement: Bool { get }
     var hasDefaultImplementation: Bool { get }
+    func subentries() -> [String]
     func summary() -> [String]
 }
 
@@ -45,16 +46,23 @@ extension APIElementProtocol {
         return genericName.source()
     }
 
-    internal func scopeSummary() -> [String] {
-        // #warning(Move this.)
-        return Array(children.lazy.map({ $0.summary().lazy.map({ $0.prepending(" ") }) }).joined())
-    }
-
     internal func appendCompilationConditions(to description: inout String) {
-        // #warning(Move this.)
         if let conditions = compilationConditions {
             description += " • " + conditions.source()
         }
+    }
+
+    public func subentries() -> [String] {
+        var result: [String] = []
+        for overload in overloads {
+            if let declaration = overload.declaration {
+                var declaration = declaration.source()
+                overload.elementProtocol.appendCompilationConditions(to: &declaration)
+                result.append(declaration)
+            }
+        }
+        result.append(contentsOf: children.lazy.map({ $0.summary() }).joined())
+        return result
     }
 
     public func summary() -> [String] {
@@ -71,16 +79,7 @@ extension APIElementProtocol {
             entry += " • " + declaration
         }
         appendCompilationConditions(to: &entry)
-        var result = [entry]
-        for overload in overloads {
-            if let declaration = overload.declaration {
-                var declaration = declaration.source()
-                overload.elementProtocol.appendCompilationConditions(to: &declaration)
-                result.append(declaration.prepending(" "))
-            }
-        }
-        result += scopeSummary()
-        return result
+        return [entry] + subentries().lazy.map { $0.prepending(contentsOf: " ") }
     }
 
     // MARK: - Children
