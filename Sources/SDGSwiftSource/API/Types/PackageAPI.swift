@@ -33,8 +33,9 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
 
-        // #workaround(Does not use UniquelyDeclaredManifestAPIElement yet.)
         let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+        // #workaround(Swift 4.2.1, Using UniquelyDeclaredManifestAPIElement currently causes a segmentation fault.)
+        // self.init(documentation: manifestDeclaration?.documentation, declaration: declaration)
         self.init(documentation: manifestDeclaration?.documentation, alreadyNormalizedDeclaration: declaration, name: declaration.manifestEntryName(), children: [])
 
         for product in package.products where ¬product.name.hasPrefix("_") {
