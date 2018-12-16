@@ -28,7 +28,7 @@ extension PatternBindingListSyntax {
         return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) }))
     }
 
-    internal func forOverloadPattern() -> PatternBindingListSyntax {
+    internal func forVariableOverloadPattern() -> PatternBindingListSyntax {
         return SyntaxFactory.makePatternBindingList(map({ $0.forOverloadPattern() }))
     }
 

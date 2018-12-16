@@ -86,6 +86,6 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attri
             attributes: nil,
             modifiers: modifiers?.forOverloadPattern(),
             letOrVarKeyword: letOrVarKeyword,
-            bindings: bindings.forVariableName())
+            bindings: bindings.forVariableOverloadPattern())
     }
 }
