@@ -25,20 +25,6 @@ public final class InitializerAPI : _APIElementBase, SortableAPIElement, Uniquel
         super.init(documentation: documentation)
     }
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        return [result]
-    }
-
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return declaration.identifierList()
-    }
-
     // MARK: - DeclaredAPIElement
 
     internal typealias Declaration = InitializerDeclSyntax
