@@ -29,6 +29,7 @@ extension Protocol {
 
 extension Protocol where Self : OtherProtocol {
     public func possiblyRequiredFunction()
+    public func functionWithNestedGenerics<T>(_ parameter: T) where T : Equatable
 }
 
 protocol InternalProtocol {}

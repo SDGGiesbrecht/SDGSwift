@@ -29,6 +29,7 @@ extension P̲r̲o̲t̲o̲c̲o̲l̲ {
 
 extension P̲r̲o̲t̲o̲c̲o̲l̲ where Self : O̲t̲h̲e̲r̲P̲r̲o̲t̲o̲c̲o̲l̲ {
     public func possiblyRequiredFunction()
+    public func functionWithNestedGenerics<T>(_ parameter: T̲) where T̲ : E̲q̲u̲a̲t̲a̲b̲l̲e̲
 }
 
 protocol InternalProtocol {}

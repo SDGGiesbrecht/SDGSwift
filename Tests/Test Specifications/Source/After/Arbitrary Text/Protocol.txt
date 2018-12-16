@@ -29,6 +29,7 @@ extension ̲Protocol ̲{
 
 extension ̲Protocol ̲where ̲Self ̲: ̲OtherProtocol ̲{
  ̲ ̲ ̲ ̲public ̲func ̲p̲o̲s̲s̲i̲b̲l̲y̲R̲e̲q̲u̲i̲r̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲()
+ ̲ ̲ ̲ ̲public ̲func ̲f̲u̲n̲c̲t̲i̲o̲n̲W̲i̲t̲h̲N̲e̲s̲t̲e̲d̲G̲e̲n̲e̲r̲i̲c̲s̲<T̲>(_ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲T) ̲where ̲T ̲: ̲Equatable
 }
 
 protocol ̲I̲n̲t̲e̲r̲n̲a̲l̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{}
