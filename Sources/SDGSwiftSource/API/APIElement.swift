@@ -31,7 +31,7 @@ public enum APIElement : Comparable, Hashable {
             switch element {
             case .extension(let `extension`):
                 extensions.append(`extension`)
-            case .type(let type) :
+            case .type(let type):
                 types.append(type)
             case .protocol(let `protocol`):
                 protocols.append(`protocol`)

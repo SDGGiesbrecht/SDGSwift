@@ -29,7 +29,7 @@ public class _APIElementBase {
 
     public let documentation: DocumentationSyntax?
 
-    private var _constraints: GenericWhereClauseSyntax? = nil
+    private var _constraints: GenericWhereClauseSyntax?
     public internal(set) var constraints: GenericWhereClauseSyntax? {
         get {
             return _constraints
@@ -38,7 +38,7 @@ public class _APIElementBase {
         }
     }
 
-    public internal(set) var compilationConditions: Syntax? = nil
+    public internal(set) var compilationConditions: Syntax?
 
     private var _children: [APIElement] = []
     public internal(set) var children: [APIElement] {
