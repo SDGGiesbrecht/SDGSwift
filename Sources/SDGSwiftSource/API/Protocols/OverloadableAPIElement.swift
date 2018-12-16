@@ -35,7 +35,8 @@ extension OverloadableAPIElement {
                     if type(of: overload.elementProtocol) == type(of: self),
                         let overloadDeclaration = overload.elementProtocol.possibleDeclaration,
                         let declaration = possibleDeclaration,
-                        overloadDeclaration.source() == declaration.source() {
+                        overloadDeclaration.source() == declaration.source(),
+                        overload.constraints?.source() == constraints?.source() {
                         hasDefaultImplementation = true
                         new.remove(at: index)
                         break
