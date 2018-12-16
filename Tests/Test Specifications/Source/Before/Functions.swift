@@ -46,13 +46,13 @@ public func tupleReturn() -> (String, Int) {
 public func arrayReturn() -> [Bool] {
     return []
 }
-public func nonstandardArrayReturn() -> Array<Bool> {
+public func nonstandardArrayReturn() -> Array<Bool> { // swiftlint:disable:this syntactic_sugar
     return []
 }
 
 public func dictionaryReturn() -> [Bool: Bool] {
     return []
 }
-public func nonstandardDictionaryReturn() -> Dictionary<Bool, Bool> {
+public func nonstandardDictionaryReturn() -> Dictionary<Bool, Bool> { // swiftlint:disable:this syntactic_sugar
     return []
 }

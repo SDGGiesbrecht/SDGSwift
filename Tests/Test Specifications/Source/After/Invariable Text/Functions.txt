@@ -46,14 +46,14 @@
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ arrayReturn(̲)̲ -̲>̲ [̲Bool]̲ {̲
 ̲    r̲e̲t̲u̲r̲n̲ [̲]̲
 ̲}̲
-̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardArrayReturn(̲)̲ -̲>̲ Array<̲Bool>̲ {̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardArrayReturn(̲)̲ -̲>̲ Array<̲Bool>̲ {̲ /̲/̲ swiftlint:disable:this syntactic_sugar
 ̲    r̲e̲t̲u̲r̲n̲ [̲]̲
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ dictionaryReturn(̲)̲ -̲>̲ [̲Bool:̲ Bool]̲ {̲
 ̲    r̲e̲t̲u̲r̲n̲ [̲]̲
 ̲}̲
-̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardDictionaryReturn(̲)̲ -̲>̲ Dictionary<̲Bool,̲ Bool>̲ {̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ nonstandardDictionaryReturn(̲)̲ -̲>̲ Dictionary<̲Bool,̲ Bool>̲ {̲ /̲/̲ swiftlint:disable:this syntactic_sugar
 ̲    r̲e̲t̲u̲r̲n̲ [̲]̲
 ̲}̲
 ̲
