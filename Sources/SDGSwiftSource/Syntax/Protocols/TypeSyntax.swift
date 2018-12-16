@@ -27,6 +27,10 @@ extension TypeSyntax {
             return optional.normalized()
         case let tuple as TupleTypeSyntax :
             return tuple.normalized(extractingFromIndexPath: indexPath)
+        case let array as ArrayTypeSyntax :
+            return array.normalized()
+        case let dictionary as DictionaryTypeSyntax :
+            return dictionary.normalized()
         case let function as FunctionTypeSyntax :
             return function.normalized()
         case let attributed as AttributedTypeSyntax :

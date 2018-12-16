@@ -42,3 +42,17 @@ public ̲func ̲w̲i̲t̲h̲V̲o̲i̲d̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲() ̲-> ̲
 public ̲func ̲t̲u̲p̲l̲e̲R̲e̲t̲u̲r̲n̲() ̲-> ̲(String, ̲Int) ̲{
  ̲ ̲ ̲ ̲return ̲("", ̲0̲)
 }
+
+public ̲func ̲a̲r̲r̲a̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲[Bool] ̲{
+ ̲ ̲ ̲ ̲return ̲[]
+}
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲A̲r̲r̲a̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Array<Bool> ̲{
+ ̲ ̲ ̲ ̲return ̲[]
+}
+
+public ̲func ̲d̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲[Bool: ̲Bool] ̲{
+ ̲ ̲ ̲ ̲return ̲[]
+}
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Dictionary<Bool, ̲Bool> ̲{
+ ̲ ̲ ̲ ̲return ̲[]
+}
