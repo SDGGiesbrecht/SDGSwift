@@ -43,12 +43,6 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
         super.init(documentation: documentation)
     }
 
-    // MARK: - APIElementProtocol
-
-    public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()] + children.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
-    }
-
     // MARK: - DeclaredAPIElement
 
     public let declaration: FunctionCallExprSyntax

@@ -28,7 +28,7 @@ public protocol APIElementProtocol : class {
     var summaryName: String { get }
     var isProtocolRequirement: Bool { get }
     var hasDefaultImplementation: Bool { get }
-    func subentries() -> [String]
+    func summarySubentries() -> [String]
     func summary() -> [String]
 }
 
@@ -52,7 +52,7 @@ extension APIElementProtocol {
         }
     }
 
-    public func subentries() -> [String] {
+    public func summarySubentries() -> [String] {
         var result: [String] = []
         for overload in overloads {
             if let declaration = overload.declaration {
@@ -79,7 +79,7 @@ extension APIElementProtocol {
             entry += " • " + declaration
         }
         appendCompilationConditions(to: &entry)
-        return [entry] + subentries().lazy.map { $0.prepending(contentsOf: " ") }
+        return [entry] + summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }
 
     // MARK: - Children

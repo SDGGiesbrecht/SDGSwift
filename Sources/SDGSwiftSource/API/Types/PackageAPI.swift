@@ -61,10 +61,10 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - APIElementProtocol
 
-    public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()]
-            + libraries.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
-            + modules.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
+    public func summarySubentries() -> [String] {
+        var result = Array(libraries.lazy.map({ $0.summary() }).joined())
+        result.append(contentsOf: modules.lazy.map({ $0.summary() }).joined())
+        return result
     }
 
     // MARK: - DeclaredAPIElement

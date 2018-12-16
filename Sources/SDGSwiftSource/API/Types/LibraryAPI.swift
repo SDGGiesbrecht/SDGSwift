@@ -48,9 +48,8 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - APIElementProtocol
 
-    public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()]
-            + modules.map({ $0.name.source().prepending(" ") })
+    public func summarySubentries() -> [String] {
+        return modules.map({ $0.name.source() })
     }
 
     // MARK: - DeclaredAPIElement
