@@ -14,4 +14,5 @@
 
 public enum Enumeration {
     case _hidden
+    case visible
 }

@@ -3,6 +3,7 @@ PackageToDocument • Package(name: "PackageToDocument")
   PrimaryModule
  PrimaryModule • .target(name: "PrimaryModule")
   Enumeration • enum Enumeration
+   visible • case visible
   Structure • struct Structure
    init() • init()
   (Bool)
