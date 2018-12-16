@@ -1,7 +1,7 @@
 Protocol • protocol Protocol
  AssociatedType • associatedtype AssociatedType
- getOnlyProperty • var getOnlyProperty: Bool { get }
- getSetProperty • var getSetProperty: Bool { get set }
+ (required) getOnlyProperty • var getOnlyProperty: Bool { get }
+ (required) getSetProperty • var getSetProperty: Bool { get set }
  conditionallyProvidedFunction() • func conditionallyProvidedFunction() where AssociatedType == Int
  (customizable) overrideableFunction() • func overrideableFunction()
  (required) possiblyRequiredFunction() • func possiblyRequiredFunction()
