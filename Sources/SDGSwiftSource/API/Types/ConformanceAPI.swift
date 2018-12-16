@@ -12,18 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class ConformanceAPI : _APIElementBase, SortableAPIElement, UndeclaredAPIElement {
-
-    // MARK: - Initialization
-
-    internal init(type: TypeSyntax) {
-        self.type = type.normalized()
-        super.init(documentation: nil)
-    }
-
-    // MARK: - Properties
-
-    internal let type: TypeSyntax
+public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, UndeclaredAPIElementProtocol {
 
     // MARK: - APIElement
 

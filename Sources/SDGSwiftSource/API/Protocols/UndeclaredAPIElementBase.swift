@@ -1,5 +1,5 @@
 /*
- UndeclaredAPIElement.swift
+ UndeclaredAPIElementBase.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
@@ -12,17 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UndeclaredAPIElement : SortableAPIElement {
-    var type: TypeSyntax { get }
-}
+public class _UndeclaredAPIElementBase : _APIElementBase {
 
-extension UndeclaredAPIElement {
+    // MARK: - Initialization
 
-    public var possibleDeclaration: Syntax? {
-        return nil
+    init(type: TypeSyntax) {
+        self.type = type.normalized()
+        super.init(documentation: nil)
     }
 
-    public var genericName: Syntax {
-        return type
-    }
+    // MARK: - Properties
+
+    public let type: TypeSyntax
 }

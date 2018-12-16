@@ -14,19 +14,15 @@
 
 import SDGControlFlow
 
-public final class ExtensionAPI : _APIElementBase, APIElementProtocol, SortableAPIElement, UndeclaredAPIElement {
+public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, UndeclaredAPIElementProtocol {
 
     // MARK: - Initialization
 
     internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        self.type = type.normalized()
-        super.init(documentation: nil, children: children)
+        super.init(type: type)
         self.constraints = constraints
+        self.children = children
     }
-
-    // MARK: - Properties
-
-    internal let type: TypeSyntax
 
     // MARK: - Combining
 
