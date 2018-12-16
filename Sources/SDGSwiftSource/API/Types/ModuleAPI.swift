@@ -122,16 +122,14 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
         return Array(joined)
     }
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()] + symbols.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
-    }
-
     // MARK: - APIElementProtocol
 
     public func shallowIdentifierList() -> Set<String> {
         return symbols.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
+    }
+
+    public func summary() -> [String] {
+        return [name.source() + " • " + declaration.source()] + symbols.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
     }
 
     // MARK: - DeclaredAPIElement

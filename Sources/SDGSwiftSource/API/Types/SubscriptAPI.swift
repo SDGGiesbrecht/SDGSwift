@@ -28,20 +28,6 @@ public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyD
         self.declaration = declaration.withGenericWhereClause(nil)
     }
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        return [result]
-    }
-
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return declaration.identifierList()
-    }
-
     // MARK: - DeclaredAPIElement
 
     internal typealias Declaration = SubscriptDeclSyntax

@@ -52,17 +52,15 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     public internal(set) var modules: [ModuleAPI] = []
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        return [name.source() + " • " + declaration.source()]
-            + modules.map({ $0.name.source().prepending(" ") })
-    }
-
     // MARK: - APIElementProtocol
 
     public func shallowIdentifierList() -> Set<String> {
         return modules.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
+    }
+
+    public func summary() -> [String] {
+        return [name.source() + " • " + declaration.source()]
+            + modules.map({ $0.name.source().prepending(" ") })
     }
 
     // MARK: - DeclaredAPIElement

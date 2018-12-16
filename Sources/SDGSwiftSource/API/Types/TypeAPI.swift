@@ -22,7 +22,7 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     internal init<T>(documentation: DocumentationSyntax?, declaration: T, children: [APIElement]) where T : TypeDeclaration {
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
-        _declaration = normalizedDeclaration
+        self.declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()
         super.init(documentation: documentation, children: children)
         constraints.merge(with: normalizedConstraints)
@@ -30,12 +30,12 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     // MARK: - Properties
 
-    private let _declaration: TypeDeclaration
+    private let declaration: TypeDeclaration
 
     // MARK: - APIElementProtocol
 
     public func shallowIdentifierList() -> Set<String> {
-        return _declaration.identifierList()
+        return declaration.identifierList()
     }
 
     public func summary() -> [String] {
@@ -47,7 +47,7 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     // MARK: - DeclaredAPIElement
 
     public var genericDeclaration: Syntax {
-        return _declaration.withGenericWhereClause(constraints)
+        return declaration.withGenericWhereClause(constraints)
     }
 
     public let genericName: Syntax
@@ -55,6 +55,6 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     // MARK: - OverloadableAPIElement
 
     internal func genericOverloadPattern() -> Syntax {
-        return _declaration
+        return declaration
     }
 }

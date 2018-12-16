@@ -33,18 +33,6 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloa
         }
     }
 
-    // MARK: - APIElementProtocol
-
-    public func shallowIdentifierList() -> Set<String> {
-        return Set([declaration.identifier.text])
-    }
-
-    public func summary() -> [String] {
-        var result = name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        return [result] + scopeSummary()
-    }
-
     // MARK: - DeclaredAPIElement
 
     public internal(set) var declaration: ProtocolDeclSyntax

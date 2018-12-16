@@ -22,20 +22,6 @@ public final class VariableAPI : _APIElementBase,  SortableAPIElement, UniquelyD
         super.init(documentation: documentation)
     }
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        return [result]
-    }
-
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return [name.source()]
-    }
-
     // MARK: - DeclaredAPIElement
 
     public let declaration: VariableDeclSyntax

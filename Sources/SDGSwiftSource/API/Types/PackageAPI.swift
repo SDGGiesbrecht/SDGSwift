@@ -64,18 +64,16 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
     public internal(set) var libraries: [LibraryAPI] = []
     public internal(set) var modules: [ModuleAPI] = []
 
-    // MARK: - APIElement
+    // MARK: - APIElementProtocol
+
+    public func shallowIdentifierList() -> Set<String> {
+        return libraries.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
+    }
 
     public func summary() -> [String] {
         return [name.source() + " • " + declaration.source()]
             + libraries.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
             + modules.map({ $0.summary().map({ $0.prepending(" ") }) }).joined()
-    }
-
-    // MARK: - APIElementProtocol
-
-    public func shallowIdentifierList() -> Set<String> {
-        return libraries.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 
     // MARK: - DeclaredAPIElement
