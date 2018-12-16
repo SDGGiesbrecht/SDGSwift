@@ -25,4 +25,10 @@ extension UndeclaredAPIElementProtocol {
     public var genericName: Syntax {
         return type
     }
+
+    // MARK: - APIElementProtocol
+
+    public func shallowIdentifierList() -> Set<String> {
+        return []
+    }
 }

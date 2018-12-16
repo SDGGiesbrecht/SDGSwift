@@ -22,11 +22,40 @@ public protocol APIElementProtocol : class {
     var compilationConditions: Syntax? { get }
     var genericName: Syntax { get }
     var children: [APIElement] { get }
+    func shallowIdentifierList() -> Set<String>
     func identifierList() -> Set<String>
     func summary() -> [String]
 }
 
 extension APIElementProtocol {
+
+    // MARK: - Identifiers
+
+    public func identifierList() -> Set<String> {
+        return children.reduce(into: shallowIdentifierList()) { $0 ∪= $1.identifierList() }
+    }
+
+    // MARK: - Summary
+
+    internal func scopeSummary() -> [String] {
+        return Array(children.lazy.map({ $0.summary().lazy.map({ $0.prepending(" ") }) }).joined())
+    }
+
+    internal func appendCompilationConditions(to description: inout String) {
+        // #warning(Move this.)
+        if let conditions = compilationConditions {
+            description += " • " + conditions.source()
+        }
+    }
+
+    public func summary() -> [String] {
+        var result = genericName.source()
+        if let declaration = possibleDeclaration?.source() {
+            result += " • " + declaration
+        }
+        appendCompilationConditions(to: &result)
+        return [result]
+    }
 
     // MARK: - Children
 
@@ -147,33 +176,5 @@ extension APIElementProtocol {
                 return nil
             }
         }
-    }
-
-    // MARK: - Identifiers
-
-    internal func scopeIdentifierList() -> Set<String> {
-        return children.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
-    }
-
-    // MARK: - Summary
-
-    internal func scopeSummary() -> [String] {
-        return Array(children.lazy.map({ $0.summary().lazy.map({ $0.prepending(" ") }) }).joined())
-    }
-
-    internal func appendCompilationConditions(to description: inout String) {
-        // #warning(Move this.)
-        if let conditions = compilationConditions {
-            description += " • " + conditions.source()
-        }
-    }
-
-    public func summary() -> [String] {
-        var result = genericName.source()
-        if let declaration = possibleDeclaration?.source() {
-            result += " • " + declaration
-        }
-        appendCompilationConditions(to: &result)
-        return [result]
     }
 }

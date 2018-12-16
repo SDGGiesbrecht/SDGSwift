@@ -61,7 +61,7 @@ public final class LibraryAPI : _APIElementBase, SortableAPIElement, UniquelyDec
 
     // MARK: - APIElementProtocol
 
-    public func identifierList() -> Set<String> {
+    public func shallowIdentifierList() -> Set<String> {
         return modules.map({ $0.identifierList() }).reduce(into: Set<String>(), { $0 ∪= $1 })
     }
 

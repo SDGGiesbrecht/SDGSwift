@@ -25,7 +25,7 @@ extension UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - UniquelyDeclaredAPIElement
 
-    public func identifierList() -> Set<String> {
+    public func shallowIdentifierList() -> Set<String> {
         return declaration.identifierList()
     }
 }

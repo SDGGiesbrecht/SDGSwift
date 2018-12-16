@@ -34,8 +34,8 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     // MARK: - APIElementProtocol
 
-    public func identifierList() -> Set<String> {
-        return _declaration.identifierList() ∪ scopeIdentifierList()
+    public func shallowIdentifierList() -> Set<String> {
+        return _declaration.identifierList()
     }
 
     public func summary() -> [String] {

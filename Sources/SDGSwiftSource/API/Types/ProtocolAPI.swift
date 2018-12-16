@@ -35,8 +35,8 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, SortableAP
 
     // MARK: - APIElementProtocol
 
-    public func identifierList() -> Set<String> {
-        return Set([declaration.identifier.text]) ∪ scopeIdentifierList()
+    public func shallowIdentifierList() -> Set<String> {
+        return Set([declaration.identifier.text])
     }
 
     public func summary() -> [String] {

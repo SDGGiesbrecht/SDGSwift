@@ -62,10 +62,6 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
 
     // MARK: - APIElementProtocol
 
-    public func identifierList() -> Set<String> {
-        return scopeIdentifierList()
-    }
-
     public func summary() -> [String] {
         var result = "(" + genericName.source() + ")"
         if let constraints = self.constraints {

@@ -14,9 +14,4 @@
 
 public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, UndeclaredAPIElementProtocol {
 
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return []
-    }
 }

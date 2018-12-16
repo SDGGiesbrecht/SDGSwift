@@ -130,7 +130,7 @@ public final class ModuleAPI : _APIElementBase, SortableAPIElement, UniquelyDecl
 
     // MARK: - APIElementProtocol
 
-    public func identifierList() -> Set<String> {
+    public func shallowIdentifierList() -> Set<String> {
         return symbols.map({ $0.identifierList() }).reduce(into: Set([name.source()]), { $0 ∪= $1 })
     }
 
