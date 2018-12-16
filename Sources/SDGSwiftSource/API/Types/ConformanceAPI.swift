@@ -14,17 +14,6 @@
 
 public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, UndeclaredAPIElementProtocol {
 
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = genericName.source()
-        if let constraints = self.constraints {
-            result += constraints.source()
-        }
-        appendCompilationConditions(to: &result)
-        return [result]
-    }
-
     // MARK: - APIElementProtocol
 
     public func identifierList() -> Set<String> {
