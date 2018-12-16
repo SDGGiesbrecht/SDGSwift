@@ -52,11 +52,18 @@ extension APIElementProtocol {
         }
     }
 
+    internal func appendConstraints(to description: inout String) {
+        if let constraints = constraints {
+            description += constraints.source()
+        }
+    }
+
     public func summarySubentries() -> [String] {
         var result: [String] = []
         for overload in overloads {
             if let declaration = overload.declaration {
                 var declaration = declaration.source()
+                overload.elementProtocol.appendConstraints(to: &declaration)
                 overload.elementProtocol.appendCompilationConditions(to: &declaration)
                 result.append(declaration)
             }
@@ -78,9 +85,7 @@ extension APIElementProtocol {
         if let declaration = possibleDeclaration?.source() {
             entry += " • " + declaration
         }
-        if let constraints = constraints {
-            entry += constraints.source()
-        }
+        appendConstraints(to: &entry)
         appendCompilationConditions(to: &entry)
         return [entry] + summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }

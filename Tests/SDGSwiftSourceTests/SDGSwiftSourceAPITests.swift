@@ -131,13 +131,17 @@ class SDGSwiftSourceAPITests : TestCase {
 
             let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
             let syntaxHighlighting = api.map({ $0.flattenedTree() }).joined().map({ element in
-                if let declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+                if var declaration = element.declaration?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+
+                    if let constraints = element.constraints?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
+                        declaration += "\n" + constraints
+                    }
 
                     if let conditions = element.compilationConditions?.syntaxHighlightedHTML(inline: false, internalIdentifiers: identifiers) {
-                        return conditions + "\n" + declaration
-                    } else {
-                        return declaration
+                        declaration = conditions + "\n" + declaration
                     }
+
+                    return declaration
                 } else {
                     return nil
                 }
