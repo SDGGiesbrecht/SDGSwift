@@ -56,6 +56,18 @@ extension PatternSyntax {
         }
     }
 
+    internal func variableBindingForOverloadPattern() -> PatternSyntax {
+        switch self {
+        case let identifier as IdentifierPatternSyntax :
+            return identifier.variableBindingIdentifierForOverloadPattern()
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified pattern: \(Swift.type(of: self))")
+            }
+            return self
+        }
+    }
+
     internal func variableBindingForName() -> PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax :

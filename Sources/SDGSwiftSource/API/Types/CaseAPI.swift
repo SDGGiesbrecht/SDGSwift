@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-public final class CaseAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class CaseAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 

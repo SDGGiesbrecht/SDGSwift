@@ -19,6 +19,11 @@ extension IdentifierPatternSyntax {
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil())
     }
 
+    internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
+        return SyntaxFactory.makeIdentifierPattern(
+            identifier: identifier)
+    }
+
     internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
         return SyntaxFactory.makeIdentifierPattern(
             identifier: identifier)

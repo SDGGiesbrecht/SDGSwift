@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class InitializerAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class InitializerAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 

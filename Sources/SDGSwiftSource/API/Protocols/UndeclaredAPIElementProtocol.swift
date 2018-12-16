@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UndeclaredAPIElementProtocol : SortableAPIElement {
+internal protocol UndeclaredAPIElementProtocol : NonOverloadableAPIElement, SortableAPIElement {
     var type: TypeSyntax { get }
 }
 

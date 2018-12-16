@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
@@ -23,95 +23,6 @@ public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDe
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)
-    }
-
-    // MARK: - Properties
-
-    internal var isProtocolRequirement: Bool = false
-    internal var hasDefaultImplementation: Bool = false
-    private var _overloads: [FunctionAPI] = []
-    internal var overloads: [FunctionAPI] {
-        get {
-            return _overloads
-        }
-        set {
-            var new = newValue.sorted()
-            if isProtocolRequirement {
-                for index in new.indices {
-                    let overload = new[index]
-                    if overload.declaration.source() == declaration.source() {
-                        hasDefaultImplementation = true
-                        new.remove(at: index)
-                        break
-                    }
-                }
-            }
-            _overloads = new
-        }
-    }
-
-    // MARK: - Combining
-
-    internal static func groupIntoOverloads(_ functions: [FunctionAPI]) -> [FunctionAPI] {
-        var sorted: [String: [FunctionAPI]] = [:]
-
-        for function in functions {
-            sorted[function.declaration.overloadPattern().source(), default: []].append(function)
-        }
-
-        var result: [FunctionAPI] = []
-        for (_, group) in sorted {
-            var merged: FunctionAPI?
-            for function in group.sorted() {
-                if let existing = merged {
-                    existing.overloads.append(function)
-                } else {
-                    merged = function
-                }
-            }
-            result.append(merged!)
-        }
-
-        return result
-    }
-
-    internal static func groupIntoOverloads(_ elements: [APIElement]) -> [APIElement] {
-        var functions: [FunctionAPI] = []
-        var result: [APIElement] = []
-        result.reserveCapacity(elements.count)
-        for element in elements {
-            switch element {
-            case .function(let function):
-                functions.append(function)
-            default:
-                result.append(element)
-            }
-        }
-        functions = FunctionAPI.groupIntoOverloads(functions)
-        result.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
-        return result
-    }
-
-    // MARK: - APIElement
-
-    public func summary() -> [String] {
-        var result = ""
-        if isProtocolRequirement {
-            if hasDefaultImplementation {
-                result += "(customizable) "
-            } else {
-                result += "(required) "
-            }
-        }
-        result += name.source() + " • " + declaration.source()
-        appendCompilationConditions(to: &result)
-        var resultSummary = [result]
-        for overload in overloads {
-            var declaration = overload.declaration.source()
-            overload.appendCompilationConditions(to: &declaration)
-            resultSummary.append(declaration.prepending(" "))
-        }
-        return resultSummary
     }
 
     // MARK: - DeclaredAPIElement

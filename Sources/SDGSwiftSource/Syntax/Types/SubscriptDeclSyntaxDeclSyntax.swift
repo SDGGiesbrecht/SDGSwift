@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Constrained, Generic, Member {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Constrained, Generic, Member, OverloadableAPIDeclaration {
 
     internal var subscriptAPI: SubscriptAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -24,6 +24,18 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
             documentation: documentation,
             declaration: self)
     }
+
+    // MARK: - Accessor
+
+    var keyword: TokenSyntax {
+        return subscriptKeyword
+    }
+
+    var accessors: AccessorBlockSyntax? {
+        return accessor
+    }
+
+    // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> SubscriptDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
@@ -54,13 +66,17 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
         return indices.identifierListForFunction()
     }
 
-    // MARK: - Accessor
+    // MARK: - OverloadableAPIDeclaration
 
-    var keyword: TokenSyntax {
-        return subscriptKeyword
-    }
-
-    var accessors: AccessorBlockSyntax? {
-        return accessor
+    internal func overloadPattern() -> SubscriptDeclSyntax {
+        return SyntaxFactory.makeSubscriptDecl(
+            attributes: nil,
+            modifiers: nil,
+            subscriptKeyword: subscriptKeyword,
+            genericParameterClause: nil,
+            indices: indices.forOverloadPattern(operator: false),
+            result: SyntaxFactory.makeBlankReturnClause(),
+            genericWhereClause: nil,
+            accessor: nil)
     }
 }

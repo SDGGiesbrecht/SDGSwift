@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, Member {
+extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, Member, OverloadableAPIDeclaration {
 
     internal func functionAPI() -> FunctionAPI? {
         if ¬isPublic ∨ isUnavailable() {
@@ -28,6 +28,8 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
         return FunctionAPI(documentation: documentation, declaration: self)
     }
 
+    // MARK: - APIDeclaration
+
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return SyntaxFactory.makeFunctionDecl(
@@ -38,18 +40,6 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
             genericParameterClause: newGenericParemeterClause,
             signature: signature.normalizedForAPIDeclaration(),
             genericWhereClause: newGenericWhereClause,
-            body: nil)
-    }
-
-    internal func overloadPattern() -> FunctionDeclSyntax {
-        return SyntaxFactory.makeFunctionDecl(
-            attributes: nil,
-            modifiers: modifiers?.forOverloadPattern(),
-            funcKeyword: funcKeyword,
-            identifier: identifier,
-            genericParameterClause: nil,
-            signature: signature.forOverloadPattern(operator: identifier.isOperator),
-            genericWhereClause: nil,
             body: nil)
     }
 
@@ -67,5 +57,19 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
 
     internal func identifierList() -> Set<String> {
         return Set([identifier.text]) ∪ signature.identifierList()
+    }
+
+    // MARK: - OverloadableAPIDeclaration
+
+    internal func overloadPattern() -> FunctionDeclSyntax {
+        return SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: modifiers?.forOverloadPattern(),
+            funcKeyword: funcKeyword,
+            identifier: identifier,
+            genericParameterClause: nil,
+            signature: signature.forOverloadPattern(operator: identifier.isOperator),
+            genericWhereClause: nil,
+            body: nil)
     }
 }

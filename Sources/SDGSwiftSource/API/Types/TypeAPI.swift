@@ -16,7 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement,  SortableAPIElement {
+public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, OverloadableAPIElement, SortableAPIElement {
 
     // MARK: - Initialization
 
@@ -51,4 +51,10 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     }
 
     public let genericName: Syntax
+
+    // MARK: - OverloadableAPIElement
+
+    internal func genericOverloadPattern() -> Syntax {
+        return _declaration
+    }
 }

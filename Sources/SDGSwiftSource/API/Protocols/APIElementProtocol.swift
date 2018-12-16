@@ -21,10 +21,13 @@ public protocol APIElementProtocol : class {
     var constraints: GenericWhereClauseSyntax? { get }
     var compilationConditions: Syntax? { get }
     var genericName: Syntax { get }
+    var overloads: [APIElement] { get }
     var children: [APIElement] { get }
     func shallowIdentifierList() -> Set<String>
     func identifierList() -> Set<String>
     var summaryName: String { get }
+    var isProtocolRequirement: Bool { get }
+    var hasDefaultImplementation: Bool { get }
     func summary() -> [String]
 }
 
@@ -55,12 +58,29 @@ extension APIElementProtocol {
     }
 
     public func summary() -> [String] {
-        var result = summaryName
-        if let declaration = possibleDeclaration?.source() {
-            result += " • " + declaration
+        var entry = ""
+        if isProtocolRequirement {
+            if hasDefaultImplementation {
+                entry += "(customizable) "
+            } else {
+                entry += "(required) "
+            }
         }
-        appendCompilationConditions(to: &result)
-        return [result] + scopeSummary()
+        entry += summaryName
+        if let declaration = possibleDeclaration?.source() {
+            entry += " • " + declaration
+        }
+        appendCompilationConditions(to: &entry)
+        var result = [entry]
+        for overload in overloads {
+            if let declaration = overload.declaration {
+                var declaration = declaration.source()
+                overload.elementProtocol.appendCompilationConditions(to: &declaration)
+                result.append(declaration.prepending(" "))
+            }
+        }
+        result += scopeSummary()
+        return result
     }
 
     // MARK: - Children

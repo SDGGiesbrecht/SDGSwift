@@ -24,7 +24,6 @@ public enum APIElement : Comparable, Hashable {
     internal static func merge(elements: [APIElement]) -> [APIElement] {
 
         var extensions: [ExtensionAPI] = []
-        var functions: [FunctionAPI] = []
         var types: [TypeAPI] = []
         var protocols: [ProtocolAPI] = []
         var other: [APIElement] = []
@@ -36,8 +35,6 @@ public enum APIElement : Comparable, Hashable {
                 types.append(type)
             case .protocol(let `protocol`):
                 protocols.append(`protocol`)
-            case .function(let function):
-                functions.append(function)
             default:
                 other.append(element)
             }
@@ -58,12 +55,10 @@ public enum APIElement : Comparable, Hashable {
         }
         other.append(contentsOf: ExtensionAPI.combine(extensions: unmergedExtensions).lazy.map({ APIElement.extension($0) }))
 
-        functions = FunctionAPI.groupIntoOverloads(functions)
-
         other.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
         other.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
-        other.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
-        return other
+
+        return _APIElementBase.groupIntoOverloads(other)
     }
 
     // MARK: - Cases

@@ -28,6 +28,10 @@ extension PatternBindingListSyntax {
         return SyntaxFactory.makePatternBindingList(map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) }))
     }
 
+    internal func forOverloadPattern() -> PatternBindingListSyntax {
+        return SyntaxFactory.makePatternBindingList(map({ $0.forOverloadPattern() }))
+    }
+
     internal func forVariableName() -> PatternBindingListSyntax {
         return SyntaxFactory.makePatternBindingList(map({ $0.forVariableName() }))
     }

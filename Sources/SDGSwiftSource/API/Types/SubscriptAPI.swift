@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
