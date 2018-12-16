@@ -114,12 +114,6 @@ public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDe
         return resultSummary
     }
 
-    // MARK: - APIElementProtocol
-
-    public func identifierList() -> Set<String> {
-        return declaration.identifierList()
-    }
-
     // MARK: - DeclaredAPIElement
 
     internal typealias Declaration = FunctionDeclSyntax
