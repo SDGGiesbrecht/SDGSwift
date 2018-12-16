@@ -62,12 +62,7 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
 
     // MARK: - APIElementProtocol
 
-    public func summary() -> [String] {
-        var result = "(" + genericName.source() + ")"
-        if let constraints = self.constraints {
-            result += constraints.source() // @exempt(from: tests) Theoretically unreachable; constraints should have been passed on to children.
-        }
-        appendCompilationConditions(to: &result)
-        return [result] + scopeSummary()
+    public var summaryName: String {
+        return "(" + genericName.source() + ")"
     }
 }

@@ -24,6 +24,7 @@ public protocol APIElementProtocol : class {
     var children: [APIElement] { get }
     func shallowIdentifierList() -> Set<String>
     func identifierList() -> Set<String>
+    var summaryName: String { get }
     func summary() -> [String]
 }
 
@@ -37,7 +38,12 @@ extension APIElementProtocol {
 
     // MARK: - Summary
 
+    public var summaryName: String {
+        return genericName.source()
+    }
+
     internal func scopeSummary() -> [String] {
+        // #warning(Move this.)
         return Array(children.lazy.map({ $0.summary().lazy.map({ $0.prepending(" ") }) }).joined())
     }
 
@@ -49,12 +55,12 @@ extension APIElementProtocol {
     }
 
     public func summary() -> [String] {
-        var result = genericName.source()
+        var result = summaryName
         if let declaration = possibleDeclaration?.source() {
             result += " • " + declaration
         }
         appendCompilationConditions(to: &result)
-        return [result]
+        return [result] + scopeSummary()
     }
 
     // MARK: - Children
