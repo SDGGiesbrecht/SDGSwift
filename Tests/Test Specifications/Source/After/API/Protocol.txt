@@ -1,12 +1,13 @@
 Protocol • protocol Protocol
- (required) AssociatedType • associatedtype AssociatedType
- (required) getOnlyProperty • var getOnlyProperty: Bool { get }
- (required) getSetProperty • var getSetProperty: Bool { get set }
- conditionallyProvidedFunction() • func conditionallyProvidedFunction()
+ AssociatedType • associatedtype AssociatedType
+ getOnlyProperty • var getOnlyProperty: Bool { get }
+ getSetProperty • var getSetProperty: Bool { get set }
+ conditionallyProvidedFunction() • func conditionallyProvidedFunction() where AssociatedType == Int
  (customizable) overrideableFunction() • func overrideableFunction()
- (customizable) possiblyRequiredFunction() • func possiblyRequiredFunction()
+ (required) possiblyRequiredFunction() • func possiblyRequiredFunction()
+  func possiblyRequiredFunction() where Self : OtherProtocol
  providedFunction() • func providedFunction()
  (required) requiredFunction() • func requiredFunction()
 ProtocolWithInheritanceAndConstraints • protocol ProtocolWithInheritanceAndConstraints where AssociatedType : OtherProtocol
- (required) InheritedOne
- (required) InheritedTwo
+ InheritedOne
+ InheritedTwo
