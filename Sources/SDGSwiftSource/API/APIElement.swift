@@ -156,6 +156,58 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.children
     }
 
+    public var libraries: AnyBidirectionalCollection<LibraryAPI> {
+        return elementProtocol.libraries
+    }
+
+    public var modules: AnyBidirectionalCollection<ModuleAPI> {
+        return elementProtocol.modules
+    }
+
+    public var types: AnyBidirectionalCollection<TypeAPI> {
+        return elementProtocol.types
+    }
+
+    public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
+        return elementProtocol.extensions
+    }
+
+    public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
+        return elementProtocol.protocols
+    }
+
+    public var cases: AnyBidirectionalCollection<CaseAPI> {
+        return elementProtocol.cases
+    }
+
+    public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
+        return elementProtocol.typeProperties
+    }
+
+    public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
+        return elementProtocol.typeMethods
+    }
+
+    public var initializers: AnyBidirectionalCollection<InitializerAPI> {
+        return elementProtocol.initializers
+    }
+
+    public var properties: AnyBidirectionalCollection<VariableAPI> {
+        return elementProtocol.properties
+    }
+
+    public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
+        return elementProtocol.subscripts
+    }
+
+    public var methods: AnyBidirectionalCollection<FunctionAPI> {
+        return elementProtocol.methods
+    }
+
+    public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
+        return elementProtocol.conformances
+    }
+
     public func summary() -> [String] {
         return elementProtocol.summary()
     }
