@@ -67,7 +67,7 @@ extension APIElementProtocol {
 
     public func summary() -> [String] {
         var entry = ""
-        if isProtocolRequirement {
+        if isProtocolRequirement ∧ ¬(self is TypeAPI ∨ self is ConformanceAPI) {
             if hasDefaultImplementation {
                 entry += "(customizable) "
             } else {
