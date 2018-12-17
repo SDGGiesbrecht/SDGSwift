@@ -173,7 +173,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             source.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
             source.append(contentsOf: "</span>")
 
-            source.prepend(contentsOf: "<a href=\u{22}\(selectorLink)\u{22}>")
+            source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeAttribute(selectorLink))\u{22}>")
             source.append(contentsOf: "</a>")
         } else {
             source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
