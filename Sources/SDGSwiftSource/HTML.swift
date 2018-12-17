@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public enum HTML {
+internal enum HTML {
 
     private static func sharedEscape(_ string: String) -> String {
         return string

@@ -80,7 +80,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         if kind == .commentURL ∨ kind == .linkURL {
-            return "<a href=\u{22}\(text)\u{22} class=\u{22}url\u{22}>\(text)</a>"
+            return "<a href=\u{22}\(HTML.escapeAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
         } else {
             var source = HTML.escape(_text)
             if let `class` = syntaxHighlightingClass() {

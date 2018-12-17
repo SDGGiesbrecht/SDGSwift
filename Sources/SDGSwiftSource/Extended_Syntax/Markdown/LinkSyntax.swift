@@ -70,7 +70,7 @@ public class LinkSyntax : MarkdownSyntax {
 
     internal override var renderedHTMLAttributes: [String: String] {
         return [
-            "href": url.text
+            "href": HTML.escapeAttribute(url.text)
         ]
     }
 }

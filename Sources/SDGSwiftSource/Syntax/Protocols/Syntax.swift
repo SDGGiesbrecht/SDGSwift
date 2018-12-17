@@ -89,7 +89,7 @@ extension Syntax {
                     source.append(contentsOf: "</span>")
                 }
                 if let url = symbolLinks[token.text] {
-                    source.prepend(contentsOf: "<a href=\u{22}\(url)\u{22}>")
+                    source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeAttribute(url))\u{22}>")
                     source.append(contentsOf: "</a>")
                 }
                 result += source
