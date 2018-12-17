@@ -21,7 +21,6 @@ internal enum HTML {
 
     internal static func escape(_ string: String) -> String {
         return sharedEscape(string)
-            .replacingMatches(for: "&", with: "&#x0026;")
             .replacingMatches(for: "<", with: "&#x003C;")
             .replacingMatches(for: "\u{2066}", with: "<bdi dir=\u{22}ltr\u{22}>")
             .replacingMatches(for: "\u{2067}", with: "<bdi dir=\u{22}rtl\u{22}>")
