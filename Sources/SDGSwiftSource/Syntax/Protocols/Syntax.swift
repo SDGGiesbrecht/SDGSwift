@@ -172,7 +172,7 @@ extension Syntax {
                     if let line = comment as? LineDocumentationSyntax {
                         return line.content.context as? DocumentationSyntax
                     } else if let block = comment as? BlockDocumentationSyntax {
-                        return block.content.first as? DocumentationSyntax
+                        return block.documentation
                     }
                 default:
                     continue

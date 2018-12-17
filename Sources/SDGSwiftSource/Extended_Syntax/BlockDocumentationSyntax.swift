@@ -20,7 +20,15 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
         return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
     }
 
-    internal override class func parse(contents: String) -> ExtendedSyntax {
+    internal override class func parse(contents: String) -> DocumentationSyntax {
         return DocumentationSyntax.parse(source: contents)
+    }
+
+    // MARK: - Properties
+
+    // @documentation(SDGSwiftSource.LineDeveloperCommentSyntax.content)
+    /// The documentation content.
+    public var documentation: DocumentationSyntax {
+        return internalSyntax as! DocumentationSyntax
     }
 }
