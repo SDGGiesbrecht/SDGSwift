@@ -2,7 +2,7 @@
  TextFreedomHighlighter.swift
 
  This source file is part of the SDGSwift open source project.
- https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+ https://sdggiesbrecht.github.io/SDGSwift
 
  Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
