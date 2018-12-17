@@ -62,6 +62,15 @@ extension Syntax {
 
     // MARK: - Syntax Highlighting
 
+    // @documentation(SDGSwiftSource.Syntax.syntaxHighlightedHTML)
+    /// Returns a syntax‐highlighted HTML representation of the source.
+    ///
+    /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.
+    ///
+    /// - Parameters:
+    ///     - inline: Pass `true` to generate inline HTML instead of a separate block section.
+    ///     - internalIdentifiers: Optional. A set of identifiers to consider as belonging to the module.
+    ///     - symbolLinks: Optional. A dictionary of target links for cross‐linking symbols. The values will be inserted as‐is in `href` attributes. URLs must already be properly encoded for this context before passing them.
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         return SyntaxHighlighter.frame(highlightedSyntax: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }
