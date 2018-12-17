@@ -177,6 +177,9 @@ class SDGSwiftSourceAPITests : TestCase {
                             SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
                         }
 
+                        let blockDocumentation = `extension`.methods.first(where: { $0.name.source().hasPrefix("documentedWithBlockStyle") })!
+                        XCTAssertNotNil(blockDocumentation.documentation)
+
                         break search
                     default:
                         break `switch`

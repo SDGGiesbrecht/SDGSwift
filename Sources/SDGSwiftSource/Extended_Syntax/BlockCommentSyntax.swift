@@ -91,6 +91,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
         }
         let contentsString = contents.joined(separator: "\n")
         let parsed = type(of: self).parse(contents: contentsString)
+        internalSyntax = parsed
 
         var content: [ExtendedSyntax] = []
         var index = 0
@@ -130,6 +131,8 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
+
+    internal var internalSyntax: ExtendedSyntax
 
     // MARK: - ExtendedSyntax
 
