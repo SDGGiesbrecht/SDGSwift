@@ -72,6 +72,6 @@ public class ImageSyntax : MarkdownSyntax {
 
     public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         let alternate = HTML.escape(contents.map({ $0.text }).joined())
-        return "<img alt=\u{22}" + alternate + "\u{22} src=\u{22}" + url.text + "\u{22}>"
+        return "<img alt=\u{22}" + alternate + "\u{22} src=\u{22}" + HTML.escapeAttribute(url.text) + "\u{22}>"
     }
 }
