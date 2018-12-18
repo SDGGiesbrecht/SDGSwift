@@ -63,22 +63,6 @@ extension Syntax {
         return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
     }
 
-    public func location(in source: String) -> Range<String.ScalarView.Index> {
-        let start: String.ScalarView.Index
-        if let parent = self.parent {
-            var position = parent.location(in: source).lowerBound
-            for index in 0 ..< indexInParent {
-                if let sibling = parent.child(at: index) {
-                    position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
-                }
-            }
-            start = position
-        } else {
-            start = source.scalars.startIndex
-        }
-        return start ..< source.scalars.index(start, offsetBy: self.source().scalars.count)
-    }
-
     // MARK: - Syntax Tree
 
     public func ancestors() -> AnySequence<Syntax> {
