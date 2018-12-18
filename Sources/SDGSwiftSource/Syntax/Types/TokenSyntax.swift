@@ -153,6 +153,7 @@ extension TokenSyntax {
 
     public func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
+            // Scan, because there may be missing intervening indices.
             var previousIndex = relationship.index
             while previousIndex > 0 {
                 previousIndex −= 1
@@ -176,7 +177,8 @@ extension TokenSyntax {
     public func nextToken() -> TokenSyntax? {
         func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
             var followingIndex = relationship.index
-            while followingIndex < 10 {
+            // Scan, because there may be missing intervening indices.
+            while followingIndex < 10 { // Larger than the largest known non‐list syntax node. (Lists likely have no entries marked as missing.)
                 followingIndex += 1
                 if let exists = relationship.parent.child(at: followingIndex) {
                     return exists
