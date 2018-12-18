@@ -32,9 +32,7 @@ extension Syntax {
         return result
     }
 
-    internal func withTriviaReducedToSpaces() -> Syntax {
-        return TriviaNormalizer().visit(self)
-    }
+    // MARK: - Location
 
     public func location(in source: String) -> Range<String.ScalarView.Index> {
         let start: String.ScalarView.Index
@@ -52,11 +50,33 @@ extension Syntax {
         return start ..< source.scalars.index(start, offsetBy: self.source().scalars.count)
     }
 
+    // MARK: - Syntax Tree
+
     public func ancestors() -> AnySequence<Syntax> {
         if let parent = self.parent {
             return AnySequence(sequence(first: parent, next: { $0.parent }))
         } else {
             return AnySequence([])
+        }
+    }
+
+    internal func tokens() -> [TokenSyntax] {
+        var tokens: [TokenSyntax] = []
+        for child in children {
+            if let token = child as? TokenSyntax {
+                tokens.append(token)
+            } else {
+                tokens.append(contentsOf: child.tokens())
+            }
+        }
+        return tokens
+    }
+
+    internal var firstToken: TokenSyntax? {
+        if let token = self as? TokenSyntax {
+            return token
+        } else {
+            return children.first(where: { _ in true })?.firstToken
         }
     }
 
@@ -162,14 +182,6 @@ extension Syntax {
         }
     }
 
-    internal var firstToken: TokenSyntax? {
-        if let token = self as? TokenSyntax {
-            return token
-        } else {
-            return children.first(where: { _ in true })?.firstToken
-        }
-    }
-
     internal var documentation: DocumentationSyntax? {
         if let token = firstToken {
             let leading = token.leadingTrivia
@@ -203,6 +215,26 @@ extension Syntax {
         return self
     }
 
+    // MARK: - Normalization
+
+    internal func withTriviaReducedToSpaces() -> Syntax {
+        return TriviaNormalizer().visit(self)
+    }
+
+    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
+        switch self {
+        case let conformance as ConformanceRequirementSyntax :
+            return conformance.normalized(comma: comma)
+        case let sameType as SameTypeRequirementSyntax :
+            return sameType.normalized(comma: comma)
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified generic requirement: \(Swift.type(of: self))")
+            }
+            return self
+        }
+    }
+
     // MARK: - Compilation Conditions
 
     internal var isUnidentifiedConditionalCompilation: Bool {
@@ -231,35 +263,5 @@ extension Syntax {
             ] + existingCondition + [
                 SyntaxFactory.makeToken(.rightParen)
             ])
-    }
-
-    // MARK: - Generic Requirements
-
-    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
-        switch self {
-        case let conformance as ConformanceRequirementSyntax :
-            return conformance.normalized(comma: comma)
-        case let sameType as SameTypeRequirementSyntax :
-            return sameType.normalized(comma: comma)
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified generic requirement: \(Swift.type(of: self))")
-            }
-            return self
-        }
-    }
-
-    // MARK: - Disection
-
-    internal func tokens() -> [TokenSyntax] {
-        var tokens: [TokenSyntax] = []
-        for child in children {
-            if let token = child as? TokenSyntax {
-                tokens.append(token)
-            } else {
-                tokens.append(contentsOf: child.tokens())
-            }
-        }
-        return tokens
     }
 }
