@@ -14,9 +14,23 @@
 
 extension Trivia {
 
+    // MARK: - Properties
+
     public func source() -> String {
         return String(map({ $0.text }).joined())
     }
+
+    // MARK: Syntax Tree
+
+    public func last() -> TriviaPiece? {
+        var result: TriviaPiece?
+        for element in self {
+            result = element
+        }
+        return result
+    }
+
+    // MARK: - Syntax Highlighting
 
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         var result = ""
