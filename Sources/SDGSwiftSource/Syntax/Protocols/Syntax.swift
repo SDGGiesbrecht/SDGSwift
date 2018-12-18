@@ -34,6 +34,35 @@ extension Syntax {
 
     // MARK: - Location
 
+    internal func index(in string: String, for position: AbsolutePosition) -> String.ScalarView.Index {
+        let utf8 = string.utf8
+        return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
+    }
+
+    public func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: position)
+    }
+
+    public func lowerSyntaxBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: positionAfterSkippingLeadingTrivia)
+    }
+
+    public func upperSyntaxBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: endPosition)
+    }
+
+    public func upperTriviaBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: endPositionAfterTrailingTrivia)
+    }
+
+    public func syntaxRange(in string: String) -> Range<String.ScalarView.Index> {
+        return lowerSyntaxBound(in: string) ..< upperSyntaxBound(in: string)
+    }
+
+    public func triviaRange(in string: String) -> Range<String.ScalarView.Index> {
+        return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
+    }
+
     public func location(in source: String) -> Range<String.ScalarView.Index> {
         let start: String.ScalarView.Index
         if let parent = self.parent {

@@ -110,37 +110,6 @@ extension TokenSyntax {
         }
     }
 
-    // MARK: - Location
-
-    private func index(in string: String, for position: AbsolutePosition) -> String.ScalarView.Index {
-        let utf8 = string.utf8
-        return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
-    }
-
-    public func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: position)
-    }
-
-    public func lowerTokenBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: positionAfterSkippingLeadingTrivia)
-    }
-
-    public func upperTokenBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPosition)
-    }
-
-    public func upperTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPositionAfterTrailingTrivia)
-    }
-
-    public func tokenRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerTokenBound(in: string) ..< upperTokenBound(in: string)
-    }
-
-    public func triviaRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
-    }
-
     // MARK: - Syntax Tree
 
     public func firstPrecedingTrivia() -> TriviaPiece? {
