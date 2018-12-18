@@ -117,6 +117,13 @@ class SDGSwiftSourceAPITests : TestCase {
         try DocumentationScanner().scan(syntax)
     }
 
+    func testLocations() throws {
+        let source = "// ...\nlet x = 0 \n"
+        let syntax = try SyntaxTreeParser.parse(source).statements
+        XCTAssertEqual(syntax.triviaRange(in: source), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
+        XCTAssertEqual(syntax.syntaxRange(in: source), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+    }
+
     func testParsing() throws {
         for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
             let sourceFile = try SyntaxTreeParser.parse(url)
