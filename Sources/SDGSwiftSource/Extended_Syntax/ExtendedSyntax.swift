@@ -2,7 +2,7 @@
  ExtendedSyntax.swift
 
  This source file is part of the SDGSwift open source project.
- https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+ https://sdggiesbrecht.github.io/SDGSwift
 
  Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
@@ -44,6 +44,15 @@ public class ExtendedSyntax : TextOutputStreamable {
         return [:]
     }
 
+    // @documentation(SDGSwiftSource.Syntax.renderedHTML)
+    /// Returns the HTML result of documentation rendering.
+    ///
+    /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.
+    ///
+    /// - Parameters:
+    ///     - localization: The localization to use for generated content such as callout headings.
+    ///     - internalIdentifiers: Optional. A set of identifiers to consider as belonging to the module.
+    ///     - symbolLinks: Optional. A dictionary of target links for cross‐linking symbols. The values will be inserted as‐is in `href` attributes. URLs must already be properly encoded for this context before passing them.
     public func renderedHTML(localization: String, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         var result = ""
         if let element = renderedHtmlElement {
@@ -67,6 +76,15 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     // MARK: - Syntax Colouring
 
+    // #documentation(SDGSwiftSource.Syntax.syntaxHighlightedHTML)
+    /// Returns a syntax‐highlighted HTML representation of the source.
+    ///
+    /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.
+    ///
+    /// - Parameters:
+    ///     - inline: Pass `true` to generate inline HTML instead of a separate block section.
+    ///     - internalIdentifiers: Optional. A set of identifiers to consider as belonging to the module.
+    ///     - symbolLinks: Optional. A dictionary of target links for cross‐linking symbols. The values will be inserted as‐is in `href` attributes. URLs must already be properly encoded for this context before passing them.
     public func syntaxHighlightedHTML(inline: Bool, internalIdentifiers: Set<String> = [], symbolLinks: [String: String] = [:]) -> String {
         return SyntaxHighlighter.frame(highlightedSyntax: nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks), inline: inline)
     }

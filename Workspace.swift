@@ -2,7 +2,7 @@
  Workspace.swift
 
  This source file is part of the SDGSwift open source project.
- https://sdggiesbrecht.github.io/SDGSwift/SDGSwift
+ https://sdggiesbrecht.github.io/SDGSwift
 
  Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
@@ -19,7 +19,7 @@ configuration._applySDGDefaults()
 
 configuration.documentation.currentVersion = Version(0, 3, 7)
 
-configuration.documentation.projectWebsite = URL(string: "https://sdggiesbrecht.github.io/SDGSwift/SDGSwift")!
+configuration.documentation.projectWebsite = URL(string: "https://sdggiesbrecht.github.io/SDGSwift")!
 configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/SDGSwift")!
 configuration.documentation.api.yearFirstPublished = 2018
 configuration.documentation.repositoryURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
