@@ -133,6 +133,13 @@ public struct Package : TransparentWrapper {
 
         for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
 
+            #if os(Linux)
+            // The move from the temporary directory to the cache may lose permissions.
+            if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
+                _ = try? Shell.default.run(command: ["chmod", "+x", executable.path])
+            }
+            #endif
+
             reportProgress("")
             reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
             return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
