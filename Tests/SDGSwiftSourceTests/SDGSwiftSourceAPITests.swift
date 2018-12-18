@@ -195,4 +195,16 @@ class SDGSwiftSourceAPITests : TestCase {
             }
         }
     }
+
+    func testTree() throws {
+        let source = "// ...\nlet x = 0 \n"
+        let syntax = try SyntaxTreeParser.parse(source)
+        XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
+        XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).previousToken())
+        XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).nextToken())
+        XCTAssertNil(syntax.firstToken().previousToken())
+        XCTAssertNil(syntax.lastToken().nextToken())
+        XCTAssertEqual(syntax.firstToken().tokenKind, .letKeyword)
+        XCTAssertEqual(syntax.lastToken().tokenKind, .eof)
+    }
 }
