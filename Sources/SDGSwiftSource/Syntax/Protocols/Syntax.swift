@@ -60,6 +60,14 @@ extension Syntax {
         }
     }
 
+    internal func ancestorRelationships() -> AnySequence<(parent: Syntax, index: Int)> {
+        if let parentRelationship = self.parentRelationship {
+            return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
+        } else {
+            return AnySequence([])
+        }
+    }
+
     internal func tokens() -> [TokenSyntax] {
         var tokens: [TokenSyntax] = []
         for child in children {
@@ -72,12 +80,29 @@ extension Syntax {
         return tokens
     }
 
-    internal func firstToken() -> TokenSyntax? {
+    public func firstToken() -> TokenSyntax {
         if let token = self as? TokenSyntax {
             return token
-        } else {
-            return children.first(where: { _ in true })?.firstToken()
         }
+        return children.first(where: { _ in true })!.firstToken()
+    }
+
+    public func lastToken() -> TokenSyntax {
+        if let token = self as? TokenSyntax {
+            return token
+        }
+        var lastChild: Syntax?
+        for child in children {
+            lastChild = child
+        }
+        return lastChild!.lastToken()
+    }
+
+    private var parentRelationship: (parent: Syntax, index: Int)? {
+        guard let parent = self.parent else {
+            return nil
+        }
+        return (parent, indexInParent)
     }
 
     // MARK: - Syntax Highlighting
