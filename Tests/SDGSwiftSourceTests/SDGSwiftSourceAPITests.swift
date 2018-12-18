@@ -118,7 +118,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testLocations() throws {
-        let source = "// ...\nlet x = 0 \n"
+        let source = "/\u{27} ...\nlet x = 0 \n"
         let syntax = try SyntaxTreeParser.parse(source).statements
         XCTAssertEqual(syntax.triviaRange(in: source), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
         XCTAssertEqual(syntax.syntaxRange(in: source), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
@@ -197,7 +197,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testTree() throws {
-        let source = "// ...\nlet x = 0 \n"
+        let source = "/\u{27} ...\nlet x = 0 \n"
         let syntax = try SyntaxTreeParser.parse(source)
         XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
         XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).previousToken())

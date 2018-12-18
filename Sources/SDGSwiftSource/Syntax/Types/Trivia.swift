@@ -20,7 +20,7 @@ extension Trivia {
         return String(map({ $0.text }).joined())
     }
 
-    // MARK: Syntax Tree
+    // MARK: - Syntax Tree
 
     public func last() -> TriviaPiece? {
         var result: TriviaPiece?
