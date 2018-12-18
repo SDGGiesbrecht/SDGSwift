@@ -143,15 +143,15 @@ extension TokenSyntax {
 
     // MARK: - Syntax Tree
 
-    internal func firstPrecedingTrivia() -> TriviaPiece? {
+    public func firstPrecedingTrivia() -> TriviaPiece? {
         return leadingTrivia.last() ?? previousToken()?.trailingTrivia.last()
     }
 
-    internal func firstFollowingTrivia() -> TriviaPiece? {
+    public func firstFollowingTrivia() -> TriviaPiece? {
         return trailingTrivia.first ?? nextToken()?.leadingTrivia.first
     }
 
-    internal func previousToken() -> TokenSyntax? {
+    public func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
             var previousIndex = relationship.index
             while previousIndex > 0 {
@@ -173,9 +173,16 @@ extension TokenSyntax {
         return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
     }
 
-    internal func nextToken() -> TokenSyntax? {
+    public func nextToken() -> TokenSyntax? {
         func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-            return relationship.parent.child(at: relationship.index + 1)
+            var followingIndex = relationship.index
+            while followingIndex < 10 {
+                followingIndex += 1
+                if let exists = relationship.parent.child(at: followingIndex) {
+                    return exists
+                }
+            }
+            return nil
         }
 
         let sharedAncestor = ancestorRelationships().first(where: { relationship in
