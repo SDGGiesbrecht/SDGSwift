@@ -208,21 +208,20 @@ extension Syntax {
     }
 
     internal var documentation: DocumentationSyntax? {
-        if let token = firstToken() {
-            let leading = token.leadingTrivia
-            for index in leading.indices.lazy.reversed() {
-                let trivia = leading[index]
-                switch trivia {
-                case .docLineComment, .docBlockComment:
-                    let comment = trivia.syntax(siblings: leading, index: index)
-                    if let line = comment as? LineDocumentationSyntax {
-                        return line.content.context as? DocumentationSyntax
-                    } else if let block = comment as? BlockDocumentationSyntax {
-                        return block.documentation
-                    }
-                default:
-                    continue
+        let token = firstToken()
+        let leading = token.leadingTrivia
+        for index in leading.indices.lazy.reversed() {
+            let trivia = leading[index]
+            switch trivia {
+            case .docLineComment, .docBlockComment:
+                let comment = trivia.syntax(siblings: leading, index: index)
+                if let line = comment as? LineDocumentationSyntax {
+                    return line.content.context as? DocumentationSyntax
+                } else if let block = comment as? BlockDocumentationSyntax {
+                    return block.documentation
                 }
+            default:
+                continue
             }
         }
         return nil
