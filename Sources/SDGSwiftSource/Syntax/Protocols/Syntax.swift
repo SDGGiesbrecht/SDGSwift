@@ -72,11 +72,11 @@ extension Syntax {
         return tokens
     }
 
-    internal var firstToken: TokenSyntax? {
+    internal func firstToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax {
             return token
         } else {
-            return children.first(where: { _ in true })?.firstToken
+            return children.first(where: { _ in true })?.firstToken()
         }
     }
 
@@ -183,7 +183,7 @@ extension Syntax {
     }
 
     internal var documentation: DocumentationSyntax? {
-        if let token = firstToken {
+        if let token = firstToken() {
             let leading = token.leadingTrivia
             for index in leading.indices.lazy.reversed() {
                 let trivia = leading[index]
