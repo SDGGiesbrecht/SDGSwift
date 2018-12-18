@@ -206,5 +206,14 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertNil(syntax.lastToken().nextToken())
         XCTAssertEqual(syntax.firstToken().tokenKind, .letKeyword)
         XCTAssertEqual(syntax.lastToken().tokenKind, .eof)
+        let `let` = syntax.firstToken()
+        XCTAssertEqual(`let`.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
+        XCTAssertEqual(`let`.firstFollowingTrivia()?.text, TriviaPiece.spaces(1).text)
+        let x = `let`.nextToken()
+        XCTAssertEqual(x?.firstPrecedingTrivia()?.text, TriviaPiece.spaces(1).text)
+        XCTAssertEqual(x?.firstFollowingTrivia()?.text, TriviaPiece.spaces(1).text)
+        let eof = syntax.lastToken()
+        XCTAssertEqual(eof.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
+        XCTAssertNil(eof.firstFollowingTrivia()?.text)
     }
 }
