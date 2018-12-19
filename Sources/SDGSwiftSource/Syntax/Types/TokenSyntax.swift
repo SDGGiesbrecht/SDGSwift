@@ -110,6 +110,62 @@ extension TokenSyntax {
         }
     }
 
+    // MARK: - Syntax Tree
+
+    public func firstPrecedingTrivia() -> TriviaPiece? {
+        return leadingTrivia.last() ?? previousToken()?.trailingTrivia.last()
+    }
+
+    public func firstFollowingTrivia() -> TriviaPiece? {
+        return trailingTrivia.first ?? nextToken()?.leadingTrivia.first
+    }
+
+    public func previousToken() -> TokenSyntax? {
+        func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
+            // Scan, because there may be missing intervening indices.
+            var previousIndex = relationship.index
+            while previousIndex > 0 {
+                previousIndex −= 1
+                if let exists = relationship.parent.child(at: previousIndex) {
+                    return exists
+                }
+            }
+            return nil
+        }
+
+        let sharedAncestor = ancestorRelationships().first(where: { relationship in
+            if previousSibling(of: relationship) ≠ nil {
+                return true
+            }
+            return false
+        })
+
+        return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
+    }
+
+    public func nextToken() -> TokenSyntax? {
+        func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
+            var followingIndex = relationship.index
+            // Scan, because there may be missing intervening indices.
+            while followingIndex < 10 { // Larger than the largest known non‐list syntax node. (Lists likely have no entries marked as missing.)
+                followingIndex += 1
+                if let exists = relationship.parent.child(at: followingIndex) {
+                    return exists
+                }
+            }
+            return nil
+        }
+
+        let sharedAncestor = ancestorRelationships().first(where: { relationship in
+            if nextSibling(of: relationship) ≠ nil {
+                return true
+            }
+            return false
+        })
+
+        return sharedAncestor.flatMap({ nextSibling(of: $0) })?.firstToken()
+    }
+
     // MARK: - Syntax Highlighting
 
     internal func syntaxHighlightingClass(internalIdentifiers: Set<String>) -> String? {

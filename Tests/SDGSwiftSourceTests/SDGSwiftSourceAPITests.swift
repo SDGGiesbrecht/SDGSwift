@@ -117,6 +117,13 @@ class SDGSwiftSourceAPITests : TestCase {
         try DocumentationScanner().scan(syntax)
     }
 
+    func testLocations() throws {
+        let source = "/\u{2F} ...\nlet x = 0 \n"
+        let syntax = try SyntaxTreeParser.parse(source).statements
+        XCTAssertEqual(syntax.triviaRange(in: source), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
+        XCTAssertEqual(syntax.syntaxRange(in: source), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+    }
+
     func testParsing() throws {
         for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
             let sourceFile = try SyntaxTreeParser.parse(url)
@@ -187,5 +194,26 @@ class SDGSwiftSourceAPITests : TestCase {
                 }
             }
         }
+    }
+
+    func testTree() throws {
+        let source = "/\u{2F} ...\nlet x = 0 \n"
+        let syntax = try SyntaxTreeParser.parse(source)
+        XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
+        XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).previousToken())
+        XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).nextToken())
+        XCTAssertNil(syntax.firstToken().previousToken())
+        XCTAssertNil(syntax.lastToken().nextToken())
+        XCTAssertEqual(syntax.firstToken().tokenKind, .letKeyword)
+        XCTAssertEqual(syntax.lastToken().tokenKind, .eof)
+        let `let` = syntax.firstToken()
+        XCTAssertEqual(`let`.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
+        XCTAssertEqual(`let`.firstFollowingTrivia()?.text, TriviaPiece.spaces(1).text)
+        let x = `let`.nextToken()
+        XCTAssertEqual(x?.firstPrecedingTrivia()?.text, TriviaPiece.spaces(1).text)
+        XCTAssertEqual(x?.firstFollowingTrivia()?.text, TriviaPiece.spaces(1).text)
+        let eof = syntax.lastToken()
+        XCTAssertEqual(eof.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
+        XCTAssertNil(eof.firstFollowingTrivia()?.text)
     }
 }

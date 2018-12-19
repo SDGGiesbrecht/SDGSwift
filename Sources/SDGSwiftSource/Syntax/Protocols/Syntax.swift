@@ -32,25 +32,38 @@ extension Syntax {
         return result
     }
 
-    internal func withTriviaReducedToSpaces() -> Syntax {
-        return TriviaNormalizer().visit(self)
+    // MARK: - Location
+
+    internal func index(in string: String, for position: AbsolutePosition) -> String.ScalarView.Index {
+        let utf8 = string.utf8
+        return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
     }
 
-    public func location(in source: String) -> Range<String.ScalarView.Index> {
-        let start: String.ScalarView.Index
-        if let parent = self.parent {
-            var position = parent.location(in: source).lowerBound
-            for index in 0 ..< indexInParent {
-                if let sibling = parent.child(at: index) {
-                    position = source.scalars.index(position, offsetBy: sibling.source().scalars.count)
-                }
-            }
-            start = position
-        } else {
-            start = source.scalars.startIndex
-        }
-        return start ..< source.scalars.index(start, offsetBy: self.source().scalars.count)
+    public func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: position)
     }
+
+    public func lowerSyntaxBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: positionAfterSkippingLeadingTrivia)
+    }
+
+    public func upperSyntaxBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: endPosition)
+    }
+
+    public func upperTriviaBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: endPositionAfterTrailingTrivia)
+    }
+
+    public func syntaxRange(in string: String) -> Range<String.ScalarView.Index> {
+        return lowerSyntaxBound(in: string) ..< upperSyntaxBound(in: string)
+    }
+
+    public func triviaRange(in string: String) -> Range<String.ScalarView.Index> {
+        return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
+    }
+
+    // MARK: - Syntax Tree
 
     public func ancestors() -> AnySequence<Syntax> {
         if let parent = self.parent {
@@ -58,6 +71,51 @@ extension Syntax {
         } else {
             return AnySequence([])
         }
+    }
+
+    internal func ancestorRelationships() -> AnySequence<(parent: Syntax, index: Int)> {
+        if let parentRelationship = self.parentRelationship {
+            return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
+        } else {
+            return AnySequence([])
+        }
+    }
+
+    internal func tokens() -> [TokenSyntax] {
+        var tokens: [TokenSyntax] = []
+        for child in children {
+            if let token = child as? TokenSyntax {
+                tokens.append(token)
+            } else {
+                tokens.append(contentsOf: child.tokens())
+            }
+        }
+        return tokens
+    }
+
+    public func firstToken() -> TokenSyntax {
+        if let token = self as? TokenSyntax {
+            return token
+        }
+        return children.first(where: { _ in true })!.firstToken()
+    }
+
+    public func lastToken() -> TokenSyntax {
+        if let token = self as? TokenSyntax {
+            return token
+        }
+        var lastChild: Syntax?
+        for child in children {
+            lastChild = child
+        }
+        return lastChild!.lastToken()
+    }
+
+    private var parentRelationship: (parent: Syntax, index: Int)? {
+        guard let parent = self.parent else {
+            return nil
+        }
+        return (parent, indexInParent)
     }
 
     // MARK: - Syntax Highlighting
@@ -162,30 +220,21 @@ extension Syntax {
         }
     }
 
-    internal var firstToken: TokenSyntax? {
-        if let token = self as? TokenSyntax {
-            return token
-        } else {
-            return children.first(where: { _ in true })?.firstToken
-        }
-    }
-
     internal var documentation: DocumentationSyntax? {
-        if let token = firstToken {
-            let leading = token.leadingTrivia
-            for index in leading.indices.lazy.reversed() {
-                let trivia = leading[index]
-                switch trivia {
-                case .docLineComment, .docBlockComment:
-                    let comment = trivia.syntax(siblings: leading, index: index)
-                    if let line = comment as? LineDocumentationSyntax {
-                        return line.content.context as? DocumentationSyntax
-                    } else if let block = comment as? BlockDocumentationSyntax {
-                        return block.documentation
-                    }
-                default:
-                    continue
+        let token = firstToken()
+        let leading = token.leadingTrivia
+        for index in leading.indices.lazy.reversed() {
+            let trivia = leading[index]
+            switch trivia {
+            case .docLineComment, .docBlockComment:
+                let comment = trivia.syntax(siblings: leading, index: index)
+                if let line = comment as? LineDocumentationSyntax {
+                    return line.content.context as? DocumentationSyntax
+                } else if let block = comment as? BlockDocumentationSyntax {
+                    return block.documentation
                 }
+            default:
+                continue
             }
         }
         return nil
@@ -201,6 +250,26 @@ extension Syntax {
             }
         }
         return self
+    }
+
+    // MARK: - Normalization
+
+    internal func withTriviaReducedToSpaces() -> Syntax {
+        return TriviaNormalizer().visit(self)
+    }
+
+    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
+        switch self {
+        case let conformance as ConformanceRequirementSyntax :
+            return conformance.normalized(comma: comma)
+        case let sameType as SameTypeRequirementSyntax :
+            return sameType.normalized(comma: comma)
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified generic requirement: \(Swift.type(of: self))")
+            }
+            return self
+        }
     }
 
     // MARK: - Compilation Conditions
@@ -231,35 +300,5 @@ extension Syntax {
             ] + existingCondition + [
                 SyntaxFactory.makeToken(.rightParen)
             ])
-    }
-
-    // MARK: - Generic Requirements
-
-    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
-        switch self {
-        case let conformance as ConformanceRequirementSyntax :
-            return conformance.normalized(comma: comma)
-        case let sameType as SameTypeRequirementSyntax :
-            return sameType.normalized(comma: comma)
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified generic requirement: \(Swift.type(of: self))")
-            }
-            return self
-        }
-    }
-
-    // MARK: - Disection
-
-    internal func tokens() -> [TokenSyntax] {
-        var tokens: [TokenSyntax] = []
-        for child in children {
-            if let token = child as? TokenSyntax {
-                tokens.append(token)
-            } else {
-                tokens.append(contentsOf: child.tokens())
-            }
-        }
-        return tokens
     }
 }
