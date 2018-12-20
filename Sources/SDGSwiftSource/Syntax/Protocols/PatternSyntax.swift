@@ -20,11 +20,11 @@ extension PatternSyntax {
     internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
         var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
         switch self {
-        case let identifier as IdentifierPatternSyntax :
+        case let identifier as IdentifierPatternSyntax:
             if ¬identifier.identifier.text.hasPrefix("_") {
                 list.append((identifier: identifier, indexPath: []))
             }
-        case let tuple as TuplePatternSyntax :
+        case let tuple as TuplePatternSyntax:
             var index = 0
             for element in tuple.elements {
                 defer { index += 1 }
@@ -46,7 +46,7 @@ extension PatternSyntax {
 
     internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
         switch self {
-        case let identifier as IdentifierPatternSyntax :
+        case let identifier as IdentifierPatternSyntax:
             return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
@@ -58,7 +58,7 @@ extension PatternSyntax {
 
     internal func variableBindingForOverloadPattern() -> PatternSyntax {
         switch self {
-        case let identifier as IdentifierPatternSyntax :
+        case let identifier as IdentifierPatternSyntax:
             return identifier.variableBindingIdentifierForOverloadPattern()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
@@ -70,7 +70,7 @@ extension PatternSyntax {
 
     internal func variableBindingForName() -> PatternSyntax {
         switch self {
-        case let identifier as IdentifierPatternSyntax :
+        case let identifier as IdentifierPatternSyntax:
             return identifier.variableBindingIdentifierForName()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)

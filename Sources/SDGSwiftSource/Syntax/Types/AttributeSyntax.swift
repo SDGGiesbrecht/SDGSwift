@@ -54,14 +54,14 @@ extension AttributeSyntax {
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
             return normalized()
-        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
+        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Xcode interface
             return normalized()
 
         case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
             // Implementation details
             return nil
-        case "NSCopying", "NSManaged" :
+        case "NSCopying", "NSManaged":
             // Objective‐C implementation details
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
@@ -70,7 +70,7 @@ extension AttributeSyntax {
         case "testable":
             // Not relevant to API symbols // @exempt(from: tests)
             return nil
-        case "NSApplicationMain", "UIApplicationMain" :
+        case "NSApplicationMain", "UIApplicationMain":
             // Not relevant to API // @exempt(from: tests)
             return nil
         case "requires_stored_property_inits", "warn_unqualified_access":
@@ -121,7 +121,7 @@ extension AttributeSyntax {
             return .discardability
         case "objc", "nonobjc", "objcMembers":
             return .objectiveC
-        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable" :
+        case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
         default:

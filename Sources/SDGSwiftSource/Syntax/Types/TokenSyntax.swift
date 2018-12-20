@@ -85,9 +85,9 @@ extension TokenSyntax {
 
                 for ancestor in ancestors() {
                     switch ancestor {
-                    case is IdentifierExprSyntax, is UnknownExprSyntax :
+                    case is IdentifierExprSyntax, is UnknownExprSyntax:
                         continue
-                    case is UnknownStmtSyntax, is UnknownSyntax :
+                    case is UnknownStmtSyntax, is UnknownSyntax:
                         if let token = ancestor.children.first(where: { _ in true }) as? TokenSyntax,
                             token.tokenKind == .poundIfKeyword ∨ token.tokenKind == .poundElseifKeyword {
                             // Part of an “#if” statement.

@@ -68,7 +68,7 @@ extension Optional where Wrapped == OpaquePointer {
 
         var result = indexFor(line: Int(line), column: Int(column), in: documentation)
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH :
+        case CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH:
             result = documentation.scalars.index(after: result)
         default:
             break
@@ -98,37 +98,37 @@ extension Optional where Wrapped == OpaquePointer {
         switch cmark_node_get_type(self) {
         // ..._DOCUMENT will never occur.
         // HTML nodes are undefined.
-        case CMARK_NODE_BLOCK_QUOTE :
+        case CMARK_NODE_BLOCK_QUOTE:
             return [QuotationSyntax(node: self, in: documentation)]
-        case CMARK_NODE_LIST :
+        case CMARK_NODE_LIST:
             let list = ListSyntax(node: self, in: documentation)
             return list.handlingCallouts ?? [list]
-        case CMARK_NODE_ITEM :
+        case CMARK_NODE_ITEM:
             let list = ListEntrySyntax(node: self, in: documentation)
             return [list.asCallout ?? list]
-        case CMARK_NODE_CODE_BLOCK :
+        case CMARK_NODE_CODE_BLOCK:
             return [CodeBlockSyntax(node: self, in: documentation)]
-        case CMARK_NODE_PARAGRAPH :
+        case CMARK_NODE_PARAGRAPH:
             return [ParagraphSyntax(node: self, in: documentation)]
-        case CMARK_NODE_HEADER :
+        case CMARK_NODE_HEADER:
             return [HeadingSyntax(node: self, in: documentation)]
-        case CMARK_NODE_HRULE :
+        case CMARK_NODE_HRULE:
             return [ExtendedTokenSyntax(text: String(documentation.scalars[lowerBound(in: documentation) ..< upperBound(in: documentation)]), kind: .asterism)]
-        case CMARK_NODE_SOFTBREAK :
+        case CMARK_NODE_SOFTBREAK:
             return [ExtendedTokenSyntax(text: "\n", kind: .newlines)]
-        case CMARK_NODE_LINEBREAK :
+        case CMARK_NODE_LINEBREAK:
             return [LineSeparatorSyntax()]
-        case CMARK_NODE_CODE :
+        case CMARK_NODE_CODE:
             return [InlineCodeSyntax(node: self, in: documentation)]
-        case CMARK_NODE_EMPH :
+        case CMARK_NODE_EMPH:
             return [FontSyntax(node: self, in: documentation, delimiter: "*")]
-        case CMARK_NODE_STRONG :
+        case CMARK_NODE_STRONG:
             return [FontSyntax(node: self, in: documentation, delimiter: "**")]
-        case CMARK_NODE_LINK :
+        case CMARK_NODE_LINK:
             return [LinkSyntax(node: self, in: documentation)]
-        case CMARK_NODE_IMAGE :
+        case CMARK_NODE_IMAGE:
             return [ImageSyntax(node: self, in: documentation)]
-        default /* CMARK_NODE_TEXT */ :
+        default /* CMARK_NODE_TEXT */:
             return [ExtendedTokenSyntax(text: self.literal ?? "", kind: .documentationText)] // @exempt(from: tests) Empty literal should never occur.
         }
     }

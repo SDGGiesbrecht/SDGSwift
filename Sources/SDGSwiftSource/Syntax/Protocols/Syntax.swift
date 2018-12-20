@@ -135,7 +135,7 @@ extension Syntax {
 
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch self {
-        case let token as TokenSyntax :
+        case let token as TokenSyntax:
             var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
 
             if let extended = token.extended {
@@ -158,10 +158,10 @@ extension Syntax {
         default:
             var identifiers = internalIdentifiers
             switch self {
-            case let function as FunctionDeclSyntax :
+            case let function as FunctionDeclSyntax:
                 let parameters = function.signature.input.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
-            case let `subscript` as SubscriptDeclSyntax :
+            case let `subscript` as SubscriptDeclSyntax:
                 let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             default:
@@ -182,31 +182,31 @@ extension Syntax {
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
         switch self {
-        case let structure as StructDeclSyntax :
+        case let structure as StructDeclSyntax:
             return structure.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let `class` as ClassDeclSyntax :
+        case let `class` as ClassDeclSyntax:
             return `class`.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let enumeration as EnumDeclSyntax :
+        case let enumeration as EnumDeclSyntax:
             return enumeration.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let typeAlias as TypealiasDeclSyntax :
+        case let typeAlias as TypealiasDeclSyntax:
             return typeAlias.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let associatedType as AssociatedtypeDeclSyntax :
+        case let associatedType as AssociatedtypeDeclSyntax:
             return associatedType.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let `protocol` as ProtocolDeclSyntax :
+        case let `protocol` as ProtocolDeclSyntax:
             return `protocol`.protocolAPI.flatMap({ [APIElement.protocol($0)] }) ?? []
-        case let `case` as EnumCaseDeclSyntax :
+        case let `case` as EnumCaseDeclSyntax:
             return `case`.caseAPI().map({ APIElement.case($0) })
-        case let initializer as InitializerDeclSyntax :
+        case let initializer as InitializerDeclSyntax:
             return initializer.initializerAPI.flatMap({ [APIElement.initializer($0)] }) ?? []
-        case let variable as VariableDeclSyntax :
+        case let variable as VariableDeclSyntax:
             return variable.variableAPI().map({ APIElement.variable($0) })
-        case let `subscript` as SubscriptDeclSyntax :
+        case let `subscript` as SubscriptDeclSyntax:
             return `subscript`.subscriptAPI.flatMap({ [APIElement.subscript($0)] }) ?? []
-        case let function as FunctionDeclSyntax :
+        case let function as FunctionDeclSyntax:
             return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
-        case let `extension` as ExtensionDeclSyntax :
+        case let `extension` as ExtensionDeclSyntax:
             return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
-        case let conditionallyCompiledSection as IfConfigDeclSyntax :
+        case let conditionallyCompiledSection as IfConfigDeclSyntax:
             return conditionallyCompiledSection.conditionalAPI
         default:
             if isUnidentifiedConditionalCompilation {
@@ -260,9 +260,9 @@ extension Syntax {
 
     internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
         switch self {
-        case let conformance as ConformanceRequirementSyntax :
+        case let conformance as ConformanceRequirementSyntax:
             return conformance.normalized(comma: comma)
-        case let sameType as SameTypeRequirementSyntax :
+        case let sameType as SameTypeRequirementSyntax:
             return sameType.normalized(comma: comma)
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
