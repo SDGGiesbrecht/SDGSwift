@@ -33,9 +33,9 @@ extension GenericRequirementListSyntax : Mergeable {
     }
     private static func group(for requirement: Syntax) -> Group {
         switch requirement {
-        case is ConformanceRequirementSyntax :
+        case is ConformanceRequirementSyntax:
             return .conformance
-        case is SameTypeRequirementSyntax :
+        case is SameTypeRequirementSyntax:
             return .sameType
         default:
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
