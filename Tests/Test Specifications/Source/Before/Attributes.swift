@@ -1,5 +1,6 @@
 import Foundation
 
+/// Documentation before hidden attribute.
 @_specialize(kind: full, where T == Int) public func withHiddenAttribute<T>(_ parameter: T) {}
 
 @available(*, unavailable) public func unavailable() {}

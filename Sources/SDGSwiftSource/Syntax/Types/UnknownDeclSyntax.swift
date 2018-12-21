@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension UnknownDeclSyntax {
 
     internal func unknownAPI() -> [APIElement] {
@@ -25,7 +27,13 @@ extension UnknownDeclSyntax {
                 genericParameterClause: children.first(GenericParameterClauseSyntax.self),
                 signature: children.first(FunctionSignatureSyntax.self) ?? SyntaxFactory.makeBlankFunctionSignature(), // @exempt(from: tests) Should not occur anyway.
                 genericWhereClause: children.first(GenericWhereClauseSyntax.self),
-                body: SyntaxFactory.makeBlankCodeBlock())
+                body: children.first(SwiftSyntax.CodeBlockSyntax.self))
+        }
+        if replacement ≠ nil,
+            replacement?.documentation == nil,
+            let documentation = self.documentation,
+            let reparsed = try? SyntaxTreeParser.parse("/**\n" + documentation.text + "\n*/\n" + replacement!.source()) {
+            replacement = reparsed
         }
         return replacement?.api() ?? [] // @exempt(from: tests) Should not occur anyway.
     }
