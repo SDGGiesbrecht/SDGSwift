@@ -41,8 +41,8 @@
 
     <span class="comment"><span class="comment‐punctuation">//</span> <span class="comment‐keyword">MARK: - </span><span class="text">Initialization</span></span>
 
-    <span class="keyword">init</span><span class="punctuation">(</span><span class="external identifier">property</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-        <span class="keyword">self</span><span class="punctuation">.</span><span class="external identifier">property</span> <span class="punctuation">=</span> <span class="external identifier">property</span>
+    <span class="keyword">init</span><span class="punctuation">(</span><span class="internal identifier">property</span><span class="punctuation">:</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="keyword">self</span><span class="punctuation">.</span><span class="internal identifier">property</span> <span class="punctuation">=</span> <span class="internal identifier">property</span>
     <span class="punctuation">}</span>
 
     <span class="comment"><span class="comment‐punctuation">//</span> <span class="comment‐keyword">MARK: - </span><span class="text">Properties</span></span>
@@ -55,9 +55,9 @@
         <span class="external identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="external identifier">index</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">index</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">get</span> <span class="punctuation">{</span>
-            <span class="keyword">return</span> <span class="external identifier">index</span>
+            <span class="keyword">return</span> <span class="internal identifier">index</span>
         <span class="punctuation">}</span>
         <span class="keyword">set</span> <span class="punctuation">{</span>
             <span class="external identifier">property</span> <span class="punctuation">=</span> <span class="keyword">true</span>
