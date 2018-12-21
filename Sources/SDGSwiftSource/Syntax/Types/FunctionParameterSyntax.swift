@@ -16,7 +16,7 @@ import SDGLogic
 
 extension FunctionParameterSyntax {
 
-    // MARK: - Function Parameters
+    // MARK: - Names & Labels
 
     internal enum LabelBehaviour {
 
@@ -43,7 +43,7 @@ extension FunctionParameterSyntax {
         }
     }
 
-    private func externalLabel(labelBehaviour: LabelBehaviour) -> TokenSyntax? {
+    internal func externalLabel(labelBehaviour: LabelBehaviour) -> TokenSyntax? {
         switch labelBehaviour {
         case .function:
             return firstName
@@ -57,6 +57,16 @@ extension FunctionParameterSyntax {
             }
         }
     }
+
+    internal var internalName: TokenSyntax? {
+        if secondName?.isPresent == true {
+            return secondName
+        } else {
+            return firstName
+        }
+    }
+
+    // MARK: - API
 
     internal func normalizedForDeclaration(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
 
