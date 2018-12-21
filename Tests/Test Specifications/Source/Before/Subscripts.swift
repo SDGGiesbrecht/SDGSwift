@@ -24,4 +24,14 @@ public struct Subscripted {
     public subscript(inOutParameter: inout Bool) -> Bool {
         return false
     }
+
+    public subscript(unlabelledIndex: Int) -> Int {
+        return unlabelledIndex
+    }
+}
+
+public struct AlsoSubscripted {
+    public subscript(_ explicitlyUnlabelledIndex: Int) -> Int {
+        return explicitlyUnlabelledIndex
+    }
 }
