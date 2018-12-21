@@ -72,7 +72,7 @@ extension FunctionParameterSyntax {
         var secondName = self.secondName?.generallyNormalized(leadingTrivia: .spaces(1))
         if ¬labelBehaviour.hasLabelByDefault,
             firstName?.tokenKind == .wildcardKeyword {
-            firstName = secondName
+            firstName = secondName?.generallyNormalized()
             secondName = nil
         }
 
