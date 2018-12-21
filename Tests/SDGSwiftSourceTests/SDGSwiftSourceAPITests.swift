@@ -170,9 +170,11 @@ class SDGSwiftSourceAPITests : TestCase {
             SDGPersistenceTestUtilities.compare(HTMLPage(content: syntaxHighlighting, cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API Syntax Highlighting").appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("html"), overwriteSpecificationInsteadOfFailing: false)
 
             if url.deletingPathExtension().lastPathComponent == "Documentation" {
+                var found = false
                 search: for element in api {
                     `switch`: switch element {
                     case .extension(let `extension`):
+                        found = true
                         let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
                         let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
                         _ = method.documentation!.renderedHTML(localization: "zxx")
@@ -192,6 +194,23 @@ class SDGSwiftSourceAPITests : TestCase {
                         break `switch`
                     }
                 }
+                XCTAssert(found, "Failed to find test documentation.")
+            }
+            if url.deletingPathExtension().lastPathComponent == "Attributes" {
+                var found = false
+                search: for element in api {
+                    `switch`: switch element {
+                    case .function(let function):
+                        if function.name.identifier.text == "withHiddenAttribute" {
+                            XCTAssertNotNil(function.documentation)
+                            found = true
+                            break search
+                        }
+                    default:
+                        break `switch`
+                    }
+                }
+                XCTAssert(found, "Failed to find hidden attribute test.")
             }
         }
     }

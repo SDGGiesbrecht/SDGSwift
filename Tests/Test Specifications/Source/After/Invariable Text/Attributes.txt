@@ -1,5 +1,6 @@
 i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲
+̲/̲/̲/̲ Documentation before hidden attribute.
 ̲@̲_specialize(̲kind:̲ full,̲ w̲h̲e̲r̲e̲ T == Int)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withHiddenAttribute<̲T>̲(̲_̲ parameter:̲ T)̲ {̲}̲
 ̲
 ̲@̲available(̲*,̲ unavailable)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ unavailable(̲)̲ {̲}̲

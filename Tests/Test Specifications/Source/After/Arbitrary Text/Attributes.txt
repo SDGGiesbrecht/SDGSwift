@@ -1,5 +1,6 @@
 import ̲Foundation
 
+/// ̲D̲o̲c̲u̲m̲e̲n̲t̲a̲t̲i̲o̲n̲ ̲b̲e̲f̲o̲r̲e̲ ̲h̲i̲d̲d̲e̲n̲ ̲a̲t̲t̲r̲i̲b̲u̲t̲e̲.̲
 @_specialize(kind: ̲full, ̲where ̲T ̲== ̲Int) ̲public ̲func ̲w̲i̲t̲h̲H̲i̲d̲d̲e̲n̲A̲t̲t̲r̲i̲b̲u̲t̲e̲<T̲>(_ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲T) ̲{}
 
 @available(*, ̲unavailable) ̲public ̲func ̲u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲() ̲{}
