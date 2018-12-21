@@ -32,6 +32,16 @@
     <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="external identifier">inOutParameter</span><span class="punctuation">:</span> <span class="keyword">inout</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">false</span>
     <span class="punctuation">}</span>
+
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="external identifier">unlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+        <span class="keyword">return</span> <span class="external identifier">unlabelledIndex</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">AlsoSubscripted</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">explicitlyUnlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+        <span class="keyword">return</span> <span class="internal identifier">explicitlyUnlabelledIndex</span>
+    <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 </code>
 

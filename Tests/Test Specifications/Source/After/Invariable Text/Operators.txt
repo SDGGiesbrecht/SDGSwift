@@ -1,5 +1,8 @@
 e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ s̲t̲a̲t̲i̲c̲ f̲u̲n̲c̲ += (̲precedingValue:̲ i̲n̲o̲u̲t̲ Bool,̲ followingValue:̲ Bool)̲ {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲a̲t̲i̲c̲ f̲u̲n̲c̲ − (̲_̲ explicitlyUnlabelledParameters:̲ Int,̲ _̲ b:̲ Int)̲ -̲>̲ Int {̲
+̲        r̲e̲t̲u̲r̲n̲ b
+̲    }̲
 ̲}̲
 ̲

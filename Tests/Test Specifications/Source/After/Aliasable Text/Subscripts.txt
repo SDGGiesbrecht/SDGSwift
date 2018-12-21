@@ -24,4 +24,14 @@ public struct Subscripted {
     public subscript(inOutParameter: inout B̲o̲o̲l̲) -> B̲o̲o̲l̲ {
         return false
     }
+
+    public subscript(unlabelledIndex: I̲n̲t̲) -> I̲n̲t̲ {
+        return u̲n̲l̲a̲b̲e̲l̲l̲e̲d̲I̲n̲d̲e̲x̲
+    }
+}
+
+public struct AlsoSubscripted {
+    public subscript(_ explicitlyUnlabelledIndex: I̲n̲t̲) -> I̲n̲t̲ {
+        return e̲x̲p̲l̲i̲c̲i̲t̲l̲y̲U̲n̲l̲a̲b̲e̲l̲l̲e̲d̲I̲n̲d̲e̲x̲
+    }
 }
