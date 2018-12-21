@@ -32,7 +32,7 @@ extension UnknownDeclSyntax {
         if replacement ≠ nil,
             replacement?.documentation == nil,
             let documentation = self.documentation,
-            let reparsed = try? SyntaxTreeParser.parse("/**\n" + documentation.text + "\n*/\n" + replacement!.source()) {
+            let reparsed = try? SyntaxTreeParser.parse("/*\u{2A}\n" + documentation.text + "\n*/\n" + replacement!.source()) {
             replacement = reparsed
         }
         return replacement?.api() ?? [] // @exempt(from: tests) Should not occur anyway.
