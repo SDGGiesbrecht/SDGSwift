@@ -1,5 +1,6 @@
 import Foundation
 
+/// Documentation before hidden attribute.
 @_̲s̲p̲e̲c̲i̲a̲l̲i̲z̲e̲(k̲i̲n̲d̲: f̲u̲l̲l̲, where T̲ =̲=̲ I̲n̲t̲) public func withHiddenAttribute<T>(_ parameter: T̲) {}
 
 @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) public func unavailable() {}
