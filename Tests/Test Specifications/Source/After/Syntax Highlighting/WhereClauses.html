@@ -11,6 +11,12 @@
 <span class="punctuation">}</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Collection</span> <span class="punctuation">:</span> <span class="external identifier">ConditionalConformance</span> <span class="keyword">where</span> <span class="external identifier">Index</span> <span class="external identifier">==</span> <span class="external identifier">Element</span><span class="punctuation">,</span> <span class="external identifier">Index</span> <span class="external identifier">==</span> <span class="external identifier">Int</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+
+<span class="keyword">extension</span> <span class="external identifier">BidirectionalCollection</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">forward</span><span class="punctuation">&#x003C;</span><span class="external identifier">R</span><span class="punctuation">></span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">range</span><span class="punctuation">:</span> <span class="external identifier">R</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Range</span><span class="punctuation">&#x003C;</span><span class="keyword">Self</span><span class="punctuation">.</span><span class="external identifier">Index</span><span class="punctuation">></span> <span class="keyword">where</span> <span class="external identifier">R</span><span class="punctuation">.</span><span class="external identifier">Bound</span> <span class="external identifier">==</span> <span class="external identifier">ReversedCollection</span><span class="punctuation">&#x003C;</span><span class="keyword">Self</span><span class="punctuation">></span><span class="punctuation">.</span><span class="external identifier">Index</span> <span class="punctuation">{</span>
+        <span class="external identifier">fatalError</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span>
 </code>
 
  </body>

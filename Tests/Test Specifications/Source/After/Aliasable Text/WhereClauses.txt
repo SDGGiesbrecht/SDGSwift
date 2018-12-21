@@ -3,3 +3,9 @@ extension C̲o̲l̲l̲e̲c̲t̲i̲o̲n̲ where I̲n̲d̲e̲x̲ =̲=̲ E̲l̲e̲m
 }
 
 extension C̲o̲l̲l̲e̲c̲t̲i̲o̲n̲ : C̲o̲n̲d̲i̲t̲i̲o̲n̲a̲l̲C̲o̲n̲f̲o̲r̲m̲a̲n̲c̲e̲ where I̲n̲d̲e̲x̲ =̲=̲ E̲l̲e̲m̲e̲n̲t̲, I̲n̲d̲e̲x̲ =̲=̲ I̲n̲t̲ {}
+
+extension B̲i̲d̲i̲r̲e̲c̲t̲i̲o̲n̲a̲l̲C̲o̲l̲l̲e̲c̲t̲i̲o̲n̲ {
+    public func forward<R>(_ range: R̲) -> R̲a̲n̲g̲e̲<Self.I̲n̲d̲e̲x̲> where R̲.B̲o̲u̲n̲d̲ =̲=̲ R̲e̲v̲e̲r̲s̲e̲d̲C̲o̲l̲l̲e̲c̲t̲i̲o̲n̲<Self>.I̲n̲d̲e̲x̲ {
+        f̲a̲t̲a̲l̲E̲r̲r̲o̲r̲()
+    }
+}
