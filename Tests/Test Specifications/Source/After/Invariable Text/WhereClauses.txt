@@ -4,3 +4,9 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection w̲h̲e̲r̲e̲ Index == Element,̲ Index
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Collection :̲ ConditionalConformance w̲h̲e̲r̲e̲ Index == Element,̲ Index == Int {̲}̲
 ̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ BidirectionalCollection {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ forward<̲R>̲(̲_̲ range:̲ R)̲ -̲>̲ Range<̲S̲e̲l̲f̲.̲Index>̲ w̲h̲e̲r̲e̲ R.̲Bound == ReversedCollection<̲S̲e̲l̲f̲>̲.̲Index {̲
+̲        fatalError(̲)̲
+̲    }̲
+̲}̲
+̲

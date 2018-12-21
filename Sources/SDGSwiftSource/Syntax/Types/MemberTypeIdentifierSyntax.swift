@@ -16,9 +16,14 @@ extension MemberTypeIdentifierSyntax {
 
     internal func normalized() -> TypeSyntax {
 
-        let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        let newGenericArgumentClause = source().contains("<") ? genericArgumentClause?.normalized() : nil
+        var genericArgumentClause = self.genericArgumentClause
+        if genericArgumentClause?.source() == "" {
+            genericArgumentClause = nil
+        }
+
+        let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
+        let newGenericArgumentClause = genericArgumentClause?.normalized()
 
         if let simple = baseType as? SimpleTypeIdentifierSyntax,
             simple.name.tokenKind == .capitalSelfKeyword {
