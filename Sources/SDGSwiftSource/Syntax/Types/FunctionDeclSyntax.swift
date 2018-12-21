@@ -38,7 +38,7 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
             funcKeyword: funcKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
-            signature: signature.normalizedForAPIDeclaration(),
+            signature: signature.normalizedForAPIDeclaration(labelBehaviour: identifier.isOperator ? .operator : .function),
             genericWhereClause: newGenericWhereClause,
             body: nil)
     }
@@ -50,13 +50,13 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
             funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
             identifier: identifier,
             genericParameterClause: nil,
-            signature: signature.forFunctionName(operator: identifier.isOperator),
+            signature: signature.forName(labelBehaviour: identifier.isOperator ? .operator : .function),
             genericWhereClause: nil,
             body: nil)
     }
 
     internal func identifierList() -> Set<String> {
-        return Set([identifier.text]) ∪ signature.identifierList()
+        return Set([identifier.text]) ∪ signature.identifierList(labelBehaviour: identifier.isOperator ? .operator : .function)
     }
 
     // MARK: - OverloadableAPIDeclaration
@@ -68,7 +68,7 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Gen
             funcKeyword: funcKeyword,
             identifier: identifier,
             genericParameterClause: nil,
-            signature: signature.forOverloadPattern(operator: identifier.isOperator),
+            signature: signature.forOverloadPattern(labelBehaviour: identifier.isOperator ? .operator : .function),
             genericWhereClause: nil,
             body: nil)
     }

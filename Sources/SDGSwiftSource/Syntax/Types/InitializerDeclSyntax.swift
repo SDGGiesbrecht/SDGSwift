@@ -36,7 +36,7 @@ extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, 
             initKeyword: initKeyword.generallyNormalizedAndMissingInsteadOfNil(),
             optionalMark: optionalMark?.generallyNormalized(),
             genericParameterClause: newGenericParemeterClause,
-            parameters: parameters.normalizedForFunctionDeclaration(),
+            parameters: parameters.normalizedForDeclaration(labelBehaviour: .function),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
             genericWhereClause: newGenericWhereClause,
             body: nil)
@@ -49,14 +49,14 @@ extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, 
             initKeyword: initKeyword,
             optionalMark: nil,
             genericParameterClause: nil,
-            parameters: parameters.forFunctionName(operator: false),
+            parameters: parameters.forName(labelBehaviour: .function),
             throwsOrRethrowsKeyword: nil,
             genericWhereClause: nil,
             body: nil)
     }
 
     internal func identifierList() -> Set<String> {
-        return parameters.identifierListForFunction()
+        return parameters.identifierList(labelBehaviour: .function)
     }
 
     // MARK: - OverloadableAPIDeclaration
@@ -68,7 +68,7 @@ extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, 
             initKeyword: initKeyword,
             optionalMark: nil,
             genericParameterClause: nil,
-            parameters: parameters.forOverloadPattern(operator: false),
+            parameters: parameters.forOverloadPattern(labelBehaviour: .function),
             throwsOrRethrowsKeyword: nil,
             genericWhereClause: nil,
             body: nil)

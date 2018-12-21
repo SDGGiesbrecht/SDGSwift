@@ -18,7 +18,47 @@ extension FunctionParameterSyntax {
 
     // MARK: - Function Parameters
 
-    internal func normalizedForFunctionDeclaration() -> FunctionParameterSyntax {
+    internal enum LabelBehaviour {
+
+        case function
+        case `operator`
+        case `subscript`
+
+        internal var capableOfLabels: Bool {
+            switch self {
+            case .function, .subscript:
+                return true
+            case .operator:
+                return false
+            }
+        }
+
+        internal var hasLabelByDefault: Bool {
+            switch self {
+            case .function:
+                return true
+            case .operator, .subscript:
+                return false
+            }
+        }
+    }
+
+    private func externalLabel(labelBehaviour: LabelBehaviour) -> TokenSyntax? {
+        switch labelBehaviour {
+        case .function:
+            return firstName
+        case .operator:
+            return nil
+        case .subscript:
+            if secondName?.isPresent == true {
+                return firstName
+            } else {
+                return nil
+            }
+        }
+    }
+
+    internal func normalizedForDeclaration(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
 
         // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
         let ellipsisToken: TokenSyntax?
@@ -28,10 +68,18 @@ extension FunctionParameterSyntax {
             ellipsisToken = ellipsis?.generallyNormalized()
         }
 
+        var firstName = self.firstName?.generallyNormalized()
+        var secondName = self.secondName?.generallyNormalized(leadingTrivia: .spaces(1))
+        if ¬labelBehaviour.hasLabelByDefault,
+            firstName?.tokenKind == .wildcardKeyword {
+            firstName = secondName
+            secondName = nil
+        }
+
         return SyntaxFactory.makeFunctionParameter(
             attributes: attributes?.normalizedForAPIDeclaration(),
-            firstName: firstName?.generallyNormalized(),
-            secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
+            firstName: firstName,
+            secondName: secondName,
             colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
             type: type?.normalized(),
             ellipsis: ellipsisToken,
@@ -39,10 +87,10 @@ extension FunctionParameterSyntax {
             trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 
-    internal func forOverloadPattern(operator: Bool) -> FunctionParameterSyntax {
+    internal func forOverloadPattern(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
-            firstName: `operator` ? SyntaxFactory.makeToken(.identifier("_")) : firstName?.generallyNormalized(),
+            firstName: labelBehaviour.capableOfLabels ? firstName?.generallyNormalized() : SyntaxFactory.makeToken(.identifier("_")),
             secondName: nil,
             colon: colon,
             type: nil,
@@ -51,10 +99,10 @@ extension FunctionParameterSyntax {
             trailingComma: trailingComma)
     }
 
-    internal func forFunctionName(operator: Bool) -> FunctionParameterSyntax {
+    internal func forName(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
-            firstName: `operator` ? SyntaxFactory.makeToken(.identifier("_")) : firstName?.generallyNormalized(),
+            firstName: externalLabel(labelBehaviour: labelBehaviour) ?? SyntaxFactory.makeToken(.wildcardKeyword),
             secondName: nil,
             colon: colon?.generallyNormalized(),
             type: nil,
@@ -63,24 +111,12 @@ extension FunctionParameterSyntax {
             trailingComma: nil)
     }
 
-    internal func identifierListForFunction() -> Set<String> {
+    internal func identifierList(labelBehaviour: LabelBehaviour) -> Set<String> {
         var result: Set<String> = []
-        if let externalName = firstName {
-            result.insert(externalName.text)
+        if let label = externalLabel(labelBehaviour: labelBehaviour) {
+            result.insert(label.text)
         }
         return result
-    }
-
-    internal func forSubscriptName() -> FunctionParameterSyntax {
-        return SyntaxFactory.makeFunctionParameter(
-            attributes: nil,
-            firstName: secondName?.isPresent == true ? firstName : SyntaxFactory.makeToken(.wildcardKeyword),
-            secondName: nil,
-            colon: colon?.generallyNormalized(),
-            type: nil,
-            ellipsis: nil,
-            defaultArgument: nil,
-            trailingComma: nil)
     }
 
     // MARK: - Associated Values
