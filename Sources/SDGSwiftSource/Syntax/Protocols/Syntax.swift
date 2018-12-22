@@ -157,15 +157,21 @@ extension Syntax {
             return result
         default:
             var identifiers = internalIdentifiers
+            var parameterClause: ParameterClauseSyntax?
             switch self {
-            case let function as FunctionDeclSyntax:
-                let parameters = function.signature.input.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
-                identifiers ∪= Set(parameters)
+            case let initializer as InitializerDeclSyntax:
+                parameterClause = initializer.parameters
             case let `subscript` as SubscriptDeclSyntax:
-                let parameters = `subscript`.indices.parameterList.map({ $0.secondName?.text }).compactMap({ $0 })
-                identifiers ∪= Set(parameters)
+                parameterClause = `subscript`.indices
+            case let function as FunctionDeclSyntax:
+                parameterClause = function.signature.input
             default:
                 break
+            }
+
+            if let clause = parameterClause {
+                let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
+                identifiers ∪= Set(parameters)
             }
             return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
         }

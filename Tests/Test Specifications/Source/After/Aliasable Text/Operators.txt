@@ -1,4 +1,7 @@
 extension B̲o̲o̲l̲ {
 
     public static func += (precedingValue: inout B̲o̲o̲l̲, followingValue: B̲o̲o̲l̲) {}
+    public static func − (_ explicitlyUnlabelledParameters: I̲n̲t̲, _ b: I̲n̲t̲) -> I̲n̲t̲ {
+        return b̲
+    }
 }

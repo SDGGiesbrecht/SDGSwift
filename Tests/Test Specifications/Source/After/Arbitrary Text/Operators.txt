@@ -1,4 +1,7 @@
 extension ̲Bool ̲{
 
  ̲ ̲ ̲ ̲public ̲static ̲func ̲+̲=̲ ̲(p̲r̲e̲c̲e̲d̲i̲n̲g̲V̲a̲l̲u̲e̲: ̲inout ̲Bool, ̲f̲o̲l̲l̲o̲w̲i̲n̲g̲V̲a̲l̲u̲e̲: ̲Bool) ̲{}
+ ̲ ̲ ̲ ̲public ̲static ̲func ̲−̲ ̲(_ ̲e̲x̲p̲l̲i̲c̲i̲t̲l̲y̲U̲n̲l̲a̲b̲e̲l̲l̲e̲d̲P̲a̲r̲a̲m̲e̲t̲e̲r̲s̲: ̲Int, ̲_ ̲b̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲b
+ ̲ ̲ ̲ ̲}
 }

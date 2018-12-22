@@ -14,28 +14,28 @@
 
 extension FunctionSignatureSyntax {
 
-    internal func normalizedForAPIDeclaration() -> FunctionSignatureSyntax {
+    internal func normalizedForAPIDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionSignatureSyntax {
         return SyntaxFactory.makeFunctionSignature(
-            input: input.normalizedForFunctionDeclaration(),
+            input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
             output: output?.normalizedForFunctionDeclaration())
     }
 
-    internal func forOverloadPattern(operator: Bool) -> FunctionSignatureSyntax {
+    internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionSignatureSyntax {
         return SyntaxFactory.makeFunctionSignature(
-            input: input.forOverloadPattern(operator: `operator`),
+            input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
             throwsOrRethrowsKeyword: nil,
             output: nil)
     }
 
-    internal func forFunctionName(operator: Bool) -> FunctionSignatureSyntax {
+    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionSignatureSyntax {
         return SyntaxFactory.makeFunctionSignature(
-            input: input.forFunctionName(operator: `operator`),
+            input: input.forName(labelBehaviour: labelBehaviour),
             throwsOrRethrowsKeyword: nil,
             output: nil)
     }
 
-    internal func identifierList() -> Set<String> {
-        return input.identifierListForFunction()
+    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<String> {
+        return input.identifierList(labelBehaviour: labelBehaviour)
     }
 }

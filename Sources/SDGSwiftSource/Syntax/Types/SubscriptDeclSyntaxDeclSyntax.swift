@@ -44,7 +44,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             subscriptKeyword: subscriptKeyword.generallyNormalizedAndMissingInsteadOfNil(),
             genericParameterClause: newGenericParemeterClause,
-            indices: indices.normalizedForFunctionDeclaration(),
+            indices: indices.normalizedForDeclaration(labelBehaviour: .subscript),
             result: result.normalizedForSubscriptDeclaration(),
             genericWhereClause: newGenericWhereClause,
             accessor: accessorListForAPIDeclaration())
@@ -56,14 +56,14 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
             modifiers: nil,
             subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, presence: .missing),
             genericParameterClause: nil,
-            indices: indices.forSuperscriptName(),
+            indices: indices.forName(labelBehaviour: .subscript),
             result: SyntaxFactory.makeBlankReturnClause(),
             genericWhereClause: nil,
             accessor: nil)
     }
 
     internal func identifierList() -> Set<String> {
-        return indices.identifierListForFunction()
+        return indices.identifierList(labelBehaviour: .subscript)
     }
 
     // MARK: - OverloadableAPIDeclaration
@@ -74,7 +74,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
             modifiers: nil,
             subscriptKeyword: subscriptKeyword,
             genericParameterClause: nil,
-            indices: indices.forOverloadPattern(operator: false),
+            indices: indices.forOverloadPattern(labelBehaviour: .subscript),
             result: SyntaxFactory.makeBlankReturnClause(),
             genericWhereClause: nil,
             accessor: nil)

@@ -17,24 +17,20 @@ import SDGCollections
 
 extension FunctionParameterListSyntax {
 
-    internal func normalizedForFunctionDeclaration() -> FunctionParameterListSyntax {
-        return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForFunctionDeclaration() }))
+    internal func normalizedForDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForDeclaration(labelBehaviour: labelBehaviour) }))
     }
 
-    internal func forOverloadPattern(operator: Bool) -> FunctionParameterListSyntax {
-        return SyntaxFactory.makeFunctionParameterList(map({ $0.forOverloadPattern(operator: `operator`) }))
+    internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forOverloadPattern(labelBehaviour: labelBehaviour) }))
     }
 
-    internal func forFunctionName(operator: Bool) -> FunctionParameterListSyntax {
-        return SyntaxFactory.makeFunctionParameterList(map({ $0.forFunctionName(operator: `operator`) }))
+    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionParameterListSyntax {
+        return SyntaxFactory.makeFunctionParameterList(map({ $0.forName(labelBehaviour: labelBehaviour) }))
     }
 
-    internal func identifierListForFunction() -> Set<String> {
-        return reduce(into: Set<String>()) { $0 ∪= $1.identifierListForFunction() }
-    }
-
-    internal func forSubscriptName() -> FunctionParameterListSyntax {
-        return SyntaxFactory.makeFunctionParameterList(map({ $0.forSubscriptName() }))
+    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<String> {
+        return reduce(into: Set<String>()) { $0 ∪= $1.identifierList(labelBehaviour: labelBehaviour) }
     }
 
     internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {

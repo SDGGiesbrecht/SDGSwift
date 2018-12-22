@@ -24,4 +24,14 @@ public ̲struct ̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
  ̲ ̲ ̲ ̲public ̲subscript(i̲n̲O̲u̲t̲P̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲inout ̲Bool) ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
+
+ ̲ ̲ ̲ ̲public ̲subscript(u̲n̲l̲a̲b̲e̲l̲l̲e̲d̲I̲n̲d̲e̲x̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲unlabelledIndex
+ ̲ ̲ ̲ ̲}
+}
+
+public ̲struct ̲A̲l̲s̲o̲S̲u̲b̲s̲c̲r̲i̲p̲t̲e̲d̲ ̲{
+ ̲ ̲ ̲ ̲public ̲subscript(_ ̲e̲x̲p̲l̲i̲c̲i̲t̲l̲y̲U̲n̲l̲a̲b̲e̲l̲l̲e̲d̲I̲n̲d̲e̲x̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲explicitlyUnlabelledIndex
+ ̲ ̲ ̲ ̲}
 }
