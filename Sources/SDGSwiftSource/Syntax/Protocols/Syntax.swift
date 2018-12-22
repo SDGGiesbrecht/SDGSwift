@@ -157,7 +157,7 @@ extension Syntax {
             return result
         default:
             var identifiers = internalIdentifiers
-            var parameterClause: ParameterClauseSyntax? = nil
+            var parameterClause: ParameterClauseSyntax?
             switch self {
             case let initializer as InitializerDeclSyntax:
                 parameterClause = initializer.parameters
