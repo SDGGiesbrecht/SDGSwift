@@ -56,3 +56,6 @@ public func dictionaryReturn() -> [Bool: Bool] {
 public func nonstandardDictionaryReturn() -> Dictionary<Bool, Bool> { // swiftlint:disable:this syntactic_sugar
     return []
 }
+
+public func withType<T>(_ type: T.Type) {}
+public func withComposedProtocol(_ composed: TextOutputStream & TextOutputStreamable) {}

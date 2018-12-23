@@ -21,12 +21,16 @@ extension TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax:
             return simple.normalized()
+        case let metatype as MetatypeTypeSyntax:
+            return metatype.normalized()
         case let member as MemberTypeIdentifierSyntax:
             return member.normalized()
         case let optional as OptionalTypeSyntax:
             return optional.normalized()
         case let tuple as TupleTypeSyntax:
             return tuple.normalized(extractingFromIndexPath: indexPath)
+        case let composition as CompositionTypeSyntax:
+            return composition.normalized()
         case let array as ArrayTypeSyntax:
             return array.normalized()
         case let dictionary as DictionaryTypeSyntax:

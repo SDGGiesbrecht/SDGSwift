@@ -56,3 +56,6 @@ public ̲func ̲d̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲[Bool:
 public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Dictionary<Bool, ̲Bool> ̲{ ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲s̲y̲n̲t̲a̲c̲t̲i̲c̲_̲s̲u̲g̲a̲r̲
  ̲ ̲ ̲ ̲return ̲[]
 }
+
+public ̲func ̲w̲i̲t̲h̲T̲y̲p̲e̲<T̲>(_ ̲t̲y̲p̲e̲: ̲T.Type) ̲{}
+public ̲func ̲w̲i̲t̲h̲C̲o̲m̲p̲o̲s̲e̲d̲P̲r̲o̲t̲o̲c̲o̲l̲(_ ̲c̲o̲m̲p̲o̲s̲e̲d̲: ̲TextOutputStream ̲& ̲TextOutputStreamable) ̲{}

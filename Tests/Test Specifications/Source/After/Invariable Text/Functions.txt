@@ -57,3 +57,6 @@
 ̲    r̲e̲t̲u̲r̲n̲ [̲]̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withType<̲T>̲(̲_̲ type:̲ T.̲Type)̲ {̲}̲
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withComposedProtocol(̲_̲ composed:̲ TextOutputStream & TextOutputStreamable)̲ {̲}̲
+̲

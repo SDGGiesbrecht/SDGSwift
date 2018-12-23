@@ -12,4 +12,6 @@ nonstandardDictionaryReturn() • func nonstandardDictionaryReturn() -> [Bool: B
 nonstandardGenerics(_:) • func nonstandardGenerics<T>(_ parameter: T) where T : Equatable
 nonstandardVoidReturn() • func nonstandardVoidReturn()
 tupleReturn() • func tupleReturn() -> (String, Int)
+withComposedProtocol(_:) • func withComposedProtocol(_ composed: TextOutputStream & TextOutputStreamable)
+withType(_:) • func withType<T>(_ type: T.Type)
 withVoid(_:) • func withVoid(_ closure: () -> Void)
