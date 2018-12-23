@@ -56,3 +56,6 @@ public func dictionaryReturn() -> [B̲o̲o̲l̲: B̲o̲o̲l̲] {
 public func nonstandardDictionaryReturn() -> D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲<B̲o̲o̲l̲, B̲o̲o̲l̲> { // swiftlint:disable:this syntactic_sugar
     return []
 }
+
+public func withType<T>(_ type: T̲.T̲y̲p̲e̲) {}
+public func withComposedProtocol(_ composed: T̲e̲x̲t̲O̲u̲t̲p̲u̲t̲S̲t̲r̲e̲a̲m̲ &̲ T̲e̲x̲t̲O̲u̲t̲p̲u̲t̲S̲t̲r̲e̲a̲m̲a̲b̲l̲e̲) {}
