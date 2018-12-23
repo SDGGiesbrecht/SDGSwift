@@ -1,3 +1,6 @@
 (Bool)
  +=(_:_:) • func +=(precedingValue: inout Bool, followingValue: Bool)
  −(_:_:) • func −(explicitlyUnlabelledParameters: Int, b: Int) -> Int
+(Int)
+ !(_:) • func !(operand: Int) -> Int
+ −(_:) • func −(operand: Int) -> Int
