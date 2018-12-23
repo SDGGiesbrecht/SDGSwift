@@ -88,15 +88,15 @@ extension DeclModifierSyntax {
             case "open", "public", "internal", "fileprivate", "private":
                 return .accessControl
             case "required":
-                return .requirement
+                return .requirement // @exempt(from: tests) Cannot appear with any other groups for sorting.
             case "convenience":
-                return .designation
+                return .designation // @exempt(from: tests) Cannot appear with any other groups for sorting.
             case "weak":
                 return .memoryManagement
             case "mutating", "nonmutating":
                 return .mutation
             case "prefix", "postfix":
-                return .operatorPosition
+                return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified modifier: \(name.text)")

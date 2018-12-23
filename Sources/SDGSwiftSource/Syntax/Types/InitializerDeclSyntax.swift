@@ -64,7 +64,7 @@ extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, 
     internal func overloadPattern() -> InitializerDeclSyntax {
         return SyntaxFactory.makeInitializerDecl(
             attributes: nil,
-            modifiers: nil,
+            modifiers: modifiers?.forOverloadPattern(),
             initKeyword: initKeyword,
             optionalMark: nil,
             genericParameterClause: nil,
