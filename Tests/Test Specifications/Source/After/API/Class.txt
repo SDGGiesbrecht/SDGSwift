@@ -1,0 +1,4 @@
+FinalClass • class FinalClass
+Superclass • class Superclass
+ init() • required init()
+ init(parameter:) • convenience init(parameter: Bool)

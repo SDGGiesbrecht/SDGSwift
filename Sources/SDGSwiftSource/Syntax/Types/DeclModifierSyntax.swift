@@ -31,19 +31,31 @@ extension DeclModifierSyntax {
             let conditionalKeyword = name.text
             switch conditionalKeyword {
             case "open":
-                // Overridability.
+                // External overridability.
                 return normalize()
+            case "final":
+                // Internal overridability.
+                return nil
             case "public", "internal", "fileprivate", "private":
                 // Access control.
                 return nil
+            case "required":
+                // Requirement.
+                return normalize()
+            case "convenience":
+                // Designation.
+                return normalize()
             case "override":
-                // Subclassing
+                // Subclassing.
                 return nil
             case "mutating", "nonmutating":
                 return normalize()
             case "indirect":
                 return nil
             case "weak":
+                return normalize()
+            case "prefix", "postfix":
+                // Operator position.
                 return normalize()
             default: // @exempt(from: tests) Should never occur.
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
@@ -57,10 +69,13 @@ extension DeclModifierSyntax {
     private enum Group : OrderedEnumeration {
         case unknown
         case accessControl
+        case requirement
+        case designation
         case memoryManagement
         case classMembership
         case staticity
         case mutation
+        case operatorPosition
     }
     private func group() -> Group {
         switch name.tokenKind {
@@ -71,12 +86,17 @@ extension DeclModifierSyntax {
         default:
             switch name.text {
             case "open", "public", "internal", "fileprivate", "private":
-                // Access control.
                 return .accessControl
+            case "required":
+                return .requirement // @exempt(from: tests) Cannot appear with any other groups for sorting.
+            case "convenience":
+                return .designation // @exempt(from: tests) Cannot appear with any other groups for sorting.
             case "weak":
                 return .memoryManagement
             case "mutating", "nonmutating":
                 return .mutation
+            case "prefix", "postfix":
+                return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unidentified modifier: \(name.text)")
@@ -97,7 +117,25 @@ extension DeclModifierSyntax {
         case .classKeyword:
             return withName(SyntaxFactory.makeToken(.staticKeyword, trailingTrivia: name.trailingTrivia))
         default:
-            return nil
+            switch name.text {
+            case "open", "public", "internal", "fileprivate", "private":
+                return nil
+            case "required":
+                return nil
+            case "convenience":
+                return nil
+            case "weak":
+                return nil
+            case "mutating", "nonmutating":
+                return nil
+            case "prefix", "postfix":
+                return self
+            default:
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified modifier: \(name.text)")
+                }
+                return nil
+            }
         }
     }
 }

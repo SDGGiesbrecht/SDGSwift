@@ -6,3 +6,12 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
 ̲    }̲
 ̲}̲
 ̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲a̲t̲i̲c̲ p̲r̲e̲f̲i̲x̲ f̲u̲n̲c̲ − (̲operand:̲ Int)̲ -̲>̲ Int {̲
+̲        r̲e̲t̲u̲r̲n̲ operand
+̲    }̲
+̲    p̲u̲b̲l̲i̲c̲ s̲t̲a̲t̲i̲c̲ p̲o̲s̲t̲f̲i̲x̲ f̲u̲n̲c̲ ! (̲operand:̲ Int)̲ -̲>̲ Int {̲
+̲        r̲e̲t̲u̲r̲n̲ operand
+̲    }̲
+̲}̲
+̲

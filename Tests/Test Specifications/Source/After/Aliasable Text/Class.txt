@@ -1,0 +1,9 @@
+public class Superclass {
+
+    public required init() {}
+    public convenience init(parameter: B̲o̲o̲l̲) {
+        self.init()
+    }
+}
+
+public final class FinalClass {}

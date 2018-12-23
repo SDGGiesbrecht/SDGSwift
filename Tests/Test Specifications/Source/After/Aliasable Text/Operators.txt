@@ -5,3 +5,12 @@ extension B̲o̲o̲l̲ {
         return b̲
     }
 }
+
+extension I̲n̲t̲ {
+    public static prefix func − (operand: I̲n̲t̲) -> I̲n̲t̲ {
+        return o̲p̲e̲r̲a̲n̲d̲
+    }
+    public static postfix func ! (operand: I̲n̲t̲) -> I̲n̲t̲ {
+        return o̲p̲e̲r̲a̲n̲d̲
+    }
+}

@@ -71,7 +71,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
     internal func overloadPattern() -> SubscriptDeclSyntax {
         return SyntaxFactory.makeSubscriptDecl(
             attributes: nil,
-            modifiers: nil,
+            modifiers: modifiers?.forOverloadPattern(),
             subscriptKeyword: subscriptKeyword,
             genericParameterClause: nil,
             indices: indices.forOverloadPattern(labelBehaviour: .subscript),

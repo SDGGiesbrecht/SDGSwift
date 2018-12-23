@@ -5,3 +5,12 @@ extension ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲b
  ̲ ̲ ̲ ̲}
 }
+
+extension ̲Int ̲{
+ ̲ ̲ ̲ ̲public ̲static ̲prefix ̲func ̲−̲ ̲(o̲p̲e̲r̲a̲n̲d̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲operand
+ ̲ ̲ ̲ ̲}
+ ̲ ̲ ̲ ̲public ̲static ̲postfix ̲func ̲!̲ ̲(o̲p̲e̲r̲a̲n̲d̲: ̲Int) ̲-> ̲Int ̲{
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲operand
+ ̲ ̲ ̲ ̲}
+}
