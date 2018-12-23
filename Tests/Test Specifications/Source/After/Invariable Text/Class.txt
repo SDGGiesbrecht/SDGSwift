@@ -1,0 +1,10 @@
+p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ Superclass {̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ r̲e̲q̲u̲i̲r̲e̲d̲ i̲n̲i̲t̲(̲)̲ {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ c̲o̲n̲v̲e̲n̲i̲e̲n̲c̲e̲ i̲n̲i̲t̲(̲parameter:̲ Bool)̲ {̲
+̲        s̲e̲l̲f̲.̲i̲n̲i̲t̲(̲)̲
+̲    }̲
+̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ f̲i̲n̲a̲l̲ c̲l̲a̲s̲s̲ FinalClass {̲}̲
+̲

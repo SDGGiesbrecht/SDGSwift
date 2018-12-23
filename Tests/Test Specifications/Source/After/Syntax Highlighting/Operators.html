@@ -13,6 +13,15 @@
         <span class="keyword">return</span> <span class="internal identifier">b</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
+
+<span class="keyword">extension</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="external identifier">prefix</span> <span class="keyword">func</span> <span class="external identifier">−</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+        <span class="keyword">return</span> <span class="internal identifier">operand</span>
+    <span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="external identifier">postfix</span> <span class="keyword">func</span> <span class="external identifier">!</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+        <span class="keyword">return</span> <span class="internal identifier">operand</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span>
 </code>
 
  </body>
