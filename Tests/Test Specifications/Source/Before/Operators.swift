@@ -5,3 +5,12 @@ extension Bool {
         return b
     }
 }
+
+extension Int {
+    public static prefix func − (operand: Int) -> Int {
+        return operand
+    }
+    public static postfix func ! (operand: Int) -> Int {
+        return operand
+    }
+}
