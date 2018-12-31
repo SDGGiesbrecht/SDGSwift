@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
@@ -105,17 +106,32 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     let number = min(count, context.scalars.distance(from: overlap.lowerBound, to: overlap.upperBound))
                     return [.trivia(construct(number), siblings, index)]
                 }
-                func reduce(text: String, construct: (String) -> TriviaPiece) -> [SyntaxFragment] {
-                    var text = text
+                func determineCrop() -> (leading: Int, trailing: Int) {
+                    var crop = (leading: 0, trailing: 0)
                     if location.lowerBound < range.lowerBound {
-                        let remove = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
-                        text.scalars.removeFirst(remove)
+                        crop.leading = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
                     }
                     if location.upperBound > range.upperBound {
-                        let remove = context.scalars.distance(from: range.upperBound, to: location.upperBound)
-                        text.scalars.removeLast(remove)
+                        crop.trailing = context.scalars.distance(from: range.upperBound, to: location.upperBound)
                     }
+                    return crop
+                }
+                func reduce(text: String, construct: (String) -> TriviaPiece) -> [SyntaxFragment] {
+                    let crop = determineCrop()
+                    var text = text
+                    text.scalars.removeFirst(crop.leading)
+                    text.scalars.removeLast(crop.trailing)
                     return [.trivia(construct(text), siblings, index)]
+                }
+                func reduce(extended node: TriviaPiece) -> [SyntaxFragment] {
+                    let extended = trivia.syntax(siblings: siblings, index: index)
+
+                    let text = node.text
+                    let crop = determineCrop()
+                    let offsets = crop.leading ..< text.count − crop.trailing
+
+                    let fragment = FragmentSyntax(scalarOffsets: offsets, in: extended)
+                    return [.extendedSyntax(fragment)]
                 }
 
                 switch trivia {
@@ -137,12 +153,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     return reduce(count: count) { .backticks($0) }
                 case .lineComment(let text):
                     return reduce(text: text) { .lineComment($0) }
-                case .blockComment(let text):
-                    return reduce(text: text) { .blockComment($0) }
+                case .blockComment:
+                    return reduce(extended: trivia)
                 case .docLineComment(let text):
                     return reduce(text: text) { .docLineComment($0) }
-                case .docBlockComment(let text):
-                    return reduce(text: text) { .docBlockComment($0) }
+                case .docBlockComment:
+                    return reduce(extended: trivia)
                 case .garbageText(let text):
                     return reduce(text: text) { .garbageText($0) }
                 }
