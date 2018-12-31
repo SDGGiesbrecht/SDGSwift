@@ -108,16 +108,16 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     let extended = trivia.syntax(siblings: siblings, index: index)
 
                     let text = trivia.text
-                    var crop = (leading: 0, trailing: 0)
+                    var startOffset = 0
+                    var endOffset = text.scalars.count
                     if location.lowerBound < range.lowerBound {
-                        crop.leading = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
+                        startOffset += context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
                     }
                     if location.upperBound > range.upperBound {
-                        crop.trailing = context.scalars.distance(from: range.upperBound, to: location.upperBound)
+                        endOffset −= context.scalars.distance(from: range.upperBound, to: location.upperBound)
                     }
-                    let offsets = crop.leading ..< text.count − crop.trailing
 
-                    let fragment = FragmentSyntax(scalarOffsets: offsets, in: extended)
+                    let fragment = FragmentSyntax(scalarOffsets: startOffset ..< endOffset, in: extended)
                     return [.extendedSyntax(fragment)]
                 }
             }
