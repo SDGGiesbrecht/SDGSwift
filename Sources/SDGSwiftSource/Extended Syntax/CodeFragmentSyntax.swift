@@ -18,7 +18,7 @@ import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
 
-    init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
+    internal init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
         self.isSwift = isSwift
 
         self.context = source
