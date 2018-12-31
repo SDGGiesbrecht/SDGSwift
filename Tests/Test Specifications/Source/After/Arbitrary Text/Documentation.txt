@@ -236,3 +236,5 @@ extension ̲Structure ̲{
 /// ̲```
 struct ̲D̲o̲c̲u̲m̲e̲n̲t̲e̲d̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲{
 }
+
+/* ̲*/ ̲// ̲←̲ ̲E̲m̲p̲t̲y̲ ̲b̲l̲o̲c̲k̲ ̲c̲o̲m̲m̲e̲n̲t̲.̲

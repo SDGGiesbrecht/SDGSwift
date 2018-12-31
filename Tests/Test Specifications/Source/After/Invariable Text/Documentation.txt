@@ -237,3 +237,5 @@
 ̲s̲t̲r̲u̲c̲t̲ DocumentedStructure {̲
 ̲}̲
 ̲
+̲/̲*̲ *̲/̲ /̲/̲ ← Empty block comment.
+̲

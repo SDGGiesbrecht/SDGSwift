@@ -236,3 +236,5 @@ extension Structure {
 /// ```
 struct DocumentedStructure {
 }
+
+/* */ // ← Empty block comment.
