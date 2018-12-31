@@ -101,11 +101,6 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             if location ⊆ range {
                 return [.trivia(trivia, siblings, index)]
             } else {
-                func reduce(count: Int, construct: (Int) -> TriviaPiece) -> [SyntaxFragment] {
-                    let overlap = location.clamped(to: range)
-                    let number = min(count, context.scalars.distance(from: overlap.lowerBound, to: overlap.upperBound))
-                    return [.trivia(construct(number), siblings, index)]
-                }
                 func determineCrop() -> (leading: Int, trailing: Int) {
                     var crop = (leading: 0, trailing: 0)
                     if location.lowerBound < range.lowerBound {
@@ -115,13 +110,6 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                         crop.trailing = context.scalars.distance(from: range.upperBound, to: location.upperBound)
                     }
                     return crop
-                }
-                func reduce(text: String, construct: (String) -> TriviaPiece) -> [SyntaxFragment] {
-                    let crop = determineCrop()
-                    var text = text
-                    text.scalars.removeFirst(crop.leading)
-                    text.scalars.removeLast(crop.trailing)
-                    return [.trivia(construct(text), siblings, index)]
                 }
                 func reduce(extended node: TriviaPiece) -> [SyntaxFragment] {
                     let extended = trivia.syntax(siblings: siblings, index: index)
@@ -135,32 +123,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                 }
 
                 switch trivia {
-                case .spaces(let count):
-                    return reduce(count: count) { .spaces($0) }
-                case .tabs(let count):
-                    return reduce(count: count) { .tabs($0) }
-                case .verticalTabs(let count):
-                    return reduce(count: count) { .verticalTabs($0) }
-                case .formfeeds(let count):
-                    return reduce(count: count) { .formfeeds($0) }
-                case .newlines(let count):
-                    return reduce(count: count) { .newlines($0) }
-                case .carriageReturns(let count):
-                    return reduce(count: count) { .carriageReturns($0) }
-                case .carriageReturnLineFeeds(let count):
-                    return reduce(count: count) { .carriageReturnLineFeeds($0) }
-                case .backticks(let count):
-                    return reduce(count: count) { .backticks($0) }
-                case .lineComment(let text):
-                    return reduce(text: text) { .lineComment($0) }
+                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
+                    return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
                 case .blockComment:
                     return reduce(extended: trivia)
-                case .docLineComment(let text):
-                    return reduce(text: text) { .docLineComment($0) }
                 case .docBlockComment:
                     return reduce(extended: trivia)
-                case .garbageText(let text):
-                    return reduce(text: text) { .garbageText($0) }
                 }
             }
         } else {
