@@ -111,24 +111,19 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     }
                     return crop
                 }
-                func reduce(extended node: TriviaPiece) -> [SyntaxFragment] {
+
+                switch trivia {
+                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
+                    return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
+                case .blockComment, .docBlockComment:
                     let extended = trivia.syntax(siblings: siblings, index: index)
 
-                    let text = node.text
+                    let text = trivia.text
                     let crop = determineCrop()
                     let offsets = crop.leading ..< text.count − crop.trailing
 
                     let fragment = FragmentSyntax(scalarOffsets: offsets, in: extended)
                     return [.extendedSyntax(fragment)]
-                }
-
-                switch trivia {
-                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
-                    return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
-                case .blockComment:
-                    return reduce(extended: trivia)
-                case .docBlockComment:
-                    return reduce(extended: trivia)
                 }
             }
         } else {
