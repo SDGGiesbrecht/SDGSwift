@@ -175,6 +175,16 @@ extension Structure {
     /// - List item.
     /// - Warning: Undefined callout in the middle of a list.
     /// - List item.
+    ///
+    /// ```swift
+    /// /*
+    ///  This
+    ///  nested
+    ///  element
+    ///  is
+    ///  fragmented.
+    ///  */
+    /// ```
     public func performAction(on parameterOne: String, with parameterTwo: String) throws -> Bool {
         return false
     }
