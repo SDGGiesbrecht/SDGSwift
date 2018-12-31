@@ -55,6 +55,8 @@ open class SyntaxScanner {
                 switch child {
                 case .syntax(let node):
                     try scan(node)
+                case .extendedSyntax(let node):
+                    try scan(node)
                 case .trivia(let node, let siblings, let index):
                     try scan(node, siblings: siblings, index: index)
                 }
