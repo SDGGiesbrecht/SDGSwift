@@ -101,17 +101,6 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             if location ⊆ range {
                 return [.trivia(trivia, siblings, index)]
             } else {
-                func determineCrop() -> (leading: Int, trailing: Int) {
-                    var crop = (leading: 0, trailing: 0)
-                    if location.lowerBound < range.lowerBound {
-                        crop.leading = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
-                    }
-                    if location.upperBound > range.upperBound {
-                        crop.trailing = context.scalars.distance(from: range.upperBound, to: location.upperBound)
-                    }
-                    return crop
-                }
-
                 switch trivia {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
                     return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
@@ -119,7 +108,13 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     let extended = trivia.syntax(siblings: siblings, index: index)
 
                     let text = trivia.text
-                    let crop = determineCrop()
+                    var crop = (leading: 0, trailing: 0)
+                    if location.lowerBound < range.lowerBound {
+                        crop.leading = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
+                    }
+                    if location.upperBound > range.upperBound {
+                        crop.trailing = context.scalars.distance(from: range.upperBound, to: location.upperBound)
+                    }
                     let offsets = crop.leading ..< text.count − crop.trailing
 
                     let fragment = FragmentSyntax(scalarOffsets: offsets, in: extended)
