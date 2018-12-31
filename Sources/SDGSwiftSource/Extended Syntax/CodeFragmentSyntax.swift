@@ -71,8 +71,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     }
                     position = end
 
-                    result.append(contentsOf: syntax(of: token.trailingTrivia, startingAt: position
-                    ))
+                    result.append(contentsOf: syntax(of: token.trailingTrivia, startingAt: position))
 
                     return result
                 } else {
