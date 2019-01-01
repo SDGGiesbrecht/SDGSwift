@@ -185,6 +185,8 @@
 ̲    /̲/̲/̲  fragmented.
 ̲    /̲/̲/̲  *̲/̲
 ̲    /̲/̲/̲ `̲`̲`̲
+̲    /̲/̲/̲
+̲    /̲/̲/̲ -̲ List ending with a multibyte character: ✓
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ performAction(̲on parameterOne:̲ String,̲ with parameterTwo:̲ String)̲ t̲h̲r̲o̲w̲s̲ -̲>̲ Bool {̲
 ̲        r̲e̲t̲u̲r̲n̲ f̲a̲l̲s̲e̲
 ̲    }̲
@@ -225,7 +227,7 @@
 ̲     `̲`̲`̲n̲o̲t̲‐̲s̲w̲i̲f̲t̲
 ̲     f̲u̲n̲c̲ ̲d̲o̲S̲o̲m̲e̲t̲h̲i̲n̲g̲(̲)̲
 ̲     `̲`̲`̲
-̲    *̲/̲
+̲     *̲/̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ documentedWithBlockStyle(̲)̲ {̲}̲
 ̲}̲
 ̲
