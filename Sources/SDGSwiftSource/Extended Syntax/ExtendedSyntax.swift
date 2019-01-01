@@ -19,7 +19,7 @@ import SDGLogic
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
 public class ExtendedSyntax : TextOutputStreamable {
 
-    internal init(children: [ExtendedSyntax]) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+    internal init(children: [ExtendedSyntax]) {
         self.children = children
     }
 

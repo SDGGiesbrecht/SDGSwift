@@ -35,17 +35,17 @@ public class CalloutSyntax : ExtendedSyntax {
 
         var children: [ExtendedSyntax] = []
         if let theBullet = bullet {
-            children.append(theBullet) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+            children.append(theBullet)
         }
         if let theIndent = indent {
-            children.append(theIndent) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+            children.append(theIndent)
         }
         children.append(name)
         if let theSpace = space {
-            children.append(theSpace) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+            children.append(theSpace)
         }
         if let parameter = parameterName {
-            children.append(parameter) // @exempt(from: tests) False coverage result in Xcode 9.4.1)
+            children.append(parameter)
         }
         children.append(colon)
         children.append(contentsOf: contents)

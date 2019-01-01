@@ -16,7 +16,7 @@
 open class SyntaxScanner {
 
     /// Creates a syntax scanner.
-    public init() {} // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+    public init() {}
 
     // MARK: - Scanning
 

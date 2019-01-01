@@ -43,7 +43,6 @@ public class CodeBlockSyntax : MarkdownSyntax {
         var isSwift: Bool?
         if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern),
             ¬language.range.isEmpty {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             let languageIdentifier = String(language.contents)
             isSwift = languageIdentifier == "swift"
             let token = ExtendedTokenSyntax(text: languageIdentifier, kind: .language)
@@ -59,7 +58,6 @@ public class CodeBlockSyntax : MarkdownSyntax {
         precedingChildren.append(openingVerticalMargin)
 
         if ¬contents.isEmpty {
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             let closingVerticalMargin = ExtendedTokenSyntax(text: String(contents.removeLast()), kind: .newlines)
             self.closingVerticalMargin = closingVerticalMargin
             followingChildren.prepend(closingVerticalMargin)

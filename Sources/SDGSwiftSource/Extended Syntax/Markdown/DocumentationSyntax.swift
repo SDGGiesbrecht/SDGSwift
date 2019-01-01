@@ -40,7 +40,7 @@ public class DocumentationSyntax : MarkdownSyntax {
         super.init(node: tree, in: source)
 
         for child in children {
-            if let paragraph = child as? ParagraphSyntax, descriptionSection == nil { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            if let paragraph = child as? ParagraphSyntax, descriptionSection == nil {
                 descriptionSection = paragraph
             } else if let calloutSyntax = child as? CalloutSyntax,
                 let callout = Callout(calloutSyntax.name.text) {

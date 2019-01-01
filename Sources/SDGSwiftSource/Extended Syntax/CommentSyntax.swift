@@ -24,7 +24,7 @@ public class CommentContentSyntax : ExtendedSyntax {
         var children: [ExtendedSyntax] = []
 
         for lineInfo in source.lines {
-            if ¬lineInfo.line.isEmpty { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            if ¬lineInfo.line.isEmpty {
                 var line = String(lineInfo.line)
 
                 func check(forHeading heading: String) {
@@ -34,7 +34,7 @@ public class CommentContentSyntax : ExtendedSyntax {
                         line = ""
                     }
                 }
-                check(forHeading: "MARK: \u{2D} ") // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+                check(forHeading: "MARK: \u{2D} ")
                 check(forHeading: "MARK:")
 
                 while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
