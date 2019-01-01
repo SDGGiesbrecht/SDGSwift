@@ -68,12 +68,8 @@ extension Optional where Wrapped == OpaquePointer {
 
         switch cmark_node_get_type(self) {
         case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
-            print("Incrementing.")
             column += 1
         default:
-            print("Skipping.")
-            print(cmark_node_get_type(self))
-            print(CMARK_NODE_DOCUMENT)
             break
         }
         return indexFor(line: Int(line), column: Int(column), in: documentation)
