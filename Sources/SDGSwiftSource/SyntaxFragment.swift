@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -19,6 +19,9 @@ public enum SyntaxFragment {
     /// A syntax element.
     case syntax(Syntax)
 
+    /// An extended syntax element.
+    case extendedSyntax(ExtendedSyntax)
+
     /// Isolated trivia.
     case trivia(TriviaPiece, Trivia, Trivia.Index)
 
@@ -28,6 +31,8 @@ public enum SyntaxFragment {
         switch self {
         case .syntax(let syntax):
             return syntax.source()
+        case .extendedSyntax(let syntax):
+            return syntax.text
         case .trivia(let trivia, _, _):
             return trivia.text
         }
@@ -38,6 +43,8 @@ public enum SyntaxFragment {
     internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch self {
         case .syntax(let syntaxNode):
+            return syntaxNode.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
+        case .extendedSyntax(let syntaxNode):
             return syntaxNode.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
         case .trivia(let piece, let group, let index):
             return piece.syntax(siblings: group, index: index).nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)

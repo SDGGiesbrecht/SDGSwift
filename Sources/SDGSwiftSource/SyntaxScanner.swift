@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -54,6 +54,8 @@ open class SyntaxScanner {
             for child in children {
                 switch child {
                 case .syntax(let node):
+                    try scan(node)
+                case .extendedSyntax(let node):
                     try scan(node)
                 case .trivia(let node, let siblings, let index):
                     try scan(node, siblings: siblings, index: index)

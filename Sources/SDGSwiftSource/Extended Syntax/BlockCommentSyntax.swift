@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -34,7 +34,7 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(source: String) { // @exempt(from: tests) False result in Xcode 9.4.1)
+    internal init(source: String) {
         let openingDelimiter = type(of: self).openingDelimiter
         let closingDelimiter = type(of: self).closingDelimiter
 
@@ -74,8 +74,8 @@ public class BlockCommentSyntax : ExtendedSyntax {
         }
 
         let indentMatch = block.scalars.prefix(upTo: ConditionalPattern({ $0 ∉ CharacterSet.whitespaces }))
-        let indent = indentMatch.flatMap({ String($0.contents) }) ?? "" // @exempt(from: tests) False coverage result in Xcode 9.4.1
-        var indents: [String] = [] // @exempt(from: tests) False coverage result in Xcode 9.4.1
+        let indent = indentMatch.flatMap({ String($0.contents) }) ?? ""
+        var indents: [String] = []
         var contents: [String] = []
         var newlines: [String] = []
         for line in block.lines {

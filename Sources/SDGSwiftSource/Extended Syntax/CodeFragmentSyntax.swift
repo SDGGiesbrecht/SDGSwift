@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,11 +13,12 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 public class CodeFragmentSyntax : ExtendedSyntax {
 
-    init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
+    internal init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
         self.isSwift = isSwift
 
         self.context = source
@@ -71,8 +72,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                     }
                     position = end
 
-                    result.append(contentsOf: syntax(of: token.trailingTrivia, startingAt: position
-                    ))
+                    result.append(contentsOf: syntax(of: token.trailingTrivia, startingAt: position))
 
                     return result
                 } else {
@@ -100,52 +100,25 @@ public class CodeFragmentSyntax : ExtendedSyntax {
         if location.overlaps(range) {
             if location ⊆ range {
                 return [.trivia(trivia, siblings, index)]
-            } else { // @exempt(from: tests) Not reachable with real source code. (?)
-                func reduce(count: Int, construct: (Int) -> TriviaPiece) -> [SyntaxFragment] { // @exempt(from: tests) Not reachable with real source code. (?)
-                    let overlap = location.clamped(to: range)
-                    let number = min(count, context.scalars.distance(from: overlap.lowerBound, to: overlap.upperBound))
-                    return [.trivia(construct(number), siblings, index)]
-                }
-                func reduce(text: String, construct: (String) -> TriviaPiece) -> [SyntaxFragment] {
-                    var text = text
+            } else {
+                switch trivia {
+                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
+                    return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
+                case .blockComment, .docBlockComment:
+                    let extended = trivia.syntax(siblings: siblings, index: index)
+
+                    let text = trivia.text
+                    var startOffset = 0
+                    var endOffset = text.scalars.count
                     if location.lowerBound < range.lowerBound {
-                        let remove = context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
-                        text.scalars.removeFirst(remove)
+                        startOffset += context.scalars.distance(from: location.lowerBound, to: range.lowerBound)
                     }
                     if location.upperBound > range.upperBound {
-                        let remove = context.scalars.distance(from: location.upperBound, to: range.upperBound)
-                        text.scalars.removeLast(remove)
+                        endOffset −= context.scalars.distance(from: range.upperBound, to: location.upperBound)
                     }
-                    return [.trivia(construct(text), siblings, index)]
-                }
 
-                switch trivia {
-                case .spaces(let count):
-                    return reduce(count: count) { .spaces($0) }
-                case .tabs(let count):
-                    return reduce(count: count) { .tabs($0) }
-                case .verticalTabs(let count):
-                    return reduce(count: count) { .verticalTabs($0) }
-                case .formfeeds(let count):
-                    return reduce(count: count) { .formfeeds($0) }
-                case .newlines(let count):
-                    return reduce(count: count) { .newlines($0) }
-                case .carriageReturns(let count):
-                    return reduce(count: count) { .carriageReturns($0) }
-                case .carriageReturnLineFeeds(let count):
-                    return reduce(count: count) { .carriageReturnLineFeeds($0) }
-                case .backticks(let count):
-                    return reduce(count: count) { .backticks($0) }
-                case .lineComment(let text):
-                    return reduce(text: text) { .lineComment($0) }
-                case .blockComment(let text):
-                    return reduce(text: text) { .blockComment($0) }
-                case .docLineComment(let text):
-                    return reduce(text: text) { .docLineComment($0) }
-                case .docBlockComment(let text):
-                    return reduce(text: text) { .docBlockComment($0) }
-                case .garbageText(let text):
-                    return reduce(text: text) { .garbageText($0) }
+                    let fragment = FragmentSyntax(scalarOffsets: startOffset ..< endOffset, in: extended)
+                    return [.extendedSyntax(fragment)]
                 }
             }
         } else {
