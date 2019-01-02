@@ -192,16 +192,16 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.initializers
     }
 
-    public var properties: AnyBidirectionalCollection<VariableAPI> {
-        return elementProtocol.properties
+    public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
+        return elementProtocol.instanceProperties
     }
 
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return elementProtocol.subscripts
     }
 
-    public var methods: AnyBidirectionalCollection<FunctionAPI> {
-        return elementProtocol.methods
+    public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
+        return elementProtocol.instanceMethods
     }
 
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {

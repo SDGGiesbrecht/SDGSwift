@@ -54,9 +54,9 @@ class SDGSwiftSourceAPITests : TestCase {
                 _ = element.typeProperties
                 _ = element.typeMethods
                 _ = element.initializers
-                _ = element.properties
+                _ = element.instanceProperties
                 _ = element.subscripts
-                _ = element.methods
+                _ = element.instanceMethods
                 _ = element.conformances
             }
             XCTAssertFalse(rootElement < rootElement)
@@ -175,8 +175,8 @@ class SDGSwiftSourceAPITests : TestCase {
                     `switch`: switch element {
                     case .extension(let `extension`):
                         found = true
-                        let method = `extension`.methods.first(where: { $0.name.source().hasPrefix("performAction") })!
-                        let methods = [method, `extension`.methods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
+                        let method = `extension`.instanceMethods.first(where: { $0.name.source().hasPrefix("performAction") })!
+                        let methods = [method, `extension`.instanceMethods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
                         _ = method.documentation!.renderedHTML(localization: "zxx")
 
                         for localization in InterfaceLocalization.allCases {
@@ -186,7 +186,7 @@ class SDGSwiftSourceAPITests : TestCase {
                             SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
                         }
 
-                        let blockDocumentation = `extension`.methods.first(where: { $0.name.source().hasPrefix("documentedWithBlockStyle") })!
+                        let blockDocumentation = `extension`.instanceMethods.first(where: { $0.name.source().hasPrefix("documentedWithBlockStyle") })!
                         XCTAssertNotNil(blockDocumentation.documentation)
 
                         break search
