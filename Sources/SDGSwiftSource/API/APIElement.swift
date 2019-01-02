@@ -144,6 +144,10 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.constraints
     }
 
+    public var documentation: DocumentationSyntax? {
+        return elementProtocol.documentation
+    }
+
     public var compilationConditions: Syntax? {
         return elementProtocol.compilationConditions
     }

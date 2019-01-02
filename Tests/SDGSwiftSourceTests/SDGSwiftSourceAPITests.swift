@@ -202,7 +202,7 @@ class SDGSwiftSourceAPITests : TestCase {
                     `switch`: switch element {
                     case .function(let function):
                         if function.name.identifier.text == "withHiddenAttribute" {
-                            XCTAssertNotNil(function.documentation)
+                            XCTAssertNotNil(element.documentation)
                             found = true
                             break search
                         }
