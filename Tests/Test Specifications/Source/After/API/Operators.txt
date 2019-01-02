@@ -4,3 +4,5 @@
 (Int)
  !(_:) • postfix func !(operand: Int) -> Int
  −(_:) • prefix func −(operand: Int) -> Int
+≠ • infix operator ≠ : ComparisonPrecedence
+ExponentPrecedence • precedencegroup ExponentPrecedence { associativity: right higherThan: MultiplicationPrecedence }
