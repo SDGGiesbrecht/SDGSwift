@@ -12,21 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLocalization
-
 extension OperatorDeclSyntax : APIDeclaration {
 
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> OperatorDeclSyntax {
-        notImplementedYetAndCannotReturn()
+        return SyntaxFactory.makeOperatorDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            operatorKeyword: operatorKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            infixOperatorGroup: infixOperatorGroup?.normalizedForAPIDeclaration())
     }
 
     internal func name() -> OperatorDeclSyntax {
-        notImplementedYetAndCannotReturn()
+        return SyntaxFactory.makeOperatorDecl(
+            attributes: nil,
+            modifiers: nil,
+            operatorKeyword: SyntaxFactory.makeToken(.operatorKeyword, presence: .missing),
+            identifier: identifier,
+            infixOperatorGroup: nil)
     }
 
     internal func identifierList() -> Set<String> {
-        notImplementedYetAndCannotReturn()
+        return [identifier.text]
     }
 }

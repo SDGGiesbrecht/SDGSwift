@@ -12,22 +12,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLocalization
-
 extension PrecedenceGroupDeclSyntax : APIDeclaration {
 
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
-        notImplementedYetAndCannotReturn()
+        return SyntaxFactory.makePrecedenceGroupDecl(
+            attributes: attributes?.normalizedForAPIDeclaration(),
+            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+            precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
+            groupAttributes: groupAttributes.normalizedForAPIDeclaration(),
+            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)))
     }
 
     internal func name() -> PrecedenceGroupDeclSyntax {
-        notImplementedYetAndCannotReturn()
+        return SyntaxFactory.makePrecedenceGroupDecl(
+            attributes: nil,
+            modifiers: nil,
+            precedencegroupKeyword: SyntaxFactory.makeToken(.precedencegroupKeyword, presence: .missing),
+            identifier: identifier,
+            leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
+            groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
+            rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing))
     }
 
     internal func identifierList() -> Set<String> {
-        notImplementedYetAndCannotReturn()
+        return [identifier.text]
     }
 
 }

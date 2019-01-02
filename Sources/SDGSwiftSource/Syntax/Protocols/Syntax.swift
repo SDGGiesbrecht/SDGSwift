@@ -282,6 +282,14 @@ extension Syntax {
         }
     }
 
+    internal func normalizedPrecedenceGroupAttribute() -> Syntax {
+        notImplementedYetAndCannotReturn()
+    }
+
+    internal static func arrangePrecedenceGroupAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
+        notImplementedYetAndCannotReturn()
+    }
+
     // MARK: - Compilation Conditions
 
     internal var isUnidentifiedConditionalCompilation: Bool {
