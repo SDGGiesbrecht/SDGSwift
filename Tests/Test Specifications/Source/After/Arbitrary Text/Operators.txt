@@ -14,3 +14,10 @@ extension ̲Int ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲operand
  ̲ ̲ ̲ ̲}
 }
+
+infix ̲operator ̲≠̲: ̲ComparisonPrecedence
+
+precedencegroup ̲E̲x̲p̲o̲n̲e̲n̲t̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲ ̲{
+ ̲ ̲ ̲ ̲associativity: ̲right
+ ̲ ̲ ̲ ̲higherThan: ̲MultiplicationPrecedence
+}

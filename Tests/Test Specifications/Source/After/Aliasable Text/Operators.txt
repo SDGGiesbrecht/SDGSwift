@@ -14,3 +14,10 @@ extension I̲n̲t̲ {
         return o̲p̲e̲r̲a̲n̲d̲
     }
 }
+
+infix operator ≠: C̲o̲m̲p̲a̲r̲i̲s̲o̲n̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲
+
+precedencegroup ExponentPrecedence {
+    a̲s̲s̲o̲c̲i̲a̲t̲i̲v̲i̲t̲y̲: r̲i̲g̲h̲t̲
+    h̲i̲g̲h̲e̲r̲T̲h̲a̲n̲: M̲u̲l̲t̲i̲p̲l̲i̲c̲a̲t̲i̲o̲n̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲
+}

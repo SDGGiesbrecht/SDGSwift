@@ -22,6 +22,13 @@
         <span class="keyword">return</span> <span class="internal identifier">operand</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
+
+<span class="external identifier">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠</span><span class="punctuation">:</span> <span class="external identifier">ComparisonPrecedence</span>
+
+<span class="keyword">precedencegroup</span> <span class="external identifier">ExponentPrecedence</span> <span class="punctuation">{</span>
+    <span class="external identifier">associativity</span><span class="punctuation">:</span> <span class="external identifier">right</span>
+    <span class="external identifier">higherThan</span><span class="punctuation">:</span> <span class="external identifier">MultiplicationPrecedence</span>
+<span class="punctuation">}</span>
 </code>
 
  </body>
