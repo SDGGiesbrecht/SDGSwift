@@ -308,7 +308,7 @@ extension Syntax {
             }
         case is PrecedenceGroupAssociativitySyntax:
             return .associativity
-        case let assignment as PrecedenceGroupAssignmentSyntax:
+        case is PrecedenceGroupAssignmentSyntax:
             return .assignment
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
