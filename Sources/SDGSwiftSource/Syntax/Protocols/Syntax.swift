@@ -210,6 +210,10 @@ extension Syntax {
             return `subscript`.subscriptAPI.flatMap({ [APIElement.subscript($0)] }) ?? []
         case let function as FunctionDeclSyntax:
             return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
+        case let `operator` as OperatorDeclSyntax:
+            notImplementedYet()
+        case let precedenceGroup as PrecedenceGroupDeclSyntax:
+            notImplementedYet()
         case let `extension` as ExtensionDeclSyntax:
             return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
