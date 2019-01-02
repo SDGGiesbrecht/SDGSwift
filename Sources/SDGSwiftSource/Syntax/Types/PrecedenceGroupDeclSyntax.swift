@@ -12,7 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension PrecedenceGroupDeclSyntax : APIDeclaration {
+extension PrecedenceGroupDeclSyntax : APIDeclaration, Attributed {
+
+    internal func operatorAPI() -> PrecedenceGroupAPI? {
+        if isUnavailable() {
+            return nil
+        }
+        return PrecedenceGroupAPI(documentation: documentation, declaration: self)
+    }
 
     // MARK: - APIDeclaration
 

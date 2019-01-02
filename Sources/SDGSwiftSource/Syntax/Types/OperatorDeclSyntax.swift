@@ -12,7 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension OperatorDeclSyntax : APIDeclaration {
+extension OperatorDeclSyntax : APIDeclaration, Attributed {
+
+    internal func operatorAPI() -> OperatorAPI? {
+        if isUnavailable() {
+            return nil
+        }
+        return OperatorAPI(documentation: documentation, declaration: self)
+    }
 
     // MARK: - APIDeclaration
 
