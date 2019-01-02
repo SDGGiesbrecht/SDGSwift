@@ -12,7 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
 extension PrecedenceGroupAttributeListSyntax {
+
+    internal enum PrecedenceAttributeGroup : OrderedEnumeration {
+        case unknown
+    }
 
     internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
         let normalized = map({ $0.normalizedPrecedenceGroupAttribute() })

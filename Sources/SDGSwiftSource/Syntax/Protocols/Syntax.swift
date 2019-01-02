@@ -283,11 +283,27 @@ extension Syntax {
     }
 
     internal func normalizedPrecedenceGroupAttribute() -> Syntax {
-        notImplementedYetAndCannotReturn()
+        switch self {
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified preference group attribute: \(Swift.type(of: self))")
+            }
+            return self
+        }
+    }
+
+    private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax.PrecedenceAttributeGroup {
+        switch self {
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified preference group attribute: \(Swift.type(of: self))")
+            }
+            return .unknown
+        }
     }
 
     internal static func arrangePrecedenceGroupAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
-        notImplementedYetAndCannotReturn()
+        return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
     // MARK: - Compilation Conditions
