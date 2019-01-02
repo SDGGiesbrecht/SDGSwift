@@ -14,3 +14,10 @@ extension Int {
         return operand
     }
 }
+
+infix operator ≠: ComparisonPrecedence
+
+precedencegroup ExponentPrecedence {
+    associativity: right
+    higherThan: MultiplicationPrecedence
+}
