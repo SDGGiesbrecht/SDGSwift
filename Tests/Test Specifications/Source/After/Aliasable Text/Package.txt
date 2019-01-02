@@ -31,7 +31,7 @@ let package = P̲a̲c̲k̲a̲g̲e̲(
          A library.
 
          It does stuff.
-        */
+         */
         .t̲a̲r̲g̲e̲t̲(n̲a̲m̲e̲: "Library", d̲e̲p̲e̲n̲d̲e̲n̲c̲i̲e̲s̲: [
             "Target"
             ]),

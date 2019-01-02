@@ -31,7 +31,7 @@
 ̲         A library.
 ̲
 ̲         It does stuff.
-̲        *̲/̲
+̲         *̲/̲
 ̲        .̲target(̲name:̲ "̲Library"̲,̲ dependencies:̲ [̲
 ̲            "̲Target"̲
 ̲            ]̲)̲,̲

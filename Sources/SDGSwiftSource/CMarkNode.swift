@@ -66,14 +66,13 @@ extension Optional where Wrapped == OpaquePointer {
             node = cmark_node_parent(node)
         }
 
-        var result = indexFor(line: Int(line), column: Int(column), in: documentation)
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH:
-            result = documentation.scalars.index(after: result)
+        case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
+            column += 1
         default:
             break
         }
-        return result
+        return indexFor(line: Int(line), column: Int(column), in: documentation)
     }
     private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView.Index {
         let scalars = documentation.scalars

@@ -185,6 +185,8 @@ extension Structure {
     ///  fragmented.
     ///  */
     /// ```
+    ///
+    /// - List ending with a multibyte character: ✓
     public func performAction(on parameterOne: String, with parameterTwo: String) throws -> Bool {
         return false
     }

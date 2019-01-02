@@ -185,6 +185,8 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
     ///  fragmented.
     ///  */
     /// ```
+    ///
+    /// - List ending with a multibyte character: ✓
     public func performAction(on parameterOne: S̲t̲r̲i̲n̲g̲, with parameterTwo: S̲t̲r̲i̲n̲g̲) throws -> B̲o̲o̲l̲ {
         return false
     }
@@ -225,7 +227,7 @@ extension S̲t̲r̲u̲c̲t̲u̲r̲e̲ {
      ```not‐swift
      func doSomething()
      ```
-    */
+     */
     public func documentedWithBlockStyle() {}
 }
 

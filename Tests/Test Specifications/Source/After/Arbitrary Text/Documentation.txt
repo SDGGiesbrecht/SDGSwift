@@ -185,6 +185,8 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲/// ̲ ̲f̲r̲a̲g̲m̲e̲n̲t̲e̲d̲.̲
  ̲ ̲ ̲ ̲/// ̲ ̲*/
  ̲ ̲ ̲ ̲/// ̲```
+ ̲ ̲ ̲ ̲///
+ ̲ ̲ ̲ ̲/// ̲- ̲L̲i̲s̲t̲ ̲e̲n̲d̲i̲n̲g̲ ̲w̲i̲t̲h̲ ̲a̲ ̲m̲u̲l̲t̲i̲b̲y̲t̲e̲ ̲c̲h̲a̲r̲a̲c̲t̲e̲r̲:̲ ̲✓̲
  ̲ ̲ ̲ ̲public ̲func ̲p̲e̲r̲f̲o̲r̲m̲A̲c̲t̲i̲o̲n̲(o̲n̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲O̲n̲e̲: ̲String, ̲w̲i̲t̲h̲ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲T̲w̲o̲: ̲String) ̲throws ̲-> ̲Bool ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲false
  ̲ ̲ ̲ ̲}
@@ -225,7 +227,7 @@ extension ̲Structure ̲{
  ̲ ̲ ̲ ̲ ̲```not‐swift
  ̲ ̲ ̲ ̲ ̲func doSomething()
  ̲ ̲ ̲ ̲ ̲```
- ̲ ̲ ̲ ̲*/
+ ̲ ̲ ̲ ̲ ̲*/
  ̲ ̲ ̲ ̲public ̲func ̲d̲o̲c̲u̲m̲e̲n̲t̲e̲d̲W̲i̲t̲h̲B̲l̲o̲c̲k̲S̲t̲y̲l̲e̲() ̲{}
 }
 

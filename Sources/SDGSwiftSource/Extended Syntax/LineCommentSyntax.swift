@@ -28,7 +28,7 @@ public class LineCommentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization
 
-    internal init(source: String, siblings: Trivia, index: Trivia.Index) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+    internal init(source: String, siblings: Trivia, index: Trivia.Index) {
         let delimiter = type(of: self).delimiter
 
         var line = source
