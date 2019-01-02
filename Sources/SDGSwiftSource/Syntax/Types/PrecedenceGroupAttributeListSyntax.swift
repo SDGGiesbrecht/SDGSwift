@@ -20,6 +20,7 @@ extension PrecedenceGroupAttributeListSyntax {
         case before
         case after
         case associativity
+        case assignment
         case unknown
     }
 

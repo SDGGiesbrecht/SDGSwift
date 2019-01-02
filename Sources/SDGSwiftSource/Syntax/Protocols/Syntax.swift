@@ -288,6 +288,8 @@ extension Syntax {
             return relation.normalizedForAPIDeclaration()
         case let associativity as PrecedenceGroupAssociativitySyntax:
             return associativity.normalizedForAPIDeclaration()
+        case let assignment as PrecedenceGroupAssignmentSyntax:
+            return assignment.normalizedForAPIDeclaration()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified preference group attribute: \(Swift.type(of: self))")
@@ -306,6 +308,8 @@ extension Syntax {
             }
         case is PrecedenceGroupAssociativitySyntax:
             return .associativity
+        case let assignment as PrecedenceGroupAssignmentSyntax:
+            return .assignment
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified preference group attribute: \(Swift.type(of: self))")
