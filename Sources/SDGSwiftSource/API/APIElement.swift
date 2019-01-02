@@ -144,6 +144,10 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.constraints
     }
 
+    public var documentation: DocumentationSyntax? {
+        return elementProtocol.documentation
+    }
+
     public var compilationConditions: Syntax? {
         return elementProtocol.compilationConditions
     }
@@ -270,7 +274,7 @@ public enum APIElement : Comparable, Hashable {
         case .initializer(let initializer):
             return flatten(.initializer, initializer.comparisonIdentity())
         case .variable(let variable):
-            if variable.declaration.typeMemberKeyword ≠ nil {
+            if variable.declaration.isTypeMember() {
                 return flatten(.typeProperty, variable.comparisonIdentity())
             } else {
                 return flatten(.variable, variable.comparisonIdentity())
@@ -278,7 +282,7 @@ public enum APIElement : Comparable, Hashable {
         case .subscript(let `subscript`):
             return flatten(.subscript, `subscript`.comparisonIdentity())
         case .function(let function):
-            if function.declaration.typeMemberKeyword ≠ nil {
+            if function.declaration.isTypeMember() {
                 return flatten(.typeMethod, function.comparisonIdentity())
             } else {
                 return flatten(.function, function.comparisonIdentity())

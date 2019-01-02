@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, Member, OverloadableAPIDeclaration {
+extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained, Generic, Member, OverloadableAPIDeclaration {
 
     internal func functionAPI() -> FunctionAPI? {
         if ¬isPublic ∨ isUnavailable() {

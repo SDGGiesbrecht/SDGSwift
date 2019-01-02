@@ -166,7 +166,7 @@ extension APIElementProtocol {
         return filtered { (element) -> VariableAPI? in
             switch element {
             case .variable(let property):
-                if property.declaration.typeMemberKeyword ≠ nil {
+                if property.declaration.isTypeMember() {
                     return property
                 } else {
                     return nil
@@ -181,7 +181,7 @@ extension APIElementProtocol {
         return filtered { (element) -> FunctionAPI? in
             switch element {
             case .function(let method):
-                if method.declaration.typeMemberKeyword ≠ nil {
+                if method.declaration.isTypeMember() {
                     return method
                 } else {
                     return nil
@@ -207,7 +207,7 @@ extension APIElementProtocol {
         return filtered { (element) -> VariableAPI? in
             switch element {
             case .variable(let property):
-                if property.declaration.typeMemberKeyword == nil {
+                if ¬property.declaration.isTypeMember() {
                     return property
                 } else {
                     return nil
@@ -233,7 +233,7 @@ extension APIElementProtocol {
         return filtered { (element) -> FunctionAPI? in
             switch element {
             case .function(let method):
-                if method.declaration.typeMemberKeyword == nil {
+                if ¬method.declaration.isTypeMember() {
                     return method
                 } else {
                     return nil

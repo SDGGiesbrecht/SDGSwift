@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension TypealiasDeclSyntax : Generic, TypeDeclaration {
+extension TypealiasDeclSyntax : Constrained, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 

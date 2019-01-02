@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol Constrained : Syntax {
+/// A declaration syntax node which includes constraints.
+public protocol Constrained : Syntax {
+    /// The constraint clause.
     var genericWhereClause: GenericWhereClauseSyntax? { get }
+    /// Creates a new node by replacing the constraint clause.
     func withGenericWhereClause(_ clause: GenericWhereClauseSyntax?) -> Self
 }

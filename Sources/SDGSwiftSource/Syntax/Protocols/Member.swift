@@ -14,12 +14,15 @@
 
 import SDGLogic
 
-internal protocol Member : Syntax {
+/// A declaration which can be either a type or instance member.
+public protocol Member : Syntax {
+    // The declaration modifiers.
     var modifiers: ModifierListSyntax? { get }
 }
 
 extension Member {
-    internal var typeMemberKeyword: TokenKind? {
+
+    private func typeMemberKeyword() -> TokenKind? {
         guard let modifiers = self.modifiers else {
             return nil // @exempt(from: tests) SwiftSyntax seems to prefer empty over nil.
         }
@@ -30,5 +33,10 @@ extension Member {
             }
         }
         return nil
+    }
+
+    /// Returns whether or not the declaration defines a type member (as opposed to an instance member).
+    public func isTypeMember() -> Bool {
+        return typeMemberKeyword() ≠ nil
     }
 }
