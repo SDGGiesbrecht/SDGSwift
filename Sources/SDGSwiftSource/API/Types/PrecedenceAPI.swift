@@ -1,5 +1,5 @@
 /*
- PrecedenceGroupAPI.swift
+ PrecedenceAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class PrecedenceGroupAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 

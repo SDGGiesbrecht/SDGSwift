@@ -21,8 +21,8 @@ extension PrecedenceGroupAttributeListSyntax {
     }
 
     internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
-        let normalized = map({ $0.normalizedPrecedenceGroupAttribute() })
-        let sorted = normalized.sorted(by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceGroupAttributes)
+        let normalized = map({ $0.normalizedPrecedenceAttribute() })
+        let sorted = normalized.sorted(by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceAttributes)
         return SyntaxFactory.makePrecedenceGroupAttributeList(sorted)
     }
 }

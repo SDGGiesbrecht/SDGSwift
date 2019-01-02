@@ -74,6 +74,8 @@ public enum APIElement : Comparable, Hashable {
     case variable(VariableAPI)
     case `subscript`(SubscriptAPI)
     case function(FunctionAPI)
+    case `operator`(OperatorAPI)
+    case precedence(PrecedenceAPI)
     case conformance(ConformanceAPI)
 
     // MARK: - Methods
@@ -102,6 +104,10 @@ public enum APIElement : Comparable, Hashable {
             return `subscript`
         case .function(let function):
             return function
+        case .operator(let `operator`):
+            return `operator`
+        case .precedence(let precedence):
+            return precedence
         case .conformance(let conformance):
             return conformance
         }
@@ -131,6 +137,10 @@ public enum APIElement : Comparable, Hashable {
             return `subscript`
         case .function(let function):
             return function
+        case .operator(let `operator`):
+            return `operator`
+        case .precedence(let precedence):
+            return precedence
         case .conformance(let conformance):
             return conformance
         }
@@ -249,6 +259,8 @@ public enum APIElement : Comparable, Hashable {
         case variable
         case `subscript`
         case function
+        case `operator`
+        case precedence
         case conformance
     }
 
@@ -287,6 +299,10 @@ public enum APIElement : Comparable, Hashable {
             } else {
                 return flatten(.function, function.comparisonIdentity())
             }
+        case .operator(let `operator`):
+            return flatten(.operator, `operator`.comparisonIdentity())
+        case .precedence(let precedence):
+            return flatten(.precedence, precedence.comparisonIdentity())
         case .conformance(let conformance):
             return flatten(.conformance, conformance.comparisonIdentity())
         }

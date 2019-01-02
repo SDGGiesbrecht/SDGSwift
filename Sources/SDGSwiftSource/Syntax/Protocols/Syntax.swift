@@ -211,9 +211,9 @@ extension Syntax {
         case let function as FunctionDeclSyntax:
             return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
         case let `operator` as OperatorDeclSyntax:
-            notImplementedYetAndCannotReturn()
-        case let precedenceGroup as PrecedenceGroupDeclSyntax:
-            notImplementedYetAndCannotReturn()
+            return `operator`.operatorAPI().flatMap({ [APIElement.operator($0)] }) ?? []
+        case let precedence as PrecedenceGroupDeclSyntax:
+            return precedence.precedenceAPI().flatMap({ [APIElement.precedence($0)] }) ?? []
         case let `extension` as ExtensionDeclSyntax:
             return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
@@ -282,7 +282,7 @@ extension Syntax {
         }
     }
 
-    internal func normalizedPrecedenceGroupAttribute() -> Syntax {
+    internal func normalizedPrecedenceAttribute() -> Syntax {
         switch self {
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
@@ -302,7 +302,7 @@ extension Syntax {
         }
     }
 
-    internal static func arrangePrecedenceGroupAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
+    internal static func arrangePrecedenceAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 

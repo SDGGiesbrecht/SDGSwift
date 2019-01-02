@@ -14,11 +14,11 @@
 
 extension PrecedenceGroupDeclSyntax : APIDeclaration, Attributed {
 
-    internal func operatorAPI() -> PrecedenceGroupAPI? {
+    internal func precedenceAPI() -> PrecedenceAPI? {
         if isUnavailable() {
             return nil
         }
-        return PrecedenceGroupAPI(documentation: documentation, declaration: self)
+        return PrecedenceAPI(documentation: documentation, declaration: self)
     }
 
     // MARK: - APIDeclaration
