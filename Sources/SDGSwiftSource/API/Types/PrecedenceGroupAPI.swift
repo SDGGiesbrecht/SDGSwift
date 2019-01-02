@@ -12,6 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class PrecedenceGroupAPI : _APIElementBase {
+public final class PrecedenceGroupAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
+    // MARK: - DeclaredAPIElement
+
+    public internal(set) var declaration: PrecedenceGroupDeclSyntax
+    public let name: PrecedenceGroupDeclSyntax
+
+    // MARK: - UniquelyDeclaredAPIElement
+
+    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax, constraints: GenericWhereClauseSyntax?, name: PrecedenceGroupDeclSyntax, children: [APIElement]) {
+        self.declaration = declaration
+        self.name = name
+        super.init(documentation: documentation)
+        self.constraints = constraints
+    }
 }

@@ -12,6 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension OperatorDeclSyntax {
+import SDGLocalization
 
+extension OperatorDeclSyntax : APIDeclaration {
+
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> OperatorDeclSyntax {
+        notImplementedYetAndCannotReturn()
+    }
+
+    internal func name() -> OperatorDeclSyntax {
+        notImplementedYetAndCannotReturn()
+    }
+
+    internal func identifierList() -> Set<String> {
+        notImplementedYetAndCannotReturn()
+    }
 }

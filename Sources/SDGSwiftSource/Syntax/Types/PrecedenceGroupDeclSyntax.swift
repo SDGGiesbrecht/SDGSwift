@@ -12,6 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension PrecedenceGroupDeclSyntax {
+import SDGLocalization
+
+extension PrecedenceGroupDeclSyntax : APIDeclaration {
+
+    // MARK: - APIDeclaration
+
+    internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
+        notImplementedYetAndCannotReturn()
+    }
+
+    internal func name() -> PrecedenceGroupDeclSyntax {
+        notImplementedYetAndCannotReturn()
+    }
+
+    internal func identifierList() -> Set<String> {
+        notImplementedYetAndCannotReturn()
+    }
 
 }
