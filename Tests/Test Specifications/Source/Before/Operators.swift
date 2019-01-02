@@ -17,7 +17,13 @@ extension Int {
 
 infix operator ≠: ComparisonPrecedence
 
-precedencegroup ExponentPrecedence {
+precedencegroup LotsOfAttributes {
     associativity: right
-    higherThan: MultiplicationPrecedence
+    higherThan: DoneAfter, AlsoDoneAfter
+    lessThan: DoneFirst, AlsoDoneFirst
+    assignment: true
+    higherThan: AnotherOneDoneAfter
+    lessThan: AnotherOneDoneFirst
 }
+
+precedencegroup NoAttributes {}
