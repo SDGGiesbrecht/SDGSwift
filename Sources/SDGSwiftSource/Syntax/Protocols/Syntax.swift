@@ -284,6 +284,10 @@ extension Syntax {
 
     internal func normalizedPrecedenceAttribute() -> Syntax {
         switch self {
+        case let relation as PrecedenceGroupRelationSyntax:
+            return relation.normalizedForAPIDeclaration()
+        case let associativity as PrecedenceGroupAssociativitySyntax:
+            return associativity.normalizedForAPIDeclaration()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified preference group attribute: \(Swift.type(of: self))")
@@ -294,6 +298,14 @@ extension Syntax {
 
     private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax.PrecedenceAttributeGroup {
         switch self {
+        case let relation as PrecedenceGroupRelationSyntax:
+            if relation.higherThanOrLowerThan.text == "lowerThan" {
+                return .before
+            } else {
+                return .after
+            }
+        case is PrecedenceGroupAssociativitySyntax:
+            return .associativity
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified preference group attribute: \(Swift.type(of: self))")

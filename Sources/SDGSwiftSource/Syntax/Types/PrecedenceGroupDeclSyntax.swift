@@ -24,14 +24,24 @@ extension PrecedenceGroupDeclSyntax : APIDeclaration, Attributed {
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
+
+        let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
+
+        let rightBraceTrivia: Trivia
+        if normalizedAttributes.isEmpty {
+            rightBraceTrivia = []
+        } else {
+            rightBraceTrivia = .spaces(1)
+        }
+
         return SyntaxFactory.makePrecedenceGroupDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            groupAttributes: groupAttributes.normalizedForAPIDeclaration(),
-            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)))
+            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
+            groupAttributes: normalizedAttributes,
+            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: rightBraceTrivia))
     }
 
     internal func name() -> PrecedenceGroupDeclSyntax {

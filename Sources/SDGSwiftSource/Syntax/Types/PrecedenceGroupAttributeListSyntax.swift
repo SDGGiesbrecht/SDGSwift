@@ -17,6 +17,9 @@ import SDGMathematics
 extension PrecedenceGroupAttributeListSyntax {
 
     internal enum PrecedenceAttributeGroup : OrderedEnumeration {
+        case before
+        case after
+        case associativity
         case unknown
     }
 
