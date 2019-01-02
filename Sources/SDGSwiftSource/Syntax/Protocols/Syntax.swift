@@ -211,9 +211,9 @@ extension Syntax {
         case let function as FunctionDeclSyntax:
             return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
         case let `operator` as OperatorDeclSyntax:
-            notImplementedYet()
+            notImplementedYetAndCannotReturn()
         case let precedenceGroup as PrecedenceGroupDeclSyntax:
-            notImplementedYet()
+            notImplementedYetAndCannotReturn()
         case let `extension` as ExtensionDeclSyntax:
             return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
