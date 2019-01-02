@@ -20,10 +20,8 @@ infix operator ≠: ComparisonPrecedence
 precedencegroup LotsOfAttributes {
     associativity: right
     higherThan: DoneAfter, AlsoDoneAfter
-    lessThan: DoneFirst, AlsoDoneFirst
+    lowerThan: DoneFirst, AlsoDoneFirst
     assignment: true
-    higherThan: AnotherOneDoneAfter
-    lessThan: AnotherOneDoneFirst
 }
 
 precedencegroup NoAttributes {}

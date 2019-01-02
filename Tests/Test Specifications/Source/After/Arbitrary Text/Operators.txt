@@ -17,7 +17,11 @@ extension ̲Int ̲{
 
 infix ̲operator ̲≠̲: ̲ComparisonPrecedence
 
-precedencegroup ̲E̲x̲p̲o̲n̲e̲n̲t̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲ ̲{
+precedencegroup ̲L̲o̲t̲s̲O̲f̲A̲t̲t̲r̲i̲b̲u̲t̲e̲s̲ ̲{
  ̲ ̲ ̲ ̲associativity: ̲right
- ̲ ̲ ̲ ̲higherThan: ̲MultiplicationPrecedence
+ ̲ ̲ ̲ ̲higherThan: ̲DoneAfter, ̲AlsoDoneAfter
+ ̲ ̲ ̲ ̲lowerThan: ̲DoneFirst, ̲AlsoDoneFirst
+ ̲ ̲ ̲ ̲assignment: ̲true
 }
+
+precedencegroup ̲N̲o̲A̲t̲t̲r̲i̲b̲u̲t̲e̲s̲ ̲{}
