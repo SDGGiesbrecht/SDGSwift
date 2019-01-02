@@ -203,7 +203,7 @@ extension APIElementProtocol {
         }
     }
 
-    public var properties: AnyBidirectionalCollection<VariableAPI> {
+    public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return filtered { (element) -> VariableAPI? in
             switch element {
             case .variable(let property):
@@ -229,7 +229,7 @@ extension APIElementProtocol {
         }
     }
 
-    public var methods: AnyBidirectionalCollection<FunctionAPI> {
+    public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return filtered { (element) -> FunctionAPI? in
             switch element {
             case .function(let method):
