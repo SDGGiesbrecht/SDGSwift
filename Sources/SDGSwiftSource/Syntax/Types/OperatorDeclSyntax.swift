@@ -27,7 +27,7 @@ extension OperatorDeclSyntax : APIDeclaration, Attributed {
         return SyntaxFactory.makeOperatorDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-            operatorKeyword: operatorKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
+            operatorKeyword: operatorKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
             infixOperatorGroup: infixOperatorGroup?.normalizedForAPIDeclaration())
     }
