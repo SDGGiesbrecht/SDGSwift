@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ExtensionDeclSyntax : AccessControlled, Attributed {
+extension ExtensionDeclSyntax : AccessControlled, Attributed, Constrained {
 
     internal var extensionAPI: ExtensionAPI? {
         var children = apiChildren()

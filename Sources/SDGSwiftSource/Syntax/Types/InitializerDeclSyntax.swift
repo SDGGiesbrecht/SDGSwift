@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, Generic, OverloadableAPIDeclaration {
+extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained, Generic, OverloadableAPIDeclaration {
 
     internal var initializerAPI: InitializerAPI? {
         if ¬isPublic ∨ isUnavailable() {

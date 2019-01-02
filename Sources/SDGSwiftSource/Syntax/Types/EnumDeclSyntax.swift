@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension EnumDeclSyntax : AccessControlled, Attributed, Generic, TypeDeclaration {
+extension EnumDeclSyntax : AccessControlled, Attributed, Constrained, Generic, TypeDeclaration {
 
     // MARK: - TypeDeclaration
 
