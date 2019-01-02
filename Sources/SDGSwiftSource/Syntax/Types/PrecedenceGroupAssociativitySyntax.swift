@@ -16,7 +16,7 @@ extension PrecedenceGroupAssociativitySyntax {
 
     internal func normalizedForAPIDeclaration() -> PrecedenceGroupAssociativitySyntax {
         return SyntaxFactory.makePrecedenceGroupAssociativity(
-            associativityKeyword: associativityKeyword.generallyNormalizedAndMissingInsteadOfNil(),
+            associativityKeyword: associativityKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
             colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             value: value.generallyNormalizedAndMissingInsteadOfNil())
     }
