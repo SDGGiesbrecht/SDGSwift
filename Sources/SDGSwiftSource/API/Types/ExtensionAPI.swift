@@ -26,9 +26,6 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
 
     // MARK: - Combining
 
-    public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.source() == type.genericName.source()
-    }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
         return self.type.source() == `protocol`.name.source()
     }

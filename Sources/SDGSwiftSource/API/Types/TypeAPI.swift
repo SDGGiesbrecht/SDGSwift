@@ -32,6 +32,16 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     private let declaration: TypeDeclaration
 
+    // MARK: - APIElementBase
+
+    internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
+        if `extension`.type.source() == genericName.source() {
+            super.merge(extension: `extension`)
+            return true
+        }
+        return false
+    }
+
     // MARK: - APIElementProtocol
 
     public func shallowIdentifierList() -> Set<String> {
