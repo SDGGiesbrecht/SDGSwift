@@ -90,6 +90,33 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
     }
 
+    func testFunctionalSyntaxScanner() throws {
+        let source = """
+            /// ```swift
+            /// print("Hello, world!")
+            /// ```
+            func helloWorld() {
+                print("Hello, world!")
+            }
+            """
+        let syntax = try SyntaxTreeParser.parse(source)
+
+        var scanned: Set<String> = []
+        try FunctionalSyntaxScanner(
+            checkSyntax: { scanned.insert($0.source()); return true },
+            checkExtendedSyntax: { scanned.insert($0.text); return true },
+            checkTrivia: { scanned.insert($0.source()); return true },
+            checkTriviaPiece: { scanned.insert($0.text); return true },
+            shouldExtendToken: { _ in return true },
+            shouldExtendFragment: { _ in return true }).scan(syntax)
+        XCTAssert(scanned.contains("print(\u{22}Hello, world!\u{22})"))
+        XCTAssert(scanned.contains("```swift"))
+        XCTAssert(scanned.contains(" "))
+        XCTAssert(scanned.contains("/\u{2F}\u{2F} ```swift"))
+
+        try FunctionalSyntaxScanner().scan(syntax)
+    }
+
     func testLineDeveloperCommentSyntax() throws {
         let syntax = try SyntaxTreeParser.parse("/\u{2F} Comment.")
         try SyntaxScanner().scan(syntax)
