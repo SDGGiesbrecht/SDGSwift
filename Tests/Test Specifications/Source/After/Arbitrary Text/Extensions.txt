@@ -7,3 +7,7 @@ extension ̲RootType ̲{
 extension ̲RootType.IntermediateType ̲{
  ̲ ̲ ̲ ̲public ̲enum ̲L̲e̲a̲f̲T̲y̲p̲e̲ ̲{}
 }
+
+extension ̲RootType.IntermediateType.LeafType ̲{
+ ̲ ̲ ̲ ̲public ̲enum ̲N̲e̲s̲t̲e̲d̲A̲b̲s̲u̲r̲d̲l̲y̲D̲e̲e̲p̲ ̲{}
+}

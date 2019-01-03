@@ -7,3 +7,7 @@ extension R̲o̲o̲t̲T̲y̲p̲e̲ {
 extension R̲o̲o̲t̲T̲y̲p̲e̲.I̲n̲t̲e̲r̲m̲e̲d̲i̲a̲t̲e̲T̲y̲p̲e̲ {
     public enum LeafType {}
 }
+
+extension R̲o̲o̲t̲T̲y̲p̲e̲.I̲n̲t̲e̲r̲m̲e̲d̲i̲a̲t̲e̲T̲y̲p̲e̲.L̲e̲a̲f̲T̲y̲p̲e̲ {
+    public enum NestedAbsurdlyDeep {}
+}

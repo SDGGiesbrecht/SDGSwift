@@ -7,3 +7,7 @@ extension RootType {
 extension RootType.IntermediateType {
     public enum LeafType {}
 }
+
+extension RootType.IntermediateType.LeafType {
+    public enum NestedAbsurdlyDeep {}
+}
