@@ -112,7 +112,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(scanned.contains("print(\u{22}Hello, world!\u{22})"))
         XCTAssert(scanned.contains("```swift"))
         XCTAssert(scanned.contains(" "))
-        XCTAssert(scanned.contains("/// ```swift"))
+        XCTAssert(scanned.contains("/\u{2F}\u{2F} ```swift"))
 
         try FunctionalSyntaxScanner().scan(syntax)
     }

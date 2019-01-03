@@ -42,7 +42,7 @@ extension SDGSwiftSourceInternalTests {
 public func __allTests() -> [XCTestCaseEntry] {
     return [
         testCase(SDGSwiftSourceAPITests.__allTests),
-        testCase(SDGSwiftSourceInternalTests.__allTests),
+        testCase(SDGSwiftSourceInternalTests.__allTests)
     ]
 }
 #endif
