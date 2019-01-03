@@ -35,9 +35,14 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
     // MARK: - APIElementBase
 
     internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
-        if `extension`.type.source() == genericName.source() {
+        if `extension`.isExtension(of: self) {
             super.merge(extension: `extension`)
             return true
+        }
+        if let nested = `extension`.nested(in: self) {
+            for subtype in types where subtype.mergeIfExtended(by: nested) {
+                return true
+            }
         }
         return false
     }
