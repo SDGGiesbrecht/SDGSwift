@@ -25,3 +25,6 @@ precedencegroup LotsOfAttributes {
 }
 
 precedencegroup NoAttributes {}
+
+@available(*, unavailable) infix operator ≠≠
+@available(*, unavailable) precedencegroup UnavailablePrecedence {}
