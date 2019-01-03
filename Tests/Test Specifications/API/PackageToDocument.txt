@@ -18,3 +18,5 @@ PackageToDocument • Package(name: "PackageToDocument")
   Protocol • protocol Protocol
   globalVariable • var globalVariable: Bool { get set }
   executeFunction() • func executeFunction()
+  ≠ • infix operator ≠ : Precedence
+  Precedence • precedencegroup Precedence {}
