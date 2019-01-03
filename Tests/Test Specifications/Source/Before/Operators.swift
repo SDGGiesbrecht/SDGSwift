@@ -14,3 +14,17 @@ extension Int {
         return operand
     }
 }
+
+infix operator ≠: ComparisonPrecedence
+
+precedencegroup LotsOfAttributes {
+    associativity: right
+    higherThan: DoneAfter, AlsoDoneAfter
+    lowerThan: DoneFirst, AlsoDoneFirst
+    assignment: true
+}
+
+precedencegroup NoAttributes {}
+
+@available(*, unavailable) infix operator ≠≠
+@available(*, unavailable) precedencegroup UnavailablePrecedence {}

@@ -54,7 +54,7 @@ extension DeclModifierSyntax {
                 return nil
             case "weak":
                 return normalize()
-            case "prefix", "postfix":
+            case "infix", "prefix", "postfix":
                 // Operator position.
                 return normalize()
             default: // @exempt(from: tests) Should never occur.
@@ -95,7 +95,7 @@ extension DeclModifierSyntax {
                 return .memoryManagement
             case "mutating", "nonmutating":
                 return .mutation
-            case "prefix", "postfix":
+            case "infix", "prefix", "postfix":
                 return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
@@ -128,7 +128,7 @@ extension DeclModifierSyntax {
                 return nil
             case "mutating", "nonmutating":
                 return nil
-            case "prefix", "postfix":
+            case "infix", "prefix", "postfix":
                 return self
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)

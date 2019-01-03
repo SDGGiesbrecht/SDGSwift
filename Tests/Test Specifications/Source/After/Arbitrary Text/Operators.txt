@@ -14,3 +14,17 @@ extension ̲Int ̲{
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲return ̲operand
  ̲ ̲ ̲ ̲}
 }
+
+infix ̲operator ̲≠̲: ̲ComparisonPrecedence
+
+precedencegroup ̲L̲o̲t̲s̲O̲f̲A̲t̲t̲r̲i̲b̲u̲t̲e̲s̲ ̲{
+ ̲ ̲ ̲ ̲associativity: ̲right
+ ̲ ̲ ̲ ̲higherThan: ̲DoneAfter, ̲AlsoDoneAfter
+ ̲ ̲ ̲ ̲lowerThan: ̲DoneFirst, ̲AlsoDoneFirst
+ ̲ ̲ ̲ ̲assignment: ̲true
+}
+
+precedencegroup ̲N̲o̲A̲t̲t̲r̲i̲b̲u̲t̲e̲s̲ ̲{}
+
+@available(*, ̲unavailable) ̲infix ̲operator ̲≠̲≠̲
+@available(*, ̲unavailable) ̲precedencegroup ̲U̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲ ̲{}

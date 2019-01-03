@@ -244,6 +244,28 @@ extension APIElementProtocol {
         }
     }
 
+    public var operators: AnyBidirectionalCollection<OperatorAPI> {
+        return filtered { (element) -> OperatorAPI? in
+            switch element {
+            case .operator(let `operator`):
+                return `operator`
+            default:
+                return nil
+            }
+        }
+    }
+
+    public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
+        return filtered { (element) -> PrecedenceAPI? in
+            switch element {
+            case .precedence(let precedence):
+                return precedence
+            default:
+                return nil
+            }
+        }
+    }
+
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return filtered { (element) -> ConformanceAPI? in
             switch element {

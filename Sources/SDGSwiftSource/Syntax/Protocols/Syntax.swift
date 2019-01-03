@@ -210,6 +210,10 @@ extension Syntax {
             return `subscript`.subscriptAPI.flatMap({ [APIElement.subscript($0)] }) ?? []
         case let function as FunctionDeclSyntax:
             return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
+        case let `operator` as OperatorDeclSyntax:
+            return `operator`.operatorAPI().flatMap({ [APIElement.operator($0)] }) ?? []
+        case let precedence as PrecedenceGroupDeclSyntax:
+            return precedence.precedenceAPI().flatMap({ [APIElement.precedence($0)] }) ?? []
         case let `extension` as ExtensionDeclSyntax:
             return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
@@ -276,6 +280,46 @@ extension Syntax {
             }
             return self
         }
+    }
+
+    internal func normalizedPrecedenceAttribute() -> Syntax {
+        switch self {
+        case let relation as PrecedenceGroupRelationSyntax:
+            return relation.normalizedForAPIDeclaration()
+        case let associativity as PrecedenceGroupAssociativitySyntax:
+            return associativity.normalizedForAPIDeclaration()
+        case let assignment as PrecedenceGroupAssignmentSyntax:
+            return assignment.normalizedForAPIDeclaration()
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified preference group attribute: \(Swift.type(of: self))")
+            }
+            return self
+        }
+    }
+
+    private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax.PrecedenceAttributeGroup {
+        switch self {
+        case let relation as PrecedenceGroupRelationSyntax:
+            if relation.higherThanOrLowerThan.text == "lowerThan" {
+                return .before
+            } else {
+                return .after
+            }
+        case is PrecedenceGroupAssociativitySyntax:
+            return .associativity
+        case is PrecedenceGroupAssignmentSyntax:
+            return .assignment
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified preference group attribute: \(Swift.type(of: self))")
+            }
+            return .unknown
+        }
+    }
+
+    internal static func arrangePrecedenceAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
+        return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
     // MARK: - Compilation Conditions

@@ -22,6 +22,20 @@
         <span class="keyword">return</span> <span class="internal identifier">operand</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
+
+<span class="external identifier">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠</span><span class="punctuation">:</span> <span class="external identifier">ComparisonPrecedence</span>
+
+<span class="keyword">precedencegroup</span> <span class="external identifier">LotsOfAttributes</span> <span class="punctuation">{</span>
+    <span class="external identifier">associativity</span><span class="punctuation">:</span> <span class="external identifier">right</span>
+    <span class="external identifier">higherThan</span><span class="punctuation">:</span> <span class="external identifier">DoneAfter</span><span class="punctuation">,</span> <span class="external identifier">AlsoDoneAfter</span>
+    <span class="external identifier">lowerThan</span><span class="punctuation">:</span> <span class="external identifier">DoneFirst</span><span class="punctuation">,</span> <span class="external identifier">AlsoDoneFirst</span>
+    <span class="external identifier">assignment</span><span class="punctuation">:</span> <span class="keyword">true</span>
+<span class="punctuation">}</span>
+
+<span class="keyword">precedencegroup</span> <span class="external identifier">NoAttributes</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="external identifier">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠≠</span>
+<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="keyword">precedencegroup</span> <span class="external identifier">UnavailablePrecedence</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 </code>
 
  </body>

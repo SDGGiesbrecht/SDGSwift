@@ -14,3 +14,17 @@ extension I̲n̲t̲ {
         return o̲p̲e̲r̲a̲n̲d̲
     }
 }
+
+infix operator ≠: C̲o̲m̲p̲a̲r̲i̲s̲o̲n̲P̲r̲e̲c̲e̲d̲e̲n̲c̲e̲
+
+precedencegroup LotsOfAttributes {
+    a̲s̲s̲o̲c̲i̲a̲t̲i̲v̲i̲t̲y̲: r̲i̲g̲h̲t̲
+    h̲i̲g̲h̲e̲r̲T̲h̲a̲n̲: D̲o̲n̲e̲A̲f̲t̲e̲r̲, A̲l̲s̲o̲D̲o̲n̲e̲A̲f̲t̲e̲r̲
+    l̲o̲w̲e̲r̲T̲h̲a̲n̲: D̲o̲n̲e̲F̲i̲r̲s̲t̲, A̲l̲s̲o̲D̲o̲n̲e̲F̲i̲r̲s̲t̲
+    a̲s̲s̲i̲g̲n̲m̲e̲n̲t̲: true
+}
+
+precedencegroup NoAttributes {}
+
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) infix operator ≠≠
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) precedencegroup UnavailablePrecedence {}

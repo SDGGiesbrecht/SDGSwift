@@ -119,7 +119,7 @@ public class _APIElementBase {
 
         for element in elements {
             switch element {
-            case .package, .library, .module, .extension, .protocol, .case, .conformance:
+            case .package, .library, .module, .extension, .protocol, .case, .operator, .precedence, .conformance:
                 result.append(element)
             case .type(let type):
                 types.append(type)

@@ -57,6 +57,8 @@ class SDGSwiftSourceAPITests : TestCase {
                 _ = element.instanceProperties
                 _ = element.subscripts
                 _ = element.instanceMethods
+                _ = element.operators
+                _ = element.precedenceGroups
                 _ = element.conformances
             }
             XCTAssertFalse(rootElement < rootElement)

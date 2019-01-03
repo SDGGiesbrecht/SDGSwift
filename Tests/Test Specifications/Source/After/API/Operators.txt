@@ -4,3 +4,6 @@
 (Int)
  !(_:) • postfix func !(operand: Int) -> Int
  −(_:) • prefix func −(operand: Int) -> Int
+≠ • infix operator ≠ : ComparisonPrecedence
+LotsOfAttributes • precedencegroup LotsOfAttributes { lowerThan: AlsoDoneFirst, DoneFirst higherThan: AlsoDoneAfter, DoneAfter associativity: right assignment: true }
+NoAttributes • precedencegroup NoAttributes {}
