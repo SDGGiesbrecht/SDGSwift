@@ -218,6 +218,14 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.instanceMethods
     }
 
+    public var operators: AnyBidirectionalCollection<OperatorAPI> {
+        return elementProtocol.operators
+    }
+
+    public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
+        return elementProtocol.precedenceGroups
+    }
+
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return elementProtocol.conformances
     }
