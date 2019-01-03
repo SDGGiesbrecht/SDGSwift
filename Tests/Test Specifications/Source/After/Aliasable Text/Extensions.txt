@@ -1,0 +1,9 @@
+public enum RootType {}
+
+extension R̲o̲o̲t̲T̲y̲p̲e̲ {
+    public enum IntermediateType {}
+}
+
+extension R̲o̲o̲t̲T̲y̲p̲e̲.I̲n̲t̲e̲r̲m̲e̲d̲i̲a̲t̲e̲T̲y̲p̲e̲ {
+    public enum LeafType {}
+}

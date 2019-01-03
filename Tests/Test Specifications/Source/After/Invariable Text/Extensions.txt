@@ -1,0 +1,10 @@
+p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ RootType {̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ RootType {̲
+̲    p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ IntermediateType {̲}̲
+̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ RootType.̲IntermediateType {̲
+̲    p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ LeafType {̲}̲
+̲}̲
+̲
