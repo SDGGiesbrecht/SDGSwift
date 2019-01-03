@@ -26,3 +26,6 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
 ̲
 ̲p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ NoAttributes {̲}̲
 ̲
+̲@̲available(̲*,̲ unavailable)̲ i̲n̲f̲i̲x̲ o̲p̲e̲r̲a̲t̲o̲r̲ ≠≠
+̲@̲available(̲*,̲ unavailable)̲ p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ UnavailablePrecedence {̲}̲
+̲
