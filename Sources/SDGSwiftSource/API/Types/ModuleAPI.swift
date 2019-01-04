@@ -29,7 +29,7 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
         var api: [APIElement] = []
         for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
             try autoreleasepool {
-                let source = try SyntaxTreeParser.parse(sourceFile)
+                let source = try SyntaxTreeParser.parseAndRetry(sourceFile)
                 children.append(contentsOf: source.api())
             }
         }
