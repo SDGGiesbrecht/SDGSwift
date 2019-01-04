@@ -14,16 +14,21 @@
 
 extension MemberTypeIdentifierSyntax {
 
-    internal func normalized() -> TypeSyntax {
+    // MARK: - Normalization
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+    // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+    private var safeGenericArgumentClause: GenericArgumentClauseSyntax? {
         var genericArgumentClause = self.genericArgumentClause
         if genericArgumentClause?.source() == "" {
             genericArgumentClause = nil
         }
+        return genericArgumentClause
+    }
+
+    internal func normalized() -> TypeSyntax {
 
         let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-        let newGenericArgumentClause = genericArgumentClause?.normalized()
+        let newGenericArgumentClause = safeGenericArgumentClause?.normalized()
 
         if let simple = baseType as? SimpleTypeIdentifierSyntax,
             simple.name.tokenKind == .capitalSelfKeyword {
@@ -37,5 +42,24 @@ extension MemberTypeIdentifierSyntax {
                 name: newName,
                 genericArgumentClause: newGenericArgumentClause)
         }
+    }
+
+    // MARK: - Merging
+
+    internal func rootType() -> TypeSyntax {
+        guard let member = baseType as? MemberTypeIdentifierSyntax else {
+            return baseType
+        }
+        return member.rootType()
+    }
+
+    internal func strippingRootType() -> TypeSyntax {
+        guard let member = baseType as? MemberTypeIdentifierSyntax else {
+            return SyntaxFactory.makeSimpleTypeIdentifier(
+                name: name,
+                genericArgumentClause: safeGenericArgumentClause)
+        }
+
+        return withBaseType(member.strippingRootType())
     }
 }

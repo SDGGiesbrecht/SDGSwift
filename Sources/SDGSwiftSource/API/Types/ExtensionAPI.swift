@@ -29,6 +29,13 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
     public func isExtension(of type: TypeAPI) -> Bool {
         return self.type.source() == type.genericName.source()
     }
+    public func nested(in type: TypeAPI) -> ExtensionAPI? {
+        guard let memberType = self.type as? MemberTypeIdentifierSyntax,
+            memberType.rootType().source() == type.genericName.source() else {
+            return nil
+        }
+        return ExtensionAPI(type: memberType.strippingRootType(), constraints: constraints, children: children)
+    }
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
         return self.type.source() == `protocol`.name.source()
     }

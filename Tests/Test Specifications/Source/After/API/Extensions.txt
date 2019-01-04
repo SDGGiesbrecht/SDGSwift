@@ -1,0 +1,4 @@
+RootType • enum RootType
+ IntermediateType • enum IntermediateType
+  LeafType • enum LeafType
+   NestedAbsurdlyDeep • enum NestedAbsurdlyDeep
