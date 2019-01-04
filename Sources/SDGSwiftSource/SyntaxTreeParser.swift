@@ -24,7 +24,7 @@ extension SyntaxTreeParser {
     public static func parseAndRetry(_ url: URL) throws -> SourceFileSyntax {
         if let result = try? parse(url) {
             return result
-        }
+        } // @exempt(from: tests)
         return try parse(url)
     }
 
