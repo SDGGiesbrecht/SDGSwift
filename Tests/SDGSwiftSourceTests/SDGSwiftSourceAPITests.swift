@@ -155,7 +155,7 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testParsing() throws {
         for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
-            let sourceFile = try SyntaxTreeParser.parse(url)
+            let sourceFile = try SyntaxTreeParser.parseAndRetry(url)
 
             let originalSource = try String(from: url)
             var roundTripSource = ""

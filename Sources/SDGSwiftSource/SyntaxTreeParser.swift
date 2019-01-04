@@ -18,6 +18,16 @@ import SDGPersistence
 
 extension SyntaxTreeParser {
 
+    /// Parses the Swift file at the provided URL, retrying in the event of an error.
+    ///
+    /// SwiftSyntax sporadically encounters errors in its communication with the compiler. In these cases, retrying often succeeds. This utility method calls `parse(_:)` over again if the first attempt encounters an error. Only if the error persists will it be thrown back to the caller.
+    public static func parseAndRetry(_ url: URL) throws -> SourceFileSyntax {
+        if let result = try? parse(url) {
+            return result
+        }
+        return try parse(url) // @exempt(from: tests)
+    }
+
     public static func parse(_ source: String) throws -> SourceFileSyntax {
         let temporary = FileManager.default.url(in: .temporary, at: UUID().uuidString + ".swift")
         try? FileManager.default.removeItem(at: temporary)
@@ -25,6 +35,6 @@ extension SyntaxTreeParser {
         try source.save(to: temporary)
         defer { try? FileManager.default.removeItem(at: temporary) }
 
-        return try parse(temporary)
+        return try parseAndRetry(temporary)
     }
 }

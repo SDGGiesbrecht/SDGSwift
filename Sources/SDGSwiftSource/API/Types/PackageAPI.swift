@@ -28,7 +28,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
     public convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
-        let manifest = try SyntaxTreeParser.parse(manifestURL)
+        let manifest = try SyntaxTreeParser.parseAndRetry(manifestURL)
 
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
