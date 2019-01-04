@@ -4,3 +4,7 @@ public struct Conforming : C̲u̲s̲t̲o̲m̲S̲t̲r̲i̲n̲g̲C̲o̲n̲v̲e̲r�
         return ""
     }
 }
+
+public protocol BaseProtocol {}
+public protocol MoreSpecificProtocol {}
+public struct Structure : M̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲o̲l̲ {}

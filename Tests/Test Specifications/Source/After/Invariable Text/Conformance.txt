@@ -5,3 +5,7 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Conforming :̲ CustomStringConvertible {̲
 ̲    }̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ BaseProtocol {̲}̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ MoreSpecificProtocol {̲}̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Structure :̲ MoreSpecificProtocol {̲}̲
+̲
