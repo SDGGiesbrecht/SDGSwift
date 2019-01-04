@@ -4,3 +4,7 @@ public struct Conforming : CustomStringConvertible {
         return ""
     }
 }
+
+public protocol BaseProtocol {}
+public protocol MoreSpecificProtocol {}
+public struct Structure : MoreSpecificProtocol {}
