@@ -279,13 +279,9 @@ extension APIElementProtocol {
 
     // MARK: - Conformance Resolution
 
-    internal func insert<S>(conformances newConformances: S) where S : Sequence, S.Element == ConformanceAPI {
-        print("Attempting to insert:")
-        print(newConformances.map({ $0.genericName }))
-        for conformance in newConformances
+    internal func inherit(from parentElement: APIElementProtocol)  {
+        for conformance in parentElement.conformances
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
-                print("Inserting:")
-                print(conformance.genericName)
                 (self as? _APIElementBase)?.children.append(.conformance(conformance))
         }
     }
