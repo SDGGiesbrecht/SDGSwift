@@ -17,4 +17,13 @@ import SDGControlFlow
 internal enum ConformanceReference {
     case `protocol`(Weak<ProtocolAPI>)
     case superclass(Weak<TypeAPI>)
+
+    internal var elementProtocol: APIElementProtocol? {
+        switch self {
+        case .protocol(let `protocol`):
+            return `protocol`.pointee
+        case .superclass(let superclass):
+            return superclass.pointee
+        }
+    }
 }

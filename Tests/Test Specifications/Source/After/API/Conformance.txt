@@ -1,9 +1,19 @@
+BaseClass • class BaseClass
+ baseClassMethod() • func baseClassMethod()
 Conforming • struct Conforming
  description • var description: String { get }
  CustomStringConvertible
 Structure • struct Structure
  BaseProtocol
  MoreSpecificProtocol
+Subclass • class Subclass
+ BaseClass
 BaseProtocol • protocol BaseProtocol
+ AssociatedType • associatedtype AssociatedType
+ (required) init() • init()
+ (required) protocolVariable • var protocolVariable: Int { get set }
+ (required) [_:] • subscript(protocolSubscript: Int) -> Int { get }
+ (required) baseProtocolMethod() • func baseProtocolMethod()
 MoreSpecificProtocol • protocol MoreSpecificProtocol
+ (required) moreSpecificProtocolMethod() • func moreSpecificProtocolMethod()
  BaseProtocol

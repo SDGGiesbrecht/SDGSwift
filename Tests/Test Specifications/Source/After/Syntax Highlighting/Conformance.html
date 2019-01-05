@@ -13,9 +13,31 @@
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">:</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-<span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">Structure</span> <span class="punctuation">:</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span>
+    <span class="keyword">func</span> <span class="external identifier">baseProtocolMethod</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">associatedtype</span> <span class="external identifier">AssociatedType</span>
+    <span class="keyword">init</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">var</span> <span class="external identifier">protocolVariable</span><span class="punctuation">:</span> <span class="external identifier">Int</span>
+    <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">protocolSubscript</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span> <span class="keyword">get</span> <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">:</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span>
+    <span class="keyword">func</span> <span class="external identifier">moreSpecificProtocolMethod</span><span class="punctuation">(</span><span class="punctuation">)</span>
+<span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">Structure</span> <span class="punctuation">:</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">baseProtocolMethod</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">moreSpecificProtocolMethod</span><span class="punctuation">(</span><span class="punctuation">)</span>
+    <span class="keyword">public</span> <span class="keyword">typealias</span> <span class="external identifier">AssociatedType</span> <span class="punctuation">=</span> <span class="external identifier">Int</span>
+    <span class="keyword">public</span> <span class="keyword">init</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+    <span class="keyword">public</span> <span class="keyword">var</span> <span class="external identifier">protocolVariable</span><span class="punctuation">:</span> <span class="external identifier">Int</span> <span class="punctuation">=</span> <span class="number">0</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">protocolSubscript</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span> <span class="keyword">return</span> <span class="number">0</span> <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="external identifier">BaseClass</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="external identifier">baseClassMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="external identifier">Subclass</span> <span class="punctuation">:</span> <span class="external identifier">BaseClass</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="external identifier">override</span> <span class="keyword">func</span> <span class="external identifier">baseClassMethod</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="punctuation">}</span>
 </code>
 
  </body>
