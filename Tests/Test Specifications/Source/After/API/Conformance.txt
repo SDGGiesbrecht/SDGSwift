@@ -1,3 +1,9 @@
 Conforming • struct Conforming
  description • var description: String { get }
  CustomStringConvertible
+Structure • struct Structure
+ BaseProtocol
+ MoreSpecificProtocol
+BaseProtocol • protocol BaseProtocol
+MoreSpecificProtocol • protocol MoreSpecificProtocol
+ BaseProtocol

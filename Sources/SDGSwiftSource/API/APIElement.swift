@@ -57,7 +57,41 @@ public enum APIElement : Comparable, Hashable {
         other.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
         other.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
 
-        return _APIElementBase.groupIntoOverloads(other)
+        let result = _APIElementBase.groupIntoOverloads(other)
+        resolveConformances(elements: result)
+        return result
+    }
+
+    private static func resolveConformances(elements: [APIElement]) {
+
+        var cache: (FlattenCollection<[[ProtocolAPI]]>, FlattenCollection<[[TypeAPI]]>)?
+
+        for element in elements {
+            for nestedElement in element.nestedList(of: APIElementProtocol.self) {
+                conformanceIteration: for conformance in nestedElement.conformances where conformance.reference == nil {
+
+                        let conformanceName = conformance.type.source()
+
+                        let (protocols, superclasses) = cached(in: &cache) {
+                            return (
+                                elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined(),
+                                elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
+                            )
+                        }
+
+                        for `protocol` in protocols where `protocol`.name.source() == conformanceName {
+                            conformance.reference = .protocol(Weak(`protocol`))
+                            nestedElement.insert(conformances: `protocol`.conformances)
+                            continue conformanceIteration
+                        }
+                        for superclass in superclasses where superclass.genericName.source() == conformanceName {
+                            conformance.reference = .superclass(Weak(superclass))
+                            nestedElement.insert(conformances: superclass.conformances)
+                            continue conformanceIteration
+                        }
+                }
+            }
+        }
     }
 
     // MARK: - Cases
@@ -227,6 +261,17 @@ public enum APIElement : Comparable, Hashable {
 
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return elementProtocol.conformances
+    }
+
+    private func nestedList<T>(of type: T.Type) -> [T] {
+        var result: [T] = []
+        if let element = elementProtocol as? T {
+            result.append(element)
+        }
+        for child in children {
+            result.append(contentsOf: child.nestedList(of: T.self))
+        }
+        return result
     }
 
     public func summary() -> [String] {

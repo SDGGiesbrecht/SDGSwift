@@ -13,5 +13,5 @@
  */
 
 public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, UndeclaredAPIElementProtocol {
-
+    var reference: ConformanceReference?
 }
