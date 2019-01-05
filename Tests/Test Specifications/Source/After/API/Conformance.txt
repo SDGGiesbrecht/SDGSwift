@@ -6,3 +6,4 @@ Structure • struct Structure
  MoreSpecificProtocol
 BaseProtocol • protocol BaseProtocol
 MoreSpecificProtocol • protocol MoreSpecificProtocol
+ BaseProtocol
