@@ -10,7 +10,7 @@ public protocol BaseProtocol {
     associatedtype AssociatedType
     init()
     var protocolVariable: I̲n̲t̲
-    subscript(protocolSubscript: I̲n̲t̲) -> I̲n̲t̲
+    subscript(protocolSubscript: I̲n̲t̲) -> I̲n̲t̲ { get }
 }
 public protocol MoreSpecificProtocol : B̲a̲s̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ {
     func moreSpecificProtocolMethod()
@@ -22,4 +22,11 @@ public struct Structure : M̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲
     public init() {}
     public var protocolVariable: I̲n̲t̲ = 0
     public subscript(protocolSubscript: I̲n̲t̲) -> I̲n̲t̲ { return 0 }
+}
+
+public class BaseClass {
+    public func baseClassMethod() {}
+}
+public class Subclass : B̲a̲s̲e̲C̲l̲a̲s̲s̲ {
+    public override func baseClassMethod() {}
 }

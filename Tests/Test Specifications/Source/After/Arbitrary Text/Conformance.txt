@@ -10,7 +10,7 @@ public ̲protocol ̲B̲a̲s̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{
  ̲ ̲ ̲ ̲associatedtype ̲A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲T̲y̲p̲e̲
  ̲ ̲ ̲ ̲init()
  ̲ ̲ ̲ ̲var ̲p̲r̲o̲t̲o̲c̲o̲l̲V̲a̲r̲i̲a̲b̲l̲e̲: ̲Int
- ̲ ̲ ̲ ̲subscript(p̲r̲o̲t̲o̲c̲o̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲: ̲Int) ̲-> ̲Int
+ ̲ ̲ ̲ ̲subscript(p̲r̲o̲t̲o̲c̲o̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲: ̲Int) ̲-> ̲Int ̲{ ̲get ̲}
 }
 public ̲protocol ̲M̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲: ̲BaseProtocol ̲{
  ̲ ̲ ̲ ̲func ̲m̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲o̲l̲M̲e̲t̲h̲o̲d̲()
@@ -22,4 +22,11 @@ public ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲: ̲MoreSpecificProtocol ̲{
  ̲ ̲ ̲ ̲public ̲init() ̲{}
  ̲ ̲ ̲ ̲public ̲var ̲p̲r̲o̲t̲o̲c̲o̲l̲V̲a̲r̲i̲a̲b̲l̲e̲: ̲Int ̲= ̲0̲
  ̲ ̲ ̲ ̲public ̲subscript(p̲r̲o̲t̲o̲c̲o̲l̲S̲u̲b̲s̲c̲r̲i̲p̲t̲: ̲Int) ̲-> ̲Int ̲{ ̲return ̲0̲ ̲}
+}
+
+public ̲class ̲B̲a̲s̲e̲C̲l̲a̲s̲s̲ ̲{
+ ̲ ̲ ̲ ̲public ̲func ̲b̲a̲s̲e̲C̲l̲a̲s̲s̲M̲e̲t̲h̲o̲d̲() ̲{}
+}
+public ̲class ̲S̲u̲b̲c̲l̲a̲s̲s̲ ̲: ̲BaseClass ̲{
+ ̲ ̲ ̲ ̲public ̲override ̲func ̲b̲a̲s̲e̲C̲l̲a̲s̲s̲M̲e̲t̲h̲o̲d̲() ̲{}
 }
