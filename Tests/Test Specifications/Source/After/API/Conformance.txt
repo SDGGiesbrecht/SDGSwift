@@ -2,8 +2,6 @@ Conforming • struct Conforming
  description • var description: String { get }
  CustomStringConvertible
 Structure • struct Structure
- baseProtocolMethod() • func baseProtocolMethod()
- moreSpecificProtocolMethod() • func moreSpecificProtocolMethod()
  BaseProtocol
  MoreSpecificProtocol
 BaseProtocol • protocol BaseProtocol
