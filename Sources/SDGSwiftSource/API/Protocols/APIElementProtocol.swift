@@ -284,5 +284,37 @@ extension APIElementProtocol {
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
                 (self as? _APIElementBase)?.children.append(.conformance(conformance))
         }
+        let parents = conformances.compactMap({ $0.reference?.elementProtocol })
+
+        (self as? _APIElementBase)?.children = children.filter { child in
+            switch child {
+            case .package, .library, .module, .protocol, .extension, .case, .operator, .precedence, .conformance:
+                return true
+            case .type(let subtype):
+                return ¬overload(for: subtype, existsInParents: parents)
+            case .initializer(let initializer):
+                return ¬overload(for: initializer, existsInParents: parents)
+            case .variable(let variable):
+                return ¬overload(for: variable, existsInParents: parents)
+            case .subscript(let `subscript`):
+                return ¬overload(for: `subscript`, existsInParents: parents)
+            case .function(let function):
+                return ¬overload(for: function, existsInParents: parents)
+            }
+        }
+    }
+
+    private func overload<E>(for element: E, existsInParents parents: [APIElementProtocol]) -> Bool where E : OverloadableAPIElement {
+        return parents.contains(where: { $0.hasChildOverload(for: element) })
+    }
+
+    private func hasChildOverload<E>(for element: E) -> Bool where E : OverloadableAPIElement {
+        return children.contains(where: { child in
+            if let sameType = child.elementProtocol as? E {
+                return sameType.genericOverloadPattern().source() == element.genericOverloadPattern().source()
+            } else {
+                return false
+            }
+        })
     }
 }
