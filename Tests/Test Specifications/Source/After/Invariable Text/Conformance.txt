@@ -7,6 +7,10 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Conforming :̲ CustomStringConvertible {̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ BaseProtocol {̲
 ̲    f̲u̲n̲c̲ baseProtocolMethod(̲)̲
+̲    a̲s̲s̲o̲c̲i̲a̲t̲e̲d̲t̲y̲p̲e̲ AssociatedType
+̲    i̲n̲i̲t̲(̲)̲
+̲    v̲a̲r̲ protocolVariable:̲ Int
+̲    s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲protocolSubscript:̲ Int)̲ -̲>̲ Int
 ̲}̲
 ̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ MoreSpecificProtocol :̲ BaseProtocol {̲
 ̲    f̲u̲n̲c̲ moreSpecificProtocolMethod(̲)̲
@@ -14,5 +18,9 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Conforming :̲ CustomStringConvertible {̲
 ̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Structure :̲ MoreSpecificProtocol {̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ baseProtocolMethod(̲)̲
 ̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ moreSpecificProtocolMethod(̲)̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ AssociatedType =̲ Int
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲i̲t̲(̲)̲ {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ v̲a̲r̲ protocolVariable:̲ Int =̲ 0
+̲    p̲u̲b̲l̲i̲c̲ s̲u̲b̲s̲c̲r̲i̲p̲t̲(̲protocolSubscript:̲ Int)̲ -̲>̲ Int {̲ r̲e̲t̲u̲r̲n̲ 0 }̲
 ̲}̲
 ̲

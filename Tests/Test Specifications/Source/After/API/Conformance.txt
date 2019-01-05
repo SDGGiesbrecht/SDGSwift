@@ -5,6 +5,10 @@ Structure • struct Structure
  BaseProtocol
  MoreSpecificProtocol
 BaseProtocol • protocol BaseProtocol
+ AssociatedType • associatedtype AssociatedType
+ (required) init() • init()
+ (required) protocolVariable • var protocolVariable: Int { get set }
+ (required) [_:] • subscript(protocolSubscript: Int) -> Int { get set }
  (required) baseProtocolMethod() • func baseProtocolMethod()
 MoreSpecificProtocol • protocol MoreSpecificProtocol
  (required) moreSpecificProtocolMethod() • func moreSpecificProtocolMethod()
