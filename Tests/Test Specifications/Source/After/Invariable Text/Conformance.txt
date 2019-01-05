@@ -5,7 +5,14 @@ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Conforming :̲ CustomStringConvertible {̲
 ̲    }̲
 ̲}̲
 ̲
-̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ BaseProtocol {̲}̲
-̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ MoreSpecificProtocol :̲ BaseProtocol {̲}̲
-̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Structure :̲ MoreSpecificProtocol {̲}̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ BaseProtocol {̲
+̲    f̲u̲n̲c̲ baseProtocolMethod(̲)̲
+̲}̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ MoreSpecificProtocol :̲ BaseProtocol {̲
+̲    f̲u̲n̲c̲ moreSpecificProtocolMethod(̲)̲
+̲}̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Structure :̲ MoreSpecificProtocol {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ baseProtocolMethod(̲)̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ moreSpecificProtocolMethod(̲)̲
+̲}̲
 ̲

@@ -5,6 +5,13 @@ public struct Conforming : CustomStringConvertible {
     }
 }
 
-public protocol BaseProtocol {}
-public protocol MoreSpecificProtocol : BaseProtocol {}
-public struct Structure : MoreSpecificProtocol {}
+public protocol BaseProtocol {
+    func baseProtocolMethod()
+}
+public protocol MoreSpecificProtocol : BaseProtocol {
+    func moreSpecificProtocolMethod()
+}
+public struct Structure : MoreSpecificProtocol {
+    public func baseProtocolMethod()
+    public func moreSpecificProtocolMethod()
+}
