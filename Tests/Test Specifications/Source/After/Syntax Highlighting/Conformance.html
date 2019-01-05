@@ -14,7 +14,7 @@
 <span class="punctuation">}</span>
 
 <span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
-<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">public</span> <span class="keyword">protocol</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">:</span> <span class="external identifier">BaseProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 <span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">Structure</span> <span class="punctuation">:</span> <span class="external identifier">MoreSpecificProtocol</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 </code>
 

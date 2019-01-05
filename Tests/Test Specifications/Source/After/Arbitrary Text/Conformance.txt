@@ -6,5 +6,5 @@ public ̲struct ̲C̲o̲n̲f̲o̲r̲m̲i̲n̲g̲ ̲: ̲CustomStringConvertible �
 }
 
 public ̲protocol ̲B̲a̲s̲e̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{}
-public ̲protocol ̲M̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲{}
+public ̲protocol ̲M̲o̲r̲e̲S̲p̲e̲c̲i̲f̲i̲c̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲: ̲BaseProtocol ̲{}
 public ̲struct ̲S̲t̲r̲u̲c̲t̲u̲r̲e̲ ̲: ̲MoreSpecificProtocol ̲{}
