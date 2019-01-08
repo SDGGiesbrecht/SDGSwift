@@ -12,15 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct SyntaxContext {
+public class SyntaxContext {
 
     // MARK: - Initialization
 
-    internal init(fragmentContext: String) {
+    internal init(fragmentContext: String, parentContext: SyntaxContext?) {
         self.fragmentContext = fragmentContext
+        self.parentContext = parentContext
     }
 
     // MARK: - Properties
 
     internal var fragmentContext: String
+    internal var parentContext: SyntaxContext?
 }

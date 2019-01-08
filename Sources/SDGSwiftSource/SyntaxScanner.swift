@@ -22,23 +22,23 @@ open class SyntaxScanner {
 
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ node: Syntax) throws {
-        try scan(node, context: SyntaxContext(fragmentContext: node.source()))
+    public func scan(_ node: SourceFileSyntax) throws {
+        try scan(node, context: SyntaxContext(fragmentContext: node.source(), parentContext: nil))
     }
     internal func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
-            try scan(token.leadingTrivia)
+            try scan(token.leadingTrivia, context: context)
             if shouldExtend(token),
                 let extended = token.extended {
                 if visit(extended) {
                     for child in extended.children {
-                        try scan(child)
+                        try scan(child, context: context)
                     }
                 }
             } else {
                 _ = visit(token, context: context)
             }
-            try scan(token.trailingTrivia)
+            try scan(token.trailingTrivia, context: context)
         } else {
             if visit(node, context: context) {
                 for child in node.children {
@@ -50,24 +50,25 @@ open class SyntaxScanner {
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ node: ExtendedSyntax) throws {
+    public func scan(_ node: ExtendedSyntax, context: SyntaxContext) throws {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
             let children = try code.syntax() {
+            let newContext = SyntaxContext(fragmentContext: code.context, parentContext: context)
             for child in children {
                 switch child {
                 case .syntax(let node):
-                    try scan(node, context: SyntaxContext(fragmentContext: code.context))
+                    try scan(node, context: newContext)
                 case .extendedSyntax(let node):
-                    try scan(node)
+                    try scan(node, context: newContext)
                 case .trivia(let node, let siblings, let index):
-                    try scan(node, siblings: siblings, index: index)
+                    try scan(node, siblings: siblings, index: index, context: newContext)
                 }
             }
         } else {
             if visit(node) {
                 for child in node.children {
-                    try scan(child)
+                    try scan(child, context: context)
                 }
             }
         }
@@ -75,20 +76,20 @@ open class SyntaxScanner {
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ trivia: Trivia) throws {
+    public func scan(_ trivia: Trivia, context: SyntaxContext) throws {
         if visit(trivia) {
             for index in trivia.indices {
                 let piece = trivia[index]
-                try scan(piece, siblings: trivia, index: index)
+                try scan(piece, siblings: trivia, index: index, context: context)
             }
         }
     }
 
     // #documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index) throws {
+    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: SyntaxContext) throws {
         if visit(piece) {
-            try scan(piece.syntax(siblings: siblings, index: index))
+            try scan(piece.syntax(siblings: siblings, index: index), context: context)
         }
     }
 

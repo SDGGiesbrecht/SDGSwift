@@ -85,7 +85,7 @@ class SDGSwiftSourceAPITests : TestCase {
             if let token = syntax as? TokenSyntax,
                 token.tokenKind == .colon {
                 foundColon = true
-                XCTAssert(source[token.syntaxRange(in: context)] == ":")
+                XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
             }
             return true
         }).scan(syntax)
