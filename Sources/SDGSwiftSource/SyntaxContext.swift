@@ -16,13 +16,23 @@ public class SyntaxContext {
 
     // MARK: - Initialization
 
-    internal init(fragmentContext: String, parentContext: SyntaxContext?) {
+    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: SyntaxContext?) {
         self.fragmentContext = fragmentContext
+        self.fragmentOffset = fragmentOffset
         self.parentContext = parentContext
     }
 
     // MARK: - Properties
 
     internal var fragmentContext: String
-    internal var parentContext: SyntaxContext?
+    private var fragmentOffset: Int
+    private var parentContext: SyntaxContext?
+
+    internal var totalOffset: Int {
+        var result = fragmentOffset
+        if let parent = parentContext {
+            result += parent.totalOffset
+        }
+        return result
+    }
 }

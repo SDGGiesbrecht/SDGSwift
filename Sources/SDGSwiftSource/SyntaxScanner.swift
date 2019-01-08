@@ -23,7 +23,7 @@ open class SyntaxScanner {
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
     public func scan(_ node: SourceFileSyntax) throws {
-        try scan(node, context: SyntaxContext(fragmentContext: node.source(), parentContext: nil))
+        try scan(node, context: SyntaxContext(fragmentContext: node.source(), fragmentOffset: 0, parentContext: nil))
     }
     private func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
@@ -52,7 +52,7 @@ open class SyntaxScanner {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
             let children = try code.syntax() {
-            let newContext = SyntaxContext(fragmentContext: code.context, parentContext: context)
+            let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: context)
             for child in children {
                 switch child {
                 case .syntax(let node):

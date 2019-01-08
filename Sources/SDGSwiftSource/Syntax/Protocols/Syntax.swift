@@ -35,8 +35,12 @@ extension Syntax {
     // MARK: - Location
 
     internal func index(in context: SyntaxContext, for position: AbsolutePosition) -> String.ScalarView.Index {
-        let utf8 = context.fragmentContext.utf8
-        return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
+        let string = context.fragmentContext
+        let scalars = string.scalars
+        let utf8 = string.utf8
+        let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
+        let scalarIndex = utf8Index.samePosition(in: scalars)!
+        return scalars.index(scalarIndex, offsetBy: −context.totalOffset)
     }
 
     public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {

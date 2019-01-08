@@ -38,6 +38,9 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     internal let context: String
 
     internal let range: Range<String.ScalarView.Index>
+    internal var offset: Int {
+        return context.scalars.distance(from: context.scalars.startIndex, to: range.lowerBound)
+    }
 
     /// The syntax of the source code contained in this token.
     public func syntax() throws -> [SyntaxFragment]? {
@@ -56,7 +59,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
-        let location = node.triviaRange(in: SyntaxContext(fragmentContext: context, parentContext: nil))
+        let location = node.triviaRange(in: SyntaxContext(fragmentContext: context, fragmentOffset: 0, parentContext: nil))
         if location.overlaps(range) {
             if location ⊆ range {
                 return [.syntax(node)]
