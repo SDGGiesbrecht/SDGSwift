@@ -93,14 +93,14 @@ extension Syntax {
         return tokens
     }
 
-    public func firstToken() -> TokenSyntax {
+    public func firstToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax {
             return token
         }
-        return children.first(where: { _ in true })!.firstToken()
+        return children.first(where: { _ in true })?.firstToken()
     }
 
-    public func lastToken() -> TokenSyntax {
+    public func lastToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax {
             return token
         }
@@ -108,7 +108,7 @@ extension Syntax {
         for child in children {
             lastChild = child
         }
-        return lastChild!.lastToken()
+        return lastChild?.lastToken()
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {
@@ -231,7 +231,9 @@ extension Syntax {
     }
 
     internal var documentation: DocumentationSyntax? {
-        let token = firstToken()
+        guard let token = firstToken() else {
+            return nil
+        }
         let leading = token.leadingTrivia
         for index in leading.indices.lazy.reversed() {
             let trivia = leading[index]
