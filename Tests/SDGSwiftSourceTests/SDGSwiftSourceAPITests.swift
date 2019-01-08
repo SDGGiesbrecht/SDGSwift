@@ -79,6 +79,17 @@ class SDGSwiftSourceAPITests : TestCase {
         let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
         XCTAssert(highlighted.contains("internal identifier"))
         XCTAssert(highlighted.contains("domain.tld"))
+
+        var foundColon = false
+        try FunctionalSyntaxScanner(checkSyntax: { syntax in
+            if let token = syntax as? TokenSyntax,
+                token.tokenKind == .colon {
+                foundColon = true
+                XCTAssert(source[token.syntaxRange(in: source)] == ":")
+            }
+            return true
+        }).scan(syntax)
+        XCTAssertTrue(foundColon)
     }
 
     func testCSS() {
