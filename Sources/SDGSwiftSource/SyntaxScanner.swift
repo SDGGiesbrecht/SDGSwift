@@ -25,7 +25,7 @@ open class SyntaxScanner {
     public func scan(_ node: SourceFileSyntax) throws {
         try scan(node, context: SyntaxContext(fragmentContext: node.source(), parentContext: nil))
     }
-    internal func scan(_ node: Syntax, context: SyntaxContext) throws {
+    private func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
             try scan(token.leadingTrivia, context: context)
             if shouldExtend(token),
@@ -48,9 +48,7 @@ open class SyntaxScanner {
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ node: ExtendedSyntax, context: SyntaxContext) throws {
+    private func scan(_ node: ExtendedSyntax, context: SyntaxContext) throws {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
             let children = try code.syntax() {
@@ -74,9 +72,7 @@ open class SyntaxScanner {
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ trivia: Trivia, context: SyntaxContext) throws {
+    private func scan(_ trivia: Trivia, context: SyntaxContext) throws {
         if visit(trivia) {
             for index in trivia.indices {
                 let piece = trivia[index]
@@ -85,9 +81,7 @@ open class SyntaxScanner {
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: SyntaxContext) throws {
+    private func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: SyntaxContext) throws {
         if visit(piece) {
             try scan(piece.syntax(siblings: siblings, index: index), context: context)
         }
