@@ -19,7 +19,7 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
 
     /// Creates a syntax scanner with behaviour defined by the provided closures.
     public init(
-        checkSyntax: @escaping (Syntax) -> Bool = { _ in true },
+        checkSyntax: @escaping (Syntax, SyntaxContext) -> Bool = { _, _ in true },
         checkExtendedSyntax: @escaping (ExtendedSyntax) -> Bool = { _ in true },
         checkTrivia: @escaping (Trivia) -> Bool = { _ in true },
         checkTriviaPiece: @escaping (TriviaPiece) -> Bool = { _ in true },
@@ -36,7 +36,7 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
 
     // MARK: - Properties
 
-    private let checkSyntax: (Syntax) -> Bool
+    private let checkSyntax: (Syntax, SyntaxContext) -> Bool
     private let checkExtendedSyntax: (ExtendedSyntax) -> Bool
     private let checkTrivia: (Trivia) -> Bool
     private let checkTriviaPiece: (TriviaPiece) -> Bool
@@ -45,8 +45,8 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
 
     // MARK: - SyntaxScanner
 
-    public override func visit(_ node: Syntax) -> Bool {
-        return checkSyntax(node)
+    public override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+        return checkSyntax(node, context)
     }
 
     public override func visit(_ node: ExtendedSyntax) -> Bool {

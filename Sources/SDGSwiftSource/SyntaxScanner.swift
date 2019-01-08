@@ -23,6 +23,9 @@ open class SyntaxScanner {
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
     public func scan(_ node: Syntax) throws {
+        try scan(node, context: SyntaxContext(fragmentContext: node.source()))
+    }
+    internal func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
             try scan(token.leadingTrivia)
             if shouldExtend(token),
@@ -33,13 +36,13 @@ open class SyntaxScanner {
                     }
                 }
             } else {
-                _ = visit(token)
+                _ = visit(token, context: context)
             }
             try scan(token.trailingTrivia)
         } else {
-            if visit(node) {
+            if visit(node, context: context) {
                 for child in node.children {
-                    try scan(child)
+                    try scan(child, context: context)
                 }
             }
         }
@@ -54,7 +57,7 @@ open class SyntaxScanner {
             for child in children {
                 switch child {
                 case .syntax(let node):
-                    try scan(node)
+                    try scan(node, context: SyntaxContext(fragmentContext: code.context))
                 case .extendedSyntax(let node):
                     try scan(node)
                 case .trivia(let node, let siblings, let index):
@@ -100,7 +103,7 @@ open class SyntaxScanner {
     ///     - node: The current node.
     ///
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-    open func visit(_ node: Syntax) -> Bool {
+    open func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
         return true
     }
 

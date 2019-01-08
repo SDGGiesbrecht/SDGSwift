@@ -34,33 +34,33 @@ extension Syntax {
 
     // MARK: - Location
 
-    internal func index(in string: String, for position: AbsolutePosition) -> String.ScalarView.Index {
-        let utf8 = string.utf8
+    internal func index(in context: SyntaxContext, for position: AbsolutePosition) -> String.ScalarView.Index {
+        let utf8 = context.fragmentContext.utf8
         return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
     }
 
-    public func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: position)
+    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: position)
     }
 
-    public func lowerSyntaxBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: positionAfterSkippingLeadingTrivia)
+    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: positionAfterSkippingLeadingTrivia)
     }
 
-    public func upperSyntaxBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPosition)
+    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: endPosition)
     }
 
-    public func upperTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPositionAfterTrailingTrivia)
+    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: endPositionAfterTrailingTrivia)
     }
 
-    public func syntaxRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerSyntaxBound(in: string) ..< upperSyntaxBound(in: string)
+    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerSyntaxBound(in: context) ..< upperSyntaxBound(in: context)
     }
 
-    public func triviaRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
+    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerTriviaBound(in: context) ..< upperTriviaBound(in: context)
     }
 
     // MARK: - Syntax Tree

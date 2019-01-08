@@ -56,7 +56,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     }
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
-        let location = node.triviaRange(in: context)
+        let location = node.triviaRange(in: SyntaxContext(fragmentContext: context))
         if location.overlaps(range) {
             if location ⊆ range {
                 return [.syntax(node)]

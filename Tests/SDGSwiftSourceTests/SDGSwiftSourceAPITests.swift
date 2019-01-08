@@ -81,11 +81,11 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(highlighted.contains("domain.tld"))
 
         var foundColon = false
-        try FunctionalSyntaxScanner(checkSyntax: { syntax in
+        try FunctionalSyntaxScanner(checkSyntax: { syntax, context in
             if let token = syntax as? TokenSyntax,
                 token.tokenKind == .colon {
                 foundColon = true
-                XCTAssert(source[token.syntaxRange(in: source)] == ":")
+                XCTAssert(source[token.syntaxRange(in: context)] == ":")
             }
             return true
         }).scan(syntax)
@@ -113,13 +113,26 @@ class SDGSwiftSourceAPITests : TestCase {
         let syntax = try SyntaxTreeParser.parse(source)
 
         var scanned: Set<String> = []
-        try FunctionalSyntaxScanner(
-            checkSyntax: { scanned.insert($0.source()); return true },
-            checkExtendedSyntax: { scanned.insert($0.text); return true },
-            checkTrivia: { scanned.insert($0.source()); return true },
-            checkTriviaPiece: { scanned.insert($0.text); return true },
+        let scanner = FunctionalSyntaxScanner(
+            checkSyntax: { syntax, context in
+                scanned.insert(syntax.source())
+                return true
+        },
+            checkExtendedSyntax: { syntax in
+                scanned.insert(syntax.text)
+                return true
+        },
+            checkTrivia: { trivia in
+                scanned.insert(trivia.source())
+                return true
+        },
+            checkTriviaPiece: { trivia in
+                scanned.insert(trivia.text)
+                return true
+        },
             shouldExtendToken: { _ in return true },
-            shouldExtendFragment: { _ in return true }).scan(syntax)
+            shouldExtendFragment: { _ in return true })
+        try scanner.scan(syntax)
         XCTAssert(scanned.contains("print(\u{22}Hello, world!\u{22})"))
         XCTAssert(scanned.contains("```swift"))
         XCTAssert(scanned.contains(" "))
@@ -159,9 +172,19 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testLocations() throws {
         let source = "/\u{2F} ...\nlet x = 0 \n"
-        let syntax = try SyntaxTreeParser.parse(source).statements
-        XCTAssertEqual(syntax.triviaRange(in: source), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
-        XCTAssertEqual(syntax.syntaxRange(in: source), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+        let syntax = try SyntaxTreeParser.parse(source)
+        var statementsFound = false
+        let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
+            if syntax is CodeBlockItemListSyntax {
+                statementsFound = true
+                XCTAssertEqual(syntax.triviaRange(in: context), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
+                XCTAssertEqual(syntax.syntaxRange(in: context), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+                return false
+            }
+            return true
+        })
+        try scanner.scan(syntax)
+        XCTAssertTrue(statementsFound)
     }
 
     func testParsing() throws {
