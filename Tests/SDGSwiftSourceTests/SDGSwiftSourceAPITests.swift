@@ -332,5 +332,25 @@ class SDGSwiftSourceAPITests : TestCase {
         let eof = syntax.lastToken()!
         XCTAssertEqual(eof.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
         XCTAssertNil(eof.firstFollowingTrivia()?.text)
+
+        let incomplete = SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: nil,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
+            identifier: SyntaxFactory.makeToken(.identifier("identifier")),
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                input: SyntaxFactory.makeParameterClause(
+                    leftParen: SyntaxFactory.makeToken(.leftParen, presence: .missing),
+                    parameterList: SyntaxFactory.makeFunctionParameterList([]),
+                    rightParen: SyntaxFactory.makeToken(.rightParen)),
+                throwsOrRethrowsKeyword: SyntaxFactory.makeToken(.throwsKeyword, presence: .missing),
+                output: nil),
+            genericWhereClause: nil,
+            body: nil)
+        XCTAssertEqual(incomplete.firstToken()?.tokenKind, .identifier("identifier"))
+        XCTAssertEqual(incomplete.lastToken()?.tokenKind, .rightParen)
+        XCTAssertEqual(incomplete.identifier.nextToken()?.tokenKind, .rightParen)
+        XCTAssertEqual(incomplete.signature.input.rightParen.previousToken()?.tokenKind, .identifier("identifier"))
     }
 }
