@@ -28,6 +28,36 @@ public class ExtendedSyntax : TextOutputStreamable {
     /// The children of this node.
     public internal(set) var children: [ExtendedSyntax]
 
+    private var _offset: Int?
+    private private(set) var positionOffset: Int {
+        get {
+            return _offset! // The unwrap can only fail if the top‐level node forgot to call determinePositions().
+        }
+        set {
+            _offset = newValue
+        }
+    }
+    private var endPositionOffset: Int {
+        if let token = self as? ExtendedTokenSyntax {
+            return positionOffset + token.text.scalars.count
+        } else {
+            return children.last?.endPositionOffset ?? positionOffset
+        }
+    }
+    internal func determinePositions() {
+        var offset = 0
+        determineNestedPositions(offset: &offset)
+    }
+    private func determineNestedPositions(offset: inout Int) {
+        positionOffset = offset
+        for child in children {
+            child.determineNestedPositions(offset: &offset)
+            if let token = child as? ExtendedTokenSyntax {
+                offset = token.endPositionOffset
+            }
+        }
+    }
+
     public var text: String {
         var result = ""
         write(to: &result)

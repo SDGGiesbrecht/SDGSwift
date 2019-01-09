@@ -22,7 +22,9 @@ extension TokenSyntax {
 
     public var extended: ExtendedSyntax? {
         if case .stringLiteral(let source) = tokenKind {
-            return StringLiteralSyntax(source: source)
+            let result = StringLiteralSyntax(source: source)
+            result.determinePositions()
+            return result
         } else {
             return nil
         }

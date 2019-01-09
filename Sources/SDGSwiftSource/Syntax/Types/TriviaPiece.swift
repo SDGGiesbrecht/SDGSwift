@@ -17,24 +17,27 @@ import SDGSwiftLocalizations
 extension TriviaPiece {
 
     public func syntax(siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
+        let result: ExtendedSyntax
         switch self {
         case .spaces, .tabs:
-            return ExtendedTokenSyntax(text: text, kind: .whitespace)
+            result = ExtendedTokenSyntax(text: text, kind: .whitespace)
         case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
-            return ExtendedTokenSyntax(text: text, kind: .newlines)
+            result = ExtendedTokenSyntax(text: text, kind: .newlines)
         case .backticks:
-            return ExtendedTokenSyntax(text: text, kind: .escape)
+            result = ExtendedTokenSyntax(text: text, kind: .escape)
         case .lineComment:
-            return LineDeveloperCommentSyntax(source: text, siblings: siblings, index: index)
+            result = LineDeveloperCommentSyntax(source: text, siblings: siblings, index: index)
         case .blockComment:
-            return BlockDeveloperCommentSyntax(source: text)
+            result = BlockDeveloperCommentSyntax(source: text)
         case .docLineComment:
-            return LineDocumentationSyntax(source: text, siblings: siblings, index: index)
+            result = LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
-            return BlockDocumentationSyntax(source: text)
+            result = BlockDocumentationSyntax(source: text)
         case .garbageText:
-            return ExtendedTokenSyntax(text: text, kind: .source) // @exempt(from: tests)
+            result = ExtendedTokenSyntax(text: text, kind: .source) // @exempt(from: tests)
         }
+        result.determinePositions()
+        return result
     }
 
     public var text: String {
