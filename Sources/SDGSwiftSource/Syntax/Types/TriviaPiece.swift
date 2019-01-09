@@ -16,6 +16,50 @@ import SDGSwiftLocalizations
 
 extension TriviaPiece {
 
+    public var text: String {
+        var result = ""
+        write(to: &result)
+        return result
+    }
+
+    // MARK: - Location
+
+    public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(let trivia, index: let index, parent: let parent):
+            var location = trivia.lowerBound(in: parent)
+            let source = parent.tokenContext.fragmentContext
+            for predecessor in trivia.indices where predecessor < index {
+                location = source.scalars.index(location, offsetBy: trivia[predecessor].text.scalars.count)
+            }
+            return location
+        case .fragment(offset: let offset, parent: let parent):
+            #warning("Not implemented yet.")
+            fatalError()
+        }
+    }
+
+    private func upperBound(from lowerBound: String.ScalarView.Index, in context: TriviaPieceContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(_, index: _, parent: let parent):
+            let source = parent.tokenContext.fragmentContext
+            return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
+        case .fragment(offset: let offset, parent: let parent):
+            #warning("Not implemented yet.")
+            fatalError()
+        }
+    }
+    public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+        return upperBound(from: lowerBound(in: context), in: context)
+    }
+
+    public func range(in context: TriviaPieceContext) -> Range<String.ScalarView.Index> {
+        let lowerBound = self.lowerBound(in: context)
+        return lowerBound ..< upperBound(from: lowerBound, in: context)
+    }
+
+    // MARK: - Parsing
+
     public func syntax(siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
         let result: ExtendedSyntax
         switch self {
@@ -37,12 +81,6 @@ extension TriviaPiece {
             result = ExtendedTokenSyntax(text: text, kind: .source) // @exempt(from: tests)
         }
         result.determinePositions()
-        return result
-    }
-
-    public var text: String {
-        var result = ""
-        write(to: &result)
         return result
     }
 }

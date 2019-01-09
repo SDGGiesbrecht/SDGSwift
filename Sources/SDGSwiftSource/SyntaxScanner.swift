@@ -82,7 +82,7 @@ open class SyntaxScanner {
     private func scan(_ trivia: Trivia, context: TriviaContext) throws {
         if visit(trivia, context: context) {
             for index in trivia.indices {
-                let newContext = TriviaPieceContext.trivia(context, index: index)
+                let newContext = TriviaPieceContext.trivia(trivia, index: index, parent: context)
                 let piece = trivia[index]
                 try scan(piece, siblings: trivia, index: index, context: newContext)
             }

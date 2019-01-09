@@ -16,6 +16,6 @@ public enum TriviaPieceContext {
 
     // MARK: - Cases
 
-    case trivia(TriviaContext, index: Trivia.Index)
+    case trivia(Trivia, index: Trivia.Index, parent: TriviaContext)
     case fragment(offset: Int, parent: SyntaxContext)
 }

@@ -25,8 +25,8 @@ public class SyntaxContext {
     // MARK: - Properties
 
     internal let fragmentContext: String
-    private let fragmentOffset: Int
-    private let parentContext: ExtendedSyntaxContext?
+    internal let fragmentOffset: Int
+    internal let parentContext: ExtendedSyntaxContext?
 
     internal var totalOffset: Int {
         var result = fragmentOffset
