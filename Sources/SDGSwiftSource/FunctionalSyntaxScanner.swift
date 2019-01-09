@@ -49,15 +49,15 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
         return checkSyntax(node, context)
     }
 
-    public override func visit(_ node: ExtendedSyntax) -> Bool {
+    public override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
         return checkExtendedSyntax(node)
     }
 
-    public override func visit(_ node: Trivia) -> Bool {
+    public override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
         return checkTrivia(node)
     }
 
-    public override func visit(_ node: TriviaPiece) -> Bool {
+    public override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
         return checkTriviaPiece(node)
     }
 

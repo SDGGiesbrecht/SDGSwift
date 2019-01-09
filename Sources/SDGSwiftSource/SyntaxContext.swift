@@ -1,5 +1,5 @@
 /*
- ScanContext.swift
+ SyntaxContext.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -16,7 +16,7 @@ public class SyntaxContext {
 
     // MARK: - Initialization
 
-    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: SyntaxContext?) {
+    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: ExtendedSyntaxContext?) {
         self.fragmentContext = fragmentContext
         self.fragmentOffset = fragmentOffset
         self.parentContext = parentContext
@@ -24,9 +24,9 @@ public class SyntaxContext {
 
     // MARK: - Properties
 
-    internal var fragmentContext: String
-    private var fragmentOffset: Int
-    private var parentContext: SyntaxContext?
+    internal let fragmentContext: String
+    private let fragmentOffset: Int
+    private let parentContext: ExtendedSyntaxContext?
 
     internal var totalOffset: Int {
         var result = fragmentOffset
