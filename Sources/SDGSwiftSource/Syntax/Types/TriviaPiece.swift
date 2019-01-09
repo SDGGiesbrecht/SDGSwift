@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import SDGSwiftLocalizations
 
 extension TriviaPiece {
@@ -56,6 +58,44 @@ extension TriviaPiece {
     public func range(in context: TriviaPieceContext) -> Range<String.ScalarView.Index> {
         let lowerBound = self.lowerBound(in: context)
         return lowerBound ..< upperBound(from: lowerBound, in: context)
+    }
+
+    // MARK: - Syntax Tree
+
+    private func parentRelationship(context: TriviaPieceContext) -> (parent: Trivia, index: Trivia.Index)? {
+        switch context {
+        case .trivia(let trivia, index: let index, parent: _):
+            return (parent: trivia, index: index)
+        case .fragment:
+            return nil
+        }
+    }
+
+    public func parentTrivia(context: TriviaPieceContext) -> Trivia? {
+        return parentRelationship(context: context)?.parent
+    }
+
+    public func indexInParent(context: TriviaPieceContext) -> Trivia.Index? {
+        return parentRelationship(context: context)?.index
+    }
+
+    public func previousTriviaPiece(context: TriviaPieceContext) -> TriviaPiece? {
+        guard let relationship = parentRelationship(context: context) else {
+            return nil
+        }
+        var resultIndex: Trivia.Index?
+        for index in relationship.parent.indices where index < relationship.index {
+            resultIndex = index
+        }
+        return resultIndex.map { relationship.parent[$0] }
+    }
+
+    public func nextTriviaPiece(context: TriviaPieceContext) -> TriviaPiece? {
+        guard let relationship = parentRelationship(context: context),
+            relationship.index ≠ relationship.parent.endIndex else {
+            return nil
+        }
+        return relationship.parent[relationship.parent.index(after: relationship.index)]
     }
 
     // MARK: - Parsing
