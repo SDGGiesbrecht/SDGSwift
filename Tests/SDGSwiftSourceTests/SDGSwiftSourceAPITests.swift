@@ -80,15 +80,46 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(highlighted.contains("internal identifier"))
         XCTAssert(highlighted.contains("domain.tld"))
 
+        var foundFunction = false
+        var foundSpaces = false
+        var foundNewline = false
+        var foundCodeDelimiters = false
         var foundColon = false
-        try FunctionalSyntaxScanner(checkSyntax: { syntax, context in
-            if let token = syntax as? TokenSyntax,
-                token.tokenKind == .colon {
-                foundColon = true
-                XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
-            }
-            return true
+        try FunctionalSyntaxScanner(
+            checkSyntax: { syntax, context in
+                if let token = syntax as? TokenSyntax,
+                    token.tokenKind == .colon {
+                    foundColon = true
+                    XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
+                }
+                return true
+        },
+            checkExtendedSyntax: { syntax, context in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .codeDelimiter {
+                    foundCodeDelimiters = true
+                    XCTAssertEqual(source[token.range(in: context)], "///")
+                }
+                return true
+        },
+            checkTrivia: { trivia, context in
+                if trivia.source() == " " {
+                    foundSpaces = true
+                    XCTAssertEqual(source[trivia.range(in: context)], " ")
+                }
+                return true
+        },
+            checkTriviaPiece: { trivia, context in
+                if case .newlines = trivia {
+                    foundNewline = true
+                    XCTAssertEqual(source[trivia.range(in: context)], "\n")
+                }
+                return true
         }).scan(syntax)
+        XCTAssertTrue(foundFunction)
+        XCTAssertTrue(foundSpaces)
+        XCTAssertTrue(foundNewline)
+        XCTAssertTrue(foundCodeDelimiters)
         XCTAssertTrue(foundColon)
     }
 
@@ -114,19 +145,19 @@ class SDGSwiftSourceAPITests : TestCase {
 
         var scanned: Set<String> = []
         let scanner = FunctionalSyntaxScanner(
-            checkSyntax: { syntax, context in
+            checkSyntax: { syntax, _ in
                 scanned.insert(syntax.source())
                 return true
         },
-            checkExtendedSyntax: { syntax in
+            checkExtendedSyntax: { syntax, _  in
                 scanned.insert(syntax.text)
                 return true
         },
-            checkTrivia: { trivia in
+            checkTrivia: { trivia, _ in
                 scanned.insert(trivia.source())
                 return true
         },
-            checkTriviaPiece: { trivia in
+            checkTriviaPiece: { trivia, _ in
                 scanned.insert(trivia.text)
                 return true
         },
