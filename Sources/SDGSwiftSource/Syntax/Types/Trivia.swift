@@ -44,12 +44,24 @@ extension Trivia {
 
     // MARK: - Syntax Tree
 
+    public func parentToken(context: TriviaContext) -> TokenSyntax? {
+        return context.token
+    }
+
     public func last() -> TriviaPiece? {
         var result: TriviaPiece?
         for element in self {
             result = element
         }
         return result
+    }
+
+    public func previousTrivia(context: TriviaContext) -> Trivia? {
+        return context.token.previousToken()?.trailingTrivia
+    }
+
+    public func nextTrivia(context: TriviaContext) -> Trivia? {
+        return context.token.nextToken()?.leadingTrivia
     }
 
     // MARK: - Syntax Highlighting
