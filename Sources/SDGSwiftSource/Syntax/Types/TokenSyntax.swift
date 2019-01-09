@@ -125,8 +125,9 @@ extension TokenSyntax {
     public func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
             var result: Syntax?
-            for sibling in relationship.parent.children where sibling.indexInParent < relationship.index {
-                result = sibling
+            for sibling in relationship.parent.children
+                where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
+                    result = sibling
             }
             return result
         }
@@ -143,8 +144,9 @@ extension TokenSyntax {
 
     public func nextToken() -> TokenSyntax? {
         func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-            for sibling in relationship.parent.children where sibling.indexInParent > relationship.index {
-                return sibling
+            for sibling in relationship.parent.children
+                where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
+                    return sibling
             }
             return nil
         }

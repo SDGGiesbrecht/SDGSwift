@@ -105,21 +105,19 @@ extension Syntax {
     }
 
     public func firstToken() -> TokenSyntax? {
-        if let token = self as? TokenSyntax {
+        if let token = self as? TokenSyntax,
+            token.isPresent {
             return token
         }
-        return children.first(where: { _ in true })?.firstToken()
+        return children.lazy.compactMap({ $0.firstToken() }).first
     }
 
     public func lastToken() -> TokenSyntax? {
-        if let token = self as? TokenSyntax {
+        if let token = self as? TokenSyntax,
+            token.isPresent {
             return token
         }
-        var lastChild: Syntax?
-        for child in children {
-            lastChild = child
-        }
-        return lastChild?.lastToken()
+        return children.reversed().lazy.compactMap({ $0.lastToken() }).first
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {
