@@ -34,6 +34,47 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
     /// The kind of the token.
     public let kind: ExtendedTokenKind
 
+    // MARK: - Syntax Tree
+
+    public func previousToken() -> ExtendedTokenSyntax? {
+        func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
+            var result: ExtendedSyntax?
+            for sibling in relationship.parent.children
+                where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
+                    result = sibling
+            }
+            return result
+        }
+
+        let sharedAncestor = ancestorRelationships().first(where: { relationship in
+            if previousSibling(of: relationship) ≠ nil {
+                return true
+            }
+            return false
+        })
+
+        return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
+    }
+
+    public func nextToken() -> ExtendedTokenSyntax? {
+        func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
+            for sibling in relationship.parent.children
+                where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
+                    return sibling
+            }
+            return nil
+        }
+
+        let sharedAncestor = ancestorRelationships().first(where: { relationship in
+            if nextSibling(of: relationship) ≠ nil {
+                return true
+            }
+            return false
+        })
+
+        return sharedAncestor.flatMap({ nextSibling(of: $0) })?.firstToken()
+    }
+
     // MARK: - ExtendedSyntax
 
     public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
