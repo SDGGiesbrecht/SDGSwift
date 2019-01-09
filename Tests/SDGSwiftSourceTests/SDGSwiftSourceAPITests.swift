@@ -147,7 +147,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertNil(syntax.ancestors().makeIterator().next())
 
         class CommentScanner : SyntaxScanner {
-            override func visit(_ node: ExtendedSyntax) -> Bool {
+            override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
                 if let comment = node as? LineDeveloperCommentSyntax {
                     XCTAssertNotNil(comment.content)
                 }
@@ -160,7 +160,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testLineDocumentationCommentSyntax() throws {
         let syntax = try SyntaxTreeParser.parse("//\u{2F} Documentation.")
         class DocumentationScanner : SyntaxScanner {
-            override func visit(_ node: ExtendedSyntax) -> Bool {
+            override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
                 if let comment = node as? LineDocumentationSyntax {
                     XCTAssertNotNil(comment.content)
                 }
