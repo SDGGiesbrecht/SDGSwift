@@ -102,7 +102,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .codeDelimiter {
                     foundCodeDelimiters = true
-                    XCTAssertEqual(source[token.range(in: context)], "///")
+                    XCTAssertEqual(source[token.range(in: context)], "`")
                 }
                 return true
         },
