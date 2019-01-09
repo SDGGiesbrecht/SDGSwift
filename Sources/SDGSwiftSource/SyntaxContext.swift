@@ -16,7 +16,7 @@ public class SyntaxContext {
 
     // MARK: - Initialization
 
-    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: ExtendedSyntaxContext?) {
+    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?) {
         self.fragmentContext = fragmentContext
         self.fragmentOffset = fragmentOffset
         self.parentContext = parentContext
@@ -26,5 +26,5 @@ public class SyntaxContext {
 
     internal let fragmentContext: String
     internal let fragmentOffset: Int
-    internal let parentContext: ExtendedSyntaxContext?
+    internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
 }

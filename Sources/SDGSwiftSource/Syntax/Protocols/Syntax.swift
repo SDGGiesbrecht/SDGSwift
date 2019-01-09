@@ -38,7 +38,16 @@ extension Syntax {
         let string = context.fragmentContext
         let utf8 = string.utf8
         let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
-        return utf8Index.samePosition(in: string.scalars)!
+        let fragmentIndex = utf8Index.samePosition(in: string.scalars)!
+
+        guard let parent = context.parentContext else {
+            return fragmentIndex
+        }
+        let code = parent.code
+        let codeFragmentContext = code.context
+        let codeOffset = codeFragmentContext.scalars.distance(from: code.range.lowerBound, to: fragmentIndex)
+        let codePosition = code.lowerBound(in: parent.context)
+        return parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
     }
 
     public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {

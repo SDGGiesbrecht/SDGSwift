@@ -59,7 +59,7 @@ open class SyntaxScanner {
             for child in children {
                 switch child {
                 case .syntax(let node):
-                    let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: context)
+                    let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: (code, context))
                     try scan(node, context: newContext)
                     offset += node.source().scalars.count
                 case .extendedSyntax(let node):
