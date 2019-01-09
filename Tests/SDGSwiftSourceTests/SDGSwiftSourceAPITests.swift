@@ -87,10 +87,14 @@ class SDGSwiftSourceAPITests : TestCase {
         var foundColon = false
         try FunctionalSyntaxScanner(
             checkSyntax: { syntax, context in
-                if let token = syntax as? TokenSyntax,
-                    token.tokenKind == .colon {
-                    foundColon = true
-                    XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
+                if let token = syntax as? TokenSyntax {
+                    if token.tokenKind == .colon {
+                        foundColon = true
+                        XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
+                    } else if token.tokenKind == .funcKeyword {
+                        foundFunction = true
+                        XCTAssertEqual(source[token.syntaxRange(in: context)], "func")
+                    }
                 }
                 return true
         },
