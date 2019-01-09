@@ -124,15 +124,11 @@ extension TokenSyntax {
 
     public func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-            // Scan, because there may be missing intervening indices.
-            var previousIndex = relationship.index
-            while previousIndex > 0 {
-                previousIndex −= 1
-                if let exists = relationship.parent.child(at: previousIndex) {
-                    return exists
-                }
+            var result: Syntax?
+            for sibling in relationship.parent.children where sibling.indexInParent < relationship.index {
+                result = sibling
             }
-            return nil
+            return result
         }
 
         let sharedAncestor = ancestorRelationships().first(where: { relationship in
@@ -147,13 +143,8 @@ extension TokenSyntax {
 
     public func nextToken() -> TokenSyntax? {
         func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-            var followingIndex = relationship.index
-            // Scan, because there may be missing intervening indices.
-            while followingIndex < 10 { // Larger than the largest known non‐list syntax node. (Lists likely have no entries marked as missing.)
-                followingIndex += 1
-                if let exists = relationship.parent.child(at: followingIndex) {
-                    return exists
-                }
+            for sibling in relationship.parent.children where sibling.indexInParent > relationship.index {
+                return sibling
             }
             return nil
         }
