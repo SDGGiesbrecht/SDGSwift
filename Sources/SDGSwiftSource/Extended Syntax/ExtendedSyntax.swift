@@ -17,7 +17,7 @@ import SDGLogic
 /// A syntax node.
 ///
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public class ExtendedSyntax : TextOutputStreamable {
+public class ExtendedSyntax : SyntaxNode, TextOutputStreamable {
 
     internal init(children: [ExtendedSyntax]) {
         self.children = children
@@ -50,13 +50,20 @@ public class ExtendedSyntax : TextOutputStreamable {
     }
     private func determineNestedPositions(offset: inout Int) {
         positionOffset = offset
-        for child in children {
+        for index in children.indices {
+            let child = children[index]
+            child.parent = self
+            child.indexInParent = index
+
             child.determineNestedPositions(offset: &offset)
             if let token = child as? ExtendedTokenSyntax {
                 offset = token.endPositionOffset
             }
         }
     }
+
+    public internal(set) weak var parent: ExtendedSyntax?
+    public internal(set) var indexInParent: Int = 0
 
     public var text: String {
         var result = ""
@@ -96,6 +103,59 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
         return lowerBound(in: context) ..< upperBound(in: context)
+    }
+
+    // MARK: - Syntax Tree
+
+    public func ancestors() -> AnySequence<ExtendedSyntax> {
+        if let parent = self.parent {
+            return AnySequence(sequence(first: parent, next: { $0.parent }))
+        } else {
+            return AnySequence([])
+        }
+    }
+
+    internal func ancestorRelationships() -> AnySequence<(parent: ExtendedSyntax, index: Int)> {
+        if let parentRelationship = self.parentRelationship {
+            return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
+        } else {
+            return AnySequence([])
+        }
+    }
+
+    internal func tokens() -> [ExtendedTokenSyntax] {
+        var tokens: [ExtendedTokenSyntax] = []
+        for child in children {
+            if let token = child as? ExtendedTokenSyntax {
+                tokens.append(token)
+            } else {
+                tokens.append(contentsOf: child.tokens())
+            }
+        }
+        return tokens
+    }
+
+    public func firstToken() -> ExtendedTokenSyntax? {
+        if let token = self as? ExtendedTokenSyntax,
+            ¬token.text.isEmpty {
+            return token
+        }
+        return children.lazy.compactMap({ $0.firstToken() }).first
+    }
+
+    public func lastToken() -> ExtendedTokenSyntax? {
+        if let token = self as? ExtendedTokenSyntax,
+            ¬token.text.isEmpty {
+            return token
+        }
+        return children.reversed().lazy.compactMap({ $0.lastToken() }).first
+    }
+
+    private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {
+        guard let parent = self.parent else {
+            return nil
+        }
+        return (parent, indexInParent)
     }
 
     // MARK: - Rendering
