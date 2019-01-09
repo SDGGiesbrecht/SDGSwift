@@ -16,15 +16,15 @@ public struct TriviaContext {
 
     // MARK: - Initialization
 
-    internal init(token: TokenSyntax, tokenContext: SyntaxContext, trailing: Bool) {
+    internal init(token: TokenSyntax, tokenContext: SyntaxContext, leading: Bool) {
         self.token = token
         self.tokenContext = tokenContext
-        self.trailing = trailing
+        self.leading = leading
     }
 
     // MARK: - Properties
 
-    private let token: TokenSyntax
-    private let tokenContext: SyntaxContext
-    private let trailing: Bool
+    internal let token: TokenSyntax
+    internal let tokenContext: SyntaxContext
+    internal let leading: Bool
 }

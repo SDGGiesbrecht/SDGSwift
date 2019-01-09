@@ -27,7 +27,7 @@ open class SyntaxScanner {
     }
     private func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
-            let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, trailing: false)
+            let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: true)
             try scan(token.leadingTrivia, context: leadingTriviaContext)
             if shouldExtend(token),
                 let extended = token.extended {
@@ -40,7 +40,7 @@ open class SyntaxScanner {
             } else {
                 _ = visit(token, context: context)
             }
-            let trailingTriviaContext = TriviaContext(token: token, tokenContext: context, trailing: true)
+            let trailingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: false)
             try scan(token.trailingTrivia, context: trailingTriviaContext)
         } else {
             if visit(node, context: context) {

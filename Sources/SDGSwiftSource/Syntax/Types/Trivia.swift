@@ -20,6 +20,28 @@ extension Trivia {
         return String(map({ $0.text }).joined())
     }
 
+    // MARK: - Location
+
+    public func lowerBound(in context: TriviaContext) -> String.ScalarView.Index {
+        if context.leading {
+            return context.token.lowerTriviaBound(in: context.tokenContext)
+        } else {
+            return context.token.upperSyntaxBound(in: context.tokenContext)
+        }
+    }
+
+    public func upperBound(in context: TriviaContext) -> String.ScalarView.Index {
+        if context.leading {
+            return context.token.lowerSyntaxBound(in: context.tokenContext)
+        } else {
+            return context.token.upperTriviaBound(in: context.tokenContext)
+        }
+    }
+
+    public func range(in context: TriviaContext) -> Range<String.ScalarView.Index> {
+        return lowerBound(in: context) ..< upperBound(in: context)
+    }
+
     // MARK: - Syntax Tree
 
     public func last() -> TriviaPiece? {
