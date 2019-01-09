@@ -55,18 +55,18 @@ open class SyntaxScanner {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
             let children = try code.syntax() {
-            let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: context)
             var offset = 0
             for child in children {
                 switch child {
                 case .syntax(let node):
+                    let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: context)
                     try scan(node, context: newContext)
                     offset += node.source().scalars.count
                 case .extendedSyntax(let node):
-                    try scan(node, context: .fragment(offset: offset, parent: newContext))
+                    try scan(node, context: .fragment(code, context: context, offset: offset))
                     offset += node.text.scalars.count
                 case .trivia(let node, let siblings, let index):
-                    try scan(node, siblings: siblings, index: index, context: .fragment(offset: offset, parent: newContext))
+                    try scan(node, siblings: siblings, index: index, context: .fragment(code, context: context, offset: offset))
                     offset += node.text.scalars.count
                 }
             }
@@ -91,7 +91,7 @@ open class SyntaxScanner {
 
     private func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: TriviaPieceContext) throws {
         if visit(piece, context: context) {
-            let newContext = ExtendedSyntaxContext.trivia(context)
+            let newContext = ExtendedSyntaxContext.trivia(piece, context: context)
             try scan(piece.syntax(siblings: siblings, index: index), context: newContext)
         }
     }

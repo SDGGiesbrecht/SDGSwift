@@ -27,12 +27,4 @@ public class SyntaxContext {
     internal let fragmentContext: String
     internal let fragmentOffset: Int
     internal let parentContext: ExtendedSyntaxContext?
-
-    internal var totalOffset: Int {
-        var result = fragmentOffset
-        if let parent = parentContext {
-            result += parent.totalOffset
-        }
-        return result
-    }
 }

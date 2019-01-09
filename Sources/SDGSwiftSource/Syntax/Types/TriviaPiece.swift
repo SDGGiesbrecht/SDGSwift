@@ -33,9 +33,9 @@ extension TriviaPiece {
                 location = source.scalars.index(location, offsetBy: trivia[predecessor].text.scalars.count)
             }
             return location
-        case .fragment(offset: let offset, parent: let parent):
-            #warning("Not implemented yet.")
-            fatalError()
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
     }
 
@@ -44,9 +44,9 @@ extension TriviaPiece {
         case .trivia(_, index: _, parent: let parent):
             let source = parent.tokenContext.fragmentContext
             return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-        case .fragment(offset: let offset, parent: let parent):
-            #warning("Not implemented yet.")
-            fatalError()
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
     }
     public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {

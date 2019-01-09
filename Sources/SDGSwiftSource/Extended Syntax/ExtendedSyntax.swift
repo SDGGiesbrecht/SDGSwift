@@ -64,6 +64,40 @@ public class ExtendedSyntax : TextOutputStreamable {
         return result
     }
 
+    // MARK: - Location
+
+    public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(let trivia, context: let triviaContext):
+            let sourceStart = trivia.lowerBound(in: triviaContext)
+            return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
+        case .token(let token, context: let tokenContext):
+            let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+            return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+        }
+    }
+
+    public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(let trivia, context: let triviaContext):
+            let sourceStart = trivia.lowerBound(in: triviaContext)
+            return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        case .token(let token, context: let tokenContext):
+            let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+            return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+        }
+    }
+
+    public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerBound(in: context) ..< upperBound(in: context)
+    }
+
     // MARK: - Rendering
 
     internal var renderedHtmlElement: String? {
