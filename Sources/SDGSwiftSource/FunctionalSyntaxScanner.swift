@@ -18,6 +18,8 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
     // MARK: - Initialization
 
     /// Creates a syntax scanner with behaviour defined by the provided closures.
+    ///
+    /// See the corresponding methods of `SyntaxScanner` for documentation relating to each closure.
     public init(
         checkSyntax: @escaping (Syntax, SyntaxContext) -> Bool = { _, _ in true },
         checkExtendedSyntax: @escaping (ExtendedSyntax, ExtendedSyntaxContext) -> Bool = { _, _ in true },
