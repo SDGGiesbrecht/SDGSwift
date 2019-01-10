@@ -83,6 +83,7 @@ class SDGSwiftSourceAPITests : TestCase {
         var foundFunction = false
         var foundSpaces = false
         var foundNewline = false
+        var foundCode = false
         var foundCodeDelimiters = false
         var foundColon = false
         try FunctionalSyntaxScanner(
@@ -103,6 +104,9 @@ class SDGSwiftSourceAPITests : TestCase {
                     token.kind == .codeDelimiter {
                     foundCodeDelimiters = true
                     XCTAssertEqual(source[token.range(in: context)], "`")
+                } else if syntax is InlineCodeSyntax {
+                    foundCode = true
+                    XCTAssertEqual(source[syntax.range(in: context)], "`selector(style:notation:)`")
                 }
                 return true
         },
@@ -123,8 +127,23 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(foundFunction)
         XCTAssertTrue(foundSpaces)
         XCTAssertTrue(foundNewline)
+        XCTAssertTrue(foundCode)
         XCTAssertTrue(foundCodeDelimiters)
         XCTAssertTrue(foundColon)
+
+        let moreSource = "let string = \u{22}string\u{22}"
+        let moreSyntax = try SyntaxTreeParser.parse(moreSource)
+        var foundQuotationMark = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .quotationMark {
+                    foundQuotationMark = true
+                    XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
+                }
+                return true
+        }).scan(moreSyntax)
+        XCTAssertTrue(foundQuotationMark)
     }
 
     func testCSS() {

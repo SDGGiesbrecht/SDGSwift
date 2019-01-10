@@ -41,7 +41,7 @@ public class ExtendedSyntax : TextOutputStreamable {
         if let token = self as? ExtendedTokenSyntax {
             return positionOffset + token.text.scalars.count
         } else {
-            return children.last?.endPositionOffset ?? positionOffset
+            return children.last?.endPositionOffset ?? positionOffset // @exempt(from: tests) Shouldn’t be childless.
         }
     }
     internal func determinePositions() {
