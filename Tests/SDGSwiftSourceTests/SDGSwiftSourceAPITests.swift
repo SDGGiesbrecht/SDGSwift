@@ -131,19 +131,25 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(foundCodeDelimiters)
         XCTAssertTrue(foundColon)
 
-        let moreSource = "let string = \u{22}string\u{22}"
+        let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
         let moreSyntax = try SyntaxTreeParser.parse(moreSource)
         var foundQuotationMark = false
+        var foundComment = false
         try FunctionalSyntaxScanner(
             checkExtendedSyntax: { syntax, context in
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .quotationMark {
                     foundQuotationMark = true
                     XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
+                } else if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .commentText {
+                    foundComment = true
+                    XCTAssertEqual(moreSource[token.range(in: context)], "Comment.")
                 }
                 return true
         }).scan(moreSyntax)
         XCTAssertTrue(foundQuotationMark)
+        XCTAssertTrue(foundComment)
     }
 
     func testCSS() {

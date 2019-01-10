@@ -97,7 +97,7 @@ public class ExtendedSyntax : TextOutputStreamable {
             return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
         case .fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
-            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset + text.scalars.count)
         }
     }
 
