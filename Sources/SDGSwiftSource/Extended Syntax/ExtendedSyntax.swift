@@ -115,24 +115,18 @@ public class ExtendedSyntax : TextOutputStreamable {
         }
     }
 
+    private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {
+        guard let parent = self.parent else {
+            return nil
+        }
+        return (parent, indexInParent)
+    }
     internal func ancestorRelationships() -> AnySequence<(parent: ExtendedSyntax, index: Int)> {
         if let parentRelationship = self.parentRelationship {
             return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
         } else {
             return AnySequence([])
         }
-    }
-
-    internal func tokens() -> [ExtendedTokenSyntax] {
-        var tokens: [ExtendedTokenSyntax] = []
-        for child in children {
-            if let token = child as? ExtendedTokenSyntax {
-                tokens.append(token)
-            } else {
-                tokens.append(contentsOf: child.tokens())
-            }
-        }
-        return tokens
     }
 
     public func firstToken() -> ExtendedTokenSyntax? {
@@ -149,13 +143,6 @@ public class ExtendedSyntax : TextOutputStreamable {
             return token
         }
         return children.reversed().lazy.compactMap({ $0.lastToken() }).first
-    }
-
-    private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {
-        guard let parent = self.parent else {
-            return nil
-        }
-        return (parent, indexInParent)
     }
 
     // MARK: - Rendering

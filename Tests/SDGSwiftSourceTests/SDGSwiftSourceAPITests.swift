@@ -377,5 +377,24 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertEqual(incomplete.lastToken()?.tokenKind, .rightParen)
         XCTAssertEqual(incomplete.identifier.nextToken()?.tokenKind, .rightParen)
         XCTAssertEqual(incomplete.signature.input.rightParen.previousToken()?.tokenKind, .identifier("identifier"))
+
+        let stringSource = "let string = \u{22}string\u{22}"
+        let stringSyntax = try SyntaxTreeParser.parse(stringSource)
+        var foundQuotationMark = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .quotationMark {
+                    foundQuotationMark = true
+                    XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}string\u{22}" }))
+                    for _ in token.ancestors() {}
+                } else if let literal = syntax as? StringLiteralSyntax {
+                    XCTAssertNil(literal.ancestors().makeIterator().next())
+                    XCTAssertEqual(literal.firstToken()?.text, "\u{22}")
+                    XCTAssertEqual(literal.lastToken()?.text, "\u{22}")
+                }
+                return true
+        }).scan(stringSyntax)
+        XCTAssert(foundQuotationMark)
     }
 }
