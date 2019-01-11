@@ -14,11 +14,15 @@
 
 import SDGLogic
 
-extension EnumCaseDeclSyntax : AccessControlled, APIDeclaration, Attributed {
+extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     internal func caseAPI() -> [CaseAPI] {
+        if ¬isVisible() {
+            return []
+        }
+
         var list: [CaseAPI] = []
-        for element in elements where ¬element.identifier.text.hasPrefix("_") {
+        for element in elements where ¬element.isHidden {
             list.append(CaseAPI(
                 documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
                 declaration: SyntaxFactory.makeEnumCaseDecl(
@@ -50,5 +54,15 @@ extension EnumCaseDeclSyntax : AccessControlled, APIDeclaration, Attributed {
 
     internal func identifierList() -> Set<String> {
         return Set(elements.lazy.map({ $0.identifier.text }))
+    }
+
+    // MARK: - APISyntax
+
+    internal var isPublic: Bool {
+        return true
+    }
+
+    internal var isHidden: Bool {
+        return elements.allSatisfy({ $0.isHidden })
     }
 }

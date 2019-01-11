@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension EnumCaseElementSyntax {
+extension EnumCaseElementSyntax : Hidable {
 
     internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
         return SyntaxFactory.makeEnumCaseElement(
@@ -32,5 +32,11 @@ extension EnumCaseElementSyntax {
             associatedValue: newAssociatedValue,
             rawValue: nil,
             trailingComma: nil)
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return identifier
     }
 }

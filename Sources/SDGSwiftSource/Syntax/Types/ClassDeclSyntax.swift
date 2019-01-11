@@ -16,7 +16,7 @@ extension ClassDeclSyntax : AccessControlled, Attributed, Constrained, Hidable, 
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax {
+    var hidabilityIdentifier: TokenSyntax? {
         return identifier
     }
 

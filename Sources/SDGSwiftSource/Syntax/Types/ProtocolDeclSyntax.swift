@@ -14,15 +14,13 @@
 
 import SDGLogic
 
-extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained {
+extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Hidable {
 
     internal var protocolAPI: ProtocolAPI? {
-        if ¬isPublic ∨ isUnavailable() {
+        if ¬isVisible() {
             return nil
         }
-        if identifier.text.hasPrefix("_") {
-            return nil
-        }
+
         var children = apiChildren()
         if let conformances = inheritanceClause?.conformances {
             children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
@@ -31,6 +29,12 @@ extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, Attributed, Con
             documentation: documentation,
             declaration: self,
             children: children)
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return identifier
     }
 
     // MARK: - APIDeclaration

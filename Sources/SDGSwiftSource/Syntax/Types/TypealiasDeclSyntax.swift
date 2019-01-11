@@ -16,7 +16,7 @@ extension TypealiasDeclSyntax : Constrained, Generic, Hidable, TypeDeclaration {
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax {
+    var hidabilityIdentifier: TokenSyntax? {
         return identifier
     }
 

@@ -15,10 +15,10 @@
 import SDGControlFlow
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Member, OverloadableAPIDeclaration {
+extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration {
 
     internal func variableAPI() -> [VariableAPI] {
-        if ¬isPublic ∨ isUnavailable() {
+        if ¬isVisible() {
             return []
         }
 
@@ -77,6 +77,12 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attri
             }
         }
         return Set(identifiers.joined())
+    }
+
+    // MARK: - APISyntax
+
+    internal var isHidden: Bool {
+        return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
     }
 
     // MARK: - OverloadableAPIDeclaration

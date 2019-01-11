@@ -18,7 +18,7 @@ extension StructDeclSyntax : AccessControlled, Attributed, Constrained, Generic,
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax {
+    var hidabilityIdentifier: TokenSyntax? {
         return identifier
     }
 

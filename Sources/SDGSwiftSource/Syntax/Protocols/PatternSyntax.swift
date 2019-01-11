@@ -17,13 +17,25 @@ import SDGLogic
 
 extension PatternSyntax {
 
+    internal var concreteSyntaxIsHidden: Bool {
+        switch self {
+        case let identifier as IdentifierPatternSyntax:
+            return identifier.isHidden
+        case let tuple as TuplePatternSyntax:
+            return tuple.elements.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
+        default: // @exempt(from: tests) Should never occur.
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified binding pattern: \(Swift.type(of: self))")
+            }
+            return false
+        }
+    }
+
     internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
         var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
         switch self {
         case let identifier as IdentifierPatternSyntax:
-            if ¬identifier.identifier.text.hasPrefix("_") {
-                list.append((identifier: identifier, indexPath: []))
-            }
+            list.append((identifier: identifier, indexPath: []))
         case let tuple as TuplePatternSyntax:
             var index = 0
             for element in tuple.elements {
@@ -41,7 +53,7 @@ extension PatternSyntax {
                 print("Unidentified binding pattern: \(Swift.type(of: self))")
             }
         }
-        return list
+        return list.filter({ ¬$0.identifier.isHidden })
     }
 
     internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {

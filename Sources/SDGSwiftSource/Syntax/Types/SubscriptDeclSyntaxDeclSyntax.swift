@@ -14,12 +14,13 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Constrained, Generic, Member, OverloadableAPIDeclaration {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
 
     internal var subscriptAPI: SubscriptAPI? {
-        if ¬isPublic ∨ isUnavailable() {
+        if ¬isVisible() {
             return nil
         }
+
         return SubscriptAPI(
             documentation: documentation,
             declaration: self)
@@ -64,6 +65,12 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attr
 
     internal func identifierList() -> Set<String> {
         return indices.identifierList(labelBehaviour: .subscript)
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return indices.parameterList.first?.firstName
     }
 
     // MARK: - OverloadableAPIDeclaration

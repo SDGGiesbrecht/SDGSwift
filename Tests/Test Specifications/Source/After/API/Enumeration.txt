@@ -8,7 +8,6 @@ EnumerationWithAssociatedValues • enum EnumerationWithAssociatedValues
  two(_, _) • case two(Bool, Bool)
 EnumerationWithAvailablitiyRestrictions • enum EnumerationWithAvailablitiyRestrictions
  new • case new
- old • @available(*, unavailable, renamed: "new") case old
 IndirectEnumeration • enum IndirectEnumeration
  indirectCase • case indirectCase
 RawEnumeration • enum RawEnumeration

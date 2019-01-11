@@ -16,7 +16,7 @@ extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, Constrained, 
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax {
+    var hidabilityIdentifier: TokenSyntax? {
         return identifier
     }
 

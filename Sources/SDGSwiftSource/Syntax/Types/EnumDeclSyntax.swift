@@ -18,7 +18,7 @@ extension EnumDeclSyntax : AccessControlled, Attributed, Constrained, Generic, H
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax {
+    var hidabilityIdentifier: TokenSyntax? {
         return identifier
     }
 

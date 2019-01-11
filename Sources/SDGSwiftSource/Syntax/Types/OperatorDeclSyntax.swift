@@ -12,10 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension OperatorDeclSyntax : APIDeclaration, Attributed {
+import SDGLogic
+
+extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     internal func operatorAPI() -> OperatorAPI? {
-        if isUnavailable() {
+        if ¬isVisible() {
             return nil
         }
         return OperatorAPI(documentation: documentation, declaration: self)
@@ -43,5 +45,15 @@ extension OperatorDeclSyntax : APIDeclaration, Attributed {
 
     internal func identifierList() -> Set<String> {
         return [identifier.text]
+    }
+
+    // MARK: - APISyntax
+
+    var isPublic: Bool {
+        return true
+    }
+
+    internal var isHidden: Bool {
+        return false
     }
 }

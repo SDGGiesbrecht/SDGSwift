@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension IdentifierPatternSyntax {
+extension IdentifierPatternSyntax : Hidable {
 
     internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
         return SyntaxFactory.makeIdentifierPattern(
@@ -27,5 +27,11 @@ extension IdentifierPatternSyntax {
     internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
         return SyntaxFactory.makeIdentifierPattern(
             identifier: identifier)
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return identifier
     }
 }

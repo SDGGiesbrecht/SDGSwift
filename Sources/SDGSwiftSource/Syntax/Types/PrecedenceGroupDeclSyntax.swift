@@ -12,10 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension PrecedenceGroupDeclSyntax : APIDeclaration, Attributed {
+import SDGLogic
+
+extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hidable {
 
     internal func precedenceAPI() -> PrecedenceAPI? {
-        if isUnavailable() {
+        if ¬isVisible() {
             return nil
         }
         return PrecedenceAPI(documentation: documentation, declaration: self)
@@ -59,4 +61,15 @@ extension PrecedenceGroupDeclSyntax : APIDeclaration, Attributed {
         return [identifier.text]
     }
 
+    // MARK: - APISyntax
+
+    internal var isPublic: Bool {
+        return true
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return identifier
+    }
 }
