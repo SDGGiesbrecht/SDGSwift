@@ -171,6 +171,7 @@ class SDGSwiftSourceAPITests : TestCase {
                     ¬trivia.text.isEmpty {
                     foundTriviaFragment = true
                     XCTAssertEqual(evenMoreSource[trivia.range(in: context)], "// Comment.")
+                    XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
                 }
                 return true
         }).scan(evenMoreSyntax)

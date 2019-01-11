@@ -46,7 +46,7 @@ extension TriviaPiece {
         case .trivia(_, index: _, parent: let parent):
             let source = parent.tokenContext.fragmentContext
             return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case .fragment(_, context: let codeContext, offset: _):
             return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
         }
     }
