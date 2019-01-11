@@ -47,8 +47,7 @@ extension TriviaPiece {
             let source = parent.tokenContext.fragmentContext
             return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
         case .fragment(let code, context: let codeContext, offset: let offset):
-            let fragmentLocation = code.lowerBound(in: codeContext)
-            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+            return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
         }
     }
     public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
