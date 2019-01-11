@@ -200,8 +200,6 @@ extension Syntax {
             return element.parseAPI()
         }
         switch self {
-        case let `extension` as ExtensionDeclSyntax:
-            return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
             return conditionallyCompiledSection.conditionalAPI
         default:
