@@ -21,7 +21,7 @@ enum ̲I̲n̲t̲e̲r̲n̲a̲l̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
 public ̲enum ̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲ ̲{
  ̲ ̲ ̲ ̲case ̲a̲
  ̲ ̲ ̲ ̲case ̲b̲
- ̲ ̲ ̲ ̲case ̲c̲
+ ̲ ̲ ̲ ̲case ̲c̲, ̲d̲
 }
 
 public ̲enum ̲R̲a̲w̲E̲n̲u̲m̲e̲r̲a̲t̲i̲o̲n̲: ̲String ̲{

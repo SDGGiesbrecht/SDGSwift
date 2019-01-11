@@ -2,6 +2,7 @@ Enumeration • enum Enumeration
  a • case a
  b • case b
  c • case c
+ d • case d
 EnumerationWithAssociatedValues • enum EnumerationWithAssociatedValues
  none • case none
  one(_) • case one(Bool)
