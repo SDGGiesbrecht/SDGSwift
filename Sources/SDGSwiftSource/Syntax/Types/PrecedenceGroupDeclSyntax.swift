@@ -56,11 +56,11 @@ extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hid
 
     // MARK: - APISyntax
 
-    internal var isPublic: Bool {
+    func isPublic() -> Bool {
         return true
     }
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
     }
 

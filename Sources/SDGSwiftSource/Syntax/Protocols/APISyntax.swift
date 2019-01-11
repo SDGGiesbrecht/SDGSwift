@@ -15,19 +15,21 @@
 import SDGLogic
 
 internal protocol APISyntax : Syntax {
-    #warning("This is O(n). Make it a method.")
-    var isPublic: Bool { get }
+    func isPublic() -> Bool
     func isUnavailable() -> Bool
     var isHidden: Bool { get }
-
-    #warning("Don’t keep this.")
-    func selfParsedAPI() -> [APIElement]
+    var shouldLookForChildren: Bool { get }
+    func createAPI(children: [APIElement]) -> [APIElement]
 }
 
 extension APISyntax {
 
     internal func isVisible() -> Bool {
-        return isPublic ∧ ¬isUnavailable() ∧ ¬isHidden
+        return isPublic() ∧ ¬isUnavailable() ∧ ¬isHidden
+    }
+
+    internal var shouldLookForChildren: Bool {
+        return false
     }
 
     internal func parseAPI() -> [APIElement] {
@@ -35,6 +37,7 @@ extension APISyntax {
             return []
         }
 
-        return selfParsedAPI()
+        let children = shouldLookForChildren ? apiChildren() : []
+        return createAPI(children: children)
     }
 }

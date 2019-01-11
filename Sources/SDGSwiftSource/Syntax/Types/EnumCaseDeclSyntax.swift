@@ -40,7 +40,7 @@ extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     // MARK: - APISyntax
 
-    internal var isPublic: Bool {
+    internal func isPublic() -> Bool {
         return true
     }
 
@@ -48,7 +48,7 @@ extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
         return elements.allSatisfy({ $0.isHidden })
     }
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         var list: [APIElement] = []
         for element in elements where ¬element.isHidden {
             list.append(.case(CaseAPI(

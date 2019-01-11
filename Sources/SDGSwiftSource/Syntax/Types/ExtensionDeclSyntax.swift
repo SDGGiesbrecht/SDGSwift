@@ -18,16 +18,20 @@ extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained {
 
     // MARK: - APISyntax
 
-    var isPublic: Bool {
+    internal func isPublic() -> Bool {
         return true
     }
 
-    var isHidden: Bool {
+    internal var isHidden: Bool {
         return false
     }
 
-    func selfParsedAPI() -> [APIElement] {
-        var children = apiChildren()
+    internal var shouldLookForChildren: Bool {
+        return true
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+        var children = children
         if let conformances = inheritanceClause?.conformances {
             children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
         }

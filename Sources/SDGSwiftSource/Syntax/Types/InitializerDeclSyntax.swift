@@ -57,7 +57,7 @@ extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, A
 
     // MARK: - APISyntax
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.initializer(InitializerAPI(documentation: documentation, declaration: self))]
     }
 

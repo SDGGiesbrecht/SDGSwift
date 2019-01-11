@@ -42,7 +42,7 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     // MARK: - APISyntax
 
-    var isPublic: Bool {
+    func isPublic() -> Bool {
         return true
     }
 
@@ -50,7 +50,7 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
         return false
     }
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.operator(OperatorAPI(documentation: documentation, declaration: self))]
     }
 }

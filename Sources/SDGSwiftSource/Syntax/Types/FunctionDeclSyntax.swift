@@ -50,7 +50,7 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
 
     // MARK: - APISyntax
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.function(FunctionAPI(documentation: documentation, declaration: self))]
     }
 

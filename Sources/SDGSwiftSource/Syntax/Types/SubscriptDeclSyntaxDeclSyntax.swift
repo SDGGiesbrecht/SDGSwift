@@ -59,7 +59,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APIS
 
     // MARK: - APISyntax
 
-    internal func selfParsedAPI() -> [APIElement] {
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.subscript(SubscriptAPI(
             documentation: documentation,
             declaration: self))]
