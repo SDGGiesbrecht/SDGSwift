@@ -88,6 +88,7 @@ class SDGSwiftSourceAPITests : TestCase {
         var foundColon = false
         var foundPreviousTrivia = false
         var foundNextTrivia = false
+        var foundDocumentationComment = false
         try FunctionalSyntaxScanner(
             checkSyntax: { syntax, context in
                 if let token = syntax as? TokenSyntax {
@@ -130,6 +131,10 @@ class SDGSwiftSourceAPITests : TestCase {
                     if trivia.parentTrivia(context: context)?.count == 2 {
                         XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
                     }
+                } else if case .docLineComment = trivia {
+                    foundDocumentationComment = true
+                    XCTAssertEqual(trivia.nextTriviaPiece(context: context)?.text, "\n")
+                    XCTAssertEqual(trivia.parentTrivia(context: context)?.indices.first, trivia.indexInParent(context: context))
                 }
                 return true
         }).scan(syntax)
@@ -141,6 +146,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(foundColon)
         XCTAssertTrue(foundPreviousTrivia)
         XCTAssertTrue(foundNextTrivia)
+        XCTAssertTrue(foundDocumentationComment)
 
         let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
         let moreSyntax = try SyntaxTreeParser.parse(moreSource)
@@ -172,6 +178,9 @@ class SDGSwiftSourceAPITests : TestCase {
                     foundTriviaFragment = true
                     XCTAssertEqual(evenMoreSource[trivia.range(in: context)], "// Comment.")
                     XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
+                    XCTAssertNil(trivia.parentTrivia(context: context))
+                    XCTAssertNil(trivia.nextTriviaPiece(context: context))
+                    XCTAssertNil(trivia.previousTriviaPiece(context: context))
                 }
                 return true
         }).scan(evenMoreSyntax)
