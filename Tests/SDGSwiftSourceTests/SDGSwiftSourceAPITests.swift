@@ -115,12 +115,14 @@ class SDGSwiftSourceAPITests : TestCase {
                     foundSpaces = true
                     XCTAssertEqual(source[trivia.range(in: context)], " ")
                 }
+                XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
                 return true
         },
             checkTriviaPiece: { trivia, context in
                 if case .newlines = trivia {
                     foundNewline = true
                     XCTAssertEqual(source[trivia.range(in: context)], "\n")
+                    XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
                 }
                 return true
         }).scan(syntax)
