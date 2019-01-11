@@ -16,24 +16,6 @@ import SDGLogic
 
 extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
-    internal func caseAPI() -> [CaseAPI] {
-        if ¬isVisible() {
-            return []
-        }
-
-        var list: [CaseAPI] = []
-        for element in elements where ¬element.isHidden {
-            list.append(CaseAPI(
-                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
-                declaration: SyntaxFactory.makeEnumCaseDecl(
-                    attributes: attributes,
-                    modifiers: modifiers,
-                    caseKeyword: caseKeyword,
-                    elements: SyntaxFactory.makeEnumCaseElementList([element]))))
-        }
-        return list
-    }
-
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
@@ -64,5 +46,19 @@ extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     internal var isHidden: Bool {
         return elements.allSatisfy({ $0.isHidden })
+    }
+
+    internal func selfParsedAPI() -> [APIElement] {
+        var list: [APIElement] = []
+        for element in elements where ¬element.isHidden {
+            list.append(.case(CaseAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeEnumCaseDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    caseKeyword: caseKeyword,
+                    elements: SyntaxFactory.makeEnumCaseElementList([element])))))
+        }
+        return list
     }
 }

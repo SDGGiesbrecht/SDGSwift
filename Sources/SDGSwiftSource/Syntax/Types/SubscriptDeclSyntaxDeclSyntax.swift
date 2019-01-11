@@ -16,16 +16,6 @@ import SDGLogic
 
 extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
 
-    internal var subscriptAPI: SubscriptAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-
-        return SubscriptAPI(
-            documentation: documentation,
-            declaration: self)
-    }
-
     // MARK: - Accessor
 
     var keyword: TokenSyntax {
@@ -65,6 +55,14 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APIS
 
     internal func identifierList() -> Set<String> {
         return indices.identifierList(labelBehaviour: .subscript)
+    }
+
+    // MARK: - APISyntax
+
+    internal func selfParsedAPI() -> [APIElement] {
+        return [.subscript(SubscriptAPI(
+            documentation: documentation,
+            declaration: self))]
     }
 
     // MARK: - Hidable

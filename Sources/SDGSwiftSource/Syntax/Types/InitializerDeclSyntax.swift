@@ -16,14 +16,6 @@ import SDGLogic
 
 extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, Attributed, Constrained, Generic, Hidable, OverloadableAPIDeclaration {
 
-    internal var initializerAPI: InitializerAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-
-        return InitializerAPI(documentation: documentation, declaration: self)
-    }
-
     // MARK: - Hidable
 
     internal var hidabilityIdentifier: TokenSyntax? {
@@ -61,6 +53,12 @@ extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, A
 
     internal func identifierList() -> Set<String> {
         return parameters.identifierList(labelBehaviour: .function)
+    }
+
+    // MARK: - APISyntax
+
+    internal func selfParsedAPI() -> [APIElement] {
+        return [.initializer(InitializerAPI(documentation: documentation, declaration: self))]
     }
 
     // MARK: - OverloadableAPIDeclaration

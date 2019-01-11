@@ -17,24 +17,6 @@ import SDGLogic
 
 extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration {
 
-    internal func variableAPI() -> [VariableAPI] {
-        if ¬isVisible() {
-            return []
-        }
-
-        var list: [VariableAPI] = []
-        for separate in bindings.flattenedForAPI() {
-            list.append(VariableAPI(
-                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
-                declaration: SyntaxFactory.makeVariableDecl(
-                    attributes: attributes,
-                    modifiers: modifiers,
-                    letOrVarKeyword: letOrVarKeyword,
-                    bindings: separate)))
-        }
-        return list
-    }
-
     // MARK: - Accessor
 
     var keyword: TokenSyntax {
@@ -83,6 +65,20 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
 
     internal var isHidden: Bool {
         return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
+    }
+
+    internal func selfParsedAPI() -> [APIElement] {
+        var list: [APIElement] = []
+        for separate in bindings.flattenedForAPI() {
+            list.append(.variable(VariableAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeVariableDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    letOrVarKeyword: letOrVarKeyword,
+                    bindings: separate))))
+        }
+        return list
     }
 
     // MARK: - OverloadableAPIDeclaration

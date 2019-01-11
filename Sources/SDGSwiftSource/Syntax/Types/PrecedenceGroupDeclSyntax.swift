@@ -16,13 +16,6 @@ import SDGLogic
 
 extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hidable {
 
-    internal func precedenceAPI() -> PrecedenceAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-        return PrecedenceAPI(documentation: documentation, declaration: self)
-    }
-
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
@@ -65,6 +58,10 @@ extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hid
 
     internal var isPublic: Bool {
         return true
+    }
+
+    internal func selfParsedAPI() -> [APIElement] {
+        return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
     }
 
     // MARK: - Hidable

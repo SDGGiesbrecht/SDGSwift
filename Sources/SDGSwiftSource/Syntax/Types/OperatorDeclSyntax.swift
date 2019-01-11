@@ -16,13 +16,6 @@ import SDGLogic
 
 extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
-    internal func operatorAPI() -> OperatorAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-        return OperatorAPI(documentation: documentation, declaration: self)
-    }
-
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> OperatorDeclSyntax {
@@ -55,5 +48,9 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     internal var isHidden: Bool {
         return false
+    }
+
+    internal func selfParsedAPI() -> [APIElement] {
+        return [.operator(OperatorAPI(documentation: documentation, declaration: self))]
     }
 }

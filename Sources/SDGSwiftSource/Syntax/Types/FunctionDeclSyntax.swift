@@ -17,13 +17,6 @@ import SDGCollections
 
 extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
 
-    internal func functionAPI() -> FunctionAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-        return FunctionAPI(documentation: documentation, declaration: self)
-    }
-
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
@@ -53,6 +46,12 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
 
     internal func identifierList() -> Set<String> {
         return Set([identifier.text]) ∪ signature.identifierList(labelBehaviour: identifier.isOperator ? .operator : .function)
+    }
+
+    // MARK: - APISyntax
+
+    internal func selfParsedAPI() -> [APIElement] {
+        return [.function(FunctionAPI(documentation: documentation, declaration: self))]
     }
 
     // MARK: - Hidable

@@ -19,11 +19,22 @@ internal protocol APISyntax : Syntax {
     var isPublic: Bool { get }
     func isUnavailable() -> Bool
     var isHidden: Bool { get }
+
+    #warning("Don’t keep this.")
+    func selfParsedAPI() -> [APIElement]
 }
 
 extension APISyntax {
 
     internal func isVisible() -> Bool {
         return isPublic ∧ ¬isUnavailable() ∧ ¬isHidden
+    }
+
+    internal func parseAPI() -> [APIElement] {
+        if ¬isVisible() {
+            return []
+        }
+
+        return selfParsedAPI()
     }
 }

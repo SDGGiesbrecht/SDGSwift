@@ -25,21 +25,6 @@ internal protocol TypeDeclaration : AccessControlled, Attributed, Generic, APISy
 
 extension TypeDeclaration {
 
-    internal var typeAPI: TypeAPI? {
-        if ¬isVisible() {
-            return nil
-        }
-
-        var children = apiChildren()
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
-        return TypeAPI(
-            documentation: documentation,
-            declaration: self,
-            children: children)
-    }
-
     internal func identifierList() -> Set<String> {
         var result: Set<String> = [identifier.text]
         if let genericParameters = genericParameterClause {
@@ -52,5 +37,18 @@ extension TypeDeclaration {
             result ∪= genericParameters.identifierList()
         }
         return result
+    }
+
+    // MARK: - APISyntax
+
+    internal func selfParsedAPI() -> [APIElement] {
+        var children = apiChildren()
+        if let conformances = inheritanceClause?.conformances {
+            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
+        return [.type(TypeAPI(
+            documentation: documentation,
+            declaration: self,
+            children: children))]
     }
 }
