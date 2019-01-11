@@ -25,8 +25,8 @@ public indirect enum TriviaPieceContext {
         switch self {
         case .trivia(_, index: _, parent: let parent):
             return parent.tokenContext.fragmentContext
-        case .fragment(let fragment, context: _, offset: _):
-            return fragment.context
+        case .fragment(_, context: let context, offset: _):
+            return context.source
         }
     }
 }

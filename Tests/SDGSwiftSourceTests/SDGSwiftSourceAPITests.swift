@@ -171,7 +171,15 @@ class SDGSwiftSourceAPITests : TestCase {
         let evenMoreSource = "/// ```swift\n///\n/// // Comment.\n///\n/// ```\nlet y = 0"
         let evenMoreSyntax = try SyntaxTreeParser.parse(evenMoreSource)
         var foundTriviaFragment = false
+        var foundCommentSyntax = false
         try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if syntax is LineDeveloperCommentSyntax {
+                    foundCommentSyntax = true
+                    XCTAssertEqual(evenMoreSource[syntax.range(in: context)], "// Comment.")
+                }
+                return true
+        },
             checkTriviaPiece: { trivia, context in
                 if case .lineComment = trivia,
                     ¬trivia.text.isEmpty {
@@ -185,6 +193,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 return true
         }).scan(evenMoreSyntax)
         XCTAssertTrue(foundTriviaFragment)
+        XCTAssertTrue(foundCommentSyntax)
     }
 
     func testCSS() {
