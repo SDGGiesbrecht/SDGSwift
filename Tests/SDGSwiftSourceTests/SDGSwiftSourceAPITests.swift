@@ -401,6 +401,7 @@ class SDGSwiftSourceAPITests : TestCase {
                     XCTAssertEqual(token.nextToken()?.text, "\u{22}")
                     XCTAssertEqual(token.previousToken()?.text, "\u{22}")
                     XCTAssertNil(token.nextToken()?.nextToken()?.text)
+                    XCTAssertNil(token.previousToken()?.previousToken()?.text)
                 }
                 return true
         }).scan(stringSyntax)
