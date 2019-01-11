@@ -120,6 +120,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
                 foundPreviousTrivia ∨= trivia.previousTrivia(context: context) ≠ nil
                 foundNextTrivia ∨= trivia.nextTrivia(context: context) ≠ nil
+                XCTAssertNotNil(trivia.parentToken(context: context))
                 return true
         },
             checkTriviaPiece: { trivia, context in
