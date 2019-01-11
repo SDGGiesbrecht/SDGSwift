@@ -124,7 +124,7 @@ public class ExtendedSyntax : TextOutputStreamable {
     internal func ancestorRelationships() -> AnySequence<(parent: ExtendedSyntax, index: Int)> {
         if let parentRelationship = self.parentRelationship {
             return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
-        } else {
+        } else { // @exempt(from: tests)
             return AnySequence([]) // @exempt(from: tests) Unreachable. No extended token is a top‐level node.
         }
     }
