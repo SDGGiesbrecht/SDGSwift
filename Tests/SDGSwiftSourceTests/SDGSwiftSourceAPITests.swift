@@ -381,6 +381,8 @@ class SDGSwiftSourceAPITests : TestCase {
         let stringSource = "let string = \u{22}string\u{22}"
         let stringSyntax = try SyntaxTreeParser.parse(stringSource)
         var foundQuotationMark = false
+        var foundLiteral = false
+        var foundString = false
         try FunctionalSyntaxScanner(
             checkExtendedSyntax: { syntax, context in
                 if let token = syntax as? ExtendedTokenSyntax,
@@ -389,12 +391,21 @@ class SDGSwiftSourceAPITests : TestCase {
                     XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}string\u{22}" }))
                     for _ in token.ancestors() {}
                 } else if let literal = syntax as? StringLiteralSyntax {
+                    foundLiteral = true
                     XCTAssertNil(literal.ancestors().makeIterator().next())
                     XCTAssertEqual(literal.firstToken()?.text, "\u{22}")
                     XCTAssertEqual(literal.lastToken()?.text, "\u{22}")
+                } else if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .string {
+                    foundString = true
+                    XCTAssertEqual(token.nextToken()?.text, "\u{22}")
+                    XCTAssertEqual(token.previousToken()?.text, "\u{22}")
+                    XCTAssertNil(token.nextToken()?.nextToken()?.text)
                 }
                 return true
         }).scan(stringSyntax)
         XCTAssert(foundQuotationMark)
+        XCTAssert(foundLiteral)
+        XCTAssert(foundString)
     }
 }
