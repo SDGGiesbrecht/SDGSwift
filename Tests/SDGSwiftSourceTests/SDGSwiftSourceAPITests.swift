@@ -428,7 +428,7 @@ class SDGSwiftSourceAPITests : TestCase {
         var foundLiteral = false
         var foundString = false
         try FunctionalSyntaxScanner(
-            checkExtendedSyntax: { syntax, context in
+            checkExtendedSyntax: { syntax, _ in
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .quotationMark {
                     foundQuotationMark = true

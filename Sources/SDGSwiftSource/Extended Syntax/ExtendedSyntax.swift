@@ -29,7 +29,7 @@ public class ExtendedSyntax : TextOutputStreamable {
     public internal(set) var children: [ExtendedSyntax]
 
     private var _offset: Int?
-    private private(set) var positionOffset: Int {
+    private var positionOffset: Int {
         get {
             return _offset! // The unwrap can only fail if the top‐level node forgot to call determinePositions().
         }
