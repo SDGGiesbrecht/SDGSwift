@@ -34,33 +34,44 @@ extension Syntax {
 
     // MARK: - Location
 
-    internal func index(in string: String, for position: AbsolutePosition) -> String.ScalarView.Index {
+    private func index(in context: SyntaxContext, for position: AbsolutePosition) -> String.ScalarView.Index {
+        let string = context.fragmentContext
         let utf8 = string.utf8
-        return utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
+        let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
+        let fragmentIndex = utf8Index.samePosition(in: string.scalars)!
+
+        guard let parent = context.parentContext else {
+            return fragmentIndex
+        }
+        let code = parent.code
+        let codeFragmentContext = code.context
+        let codeOffset = codeFragmentContext.scalars.distance(from: code.range.lowerBound, to: fragmentIndex)
+        let codePosition = code.lowerBound(in: parent.context)
+        return parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
     }
 
-    public func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: position)
+    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: position)
     }
 
-    public func lowerSyntaxBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: positionAfterSkippingLeadingTrivia)
+    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: positionAfterSkippingLeadingTrivia)
     }
 
-    public func upperSyntaxBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPosition)
+    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: endPosition)
     }
 
-    public func upperTriviaBound(in string: String) -> String.ScalarView.Index {
-        return index(in: string, for: endPositionAfterTrailingTrivia)
+    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+        return index(in: context, for: endPositionAfterTrailingTrivia)
     }
 
-    public func syntaxRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerSyntaxBound(in: string) ..< upperSyntaxBound(in: string)
+    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerSyntaxBound(in: context) ..< upperSyntaxBound(in: context)
     }
 
-    public func triviaRange(in string: String) -> Range<String.ScalarView.Index> {
-        return lowerTriviaBound(in: string) ..< upperTriviaBound(in: string)
+    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerTriviaBound(in: context) ..< upperTriviaBound(in: context)
     }
 
     // MARK: - Syntax Tree
@@ -94,21 +105,19 @@ extension Syntax {
     }
 
     public func firstToken() -> TokenSyntax? {
-        if let token = self as? TokenSyntax {
+        if let token = self as? TokenSyntax,
+            token.isPresent {
             return token
         }
-        return children.first(where: { _ in true })?.firstToken()
+        return children.lazy.compactMap({ $0.firstToken() }).first
     }
 
     public func lastToken() -> TokenSyntax? {
-        if let token = self as? TokenSyntax {
+        if let token = self as? TokenSyntax,
+            token.isPresent {
             return token
         }
-        var lastChild: Syntax?
-        for child in children {
-            lastChild = child
-        }
-        return lastChild?.lastToken()
+        return children.reversed().lazy.compactMap({ $0.lastToken() }).first
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {

@@ -27,7 +27,7 @@ class Highlighter : SyntaxScanner {
         return false
     }
 
-    @discardableResult func compare(syntax: Syntax, parsedFrom url: URL, againstSpecification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) throws -> String {
+    @discardableResult func compare(syntax: SourceFileSyntax, parsedFrom url: URL, againstSpecification name: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) throws -> String {
         let result = try highlight(syntax)
 
         let specification = afterDirectory.appendingPathComponent(name).appendingPathComponent(url.deletingPathExtension().lastPathComponent).appendingPathExtension("txt")
@@ -37,20 +37,20 @@ class Highlighter : SyntaxScanner {
     }
 
     private var highlighted = ""
-    private func highlight(_ source: Syntax) throws -> String {
+    private func highlight(_ source: SourceFileSyntax) throws -> String {
         highlighted = ""
         _ = try scan(source)
         return highlighted
     }
 
-    override func visit(_ node: Syntax) -> Bool {
+    override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
         if let token = node as? TokenSyntax {
             highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
         }
         return true
     }
 
-    override func visit(_ node: ExtendedSyntax) -> Bool {
+    override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
         if let token = node as? ExtendedTokenSyntax {
             highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
         }

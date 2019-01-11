@@ -18,11 +18,13 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
     // MARK: - Initialization
 
     /// Creates a syntax scanner with behaviour defined by the provided closures.
+    ///
+    /// See the corresponding methods of `SyntaxScanner` for documentation relating to each closure.
     public init(
-        checkSyntax: @escaping (Syntax) -> Bool = { _ in true },
-        checkExtendedSyntax: @escaping (ExtendedSyntax) -> Bool = { _ in true },
-        checkTrivia: @escaping (Trivia) -> Bool = { _ in true },
-        checkTriviaPiece: @escaping (TriviaPiece) -> Bool = { _ in true },
+        checkSyntax: @escaping (Syntax, SyntaxContext) -> Bool = { _, _ in true },
+        checkExtendedSyntax: @escaping (ExtendedSyntax, ExtendedSyntaxContext) -> Bool = { _, _ in true },
+        checkTrivia: @escaping (Trivia, TriviaContext) -> Bool = { _, _ in true },
+        checkTriviaPiece: @escaping (TriviaPiece, TriviaPieceContext) -> Bool = { _, _ in true },
         shouldExtendToken: @escaping (TokenSyntax) -> Bool = { _ in true },
         shouldExtendFragment: @escaping (CodeFragmentSyntax) -> Bool = { _ in true }) {
 
@@ -36,29 +38,29 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
 
     // MARK: - Properties
 
-    private let checkSyntax: (Syntax) -> Bool
-    private let checkExtendedSyntax: (ExtendedSyntax) -> Bool
-    private let checkTrivia: (Trivia) -> Bool
-    private let checkTriviaPiece: (TriviaPiece) -> Bool
+    private let checkSyntax: (Syntax, SyntaxContext) -> Bool
+    private let checkExtendedSyntax: (ExtendedSyntax, ExtendedSyntaxContext) -> Bool
+    private let checkTrivia: (Trivia, TriviaContext) -> Bool
+    private let checkTriviaPiece: (TriviaPiece, TriviaPieceContext) -> Bool
     private let shouldExtendToken: (TokenSyntax) -> Bool
     private let shouldExtendFragment: (CodeFragmentSyntax) -> Bool
 
     // MARK: - SyntaxScanner
 
-    public override func visit(_ node: Syntax) -> Bool {
-        return checkSyntax(node)
+    public override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+        return checkSyntax(node, context)
     }
 
-    public override func visit(_ node: ExtendedSyntax) -> Bool {
-        return checkExtendedSyntax(node)
+    public override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
+        return checkExtendedSyntax(node, context)
     }
 
-    public override func visit(_ node: Trivia) -> Bool {
-        return checkTrivia(node)
+    public override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
+        return checkTrivia(node, context)
     }
 
-    public override func visit(_ node: TriviaPiece) -> Bool {
-        return checkTriviaPiece(node)
+    public override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+        return checkTriviaPiece(node, context)
     }
 
     public override func shouldExtend(_ node: TokenSyntax) -> Bool {

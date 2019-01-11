@@ -22,70 +22,77 @@ open class SyntaxScanner {
 
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
-    public func scan(_ node: Syntax) throws {
+    public func scan(_ node: SourceFileSyntax) throws {
+        try scan(node, context: SyntaxContext(fragmentContext: node.source(), fragmentOffset: 0, parentContext: nil))
+    }
+    private func scan(_ node: Syntax, context: SyntaxContext) throws {
         if let token = node as? TokenSyntax {
-            try scan(token.leadingTrivia)
+            let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: true)
+            try scan(token.leadingTrivia, context: leadingTriviaContext)
             if shouldExtend(token),
                 let extended = token.extended {
-                if visit(extended) {
+                let newContext = ExtendedSyntaxContext.token(token, context: context)
+                if visit(extended, context: newContext) {
                     for child in extended.children {
-                        try scan(child)
+                        try scan(child, context: newContext)
                     }
                 }
             } else {
-                _ = visit(token)
+                _ = visit(token, context: context)
             }
-            try scan(token.trailingTrivia)
+            let trailingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: false)
+            try scan(token.trailingTrivia, context: trailingTriviaContext)
         } else {
-            if visit(node) {
+            if visit(node, context: context) {
                 for child in node.children {
-                    try scan(child)
+                    try scan(child, context: context)
                 }
             }
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ node: ExtendedSyntax) throws {
+    private func scan(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) throws {
         if let code = node as? CodeFragmentSyntax,
             shouldExtend(code),
             let children = try code.syntax() {
+            var offset = 0
             for child in children {
                 switch child {
                 case .syntax(let node):
-                    try scan(node)
+                    let newContext = SyntaxContext(fragmentContext: code.context, fragmentOffset: code.offset, parentContext: (code, context))
+                    try scan(node, context: newContext)
+                    offset += node.source().scalars.count
                 case .extendedSyntax(let node):
-                    try scan(node)
+                    try scan(node, context: .fragment(code, context: context, offset: offset))
+                    offset += node.text.scalars.count
                 case .trivia(let node, let siblings, let index):
-                    try scan(node, siblings: siblings, index: index)
+                    try scan(node, siblings: siblings, index: index, context: .fragment(code, context: context, offset: offset))
+                    offset += node.text.scalars.count
                 }
             }
         } else {
-            if visit(node) {
+            if visit(node, context: context) {
                 for child in node.children {
-                    try scan(child)
+                    try scan(child, context: context)
                 }
             }
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ trivia: Trivia) throws {
-        if visit(trivia) {
+    private func scan(_ trivia: Trivia, context: TriviaContext) throws {
+        if visit(trivia, context: context) {
             for index in trivia.indices {
+                let newContext = TriviaPieceContext.trivia(trivia, index: index, parent: context)
                 let piece = trivia[index]
-                try scan(piece, siblings: trivia, index: index)
+                try scan(piece, siblings: trivia, index: index, context: newContext)
             }
         }
     }
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    public func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index) throws {
-        if visit(piece) {
-            try scan(piece.syntax(siblings: siblings, index: index))
+    private func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: TriviaPieceContext) throws {
+        if visit(piece, context: context) {
+            let newContext = ExtendedSyntaxContext.trivia(piece, context: context)
+            try scan(piece.syntax(siblings: siblings, index: index), context: newContext)
         }
     }
 
@@ -96,11 +103,14 @@ open class SyntaxScanner {
     ///
     /// Subclass this to read information from a particular node.
     ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
     /// - Parameters:
     ///     - node: The current node.
+    ///     - context: The context of the current node.
     ///
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-    open func visit(_ node: Syntax) -> Bool {
+    open func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
         return true
     }
 
@@ -109,11 +119,14 @@ open class SyntaxScanner {
     ///
     /// Subclass this to read information from a particular node.
     ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
     /// - Parameters:
     ///     - node: The current node.
+    ///     - context: The context of the current node.
     ///
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-    open func visit(_ node: ExtendedSyntax) -> Bool {
+    open func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
         return true
     }
 
@@ -122,11 +135,14 @@ open class SyntaxScanner {
     ///
     /// Subclass this to read information from a particular node.
     ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
     /// - Parameters:
     ///     - node: The current node.
+    ///     - context: The context of the current node.
     ///
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-    open func visit(_ node: Trivia) -> Bool {
+    open func visit(_ node: Trivia, context: TriviaContext) -> Bool {
         return true
     }
 
@@ -135,11 +151,14 @@ open class SyntaxScanner {
     ///
     /// Subclass this to read information from a particular node.
     ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
     /// - Parameters:
     ///     - node: The current node.
+    ///     - context: The context of the current node.
     ///
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-    open func visit(_ node: TriviaPiece) -> Bool {
+    open func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
         return true
     }
 

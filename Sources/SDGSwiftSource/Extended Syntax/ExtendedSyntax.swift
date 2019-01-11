@@ -28,10 +28,121 @@ public class ExtendedSyntax : TextOutputStreamable {
     /// The children of this node.
     public internal(set) var children: [ExtendedSyntax]
 
+    private var _offset: Int?
+    private var positionOffset: Int {
+        get {
+            return _offset! // The unwrap can only fail if the top‐level node forgot to call determinePositions().
+        }
+        set {
+            _offset = newValue
+        }
+    }
+    private var endPositionOffset: Int {
+        if let token = self as? ExtendedTokenSyntax {
+            return positionOffset + token.text.scalars.count
+        } else {
+            return children.last?.endPositionOffset ?? positionOffset // @exempt(from: tests) Shouldn’t be childless.
+        }
+    }
+    internal func determinePositions() {
+        var offset = 0
+        determineNestedPositions(offset: &offset)
+    }
+    private func determineNestedPositions(offset: inout Int) {
+        positionOffset = offset
+        for index in children.indices {
+            let child = children[index]
+            child.parent = self
+            child.indexInParent = index
+
+            child.determineNestedPositions(offset: &offset)
+            if let token = child as? ExtendedTokenSyntax {
+                offset = token.endPositionOffset
+            }
+        }
+    }
+
+    public internal(set) weak var parent: ExtendedSyntax?
+    public internal(set) var indexInParent: Int = 0
+
     public var text: String {
         var result = ""
         write(to: &result)
         return result
+    }
+
+    // MARK: - Location
+
+    public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(let trivia, context: let triviaContext):
+            let sourceStart = trivia.lowerBound(in: triviaContext)
+            return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
+        case .token(let token, context: let tokenContext):
+            let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+            return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+        }
+    }
+
+    public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+        switch context {
+        case .trivia(let trivia, context: let triviaContext):
+            let sourceStart = trivia.lowerBound(in: triviaContext)
+            return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        case .token(let token, context: let tokenContext):
+            let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+            return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        case .fragment(let code, context: let codeContext, offset: let offset):
+            let fragmentLocation = code.lowerBound(in: codeContext)
+            return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset + text.scalars.count)
+        }
+    }
+
+    public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
+        return lowerBound(in: context) ..< upperBound(in: context)
+    }
+
+    // MARK: - Syntax Tree
+
+    public func ancestors() -> AnySequence<ExtendedSyntax> {
+        if let parent = self.parent {
+            return AnySequence(sequence(first: parent, next: { $0.parent }))
+        } else {
+            return AnySequence([])
+        }
+    }
+
+    private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {
+        guard let parent = self.parent else {
+            return nil
+        }
+        return (parent, indexInParent)
+    }
+    internal func ancestorRelationships() -> AnySequence<(parent: ExtendedSyntax, index: Int)> {
+        if let parentRelationship = self.parentRelationship {
+            return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
+        } else { // @exempt(from: tests)
+            return AnySequence([]) // @exempt(from: tests) Unreachable. No extended token is a top‐level node.
+        }
+    }
+
+    public func firstToken() -> ExtendedTokenSyntax? {
+        if let token = self as? ExtendedTokenSyntax,
+            ¬token.text.isEmpty {
+            return token
+        }
+        return children.lazy.compactMap({ $0.firstToken() }).first
+    }
+
+    public func lastToken() -> ExtendedTokenSyntax? {
+        if let token = self as? ExtendedTokenSyntax,
+            ¬token.text.isEmpty {
+            return token
+        }
+        return children.reversed().lazy.compactMap({ $0.lastToken() }).first
     }
 
     // MARK: - Rendering

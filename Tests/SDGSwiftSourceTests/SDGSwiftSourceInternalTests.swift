@@ -22,6 +22,13 @@ class SDGSwiftSourceInternalTests : TestCase {
         XCTAssertNil(SyntaxFactory.makeBlankUnknownExpr().documentation)
     }
 
+    func testExtendedSyntaxContext() {
+        let context = ExtendedSyntaxContext.token(SyntaxFactory.makeToken(.comma), context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil))
+        _ = context.source
+        let source = ""
+        _ = ExtendedSyntaxContext.fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
+    }
+
     func testTokenNormalization() {
         let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),

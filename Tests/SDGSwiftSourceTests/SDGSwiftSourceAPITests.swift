@@ -74,11 +74,126 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testCodeFragmentSyntax() throws {
-        let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() {}"
+        let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
         let syntax = try SyntaxTreeParser.parse(source)
         let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
         XCTAssert(highlighted.contains("internal identifier"))
         XCTAssert(highlighted.contains("domain.tld"))
+
+        var foundFunction = false
+        var foundSpaces = false
+        var foundNewline = false
+        var foundCode = false
+        var foundCodeDelimiters = false
+        var foundColon = false
+        var foundPreviousTrivia = false
+        var foundNextTrivia = false
+        var foundDocumentationComment = false
+        try FunctionalSyntaxScanner(
+            checkSyntax: { syntax, context in
+                if let token = syntax as? TokenSyntax {
+                    if token.tokenKind == .colon {
+                        foundColon = true
+                        XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
+                    } else if token.tokenKind == .funcKeyword {
+                        foundFunction = true
+                        XCTAssertEqual(source[token.syntaxRange(in: context)], "func")
+                    }
+                }
+                return true
+        },
+            checkExtendedSyntax: { syntax, context in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .codeDelimiter {
+                    foundCodeDelimiters = true
+                    XCTAssertEqual(source[token.range(in: context)], "`")
+                } else if syntax is InlineCodeSyntax {
+                    foundCode = true
+                    XCTAssertEqual(source[syntax.range(in: context)], "`selector(style:notation:)`")
+                }
+                return true
+        },
+            checkTrivia: { trivia, context in
+                if trivia.source() == " " {
+                    foundSpaces = true
+                    XCTAssertEqual(source[trivia.range(in: context)], " ")
+                }
+                XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
+                foundPreviousTrivia ∨= trivia.previousTrivia(context: context) ≠ nil
+                foundNextTrivia ∨= trivia.nextTrivia(context: context) ≠ nil
+                XCTAssertNotNil(trivia.parentToken(context: context))
+                return true
+        },
+            checkTriviaPiece: { trivia, context in
+                if case .newlines = trivia {
+                    foundNewline = true
+                    XCTAssertEqual(source[trivia.range(in: context)], "\n")
+                    if trivia.parentTrivia(context: context)?.count == 2 {
+                        XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
+                    }
+                } else if case .docLineComment = trivia {
+                    foundDocumentationComment = true
+                    XCTAssertEqual(trivia.nextTriviaPiece(context: context)?.text, "\n")
+                    XCTAssertEqual(trivia.parentTrivia(context: context)?.indices.first, trivia.indexInParent(context: context))
+                }
+                return true
+        }).scan(syntax)
+        XCTAssertTrue(foundFunction)
+        XCTAssertTrue(foundSpaces)
+        XCTAssertTrue(foundNewline)
+        XCTAssertTrue(foundCode)
+        XCTAssertTrue(foundCodeDelimiters)
+        XCTAssertTrue(foundColon)
+        XCTAssertTrue(foundPreviousTrivia)
+        XCTAssertTrue(foundNextTrivia)
+        XCTAssertTrue(foundDocumentationComment)
+
+        let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
+        let moreSyntax = try SyntaxTreeParser.parse(moreSource)
+        var foundQuotationMark = false
+        var foundComment = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .quotationMark {
+                    foundQuotationMark = true
+                    XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
+                } else if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .commentText {
+                    foundComment = true
+                    XCTAssertEqual(moreSource[token.range(in: context)], "Comment.")
+                }
+                return true
+        }).scan(moreSyntax)
+        XCTAssertTrue(foundQuotationMark)
+        XCTAssertTrue(foundComment)
+
+        let evenMoreSource = "/// ```swift\n///\n/// // Comment.\n///\n/// ```\nlet y = 0"
+        let evenMoreSyntax = try SyntaxTreeParser.parse(evenMoreSource)
+        var foundTriviaFragment = false
+        var foundCommentSyntax = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if syntax is LineDeveloperCommentSyntax {
+                    foundCommentSyntax = true
+                    XCTAssertEqual(evenMoreSource[syntax.range(in: context)], "// Comment.")
+                }
+                return true
+        },
+            checkTriviaPiece: { trivia, context in
+                if case .lineComment = trivia,
+                    ¬trivia.text.isEmpty {
+                    foundTriviaFragment = true
+                    XCTAssertEqual(evenMoreSource[trivia.range(in: context)], "// Comment.")
+                    XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
+                    XCTAssertNil(trivia.parentTrivia(context: context))
+                    XCTAssertNil(trivia.nextTriviaPiece(context: context))
+                    XCTAssertNil(trivia.previousTriviaPiece(context: context))
+                }
+                return true
+        }).scan(evenMoreSyntax)
+        XCTAssertTrue(foundTriviaFragment)
+        XCTAssertTrue(foundCommentSyntax)
     }
 
     func testCSS() {
@@ -102,13 +217,26 @@ class SDGSwiftSourceAPITests : TestCase {
         let syntax = try SyntaxTreeParser.parse(source)
 
         var scanned: Set<String> = []
-        try FunctionalSyntaxScanner(
-            checkSyntax: { scanned.insert($0.source()); return true },
-            checkExtendedSyntax: { scanned.insert($0.text); return true },
-            checkTrivia: { scanned.insert($0.source()); return true },
-            checkTriviaPiece: { scanned.insert($0.text); return true },
+        let scanner = FunctionalSyntaxScanner(
+            checkSyntax: { syntax, _ in
+                scanned.insert(syntax.source())
+                return true
+        },
+            checkExtendedSyntax: { syntax, _  in
+                scanned.insert(syntax.text)
+                return true
+        },
+            checkTrivia: { trivia, _ in
+                scanned.insert(trivia.source())
+                return true
+        },
+            checkTriviaPiece: { trivia, _ in
+                scanned.insert(trivia.text)
+                return true
+        },
             shouldExtendToken: { _ in return true },
-            shouldExtendFragment: { _ in return true }).scan(syntax)
+            shouldExtendFragment: { _ in return true })
+        try scanner.scan(syntax)
         XCTAssert(scanned.contains("print(\u{22}Hello, world!\u{22})"))
         XCTAssert(scanned.contains("```swift"))
         XCTAssert(scanned.contains(" "))
@@ -123,7 +251,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertNil(syntax.ancestors().makeIterator().next())
 
         class CommentScanner : SyntaxScanner {
-            override func visit(_ node: ExtendedSyntax) -> Bool {
+            override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
                 if let comment = node as? LineDeveloperCommentSyntax {
                     XCTAssertNotNil(comment.content)
                 }
@@ -136,7 +264,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testLineDocumentationCommentSyntax() throws {
         let syntax = try SyntaxTreeParser.parse("//\u{2F} Documentation.")
         class DocumentationScanner : SyntaxScanner {
-            override func visit(_ node: ExtendedSyntax) -> Bool {
+            override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
                 if let comment = node as? LineDocumentationSyntax {
                     XCTAssertNotNil(comment.content)
                 }
@@ -148,9 +276,19 @@ class SDGSwiftSourceAPITests : TestCase {
 
     func testLocations() throws {
         let source = "/\u{2F} ...\nlet x = 0 \n"
-        let syntax = try SyntaxTreeParser.parse(source).statements
-        XCTAssertEqual(syntax.triviaRange(in: source), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
-        XCTAssertEqual(syntax.syntaxRange(in: source), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+        let syntax = try SyntaxTreeParser.parse(source)
+        var statementsFound = false
+        let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
+            if syntax is CodeBlockItemListSyntax {
+                statementsFound = true
+                XCTAssertEqual(syntax.triviaRange(in: context), source.startIndex ..< source.index(source.endIndex, offsetBy: −1))
+                XCTAssertEqual(syntax.syntaxRange(in: context), source.index(source.startIndex, offsetBy: 7) ..< source.index(source.endIndex, offsetBy: −2))
+                return false
+            }
+            return true
+        })
+        try scanner.scan(syntax)
+        XCTAssertTrue(statementsFound)
     }
 
     func testParsing() throws {
@@ -263,5 +401,56 @@ class SDGSwiftSourceAPITests : TestCase {
         let eof = syntax.lastToken()!
         XCTAssertEqual(eof.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
         XCTAssertNil(eof.firstFollowingTrivia()?.text)
+
+        let incomplete = SyntaxFactory.makeFunctionDecl(
+            attributes: nil,
+            modifiers: nil,
+            funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
+            identifier: SyntaxFactory.makeToken(.identifier("identifier")),
+            genericParameterClause: nil,
+            signature: SyntaxFactory.makeFunctionSignature(
+                input: SyntaxFactory.makeParameterClause(
+                    leftParen: SyntaxFactory.makeToken(.leftParen, presence: .missing),
+                    parameterList: SyntaxFactory.makeFunctionParameterList([]),
+                    rightParen: SyntaxFactory.makeToken(.rightParen)),
+                throwsOrRethrowsKeyword: SyntaxFactory.makeToken(.throwsKeyword, presence: .missing),
+                output: nil),
+            genericWhereClause: nil,
+            body: nil)
+        XCTAssertEqual(incomplete.firstToken()?.tokenKind, .identifier("identifier"))
+        XCTAssertEqual(incomplete.lastToken()?.tokenKind, .rightParen)
+        XCTAssertEqual(incomplete.identifier.nextToken()?.tokenKind, .rightParen)
+        XCTAssertEqual(incomplete.signature.input.rightParen.previousToken()?.tokenKind, .identifier("identifier"))
+
+        let stringSource = "let string = \u{22}string\u{22}"
+        let stringSyntax = try SyntaxTreeParser.parse(stringSource)
+        var foundQuotationMark = false
+        var foundLiteral = false
+        var foundString = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, _ in
+                if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .quotationMark {
+                    foundQuotationMark = true
+                    XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}string\u{22}" }))
+                    for _ in token.ancestors() {}
+                } else if let literal = syntax as? StringLiteralSyntax {
+                    foundLiteral = true
+                    XCTAssertNil(literal.ancestors().makeIterator().next())
+                    XCTAssertEqual(literal.firstToken()?.text, "\u{22}")
+                    XCTAssertEqual(literal.lastToken()?.text, "\u{22}")
+                } else if let token = syntax as? ExtendedTokenSyntax,
+                    token.kind == .string {
+                    foundString = true
+                    XCTAssertEqual(token.nextToken()?.text, "\u{22}")
+                    XCTAssertEqual(token.previousToken()?.text, "\u{22}")
+                    XCTAssertNil(token.nextToken()?.nextToken()?.text)
+                    XCTAssertNil(token.previousToken()?.previousToken()?.text)
+                }
+                return true
+        }).scan(stringSyntax)
+        XCTAssert(foundQuotationMark)
+        XCTAssert(foundLiteral)
+        XCTAssert(foundString)
     }
 }
