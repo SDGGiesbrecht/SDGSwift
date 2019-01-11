@@ -14,7 +14,13 @@
 
 import SDGLogic
 
-extension StructDeclSyntax : AccessControlled, Attributed, Constrained, Generic, TypeDeclaration {
+extension StructDeclSyntax : AccessControlled, Attributed, Constrained, Generic, Hidable, TypeDeclaration {
+
+    // MARK: - Hidable
+
+    var hidabilityIdentifier: TokenSyntax {
+        return identifier
+    }
 
     // MARK: - TypeDeclaration
 

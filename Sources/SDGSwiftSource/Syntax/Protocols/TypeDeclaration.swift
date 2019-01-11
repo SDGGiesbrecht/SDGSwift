@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
+internal protocol TypeDeclaration : AccessControlled, Attributed, Generic, APISyntax {
     var identifier: TokenSyntax { get }
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 
@@ -26,11 +26,7 @@ internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
 extension TypeDeclaration {
 
     internal var typeAPI: TypeAPI? {
-        if ¬isPublic ∨ isUnavailable() {
-            return nil
-        }
-
-        if identifier.text.hasPrefix("_") {
+        if ¬isVisible() {
             return nil
         }
 

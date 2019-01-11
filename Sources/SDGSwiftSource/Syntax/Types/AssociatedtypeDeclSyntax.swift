@@ -12,7 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, Constrained, TypeDeclaration {
+extension AssociatedtypeDeclSyntax : AccessControlled, Attributed, Constrained, Hidable, TypeDeclaration {
+
+    // MARK: - Hidable
+
+    var hidabilityIdentifier: TokenSyntax {
+        return identifier
+    }
 
     // MARK: - TypeDeclaration
 
