@@ -64,4 +64,11 @@ public class FragmentSyntax : ExtendedSyntax {
     // MARK: - Properties
 
     internal let context: ExtendedSyntax
+
+    // MARK: - ExtendedSyntax
+
+    internal override func setTreeRelationships() {
+        super.setTreeRelationships()
+        context.setTreeRelationships()
+    }
 }
