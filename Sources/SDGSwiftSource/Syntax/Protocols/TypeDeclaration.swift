@@ -15,9 +15,8 @@
 import SDGLogic
 import SDGCollections
 
-internal protocol TypeDeclaration : AccessControlled, Attributed, Generic, APISyntax {
+internal protocol TypeDeclaration : AccessControlled, Attributed, APISyntax, Generic, Inheritor {
     var identifier: TokenSyntax { get }
-    var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
@@ -46,10 +45,6 @@ extension TypeDeclaration {
     }
 
     internal func createAPI(children: [APIElement]) -> [APIElement] {
-        var children = children
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
         return [.type(TypeAPI(
             documentation: documentation,
             declaration: self,

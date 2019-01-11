@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Hidable {
+extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Hidable, Inheritor {
 
     // MARK: - Hidable
 
@@ -57,10 +57,6 @@ extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
     }
 
     internal func createAPI(children: [APIElement]) -> [APIElement] {
-        var children = children
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
         return [.protocol(ProtocolAPI(
             documentation: documentation,
             declaration: self,

@@ -28,16 +28,18 @@ extension APISyntax {
         return isPublic() ∧ ¬isUnavailable() ∧ ¬isHidden
     }
 
-    internal var shouldLookForChildren: Bool {
-        return false
-    }
-
     internal func parseAPI() -> [APIElement] {
         if ¬isVisible() {
             return []
         }
 
-        let children = shouldLookForChildren ? apiChildren() : []
+        var children = shouldLookForChildren ? apiChildren() : []
+
+        if let inheritor = self as? Inheritor,
+            let conformances = inheritor.inheritanceClause?.conformances {
+                children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
+        }
+
         return createAPI(children: children)
     }
 }

@@ -48,6 +48,10 @@ extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
         return elements.allSatisfy({ $0.isHidden })
     }
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         var list: [APIElement] = []
         for element in elements where ¬element.isHidden {

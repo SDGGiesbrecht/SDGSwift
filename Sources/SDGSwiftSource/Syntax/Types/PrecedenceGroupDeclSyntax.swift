@@ -60,6 +60,10 @@ extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hid
         return true
     }
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
     }

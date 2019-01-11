@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained {
+extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Inheritor {
 
     // MARK: - APISyntax
 
@@ -31,10 +31,6 @@ extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained {
     }
 
     internal func createAPI(children: [APIElement]) -> [APIElement] {
-        var children = children
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
         guard ¬children.isEmpty else {
             return []
         }

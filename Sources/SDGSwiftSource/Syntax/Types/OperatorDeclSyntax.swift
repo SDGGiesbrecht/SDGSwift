@@ -50,6 +50,10 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
         return false
     }
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.operator(OperatorAPI(documentation: documentation, declaration: self))]
     }

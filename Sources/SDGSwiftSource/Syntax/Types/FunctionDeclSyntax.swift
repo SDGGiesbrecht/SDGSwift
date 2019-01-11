@@ -50,6 +50,10 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
 
     // MARK: - APISyntax
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.function(FunctionAPI(documentation: documentation, declaration: self))]
     }

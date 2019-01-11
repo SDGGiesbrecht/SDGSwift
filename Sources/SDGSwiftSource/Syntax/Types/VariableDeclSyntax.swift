@@ -67,6 +67,10 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
         return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
     }
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         var list: [APIElement] = []
         for separate in bindings.flattenedForAPI() {

@@ -59,6 +59,10 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APIS
 
     // MARK: - APISyntax
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.subscript(SubscriptAPI(
             documentation: documentation,

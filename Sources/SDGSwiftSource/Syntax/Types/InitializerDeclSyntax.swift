@@ -57,6 +57,10 @@ extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, A
 
     // MARK: - APISyntax
 
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
     internal func createAPI(children: [APIElement]) -> [APIElement] {
         return [.initializer(InitializerAPI(documentation: documentation, declaration: self))]
     }
