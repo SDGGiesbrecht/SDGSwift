@@ -74,7 +74,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testCodeFragmentSyntax() throws {
-        let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() {}"
+        let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
         let syntax = try SyntaxTreeParser.parse(source)
         let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
         XCTAssert(highlighted.contains("internal identifier"))
@@ -86,6 +86,8 @@ class SDGSwiftSourceAPITests : TestCase {
         var foundCode = false
         var foundCodeDelimiters = false
         var foundColon = false
+        var foundPreviousTrivia = false
+        var foundNextTrivia = false
         try FunctionalSyntaxScanner(
             checkSyntax: { syntax, context in
                 if let token = syntax as? TokenSyntax {
@@ -116,13 +118,17 @@ class SDGSwiftSourceAPITests : TestCase {
                     XCTAssertEqual(source[trivia.range(in: context)], " ")
                 }
                 XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
+                foundPreviousTrivia ∨= trivia.previousTrivia(context: context) ≠ nil
+                foundNextTrivia ∨= trivia.nextTrivia(context: context) ≠ nil
                 return true
         },
             checkTriviaPiece: { trivia, context in
                 if case .newlines = trivia {
                     foundNewline = true
                     XCTAssertEqual(source[trivia.range(in: context)], "\n")
-                    XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
+                    if trivia.parentTrivia(context: context)?.count == 2 {
+                        XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
+                    }
                 }
                 return true
         }).scan(syntax)
@@ -132,6 +138,8 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(foundCode)
         XCTAssertTrue(foundCodeDelimiters)
         XCTAssertTrue(foundColon)
+        XCTAssertTrue(foundPreviousTrivia)
+        XCTAssertTrue(foundNextTrivia)
 
         let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
         let moreSyntax = try SyntaxTreeParser.parse(moreSource)
