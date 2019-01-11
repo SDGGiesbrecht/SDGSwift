@@ -35,7 +35,7 @@ class SDGSwiftSourceInternalTests : TestCase {
         if case .stringLiteral(let normalized) = kind {
             XCTAssertEqual(normalized, literal)
         } else {
-            XCTFail()
+            XCTFail("String literal not found.")
         }
 
     }
