@@ -21,7 +21,7 @@ enum InternalEnumeration {
 public enum Enumeration {
     case a
     case b
-    case c
+    case c, d
 }
 
 public enum RawEnumeration: S̲t̲r̲i̲n̲g̲ {

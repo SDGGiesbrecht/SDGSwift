@@ -14,19 +14,29 @@
 
 import SDGLogic
 
-extension ExtensionDeclSyntax : AccessControlled, Attributed, Constrained {
+extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Inheritor {
 
-    internal var extensionAPI: ExtensionAPI? {
-        var children = apiChildren()
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
+    // MARK: - APISyntax
+
+    internal func isPublic() -> Bool {
+        return true
+    }
+
+    internal var isHidden: Bool {
+        return false
+    }
+
+    internal var shouldLookForChildren: Bool {
+        return true
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
         guard ¬children.isEmpty else {
-            return nil
+            return []
         }
-        return ExtensionAPI(
+        return [.extension(ExtensionAPI(
             type: extendedType,
             constraints: genericWhereClause,
-            children: children)
+            children: children))]
     }
 }

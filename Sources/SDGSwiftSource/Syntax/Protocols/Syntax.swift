@@ -196,35 +196,10 @@ extension Syntax {
     // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
+        if let element = self as? APISyntax {
+            return element.parseAPI()
+        }
         switch self {
-        case let structure as StructDeclSyntax:
-            return structure.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let `class` as ClassDeclSyntax:
-            return `class`.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let enumeration as EnumDeclSyntax:
-            return enumeration.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let typeAlias as TypealiasDeclSyntax:
-            return typeAlias.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let associatedType as AssociatedtypeDeclSyntax:
-            return associatedType.typeAPI.flatMap({ [APIElement.type($0)] }) ?? []
-        case let `protocol` as ProtocolDeclSyntax:
-            return `protocol`.protocolAPI.flatMap({ [APIElement.protocol($0)] }) ?? []
-        case let `case` as EnumCaseDeclSyntax:
-            return `case`.caseAPI().map({ APIElement.case($0) })
-        case let initializer as InitializerDeclSyntax:
-            return initializer.initializerAPI.flatMap({ [APIElement.initializer($0)] }) ?? []
-        case let variable as VariableDeclSyntax:
-            return variable.variableAPI().map({ APIElement.variable($0) })
-        case let `subscript` as SubscriptDeclSyntax:
-            return `subscript`.subscriptAPI.flatMap({ [APIElement.subscript($0)] }) ?? []
-        case let function as FunctionDeclSyntax:
-            return function.functionAPI().flatMap({ [APIElement.function($0)] }) ?? []
-        case let `operator` as OperatorDeclSyntax:
-            return `operator`.operatorAPI().flatMap({ [APIElement.operator($0)] }) ?? []
-        case let precedence as PrecedenceGroupDeclSyntax:
-            return precedence.precedenceAPI().flatMap({ [APIElement.precedence($0)] }) ?? []
-        case let `extension` as ExtensionDeclSyntax:
-            return `extension`.extensionAPI.flatMap({ [APIElement.extension($0)] }) ?? []
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
             return conditionallyCompiledSection.conditionalAPI
         default:

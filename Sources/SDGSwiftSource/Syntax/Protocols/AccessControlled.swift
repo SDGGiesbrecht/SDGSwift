@@ -20,7 +20,7 @@ internal protocol AccessControlled : Syntax {
 
 extension AccessControlled {
 
-    internal var isPublic: Bool {
+    internal func isPublic() -> Bool {
         if let modifiers = self.modifiers,
             modifiers.contains(where: { $0.name.tokenKind == .publicKeyword ∨ $0.name.text == "open" }) {
             return true

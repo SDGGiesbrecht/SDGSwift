@@ -29,6 +29,17 @@ class SDGSwiftSourceInternalTests : TestCase {
         _ = ExtendedSyntaxContext.fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
     }
 
+    func testStringLiteral() {
+        let literal = "\u{22}...\u{22}"
+        let kind = TokenKind.stringLiteral(literal).normalized()
+        if case .stringLiteral(let normalized) = kind {
+            XCTAssertEqual(normalized, literal)
+        } else {
+            XCTFail("String literal not found.")
+        }
+
+    }
+
     func testTokenNormalization() {
         let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),

@@ -15,34 +15,14 @@
 import SDGLogic
 import SDGCollections
 
-internal protocol TypeDeclaration : AccessControlled, Attributed, Generic {
+internal protocol TypeDeclaration : AccessControlled, Attributed, APISyntax, Generic, Inheritor {
     var identifier: TokenSyntax { get }
-    var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
 }
 
 extension TypeDeclaration {
-
-    internal var typeAPI: TypeAPI? {
-        if ¬isPublic ∨ isUnavailable() {
-            return nil
-        }
-
-        if identifier.text.hasPrefix("_") {
-            return nil
-        }
-
-        var children = apiChildren()
-        if let conformances = inheritanceClause?.conformances {
-            children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-        }
-        return TypeAPI(
-            documentation: documentation,
-            declaration: self,
-            children: children)
-    }
 
     internal func identifierList() -> Set<String> {
         var result: Set<String> = [identifier.text]
@@ -56,5 +36,18 @@ extension TypeDeclaration {
             result ∪= genericParameters.identifierList()
         }
         return result
+    }
+
+    // MARK: - APISyntax
+
+    internal var shouldLookForChildren: Bool {
+        return true
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+        return [.type(TypeAPI(
+            documentation: documentation,
+            declaration: self,
+            children: children))]
     }
 }

@@ -12,7 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension TypealiasDeclSyntax : Constrained, Generic, TypeDeclaration {
+extension TypealiasDeclSyntax : Constrained, Generic, Hidable, TypeDeclaration {
+
+    // MARK: - Hidable
+
+    var hidabilityIdentifier: TokenSyntax? {
+        return identifier
+    }
 
     // MARK: - TypeDeclaration
 
