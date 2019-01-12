@@ -47,14 +47,11 @@ public class ExtendedSyntax : TextOutputStreamable {
     internal func determinePositions() {
         var offset = 0
         determineNestedPositions(offset: &offset)
+        setTreeRelationships()
     }
-    private func determineNestedPositions(offset: inout Int) {
+    internal func determineNestedPositions(offset: inout Int) {
         positionOffset = offset
-        for index in children.indices {
-            let child = children[index]
-            child.parent = self
-            child.indexInParent = index
-
+        for child in children {
             child.determineNestedPositions(offset: &offset)
             if let token = child as? ExtendedTokenSyntax {
                 offset = token.endPositionOffset
@@ -64,6 +61,14 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     public internal(set) weak var parent: ExtendedSyntax?
     public internal(set) var indexInParent: Int = 0
+    internal func setTreeRelationships() {
+        for index in children.indices {
+            let child = children[index]
+            child.parent = self
+            child.indexInParent = index
+            child.setTreeRelationships()
+        }
+    }
 
     public var text: String {
         var result = ""

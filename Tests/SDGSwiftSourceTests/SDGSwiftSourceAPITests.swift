@@ -217,6 +217,7 @@ class SDGSwiftSourceAPITests : TestCase {
         let syntax = try SyntaxTreeParser.parse(source)
 
         var scanned: Set<String> = []
+        var foundCodeDelimiter = false
         let scanner = FunctionalSyntaxScanner(
             checkSyntax: { syntax, _ in
                 scanned.insert(syntax.source())
@@ -224,6 +225,11 @@ class SDGSwiftSourceAPITests : TestCase {
         },
             checkExtendedSyntax: { syntax, _  in
                 scanned.insert(syntax.text)
+                if let codeDelimiter = syntax as? ExtendedTokenSyntax,
+                    codeDelimiter.kind == .codeDelimiter {
+                    foundCodeDelimiter = true
+                    XCTAssert(codeDelimiter.parent is CodeBlockSyntax)
+                }
                 return true
         },
             checkTrivia: { trivia, _ in
@@ -241,6 +247,7 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(scanned.contains("```swift"))
         XCTAssert(scanned.contains(" "))
         XCTAssert(scanned.contains("/\u{2F}\u{2F} ```swift"))
+        XCTAssert(foundCodeDelimiter)
 
         try FunctionalSyntaxScanner().scan(syntax)
     }
