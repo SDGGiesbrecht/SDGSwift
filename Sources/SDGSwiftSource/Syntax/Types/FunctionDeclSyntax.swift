@@ -15,18 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained, Generic, Member, OverloadableAPIDeclaration {
-
-    internal func functionAPI() -> FunctionAPI? {
-        if ¬isPublic ∨ isUnavailable() {
-            return nil
-        }
-        let name = identifier.text
-        if name.hasPrefix("_") {
-            return nil
-        }
-        return FunctionAPI(documentation: documentation, declaration: self)
-    }
+extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
 
     // MARK: - APIDeclaration
 
@@ -57,6 +46,22 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, Attributed, Con
 
     internal func identifierList() -> Set<String> {
         return Set([identifier.text]) ∪ signature.identifierList(labelBehaviour: identifier.isOperator ? .operator : .function)
+    }
+
+    // MARK: - APISyntax
+
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+        return [.function(FunctionAPI(documentation: documentation, declaration: self))]
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return identifier
     }
 
     // MARK: - OverloadableAPIDeclaration

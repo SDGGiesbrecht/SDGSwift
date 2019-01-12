@@ -15,25 +15,7 @@
 import SDGControlFlow
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attributed, Member, OverloadableAPIDeclaration {
-
-    internal func variableAPI() -> [VariableAPI] {
-        if ¬isPublic ∨ isUnavailable() {
-            return []
-        }
-
-        var list: [VariableAPI] = []
-        for separate in bindings.flattenedForAPI() {
-            list.append(VariableAPI(
-                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
-                declaration: SyntaxFactory.makeVariableDecl(
-                    attributes: attributes,
-                    modifiers: modifiers,
-                    letOrVarKeyword: letOrVarKeyword,
-                    bindings: separate)))
-        }
-        return list
-    }
+extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration {
 
     // MARK: - Accessor
 
@@ -77,6 +59,30 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, Attri
             }
         }
         return Set(identifiers.joined())
+    }
+
+    // MARK: - APISyntax
+
+    internal var isHidden: Bool {
+        return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
+    }
+
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+        var list: [APIElement] = []
+        for separate in bindings.flattenedForAPI() {
+            list.append(.variable(VariableAPI(
+                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                declaration: SyntaxFactory.makeVariableDecl(
+                    attributes: attributes,
+                    modifiers: modifiers,
+                    letOrVarKeyword: letOrVarKeyword,
+                    bindings: separate))))
+        }
+        return list
     }
 
     // MARK: - OverloadableAPIDeclaration

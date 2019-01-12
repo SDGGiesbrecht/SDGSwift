@@ -21,7 +21,7 @@
 ̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ Enumeration {̲
 ̲    c̲a̲s̲e̲ a
 ̲    c̲a̲s̲e̲ b
-̲    c̲a̲s̲e̲ c
+̲    c̲a̲s̲e̲ c,̲ d
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ RawEnumeration:̲ String {̲

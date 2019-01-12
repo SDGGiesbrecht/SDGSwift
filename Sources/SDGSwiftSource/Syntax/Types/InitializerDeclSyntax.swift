@@ -14,16 +14,12 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, Constrained, Generic, OverloadableAPIDeclaration {
+extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, Attributed, Constrained, Generic, Hidable, OverloadableAPIDeclaration {
 
-    internal var initializerAPI: InitializerAPI? {
-        if ¬isPublic ∨ isUnavailable() {
-            return nil
-        }
-        if parameters.parameterList.first?.firstName?.text.hasPrefix("_") == true {
-            return nil
-        }
-        return InitializerAPI(documentation: documentation, declaration: self)
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return parameters.parameterList.first?.firstName
     }
 
     // MARK: - APIDeclaration
@@ -57,6 +53,16 @@ extension InitializerDeclSyntax : AccessControlled, APIDeclaration, Attributed, 
 
     internal func identifierList() -> Set<String> {
         return parameters.identifierList(labelBehaviour: .function)
+    }
+
+    // MARK: - APISyntax
+
+    internal var shouldLookForChildren: Bool {
+        return false
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+        return [.initializer(InitializerAPI(documentation: documentation, declaration: self))]
     }
 
     // MARK: - OverloadableAPIDeclaration
