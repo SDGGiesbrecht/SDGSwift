@@ -25,7 +25,13 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
     /// Creates a package API instance by parsing the specified package’s sources.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
-    public convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public convenience init(package: PackageGraph, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+
+        let root = package.rootPackages.first!.underlyingPackage
+        try self.init(package: root, reportProgress: reportProgress)
+    }
+
+    internal convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.asString)
         let manifest = try SyntaxTreeParser.parseAndRetry(manifestURL)
