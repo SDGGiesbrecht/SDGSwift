@@ -1,0 +1,13 @@
+/̲/̲/̲ Does something with a string.
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedFunction(̲_̲ string:̲ String)̲ {̲}̲
+̲
+̲/̲/̲/̲ Does something with a number.
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedFunction(̲_̲ number:̲ Int)̲ {̲}̲
+̲
+̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedMethod(̲_̲ specific:̲ Int)̲ {̲}̲
+̲    /̲/̲/̲ Does something with a number.
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedMethod<̲T>̲(̲_̲ general:̲ T)̲ w̲h̲e̲r̲e̲ T :̲ Numeric {̲}̲
+̲    p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedMethod<̲T>̲(̲_̲ general:̲ T)̲ w̲h̲e̲r̲e̲ T :̲ SignedNumeric {̲}̲
+̲}̲
+̲
