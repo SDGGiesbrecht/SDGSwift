@@ -27,6 +27,9 @@ let package = Package(
 
         .library(name: "_Hidden", targets: ["Hidden"])
     ],
+    dependencies: [
+        .package(path: "../Dependency")
+    ],
     targets: [
         .target(name: "executable"),
 
