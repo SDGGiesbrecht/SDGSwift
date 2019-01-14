@@ -29,7 +29,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testAPIParsing() throws {
         for packageName in ["PackageToDocument", "PackageToDocument2"] {
             let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
-            let parsed = try PackageAPI(package: package.package())
+            let parsed = try PackageAPI(package: package.packageGraph())
             XCTAssertNotNil(parsed.documentation)
             let summary = parsed.summary().joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")

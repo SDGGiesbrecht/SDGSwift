@@ -6,7 +6,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -16,14 +16,12 @@
 
 import PackageDescription
 
-/// Package documentation.
-let package = Package(name: "PackageToDocument2",
+let package = Package(
+    name: "Dependency",
     products: [
-        /// Library documentation.
-        .library(name: "PrimaryProduct", targets: ["PrimaryModule"])
+        .library(name: "Dependency", targets: ["Dependency"])
     ],
     targets: [
-        /// Module documentation.
-        .target( name: "PrimaryModule", dependencies: [])
+        .target(name: "Dependency")
     ]
 )
