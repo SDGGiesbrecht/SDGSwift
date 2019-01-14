@@ -28,13 +28,14 @@ let package = Package(
         .library(name: "_Hidden", targets: ["Hidden"])
     ],
     dependencies: [
-        .package(path: "../Dependency")
+        .package(path: "../Dependency"),
+        .package(path: "../Dependency2")
     ],
     targets: [
         .target(name: "executable"),
 
         /// Module documentation.
-        .target(name: "PrimaryModule", dependencies: ["Dependency"]),
+        .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2"]),
 
         .target(name: "Hidden")
     ]
