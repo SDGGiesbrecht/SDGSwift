@@ -70,25 +70,25 @@ public enum APIElement : Comparable, Hashable {
             for nestedElement in element.nestedList(of: APIElementProtocol.self) {
                 conformanceIteration: for conformance in nestedElement.conformances where conformance.reference == nil {
 
-                        let conformanceName = conformance.type.source()
+                    let conformanceName = conformance.type.source()
 
-                        let (protocols, superclasses) = cached(in: &cache) {
-                            return (
-                                elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined(),
-                                elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
-                            )
-                        }
+                    let (protocols, superclasses) = cached(in: &cache) {
+                        return (
+                            elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined(),
+                            elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
+                        )
+                    }
 
-                        for `protocol` in protocols where `protocol`.name.source() == conformanceName {
-                            conformance.reference = .protocol(Weak(`protocol`))
-                            nestedElement.inherit(from: `protocol`)
-                            continue conformanceIteration
-                        }
-                        for superclass in superclasses where superclass.genericName.source() == conformanceName {
-                            conformance.reference = .superclass(Weak(superclass))
-                            nestedElement.inherit(from: superclass)
-                            continue conformanceIteration
-                        }
+                    for `protocol` in protocols where `protocol`.name.source() == conformanceName {
+                        conformance.reference = .protocol(Weak(`protocol`))
+                        nestedElement.inherit(from: `protocol`)
+                        continue conformanceIteration
+                    }
+                    for superclass in superclasses where superclass.genericName.source() == conformanceName {
+                        conformance.reference = .superclass(Weak(superclass))
+                        nestedElement.inherit(from: superclass)
+                        continue conformanceIteration
+                    }
                 }
             }
         }
