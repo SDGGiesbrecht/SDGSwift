@@ -18,7 +18,7 @@ extension SubDependencyProtocol {
     public func inherited()
 }
 
-public protocol DependencyProtocol {
+public protocol DependencyProtocol : SubDependencyProtocol {
     func requirement()
 }
 extension DependencyProtocol {
