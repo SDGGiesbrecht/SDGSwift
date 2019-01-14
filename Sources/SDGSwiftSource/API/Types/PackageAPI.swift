@@ -38,7 +38,9 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
                 return ¬root.targets.contains(module.underlyingTarget)
             }
         })
+
         for module in dependencies.sorted(by: { $0.name < $1.name }) {
+            self.dependencies.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))
         }
     }
 
@@ -77,6 +79,10 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         super.init(documentation: documentation)
         self.constraints = constraints
     }
+
+    // MARK: - Properties
+
+    private var dependencies: [ModuleAPI] = [] // Storage because conformances only have weak references.
 
     // MARK: - APIElementProtocol
 
