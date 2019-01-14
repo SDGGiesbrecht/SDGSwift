@@ -40,7 +40,10 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         })
 
         for module in dependencies.sorted(by: { $0.name < $1.name }) {
-            self.dependencies.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))
+            let parsed = try ModuleAPI(module: module.underlyingTarget, manifest: nil)
+            self.dependencies.append(parsed)
+            for element in children {
+            }
         }
     }
 

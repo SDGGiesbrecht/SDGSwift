@@ -62,7 +62,7 @@ public enum APIElement : Comparable, Hashable {
         return result
     }
 
-    private static func resolveConformances(elements: [APIElement]) {
+    internal static func resolveConformances(elements: [APIElement]) {
 
         var cache: (FlattenCollection<[[ProtocolAPI]]>, FlattenCollection<[[TypeAPI]]>)?
 
