@@ -1,5 +1,7 @@
 /// Does something with a string.
 public func overloadedFunction(_ string: S̲t̲r̲i̲n̲g̲) {}
+/// Does something with a string.
+public func overloadedFunction(_ string: C̲h̲a̲r̲a̲c̲t̲e̲r̲) {}
 
 /// Does something with a number.
 public func overloadedFunction(_ number: I̲n̲t̲) {}

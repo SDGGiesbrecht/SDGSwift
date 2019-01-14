@@ -6,9 +6,12 @@
  </head>
  <body>
 
-<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">overloadedMethod</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">specific</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span></code>
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">overloadedMethod</span><span class="punctuation">&#x003C;</span><span class="external identifier">T</span><span class="punctuation">></span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">general</span><span class="punctuation">:</span> <span class="external identifier">T</span><span class="punctuation">)</span></code>
+<code class="swift blockquote"> <span class="keyword">where</span> <span class="external identifier">T</span> <span class="punctuation">:</span> <span class="external identifier">Numeric</span></code>
 
 <code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">overloadedFunction</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">number</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span></code>
+
+<code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">overloadedFunction</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">string</span><span class="punctuation">:</span> <span class="external identifier">Character</span><span class="punctuation">)</span></code>
 
  </body>
 </html>

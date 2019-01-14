@@ -1,5 +1,7 @@
 /̲/̲/̲ Does something with a string.
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedFunction(̲_̲ string:̲ String)̲ {̲}̲
+̲/̲/̲/̲ Does something with a string.
+̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedFunction(̲_̲ string:̲ Character)̲ {̲}̲
 ̲
 ̲/̲/̲/̲ Does something with a number.
 ̲p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ overloadedFunction(̲_̲ number:̲ Int)̲ {̲}̲

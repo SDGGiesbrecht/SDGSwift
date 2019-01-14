@@ -1,5 +1,7 @@
 /// ̲D̲o̲e̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲w̲i̲t̲h̲ ̲a̲ ̲s̲t̲r̲i̲n̲g̲.̲
 public ̲func ̲o̲v̲e̲r̲l̲o̲a̲d̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲(_ ̲s̲t̲r̲i̲n̲g̲: ̲String) ̲{}
+/// ̲D̲o̲e̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲w̲i̲t̲h̲ ̲a̲ ̲s̲t̲r̲i̲n̲g̲.̲
+public ̲func ̲o̲v̲e̲r̲l̲o̲a̲d̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲(_ ̲s̲t̲r̲i̲n̲g̲: ̲Character) ̲{}
 
 /// ̲D̲o̲e̲s̲ ̲s̲o̲m̲e̲t̲h̲i̲n̲g̲ ̲w̲i̲t̲h̲ ̲a̲ ̲n̲u̲m̲b̲e̲r̲.̲
 public ̲func ̲o̲v̲e̲r̲l̲o̲a̲d̲e̲d̲F̲u̲n̲c̲t̲i̲o̲n̲(_ ̲n̲u̲m̲b̲e̲r̲: ̲Int) ̲{}
