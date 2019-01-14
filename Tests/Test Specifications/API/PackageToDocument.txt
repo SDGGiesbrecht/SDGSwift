@@ -4,6 +4,10 @@ PackageToDocument • Package(name: "PackageToDocument")
  PrimaryModule • .target(name: "PrimaryModule")
   Enumeration • enum Enumeration
    visible • case visible
+  Inherited • struct Inherited
+   required() • func required()
+   DependencyProtocol
+   SubDependencyProtocol
   Structure • struct Structure
    staticProperty • static var staticProperty: Bool { get }
    staticMethod() • static func staticMethod()
