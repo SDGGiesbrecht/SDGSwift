@@ -25,8 +25,8 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - Initialization
 
-    internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
+    internal convenience init(product: Product, manifest: Syntax?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+        let manifestDeclaration = manifest?.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
         for module in product.targets where ¬module.name.hasPrefix("_") {

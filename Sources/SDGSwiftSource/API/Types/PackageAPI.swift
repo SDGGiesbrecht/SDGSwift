@@ -29,6 +29,17 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
         let root = package.rootPackages.first!.underlyingPackage
         try self.init(package: root, reportProgress: reportProgress)
+
+        let dependencies = package.reachableTargets.filter({ module in
+            switch module.type {
+            case .executable, .systemModule, .test:
+                return false
+            case .library:
+                return ¬root.targets.contains(module.underlyingTarget)
+            }
+        })
+        for module in dependencies.sorted(by: { $0.name < $1.name }) {
+        }
     }
 
     internal convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
