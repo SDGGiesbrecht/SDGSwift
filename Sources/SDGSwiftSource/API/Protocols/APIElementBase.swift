@@ -94,15 +94,45 @@ public class _APIElementBase {
 
         var result: [E] = []
         for (_, group) in grouped {
-            var merged: E?
+            var merged: [E] = []
             for element in group.sorted() {
-                if let existing = merged {
-                    existing.overloads.append(convert(element))
-                } else {
-                    merged = element
+                var shouldAppendNew = true
+                partnerSearch: for index in merged.indices {
+                    let existing = merged[index]
+
+                    if let existingDocumenation = existing.documentation {
+                        if let elementDocumentation = element.documentation {
+                            if existingDocumenation.text == elementDocumentation.text {
+                                // Same documentation.
+                                existing.overloads.append(convert(element))
+                                shouldAppendNew = false
+                                break partnerSearch
+                            } else {
+                                // Differing documentation.
+                                continue partnerSearch
+                            }
+                        } else {
+                            // Only the existing element has documentation.
+                            existing.overloads.append(convert(element))
+                            shouldAppendNew = false
+                            break partnerSearch
+                        }
+                    } else if element.documentation ≠ nil {
+                        // Only the new element has documentation.
+                        element.overloads.append(convert(merged.remove(at: index)))
+                        break partnerSearch
+                    } else {
+                        // Neither has documentation.
+                        existing.overloads.append(convert(element))
+                        shouldAppendNew = false
+                        break partnerSearch
+                    }
+                }
+                if shouldAppendNew {
+                    merged.append(element)
                 }
             }
-            result.append(merged!)
+            result.append(contentsOf: merged)
         }
 
         return result

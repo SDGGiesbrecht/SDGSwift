@@ -1,0 +1,7 @@
+(Bool)
+ overloadedMethod(_:) • func overloadedMethod<T>(_ general: T) where T : Numeric
+  func overloadedMethod(_ specific: Int)
+  func overloadedMethod<T>(_ general: T) where T : SignedNumeric
+overloadedFunction(_:) • func overloadedFunction(_ number: Int)
+overloadedFunction(_:) • func overloadedFunction(_ string: Character)
+ func overloadedFunction(_ string: String)
