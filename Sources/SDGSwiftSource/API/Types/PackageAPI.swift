@@ -36,10 +36,10 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         var dependencyModules: [ModuleAPI] = []
 
         for (name, source) in [
-            ("Swift", Resources.swift),
-            ("Foundation", Resources.foundation),
-            ("Dispatch", Resources.dispatch),
-            ("XCTest", Resources.xctest)
+            ("Swift", Resources.CoreLibraries.swift),
+            ("Foundation", Resources.CoreLibraries.foundation),
+            ("Dispatch", Resources.CoreLibraries.dispatch),
+            ("XCTest", Resources.CoreLibraries.xctest)
             ] {
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

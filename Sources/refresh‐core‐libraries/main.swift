@@ -33,7 +33,7 @@ let modules: [String: (url: String, path: String)] = [
     "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public")
 ]
 
-let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource")
+let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Core Libraries")
 
 moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
     let gitHubRepository = SDGSwift.Package(url: URL(string: "https://github.com/apple/" + module.url)!)
