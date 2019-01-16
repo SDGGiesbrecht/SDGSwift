@@ -55,6 +55,7 @@ moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
     } catch {
         fatalError("\(error)")
     }
+    interface = interface.map({ $0.replacingMatches(for: "= default", with: "= x") })
 
     let resource = resources.appendingPathComponent(name).appendingPathExtension("swift")
     try interface.joined(separator: "\n").save(to: resource)
