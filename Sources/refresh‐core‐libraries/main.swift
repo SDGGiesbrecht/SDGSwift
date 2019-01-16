@@ -33,7 +33,11 @@ let modules: [String: (url: String, path: String)] = [
 
 let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource")
 
-for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
+moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
+    if name == "Foundation" {
+        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax cannot parse Foundation due to “#error”.)
+        continue moduleEnumeration
+    }
 
     let gitHubRepository = SDGSwift.Package(url: URL(string: "https://github.com/apple/" + module.url)!)
     let cloneURL = FileManager.default.url(in: .temporary, at: module.url)
@@ -49,7 +53,7 @@ for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
         let api = try ModuleAPI(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
         APIElement.module(api).appendInheritables(to: &interface)
     } catch {
-        print(error)
+        fatalError(error)
     }
 
     let resource = resources.appendingPathComponent(name).appendingPathExtension("swift")
