@@ -95,13 +95,15 @@ public class BlockCommentSyntax : ExtendedSyntax {
 
         var content: [ExtendedSyntax] = []
         var index = 0
-        for line in parsed.text.lines {
+        for line in contentsString.lines {
             defer { index += 1 }
             let indent = indents[index]
             if ¬indent.isEmpty {
                 content.append(ExtendedTokenSyntax(text: indent, kind: .whitespace))
             }
-            content.append(FragmentSyntax(scalarOffsets: contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.startIndex) ..< contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.endIndex), in: parsed))
+            let lowerOffset = contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.startIndex)
+            let upperOffset = contentsString.scalars.distance(from: contentsString.scalars.startIndex, to: line.line.endIndex)
+            content.append(FragmentSyntax(scalarOffsets: lowerOffset ..< upperOffset, in: parsed))
             let newline = newlines[index]
             if ¬newline.isEmpty {
                 content.append(ExtendedTokenSyntax(text: newline, kind: .newlines))

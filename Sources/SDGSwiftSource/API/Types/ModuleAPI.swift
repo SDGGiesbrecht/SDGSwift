@@ -24,10 +24,13 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public convenience init(module: PackageModel.Target, manifest: Syntax?) throws {
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name))
+        try self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name), sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }))
+    }
 
+    public convenience init(documentation: DocumentationSyntax?, declaration: FunctionCallExprSyntax, sources: [URL]) throws {
+        self.init(documentation: documentation, declaration: declaration)
         var api: [APIElement] = []
-        for sourceFile in module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }) {
+        for sourceFile in sources {
             try autoreleasepool {
                 let source = try SyntaxTreeParser.parseAndRetry(sourceFile)
                 children.append(contentsOf: source.api())

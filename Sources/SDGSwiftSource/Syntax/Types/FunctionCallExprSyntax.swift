@@ -59,7 +59,7 @@ extension FunctionCallExprSyntax {
 
     internal func manifestEntryName() -> TokenSyntax {
         guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax else {
-            unreachable()
+            return SyntaxFactory.makeUnknown("") // @exempt(from: tests) Only reachable with a degenerate declaration.
         }
         return SyntaxFactory.makeStringSegment(String(literal.stringLiteral.text.dropFirst().dropLast()))
     }

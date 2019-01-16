@@ -27,6 +27,8 @@ extension TypeSyntax {
             return member.normalized()
         case let optional as OptionalTypeSyntax:
             return optional.normalized()
+        case let implicitlyUnwrapped as ImplicitlyUnwrappedOptionalTypeSyntax:
+            return implicitlyUnwrapped.normalized()
         case let tuple as TupleTypeSyntax:
             return tuple.normalized(extractingFromIndexPath: indexPath)
         case let composition as CompositionTypeSyntax:

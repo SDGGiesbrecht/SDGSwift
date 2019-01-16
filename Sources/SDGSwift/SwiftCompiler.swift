@@ -25,6 +25,7 @@ public enum SwiftCompiler {
     // MARK: - Locating
 
     internal static let versions = Version(4, 2, 1) /* Travis CI */ ... Version(4, 2, 1) /* Current */
+    public static let _standardLibraryVersion = versions.lowerBound
 
     private static func standardLocations(for version: Version) -> [URL] {
         return [
