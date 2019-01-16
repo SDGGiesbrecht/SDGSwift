@@ -1,7 +1,7 @@
 open class ManagedBuffer<Header, Element> {
     public var header: Header { get set }
 }
-public protocol AdditiveArithmetic {
+public protocol AdditiveArithmetic : Equatable {
     static var zero: Self { get }
     prefix func +(x: Self) -> Self
     func +(lhs: Self, rhs: Self) -> Self
@@ -9,7 +9,7 @@ public protocol AdditiveArithmetic {
     func -(lhs: Self, rhs: Self) -> Self
     func -=(lhs: inout Self, rhs: Self)
 }
-public protocol BidirectionalCollection {
+public protocol BidirectionalCollection : Collection, Sequence {
     var last: Element? { get }
     subscript(position: Index) -> Element { get }
     func formIndex(before i: inout Index)
@@ -22,7 +22,7 @@ public protocol BidirectionalCollection {
     @discardableResult mutating func removeLast() -> Element where Self == SubSequence
     mutating func removeLast(_ k: Int) where Self == SubSequence
 }
-public protocol BinaryFloatingPoint {
+public protocol BinaryFloatingPoint : ExpressibleByFloatLiteral, FloatingPoint, Hashable, SignedNumeric, Strideable {
     static var exponentBitCount: Int { get }
     static var significandBitCount: Int { get }
     static func random(in range: ClosedRange<Self>) -> Self where RawSignificand : FixedWidthInteger
@@ -35,7 +35,7 @@ public protocol BinaryFloatingPoint {
     var significandBitPattern: RawSignificand { get }
     var significandWidth: Int { get }
 }
-public protocol BinaryInteger {
+public protocol BinaryInteger : AdditiveArithmetic, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
     static var isSigned: Bool { get }
     init()
     init<T>(_ source: T) where T : BinaryFloatingPoint
@@ -73,7 +73,7 @@ public protocol CVarArg {
 public protocol CaseIterable {
     static var allCases: AllCases { get }
 }
-public protocol Collection {
+public protocol Collection : Sequence {
     var count: Int { get }
     var endIndex: Index { get }
     var first: Element? { get }
@@ -102,7 +102,7 @@ public protocol Collection {
     @discardableResult mutating func removeFirst() -> Element where Self == SubSequence
     mutating func removeFirst(_ k: Int) where Self == SubSequence
 }
-public protocol Comparable {
+public protocol Comparable : Equatable {
     postfix func ...(minimum: Self) -> PartialRangeFrom<Self>
     prefix func ...(maximum: Self) -> PartialRangeThrough<Self>
     func ...(minimum: Self, maximum: Self) -> ClosedRange<Self>
@@ -119,7 +119,7 @@ public protocol Comparable {
 public protocol CustomDebugStringConvertible {
     var debugDescription: String { get }
 }
-public protocol CustomLeafReflectable {
+public protocol CustomLeafReflectable : CustomReflectable {
 }
 public protocol CustomPlaygroundDisplayConvertible {
     var playgroundDescription: Any { get }
@@ -145,7 +145,7 @@ public protocol ExpressibleByBooleanLiteral {
 public protocol ExpressibleByDictionaryLiteral {
     init(dictionaryLiteral elements: (Key, Value)...)
 }
-public protocol ExpressibleByExtendedGraphemeClusterLiteral {
+public protocol ExpressibleByExtendedGraphemeClusterLiteral : ExpressibleByUnicodeScalarLiteral {
     init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterLiteralType)
 }
 public protocol ExpressibleByFloatLiteral {
@@ -157,17 +157,17 @@ public protocol ExpressibleByIntegerLiteral {
 public protocol ExpressibleByNilLiteral {
     init(nilLiteral: Void)
 }
-public protocol ExpressibleByStringInterpolation {
+public protocol ExpressibleByStringInterpolation : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral {
     init(stringInterpolation: DefaultStringInterpolation) where DefaultStringInterpolation == StringInterpolation
     init(stringInterpolation: StringInterpolation)
 }
-public protocol ExpressibleByStringLiteral {
+public protocol ExpressibleByStringLiteral : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByUnicodeScalarLiteral {
     init(stringLiteral value: StringLiteralType)
 }
 public protocol ExpressibleByUnicodeScalarLiteral {
     init(unicodeScalarLiteral value: UnicodeScalarLiteralType)
 }
-public protocol FixedWidthInteger {
+public protocol FixedWidthInteger : AdditiveArithmetic, BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, LosslessStringConvertible, Numeric, Strideable {
     static var bitWidth: Int { get }
     static var max: Self { get }
     static var min: Self { get }
@@ -201,7 +201,7 @@ public protocol FixedWidthInteger {
     func remainderReportingOverflow(dividingBy rhs: Self) -> (partialValue : Self, overflow : Bool)
     func subtractingReportingOverflow(_ rhs: Self) -> (partialValue : Self, overflow : Bool)
 }
-public protocol FloatingPoint {
+public protocol FloatingPoint : AdditiveArithmetic, Comparable, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
     static var greatestFiniteMagnitude: Self { get }
     static var infinity: Self { get }
     static var leastNonzeroMagnitude: Self { get }
@@ -255,25 +255,25 @@ public protocol FloatingPoint {
     func squareRoot() -> Self
     func truncatingRemainder(dividingBy other: Self) -> Self
 }
-public protocol Hashable {
+public protocol Hashable : Equatable {
     var hashValue: Int { get }
     func hash(into hasher: inout Hasher)
 }
 public protocol IteratorProtocol {
     mutating func next() -> Element?
 }
-public protocol LazyCollectionProtocol {
+public protocol LazyCollectionProtocol : Collection, LazySequenceProtocol, Sequence {
 }
-public protocol LazySequenceProtocol {
+public protocol LazySequenceProtocol : Sequence {
     var elements: Elements { get }
     var elements: Self { get } where Elements == Self
 }
-public protocol LosslessStringConvertible {
+public protocol LosslessStringConvertible : CustomStringConvertible {
     init?(_ description: String)
 }
 public protocol MirrorPath {
 }
-public protocol MutableCollection {
+public protocol MutableCollection : Collection, Sequence {
     mutating func partition(by belongsInSecondPartition: (Element) throws -> Bool) rethrows -> Index
     mutating func reverse() where Self : BidirectionalCollection
     mutating func shuffle() where Self : RandomAccessCollection
@@ -284,18 +284,18 @@ public protocol MutableCollection {
     mutating func swapAt(_ i: Index, _ j: Index)
     mutating func withContiguousMutableStorageIfAvailable<R>(_ body: (inout UnsafeMutableBufferPointer<Element>) throws -> R) rethrows -> R?
 }
-public protocol Numeric {
+public protocol Numeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral {
     init?<T>(exactly source: T) where T : BinaryInteger
     var magnitude: Magnitude { get }
     func *(lhs: Self, rhs: Self) -> Self
     func *=(lhs: inout Self, rhs: Self)
 }
-public protocol OptionSet {
+public protocol OptionSet : Equatable, ExpressibleByArrayLiteral, RawRepresentable, SetAlgebra {
     func intersection(_ other: Self) -> Self
     func symmetricDifference(_ other: Self) -> Self
     func union(_ other: Self) -> Self
 }
-public protocol RandomAccessCollection {
+public protocol RandomAccessCollection : BidirectionalCollection, Collection, Sequence {
 }
 public protocol RandomNumberGenerator {
     mutating func next() -> UInt64
@@ -307,7 +307,7 @@ public protocol RangeExpression {
     func relative<C>(to collection: C) -> Range<Bound> where C : Collection, Bound == C.Index
     func ~=(pattern: Self, value: Bound) -> Bool
 }
-public protocol RangeReplaceableCollection {
+public protocol RangeReplaceableCollection : Collection, Sequence {
     init()
     init<S>(_ elements: S) where S : Sequence, Element == S.Element
     init<S>(_ elements: S) where S : Sequence, Element == S.Element
@@ -342,7 +342,7 @@ public protocol RawRepresentable {
     var rawValue: RawValue { get }
     func hash(into hasher: inout Hasher) where RawValue : Hashable, Self : Hashable
 }
-public protocol SIMD {
+public protocol SIMD : CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, SIMDStorage {
 }
 public protocol SIMDScalar {
 }
@@ -383,7 +383,7 @@ public protocol Sequence {
     func starts<PossiblePrefix>(with possiblePrefix: PossiblePrefix, by areEquivalent: (Element, PossiblePrefix.Element) throws -> Bool) rethrows -> Bool where PossiblePrefix : Sequence
     func withContiguousStorageIfAvailable<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R?
 }
-public protocol SetAlgebra {
+public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     init()
     init<S>(_ sequence: __owned S) where S : Sequence, Element == S.Element
     var isEmpty: Bool { get }
@@ -403,18 +403,18 @@ public protocol SetAlgebra {
     func subtracting(_ other: Self) -> Self
     @discardableResult mutating func update(with newMember: __owned Element) -> Element?
 }
-public protocol SignedInteger {
+public protocol SignedInteger : AdditiveArithmetic, BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
     static var max: Self { get } where Self : FixedWidthInteger
     static var min: Self { get } where Self : FixedWidthInteger
     func &+(lhs: Self, rhs: Self) -> Self where Self : FixedWidthInteger
     func &-(lhs: Self, rhs: Self) -> Self where Self : FixedWidthInteger
 }
-public protocol SignedNumeric {
+public protocol SignedNumeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral, Numeric {
     prefix func -(operand: Self) -> Self
     prefix func -(operand: Self) -> Self
     mutating func negate()
 }
-public protocol Strideable {
+public protocol Strideable : Comparable, Equatable {
     func +(lhs: Self, rhs: Stride) -> Self where Self : _Pointer
     func +=(lhs: inout Self, rhs: Stride) where Self : _Pointer
     func -(lhs: Self, rhs: Self) -> Stride where Self : _Pointer
@@ -426,7 +426,7 @@ public protocol StringInterpolationProtocol {
     init(literalCapacity: Int, interpolationCount: Int)
     mutating func appendLiteral(_ literal: StringLiteralType)
 }
-public protocol StringProtocol {
+public protocol StringProtocol : BidirectionalCollection, Collection, Comparable, CustomStringConvertible, Equatable, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringInterpolation, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Hashable, LosslessStringConvertible, Sequence, TextOutputStream, TextOutputStreamable {
     init(cString nullTerminatedUTF8: UnsafePointer<CChar>)
     init<C, Encoding>(decoding codeUnits: C, as sourceEncoding: Encoding.Type) where C : Collection, Encoding : Unicode.Encoding, C.Iterator.Element == Encoding.CodeUnit
     init<Encoding>(decodingCString nullTerminatedCodeUnits: UnsafePointer<Encoding.CodeUnit>, as sourceEncoding: Encoding.Type) where Encoding : Unicode.Encoding
@@ -446,12 +446,12 @@ public protocol TextOutputStream {
 public protocol TextOutputStreamable {
     func write<Target>(to target: inout Target) where Target : TextOutputStream
 }
-public protocol UnicodeCodec {
+public protocol UnicodeCodec : Unicode.Encoding {
     static func encode(_ input: Unicode.Scalar, into processCodeUnit: (CodeUnit) -> Void)
     init()
     mutating func decode<I>(_ input: inout I) -> UnicodeDecodingResult where I : IteratorProtocol, CodeUnit == I.Element
 }
-public protocol UnsignedInteger {
+public protocol UnsignedInteger : AdditiveArithmetic, BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
     static var max: Self { get } where Self : FixedWidthInteger
     static var min: Self { get } where Self : FixedWidthInteger
 }
@@ -704,10 +704,6 @@ extension StrideToIterator {
 }
 extension String.UTF16View {
 }
-extension String.UTF16View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF16View) {}
-    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
-}
 extension String.UTF8View {
     public var count: Int { get }
     @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UTF8View.SubSequence { get } {}
@@ -716,6 +712,10 @@ extension String.UTF8View {
 }
 extension String.UTF8View.Index {
     public init?(_ idx: String.Index, within target: String.UTF8View) {}
+}
+extension String.UnicodeScalarIndex {
+    public init?(_ sourcePosition: String.Index, within unicodeScalars: String.UnicodeScalarView) {}
+    public func samePosition(in characters: String) -> String.Index? {}
 }
 extension String.UnicodeScalarView {
 }
@@ -751,23 +751,19 @@ extension Unicode.ASCII.Parser {
     public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
 }
 extension Unicode.Scalar {
-    public var isASCII: Bool { get }
-    public var utf16: UTF16View { get }
-    public var value: UInt32 { get }
-    public func escaped(asASCII forceASCII: Bool) -> String {}
 }
-extension Unicode.Scalar.UTF16View {
+extension Unicode.UTF16 {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
+}
+extension Unicode.UTF16.ForwardParser {
 }
 extension Unicode.UTF32 {
     public static var encodedReplacementCharacter: EncodedScalar { get }
     public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
     public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-}
-extension Unicode.UTF8 {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : _UnicodeEncoding {}
 }
 extension Unicode.UTF8.ForwardParser {
 }

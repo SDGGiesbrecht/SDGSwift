@@ -34,7 +34,11 @@ extension APIElement {
             case let `class` as ClassDeclSyntax:
                 if let modifiers = `class`.modifiers,
                     modifiers.contains(where: { $0.name.text == "open" }) {
-                    api.append(`class`.source() + " {")
+                    var declaration = `class`.source()
+                    if let conformances = conformanceClause() {
+                        declaration.append(conformances)
+                    }
+                    api.append(declaration + " {")
                     for child in children {
                         child.appendInheritables(to: &api)
                     }
@@ -46,7 +50,11 @@ extension APIElement {
         case .protocol(let `protocol`):
             inProtocol = true
             defer { inProtocol = false }
-            api.append(`protocol`.declaration.madePublic().source() + " {")
+            var declaration = `protocol`.declaration.madePublic().source()
+            if let conformances = conformanceClause() {
+                declaration.append(conformances)
+            }
+            api.append(declaration + " {")
             for child in children {
                 child.appendInheritables(to: &api)
             }
@@ -85,5 +93,21 @@ extension APIElement {
             declaration += "\n#endif"
         }
         api.append(declaration)
+    }
+    
+    private func conformanceClause() -> String? {
+        var conformances = self.conformances.map { $0 }
+        if conformances.isEmpty {
+            return nil
+        }
+        var result = " : "
+        while ¬conformances.isEmpty {
+            let next = conformances.removeFirst()
+            result.append(next.summaryName)
+            if ¬conformances.isEmpty {
+                result.append(", ")
+            }
+        }
+        return result
     }
 }

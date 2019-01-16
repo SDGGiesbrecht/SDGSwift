@@ -1,4 +1,4 @@
-public protocol DispatchSourceFileSystemObject {
+public protocol DispatchSourceFileSystemObject : DispatchSourceProtocol {
 #if !os(Linux) && !os(Android) && !os(Windows)
     var data: DispatchSource.FileSystemEvent { get }
 #endif
@@ -9,12 +9,12 @@ public protocol DispatchSourceFileSystemObject {
     var mask: DispatchSource.FileSystemEvent { get }
 #endif
 }
-public protocol DispatchSourceMachReceive {
+public protocol DispatchSourceMachReceive : DispatchSourceProtocol {
 #if HAVE_MACH
     var handle: mach_port_t { get }
 #endif
 }
-public protocol DispatchSourceMachSend {
+public protocol DispatchSourceMachSend : DispatchSourceProtocol {
 #if HAVE_MACH
     var data: DispatchSource.MachSendEvent { get }
 #endif
@@ -25,7 +25,7 @@ public protocol DispatchSourceMachSend {
     var mask: DispatchSource.MachSendEvent { get }
 #endif
 }
-public protocol DispatchSourceMemoryPressure {
+public protocol DispatchSourceMemoryPressure : DispatchSourceProtocol {
 #if HAVE_MACH
     var data: DispatchSource.MemoryPressureEvent { get }
 #endif
@@ -33,7 +33,7 @@ public protocol DispatchSourceMemoryPressure {
     var mask: DispatchSource.MemoryPressureEvent { get }
 #endif
 }
-public protocol DispatchSourceProcess {
+public protocol DispatchSourceProcess : DispatchSourceProtocol {
 #if !os(Linux) && !os(Android) && !os(Windows)
     var data: DispatchSource.ProcessEvent { get }
 #endif
@@ -60,11 +60,11 @@ public protocol DispatchSourceProtocol {
     func setRegistrationHandler(qos: DispatchQoS = x, flags: DispatchWorkItemFlags = x, handler: DispatchSourceHandler?)
     func suspend()
 }
-public protocol DispatchSourceRead {
+public protocol DispatchSourceRead : DispatchSourceProtocol {
 }
-public protocol DispatchSourceSignal {
+public protocol DispatchSourceSignal : DispatchSourceProtocol {
 }
-public protocol DispatchSourceTimer {
+public protocol DispatchSourceTimer : DispatchSourceProtocol {
     @available(swift, introduced: 4) func schedule(deadline: DispatchTime, repeating interval: DispatchTimeInterval = x, leeway: DispatchTimeInterval = x)
     @available(swift, introduced: 4) func schedule(deadline: DispatchTime, repeating interval: Double, leeway: DispatchTimeInterval = x)
     @available(swift, introduced: 4) func schedule(wallDeadline: DispatchWallTime, repeating interval: DispatchTimeInterval = x, leeway: DispatchTimeInterval = x)
@@ -74,14 +74,14 @@ public protocol DispatchSourceTimer {
     func scheduleRepeating(deadline: DispatchTime, interval: DispatchTimeInterval, leeway: DispatchTimeInterval)
     func scheduleRepeating(wallDeadline: DispatchWallTime, interval: DispatchTimeInterval, leeway: DispatchTimeInterval)
 }
-public protocol DispatchSourceUserDataAdd {
+public protocol DispatchSourceUserDataAdd : DispatchSourceProtocol {
     func add(data: UInt)
 }
-public protocol DispatchSourceUserDataOr {
+public protocol DispatchSourceUserDataOr : DispatchSourceProtocol {
     func or(data: UInt)
 }
-public protocol DispatchSourceUserDataReplace {
+public protocol DispatchSourceUserDataReplace : DispatchSourceProtocol {
     func replace(data: UInt)
 }
-public protocol DispatchSourceWrite {
+public protocol DispatchSourceWrite : DispatchSourceProtocol {
 }
