@@ -197,7 +197,7 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testCoreLibraries() throws {
-        let syntax = try SyntaxTreeParser.parse(URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Swift.swift"))
+        let syntax = try SyntaxTreeParser.parse(URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Core Libraries/Swift.txt"))
         var foundLessThan = false
         try FunctionalSyntaxScanner(
             checkSyntax: { syntax, _ in
