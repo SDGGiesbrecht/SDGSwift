@@ -30,7 +30,13 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         let root = package.rootPackages.first!.underlyingPackage
         try self.init(package: root, reportProgress: reportProgress)
 
-        let dependencies = package.reachableTargets.filter({ module in
+        var dependencyModules = try [
+            Resources.swift,
+            Resources.dispatch,
+            Resources.xctest
+            ].map({ try ModuleAPI(source: String(data: $0, encoding: String.Encoding.utf8)!) })
+
+        let declaredDependencies = package.reachableTargets.filter({ module in
             switch module.type {
             case .executable, .systemModule, .test:
                 return false
@@ -38,11 +44,13 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
                 return ¬root.targets.contains(module.underlyingTarget)
             }
         })
+        dependencyModules += try declaredDependencies.sorted(by: { $0.name < $1.name }).map { module in
+            return try ModuleAPI(module: module.underlyingTarget, manifest: nil)
+        }
 
-        for module in dependencies.sorted(by: { $0.name < $1.name }) {
-            let parsed = try ModuleAPI(module: module.underlyingTarget, manifest: nil)
-            self.dependencies.append(parsed)
-            APIElement.resolveConformances(elements: [.package(self)] + [.module(parsed)])
+        for module in dependencyModules {
+            self.dependencies.append(module)
+            APIElement.resolveConformances(elements: [.package(self)] + [.module(module)])
         }
     }
 
