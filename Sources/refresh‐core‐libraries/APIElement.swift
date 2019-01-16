@@ -94,7 +94,7 @@ extension APIElement {
         }
         api.append(declaration)
     }
-    
+
     private func conformanceClause() -> String? {
         var conformances = self.conformances.map { $0 }
         if conformances.isEmpty {
