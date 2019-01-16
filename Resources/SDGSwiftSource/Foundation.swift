@@ -296,6 +296,7 @@ open class HTTPURLResponse {
 open class func localizedString(forStatusCode statusCode: Int) -> String {}
 public init?(url: URL, statusCode: Int, httpVersion: String?, headerFields: [String: String]?) {}
 public var allHeaderFields: [AnyHashable: Any] { get }
+open var description: String { get }
 public var statusCode: Int { get }
 }
 open class Host {
@@ -392,16 +393,21 @@ open func transform(_ aSize: NSSize) -> NSSize {}
 open func translateX(by deltaX: CGFloat, yBy deltaY: CGFloat) {}
 }
 open class NSArray {
+public static var supportsSecureCoding: Bool { get }
+public init() {}
 public convenience init(array: [Any]) {}
 public convenience init(array: [Any], copyItems: Bool) {}
 public required convenience init(arrayLiteral elements: Any...) {}
+public required convenience init?(coder aDecoder: NSCoder) {}
 public convenience init(contentsOf url: URL, error: Void) throws {}
 public convenience init(object anObject: Any) {}
 public convenience init(objects elements: AnyObject...) {}
 public convenience init(objects: UnsafePointer<AnyObject>, count: Int) {}
 open var count: Int { get }
 public var customMirror: Mirror { get }
+open var description: String { get }
 open var firstObject: Any? { get }
+open var hash: Int { get }
 open var lastObject: Any? { get }
 open var sortedArrayHint: Data { get }
 open subscript(idx: Int) -> Any { get } {}
@@ -409,8 +415,11 @@ open func adding(_ anObject: Any) -> [Any] {}
 open func addingObjects(from otherArray: [Any]) -> [Any] {}
 open func componentsJoined(by separator: String) -> String {}
 open func contains(_ anObject: Any) -> Bool {}
+open func copy() -> Any {}
+open func copy(with zone: NSZone? = x) -> Any {}
 open func description(withLocale locale: Locale?) -> String {}
 open func description(withLocale locale: Locale?, indent level: Int) -> String {}
+open func encode(with aCoder: NSCoder) {}
 open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -427,8 +436,11 @@ open func indexOfObjectIdentical(to anObject: Any, in range: NSRange) -> Int {}
 open func indexesOfObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
 open func indexesOfObjects(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
 open func indexesOfObjects(passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
+open func isEqual(_ value: Any?) -> Bool {}
 open func isEqual(to otherArray: [Any]) -> Bool {}
 public func makeIterator() -> Iterator {}
+open func mutableCopy() -> Any {}
+open func mutableCopy(with zone: NSZone? = x) -> Any {}
 open func object(at index: Int) -> Any {}
 open func objectEnumerator() -> NSEnumerator {}
 open func objects(at indexes: IndexSet) -> [Any] {}
@@ -556,16 +568,26 @@ open class var urlQueryAllowed: CharacterSet { get }
 open class var urlUserAllowed: CharacterSet { get }
 open class var whitespaces: CharacterSet { get }
 open class var whitespacesAndNewlines: CharacterSet { get }
+public init() {}
 public init(bitmapRepresentation data: Data) {}
 public init(charactersIn aString: String) {}
+public required convenience init(coder aDecoder: NSCoder) {}
 public convenience init?(contentsOfFile fName: String) {}
 public init(range aRange: NSRange) {}
 open var bitmapRepresentation: Data { get }
+open var description: String { get }
+open var hash: Int { get }
 open var inverted: CharacterSet { get }
 open func characterIsMember(_ aCharacter: unichar) -> Bool {}
+open func copy() -> Any {}
+open func copy(with zone: NSZone? = x) -> Any {}
+open func encode(with aCoder: NSCoder) {}
 open func hasMemberInPlane(_ thePlane: UInt8) -> Bool {}
+open func isEqual(_ value: Any?) -> Bool {}
 open func isSuperset(of theOtherSet: CharacterSet) -> Bool {}
 open func longCharacterIsMember(_ theLongChar: UInt32) -> Bool {}
+open func mutableCopy() -> Any {}
+open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSCoder {
 open var allowedClasses: [AnyClass]? { get }
@@ -656,11 +678,7 @@ open func tryLock(whenCondition condition: Int) -> Bool {}
 open func unlock(withCondition condition: Int) {}
 }
 open class NSCountedSet {
-public convenience init(array: [Any]) {}
-public convenience init(set: Set<AnyHashable>) {}
-open func copy(with zone: NSZone? = x) -> Any {}
 open func count(for object: Any) -> Int {}
-open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSData {
 public init?(base64Encoded base64Data: Data, options: Base64DecodingOptions = x) {}
@@ -1757,12 +1775,8 @@ public var fileHandleForWriting: FileHandle { get }
 }
 open class Port {
 public static var didBecomeInvalidNotification { get }
-public init() {}
-public required init?(coder aDecoder: NSCoder) {}
 open var isValid: Bool { get }
 open var reservedSpaceLength: Int { get }
-open func copy(with zone: NSZone? = x) -> Any {}
-open func encode(with aCoder: NSCoder) {}
 open func invalidate() {}
 open func remove(from runLoop: RunLoop, forMode mode: RunLoopMode) {}
 open func schedule(in runLoop: RunLoop, forMode mode: RunLoopMode) {}
@@ -1926,6 +1940,7 @@ open class func getBoundStreams(withBufferSize bufferSize: Int, inputStream: Aut
 #if false
 open class func getStreamsToHost(withName hostname: String, port: Int, inputStream: AutoreleasingUnsafeMutablePointer<InputStream?>?, outputStream: AutoreleasingUnsafeMutablePointer<OutputStream?>?) {}
 #endif
+public init() {}
 open weak var delegate: StreamDelegate? { get set }
 open var streamError: Error? { get }
 open var streamStatus: Status { get }
@@ -2048,17 +2063,12 @@ open func startLoading() {}
 open func stopLoading() {}
 }
 open class URLResponse {
-public static var supportsSecureCoding: Bool { get }
-public required init?(coder aDecoder: NSCoder) {}
 public init(url: URL, mimeType: String?, expectedContentLength length: Int, textEncodingName name: String?) {}
 open var expectedContentLength: Int64 { get }
 open var mimeType: String? { get }
 open var suggestedFilename: String? { get }
 open var textEncodingName: String? { get }
 open var url: URL? { get }
-open func copy() -> Any {}
-open func copy(with zone: NSZone? = x) -> Any {}
-open func encode(with aCoder: NSCoder) {}
 }
 open class URLSession {
 open class var shared: URLSession { get }
@@ -2129,6 +2139,7 @@ open class URLSessionTask {
 public static var defaultPriority: Float { get }
 public static var highPriority: Float { get }
 public static var lowPriority: Float { get }
+public init() {}
 public var countOfBytesClientExpectsToReceive: Int64 { get }
 public var countOfBytesClientExpectsToSend: Int64 { get }
 open var countOfBytesExpectedToReceive: Int64 { get }
@@ -2140,11 +2151,14 @@ public var earliestBeginDate: Date? { get }
 open var error: Error? { get }
 open var originalRequest: URLRequest? { get }
 open var priority: Float { get set }
+public var progress: Progress { get }
 open var response: URLResponse? { get }
 open var state: URLSessionTask.State { get set }
 open var taskDescription: String? { get set }
 open var taskIdentifier: Int { get }
 open func cancel() {}
+open func copy() -> Any {}
+open func copy(with zone: NSZone?) -> Any {}
 open func resume() {}
 open func suspend() {}
 }
@@ -2168,6 +2182,7 @@ public convenience init(coefficient: Double) {}
 public init(coefficient: Double, constant: Double) {}
 open var coefficient: Double { get }
 open var constant: Double { get }
+open func isEqual(_ object: Any?) -> Bool {}
 }
 open class UserDefaults {
 public static var argumentDomain: String { get }
@@ -2207,7 +2222,6 @@ open func volatileDomain(forName domainName: String) -> [String: Any] {}
 }
 open class XMLDTD {
 open class func predefinedEntityDeclaration(forName name: String) -> XMLDTDNode? {}
-public init() {}
 public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
 public convenience init(data: Data, options mask: XMLNode.Options = x) throws {}
 open var publicID: String? { get set }
@@ -2611,8 +2625,8 @@ public var debugDescription: String { get }
 public var description: String { get }
 public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
-public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
 public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
+public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
 public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
 public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}

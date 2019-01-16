@@ -316,9 +316,9 @@ public enum APIElement : Comparable, Hashable {
         case conformance
     }
 
-    private func comparisonIdentity() -> (Group, String, String) {
-        func flatten(_ group: Group, _ properties: (name: String, declaration: String)) -> (Group, String, String) {
-            return (group, properties.name, properties.declaration)
+    private func comparisonIdentity() -> (Group, String, String, String) {
+        func flatten(_ group: Group, _ properties: (name: String, declaration: String, constraints: String)) -> (Group, String, String, String) {
+            return (group, properties.name, properties.declaration, properties.constraints)
         }
         switch self {
         case .package(let package):
