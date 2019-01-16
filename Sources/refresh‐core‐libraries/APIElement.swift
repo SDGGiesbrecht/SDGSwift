@@ -72,7 +72,7 @@ extension APIElement {
     private func append(simpleDeclaration declaration: Syntax, implementation: Bool, to api: inout [String]) {
         var declaration = "    " + declaration.source()
         if let constraints = self.constraints?.source() {
-            declaration += " " + constraints
+            declaration += constraints
         }
         if implementation {
             declaration += " {}"
