@@ -16,6 +16,7 @@ import SDGLogic
 
 import SDGSwiftSource
 
+var inProtocol = false
 extension APIElement {
 
     func appendInheritables(to api: inout [String]) {
@@ -43,6 +44,8 @@ extension APIElement {
                 break
             }
         case .protocol(let `protocol`):
+            inProtocol = true
+            defer { inProtocol = false }
             api.append(`protocol`.declaration.madePublic().source() + " {")
             for child in children {
                 child.appendInheritables(to: &api)
@@ -57,14 +60,14 @@ extension APIElement {
         case .case, .operator, .precedence, .conformance:
             break
         case .initializer(let initializer):
-            append(simpleDeclaration: initializer.declaration.madePublic(), implementation: true, to: &api)
+            append(simpleDeclaration: initializer.declaration.madePublic(inProtocol), implementation: true, to: &api)
         case .variable(let variable):
-            append(simpleDeclaration: variable.declaration.madePublic(), implementation: false, to: &api)
+            append(simpleDeclaration: variable.declaration.madePublic(inProtocol), implementation: false, to: &api)
         case .subscript(let `subscript`):
-            append(simpleDeclaration: `subscript`.declaration.madePublic(), implementation: true, to: &api)
+            append(simpleDeclaration: `subscript`.declaration.madePublic(inProtocol), implementation: true, to: &api)
         case .function(let function):
             if function.declaration.identifier.text ≠ "" {
-                append(simpleDeclaration: function.declaration.madePublic(), implementation: true, to: &api)
+                append(simpleDeclaration: function.declaration.madePublic(inProtocol), implementation: true, to: &api)
             }
         }
     }
@@ -74,7 +77,7 @@ extension APIElement {
         if let constraints = self.constraints?.source() {
             declaration += constraints
         }
-        if implementation {
+        if implementation ∧ ¬inProtocol {
             declaration += " {}"
         }
         if let conditions = self.compilationConditions?.source() {

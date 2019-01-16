@@ -331,7 +331,7 @@ open class JSONDecoder {
     open var keyDecodingStrategy: KeyDecodingStrategy { get set }
     open var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy { get set }
     open var userInfo: [CodingUserInfoKey: Any] { get set }
-    open func decode<T>(_ type: T.Type, from data: Data) throws -> T  where T : Decodable {}
+    open func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable {}
 }
 open class JSONEncoder {
     public init() {}
@@ -341,7 +341,7 @@ open class JSONEncoder {
     open var nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy { get set }
     open var outputFormatting: OutputFormatting { get set }
     open var userInfo: [CodingUserInfoKey: Any] { get set }
-    open func encode<T>(_ value: T) throws -> Data  where T : Encodable {}
+    open func encode<T>(_ value: T) throws -> Data where T : Encodable {}
 }
 open class JSONSerialization {
     open class func data(withJSONObject value: Any, options opt: WritingOptions = x) throws -> Data {}
@@ -443,9 +443,7 @@ open class NSArray {
     open func write(to url: URL) throws {}
 }
 open class NSAttributedString {
-    public static var supportsSecureCoding: Bool { get }
     public init(attributedString: NSAttributedString) {}
-    public required init?(coder aDecoder: NSCoder) {}
     public init(string: String) {}
     public init(string: String, attributes attrs: [NSAttributedStringKey: Any]? = x) {}
     open var length: Int { get }
@@ -455,14 +453,9 @@ open class NSAttributedString {
     open func attributedSubstring(from range: NSRange) -> NSAttributedString {}
     open func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey: Any] {}
     open func attributes(at location: Int, longestEffectiveRange range: NSRangePointer?, in rangeLimit: NSRange) -> [NSAttributedStringKey: Any] {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerateAttribute(_ attrName: NSAttributedStringKey, in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateAttributes(in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: ([NSAttributedStringKey: Any], NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func isEqual(to other: NSAttributedString) -> Bool {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSCache<KeyType, ObjectType> {
     open var countLimit: Int { get set }
@@ -676,25 +669,37 @@ open class NSCountedSet {
     open func count(for object: Any) -> Int {}
 }
 open class NSData {
+    public static var supportsSecureCoding: Bool { get }
+    public init() {}
     public init?(base64Encoded base64Data: Data, options: Base64DecodingOptions = x) {}
     public init?(base64Encoded base64String: String, options: Base64DecodingOptions = x) {}
     public init(bytes: UnsafeRawPointer?, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, deallocator: ((UnsafeMutableRawPointer, Int) -> Void)? = x) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, freeWhenDone: Bool) {}
+    public required init?(coder aDecoder: NSCoder) {}
     public init?(contentsOf url: URL) {}
     public init(contentsOf url: URL, options readOptionsMask: ReadingOptions = x) throws {}
     public init?(contentsOfFile path: String) {}
     public init(contentsOfFile path: String, options readOptionsMask: ReadingOptions = x) throws {}
     public init(data: Data) {}
     open var bytes: UnsafeRawPointer { get }
+    open var debugDescription: String { get }
+    open var description: String { get }
+    open var hash: Int { get }
     open var length: Int { get }
     open func base64EncodedData(options: Base64EncodingOptions = x) -> Data {}
     open func base64EncodedString(options: Base64EncodingOptions = x) -> String {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerateBytes(_ block: (UnsafeRawPointer, NSRange, UnsafeMutablePointer<Bool>) -> Void) {}
     open func getBytes(_ buffer: UnsafeMutableRawPointer, length: Int) {}
     open func getBytes(_ buffer: UnsafeMutableRawPointer, range: NSRange) {}
+    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to other: Data) -> Bool {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func range(of dataToFind: Data, options mask: SearchOptions = x, in searchRange: NSRange) -> NSRange {}
     open func subdata(with range: NSRange) -> Data {}
     open func write(to url: URL, atomically: Bool) -> Bool {}
@@ -787,10 +792,7 @@ open class NSDecimalNumberHandler {
     public init(roundingMode: NSDecimalNumber.RoundingMode, scale: Int16, raiseOnExactness exact: Bool, raiseOnOverflow overflow: Bool, raiseOnUnderflow underflow: Bool, raiseOnDivideByZero divideByZero: Bool) {}
 }
 open class NSDictionary {
-    public static var supportsSecureCoding: Bool { get }
     open class func sharedKeySet(forKeys keys: [NSCopying]) -> Any {}
-    public convenience init() {}
-    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(dictionary otherDictionary: [AnyHashable: Any]) {}
     public required convenience init(dictionaryLiteral elements: (Any, Any)...) {}
     public convenience init(object: Any, forKey key: NSCopying) {}
@@ -800,20 +802,14 @@ open class NSDictionary {
     open var allValues: [Any] { get }
     open var count: Int { get }
     public var customMirror: Mirror { get }
-    open var description: String { get }
     open var descriptionInStringsFileFormat: String { get }
-    open var hash: Int { get }
     open subscript(key: Any) -> Any? { get } {}
     open func allKeys(for anObject: Any) -> [Any] {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
     open func description(withLocale locale: Locale?) -> String {}
     open func description(withLocale locale: Locale?, indent level: Int) -> String {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerateKeysAndObjects(_ block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateKeysAndObjects(options opts: NSEnumerationOptions = x, using block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func getObjects(_ objects: inout [Any], andKeys keys: inout [Any], count: Int) {}
-    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to otherDictionary: [AnyHashable: Any]) -> Bool {}
     open func keyEnumerator() -> NSEnumerator {}
     open func keysOfEntries(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
@@ -821,8 +817,6 @@ open class NSDictionary {
     open func keysSortedByValue(comparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
     open func keysSortedByValue(options opts: NSSortOptions = x, usingComparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
     public func makeIterator() -> Iterator {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func object(forKey aKey: Any) -> Any? {}
     open func objectEnumerator() -> NSEnumerator {}
     open func objects(forKeys keys: [Any], notFoundMarker marker: Any) -> [Any] {}
@@ -896,9 +890,6 @@ open class NSIndexPath {
     open func removingLastIndex() -> IndexPath {}
 }
 open class NSIndexSet {
-    public static var supportsSecureCoding: Bool { get }
-    public init() {}
-    public required init?(coder aDecoder: NSCoder) {}
     public convenience init(index value: Int) {}
     public init(indexSet: IndexSet) {}
     public init(indexesIn range: NSRange) {}
@@ -907,10 +898,7 @@ open class NSIndexSet {
     open var lastIndex: Int { get }
     open func contains(_ indexSet: IndexSet) -> Bool {}
     open func contains(in range: NSRange) -> Bool {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
     open func countOfIndexes(in range: NSRange) -> Int {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerate(_ block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func enumerate(in range: NSRange, options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func enumerate(options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
@@ -931,8 +919,6 @@ open class NSIndexSet {
     open func intersects(in range: NSRange) -> Bool {}
     open func isEqual(to indexSet: IndexSet) -> Bool {}
     public func makeIterator() -> NSIndexSetIterator {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSKeyedArchiver {
     open class func archiveRootObject(_ rootObject: Any, toFile path: String) -> Bool {}
@@ -1189,10 +1175,13 @@ open class NSObject {
     open func replacementObject(for archiver: NSKeyedArchiver) -> Any? {}
 }
 open class NSOrderedSet {
+    public static var supportsSecureCoding: Bool { get }
+    public convenience init() {}
     public convenience init(array: [Any]) {}
     public convenience init(array set: [Any], copyItems flag: Bool) {}
     public convenience init(array set: [Any], range: NSRange, copyItems flag: Bool) {}
     public required convenience init(arrayLiteral elements: Any...) {}
+    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(object: Any) {}
     public convenience init(objects elements: Any...) {}
     public init(objects: UnsafePointer<AnyObject>!, count cnt: Int) {}
@@ -1209,8 +1198,11 @@ open class NSOrderedSet {
     public var set: Set<AnyHashable> { get }
     open subscript(idx: Int) -> Any { get } {}
     open func contains(_ object: Any) -> Bool {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
     public func description(withLocale locale: Locale?) -> String {}
     public func description(withLocale locale: Locale?, indent level: Int) -> String {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -1226,9 +1218,12 @@ open class NSOrderedSet {
     open func indexes(options opts: NSEnumerationOptions = x, ofObjectsPassingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
     open func intersects(_ other: NSOrderedSet) -> Bool {}
     open func intersectsSet(_ set: Set<AnyHashable>) -> Bool {}
+    open func isEqual(_ object: Any?) -> Bool {}
     open func isEqual(to other: NSOrderedSet) -> Bool {}
     open func isSubset(of other: NSOrderedSet) -> Bool {}
     public func makeIterator() -> Iterator {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func object(at idx: Int) -> Any {}
     public func objectEnumerator() -> NSEnumerator {}
     open func objects(at indexes: IndexSet) -> [Any] {}
@@ -1281,10 +1276,7 @@ open class NSRegularExpression {
     public func stringByReplacingMatches(in string: String, options: NSRegularExpression.MatchingOptions = x, range: NSRange, withTemplate templ: String) -> String {}
 }
 open class NSSet {
-    public static var supportsSecureCoding: Bool { get }
-    public convenience init() {}
     public convenience init(array: [Any]) {}
-    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(object: Any) {}
     public init(objects: UnsafePointer<AnyObject>!, count cnt: Int) {}
     public convenience init(set: Set<AnyHashable>) {}
@@ -1292,26 +1284,19 @@ open class NSSet {
     open var allObjects: [Any] { get }
     open var count: Int { get }
     public var customMirror: Mirror { get }
-    open var hash: Int { get }
     open func adding(_ anObject: Any) -> Set<AnyHashable> {}
     open func addingObjects(from other: Set<AnyHashable>) -> Set<AnyHashable> {}
     open func anyObject() -> Any? {}
     open func contains(_ anObject: Any) -> Bool {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
     open func description(withLocale locale: Locale?) -> String {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerateObjects(_ block: (Any, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func filtered(using predicate: NSPredicate) -> Set<AnyHashable> {}
     open func intersects(_ otherSet: Set<AnyHashable>) -> Bool {}
-    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to otherSet: Set<AnyHashable>) -> Bool {}
     open func isSubset(of otherSet: Set<AnyHashable>) -> Bool {}
     public func makeIterator() -> Iterator {}
     open func member(_ object: Any) -> Any? {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func objectEnumerator() -> NSEnumerator {}
     open func objects(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
     open func objects(passingTest predicate: (Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
@@ -1333,16 +1318,13 @@ open class NSSortDescriptor {
 open class NSString {
     open class var availableStringEncodings: UnsafePointer<UInt> { get }
     open class var defaultCStringEncoding: UInt { get }
-    public static var supportsSecureCoding: Bool { get }
     open class func localizedName(of encoding: UInt) -> String {}
     public static func pathWithComponents(_ components: [String]) -> String {}
-    public convenience init() {}
     public convenience init?(bytes: UnsafeRawPointer, length len: Int, encoding: UInt) {}
     public convenience init?(bytesNoCopy bytes: UnsafeMutableRawPointer, length len: Int, encoding: UInt, freeWhenDone freeBuffer: Bool) {}
     public convenience init?(cString nullTerminatedCString: UnsafePointer<Int8>, encoding: UInt) {}
     public init(characters: UnsafePointer<unichar>, length: Int) {}
     public convenience init(charactersNoCopy characters: UnsafeMutablePointer<unichar>, length: Int, freeWhenDone freeBuffer: Bool) {}
-    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(contentsOf url: URL, encoding enc: UInt) throws {}
     public convenience init(contentsOf url: URL, usedEncoding enc: UnsafeMutablePointer<UInt>?) throws {}
     public convenience init(contentsOfFile path: String, encoding enc: UInt) throws {}
@@ -1362,13 +1344,11 @@ open class NSString {
     open var decomposedStringWithCompatibilityMapping: String { get }
     public var deletingLastPathComponent: String { get }
     public var deletingPathExtension: String { get }
-    open var description: String { get }
     public var doubleValue: Double { get }
     public var expandingTildeInPath: String { get }
     public var fastestEncoding: UInt { get }
     public var fileSystemRepresentation: UnsafePointer<Int8> { get }
     public var floatValue: Float { get }
-    open var hash: Int { get }
     public var intValue: Int32 { get }
     public var integerValue: Int { get }
     public var isAbsolutePath: Bool { get }
@@ -1407,11 +1387,8 @@ open class NSString {
     public func completePath(into outputName: inout String?, caseSensitive flag: Bool, matchesInto outputArray: inout [String], filterTypes: [String]?) -> Int {}
     open func components(separatedBy separator: CharacterSet) -> [String] {}
     public func contains(_ str: String) -> Bool {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
     public func data(using encoding: UInt) -> Data? {}
     public func data(using encoding: UInt, allowLossyConversion lossy: Bool = x) -> Data? {}
-    open func encode(with aCoder: NSCoder) {}
     public func enumerateLines(_ block: (String, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     public func enumerateSubstrings(in range: NSRange, options opts: EnumerationOptions = x, using block: (String?, NSRange, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func folding(options: CompareOptions = x, locale: Locale?) -> String {}
@@ -1423,7 +1400,6 @@ open class NSString {
     public func getParagraphStart(_ startPtr: UnsafeMutablePointer<Int>?, end parEndPtr: UnsafeMutablePointer<Int>?, contentsEnd contentsEndPtr: UnsafeMutablePointer<Int>?, for range: NSRange) {}
     public func hasPrefix(_ str: String) -> Bool {}
     public func hasSuffix(_ str: String) -> Bool {}
-    open func isEqual(_ object: Any?) -> Bool {}
     public func isEqual(to aString: String) -> Bool {}
     public func lengthOfBytes(using enc: UInt) -> Int {}
     public func lineRange(for range: NSRange) -> NSRange {}
@@ -1435,8 +1411,6 @@ open class NSString {
     public func localizedStandardRange(of str: String) -> NSRange {}
     public func lowercased(with locale: Locale?) -> String {}
     public func maximumLengthOfBytes(using enc: UInt) -> Int {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func padding(toLength newLength: Int, withPad padString: String, startingAt padIndex: Int) -> String {}
     public func paragraphRange(for range: NSRange) -> NSRange {}
     public func range(of searchString: String) -> NSRange {}
@@ -2144,6 +2118,7 @@ open class URLSessionTask {
     public static var defaultPriority: Float { get }
     public static var highPriority: Float { get }
     public static var lowPriority: Float { get }
+    public init() {}
     public var countOfBytesClientExpectsToReceive: Int64 { get }
     public var countOfBytesClientExpectsToSend: Int64 { get }
     open var countOfBytesExpectedToReceive: Int64 { get }
@@ -2155,19 +2130,27 @@ open class URLSessionTask {
     open var error: Error? { get }
     open var originalRequest: URLRequest? { get }
     open var priority: Float { get set }
+    public var progress: Progress { get }
     open var response: URLResponse? { get }
     open var state: URLSessionTask.State { get set }
     open var taskDescription: String? { get set }
     open var taskIdentifier: Int { get }
     open func cancel() {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone?) -> Any {}
     open func resume() {}
     open func suspend() {}
 }
 open class URLSessionUploadTask {
 }
 open class Unit {
+    public static var supportsSecureCoding: Bool { get }
+    public required init?(coder aDecoder: NSCoder) {}
     public required init(symbol: String) {}
     open var symbol: String { get }
+    open func copy(with zone: NSZone?) -> Any {}
+    open func encode(with aCoder: NSCoder) {}
+    open func isEqual(_ object: Any?) -> Bool {}
 }
 open class UnitConverter {
     open func baseUnitValue(fromValue value: Double) -> Double {}
@@ -2368,165 +2351,165 @@ open class XMLParser {
     open func parse() -> Bool {}
 }
 public protocol CustomNSError {
-    public static var errorDomain: String { get }
-    public var errorCode: Int { get }
-    public var errorUserInfo: [String: Any] { get }
+    static var errorDomain: String { get }
+    var errorCode: Int { get }
+    var errorUserInfo: [String: Any] { get }
 }
 public protocol FileManagerDelegate {
-    public func fileManager(_ fileManager: FileManager, shouldCopyItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldCopyItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldLinkItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldLinkItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldMoveItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldMoveItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, copyingItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, copyingItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, linkingItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, linkingItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, movingItemAt srcURL: URL, to dstURL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, movingItemAtPath srcPath: String, toPath dstPath: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, removingItemAt URL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, removingItemAtPath path: String) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldRemoveItemAt URL: URL) -> Bool {}
-    public func fileManager(_ fileManager: FileManager, shouldRemoveItemAtPath path: String) -> Bool {}
+    func fileManager(_ fileManager: FileManager, shouldCopyItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldCopyItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldLinkItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldLinkItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldMoveItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldMoveItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, copyingItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, copyingItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, linkingItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, linkingItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, movingItemAt srcURL: URL, to dstURL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, movingItemAtPath srcPath: String, toPath dstPath: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, removingItemAt URL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldProceedAfterError error: Error, removingItemAtPath path: String) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldRemoveItemAt URL: URL) -> Bool
+    func fileManager(_ fileManager: FileManager, shouldRemoveItemAtPath path: String) -> Bool
 }
 public protocol LocalizedError {
-    public var errorDescription: String? { get }
-    public var failureReason: String? { get }
-    public var helpAnchor: String? { get }
-    public var recoverySuggestion: String? { get }
+    var errorDescription: String? { get }
+    var failureReason: String? { get }
+    var helpAnchor: String? { get }
+    var recoverySuggestion: String? { get }
 }
 public protocol NSCacheDelegate {
-    public func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {}
+    func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any)
 }
 public protocol NSCoding {
-    public init?(coder aDecoder: NSCoder) {}
-    public func encode(with aCoder: NSCoder) {}
+    init?(coder aDecoder: NSCoder)
+    func encode(with aCoder: NSCoder)
 }
 public protocol NSCopying {
-    public func copy() -> Any {}
-    public func copy(with zone: NSZone?) -> Any {}
+    func copy() -> Any
+    func copy(with zone: NSZone?) -> Any
 }
 public protocol NSDecimalNumberBehaviors {
-    public func roundingMode() -> NSDecimalNumber.RoundingMode {}
-    public func scale() -> Int16 {}
+    func roundingMode() -> NSDecimalNumber.RoundingMode
+    func scale() -> Int16
 }
 public protocol NSKeyedArchiverDelegate {
-    public func archiver(_ archiver: NSKeyedArchiver, didEncode object: Any?) {}
-    public func archiver(_ archiver: NSKeyedArchiver, willEncode object: Any) -> Any? {}
-    public func archiver(_ archiver: NSKeyedArchiver, willReplace object: Any?, withObject newObject: Any?) {}
-    public func archiverDidFinish(_ archiver: NSKeyedArchiver) {}
-    public func archiverWillFinish(_ archiver: NSKeyedArchiver) {}
+    func archiver(_ archiver: NSKeyedArchiver, didEncode object: Any?)
+    func archiver(_ archiver: NSKeyedArchiver, willEncode object: Any) -> Any?
+    func archiver(_ archiver: NSKeyedArchiver, willReplace object: Any?, withObject newObject: Any?)
+    func archiverDidFinish(_ archiver: NSKeyedArchiver)
+    func archiverWillFinish(_ archiver: NSKeyedArchiver)
 }
 public protocol NSKeyedUnarchiverDelegate {
-    public func unarchiver(_ unarchiver: NSKeyedUnarchiver, cannotDecodeObjectOfClassName name: String, originalClasses classNames: [String]) -> AnyClass? {}
-    public func unarchiver(_ unarchiver: NSKeyedUnarchiver, didDecode object: Any?) -> Any? {}
-    public func unarchiver(_ unarchiver: NSKeyedUnarchiver, willReplace object: Any, with newObject: Any) {}
-    public func unarchiverDidFinish(_ unarchiver: NSKeyedUnarchiver) {}
-    public func unarchiverWillFinish(_ unarchiver: NSKeyedUnarchiver) {}
+    func unarchiver(_ unarchiver: NSKeyedUnarchiver, cannotDecodeObjectOfClassName name: String, originalClasses classNames: [String]) -> AnyClass?
+    func unarchiver(_ unarchiver: NSKeyedUnarchiver, didDecode object: Any?) -> Any?
+    func unarchiver(_ unarchiver: NSKeyedUnarchiver, willReplace object: Any, with newObject: Any)
+    func unarchiverDidFinish(_ unarchiver: NSKeyedUnarchiver)
+    func unarchiverWillFinish(_ unarchiver: NSKeyedUnarchiver)
 }
 public protocol NSLocking {
-    public func lock() {}
-    public func unlock() {}
+    func lock()
+    func unlock()
 }
 public protocol NSMutableCopying {
-    public func mutableCopy() -> Any {}
-    public func mutableCopy(with zone: NSZone?) -> Any {}
+    func mutableCopy() -> Any
+    func mutableCopy(with zone: NSZone?) -> Any
 }
 public protocol NSObjectProtocol {
-    public var debugDescription: String { get }
-    public var description: String { get }
-    public var hash: Int { get }
-    public func isEqual(_ object: Any?) -> Bool {}
-    public func isProxy() -> Bool {}
-    public func self() -> Self {}
+    var debugDescription: String { get }
+    var description: String { get }
+    var hash: Int { get }
+    func isEqual(_ object: Any?) -> Bool
+    func isProxy() -> Bool
+    func self() -> Self
 }
 public protocol NSSecureCoding {
-    public static var supportsSecureCoding: Bool { get }
+    static var supportsSecureCoding: Bool { get }
 }
 public protocol PortDelegate {
-    public func handlePortMessage(_ message: PortMessage) {}
+    func handlePortMessage(_ message: PortMessage)
 }
 public protocol ProgressReporting {
-    public var progress: Progress { get }
+    var progress: Progress { get }
 }
 public protocol RecoverableError {
-    public var recoveryOptions: [String] { get }
-    public func attemptRecovery(optionIndex recoveryOptionIndex: Int) -> Bool {}
-    public func attemptRecovery(optionIndex recoveryOptionIndex: Int, resultHandler handler: (_ recovered: Bool) -> Void) {}
+    var recoveryOptions: [String] { get }
+    func attemptRecovery(optionIndex recoveryOptionIndex: Int) -> Bool
+    func attemptRecovery(optionIndex recoveryOptionIndex: Int, resultHandler handler: (_ recovered: Bool) -> Void)
 }
 public protocol ReferenceConvertible {
 }
 public protocol StreamDelegate {
-    public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {}
+    func stream(_ aStream: Stream, handle eventCode: Stream.Event)
 }
 public protocol URLAuthenticationChallengeSender {
-    public func cancel(_ challenge: URLAuthenticationChallenge) {}
-    public func continueWithoutCredential(for challenge: URLAuthenticationChallenge) {}
-    public func performDefaultHandling(for challenge: URLAuthenticationChallenge) {}
-    public func rejectProtectionSpaceAndContinue(with challenge: URLAuthenticationChallenge) {}
-    public func use(_ credential: URLCredential, for challenge: URLAuthenticationChallenge) {}
+    func cancel(_ challenge: URLAuthenticationChallenge)
+    func continueWithoutCredential(for challenge: URLAuthenticationChallenge)
+    func performDefaultHandling(for challenge: URLAuthenticationChallenge)
+    func rejectProtectionSpaceAndContinue(with challenge: URLAuthenticationChallenge)
+    func use(_ credential: URLCredential, for challenge: URLAuthenticationChallenge)
 }
 public protocol URLProtocolClient {
-    public func urlProtocol(_ protocol: URLProtocol, cachedResponseIsValid cachedResponse: CachedURLResponse) {}
-    public func urlProtocol(_ protocol: URLProtocol, didCancel challenge: URLAuthenticationChallenge) {}
-    public func urlProtocol(_ protocol: URLProtocol, didFailWithError error: Error) {}
-    public func urlProtocol(_ protocol: URLProtocol, didLoad data: Data) {}
-    public func urlProtocol(_ protocol: URLProtocol, didReceive challenge: URLAuthenticationChallenge) {}
-    public func urlProtocol(_ protocol: URLProtocol, didReceive response: URLResponse, cacheStoragePolicy policy: URLCache.StoragePolicy) {}
-    public func urlProtocol(_ protocol: URLProtocol, wasRedirectedTo request: URLRequest, redirectResponse: URLResponse) {}
-    public func urlProtocolDidFinishLoading(_ protocol: URLProtocol) {}
+    func urlProtocol(_ protocol: URLProtocol, cachedResponseIsValid cachedResponse: CachedURLResponse)
+    func urlProtocol(_ protocol: URLProtocol, didCancel challenge: URLAuthenticationChallenge)
+    func urlProtocol(_ protocol: URLProtocol, didFailWithError error: Error)
+    func urlProtocol(_ protocol: URLProtocol, didLoad data: Data)
+    func urlProtocol(_ protocol: URLProtocol, didReceive challenge: URLAuthenticationChallenge)
+    func urlProtocol(_ protocol: URLProtocol, didReceive response: URLResponse, cacheStoragePolicy policy: URLCache.StoragePolicy)
+    func urlProtocol(_ protocol: URLProtocol, wasRedirectedTo request: URLRequest, redirectResponse: URLResponse)
+    func urlProtocolDidFinishLoading(_ protocol: URLProtocol)
 }
 public protocol URLSessionDataDelegate {
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask) {}
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {}
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {}
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void) {}
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask)
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void)
 }
 public protocol URLSessionDelegate {
-    public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {}
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {}
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 }
 public protocol URLSessionDownloadDelegate {
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {}
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {}
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {}
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64)
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
 public protocol URLSessionStreamDelegate {
-    public func urlSession(_ session: URLSession, betterRouteDiscoveredFor streamTask: URLSessionStreamTask) {}
-    public func urlSession(_ session: URLSession, readClosedFor streamTask: URLSessionStreamTask) {}
-    public func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream) {}
-    public func urlSession(_ session: URLSession, writeClosedFor streamTask: URLSessionStreamTask) {}
+    func urlSession(_ session: URLSession, betterRouteDiscoveredFor streamTask: URLSessionStreamTask)
+    func urlSession(_ session: URLSession, readClosedFor streamTask: URLSessionStreamTask)
+    func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream)
+    func urlSession(_ session: URLSession, writeClosedFor streamTask: URLSessionStreamTask)
 }
 public protocol URLSessionTaskDelegate {
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {}
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {}
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {}
-    public func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Void) {}
-    public func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest request: URLRequest, completionHandler: @escaping (URLSession.DelayedRequestDisposition, URLRequest?) -> Void) {}
-    public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {}
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
+    func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Void)
+    func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest request: URLRequest, completionHandler: @escaping (URLSession.DelayedRequestDisposition, URLRequest?) -> Void)
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
 }
 public protocol XMLParserDelegate {
-    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {}
-    public func parser(_ parser: XMLParser, didEndMappingPrefix prefix: String) {}
-    public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {}
-    public func parser(_ parser: XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String) {}
-    public func parser(_ parser: XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) {}
-    public func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {}
-    public func parser(_ parser: XMLParser, foundCharacters string: String) {}
-    public func parser(_ parser: XMLParser, foundComment comment: String) {}
-    public func parser(_ parser: XMLParser, foundElementDeclarationWithName elementName: String, model: String) {}
-    public func parser(_ parser: XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?) {}
-    public func parser(_ parser: XMLParser, foundIgnorableWhitespace whitespaceString: String) {}
-    public func parser(_ parser: XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?) {}
-    public func parser(_ parser: XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) {}
-    public func parser(_ parser: XMLParser, foundProcessingInstructionWithTarget target: String, data: String?) {}
-    public func parser(_ parser: XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?) {}
-    public func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {}
-    public func parser(_ parser: XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data? {}
-    public func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error) {}
-    public func parserDidEndDocument(_ parser: XMLParser) {}
-    public func parserDidStartDocument(_ parser: XMLParser) {}
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
+    func parser(_ parser: XMLParser, didEndMappingPrefix prefix: String)
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String])
+    func parser(_ parser: XMLParser, didStartMappingPrefix prefix: String, toURI namespaceURI: String)
+    func parser(_ parser: XMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?)
+    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data)
+    func parser(_ parser: XMLParser, foundCharacters string: String)
+    func parser(_ parser: XMLParser, foundComment comment: String)
+    func parser(_ parser: XMLParser, foundElementDeclarationWithName elementName: String, model: String)
+    func parser(_ parser: XMLParser, foundExternalEntityDeclarationWithName name: String, publicID: String?, systemID: String?)
+    func parser(_ parser: XMLParser, foundIgnorableWhitespace whitespaceString: String)
+    func parser(_ parser: XMLParser, foundInternalEntityDeclarationWithName name: String, value: String?)
+    func parser(_ parser: XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?)
+    func parser(_ parser: XMLParser, foundProcessingInstructionWithTarget target: String, data: String?)
+    func parser(_ parser: XMLParser, foundUnparsedEntityDeclarationWithName name: String, publicID: String?, systemID: String?, notationName: String?)
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error)
+    func parser(_ parser: XMLParser, resolveExternalEntityName name: String, systemID: String?) -> Data?
+    func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error)
+    func parserDidEndDocument(_ parser: XMLParser)
+    func parserDidStartDocument(_ parser: XMLParser)
 }
 extension Array {
 }
@@ -2624,22 +2607,22 @@ extension Measurement {
     public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
+    public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
+    public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func /(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func <<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
     public func ==<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
-    public mutating func convert(to otherUnit: UnitType)  where UnitType : Dimension {}
-    public func converted(to otherUnit: UnitType) -> Measurement<UnitType>  where UnitType : Dimension {}
+    public mutating func convert(to otherUnit: UnitType) where UnitType : Dimension {}
+    public func converted(to otherUnit: UnitType) -> Measurement<UnitType> where UnitType : Dimension {}
     public func encode(to encoder: Encoder) throws {}
 }
 extension Optional {
 }
 extension Range {
-    public init?(_ range: NSRange)  where Bound : BinaryInteger {}
-    public init?(_ range: NSRange, in string: String)  where Bound == String.Index {}
+    public init?(_ range: NSRange) where Bound : BinaryInteger {}
+    public init?(_ range: NSRange, in string: String) where Bound == String.Index {}
 }
 extension Set {
 }
@@ -2648,7 +2631,7 @@ extension String {
     public static var defaultCStringEncoding: Encoding { get }
     public static func localizedName(of encoding: Encoding) -> String {}
     public static func localizedStringWithFormat(_ format: String, _ arguments: CVarArg...) -> String {}
-    public init?<S>(bytes: S, encoding: Encoding)  where S : Sequence, S.Iterator.Element == UInt8 {}
+    public init?<S>(bytes: S, encoding: Encoding) where S : Sequence, S.Iterator.Element == UInt8 {}
     public init?(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, encoding: Encoding, freeWhenDone flag: Bool) {}
     public init?(cString: UnsafePointer<CChar>, encoding enc: Encoding) {}
     public init(contentsOf url: URL) throws {}
@@ -2672,78 +2655,78 @@ extension String.Encoding {
     public func ==(lhs: String.Encoding, rhs: String.Encoding) -> Bool {}
 }
 extension StringProtocol {
-    public var capitalized: String { get }  where Index == String.Index
-    public var decomposedStringWithCanonicalMapping: String { get }  where Index == String.Index
-    public var decomposedStringWithCompatibilityMapping: String { get }  where Index == String.Index
-    public var fastestEncoding: String.Encoding { get }  where Index == String.Index
-    public var hash: Int { get }  where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedCapitalized: String { get }  where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedLowercase: String { get }  where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedUppercase: String { get }  where Index == String.Index
-    public var precomposedStringWithCanonicalMapping: String { get }  where Index == String.Index
-    public var precomposedStringWithCompatibilityMapping: String { get }  where Index == String.Index
-    public var removingPercentEncoding: String? { get }  where Index == String.Index
-    public var smallestEncoding: String.Encoding { get }  where Index == String.Index
-    public func addingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String?  where Index == String.Index {}
-    public func appending<T>(_ aString: T) -> String  where T : StringProtocol, Index == String.Index {}
-    public func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String  where T : StringProtocol, Index == String.Index {}
+    public var capitalized: String { get } where Index == String.Index
+    public var decomposedStringWithCanonicalMapping: String { get } where Index == String.Index
+    public var decomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
+    public var fastestEncoding: String.Encoding { get } where Index == String.Index
+    public var hash: Int { get } where Index == String.Index
+    @available(macOS10.11, iOS9.0, *) public var localizedCapitalized: String { get } where Index == String.Index
+    @available(macOS10.11, iOS9.0, *) public var localizedLowercase: String { get } where Index == String.Index
+    @available(macOS10.11, iOS9.0, *) public var localizedUppercase: String { get } where Index == String.Index
+    public var precomposedStringWithCanonicalMapping: String { get } where Index == String.Index
+    public var precomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
+    public var removingPercentEncoding: String? { get } where Index == String.Index
+    public var smallestEncoding: String.Encoding { get } where Index == String.Index
+    public func addingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? where Index == String.Index {}
+    public func appending<T>(_ aString: T) -> String where T : StringProtocol, Index == String.Index {}
+    public func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
-    @available(macOS10.11, iOS9.0, *) public func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String?  where Index == String.Index {}
+    @available(macOS10.11, iOS9.0, *) public func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String? where Index == String.Index {}
 #endif
-    public func cString(using encoding: String.Encoding) -> [CChar]?  where Index == String.Index {}
-    public func canBeConverted(to encoding: String.Encoding) -> Bool  where Index == String.Index {}
-    public func capitalized(with locale: Locale?) -> String  where Index == String.Index {}
-    public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult  where T : StringProtocol, Index == String.Index {}
-    public func commonPrefix<T>(with aString: T, options: String.CompareOptions = x) -> String  where T : StringProtocol, Index == String.Index {}
-    public func compare<T>(_ aString: T, options mask: String.CompareOptions = x, range: Range<Index>? = x, locale: Locale? = x) -> ComparisonResult  where T : StringProtocol, Index == String.Index {}
-    public func completePath(into outputName: UnsafeMutablePointer<String>? = x, caseSensitive: Bool, matchesInto outputArray: UnsafeMutablePointer<[String]>? = x, filterTypes: [String]? = x) -> Int  where Index == String.Index {}
-    public func components(separatedBy separator: CharacterSet) -> [String]  where Index == String.Index {}
-    public func components<T>(separatedBy separator: T) -> [String]  where T : StringProtocol, Index == String.Index {}
-    public func contains<T>(_ other: T) -> Bool  where T : StringProtocol, Index == String.Index {}
-    public func data(using encoding: String.Encoding, allowLossyConversion: Bool = x) -> Data?  where Index == String.Index {}
-    public func enumerateLines(invoking body: @escaping (_ line: String, _ stop: inout Bool) -> Void)  where Index == String.Index {}
+    public func cString(using encoding: String.Encoding) -> [CChar]? where Index == String.Index {}
+    public func canBeConverted(to encoding: String.Encoding) -> Bool where Index == String.Index {}
+    public func capitalized(with locale: Locale?) -> String where Index == String.Index {}
+    public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    public func commonPrefix<T>(with aString: T, options: String.CompareOptions = x) -> String where T : StringProtocol, Index == String.Index {}
+    public func compare<T>(_ aString: T, options mask: String.CompareOptions = x, range: Range<Index>? = x, locale: Locale? = x) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    public func completePath(into outputName: UnsafeMutablePointer<String>? = x, caseSensitive: Bool, matchesInto outputArray: UnsafeMutablePointer<[String]>? = x, filterTypes: [String]? = x) -> Int where Index == String.Index {}
+    public func components(separatedBy separator: CharacterSet) -> [String] where Index == String.Index {}
+    public func components<T>(separatedBy separator: T) -> [String] where T : StringProtocol, Index == String.Index {}
+    public func contains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
+    public func data(using encoding: String.Encoding, allowLossyConversion: Bool = x) -> Data? where Index == String.Index {}
+    public func enumerateLines(invoking body: @escaping (_ line: String, _ stop: inout Bool) -> Void) where Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
-    public func enumerateLinguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, invoking body: (String, Range<Index>, Range<Index>, inout Bool) -> Void)  where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
+    public func enumerateLinguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, invoking body: (String, Range<Index>, Range<Index>, inout Bool) -> Void) where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
 #endif
-    public func enumerateSubstrings<R>(in range: R, options opts: String.EnumerationOptions = x, _ body: @escaping (_ substring: String?, _ substringRange: Range<Index>, _ enclosingRange: Range<Index>, inout Bool) -> Void)  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func folding(options: String.CompareOptions = x, locale: Locale?) -> String  where Index == String.Index {}
-    public func getBytes<R>(_ buffer: inout [UInt8], maxLength maxBufferCount: Int, usedLength usedBufferCount: UnsafeMutablePointer<Int>, encoding: String.Encoding, options: String.EncodingConversionOptions = x, range: R, remaining leftover: UnsafeMutablePointer<Range<Index>>) -> Bool  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func getCString(_ buffer: inout [CChar], maxLength: Int, encoding: String.Encoding) -> Bool  where Index == String.Index {}
-    public func getLineStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R)  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func getParagraphStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R)  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func lengthOfBytes(using encoding: String.Encoding) -> Int  where Index == String.Index {}
-    public func lineRange<R>(for aRange: R) -> Range<Index>  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func enumerateSubstrings<R>(in range: R, options opts: String.EnumerationOptions = x, _ body: @escaping (_ substring: String?, _ substringRange: Range<Index>, _ enclosingRange: Range<Index>, inout Bool) -> Void) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func folding(options: String.CompareOptions = x, locale: Locale?) -> String where Index == String.Index {}
+    public func getBytes<R>(_ buffer: inout [UInt8], maxLength maxBufferCount: Int, usedLength usedBufferCount: UnsafeMutablePointer<Int>, encoding: String.Encoding, options: String.EncodingConversionOptions = x, range: R, remaining leftover: UnsafeMutablePointer<Range<Index>>) -> Bool where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func getCString(_ buffer: inout [CChar], maxLength: Int, encoding: String.Encoding) -> Bool where Index == String.Index {}
+    public func getLineStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func getParagraphStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func lengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
+    public func lineRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
-    public func linguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, tokenRanges: UnsafeMutablePointer<[Range<Index>]>? = x) -> [String]  where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
+    public func linguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, tokenRanges: UnsafeMutablePointer<[Range<Index>]>? = x) -> [String] where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
 #endif
-    public func localizedCaseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult  where T : StringProtocol, Index == String.Index {}
-    public func localizedCaseInsensitiveContains<T>(_ other: T) -> Bool  where T : StringProtocol, Index == String.Index {}
-    public func localizedCompare<T>(_ aString: T) -> ComparisonResult  where T : StringProtocol, Index == String.Index {}
-    public func localizedStandardCompare<T>(_ string: T) -> ComparisonResult  where T : StringProtocol, Index == String.Index {}
-    @available(macOS10.11, iOS9.0, *) public func localizedStandardContains<T>(_ string: T) -> Bool  where T : StringProtocol, Index == String.Index {}
-    @available(macOS10.11, iOS9.0, *) public func localizedStandardRange<T>(of string: T) -> Range<Index>?  where T : StringProtocol, Index == String.Index {}
-    public func lowercased(with locale: Locale?) -> String  where Index == String.Index {}
-    public func maximumLengthOfBytes(using encoding: String.Encoding) -> Int  where Index == String.Index {}
-    public func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String  where T : StringProtocol, Index == String.Index {}
+    public func localizedCaseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    public func localizedCaseInsensitiveContains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
+    public func localizedCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    public func localizedStandardCompare<T>(_ string: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    @available(macOS10.11, iOS9.0, *) public func localizedStandardContains<T>(_ string: T) -> Bool where T : StringProtocol, Index == String.Index {}
+    @available(macOS10.11, iOS9.0, *) public func localizedStandardRange<T>(of string: T) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
+    public func lowercased(with locale: Locale?) -> String where Index == String.Index {}
+    public func maximumLengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
+    public func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String where T : StringProtocol, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
-    public func paragraphRange<R>(for aRange: R) -> Range<Index>  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-#endif
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyList() -> Any  where Index == String.Index {}
+    public func paragraphRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #endif
 #if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyListFromStringsFileFormat() -> [String: String]  where Index == String.Index {}
+    public func propertyList() -> Any where Index == String.Index {}
 #endif
-    public func range<T>(of aString: T, options mask: String.CompareOptions = x, range searchRange: Range<Index>? = x, locale: Locale? = x) -> Range<Index>?  where T : StringProtocol, Index == String.Index {}
-    public func rangeOfCharacter(from aSet: CharacterSet, options mask: String.CompareOptions = x, range aRange: Range<Index>? = x) -> Range<Index>?  where Index == String.Index {}
-    public func rangeOfComposedCharacterSequence(at anIndex: Index) -> Range<Index>  where Index == String.Index {}
-    public func rangeOfComposedCharacterSequences<R>(for range: R) -> Range<Index>  where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func replacingCharacters<T, R>(in range: R, with replacement: T) -> String  where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
-    public func replacingOccurrences<Target, Replacement>(of target: Target, with replacement: Replacement, options: String.CompareOptions = x, range searchRange: Range<Index>? = x) -> String  where Replacement : StringProtocol, Target : StringProtocol, Index == String.Index {}
-    public func trimmingCharacters(in set: CharacterSet) -> String  where Index == String.Index {}
-    public func uppercased(with locale: Locale?) -> String  where Index == String.Index {}
-    public func write(to url: URL, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws  where Index == String.Index {}
-    public func write<T>(toFile path: T, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws  where T : StringProtocol, Index == String.Index {}
+#if !DEPLOYMENT_RUNTIME_SWIFT
+    public func propertyListFromStringsFileFormat() -> [String: String] where Index == String.Index {}
+#endif
+    public func range<T>(of aString: T, options mask: String.CompareOptions = x, range searchRange: Range<Index>? = x, locale: Locale? = x) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
+    public func rangeOfCharacter(from aSet: CharacterSet, options mask: String.CompareOptions = x, range aRange: Range<Index>? = x) -> Range<Index>? where Index == String.Index {}
+    public func rangeOfComposedCharacterSequence(at anIndex: Index) -> Range<Index> where Index == String.Index {}
+    public func rangeOfComposedCharacterSequences<R>(for range: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
+    public func replacingCharacters<T, R>(in range: R, with replacement: T) -> String where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
+    public func replacingOccurrences<Target, Replacement>(of target: Target, with replacement: Replacement, options: String.CompareOptions = x, range searchRange: Range<Index>? = x) -> String where Replacement : StringProtocol, Target : StringProtocol, Index == String.Index {}
+    public func trimmingCharacters(in set: CharacterSet) -> String where Index == String.Index {}
+    public func uppercased(with locale: Locale?) -> String where Index == String.Index {}
+    public func write(to url: URL, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where Index == String.Index {}
+    public func write<T>(toFile path: T, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where T : StringProtocol, Index == String.Index {}
 }
 extension UInt {
     public init(_ value: CGFloat) {}

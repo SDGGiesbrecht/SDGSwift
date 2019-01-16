@@ -21,7 +21,11 @@ internal protocol AccessControlled : Syntax {
 }
 
 extension AccessControlled {
-    func madePublic() -> Self {
+    func madePublic(_ inProtocol: Bool = false) -> Self {
+        if inProtocol {
+            return self
+        }
+
         var modifiers = self.modifiers?.map({ $0 }) ?? []
         if ¬modifiers.contains(where: { $0.name.text == "open" }) {
             modifiers.prepend(SyntaxFactory.makeDeclModifier(

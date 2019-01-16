@@ -79,17 +79,17 @@ open class XCTestSuiteRun {
     open func addTestRun(_ testRun: XCTestRun) {}
 }
 public protocol XCTWaiterDelegate {
-    public func nestedWaiter(_ waiter: XCTWaiter, wasInterruptedByTimedOutWaiter outerWaiter: XCTWaiter) {}
-    public func waiter(_ waiter: XCTWaiter, didFulfillInvertedExpectation expectation: XCTestExpectation) {}
-    public func waiter(_ waiter: XCTWaiter, didTimeoutWithUnfulfilledExpectations unfulfilledExpectations: [XCTestExpectation]) {}
-    public func waiter(_ waiter: XCTWaiter, fulfillmentDidViolateOrderingConstraintsFor expectation: XCTestExpectation, requiredExpectation: XCTestExpectation) {}
+    func nestedWaiter(_ waiter: XCTWaiter, wasInterruptedByTimedOutWaiter outerWaiter: XCTWaiter)
+    func waiter(_ waiter: XCTWaiter, didFulfillInvertedExpectation expectation: XCTestExpectation)
+    func waiter(_ waiter: XCTWaiter, didTimeoutWithUnfulfilledExpectations unfulfilledExpectations: [XCTestExpectation])
+    func waiter(_ waiter: XCTWaiter, fulfillmentDidViolateOrderingConstraintsFor expectation: XCTestExpectation, requiredExpectation: XCTestExpectation)
 }
 public protocol XCTestObservation {
-    public func testBundleDidFinish(_ testBundle: Bundle) {}
-    public func testBundleWillStart(_ testBundle: Bundle) {}
-    public func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {}
-    public func testCaseDidFinish(_ testCase: XCTestCase) {}
-    public func testCaseWillStart(_ testCase: XCTestCase) {}
-    public func testSuiteDidFinish(_ testSuite: XCTestSuite) {}
-    public func testSuiteWillStart(_ testSuite: XCTestSuite) {}
+    func testBundleDidFinish(_ testBundle: Bundle)
+    func testBundleWillStart(_ testBundle: Bundle)
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int)
+    func testCaseDidFinish(_ testCase: XCTestCase)
+    func testCaseWillStart(_ testCase: XCTestCase)
+    func testSuiteDidFinish(_ testSuite: XCTestSuite)
+    func testSuiteWillStart(_ testSuite: XCTestSuite)
 }
