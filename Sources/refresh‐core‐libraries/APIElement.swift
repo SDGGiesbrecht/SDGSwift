@@ -25,7 +25,7 @@ extension APIElement {
             for child in [
                 types.map({ APIElement.type($0) }),
                 protocols.map({ APIElement.protocol($0) }),
-                extensions.map({ APIElement.extension($0) }),
+                extensions.map({ APIElement.extension($0) })
                 ].joined() {
                 child.appendInheritables(to: &api)
             }

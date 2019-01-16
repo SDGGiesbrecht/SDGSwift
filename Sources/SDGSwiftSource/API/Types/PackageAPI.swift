@@ -35,7 +35,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
         var dependencyModules: [ModuleAPI] = []
 
-        for (name, sourceData) in [
+        for (name, source) in [
             ("Swift", Resources.swift),
             ("Foundation", Resources.foundation),
             ("Dispatch", Resources.dispatch),
@@ -47,7 +47,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
                         return "Loading inheritance from “" + StrictString(name) + "”..."
                     }
                 }).resolved()))
-                dependencyModules.append(try ModuleAPI(source: String(data: sourceData, encoding: String.Encoding.utf8)!))
+                dependencyModules.append(try ModuleAPI(source: source))
         }
 
         let declaredDependencies = package.reachableTargets.filter({ module in
