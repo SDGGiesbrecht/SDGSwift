@@ -14,7 +14,7 @@
 
 import SDGControlFlow
 
-internal enum ConformanceReference {
+public enum ConformanceReference {
     case `protocol`(Weak<ProtocolAPI>)
     case superclass(Weak<TypeAPI>)
 
