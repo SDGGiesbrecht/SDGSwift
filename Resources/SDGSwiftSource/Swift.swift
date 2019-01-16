@@ -307,8 +307,8 @@ public init<S>(_ elements: S)  where S : Sequence, Element == S.Element {}
 public init(repeating repeatedValue: Element, count: Int) {}
 public init(repeating repeatedValue: Element, count: Int) {}
 public func +<Other>(lhs: Other, rhs: Self) -> Self  where Other : Sequence, Element == Other.Element {}
-public func +<Other>(lhs: Self, rhs: Other) -> Self  where Other : RangeReplaceableCollection, Element == Other.Element {}
 public func +<Other>(lhs: Self, rhs: Other) -> Self  where Other : Sequence, Element == Other.Element {}
+public func +<Other>(lhs: Self, rhs: Other) -> Self  where Other : RangeReplaceableCollection, Element == Other.Element {}
 public func +=<Other>(lhs: inout Self, rhs: Other)  where Other : Sequence, Element == Other.Element {}
 public mutating func append(_ newElement: __owned Element) {}
 public mutating func append<S>(contentsOf newElements: __owned S)  where S : Sequence, Element == S.Element {}
@@ -698,10 +698,15 @@ extension StrideToIterator {
 }
 extension String.Index {
 public init?(_ sourcePosition: String.Index, within target: String) {}
+public init(encodedOffset: Int) {}
+public var encodedOffset: Int { get }
 public func samePosition(in utf16: String.UTF16View) -> String.UTF16View.Index? {}
 public func samePosition(in utf8: String.UTF8View) -> String.UTF8View.Index? {}
 }
 extension String.UTF16View {
+public var count: Int { get }
+public subscript(i: Index) -> UTF16.CodeUnit { get } {}
+public subscript(r: Range<Index>) -> Substring.UTF16View { get } {}
 }
 extension String.UTF16View.Index {
 public init?(_ idx: String.Index, within target: String.UTF16View) {}
@@ -721,6 +726,7 @@ public init?(_ sourcePosition: String.Index, within unicodeScalars: String.Unico
 public func samePosition(in characters: String) -> String.Index? {}
 }
 extension String.UnicodeScalarView {
+@available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UnicodeScalarView.SubSequence { get } {}
 }
 extension UInt {
 public init(bitPattern objectID: ObjectIdentifier) {}
@@ -750,19 +756,91 @@ extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
 }
+extension Unicode.ASCII.Parser {
+public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar>  where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
+}
 extension Unicode.Scalar {
+public var isASCII: Bool { get }
+public var utf16: UTF16View { get }
+public var value: UInt32 { get }
+public func escaped(asASCII forceASCII: Bool) -> String {}
+}
+extension Unicode.Scalar.Properties {
+public var age: Unicode.Version? { get }
+public var canonicalCombiningClass: Unicode.CanonicalCombiningClass { get }
+public var changesWhenCaseFolded: Bool { get }
+public var changesWhenCaseMapped: Bool { get }
+public var changesWhenLowercased: Bool { get }
+public var changesWhenNFKCCaseFolded: Bool { get }
+public var changesWhenTitlecased: Bool { get }
+public var changesWhenUppercased: Bool { get }
+public var generalCategory: Unicode.GeneralCategory { get }
+public var isASCIIHexDigit: Bool { get }
+public var isAlphabetic: Bool { get }
+public var isBidiControl: Bool { get }
+public var isBidiMirrored: Bool { get }
+public var isCaseIgnorable: Bool { get }
+public var isCased: Bool { get }
+public var isDash: Bool { get }
+public var isDefaultIgnorableCodePoint: Bool { get }
+public var isDeprecated: Bool { get }
+public var isDiacritic: Bool { get }
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+@available(macOS10.12.2, iOS10.2, tvOS10.1, watchOS3.1.1, *) public var isEmoji: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+@available(macOS10.12.2, iOS10.2, tvOS10.1, watchOS3.1.1, *) public var isEmojiModifier: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+@available(macOS10.12.2, iOS10.2, tvOS10.1, watchOS3.1.1, *) public var isEmojiModifierBase: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+@available(macOS10.12.2, iOS10.2, tvOS10.1, watchOS3.1.1, *) public var isEmojiPresentation: Bool { get }
+#endif
+public var isExtender: Bool { get }
+public var isFullCompositionExclusion: Bool { get }
+public var isGraphemeBase: Bool { get }
+public var isGraphemeExtend: Bool { get }
+public var isHexDigit: Bool { get }
+public var isIDContinue: Bool { get }
+public var isIDSBinaryOperator: Bool { get }
+public var isIDSTrinaryOperator: Bool { get }
+public var isIDStart: Bool { get }
+public var isIdeographic: Bool { get }
+public var isJoinControl: Bool { get }
+public var isLogicalOrderException: Bool { get }
+public var isLowercase: Bool { get }
+public var isMath: Bool { get }
+public var isNoncharacterCodePoint: Bool { get }
+public var isPatternSyntax: Bool { get }
+public var isPatternWhitespace: Bool { get }
+public var isQuotationMark: Bool { get }
+public var isRadical: Bool { get }
+public var isSentenceTerminal: Bool { get }
+public var isSoftDotted: Bool { get }
+public var isTerminalPunctuation: Bool { get }
+public var isUnifiedIdeograph: Bool { get }
+public var isUppercase: Bool { get }
+public var isVariationSelector: Bool { get }
+public var isWhitespace: Bool { get }
+public var isXIDContinue: Bool { get }
+public var isXIDStart: Bool { get }
+public var lowercaseMapping: String { get }
+public var name: String? { get }
+public var nameAlias: String? { get }
+public var numericType: Unicode.NumericType? { get }
+public var numericValue: Double? { get }
+public var titlecaseMapping: String { get }
+public var uppercaseMapping: String { get }
+}
+extension Unicode.Scalar.UTF16View {
 }
 extension Unicode.UTF16 {
+}
+extension Unicode.UTF32 {
 public static var encodedReplacementCharacter: EncodedScalar { get }
 public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
 public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar?  where FromEncoding : Unicode.Encoding {}
-}
-extension Unicode.UTF16.ForwardParser {
-}
-extension Unicode.UTF32 {
-}
-extension Unicode.UTF8.ForwardParser {
 }
 extension UnsafeBufferPointer {
 }

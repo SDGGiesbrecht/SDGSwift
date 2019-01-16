@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 import SDGPersistence
 import SDGExternalProcess
 
@@ -23,7 +24,7 @@ import SDGSwiftSource
 
 ProcessInfo.applicationIdentifier = "ca.solideogloria.SDGSwift.refresh‐core‐libraries"
 
-let branchName = "swift\u{2D}\(SwiftCompiler._standardLibraryVersion.string(droppingEmptyPatch: true))\u{2D}branch"
+let branchName = "swift\u{2D}\(SwiftCompiler._standardLibraryVersion.string(droppingEmptyPatch: true))\u{2D}RELEASE"
 let modules: [String: (url: String, path: String)] = [
     "Swift": ("swift", "stdlib/public/core"),
     "Foundation": ("swift\u{2D}corelibs\u{2D}foundation", "Foundation"),
@@ -34,11 +35,6 @@ let modules: [String: (url: String, path: String)] = [
 let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource")
 
 moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
-    if name == "Foundation" {
-        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax cannot parse Foundation due to “#error”.)
-        continue moduleEnumeration
-    }
-
     let gitHubRepository = SDGSwift.Package(url: URL(string: "https://github.com/apple/" + module.url)!)
     let cloneURL = FileManager.default.url(in: .temporary, at: module.url)
     defer { try? FileManager.default.removeItem(at: cloneURL) }
@@ -49,6 +45,17 @@ moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
 
     var sources = try FileManager.default.deepFileEnumeration(in: cloneURL.appendingPathComponent(module.path))
     sources = sources.filter { $0.pathExtension == "swift" }
+    for source in sources {
+        try autoreleasepool {
+            var normalized = try StrictString(from: source)
+
+            // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax cannot parse “#error”.)
+            normalized.replaceMatches(for: "#error", with: "error")
+
+            try normalized.save(to: source)
+        }
+    }
+
     do {
         let api = try ModuleAPI(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
         APIElement.module(api).appendInheritables(to: &interface)
