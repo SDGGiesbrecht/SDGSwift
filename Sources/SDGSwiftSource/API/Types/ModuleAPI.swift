@@ -33,11 +33,18 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
         for sourceFile in sources {
             try autoreleasepool {
                 let source = try SyntaxTreeParser.parseAndRetry(sourceFile)
-                children.append(contentsOf: source.api())
+                api.append(contentsOf: source.api())
             }
         }
-        api = APIElement.merge(elements: api)
-        children.append(contentsOf: api)
+        apply(parsedElements: api)
+    }
+    internal convenience init(source: String) throws {
+        self.init(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr())
+        let syntax = try SyntaxTreeParser.parse(source)
+        apply(parsedElements: syntax.api())
+    }
+    private func apply(parsedElements: [APIElement]) {
+        children.append(contentsOf: APIElement.merge(elements: parsedElements))
     }
 
     internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
