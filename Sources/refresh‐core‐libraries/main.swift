@@ -53,7 +53,7 @@ moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
         let api = try ModuleAPI(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
         APIElement.module(api).appendInheritables(to: &interface)
     } catch {
-        fatalError(error)
+        fatalError("\(error)")
     }
 
     let resource = resources.appendingPathComponent(name).appendingPathExtension("swift")
