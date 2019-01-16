@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct Inherited : DependencyProtocol {
+public struct Inherited : DependencyProtocol, Comparable {
     public func required() {}
+    public static func ==(lhs: Self, rhs: Self) -> Bool
+    public static func <(lhs: Self, rhs: Self) -> Bool
 }
