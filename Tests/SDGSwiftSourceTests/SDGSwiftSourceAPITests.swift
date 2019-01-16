@@ -206,7 +206,6 @@ class SDGSwiftSourceAPITests : TestCase {
                     if function.identifier.text == "<" {
                         foundLessThan = true
                     }
-                    print(function)
                 }
                 return true
         },
