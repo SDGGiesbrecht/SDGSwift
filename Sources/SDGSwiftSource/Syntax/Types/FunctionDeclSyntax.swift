@@ -20,6 +20,7 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
+        print(self)
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),

@@ -32,6 +32,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
         var dependencyModules = try [
             Resources.swift,
+            Resources.foundation,
             Resources.dispatch,
             Resources.xctest
             ].map({ try ModuleAPI(source: String(data: $0, encoding: String.Encoding.utf8)!) })
