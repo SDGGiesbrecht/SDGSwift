@@ -196,6 +196,25 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(foundCommentSyntax)
     }
 
+    func testCoreLibraries() throws {
+        let syntax = try SyntaxTreeParser.parse(URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Swift.swift"))
+        var foundLessThan = false
+        try FunctionalSyntaxScanner(
+            checkSyntax: { syntax, _ in
+                if let function = syntax as? FunctionDeclSyntax {
+                    XCTAssert(function.identifier.text ≠ "", "Corrupt function:\n\(function)")
+                    if function.identifier.text == "<" {
+                        foundLessThan = true
+                    }
+                    print(function)
+                }
+                return true
+        },
+            shouldExtendToken: { _ in false },
+            shouldExtendFragment: { _ in false }).scan(syntax)
+        XCTAssert(foundLessThan)
+    }
+
     func testCSS() {
         XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     }
