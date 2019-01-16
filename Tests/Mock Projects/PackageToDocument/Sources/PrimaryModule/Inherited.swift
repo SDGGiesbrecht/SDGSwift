@@ -14,6 +14,6 @@
 
 public struct Inherited : DependencyProtocol, Comparable {
     public func required() {}
-    public static func ==(lhs: Self, rhs: Self) -> Bool
-    public static func <(lhs: Self, rhs: Self) -> Bool
+    public static func ==(lhs: Self, rhs: Self) -> Bool {}
+    public static func <(lhs: Self, rhs: Self) -> Bool {}
 }
