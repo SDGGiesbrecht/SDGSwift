@@ -37,8 +37,8 @@ public var significandWidth: Int { get }
 public protocol BinaryInteger {
 public static var isSigned: Bool { get }
 public init() {}
-public init<T>(_ source: T)  where T : BinaryFloatingPoint {}
 public init<T>(_ source: T)  where T : BinaryInteger {}
+public init<T>(_ source: T)  where T : BinaryFloatingPoint {}
 public init<T>(clamping source: T)  where T : BinaryInteger {}
 public init<T>(truncatingIfNeeded source: T)  where T : BinaryInteger {}
 public var bitWidth: Int { get }
@@ -420,7 +420,6 @@ public init(literalCapacity: Int, interpolationCount: Int) {}
 public mutating func appendLiteral(_ literal: StringLiteralType) {}
 }
 public protocol StringProtocol {
-public static func <RHS>(lhs: Self, rhs: RHS) -> Bool  where RHS : StringProtocol {}
 public init(cString nullTerminatedUTF8: UnsafePointer<CChar>) {}
 public init<C, Encoding>(decoding codeUnits: C, as sourceEncoding: Encoding.Type)  where C : Collection, Encoding : Unicode.Encoding, C.Iterator.Element == Encoding.CodeUnit {}
 public init<Encoding>(decodingCString nullTerminatedCodeUnits: UnsafePointer<Encoding.CodeUnit>, as sourceEncoding: Encoding.Type)  where Encoding : Unicode.Encoding {}
@@ -698,8 +697,6 @@ extension StrideToIterator {
 }
 extension String.Index {
 public init?(_ sourcePosition: String.Index, within target: String) {}
-public init(encodedOffset: Int) {}
-public var encodedOffset: Int { get }
 public func samePosition(in utf16: String.UTF16View) -> String.UTF16View.Index? {}
 public func samePosition(in utf8: String.UTF8View) -> String.UTF8View.Index? {}
 }
@@ -721,12 +718,7 @@ public func withContiguousStorageIfAvailable<R>(_ body: (UnsafeBufferPointer<Ele
 extension String.UTF8View.Index {
 public init?(_ idx: String.Index, within target: String.UTF8View) {}
 }
-extension String.UnicodeScalarIndex {
-public init?(_ sourcePosition: String.Index, within unicodeScalars: String.UnicodeScalarView) {}
-public func samePosition(in characters: String) -> String.Index? {}
-}
 extension String.UnicodeScalarView {
-@available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UnicodeScalarView.SubSequence { get } {}
 }
 extension UInt {
 public init(bitPattern objectID: ObjectIdentifier) {}
@@ -755,9 +747,6 @@ extension UTF8.CodeUnit {
 extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
-}
-extension Unicode.ASCII.Parser {
-public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar>  where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
 }
 extension Unicode.Scalar {
 public var isASCII: Bool { get }
@@ -836,11 +825,19 @@ public var uppercaseMapping: String { get }
 extension Unicode.Scalar.UTF16View {
 }
 extension Unicode.UTF16 {
+public static var encodedReplacementCharacter: EncodedScalar { get }
+public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar?  where FromEncoding : Unicode.Encoding {}
+}
+extension Unicode.UTF16.ForwardParser {
 }
 extension Unicode.UTF32 {
 public static var encodedReplacementCharacter: EncodedScalar { get }
 public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
 public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+}
+extension Unicode.UTF8.ForwardParser {
 }
 extension UnsafeBufferPointer {
 }

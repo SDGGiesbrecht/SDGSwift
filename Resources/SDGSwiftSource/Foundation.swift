@@ -392,21 +392,16 @@ open func transform(_ aSize: NSSize) -> NSSize {}
 open func translateX(by deltaX: CGFloat, yBy deltaY: CGFloat) {}
 }
 open class NSArray {
-public static var supportsSecureCoding: Bool { get }
-public init() {}
 public convenience init(array: [Any]) {}
 public convenience init(array: [Any], copyItems: Bool) {}
 public required convenience init(arrayLiteral elements: Any...) {}
-public required convenience init?(coder aDecoder: NSCoder) {}
 public convenience init(contentsOf url: URL, error: Void) throws {}
 public convenience init(object anObject: Any) {}
 public convenience init(objects elements: AnyObject...) {}
 public convenience init(objects: UnsafePointer<AnyObject>, count: Int) {}
 open var count: Int { get }
 public var customMirror: Mirror { get }
-open var description: String { get }
 open var firstObject: Any? { get }
-open var hash: Int { get }
 open var lastObject: Any? { get }
 open var sortedArrayHint: Data { get }
 open subscript(idx: Int) -> Any { get } {}
@@ -414,11 +409,8 @@ open func adding(_ anObject: Any) -> [Any] {}
 open func addingObjects(from otherArray: [Any]) -> [Any] {}
 open func componentsJoined(by separator: String) -> String {}
 open func contains(_ anObject: Any) -> Bool {}
-open func copy() -> Any {}
-open func copy(with zone: NSZone? = x) -> Any {}
 open func description(withLocale locale: Locale?) -> String {}
 open func description(withLocale locale: Locale?, indent level: Int) -> String {}
-open func encode(with aCoder: NSCoder) {}
 open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -435,11 +427,8 @@ open func indexOfObjectIdentical(to anObject: Any, in range: NSRange) -> Int {}
 open func indexesOfObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
 open func indexesOfObjects(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
 open func indexesOfObjects(passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
-open func isEqual(_ value: Any?) -> Bool {}
 open func isEqual(to otherArray: [Any]) -> Bool {}
 public func makeIterator() -> Iterator {}
-open func mutableCopy() -> Any {}
-open func mutableCopy(with zone: NSZone? = x) -> Any {}
 open func object(at index: Int) -> Any {}
 open func objectEnumerator() -> NSEnumerator {}
 open func objects(at indexes: IndexSet) -> [Any] {}
@@ -454,9 +443,7 @@ open func subarray(with range: NSRange) -> [Any] {}
 open func write(to url: URL) throws {}
 }
 open class NSAttributedString {
-public static var supportsSecureCoding: Bool { get }
 public init(attributedString: NSAttributedString) {}
-public required init?(coder aDecoder: NSCoder) {}
 public init(string: String) {}
 public init(string: String, attributes attrs: [NSAttributedStringKey: Any]? = x) {}
 open var length: Int { get }
@@ -466,14 +453,9 @@ open func attribute(_ attrName: NSAttributedStringKey, at location: Int, longest
 open func attributedSubstring(from range: NSRange) -> NSAttributedString {}
 open func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey: Any] {}
 open func attributes(at location: Int, longestEffectiveRange range: NSRangePointer?, in rangeLimit: NSRange) -> [NSAttributedStringKey: Any] {}
-open func copy() -> Any {}
-open func copy(with zone: NSZone? = x) -> Any {}
-open func encode(with aCoder: NSCoder) {}
 open func enumerateAttribute(_ attrName: NSAttributedStringKey, in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateAttributes(in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: ([NSAttributedStringKey: Any], NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func isEqual(to other: NSAttributedString) -> Bool {}
-open func mutableCopy() -> Any {}
-open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSCache<KeyType, ObjectType> {
 open var countLimit: Int { get set }
@@ -574,26 +556,16 @@ open class var urlQueryAllowed: CharacterSet { get }
 open class var urlUserAllowed: CharacterSet { get }
 open class var whitespaces: CharacterSet { get }
 open class var whitespacesAndNewlines: CharacterSet { get }
-public init() {}
 public init(bitmapRepresentation data: Data) {}
 public init(charactersIn aString: String) {}
-public required convenience init(coder aDecoder: NSCoder) {}
 public convenience init?(contentsOfFile fName: String) {}
 public init(range aRange: NSRange) {}
 open var bitmapRepresentation: Data { get }
-open var description: String { get }
-open var hash: Int { get }
 open var inverted: CharacterSet { get }
 open func characterIsMember(_ aCharacter: unichar) -> Bool {}
-open func copy() -> Any {}
-open func copy(with zone: NSZone? = x) -> Any {}
-open func encode(with aCoder: NSCoder) {}
 open func hasMemberInPlane(_ thePlane: UInt8) -> Bool {}
-open func isEqual(_ value: Any?) -> Bool {}
 open func isSuperset(of theOtherSet: CharacterSet) -> Bool {}
 open func longCharacterIsMember(_ theLongChar: UInt32) -> Bool {}
-open func mutableCopy() -> Any {}
-open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSCoder {
 open var allowedClasses: [AnyClass]? { get }
@@ -802,10 +774,7 @@ open class var default: NSDecimalNumberHandler { get }
 public init(roundingMode: NSDecimalNumber.RoundingMode, scale: Int16, raiseOnExactness exact: Bool, raiseOnOverflow overflow: Bool, raiseOnUnderflow underflow: Bool, raiseOnDivideByZero divideByZero: Bool) {}
 }
 open class NSDictionary {
-public static var supportsSecureCoding: Bool { get }
 open class func sharedKeySet(forKeys keys: [NSCopying]) -> Any {}
-public convenience init() {}
-public required convenience init?(coder aDecoder: NSCoder) {}
 public convenience init(dictionary otherDictionary: [AnyHashable: Any]) {}
 public required convenience init(dictionaryLiteral elements: (Any, Any)...) {}
 public convenience init(object: Any, forKey key: NSCopying) {}
@@ -815,20 +784,14 @@ open var allKeys: [Any] { get }
 open var allValues: [Any] { get }
 open var count: Int { get }
 public var customMirror: Mirror { get }
-open var description: String { get }
 open var descriptionInStringsFileFormat: String { get }
-open var hash: Int { get }
 open subscript(key: Any) -> Any? { get } {}
 open func allKeys(for anObject: Any) -> [Any] {}
-open func copy() -> Any {}
-open func copy(with zone: NSZone? = x) -> Any {}
 open func description(withLocale locale: Locale?) -> String {}
 open func description(withLocale locale: Locale?, indent level: Int) -> String {}
-open func encode(with aCoder: NSCoder) {}
 open func enumerateKeysAndObjects(_ block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateKeysAndObjects(options opts: NSEnumerationOptions = x, using block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Void) {}
 open func getObjects(_ objects: inout [Any], andKeys keys: inout [Any], count: Int) {}
-open func isEqual(_ value: Any?) -> Bool {}
 open func isEqual(to otherDictionary: [AnyHashable: Any]) -> Bool {}
 open func keyEnumerator() -> NSEnumerator {}
 open func keysOfEntries(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
@@ -836,8 +799,6 @@ open func keysOfEntries(passingTest predicate: (Any, Any, UnsafeMutablePointer<O
 open func keysSortedByValue(comparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
 open func keysSortedByValue(options opts: NSSortOptions = x, usingComparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
 public func makeIterator() -> Iterator {}
-open func mutableCopy() -> Any {}
-open func mutableCopy(with zone: NSZone? = x) -> Any {}
 open func object(forKey aKey: Any) -> Any? {}
 open func objectEnumerator() -> NSEnumerator {}
 open func objects(forKeys keys: [Any], notFoundMarker marker: Any) -> [Any] {}
@@ -911,6 +872,9 @@ open func index(atPosition position: Int) -> Int {}
 open func removingLastIndex() -> IndexPath {}
 }
 open class NSIndexSet {
+public static var supportsSecureCoding: Bool { get }
+public init() {}
+public required init?(coder aDecoder: NSCoder) {}
 public convenience init(index value: Int) {}
 public init(indexSet: IndexSet) {}
 public init(indexesIn range: NSRange) {}
@@ -919,7 +883,10 @@ open var firstIndex: Int { get }
 open var lastIndex: Int { get }
 open func contains(_ indexSet: IndexSet) -> Bool {}
 open func contains(in range: NSRange) -> Bool {}
+open func copy() -> Any {}
+open func copy(with zone: NSZone? = x) -> Any {}
 open func countOfIndexes(in range: NSRange) -> Int {}
+open func encode(with aCoder: NSCoder) {}
 open func enumerate(_ block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
 open func enumerate(in range: NSRange, options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
 open func enumerate(options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
@@ -940,6 +907,8 @@ open func indexes(passingTest predicate: (Int, UnsafeMutablePointer<ObjCBool>) -
 open func intersects(in range: NSRange) -> Bool {}
 open func isEqual(to indexSet: IndexSet) -> Bool {}
 public func makeIterator() -> NSIndexSetIterator {}
+open func mutableCopy() -> Any {}
+open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSKeyedArchiver {
 open class func archiveRootObject(_ rootObject: Any, toFile path: String) -> Bool {}
@@ -1166,7 +1135,6 @@ public required convenience init(floatLiteral value: Double) {}
 public required convenience init(integerLiteral value: Int) {}
 public convenience init(value: Bool) {}
 open var boolValue: Bool { get }
-open var classForCoder: AnyClass { get }
 public var decimalValue: Decimal { get }
 open var doubleValue: Double { get }
 open var floatValue: Float { get }
@@ -1198,10 +1166,13 @@ open func replacementObject(for aCoder: NSCoder) -> Any? {}
 open func replacementObject(for archiver: NSKeyedArchiver) -> Any? {}
 }
 open class NSOrderedSet {
+public static var supportsSecureCoding: Bool { get }
+public convenience init() {}
 public convenience init(array: [Any]) {}
 public convenience init(array set: [Any], copyItems flag: Bool) {}
 public convenience init(array set: [Any], range: NSRange, copyItems flag: Bool) {}
 public required convenience init(arrayLiteral elements: Any...) {}
+public required convenience init?(coder aDecoder: NSCoder) {}
 public convenience init(object: Any) {}
 public convenience init(objects elements: Any...) {}
 public init(objects: UnsafePointer<AnyObject>!, count cnt: Int) {}
@@ -1218,8 +1189,11 @@ public var reversed: NSOrderedSet { get }
 public var set: Set<AnyHashable> { get }
 open subscript(idx: Int) -> Any { get } {}
 open func contains(_ object: Any) -> Bool {}
+open func copy() -> Any {}
+open func copy(with zone: NSZone? = x) -> Any {}
 public func description(withLocale locale: Locale?) -> String {}
 public func description(withLocale locale: Locale?, indent level: Int) -> String {}
+open func encode(with aCoder: NSCoder) {}
 open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
 open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -1235,9 +1209,12 @@ open func indexes(ofObjectsPassingTest predicate: (Any, Int, UnsafeMutablePointe
 open func indexes(options opts: NSEnumerationOptions = x, ofObjectsPassingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
 open func intersects(_ other: NSOrderedSet) -> Bool {}
 open func intersectsSet(_ set: Set<AnyHashable>) -> Bool {}
+open func isEqual(_ object: Any?) -> Bool {}
 open func isEqual(to other: NSOrderedSet) -> Bool {}
 open func isSubset(of other: NSOrderedSet) -> Bool {}
 public func makeIterator() -> Iterator {}
+open func mutableCopy() -> Any {}
+open func mutableCopy(with zone: NSZone? = x) -> Any {}
 open func object(at idx: Int) -> Any {}
 public func objectEnumerator() -> NSEnumerator {}
 open func objects(at indexes: IndexSet) -> [Any] {}
@@ -1719,7 +1696,6 @@ open func objectValue(_ string: String, range: inout NSRange) throws -> Any? {}
 open func string(from number: NSNumber) -> String? {}
 }
 open class Operation {
-public init() {}
 public var completionBlock: (() -> Void)? { get set }
 open var dependencies: [Operation] { get }
 open var isAsynchronous: Bool { get }
@@ -1781,8 +1757,12 @@ public var fileHandleForWriting: FileHandle { get }
 }
 open class Port {
 public static var didBecomeInvalidNotification { get }
+public init() {}
+public required init?(coder aDecoder: NSCoder) {}
 open var isValid: Bool { get }
 open var reservedSpaceLength: Int { get }
+open func copy(with zone: NSZone? = x) -> Any {}
+open func encode(with aCoder: NSCoder) {}
 open func invalidate() {}
 open func remove(from runLoop: RunLoop, forMode mode: RunLoopMode) {}
 open func schedule(in runLoop: RunLoop, forMode mode: RunLoopMode) {}
@@ -2188,7 +2168,6 @@ public convenience init(coefficient: Double) {}
 public init(coefficient: Double, constant: Double) {}
 open var coefficient: Double { get }
 open var constant: Double { get }
-open func isEqual(_ object: Any?) -> Bool {}
 }
 open class UserDefaults {
 public static var argumentDomain: String { get }
@@ -2254,7 +2233,6 @@ open var systemID: String? { get set }
 }
 open class XMLDocument {
 open class func replacementClass(for cls: AnyClass) -> AnyClass {}
-public init() {}
 public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
 public init(data: Data, options mask: XMLNode.Options = x) throws {}
 public init(rootElement element: XMLElement?) {}
@@ -2633,10 +2611,10 @@ public var debugDescription: String { get }
 public var description: String { get }
 public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
-public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
-public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
+public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
+public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType>  where UnitType : Dimension {}
 public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
 public func /(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
 public func <<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}

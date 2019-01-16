@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import SDGSwiftSource
 
 extension APIElement {
@@ -61,7 +63,9 @@ extension APIElement {
         case .subscript(let `subscript`):
             append(simpleDeclaration: `subscript`.declaration.madePublic(), implementation: true, to: &api)
         case .function(let function):
-            append(simpleDeclaration: function.declaration.madePublic(), implementation: true, to: &api)
+            if function.declaration.identifier.text ≠ "" {
+                append(simpleDeclaration: function.declaration.madePublic(), implementation: true, to: &api)
+            }
         }
     }
 
