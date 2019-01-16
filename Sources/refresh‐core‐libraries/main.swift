@@ -25,10 +25,10 @@ ProcessInfo.applicationIdentifier = "ca.solideogloria.SDGSwift.refresh‐core‐
 
 let branchName = "swift\u{2D}\(SwiftCompiler._standardLibraryVersion.string(droppingEmptyPatch: true))\u{2D}branch"
 let modules: [String: (url: String, path: String)] = [
-    //"Swift": ("swift", "stdlib/public/core"),
+    "Swift": ("swift", "stdlib/public/core"),
     "Foundation": ("swift\u{2D}corelibs\u{2D}foundation", "Foundation"),
-    //"Dispatch": ("swift\u{2D}corelibs\u{2D}libdispatch", "src/swift"),
-    //"XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public")
+    "Dispatch": ("swift\u{2D}corelibs\u{2D}libdispatch", "src/swift"),
+    "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public")
 ]
 
 let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource")
