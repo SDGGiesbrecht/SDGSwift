@@ -30,7 +30,7 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
     public convenience init(documentation: DocumentationSyntax?, declaration: FunctionCallExprSyntax, sources: [URL]) throws {
         self.init(documentation: documentation, declaration: declaration)
         var api: [APIElement] = []
-        for sourceFile in sources.sorted() {
+        for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
             try autoreleasepool {
                 let source = try SyntaxTreeParser.parseAndRetry(sourceFile)
                 api.append(contentsOf: source.api())
