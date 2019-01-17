@@ -6,7 +6,9 @@ PackageToDocument • Package(name: "PackageToDocument")
    visible • case visible
   Inherited • struct Inherited
    required() • func required()
+   Comparable
    DependencyProtocol
+   Equatable
    SubDependencyProtocol
   Structure • struct Structure
    staticProperty • static var staticProperty: Bool { get }

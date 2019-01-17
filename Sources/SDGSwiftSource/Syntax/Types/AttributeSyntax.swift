@@ -58,7 +58,7 @@ extension AttributeSyntax {
             // Xcode interface
             return normalized()
 
-        case "inlinable", "usableFromInline", "dynamicMemberLookup", "convention":
+        case "inlinable", "usableFromInline", "inline", "dynamicMemberLookup", "convention":
             // Implementation details
             return nil
         case "NSCopying", "NSManaged":

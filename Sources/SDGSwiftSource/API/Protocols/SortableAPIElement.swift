@@ -19,8 +19,8 @@ extension SortableAPIElement {
 
     // MARK: - Comparable
 
-    internal func comparisonIdentity() -> (String, String) {
-        return (genericName.source(), possibleDeclaration?.source() ?? "")
+    internal func comparisonIdentity() -> (String, String, String) {
+        return (genericName.source(), possibleDeclaration?.source() ?? "", constraints?.source() ?? "")
     }
 
     public static func < (precedingValue: Self, followingValue: Self) -> Bool {

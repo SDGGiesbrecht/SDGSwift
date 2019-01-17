@@ -160,6 +160,15 @@ let package = Package(
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
 
+        .target(name: "refresh‐core‐libraries", dependencies: [
+            "SDGSwiftPackageManager",
+            "SDGSwiftSource",
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+            ]),
+
         // Tests
         .target(name: "SDGSwiftTestUtilities", dependencies: [
             "SDGSwift",

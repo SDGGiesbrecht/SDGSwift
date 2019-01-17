@@ -12,8 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 import SDGCollections
+import SDGSwiftLocalizations
 
 import SDGSwift
 import SDGSwiftPackageManager
@@ -30,7 +33,24 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
         let root = package.rootPackages.first!.underlyingPackage
         try self.init(package: root, reportProgress: reportProgress)
 
-        let dependencies = package.reachableTargets.filter({ module in
+        var dependencyModules: [ModuleAPI] = []
+
+        for (name, source) in [
+            ("Swift", Resources.CoreLibraries.swift),
+            ("Foundation", Resources.CoreLibraries.foundation),
+            ("Dispatch", Resources.CoreLibraries.dispatch),
+            ("XCTest", Resources.CoreLibraries.xctest)
+            ] {
+                reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Loading inheritance from “" + StrictString(name) + "”..."
+                    }
+                }).resolved()))
+                dependencyModules.append(try ModuleAPI(source: source))
+        }
+
+        let declaredDependencies = package.reachableTargets.filter({ module in
             switch module.type {
             case .executable, .systemModule, .test:
                 return false
@@ -38,11 +58,19 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
                 return ¬root.targets.contains(module.underlyingTarget)
             }
         })
+        for module in declaredDependencies.sorted(by: { $0.name < $1.name }) {
+            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Loading inheritance from “" + StrictString(module.name) + "”..."
+                }
+            }).resolved()))
+            dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))
+        }
 
-        for module in dependencies.sorted(by: { $0.name < $1.name }) {
-            let parsed = try ModuleAPI(module: module.underlyingTarget, manifest: nil)
-            self.dependencies.append(parsed)
-            APIElement.resolveConformances(elements: [.package(self)] + [.module(parsed)])
+        for module in dependencyModules {
+            self.dependencies.append(module)
+            APIElement.resolveConformances(elements: [.package(self)] + [.module(module)])
         }
     }
 

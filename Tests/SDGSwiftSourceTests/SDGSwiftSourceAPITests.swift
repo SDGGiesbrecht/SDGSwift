@@ -29,7 +29,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testAPIParsing() throws {
         for packageName in ["PackageToDocument", "PackageToDocument2"] {
             let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
-            let parsed = try PackageAPI(package: package.packageGraph())
+            let parsed = try PackageAPI(package: package.packageGraph(), reportProgress: { print($0) })
             XCTAssertNotNil(parsed.documentation)
             let summary = parsed.summary().joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
@@ -194,6 +194,24 @@ class SDGSwiftSourceAPITests : TestCase {
         }).scan(evenMoreSyntax)
         XCTAssertTrue(foundTriviaFragment)
         XCTAssertTrue(foundCommentSyntax)
+    }
+
+    func testCoreLibraries() throws {
+        let syntax = try SyntaxTreeParser.parse(URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Core Libraries/Swift.txt"))
+        var foundLessThan = false
+        try FunctionalSyntaxScanner(
+            checkSyntax: { syntax, _ in
+                if let function = syntax as? FunctionDeclSyntax {
+                    XCTAssert(function.identifier.text ≠ "", "Corrupt function:\n\(function)")
+                    if function.identifier.text == "<" {
+                        foundLessThan = true
+                    }
+                }
+                return true
+        },
+            shouldExtendToken: { _ in false },
+            shouldExtendFragment: { _ in false }).scan(syntax)
+        XCTAssert(foundLessThan)
     }
 
     func testCSS() {

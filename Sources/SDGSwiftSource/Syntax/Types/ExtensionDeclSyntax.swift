@@ -14,16 +14,12 @@
 
 import SDGLogic
 
-extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Inheritor {
+extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Hidable, Inheritor {
 
     // MARK: - APISyntax
 
     internal func isPublic() -> Bool {
         return true
-    }
-
-    internal var isHidden: Bool {
-        return false
     }
 
     internal var shouldLookForChildren: Bool {
@@ -38,5 +34,11 @@ extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Inheritor {
             type: extendedType,
             constraints: genericWhereClause,
             children: children))]
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        return extendedType.hidabilityIdentifier
     }
 }

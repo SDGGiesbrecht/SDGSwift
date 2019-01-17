@@ -27,6 +27,8 @@ extension TypeSyntax {
             return member.normalized()
         case let optional as OptionalTypeSyntax:
             return optional.normalized()
+        case let implicitlyUnwrapped as ImplicitlyUnwrappedOptionalTypeSyntax:
+            return implicitlyUnwrapped.normalized()
         case let tuple as TupleTypeSyntax:
             return tuple.normalized(extractingFromIndexPath: indexPath)
         case let composition as CompositionTypeSyntax:
@@ -47,6 +49,22 @@ extension TypeSyntax {
                 name: SyntaxFactory.makeToken(.wildcardKeyword),
                 genericArgumentClause: nil)
         }
+    }
 
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+        // Only used by extensions. Non‐extendable types are ignored.
+        switch self {
+        case let simple as SimpleTypeIdentifierSyntax:
+            return simple.name
+        case let member as MemberTypeIdentifierSyntax:
+            return member.baseType.hidabilityIdentifier
+        default:
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                print("Unidentified type syntax class: \(type(of: self))")
+            }
+            return nil
+        }
     }
 }

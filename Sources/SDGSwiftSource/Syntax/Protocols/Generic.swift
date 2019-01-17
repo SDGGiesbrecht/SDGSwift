@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 internal protocol Generic : Constrained {
     var genericParameterClause: GenericParameterClauseSyntax? { get }
 }
@@ -21,7 +23,8 @@ extension Generic {
     internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
         var newGenericParemeterClause: GenericParameterClauseSyntax?
         var newGenericWhereClause: GenericWhereClauseSyntax?
-        if let originalGenericParameterClause = genericParameterClause {
+        if let originalGenericParameterClause = genericParameterClause,
+            originalGenericParameterClause.source() ≠ "" { // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
             (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
         }
 
