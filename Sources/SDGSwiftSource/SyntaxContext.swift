@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public class SyntaxContext {
 
     // MARK: - Initialization
@@ -27,4 +29,8 @@ public class SyntaxContext {
     internal let fragmentContext: String
     internal let fragmentOffset: Int
     internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
+
+    public func isFragmented() -> Bool {
+        return parentContext ≠ nil
+    }
 }

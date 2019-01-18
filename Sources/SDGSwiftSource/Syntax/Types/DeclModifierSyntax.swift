@@ -50,7 +50,7 @@ extension DeclModifierSyntax {
                 return nil
             case "mutating", "nonmutating":
                 return normalize()
-            case "indirect":
+            case "indirect", "lazy":
                 return nil
             case "weak":
                 return normalize()

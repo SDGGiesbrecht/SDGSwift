@@ -194,6 +194,26 @@ class SDGSwiftSourceAPITests : TestCase {
         }).scan(evenMoreSyntax)
         XCTAssertTrue(foundTriviaFragment)
         XCTAssertTrue(foundCommentSyntax)
+
+        let yetMoreSource = "/// ```swift\n/// let x = 0\n/// ```\nlet y = 0"
+        let yetMoreSyntax = try SyntaxTreeParser.parse(yetMoreSource)
+        var foundX = false
+        var foundY = false
+        try FunctionalSyntaxScanner(
+            checkSyntax: { syntax, context in
+                if let token = syntax as? TokenSyntax {
+                    if token.text == "x" {
+                        foundX = true
+                        XCTAssert(context.isFragmented())
+                    } else if token.text == "y" {
+                        foundY = true
+                        XCTAssertFalse(context.isFragmented())
+                    }
+                }
+                return true
+        }).scan(yetMoreSyntax)
+        XCTAssertTrue(foundX)
+        XCTAssertTrue(foundY)
     }
 
     func testCoreLibraries() throws {
