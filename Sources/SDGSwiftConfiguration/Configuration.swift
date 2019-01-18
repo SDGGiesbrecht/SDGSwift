@@ -15,7 +15,7 @@
 /// An abstract superclass for a type representing an overall configuration.
 ///
 /// The concrete subclass is comparable to the `Package` type in a package manifest.
-open class Configuration : Codable {
+open class Configuration : Decodable, Encodable {
 
     // MARK: - Static Properties
 
