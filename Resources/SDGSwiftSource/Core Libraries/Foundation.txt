@@ -1,4 +1,4 @@
-open class BlockOperation : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Operation, _ {
+open class BlockOperation : NSObject, Operation {
     public init(block: @escaping () -> Void) {}
     open var executionBlocks: [() -> Void] { get }
     open func addExecutionBlock(_ block: @escaping () -> Void) {}
@@ -95,7 +95,7 @@ open class DateComponentsFormatter : CustomDebugStringConvertible, CustomStringC
     open func string(from components: DateComponents) -> String? {}
     open func string(from startDate: Date, to endDate: Date) -> String? {}
 }
-open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class DateFormatter : Formatter, NSCoding, NSCopying, NSObject {
     open class func dateFormat(fromTemplate tmplate: String, options opts: Int, locale: Locale?) -> String? {}
     open class func localizedString(from date: Date, dateStyle dstyle: Style, timeStyle tstyle: Style) -> String {}
     open var amSymbol: String! { get set }
@@ -109,7 +109,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open var generatesCalendarDates { get }
     open var gregorianStartDate: Date? { get set }
     open var isLenient { get }
-    open var locale: Locale! { get set }
+    open var locale: Locale! { get }
     open var longEraSymbols: [String]! { get set }
     open var monthSymbols: [String]! { get set }
     open var pmSymbol: String! { get set }
@@ -124,7 +124,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open var standaloneQuarterSymbols: [String]! { get set }
     open var standaloneWeekdaySymbols: [String]! { get set }
     open var timeStyle: Style { get set }
-    open var timeZone: TimeZone! { get set }
+    open var timeZone: TimeZone! { get }
     open var twoDigitStartDate: Date? { get set }
     open var veryShortMonthSymbols: [String]! { get set }
     open var veryShortStandaloneMonthSymbols: [String]! { get set }
@@ -136,7 +136,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open func setLocalizedDateFormatFromTemplate(_ dateFormatTemplate: String) {}
     open func string(from date: Date) -> String {}
 }
-open class DateIntervalFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class DateIntervalFormatter : Formatter, NSCoding, NSCopying, NSObject {
     open var calendar: Calendar! { get set }
     open var dateStyle: Style { get set }
     open var dateTemplate: String! { get set }
@@ -177,8 +177,8 @@ open class FileHandle : CustomDebugStringConvertible, CustomStringConvertible, E
     open var availableData: Data { get }
     open var fileDescriptor: Int32 { get }
     open var offsetInFile: UInt64 { get }
-    open var readabilityHandler: ((FileHandle) -> Void)? { get set }
-    open var writeabilityHandler: ((FileHandle) -> Void)? { get set }
+    open var readabilityHandler: ((FileHandle) -> Void)? { get }
+    open var writeabilityHandler: ((FileHandle) -> Void)? { get }
     open func acceptConnectionInBackgroundAndNotify() {}
     open func acceptConnectionInBackgroundAndNotify(forModes modes: [RunLoopMode]?) {}
     open func closeFile() {}
@@ -197,7 +197,7 @@ open class FileHandle : CustomDebugStringConvertible, CustomStringConvertible, E
     open func write(_ data: Data) {}
 }
 open class FileManager : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
-open class DirectoryEnumerator : NSEnumerator, NSObject, Sequence {
+open class DirectoryEnumerator : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSEnumerator, NSObject, NSObjectProtocol, Sequence, _ {
     open var directoryAttributes: [FileAttributeKey: Any]? { get }
     open var fileAttributes: [FileAttributeKey: Any]? { get }
     open var level: Int { get }
@@ -205,7 +205,7 @@ open class DirectoryEnumerator : NSEnumerator, NSObject, Sequence {
 }
     open class var default: FileManager { get }
     open var currentDirectoryPath: String { get }
-    open weak var delegate: FileManagerDelegate? { get set }
+    open weak var delegate: FileManagerDelegate? { get }
     open var homeDirectoryForCurrentUser: URL { get }
     open var temporaryDirectory: URL { get }
 #if !(os(Android))
@@ -222,7 +222,7 @@ open class DirectoryEnumerator : NSEnumerator, NSObject, Sequence {
     open func copyItem(atPath srcPath: String, toPath dstPath: String) throws {}
     open func createDirectory(at url: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = x) throws {}
     open func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = x) throws {}
-    @discardableResult open func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]? = x) -> Bool {}
+    open func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]? = x) -> Bool {}
     open func createSymbolicLink(at url: URL, withDestinationURL destURL: URL) throws {}
     open func createSymbolicLink(atPath path: String, withDestinationPath destPath: String) throws {}
     open func destinationOfSymbolicLink(atPath path: String) throws -> String {}
@@ -253,9 +253,7 @@ open class DirectoryEnumerator : NSEnumerator, NSObject, Sequence {
     open func subpaths(atPath path: String) -> [String]? {}
     open func subpathsOfDirectory(atPath path: String) throws -> [String] {}
     open func url(for directory: SearchPathDirectory, in domain: SearchPathDomainMask, appropriateFor url: URL?, create shouldCreate: Bool) throws -> URL {}
-#if !(os(Windows) )
     open func urls(for directory: SearchPathDirectory, in domainMask: SearchPathDomainMask) -> [URL] {}
-#endif
 }
 open class Formatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
     open func editingString(for obj: Any) -> String? {}
@@ -317,7 +315,7 @@ open class ISO8601DateFormatter : CustomDebugStringConvertible, CustomStringConv
     open func date(from string: String) -> Date? {}
     open func string(from date: Date) -> String {}
 }
-open class InputStream : NSObject, Stream {
+open class InputStream : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream, _ {
     public init(data: Data) {}
     public convenience init?(fileAtPath path: String) {}
     public init?(url: URL) {}
@@ -350,7 +348,7 @@ open class JSONSerialization : CustomDebugStringConvertible, CustomStringConvert
     open class func jsonObject(with data: Data, options opt: ReadingOptions = x) throws -> Any {}
     open class func writeJSONObject(_ obj: Any, toStream stream: OutputStream, options opt: WritingOptions) throws -> Int {}
 }
-open class LengthFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class LengthFormatter : Formatter, NSCoding, NSCopying, NSObject {
     open var isForPersonHeightUse: Bool { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitStyle: UnitStyle { get set }
@@ -359,7 +357,7 @@ open class LengthFormatter : CustomDebugStringConvertible, CustomStringConvertib
     open func unitString(fromMeters numberInMeters: Double, usedUnit unitp: UnsafeMutablePointer<Unit>?) -> String {}
     open func unitString(fromValue value: Double, unit: Unit) -> String {}
 }
-open class MassFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class MassFormatter : Formatter, NSCoding, NSCopying, NSObject {
     open var isForPersonMassUse: Bool { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitStyle: UnitStyle { get set }
@@ -392,17 +390,22 @@ open class NSAffineTransform : CustomDebugStringConvertible, CustomStringConvert
     open func transform(_ aSize: NSSize) -> NSSize {}
     open func translateX(by deltaX: CGFloat, yBy deltaY: CGFloat) {}
 }
-open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSArray : CustomReflectable, ExpressibleByArrayLiteral, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+    public static var supportsSecureCoding: Bool { get }
+    public init() {}
     public convenience init(array: [Any]) {}
     public convenience init(array: [Any], copyItems: Bool) {}
     public required convenience init(arrayLiteral elements: Any...) {}
+    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(contentsOf url: URL, error: Void) throws {}
     public convenience init(object anObject: Any) {}
     public convenience init(objects elements: AnyObject...) {}
     public convenience init(objects: UnsafePointer<AnyObject>, count: Int) {}
     open var count: Int { get }
     public var customMirror: Mirror { get }
+    open var description: String { get }
     open var firstObject: Any? { get }
+    open var hash: Int { get }
     open var lastObject: Any? { get }
     open var sortedArrayHint: Data { get }
     open subscript(idx: Int) -> Any { get } {}
@@ -410,8 +413,11 @@ open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStri
     open func addingObjects(from otherArray: [Any]) -> [Any] {}
     open func componentsJoined(by separator: String) -> String {}
     open func contains(_ anObject: Any) -> Bool {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
     open func description(withLocale locale: Locale?) -> String {}
     open func description(withLocale locale: Locale?, indent level: Int) -> String {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -428,8 +434,11 @@ open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStri
     open func indexesOfObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
     open func indexesOfObjects(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
     open func indexesOfObjects(passingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
+    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to otherArray: [Any]) -> Bool {}
     public func makeIterator() -> Iterator {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func object(at index: Int) -> Any {}
     open func objectEnumerator() -> NSEnumerator {}
     open func objects(at indexes: IndexSet) -> [Any] {}
@@ -443,10 +452,8 @@ open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStri
     open func subarray(with range: NSRange) -> [Any] {}
     open func write(to url: URL) throws {}
 }
-open class NSAttributedString : NSCopying, NSMutableCopying, NSObject, NSSecureCoding, _CFBridgeable {
-    public static var supportsSecureCoding: Bool { get }
+open class NSAttributedString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable {
     public init(attributedString: NSAttributedString) {}
-    public required init?(coder aDecoder: NSCoder) {}
     public init(string: String) {}
     public init(string: String, attributes attrs: [NSAttributedStringKey: Any]? = x) {}
     open var length: Int { get }
@@ -456,14 +463,9 @@ open class NSAttributedString : NSCopying, NSMutableCopying, NSObject, NSSecureC
     open func attributedSubstring(from range: NSRange) -> NSAttributedString {}
     open func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey: Any] {}
     open func attributes(at location: Int, longestEffectiveRange range: NSRangePointer?, in rangeLimit: NSRange) -> [NSAttributedStringKey: Any] {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerateAttribute(_ attrName: NSAttributedStringKey, in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateAttributes(in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: ([NSAttributedStringKey: Any], NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func isEqual(to other: NSAttributedString) -> Bool {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
 open class NSCache<KeyType, ObjectType> : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
     open var countLimit: Int { get set }
@@ -629,7 +631,7 @@ open class NSCoder : CustomDebugStringConvertible, CustomStringConvertible, Equa
     open func version(forClassName className: String) -> Int {}
     open func withDecodedUnsafeBufferPointer<ResultType>(forKey key: String, body: (UnsafeBufferPointer<UInt8>?) throws -> ResultType) rethrows -> ResultType {}
 }
-open class NSComparisonPredicate : NSCopying, NSObject, NSPredicate, NSSecureCoding {
+open class NSComparisonPredicate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding, _ {
     public init(leftExpression lhs: NSExpression, rightExpression rhs: NSExpression, modifier: Modifier, type: Operator, options: Options) {}
     open var comparisonPredicateModifier: Modifier { get }
     open var leftExpression: NSExpression { get }
@@ -637,7 +639,7 @@ open class NSComparisonPredicate : NSCopying, NSObject, NSPredicate, NSSecureCod
     open var predicateOperatorType: Operator { get }
     open var rightExpression: NSExpression { get }
 }
-open class NSCompoundPredicate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding, _ {
+open class NSCompoundPredicate : NSCopying, NSObject, NSPredicate, NSSecureCoding {
     public convenience init(andPredicateWithSubpredicates subpredicates: [NSPredicate]) {}
     public convenience init(notPredicateWithSubpredicate predicate: NSPredicate) {}
     public convenience init(orPredicateWithSubpredicates subpredicates: [NSPredicate]) {}
@@ -663,41 +665,29 @@ open class NSConditionLock : CustomDebugStringConvertible, CustomStringConvertib
     open func tryLock(whenCondition condition: Int) -> Bool {}
     open func unlock(withCondition condition: Int) {}
 }
-open class NSCountedSet : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSMutableSet, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSCountedSet : CustomReflectable, NSCoding, NSCopying, NSMutableCopying, NSMutableSet, NSObject, NSSecureCoding, NSSet, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open func count(for object: Any) -> Int {}
 }
-open class NSData : NSCopying, NSMutableCopying, NSObject, NSSecureCoding, _CFBridgeable, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable, _SwiftBridgeable {
-    public static var supportsSecureCoding: Bool { get }
-    public init() {}
+open class NSData : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(base64Encoded base64Data: Data, options: Base64DecodingOptions = x) {}
     public init?(base64Encoded base64String: String, options: Base64DecodingOptions = x) {}
     public init(bytes: UnsafeRawPointer?, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, deallocator: ((UnsafeMutableRawPointer, Int) -> Void)? = x) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, freeWhenDone: Bool) {}
-    public required init?(coder aDecoder: NSCoder) {}
     public init?(contentsOf url: URL) {}
     public init(contentsOf url: URL, options readOptionsMask: ReadingOptions = x) throws {}
     public init?(contentsOfFile path: String) {}
     public init(contentsOfFile path: String, options readOptionsMask: ReadingOptions = x) throws {}
     public init(data: Data) {}
     open var bytes: UnsafeRawPointer { get }
-    open var debugDescription: String { get }
-    open var description: String { get }
-    open var hash: Int { get }
     open var length: Int { get }
     open func base64EncodedData(options: Base64EncodingOptions = x) -> Data {}
     open func base64EncodedString(options: Base64EncodingOptions = x) -> String {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
-    open func encode(with aCoder: NSCoder) {}
     open func enumerateBytes(_ block: (UnsafeRawPointer, NSRange, UnsafeMutablePointer<Bool>) -> Void) {}
     open func getBytes(_ buffer: UnsafeMutableRawPointer, length: Int) {}
     open func getBytes(_ buffer: UnsafeMutableRawPointer, range: NSRange) {}
-    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to other: Data) -> Bool {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func range(of dataToFind: Data, options mask: SearchOptions = x, in searchRange: NSRange) -> NSRange {}
     open func subdata(with range: NSRange) -> Data {}
     open func write(to url: URL, atomically: Bool) -> Bool {}
@@ -789,8 +779,11 @@ open class NSDecimalNumberHandler : CustomDebugStringConvertible, CustomStringCo
     open class var default: NSDecimalNumberHandler { get }
     public init(roundingMode: NSDecimalNumber.RoundingMode, scale: Int16, raiseOnExactness exact: Bool, raiseOnOverflow overflow: Bool, raiseOnUnderflow underflow: Bool, raiseOnDivideByZero divideByZero: Bool) {}
 }
-open class NSDictionary : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSDictionary : CustomReflectable, ExpressibleByDictionaryLiteral, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+    public static var supportsSecureCoding: Bool { get }
     open class func sharedKeySet(forKeys keys: [NSCopying]) -> Any {}
+    public convenience init() {}
+    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(dictionary otherDictionary: [AnyHashable: Any]) {}
     public required convenience init(dictionaryLiteral elements: (Any, Any)...) {}
     public convenience init(object: Any, forKey key: NSCopying) {}
@@ -800,14 +793,20 @@ open class NSDictionary : CustomDebugStringConvertible, CustomReflectable, Custo
     open var allValues: [Any] { get }
     open var count: Int { get }
     public var customMirror: Mirror { get }
+    open var description: String { get }
     open var descriptionInStringsFileFormat: String { get }
+    open var hash: Int { get }
     open subscript(key: Any) -> Any? { get } {}
     open func allKeys(for anObject: Any) -> [Any] {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
     open func description(withLocale locale: Locale?) -> String {}
     open func description(withLocale locale: Locale?, indent level: Int) -> String {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerateKeysAndObjects(_ block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateKeysAndObjects(options opts: NSEnumerationOptions = x, using block: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func getObjects(_ objects: inout [Any], andKeys keys: inout [Any], count: Int) {}
+    open func isEqual(_ value: Any?) -> Bool {}
     open func isEqual(to otherDictionary: [AnyHashable: Any]) -> Bool {}
     open func keyEnumerator() -> NSEnumerator {}
     open func keysOfEntries(options opts: NSEnumerationOptions = x, passingTest predicate: (Any, Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
@@ -815,6 +814,8 @@ open class NSDictionary : CustomDebugStringConvertible, CustomReflectable, Custo
     open func keysSortedByValue(comparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
     open func keysSortedByValue(options opts: NSSortOptions = x, usingComparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
     public func makeIterator() -> Iterator {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func object(forKey aKey: Any) -> Any? {}
     open func objectEnumerator() -> NSEnumerator {}
     open func objects(forKeys keys: [Any], notFoundMarker marker: Any) -> [Any] {}
@@ -879,15 +880,19 @@ open class NSExpression : CustomDebugStringConvertible, CustomStringConvertible,
 }
 open class NSIndexPath : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public convenience init(index: Int) {}
-    public init(indexes: UnsafePointer<Int>?, length: Int) {}
+    public init(indexes: UnsafePointer<Int>!, length: Int) {}
     open var length: Int { get }
     open func adding(_ index: Int) -> IndexPath {}
     open func compare(_ otherObject: IndexPath) -> ComparisonResult {}
+    open func getIndexes(_ indexes: UnsafeMutablePointer<Int>) {}
     open func getIndexes(_ indexes: UnsafeMutablePointer<Int>, range positionRange: NSRange) {}
     open func index(atPosition position: Int) -> Int {}
     open func removingLastIndex() -> IndexPath {}
 }
-open class NSIndexSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSIndexSet : NSCopying, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+    public static var supportsSecureCoding: Bool { get }
+    public init() {}
+    public required init?(coder aDecoder: NSCoder) {}
     public convenience init(index value: Int) {}
     public init(indexSet: IndexSet) {}
     public init(indexesIn range: NSRange) {}
@@ -896,7 +901,10 @@ open class NSIndexSet : CustomDebugStringConvertible, CustomStringConvertible, E
     open var lastIndex: Int { get }
     open func contains(_ indexSet: IndexSet) -> Bool {}
     open func contains(in range: NSRange) -> Bool {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
     open func countOfIndexes(in range: NSRange) -> Int {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerate(_ block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func enumerate(in range: NSRange, options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func enumerate(options opts: NSEnumerationOptions = x, using block: (Int, UnsafeMutablePointer<ObjCBool>) -> Void) {}
@@ -917,12 +925,15 @@ open class NSIndexSet : CustomDebugStringConvertible, CustomStringConvertible, E
     open func intersects(in range: NSRange) -> Bool {}
     open func isEqual(to indexSet: IndexSet) -> Bool {}
     public func makeIterator() -> NSIndexSetIterator {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
 }
-open class NSKeyedArchiver : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol, _ {
+open class NSKeyedArchiver : NSCoder, NSObject {
     open class func archiveRootObject(_ rootObject: Any, toFile path: String) -> Bool {}
     open class func archivedData(withRootObject rootObject: Any) -> Data {}
     open class func classNameForClass(_ cls: AnyClass) -> String? {}
     open class func setClassName(_ codedName: String?, for cls: AnyClass) {}
+    public convenience init() {}
     public convenience init(forWritingWith data: NSMutableData) {}
     open weak var delegate: NSKeyedArchiverDelegate? { get set }
     open var encodedData: Data { get }
@@ -981,7 +992,7 @@ open class NSMeasurement : CustomDebugStringConvertible, CustomStringConvertible
     open func converting(to unit: Unit) -> Measurement<Unit> {}
     open func subtracting(_ measurement: Measurement<Unit>) -> Measurement<Unit> {}
 }
-open class NSMutableArray : CustomReflectable, ExpressibleByArrayLiteral, NSArray, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableArray : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSArray, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public init(capacity numItems: Int) {}
     open func add(_ anObject: Any) {}
     open func addObjects(from otherArray: [Any]) {}
@@ -1007,7 +1018,7 @@ open class NSMutableArray : CustomReflectable, ExpressibleByArrayLiteral, NSArra
     open func sort(options opts: NSSortOptions = x, usingComparator cmptr: Comparator) {}
     public func sort(using sortDescriptors: [NSSortDescriptor]) {}
 }
-open class NSMutableAttributedString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSAttributedString, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable {
+open class NSMutableAttributedString : NSAttributedString, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, _CFBridgeable {
     open var mutableString: NSMutableString { get }
     open func addAttribute(_ name: NSAttributedStringKey, value: Any, range: NSRange) {}
     open func addAttributes(_ attrs: [NSAttributedStringKey: Any], range: NSRange) {}
@@ -1043,7 +1054,7 @@ open class NSMutableCharacterSet : NSCharacterSet, NSCoding, NSCopying, NSMutabl
     open func invert() {}
     open func removeCharacters(in aRange: NSRange) {}
 }
-open class NSMutableData : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSData, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableData : NSCopying, NSData, NSMutableCopying, NSObject, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(capacity: Int) {}
     public init?(length: Int) {}
     open var mutableBytes: UnsafeMutableRawPointer { get }
@@ -1055,7 +1066,7 @@ open class NSMutableData : CustomDebugStringConvertible, CustomStringConvertible
     open func resetBytes(in range: NSRange) {}
     open func setData(_ data: Data) {}
 }
-open class NSMutableDictionary : CustomReflectable, ExpressibleByDictionaryLiteral, NSCoding, NSCopying, NSDictionary, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableDictionary : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSDictionary, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public convenience init(capacity numItems: Int) {}
     public convenience init(sharedKeySet keyset: Any) {}
     open func addEntries(from otherDictionary: [AnyHashable: Any]) {}
@@ -1065,7 +1076,7 @@ open class NSMutableDictionary : CustomReflectable, ExpressibleByDictionaryLiter
     open func setDictionary(_ otherDictionary: [AnyHashable: Any]) {}
     open func setObject(_ anObject: Any, forKey aKey: AnyHashable) {}
 }
-open class NSMutableIndexSet : NSCopying, NSIndexSet, NSMutableCopying, NSObject, NSSecureCoding, Sequence, _StructTypeBridgeable {
+open class NSMutableIndexSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSIndexSet, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _StructTypeBridgeable {
     open func add(_ indexSet: IndexSet) {}
     open func add(in r: NSRange) {}
     open func remove(_ indexSet: IndexSet) {}
@@ -1073,7 +1084,7 @@ open class NSMutableIndexSet : NSCopying, NSIndexSet, NSMutableCopying, NSObject
     open func removeAllIndexes() {}
     open func shiftIndexesStarting(at index: Int, by delta: Int) {}
 }
-open class NSMutableOrderedSet : ExpressibleByArrayLiteral, NSCopying, NSMutableCopying, NSObject, NSOrderedSet, NSSecureCoding, Sequence {
+open class NSMutableOrderedSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSOrderedSet, NSSecureCoding, Sequence, _ {
     public init(capacity numItems: Int) {}
     open func add(_ object: Any) {}
     open func add(_ objects: UnsafePointer<AnyObject>!, count: Int) {}
@@ -1102,7 +1113,7 @@ open class NSMutableOrderedSet : ExpressibleByArrayLiteral, NSCopying, NSMutable
     open func union(_ other: NSOrderedSet) {}
     open func unionSet(_ other: Set<AnyHashable>) {}
 }
-open class NSMutableSet : CustomReflectable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, NSSet, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableSet : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public required init(capacity numItems: Int) {}
     open func add(_ object: Any) {}
     open func addObjects(from array: [Any]) {}
@@ -1114,7 +1125,7 @@ open class NSMutableSet : CustomReflectable, NSCoding, NSCopying, NSMutableCopyi
     open func setSet(_ otherSet: Set<AnyHashable>) {}
     open func union(_ otherSet: Set<AnyHashable>) {}
 }
-open class NSMutableString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSString, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, NSString, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public required init(capacity: Int) {}
     public func append(_ aString: String) {}
     public func applyTransform(_ transform: String, reverse: Bool, range: NSRange, updatedRange resultingRange: NSRangePointer?) -> Bool {}
@@ -1172,11 +1183,14 @@ open class NSObject : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func replacementObject(for aCoder: NSCoder) -> Any? {}
     open func replacementObject(for archiver: NSKeyedArchiver) -> Any? {}
 }
-open class NSOrderedSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _ {
+open class NSOrderedSet : ExpressibleByArrayLiteral, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, Sequence {
+    public static var supportsSecureCoding: Bool { get }
+    public convenience init() {}
     public convenience init(array: [Any]) {}
     public convenience init(array set: [Any], copyItems flag: Bool) {}
     public convenience init(array set: [Any], range: NSRange, copyItems flag: Bool) {}
     public required convenience init(arrayLiteral elements: Any...) {}
+    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(object: Any) {}
     public convenience init(objects elements: Any...) {}
     public init(objects: UnsafePointer<AnyObject>!, count cnt: Int) {}
@@ -1193,8 +1207,11 @@ open class NSOrderedSet : CustomDebugStringConvertible, CustomStringConvertible,
     public var set: Set<AnyHashable> { get }
     open subscript(idx: Int) -> Any { get } {}
     open func contains(_ object: Any) -> Bool {}
+    open func copy() -> Any {}
+    open func copy(with zone: NSZone? = x) -> Any {}
     public func description(withLocale locale: Locale?) -> String {}
     public func description(withLocale locale: Locale?, indent level: Int) -> String {}
+    open func encode(with aCoder: NSCoder) {}
     open func enumerateObjects(_ block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(at s: IndexSet, options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func enumerateObjects(options opts: NSEnumerationOptions = x, using block: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
@@ -1210,9 +1227,12 @@ open class NSOrderedSet : CustomDebugStringConvertible, CustomStringConvertible,
     open func indexes(options opts: NSEnumerationOptions = x, ofObjectsPassingTest predicate: (Any, Int, UnsafeMutablePointer<ObjCBool>) -> Bool) -> IndexSet {}
     open func intersects(_ other: NSOrderedSet) -> Bool {}
     open func intersectsSet(_ set: Set<AnyHashable>) -> Bool {}
+    open func isEqual(_ object: Any?) -> Bool {}
     open func isEqual(to other: NSOrderedSet) -> Bool {}
     open func isSubset(of other: NSOrderedSet) -> Bool {}
     public func makeIterator() -> Iterator {}
+    open func mutableCopy() -> Any {}
+    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func object(at idx: Int) -> Any {}
     public func objectEnumerator() -> NSEnumerator {}
     open func objects(at indexes: IndexSet) -> [Any] {}
@@ -1314,19 +1334,16 @@ open class NSSortDescriptor : CustomDebugStringConvertible, CustomStringConverti
     open func allowEvaluation() {}
     open func compare(_ object1: Any, to object2: Any) -> ComparisonResult {}
 }
-open class NSString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutableCopying, NSObject, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class var availableStringEncodings: UnsafePointer<UInt> { get }
     open class var defaultCStringEncoding: UInt { get }
-    public static var supportsSecureCoding: Bool { get }
     open class func localizedName(of encoding: UInt) -> String {}
     public static func pathWithComponents(_ components: [String]) -> String {}
-    public convenience init() {}
     public convenience init?(bytes: UnsafeRawPointer, length len: Int, encoding: UInt) {}
     public convenience init?(bytesNoCopy bytes: UnsafeMutableRawPointer, length len: Int, encoding: UInt, freeWhenDone freeBuffer: Bool) {}
     public convenience init?(cString nullTerminatedCString: UnsafePointer<Int8>, encoding: UInt) {}
     public init(characters: UnsafePointer<unichar>, length: Int) {}
     public convenience init(charactersNoCopy characters: UnsafeMutablePointer<unichar>, length: Int, freeWhenDone freeBuffer: Bool) {}
-    public required convenience init?(coder aDecoder: NSCoder) {}
     public convenience init(contentsOf url: URL, encoding enc: UInt) throws {}
     public convenience init(contentsOf url: URL, usedEncoding enc: UnsafeMutablePointer<UInt>?) throws {}
     public convenience init(contentsOfFile path: String, encoding enc: UInt) throws {}
@@ -1346,13 +1363,11 @@ open class NSString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutable
     open var decomposedStringWithCompatibilityMapping: String { get }
     public var deletingLastPathComponent: String { get }
     public var deletingPathExtension: String { get }
-    open var description: String { get }
     public var doubleValue: Double { get }
     public var expandingTildeInPath: String { get }
     public var fastestEncoding: UInt { get }
     public var fileSystemRepresentation: UnsafePointer<Int8> { get }
     public var floatValue: Float { get }
-    open var hash: Int { get }
     public var intValue: Int32 { get }
     public var integerValue: Int { get }
     public var isAbsolutePath: Bool { get }
@@ -1391,11 +1406,8 @@ open class NSString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutable
     public func completePath(into outputName: inout String?, caseSensitive flag: Bool, matchesInto outputArray: inout [String], filterTypes: [String]?) -> Int {}
     open func components(separatedBy separator: CharacterSet) -> [String] {}
     public func contains(_ str: String) -> Bool {}
-    open func copy() -> Any {}
-    open func copy(with zone: NSZone? = x) -> Any {}
     public func data(using encoding: UInt) -> Data? {}
     public func data(using encoding: UInt, allowLossyConversion lossy: Bool = x) -> Data? {}
-    open func encode(with aCoder: NSCoder) {}
     public func enumerateLines(_ block: (String, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     public func enumerateSubstrings(in range: NSRange, options opts: EnumerationOptions = x, using block: (String?, NSRange, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {}
     open func folding(options: CompareOptions = x, locale: Locale?) -> String {}
@@ -1407,7 +1419,6 @@ open class NSString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutable
     public func getParagraphStart(_ startPtr: UnsafeMutablePointer<Int>?, end parEndPtr: UnsafeMutablePointer<Int>?, contentsEnd contentsEndPtr: UnsafeMutablePointer<Int>?, for range: NSRange) {}
     public func hasPrefix(_ str: String) -> Bool {}
     public func hasSuffix(_ str: String) -> Bool {}
-    open func isEqual(_ object: Any?) -> Bool {}
     public func isEqual(to aString: String) -> Bool {}
     public func lengthOfBytes(using enc: UInt) -> Int {}
     public func lineRange(for range: NSRange) -> NSRange {}
@@ -1419,8 +1430,6 @@ open class NSString : ExpressibleByStringLiteral, NSCoding, NSCopying, NSMutable
     public func localizedStandardRange(of str: String) -> NSRange {}
     public func lowercased(with locale: Locale?) -> String {}
     public func maximumLengthOfBytes(using enc: UInt) -> Int {}
-    open func mutableCopy() -> Any {}
-    open func mutableCopy(with zone: NSZone? = x) -> Any {}
     open func padding(toLength newLength: Int, withPad padString: String, startingAt padIndex: Int) -> String {}
     public func paragraphRange(for range: NSRange) -> NSRange {}
     public func range(of searchString: String) -> NSRange {}
@@ -1693,8 +1702,7 @@ open class NumberFormatter : CustomDebugStringConvertible, CustomStringConvertib
     open func objectValue(_ string: String, range: inout NSRange) throws -> Any? {}
     open func string(from number: NSNumber) -> String? {}
 }
-open class Operation : NSObject {
-    public init() {}
+open class Operation : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
     public var completionBlock: (() -> Void)? { get set }
     open var dependencies: [Operation] { get }
     open var isAsynchronous: Bool { get }
@@ -1733,7 +1741,7 @@ open class OperationQueue : CustomDebugStringConvertible, CustomStringConvertibl
     open func cancelAllOperations() {}
     open func waitUntilAllOperationsAreFinished() {}
 }
-open class OutputStream : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream, _ {
+open class OutputStream : NSObject, Stream {
     open class func toMemory() -> Self {}
     public init(toBuffer buffer: UnsafeMutablePointer<UInt8>, capacity: Int) {}
     public convenience init?(toFileAtPath path: String, append shouldAppend: Bool) {}
@@ -1751,8 +1759,8 @@ open class PersonNameComponentsFormatter : CustomDebugStringConvertible, CustomS
     open func string(from components: PersonNameComponents) -> String {}
 }
 open class Pipe : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
-    public var fileHandleForReading: FileHandle { get }
-    public var fileHandleForWriting: FileHandle { get }
+    open var fileHandleForReading: FileHandle { get }
+    open var fileHandleForWriting: FileHandle { get }
 }
 open class Port : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
     public static var didBecomeInvalidNotification { get }
@@ -1774,23 +1782,25 @@ open class PortMessage : CustomDebugStringConvertible, CustomStringConvertible, 
 }
 open class Process : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
     public static var didTerminateNotification { get }
-    open class func run(_ url: URL, arguments: [String], terminationHandler: ((Process) -> Void)? = x) throws -> Process {}
+    open class func launchedProcess(launchPath path: String, arguments: [String]) -> Process {}
     open var arguments: [String]? { get set }
-    open var currentDirectoryURL { get set }
+    open var currentDirectoryPath: String { get set }
+    open var currentDirectoryURL: URL { get set }
     open var environment: [String: String]? { get set }
     open var executableURL: URL? { get set }
     open var isRunning: Bool { get }
+    open var launchPath: String? { get set }
     open var processIdentifier: Int32 { get }
     open var qualityOfService: QualityOfService { get set }
     open var standardError: Any? { get }
     open var standardInput: Any? { get }
     open var standardOutput: Any? { get }
     open var terminationHandler: ((Process) -> Void)? { get set }
-    public var terminationReason: TerminationReason { get }
-    public var terminationStatus: Int32 { get }
+    open var terminationReason: TerminationReason { get }
+    open var terminationStatus: Int32 { get }
     open func interrupt() {}
+    open func launch() {}
     open func resume() -> Bool {}
-    open func run() throws {}
     open func suspend() -> Bool {}
     open func terminate() {}
     open func waitUntilExit() {}
@@ -1877,28 +1887,28 @@ open class Scanner : CustomDebugStringConvertible, CustomStringConvertible, Equa
     public func scanDecimal() -> Decimal? {}
     public func scanDecimal(_ dcm: inout Decimal) -> Bool {}
     public func scanDouble() -> Double? {}
-    @discardableResult public func scanDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
+    public func scanDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
     public func scanFloat() -> Float? {}
-    @discardableResult public func scanFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
+    public func scanFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
     public func scanHexDouble() -> Double? {}
-    @discardableResult public func scanHexDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
+    public func scanHexDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
     public func scanHexFloat() -> Float? {}
-    @discardableResult public func scanHexFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
+    public func scanHexFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
     public func scanHexInt32() -> UInt32? {}
-    @discardableResult public func scanHexInt32(_ result: UnsafeMutablePointer<UInt32>) -> Bool {}
+    public func scanHexInt32(_ result: UnsafeMutablePointer<UInt32>) -> Bool {}
     public func scanHexInt64() -> UInt64? {}
-    @discardableResult public func scanHexInt64(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
+    public func scanHexInt64(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
     public func scanInt() -> Int? {}
-    @discardableResult public func scanInt(_ result: UnsafeMutablePointer<Int>) -> Bool {}
+    public func scanInt(_ result: UnsafeMutablePointer<Int>) -> Bool {}
     public func scanInt32() -> Int32? {}
-    @discardableResult public func scanInt32(_ result: UnsafeMutablePointer<Int32>) -> Bool {}
+    public func scanInt32(_ result: UnsafeMutablePointer<Int32>) -> Bool {}
     public func scanInt64() -> Int64? {}
-    @discardableResult public func scanInt64(_ result: UnsafeMutablePointer<Int64>) -> Bool {}
+    public func scanInt64(_ result: UnsafeMutablePointer<Int64>) -> Bool {}
     public func scanString(_ searchString: String) -> String? {}
-    @discardableResult public func scanString(_ string: String, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
+    public func scanString(_ string: String, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
     public func scanUnsignedLongLong() -> UInt64? {}
-    @discardableResult public func scanUnsignedLongLong(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
-    @discardableResult public func scanUpToCharacters(from set: CharacterSet, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
+    public func scanUnsignedLongLong(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
+    public func scanUpToCharacters(from set: CharacterSet, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
     public func scanUpToCharactersFromSet(_ set: CharacterSet) -> String? {}
     public func scanUpToString(_ string: String) -> String? {}
 }
@@ -1950,7 +1960,7 @@ open class Thread : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open var isMainThread: Bool { get }
     open var name: String? { get }
     open var stackSize: Int { get set }
-    open var threadDictionary: NSMutableDictionary { get }
+    open var threadDictionary { get set }
     open func cancel() {}
     open func main() {}
     open func start() {}
@@ -2084,6 +2094,7 @@ open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringC
     open class func background(withIdentifier identifier: String) -> URLSessionConfiguration {}
     open var allowsCellularAccess: Bool { get set }
     open var connectionProxyDictionary: [AnyHashable: Any]? { get set }
+    open var discretionary: Bool { get set }
     open var httpAdditionalHeaders: [AnyHashable: Any]? { get set }
     open var httpCookieAcceptPolicy: HTTPCookie.AcceptPolicy { get set }
     open var httpCookieStorage: HTTPCookieStorage? { get set }
@@ -2091,7 +2102,6 @@ open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringC
     open var httpShouldSetCookies: Bool { get set }
     open var httpShouldUsePipelining: Bool { get set }
     open var identifier: String? { get set }
-    open var isDiscretionary: Bool { get set }
     open var networkServiceType: URLRequest.NetworkServiceType { get set }
     open var protocolClasses: [AnyClass]? { get set }
     open var requestCachePolicy: URLRequest.CachePolicy { get set }
@@ -2102,9 +2112,9 @@ open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringC
     open var urlCache: URLCache? { get set }
     open var urlCredentialStorage: URLCredentialStorage? { get set }
 }
-open class URLSessionDataTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask, _ {
+open class URLSessionDataTask : NSCopying, NSObject, ProgressReporting, URLSessionTask {
 }
-open class URLSessionDownloadTask : NSCopying, NSObject, ProgressReporting, URLSessionTask {
+open class URLSessionDownloadTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask, _ {
     open func cancel(byProducingResumeData completionHandler: @escaping (Data?) -> Void) {}
 }
 open class URLSessionStreamTask : NSCopying, NSObject, ProgressReporting, URLSessionTask {
@@ -2143,7 +2153,7 @@ open class URLSessionTask : NSCopying, NSObject, ProgressReporting {
     open func resume() {}
     open func suspend() {}
 }
-open class URLSessionUploadTask : NSCopying, NSObject, ProgressReporting, URLSessionDataTask, URLSessionTask {
+open class URLSessionUploadTask : URLSessionDataTask, URLSessionTask {
 }
 open class Unit : NSCopying, NSObject, NSSecureCoding {
     public static var supportsSecureCoding: Bool { get }
@@ -2153,6 +2163,39 @@ open class Unit : NSCopying, NSObject, NSSecureCoding {
     open func copy(with zone: NSZone?) -> Any {}
     open func encode(with aCoder: NSCoder) {}
     open func isEqual(_ object: Any?) -> Bool {}
+}
+open class UnitAcceleration : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var gravity: UnitAcceleration { get }
+    open class var metersPerSecondSquared: UnitAcceleration { get }
+}
+open class UnitAngle : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var arcMinutes: UnitAngle { get }
+    open class var arcSeconds: UnitAngle { get }
+    open class var degrees: UnitAngle { get }
+    open class var gradians: UnitAngle { get }
+    open class var radians: UnitAngle { get }
+    open class var revolutions: UnitAngle { get }
+}
+open class UnitArea : Dimension, Unit {
+    open class var acres: UnitArea { get }
+    open class var ares: UnitArea { get }
+    open class var hectares: UnitArea { get }
+    open class var squareCentimeters: UnitArea { get }
+    open class var squareFeet: UnitArea { get }
+    open class var squareInches: UnitArea { get }
+    open class var squareKilometers: UnitArea { get }
+    open class var squareMegameters: UnitArea { get }
+    open class var squareMeters: UnitArea { get }
+    open class var squareMicrometers: UnitArea { get }
+    open class var squareMiles: UnitArea { get }
+    open class var squareMillimeters: UnitArea { get }
+    open class var squareNanometers: UnitArea { get }
+    open class var squareYards: UnitArea { get }
+}
+open class UnitConcentrationMass : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var gramsPerLiter: UnitConcentrationMass { get }
+    open class var milligramsPerDeciliter: UnitConcentrationMass { get }
+    open class func millimolesPerLiter(withGramsPerMole gramsPerMole: Double) -> UnitConcentrationMass {}
 }
 open class UnitConverter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
     open func baseUnitValue(fromValue value: Double) -> Double {}
@@ -2164,6 +2207,179 @@ open class UnitConverterLinear : NSCoding, NSObject, NSSecureCoding, UnitConvert
     open var coefficient: Double { get }
     open var constant: Double { get }
     open func isEqual(_ object: Any?) -> Bool {}
+}
+open class UnitDispersion : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var partsPerMillion: UnitDispersion { get }
+}
+open class UnitDuration : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var hours: UnitDuration { get }
+    open class var minutes: UnitDuration { get }
+    open class var seconds: UnitDuration { get }
+}
+open class UnitElectricCharge : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
+    open class var ampereHours: UnitElectricCharge { get }
+    open class var coulombs: UnitElectricCharge { get }
+    open class var kiloampereHours: UnitElectricCharge { get }
+    open class var megaampereHours: UnitElectricCharge { get }
+    open class var microampereHours: UnitElectricCharge { get }
+    open class var milliampereHours: UnitElectricCharge { get }
+}
+open class UnitElectricCurrent : Dimension, Unit {
+    open class var amperes: UnitElectricCurrent { get }
+    open class var kiloamperes: UnitElectricCurrent { get }
+    open class var megaamperes: UnitElectricCurrent { get }
+    open class var microamperes: UnitElectricCurrent { get }
+    open class var milliamperes: UnitElectricCurrent { get }
+}
+open class UnitElectricPotentialDifference : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var kilovolts: UnitElectricPotentialDifference { get }
+    open class var megavolts: UnitElectricPotentialDifference { get }
+    open class var microvolts: UnitElectricPotentialDifference { get }
+    open class var millivolts: UnitElectricPotentialDifference { get }
+    open class var volts: UnitElectricPotentialDifference { get }
+}
+open class UnitElectricResistance : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var kiloohms: UnitElectricResistance { get }
+    open class var megaohms: UnitElectricResistance { get }
+    open class var microohms: UnitElectricResistance { get }
+    open class var milliohms: UnitElectricResistance { get }
+    open class var ohms: UnitElectricResistance { get }
+}
+open class UnitEnergy : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var calories: UnitEnergy { get }
+    open class var joules: UnitEnergy { get }
+    open class var kilocalories: UnitEnergy { get }
+    open class var kilojoules: UnitEnergy { get }
+    open class var kilowattHours: UnitEnergy { get }
+}
+open class UnitFrequency : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var gigahertz: UnitFrequency { get }
+    open class var hertz: UnitFrequency { get }
+    open class var kilohertz: UnitFrequency { get }
+    open class var megahertz: UnitFrequency { get }
+    open class var microhertz: UnitFrequency { get }
+    open class var millihertz: UnitFrequency { get }
+    open class var nanohertz: UnitFrequency { get }
+    open class var terahertz: UnitFrequency { get }
+}
+open class UnitFuelEfficiency : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var litersPer100Kilometers: UnitFuelEfficiency { get }
+    open class var milesPerGallon: UnitFuelEfficiency { get }
+    open class var milesPerImperialGallon: UnitFuelEfficiency { get }
+}
+open class UnitIlluminance : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var lux: UnitIlluminance { get }
+}
+open class UnitLength : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var astronomicalUnits: UnitLength { get }
+    open class var centimeters: UnitLength { get }
+    open class var decameters: UnitLength { get }
+    open class var decimeters: UnitLength { get }
+    open class var fathoms: UnitLength { get }
+    open class var feet: UnitLength { get }
+    open class var furlongs: UnitLength { get }
+    open class var hectometers: UnitLength { get }
+    open class var inches: UnitLength { get }
+    open class var kilometers: UnitLength { get }
+    open class var lightyears: UnitLength { get }
+    open class var megameters: UnitLength { get }
+    open class var meters: UnitLength { get }
+    open class var micrometers: UnitLength { get }
+    open class var miles: UnitLength { get }
+    open class var millimeters: UnitLength { get }
+    open class var nanometers: UnitLength { get }
+    open class var nauticalMiles: UnitLength { get }
+    open class var parsecs: UnitLength { get }
+    open class var picometers: UnitLength { get }
+    open class var scandinavianMiles: UnitLength { get }
+    open class var yards: UnitLength { get }
+}
+open class UnitMass : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var carats: UnitMass { get }
+    open class var centigrams: UnitMass { get }
+    open class var decigrams: UnitMass { get }
+    open class var grams: UnitMass { get }
+    open class var kilograms: UnitMass { get }
+    open class var metricTons: UnitMass { get }
+    open class var micrograms: UnitMass { get }
+    open class var milligrams: UnitMass { get }
+    open class var nanograms: UnitMass { get }
+    open class var ounces: UnitMass { get }
+    open class var ouncesTroy: UnitMass { get }
+    open class var picograms: UnitMass { get }
+    open class var pounds: UnitMass { get }
+    open class var shortTons: UnitMass { get }
+    open class var slugs: UnitMass { get }
+    open class var stones: UnitMass { get }
+}
+open class UnitPower : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var femtowatts: UnitPower { get }
+    open class var gigawatts: UnitPower { get }
+    open class var horsepower: UnitPower { get }
+    open class var kilowatts: UnitPower { get }
+    open class var megawatts: UnitPower { get }
+    open class var microwatts: UnitPower { get }
+    open class var milliwatts: UnitPower { get }
+    open class var nanowatts: UnitPower { get }
+    open class var picowatts: UnitPower { get }
+    open class var terawatts: UnitPower { get }
+    open class var watts: UnitPower { get }
+}
+open class UnitPressure : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var bars: UnitPressure { get }
+    open class var gigapascals: UnitPressure { get }
+    open class var hectopascals: UnitPressure { get }
+    open class var inchesOfMercury: UnitPressure { get }
+    open class var kilopascals: UnitPressure { get }
+    open class var megapascals: UnitPressure { get }
+    open class var millibars: UnitPressure { get }
+    open class var millimetersOfMercury: UnitPressure { get }
+    open class var newtonsPerMetersSquared: UnitPressure { get }
+    open class var poundsForcePerSquareInch: UnitPressure { get }
+}
+open class UnitSpeed : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var kilometersPerHour: UnitSpeed { get }
+    open class var knots: UnitSpeed { get }
+    open class var metersPerSecond: UnitSpeed { get }
+    open class var milesPerHour: UnitSpeed { get }
+}
+open class UnitTemperature : Dimension, Unit {
+    open class var celsius: UnitTemperature { get }
+    open class var fahrenheit: UnitTemperature { get }
+    open class var kelvin: UnitTemperature { get }
+}
+open class UnitVolume : Dimension, NSCopying, NSObject, NSSecureCoding, Unit {
+    open class var acreFeet: UnitVolume { get }
+    open class var bushels: UnitVolume { get }
+    open class var centiliters: UnitVolume { get }
+    open class var cubicCentimeters: UnitVolume { get }
+    open class var cubicDecimeters: UnitVolume { get }
+    open class var cubicFeet: UnitVolume { get }
+    open class var cubicInches: UnitVolume { get }
+    open class var cubicKilometers: UnitVolume { get }
+    open class var cubicMeters: UnitVolume { get }
+    open class var cubicMiles: UnitVolume { get }
+    open class var cubicMillimeters: UnitVolume { get }
+    open class var cubicYards: UnitVolume { get }
+    open class var cups: UnitVolume { get }
+    open class var deciliters: UnitVolume { get }
+    open class var fluidOunces: UnitVolume { get }
+    open class var gallons: UnitVolume { get }
+    open class var imperialFluidOunces: UnitVolume { get }
+    open class var imperialGallons: UnitVolume { get }
+    open class var imperialPints: UnitVolume { get }
+    open class var imperialQuarts: UnitVolume { get }
+    open class var imperialTablespoons: UnitVolume { get }
+    open class var imperialTeaspoons: UnitVolume { get }
+    open class var kiloliters: UnitVolume { get }
+    open class var liters: UnitVolume { get }
+    open class var megaliters: UnitVolume { get }
+    open class var metricCups: UnitVolume { get }
+    open class var milliliters: UnitVolume { get }
+    open class var pints: UnitVolume { get }
+    open class var quarts: UnitVolume { get }
+    open class var tablespoons: UnitVolume { get }
+    open class var teaspoons: UnitVolume { get }
 }
 open class UserDefaults : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
     public static var argumentDomain: String { get }
@@ -2201,9 +2417,8 @@ open class UserDefaults : CustomDebugStringConvertible, CustomStringConvertible,
     open func url(forKey defaultName: String) -> URL? {}
     open func volatileDomain(forName domainName: String) -> [String: Any] {}
 }
-open class XMLDTD : NSCopying, NSObject, XMLNode, _NSXMLNodeCollectionType {
+open class XMLDTD : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _, _NSXMLNodeCollectionType {
     open class func predefinedEntityDeclaration(forName name: String) -> XMLDTDNode? {}
-    public init() {}
     public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
     public convenience init(data: Data, options mask: XMLNode.Options = x) throws {}
     open var publicID: String? { get set }

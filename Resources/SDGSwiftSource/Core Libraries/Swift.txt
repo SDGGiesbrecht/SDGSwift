@@ -659,12 +659,7 @@ extension ArraySlice {
 }
 extension AutoreleasingUnsafeMutablePointer {
 }
-extension Character.UnicodeScalarView {
-    public subscript(i: Index) -> UnicodeScalar { get } {}
-}
 extension Character.UnicodeScalarView.Index {
-}
-extension Character.UnicodeScalarView.Iterator {
 }
 extension ClosedRange {
     public init(_ other: Range<Bound>) where Bound : Strideable, Bound.Stride : SignedInteger {}
@@ -754,8 +749,10 @@ extension LazyDropWhileSequence {
 extension LazyDropWhileSequence.Iterator {
 }
 extension LazyFilterCollection {
+    public var underestimatedCount: Int { get }
     public func formIndex(_ i: inout Index, offsetBy n: Int) {}
     public func formIndex(_ i: inout Index, offsetBy n: Int, limitedBy limit: Index) -> Bool {}
+    public func makeIterator() -> Iterator {}
 }
 extension LazyFilterSequence {
 }
@@ -842,6 +839,16 @@ extension StrideTo {
 }
 extension StrideToIterator {
 }
+extension String.UTF16View {
+    @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UTF16View.SubSequence { get } {}
+}
+extension String.UTF16View.Index {
+    public init?(_ sourcePosition: String.Index, within target: String.UTF16View) {}
+    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
+}
+extension String.UTF16View.Indices {
+    public subscript(i: Index) -> Index { get } {}
+}
 extension String.UTF8View {
     public var count: Int { get }
     @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UTF8View.SubSequence { get } {}
@@ -851,6 +858,9 @@ extension String.UTF8View.Index {
     public init?(_ idx: String.Index, within target: String.UTF8View) {}
 }
 extension String.UTF8View.Iterator {
+}
+extension String.UnicodeScalarView {
+    @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UnicodeScalarView.SubSequence { get } {}
 }
 extension String._CharacterView {
     public subscript(i: Index) -> Character { get } {}
@@ -869,15 +879,18 @@ extension UTF8.CodeUnit {
 }
 extension UTF8.ReverseParser {
 }
-extension Unicode.Scalar {
-}
-extension Unicode.Scalar.UTF16View {
-}
-extension Unicode.UTF16 {
+extension Unicode.ASCII {
     public static var encodedReplacementCharacter: EncodedScalar { get }
     public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
     public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
     public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
+}
+extension Unicode.ASCII.Parser {
+    public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
+}
+extension Unicode.Scalar {
+}
+extension Unicode.Scalar.UTF16View {
 }
 extension Unicode.UTF16.ForwardParser {
 }
