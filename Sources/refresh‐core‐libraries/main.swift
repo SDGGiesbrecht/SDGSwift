@@ -45,7 +45,7 @@ do {
             gitHubRepository.absoluteString,
             cloneURL.path,
             "\u{2D}\u{2D}branch", branchName,
-            "\u{2D}\u{2D}depth", "1",
+            "\u{2D}\u{2D}depth", "1"
             ], reportProgress: { print($0) })
 
         var interface: [String] = []
