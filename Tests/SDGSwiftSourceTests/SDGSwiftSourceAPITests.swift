@@ -219,6 +219,7 @@ class SDGSwiftSourceAPITests : TestCase {
     func testCoreLibraries() throws {
         let syntax = try SyntaxTreeParser.parse(URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Core Libraries/Swift.txt"))
         var foundLessThan = false
+        var foundEncodable = false
         try FunctionalSyntaxScanner(
             checkSyntax: { syntax, _ in
                 if let function = syntax as? FunctionDeclSyntax {
@@ -226,12 +227,17 @@ class SDGSwiftSourceAPITests : TestCase {
                     if function.identifier.text == "<" {
                         foundLessThan = true
                     }
+                } else if let `protocol` = syntax as? ProtocolDeclSyntax {
+                    if `protocol`.identifier.text == "Encodable" {
+                        foundEncodable = true
+                    }
                 }
                 return true
         },
             shouldExtendToken: { _ in false },
             shouldExtendFragment: { _ in false }).scan(syntax)
         XCTAssert(foundLessThan)
+        XCTAssert(foundEncodable)
     }
 
     func testCSS() {

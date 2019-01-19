@@ -1,11 +1,11 @@
 public protocol DispatchSourceFileSystemObject : DispatchSourceProtocol {
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var data: DispatchSource.FileSystemEvent { get }
 #endif
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var handle: Int32 { get }
 #endif
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var mask: DispatchSource.FileSystemEvent { get }
 #endif
 }
@@ -34,13 +34,13 @@ public protocol DispatchSourceMemoryPressure : DispatchSourceProtocol {
 #endif
 }
 public protocol DispatchSourceProcess : DispatchSourceProtocol {
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var data: DispatchSource.ProcessEvent { get }
 #endif
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var handle: pid_t { get }
 #endif
-#if !os(Linux) && !os(Android) && !os(Windows)
+#if !os(Linux) && !os(Android)
     var mask: DispatchSource.ProcessEvent { get }
 #endif
 }
