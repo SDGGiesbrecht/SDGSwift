@@ -18,6 +18,13 @@ PackageToDocument • Package(name: "PackageToDocument")
    [_:] • subscript(subscript: Int) -> Bool { get }
    method() • func method()
    Error
+  Subclass • class Subclass
+   Decodable
+   Encodable
+   Superclass
+  Superclass • class Superclass
+   Decodable
+   Encodable
   (Bool)
    extensionProperty • var extensionProperty: Bool { get }
    propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }

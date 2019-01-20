@@ -17,3 +17,12 @@ public struct Inherited : DependencyProtocol, Comparable {
     public static func ==(lhs: Self, rhs: Self) -> Bool {}
     public static func <(lhs: Self, rhs: Self) -> Bool {}
 }
+
+public class Superclass : Decodable, Encodable {
+    public init(from decoder: Decoder) throws {}
+    public func encode(to encoder: Encoder) throws {}
+}
+public class Subclass : Superclass {
+    public init(from decoder: Decoder) throws {}
+    public func encode(to encoder: Encoder) throws {}
+}
