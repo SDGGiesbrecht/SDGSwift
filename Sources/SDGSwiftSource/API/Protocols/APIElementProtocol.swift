@@ -279,7 +279,7 @@ extension APIElementProtocol {
 
     // MARK: - Conformance Resolution
 
-    internal func inherit(from parentElement: APIElementProtocol) {
+    internal func inherit(from parentElement: APIElementProtocol, otherProtocols: FlattenCollection<[[ProtocolAPI]]>, otherClasses: FlattenCollection<[[TypeAPI]]>) {
         for conformance in parentElement.conformances
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
                 (self as? _APIElementBase)?.children.append(.conformance(ConformanceAPI(type: conformance.type)))

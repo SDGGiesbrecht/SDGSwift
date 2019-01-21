@@ -81,12 +81,12 @@ public enum APIElement : Comparable, Hashable {
 
                     for `protocol` in protocols where `protocol`.name.source() == conformanceName {
                         conformance.reference = .protocol(Weak(`protocol`))
-                        nestedElement.inherit(from: `protocol`)
+                        nestedElement.inherit(from: `protocol`, otherProtocols: protocols, otherClasses: superclasses)
                         continue conformanceIteration
                     }
                     for superclass in superclasses where superclass.genericName.source() == conformanceName {
                         conformance.reference = .superclass(Weak(superclass))
-                        nestedElement.inherit(from: superclass)
+                        nestedElement.inherit(from: superclass, otherProtocols: protocols, otherClasses: superclasses)
                         continue conformanceIteration
                     }
                 }
