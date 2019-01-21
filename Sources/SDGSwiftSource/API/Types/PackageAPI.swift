@@ -70,8 +70,8 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
         for module in dependencyModules {
             self.dependencies.append(module)
-            APIElement.resolveConformances(elements: [.package(self)] + [.module(module)])
         }
+        APIElement.resolveConformances(elements: [.package(self)] + dependencyModules.lazy.map({ APIElement.module($0) }))
     }
 
     internal convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
