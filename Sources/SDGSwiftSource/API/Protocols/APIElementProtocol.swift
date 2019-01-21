@@ -299,7 +299,12 @@ extension APIElementProtocol {
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
                 let conformanceCopy = ConformanceAPI(type: conformance.type)
                 (self as? _APIElementBase)?.children.append(.conformance(conformanceCopy))
-                inherit(from: conformanceCopy, protocols: otherProtocols, classes: otherClasses)
+                if let referee = conformance.reference?.elementProtocol {
+                    conformanceCopy.reference = conformance.reference
+                    inherit(from: referee, otherProtocols: otherProtocols, otherClasses: otherClasses)
+                } else {
+                    inherit(from: conformanceCopy, protocols: otherProtocols, classes: otherClasses)
+                }
         }
         let parents = conformances.compactMap({ $0.reference?.elementProtocol })
 
