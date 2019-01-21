@@ -280,21 +280,21 @@ extension APIElementProtocol {
 
     // MARK: - Conformance Resolution
 
-    internal func inherit(from conformance: ConformanceAPI, protocols: FlattenCollection<[[ProtocolAPI]]>, classes: FlattenCollection<[[TypeAPI]]>) {
+    internal func inherit(from conformance: ConformanceAPI, protocols: [String : ProtocolAPI], classes: [String: TypeAPI]) {
         let conformanceName = conformance.type.source()
-        for `protocol` in protocols where `protocol`.name.source() == conformanceName {
+        if let `protocol` = protocols[conformanceName] {
             conformance.reference = .protocol(Weak(`protocol`))
             inherit(from: `protocol`, otherProtocols: protocols, otherClasses: classes)
             return
         }
-        for superclass in classes where superclass.genericName.source() == conformanceName {
+        if let superclass = classes[conformanceName] {
             conformance.reference = .superclass(Weak(superclass))
             inherit(from: superclass, otherProtocols: protocols, otherClasses: classes)
             return
         }
     }
 
-    private func inherit(from parentElement: APIElementProtocol, otherProtocols: FlattenCollection<[[ProtocolAPI]]>, otherClasses: FlattenCollection<[[TypeAPI]]>) {
+    private func inherit(from parentElement: APIElementProtocol, otherProtocols:  [String : ProtocolAPI], otherClasses: [String: TypeAPI]) {
         for conformance in parentElement.conformances
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
                 let conformanceCopy = ConformanceAPI(type: conformance.type)

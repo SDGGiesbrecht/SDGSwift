@@ -64,15 +64,17 @@ public enum APIElement : Comparable, Hashable {
 
     internal static func resolveConformances(elements: [APIElement]) {
 
-        var cache: (FlattenCollection<[[ProtocolAPI]]>, FlattenCollection<[[TypeAPI]]>)?
+        var cache: ([String: ProtocolAPI], [String: TypeAPI])?
 
         for element in elements {
             for nestedElement in element.nestedList(of: APIElementProtocol.self) {
                 for conformance in nestedElement.conformances where conformance.reference == nil {
                     let (protocols, superclasses) = cached(in: &cache) {
+                        let protocols = elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined()
+                        let superclasses = elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
                         return (
-                            elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined(),
-                            elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
+                            Dictionary(protocols.map({ ($0.name.source(), $0) }), uniquingKeysWith: { first, _ in first }),
+                            Dictionary(superclasses.map({ ($0.genericName.source(), $0) }), uniquingKeysWith: { first, _ in first })
                         )
                     }
                     nestedElement.inherit(from: conformance, protocols: protocols, classes: superclasses)
