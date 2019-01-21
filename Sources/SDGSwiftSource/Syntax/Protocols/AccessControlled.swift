@@ -28,4 +28,12 @@ extension AccessControlled {
             return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
         }
     }
+
+    internal func isOpen() -> Bool {
+        if let modifiers = self.modifiers {
+            return modifiers.contains(where: { $0.name.text == "open" })
+        } else {
+            return false
+        }
+    }
 }
