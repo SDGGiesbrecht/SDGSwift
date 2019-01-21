@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
@@ -279,10 +280,26 @@ extension APIElementProtocol {
 
     // MARK: - Conformance Resolution
 
-    internal func inherit(from parentElement: APIElementProtocol, otherProtocols: FlattenCollection<[[ProtocolAPI]]>, otherClasses: FlattenCollection<[[TypeAPI]]>) {
+    internal func inherit(from conformance: ConformanceAPI, protocols: FlattenCollection<[[ProtocolAPI]]>, classes: FlattenCollection<[[TypeAPI]]>) {
+        let conformanceName = conformance.type.source()
+        for `protocol` in protocols where `protocol`.name.source() == conformanceName {
+            conformance.reference = .protocol(Weak(`protocol`))
+            inherit(from: `protocol`, otherProtocols: protocols, otherClasses: classes)
+            return
+        }
+        for superclass in classes where superclass.genericName.source() == conformanceName {
+            conformance.reference = .superclass(Weak(superclass))
+            inherit(from: superclass, otherProtocols: protocols, otherClasses: classes)
+            return
+        }
+    }
+
+    private func inherit(from parentElement: APIElementProtocol, otherProtocols: FlattenCollection<[[ProtocolAPI]]>, otherClasses: FlattenCollection<[[TypeAPI]]>) {
         for conformance in parentElement.conformances
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
-                (self as? _APIElementBase)?.children.append(.conformance(ConformanceAPI(type: conformance.type)))
+                let conformanceCopy = ConformanceAPI(type: conformance.type)
+                (self as? _APIElementBase)?.children.append(.conformance(conformanceCopy))
+                inherit(from: conformanceCopy, protocols: otherProtocols, classes: otherClasses)
         }
         let parents = conformances.compactMap({ $0.reference?.elementProtocol })
 

@@ -68,27 +68,14 @@ public enum APIElement : Comparable, Hashable {
 
         for element in elements {
             for nestedElement in element.nestedList(of: APIElementProtocol.self) {
-                conformanceIteration: for conformance in nestedElement.conformances where conformance.reference == nil {
-
-                    let conformanceName = conformance.type.source()
-
+                for conformance in nestedElement.conformances where conformance.reference == nil {
                     let (protocols, superclasses) = cached(in: &cache) {
                         return (
                             elements.map({ $0.nestedList(of: ProtocolAPI.self) }).joined(),
                             elements.map({ $0.nestedList(of: TypeAPI.self) }).joined()
                         )
                     }
-
-                    for `protocol` in protocols where `protocol`.name.source() == conformanceName {
-                        conformance.reference = .protocol(Weak(`protocol`))
-                        nestedElement.inherit(from: `protocol`, otherProtocols: protocols, otherClasses: superclasses)
-                        continue conformanceIteration
-                    }
-                    for superclass in superclasses where superclass.genericName.source() == conformanceName {
-                        conformance.reference = .superclass(Weak(superclass))
-                        nestedElement.inherit(from: superclass, otherProtocols: protocols, otherClasses: superclasses)
-                        continue conformanceIteration
-                    }
+                    nestedElement.inherit(from: conformance, protocols: protocols, classes: superclasses)
                 }
             }
         }
