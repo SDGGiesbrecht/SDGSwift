@@ -32,6 +32,10 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     private let declaration: TypeDeclaration
 
+    internal func isSubclassable() -> Bool {
+        return declaration is ClassDeclSyntax
+    }
+
     // MARK: - APIElementBase
 
     internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
