@@ -71,7 +71,7 @@ public enum APIElement : Comparable, Hashable {
                 for conformance in nestedElement.conformances where conformance.reference == nil {
                     let (protocols, superclasses) = cached(in: &cache) {
                         let protocols = elements.lazy.map({ $0.nestedList(of: ProtocolAPI.self) }).joined()
-                        let superclasses = elements.lazy.map({ $0.nestedList(of: TypeAPI.self) }).joined().filter({ $0.isOpen() })
+                        let superclasses = elements.lazy.map({ $0.nestedList(of: TypeAPI.self) }).joined().filter({ $0.isSubclassable() })
                         return (
                             Dictionary(protocols.lazy.map({ ($0.name.source(), $0) }), uniquingKeysWith: { first, _ in first }),
                             Dictionary(superclasses.lazy.map({ ($0.genericName.source(), $0) }), uniquingKeysWith: { first, _ in first })

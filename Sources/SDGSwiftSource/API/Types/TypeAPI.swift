@@ -32,8 +32,8 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     private let declaration: TypeDeclaration
 
-    internal func isOpen() -> Bool {
-        return declaration.isOpen()
+    internal func isSubclassable() -> Bool {
+        return declaration is ClassDeclSyntax
     }
 
     // MARK: - APIElementBase
