@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol NonOverloadableAPIElement : APIElementProtocol {
-
-}
+internal protocol NonOverloadableAPIElement : APIElementProtocol {}
 
 extension NonOverloadableAPIElement {
 

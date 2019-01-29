@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UniquelyDeclaredManifestAPIElement : UniquelyDeclaredAPIElement where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {
-
-}
+internal protocol UniquelyDeclaredManifestAPIElement : UniquelyDeclaredAPIElement where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
 
 extension UniquelyDeclaredManifestAPIElement {
 

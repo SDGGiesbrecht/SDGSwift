@@ -14,6 +14,4 @@
 
 import Workspace
 
-internal class DefaultWorkspaceDelegate : WorkspaceDelegate {
-
-}
+internal class DefaultWorkspaceDelegate : WorkspaceDelegate {}

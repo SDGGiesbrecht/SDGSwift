@@ -250,14 +250,14 @@ class SDGSwiftSourceAPITests : TestCase {
     }
 
     func testFunctionalSyntaxScanner() throws {
-        let source = """
-            /// ```swift
-            /// print("Hello, world!")
-            /// ```
-            func helloWorld() {
-                print("Hello, world!")
-            }
-            """
+        let source = [
+            "/// ```swift",
+            "/// print(\u{22}Hello, world!\u{22})",
+            "/// ```",
+            "func helloWorld() {",
+            "    print(\u{22}Hello, world!\u{22})",
+            "}"
+        ].joined(separator: "\n")
         let syntax = try SyntaxTreeParser.parse(source)
 
         var scanned: Set<String> = []
