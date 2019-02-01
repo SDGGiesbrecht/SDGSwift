@@ -24,6 +24,11 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
     // MARK: - Initialization
 
     /// Creates a version.
+    ///
+    /// - Parameters:
+    ///     - major: The major version number.
+    ///     - minor: Optional. The minor version number.
+    ///     - patch: Optional. The patch version number.
     public init(_ major: Int, _ minor: Int = 0, _ patch: Int = 0) {
         self.major = major
         self.minor = minor
@@ -73,6 +78,9 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
     }
 
     /// Creates a version from its string representation.
+    ///
+    /// - Parameters:
+    ///     - string: The version string.
     public init?(_ string: String) {
         let parsed: [String] = string.components(separatedBy: ".").map { String($0.contents) }
         var sections = parsed[parsed.bounds]
@@ -109,6 +117,9 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
     }
 
     /// Creates an instance representing the first version in a string.
+    ///
+    /// - Parameters:
+    ///     - string: The string to look for the version in.
     public init?(firstIn string: String) {
         let versionPattern = RepetitionPattern(ConditionalPattern({ (scalar: UnicodeScalar) in
             let versionScalars: Set<UnicodeScalar> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]

@@ -51,12 +51,20 @@ extension PackageRepository {
 
     /// Builds the package.
     ///
+    /// - Parameters:
+    ///     - sdk: The SDK to build for.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
 
     /// Tests the package.
+    ///
+    /// - Parameters:
+    ///     - sdk: The SDK to run tests on.
+    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
@@ -65,14 +73,22 @@ extension PackageRepository {
 
     /// Returns the code coverage report for the package.
     ///
-    /// - Returns: The report, or `nil` if there is no code coverage information.
+    /// - Parameters:
+    ///     - sdk: The SDK to run tests on.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         return try Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
     /// The derived data directory for the package.
+    ///
+    /// - Parameters:
+    ///     - sdk: The SDK.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public func derivedData(for sdk: Xcode.SDK) throws -> URL {

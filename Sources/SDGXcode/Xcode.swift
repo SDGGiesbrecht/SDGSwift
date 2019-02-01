@@ -150,6 +150,9 @@ public enum Xcode {
     /// Abbreviates Xcode output to make it more readable.
     ///
     /// This function is intended for use in `reportProgress` to keep the log concise and manageable.
+    ///
+    /// - Parameters:
+    ///     - output: The Xcode output to abbreviate.
     public static func abbreviate(output: String) -> String? {
         if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
             return nil
@@ -199,6 +202,11 @@ public enum Xcode {
 
     /// Builds the package.
     ///
+    /// - Parameters:
+    ///     - package: The package to build.
+    ///     - sdk: The SDK to build for.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try runCustomSubcommand([
@@ -209,6 +217,9 @@ public enum Xcode {
     }
 
     /// Returns whether the log contains warnings.
+    ///
+    /// - Parameters:
+    ///     - log: The Xcode output to check.
     public static func warningsOccurred(during log: String) -> Bool {
         let warnings = log.scalars.matches(for: " warning:".scalars).filter { match in // @exempt(from: tests)
             // @exempt(from: tests) Only triggered on the first build.
@@ -224,6 +235,11 @@ public enum Xcode {
     }
 
     /// Tests the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - sdk: The SDK to run tests on.
+    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
@@ -253,9 +269,15 @@ public enum Xcode {
 
     /// Returns the code coverage report for the package.
     ///
-    /// - Returns: The report, or `nil` if there is no code coverage information.
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - sdk: The SDK to run tests on.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
@@ -426,6 +448,9 @@ public enum Xcode {
 
     /// Returns the main package scheme.
     ///
+    /// - Parameters:
+    ///     - package: The package.
+    ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func scheme(for package: PackageRepository) throws -> String {
         if try package.xcodeProject() == nil {
@@ -466,6 +491,10 @@ public enum Xcode {
     }
 
     /// The derived data directory for the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package.
+    ///     - sdk: The SDK.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func derivedData(for package: PackageRepository, on sdk: SDK) throws -> URL {

@@ -280,7 +280,7 @@ extension APIElementProtocol {
 
     // MARK: - Conformance Resolution
 
-    internal func inherit(from conformance: ConformanceAPI, protocols: [String : ProtocolAPI], classes: [String: TypeAPI]) {
+    internal func inherit(from conformance: ConformanceAPI, protocols: [String: ProtocolAPI], classes: [String: TypeAPI]) {
         let conformanceName = conformance.type.source()
         if let `protocol` = protocols[conformanceName] {
             conformance.reference = .protocol(Weak(`protocol`))
@@ -294,7 +294,7 @@ extension APIElementProtocol {
         }
     }
 
-    private func inherit(from parentElement: APIElementProtocol, otherProtocols:  [String : ProtocolAPI], otherClasses: [String: TypeAPI]) {
+    private func inherit(from parentElement: APIElementProtocol, otherProtocols:  [String: ProtocolAPI], otherClasses: [String: TypeAPI]) {
         for conformance in parentElement.conformances
             where ¬conformances.contains(where: { $0.genericName.source() == conformance.genericName.source() }) {
                 let conformanceCopy = ConformanceAPI(type: conformance.type)

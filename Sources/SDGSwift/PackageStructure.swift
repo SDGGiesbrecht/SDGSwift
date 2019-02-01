@@ -27,6 +27,9 @@ public struct Package : TransparentWrapper {
     // MARK: - Initialization
 
     /// Creates an instance describing the package at the specified url.
+    ///
+    /// - Parameters:
+    ///     - url: The package URL.
     public init(url: URL) {
         self.url = url
     }
@@ -54,13 +57,18 @@ public struct Package : TransparentWrapper {
 
     /// Retrieves the package, builds it, and copies its products to the specified destination.
     ///
+    /// - Parameters:
+    ///     - build: The version to build.
+    ///     - destination: The directory to put the products in.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    public func build(_ version: Build, to destination: URL, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public func build(_ build: Build, to destination: URL, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         let temporaryCloneLocation = FileManager.default.url(in: .temporary, at: "Package Clones/" + url.lastPathComponent)
 
         reportProgress("")
 
-        let temporaryRepository = try PackageRepository(cloning: self, to: temporaryCloneLocation, at: version, shallow: true, reportProgress: reportProgress)
+        let temporaryRepository = try PackageRepository(cloning: self, to: temporaryCloneLocation, at: build, shallow: true, reportProgress: reportProgress)
         defer { try? FileManager.default.removeItem(at: temporaryCloneLocation) }
 
         reportProgress("")
@@ -112,14 +120,21 @@ public struct Package : TransparentWrapper {
 
     /// Retrieves, builds and runs a command line tool defined by a Swift package.
     ///
+    /// - Parameters:
+    ///     - build: The version to build.
+    ///     - executableNames: The name of the executable file. Multiple names can be supplied if the package defines localized products which are essentially the same executable.
+    ///     - arguments: The arguments to send to the executable.
+    ///     - cacheDirectory: Optional. A directory to store the executable in for future use. If the executable is already in the cache, the cached version will be used instead of fetching and rebuilding.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    @discardableResult public func execute(_ version: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache") // @exempt(from: tests)
-        let cache = try self.cacheDirectory(in: cacheRoot, for: version)
+        let cache = try self.cacheDirectory(in: cacheRoot, for: build)
 
         if ¬FileManager.default.fileExists(atPath: cache.path) {
 
-            switch version {
+            switch build {
             case .development:
                 // Clean up older builds.
                 try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
@@ -127,7 +142,7 @@ public struct Package : TransparentWrapper {
                 break
             }
 
-            try build(version, to: cache, reportProgress: reportProgress)
+            try self.build(build, to: cache, reportProgress: reportProgress)
         }
 
         for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {

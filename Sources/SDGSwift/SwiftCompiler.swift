@@ -109,7 +109,9 @@ public enum SwiftCompiler {
     ///
     /// - Parameters:
     ///     - package: The package to build.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+    ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
@@ -124,6 +126,9 @@ public enum SwiftCompiler {
     }
 
     /// Returns whether the log contains warnings.
+    ///
+    /// - Parameters:
+    ///     - log: The output log to be checked.
     public static func warningsOccurred(during log: String) -> Bool {
         return log.contains("warning:")
     }

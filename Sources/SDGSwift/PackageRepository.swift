@@ -22,6 +22,9 @@ public struct PackageRepository : TransparentWrapper {
     // MARK: - Initialization
 
     /// Creates an instance describing an existing package repository.
+    ///
+    /// - Parameters:
+    ///     - location: The local directory where the package repository already resides.
     public init(at location: URL) {
         self.location = location
     }
@@ -31,14 +34,14 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - package: The package to clone.
     ///     - location: The location to create the clone.
-    ///     - version: Optional. A specific version to check out.
+    ///     - build: Optional. A specific version to check out.
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public init(cloning package: Package, to location: URL, at version: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public init(cloning package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         self.init(at: location)
-        try Git.clone(package, to: location, at: version, shallow: shallow, reportProgress: reportProgress)
+        try Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress)
     }
 
     // MARK: - Properties
@@ -68,7 +71,9 @@ public struct PackageRepository : TransparentWrapper {
     /// Builds the package.
     ///
     /// - Parameters:
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+    ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {

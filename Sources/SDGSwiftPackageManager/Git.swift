@@ -18,12 +18,19 @@ extension Git {
 
     /// Initializes a repository with Git.
     ///
+    /// - Parameters:
+    ///     - repository: The uninitialized repository.
+    ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func initialize(_ repository: PackageRepository) throws {
         try runCustomSubcommand(["init"], in: repository.location)
     }
 
     /// Commits existing changes.
+    ///
+    /// - Parameters:
+    ///     - repository: The repository for which to perform the commit.
+    ///     - description: A description for the commit.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func commitChanges(in repository: PackageRepository, description: StrictString) throws {
@@ -40,17 +47,22 @@ extension Git {
 
     /// Tags a version.
     ///
+    /// - Parameters:
+    ///     - releaseVersion: The semantic version.
+    ///     - repository: The repository to tag.
+    ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func tag(version: Version, in repository: PackageRepository) throws {
+    public static func tag(version releaseVersion: Version, in repository: PackageRepository) throws {
         try runCustomSubcommand([
             "tag",
-            version.string()
+            releaseVersion.string()
             ], in: repository.location)
     }
 
     /// Checks for uncommitted changes or additions in the repository.
     ///
     /// - Parameters:
+    ///     - repository: The repository.
     ///     - exclusionPatterns: Patterns describing paths or files to ignore.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
@@ -70,6 +82,9 @@ extension Git {
     }
 
     /// Returns the list of files ignored by source control.
+    ///
+    /// - Parameters:
+    ///     - repository: The repository.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func ignoredFiles(in repository: PackageRepository) throws -> [URL] {
