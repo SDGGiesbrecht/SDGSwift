@@ -223,7 +223,7 @@ extension Configuration {
     /// If there is a mock configuration in the queue, it will be used instead at the next attempt to load a configuration from the disk. This allows tests to bypass the need for a published release of the configuration definition module.
     ///
     /// - Parameters:
-    ///     - The configuration to add to the queue.
+    ///     - mock: The configuration to add to the queue.
     public static func queue(mock: Configuration) {
         mockQueue.append(mock)
     }

@@ -78,6 +78,9 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
     }
 
     /// Creates a version from its string representation.
+    ///
+    /// - Parameters:
+    ///     - string: The version string.
     public init?(_ string: String) {
         let parsed: [String] = string.components(separatedBy: ".").map { String($0.contents) }
         var sections = parsed[parsed.bounds]
