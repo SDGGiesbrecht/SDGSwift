@@ -80,21 +80,32 @@ extension Configuration {
     ///     - directory: The directory in which to look for a configuration.
     ///     - product: The name of the product which defines the `Configuration` subclass. Users will directly import it in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
     ///     - package: The package were the module is defined.
-    ///     - version: The version of the package to link against.
+    ///     - releaseVersion: The version of the package to link against.
+    ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
-    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
         let nullContext: NullContext? = nil
-        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: version, context: nullContext, reportProgress: reportProgress)
+        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, context: nullContext, reportProgress: reportProgress)
     }
     private struct NullContext : Context {}
 
     /// Loads the configuration, providing it with additional context information.
     ///
-    /// - SeeAlso: `load(configuration:named:from:linkingAgainst:in:at:)`
-    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at version: Version, context: E?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+    /// This method has the additional ability to supply context to the configuration file as it loads. See the simpler version  (`load(configuration:named:from:linkingAgainst:in:at:reportProgress:)`) for general information about loading configurations.
+    ///
+    /// - Parameters:
+    ///     - configuration: The subclass of `Configuration` to load.
+    ///     - fileName: The localized file name of the configuration.
+    ///     - directory: The directory in which to look for a configuration.
+    ///     - product: The name of the product which defines the `Configuration` subclass.
+    ///     - package: The package were the module is defined.
+    ///     - releaseVersion: The version of the package to link against.
+    ///     - context: The context to provide to the configuration file.
+    ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
+    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, context: E?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
@@ -168,7 +179,7 @@ extension Configuration {
             let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
             var manifest = String(data: Resources.package, encoding: .utf8)!
             manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
-            manifest.replaceMatches(for: "[*version*]", with: version.string())
+            manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
             manifest.replaceMatches(for: "[*packages*]", with: packages)
             manifest.replaceMatches(for: "[*product*]", with: product)
             manifest.replaceMatches(for: "[*products*]", with: products)
@@ -210,6 +221,9 @@ extension Configuration {
     /// Queues a mock configuration.
     ///
     /// If there is a mock configuration in the queue, it will be used instead at the next attempt to load a configuration from the disk. This allows tests to bypass the need for a published release of the configuration definition module.
+    ///
+    /// - Parameters:
+    ///     - The configuration to add to the queue.
     public static func queue(mock: Configuration) {
         mockQueue.append(mock)
     }

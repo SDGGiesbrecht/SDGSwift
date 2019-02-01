@@ -25,6 +25,9 @@ public struct SampleContext : Context {
     // MARK: - Initialization
 
     /// Creates the context.
+    ///
+    /// - Parameters:
+    ///     - information: Context information to be supplied.
     public init(information: String) {
         self.information = information
     }

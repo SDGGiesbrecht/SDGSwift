@@ -27,6 +27,10 @@ extension PackageRepository {
 
     /// Creates a new package by initializing it at the specified URL.
     ///
+    /// - Parameters:
+    ///     - location: The location at which to initialize the new package.
+    ///     - type: The type of package.
+    ///
     /// - Throws: A `Git.Error`, an `ExternalProcess.Error`, or a package manager error.
     public init(initializingAt location: URL, type: InitPackage.PackageType) throws {
         self.init(at: location)
@@ -100,6 +104,9 @@ extension PackageRepository {
 
     /// Commits existing changes.
     ///
+    /// - Parameters:
+    ///     - description: A description for the commit.
+    ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public func commitChanges(description: StrictString) throws {
         try Git.commitChanges(in: self, description: description)
@@ -107,9 +114,12 @@ extension PackageRepository {
 
     /// Tags a version.
     ///
+    /// - Parameters:
+    ///     - releaseVersion: The semantic version.
+    ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func tag(version: SDGSwift.Version) throws {
-        try Git.tag(version: version, in: self)
+    public func tag(version releaseVersion: SDGSwift.Version) throws {
+        try Git.tag(version: releaseVersion, in: self)
     }
 
     /// Returns the list of files ignored by source control.
