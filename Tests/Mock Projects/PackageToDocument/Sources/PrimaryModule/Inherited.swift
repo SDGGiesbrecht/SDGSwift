@@ -26,3 +26,7 @@ public class Subclass : Superclass {
     public init(from decoder: Decoder) throws {}
     public func encode(to encoder: Encoder) throws {}
 }
+
+public class AnotherSublass : UnknownSuperclass {
+    public override func methodOverride() {}
+}
