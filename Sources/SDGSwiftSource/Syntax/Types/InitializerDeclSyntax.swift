@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, Attributed, Constrained, Generic, Hidable, OverloadableAPIDeclaration {
+extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, Attributed, Constrained, Generic, Hidable, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Hidable
 

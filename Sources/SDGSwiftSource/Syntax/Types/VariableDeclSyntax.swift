@@ -15,7 +15,7 @@
 import SDGControlFlow
 import SDGLogic
 
-extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration {
+extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Accessor
 

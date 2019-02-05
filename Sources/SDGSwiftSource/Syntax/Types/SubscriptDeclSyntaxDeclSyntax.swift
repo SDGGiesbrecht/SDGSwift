@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
+extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Accessor
 

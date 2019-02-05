@@ -15,7 +15,7 @@
 import SDGLogic
 import SDGCollections
 
-extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration {
+extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - APIDeclaration
 

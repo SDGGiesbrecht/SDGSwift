@@ -29,7 +29,7 @@ extension APISyntax {
     }
 
     internal func parseAPI() -> [APIElement] {
-        if ¬isVisible() {
+        if ¬isVisible() ∨ (self as? OverridableDeclaration)?.isOverride() == true {
             return []
         }
 
