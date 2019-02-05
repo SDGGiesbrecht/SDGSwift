@@ -11,16 +11,14 @@ public protocol BidirectionalCollection : Collection, Sequence {
     var last: Element? { get }
     func formIndex(before i: inout Index)
     func index(before i: Index) -> Index
-    func joined(separator: String = x) -> String where Iterator.Element == String
     func last(where predicate: (Element) throws -> Bool) rethrows -> Element?
     func lastIndex(of element: Element) -> Index? where Element : Equatable
     func lastIndex(where predicate: (Element) throws -> Bool) rethrows -> Index?
     mutating func popLast() -> Element? where Self == SubSequence
     @discardableResult mutating func removeLast() -> Element where Self == SubSequence
     mutating func removeLast(_ k: Int) where Self == SubSequence
-    func reversed() -> ReversedCollection<Self>
 }
-public protocol BinaryFloatingPoint : ExpressibleByFloatLiteral, FloatingPoint, Hashable, SignedNumeric, Strideable {
+public protocol BinaryFloatingPoint : Comparable, Equatable, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, FloatingPoint, Hashable, Numeric, SignedNumeric, Strideable {
     static var exponentBitCount: Int { get }
     static var significandBitCount: Int { get }
     static func random(in range: ClosedRange<Self>) -> Self where RawSignificand : FixedWidthInteger
@@ -49,9 +47,6 @@ public protocol BinaryInteger : Comparable, CustomStringConvertible, Equatable, 
     func /=(lhs: inout Self, rhs: Self)
     func <<<RHS>(lhs: Self, rhs: RHS) -> Self where RHS : BinaryInteger
     func <<=<RHS>(lhs: inout Self, rhs: RHS) where RHS : BinaryInteger
-    func <=<Other>(lhs: Self, rhs: Other) -> Bool where Other : BinaryInteger
-    func ><Other>(lhs: Self, rhs: Other) -> Bool where Other : BinaryInteger
-    func >=<Other>(lhs: Self, rhs: Other) -> Bool where Other : BinaryInteger
     func >><RHS>(lhs: Self, rhs: RHS) -> Self where RHS : BinaryInteger
     func >>=<RHS>(lhs: inout Self, rhs: RHS) where RHS : BinaryInteger
     func ^(lhs: Self, rhs: Self) -> Self
@@ -189,7 +184,7 @@ public protocol ExpressibleByStringLiteral : ExpressibleByExtendedGraphemeCluste
 public protocol ExpressibleByUnicodeScalarLiteral {
     init(unicodeScalarLiteral value: UnicodeScalarLiteralType)
 }
-public protocol FixedWidthInteger : BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, LosslessStringConvertible, Numeric, Strideable, _BitwiseOperations {
+public protocol FixedWidthInteger : BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, LosslessStringConvertible, Numeric, Strideable, _BitwiseOperations {
     static var bitWidth: Int { get }
     static var max: Self { get }
     static var min: Self { get }
@@ -255,9 +250,6 @@ public protocol FloatingPoint : Comparable, Equatable, ExpressibleByIntegerLiter
     var ulp: Self { get }
     func /(lhs: Self, rhs: Self) -> Self
     func /=(lhs: inout Self, rhs: Self)
-    func <=(lhs: Self, rhs: Self) -> Bool
-    func >(lhs: Self, rhs: Self) -> Bool
-    func >=(lhs: Self, rhs: Self) -> Bool
     mutating func addProduct(_ lhs: Self, _ rhs: Self)
     func addingProduct(_ lhs: Self, _ rhs: Self) -> Self
     mutating func formRemainder(dividingBy other: Self)
@@ -305,28 +297,11 @@ public protocol KeyedEncodingContainerProtocol {
     mutating func superEncoder() -> Encoder
     mutating func superEncoder(forKey key: Key) -> Encoder
 }
-public protocol LazyCollectionProtocol : Collection, LazySequenceProtocol {
-    var lazy: Elements { get } where Elements : LazyCollectionProtocol
-    func compactMap<ElementOfResult>(_ transform: @escaping (Elements.Element) -> ElementOfResult?) -> LazyMapCollection<LazyFilterCollection<LazyMapCollection<Elements, ElementOfResult?>>, ElementOfResult>
-    func drop(while predicate: @escaping (Elements.Element) -> Bool) -> LazyDropWhileCollection<Elements>
-    func filter(_ isIncluded: @escaping (Elements.Element) -> Bool) -> LazyFilterCollection<Elements>
-    func flatMap<SegmentOfResult>(_ transform: @escaping (Elements.Element) -> SegmentOfResult) -> LazyCollection<FlattenCollection<LazyMapCollection<Elements, SegmentOfResult>>>
-    func joined() -> LazyCollection<FlattenCollection<Elements>> where Element : Collection, Self : Collection
-    func map<U>(_ transform: @escaping (Elements.Element) -> U) -> LazyMapCollection<Elements, U>
-    func prefix(while predicate: @escaping (Element) -> Bool) -> LazyPrefixWhileCollection<Elements>
-    func reversed() -> LazyCollection<ReversedCollection<Elements>> where Elements : BidirectionalCollection, Self : BidirectionalCollection
+public protocol LazyCollectionProtocol : Collection, LazySequenceProtocol, Sequence {
 }
 public protocol LazySequenceProtocol : Sequence {
     var elements: Elements { get }
     var elements: Self { get } where Elements == Self
-    var lazy: Elements { get } where Elements : LazySequenceProtocol
-    func compactMap<ElementOfResult>(_ transform: @escaping (Elements.Element) -> ElementOfResult?) -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<Elements, ElementOfResult?>>, ElementOfResult>
-    func drop(while predicate: @escaping (Elements.Element) -> Bool) -> LazyDropWhileSequence<Elements>
-    func filter(_ isIncluded: @escaping (Elements.Element) -> Bool) -> LazyFilterSequence<Elements>
-    func flatMap<SegmentOfResult>(_ transform: @escaping (Elements.Element) -> SegmentOfResult) -> LazySequence<FlattenSequence<LazyMapSequence<Elements, SegmentOfResult>>>
-    func joined() -> LazySequence<FlattenSequence<Elements>> where Element : Sequence
-    func map<U>(_ transform: @escaping (Elements.Element) -> U) -> LazyMapSequence<Elements, U>
-    func prefix(while predicate: @escaping (Elements.Element) -> Bool) -> LazyPrefixWhileSequence<Elements>
 }
 public protocol LosslessStringConvertible : CustomStringConvertible {
     init?(_ description: String)
@@ -505,7 +480,7 @@ public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     func union(_ other: Self) -> Self
     @discardableResult mutating func update(with newMember: Element) -> Element?
 }
-public protocol SignedInteger : BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
+public protocol SignedInteger : BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
     static var max: Self { get } where Self : FixedWidthInteger
     static var min: Self { get } where Self : FixedWidthInteger
     func &+(lhs: Self, rhs: Self) -> Self where Self : FixedWidthInteger
@@ -582,7 +557,7 @@ public protocol UnkeyedEncodingContainer {
     mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer
     mutating func superEncoder() -> Encoder
 }
-public protocol UnsignedInteger : BinaryInteger, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
+public protocol UnsignedInteger : BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
     static var max: Self { get } where Self : FixedWidthInteger
     static var min: Self { get } where Self : FixedWidthInteger
 }
@@ -590,26 +565,10 @@ extension AnyBidirectionalCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
     public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
     public init?(_ other: AnyCollection<Element>) {}
-    public var count: Int { get }
-    public var first: Element? { get }
-    public var underestimatedCount: Int { get }
-    public func drop(while predicate: (Element) throws -> Bool) rethrows -> AnyBidirectionalCollection<Element> {}
-    public func dropFirst(_ n: Int) -> AnyBidirectionalCollection<Element> {}
-    public func filter(_ isIncluded: (Element) throws -> Bool) rethrows -> [Element] {}
-    public func forEach(_ body: (Element) throws -> Void) rethrows {}
-    public func formIndex(_ i: inout Index, offsetBy n: Int) {}
-    public func formIndex(_ i: inout Index, offsetBy n: Int, limitedBy limit: Index) -> Bool {}
-    public func makeIterator() -> Iterator {}
-    public func map<T>(_ transform: (Element) throws -> T) rethrows -> [T] {}
-    public func prefix(_ maxLength: Int) -> AnyBidirectionalCollection<Element> {}
-    public func prefix(while predicate: (Element) throws -> Bool) rethrows -> AnyBidirectionalCollection<Element> {}
-    public func split(maxSplits: Int = x, omittingEmptySubsequences: Bool = x, whereSeparator isSeparator: (Element) throws -> Bool) rethrows -> [AnyBidirectionalCollection<Element>] {}
 }
 extension AnyCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
     public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
-    public func filter(_ isIncluded: (Element) throws -> Bool) rethrows -> [Element] {}
-    public func forEach(_ body: (Element) throws -> Void) rethrows {}
 }
 extension AnyIterator {
 }
@@ -617,30 +576,12 @@ extension AnyRandomAccessCollection {
     public init(_ other: AnyRandomAccessCollection<Element>) {}
     public init<C>(_ base: C) where C : RandomAccessCollection, C.Element == Element {}
     public init?(_ other: AnyBidirectionalCollection<Element>) {}
-    public var count: Int { get }
-    public var first: Element? { get }
-    public var last: Element? { get }
-    public var underestimatedCount: Int { get }
-    public func drop(while predicate: (Element) throws -> Bool) rethrows -> AnyRandomAccessCollection<Element> {}
-    public func dropFirst(_ n: Int) -> AnyRandomAccessCollection<Element> {}
-    public func dropLast(_ n: Int) -> AnyRandomAccessCollection<Element> {}
-    public func filter(_ isIncluded: (Element) throws -> Bool) rethrows -> [Element] {}
-    public func forEach(_ body: (Element) throws -> Void) rethrows {}
-    public func formIndex(_ i: inout Index, offsetBy n: Int) {}
-    public func formIndex(_ i: inout Index, offsetBy n: Int, limitedBy limit: Index) -> Bool {}
-    public func makeIterator() -> Iterator {}
-    public func map<T>(_ transform: (Element) throws -> T) rethrows -> [T] {}
-    public func prefix(_ maxLength: Int) -> AnyRandomAccessCollection<Element> {}
-    public func prefix(while predicate: (Element) throws -> Bool) rethrows -> AnyRandomAccessCollection<Element> {}
-    public func split(maxSplits: Int = x, omittingEmptySubsequences: Bool = x, whereSeparator isSeparator: (Element) throws -> Bool) rethrows -> [AnyRandomAccessCollection<Element>] {}
-    public func suffix(_ maxLength: Int) -> AnyRandomAccessCollection<Element> {}
 }
 extension AnySequence {
     public init<S>(_ base: S) where S : Sequence, Element == S.Element {}
 }
 extension Array {
     public var capacity: Int { get }
-    public var count: Int { get }
     public func withUnsafeBufferPointer<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R {}
     public func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R {}
     public mutating func withUnsafeMutableBufferPointer<R>(_ body: (inout UnsafeMutableBufferPointer<Element>) throws -> R) rethrows -> R {}
@@ -651,7 +592,6 @@ extension ArrayProtocol {
 }
 extension ArraySlice {
     public var capacity: Int { get }
-    public var count: Int { get }
     public func withUnsafeBufferPointer<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R {}
     public func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R {}
     public mutating func withUnsafeMutableBufferPointer<R>(_ body: (inout UnsafeMutableBufferPointer<Element>) throws -> R) rethrows -> R {}
@@ -659,7 +599,12 @@ extension ArraySlice {
 }
 extension AutoreleasingUnsafeMutablePointer {
 }
+extension Character.UnicodeScalarView {
+    public subscript(i: Index) -> UnicodeScalar { get } {}
+}
 extension Character.UnicodeScalarView.Index {
+}
+extension Character.UnicodeScalarView.Iterator {
 }
 extension ClosedRange {
     public init(_ other: Range<Bound>) where Bound : Strideable, Bound.Stride : SignedInteger {}
@@ -667,15 +612,11 @@ extension ClosedRange {
     public func overlaps(_ other: ClosedRange<Bound>) -> Bool {}
 }
 extension ClosedRange.Index {
-    public func ==(lhs: ClosedRange<Bound>.Index, rhs: ClosedRange<Bound>.Index) -> Bool {}
 }
 extension CollectionOfOne {
-    public var count: Int { get }
-    public func makeIterator() -> IteratorOverOne<Element> {}
 }
 extension ContiguousArray {
     public var capacity: Int { get }
-    public var count: Int { get }
     public func withUnsafeBufferPointer<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R {}
     public func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R {}
     public mutating func withUnsafeMutableBufferPointer<R>(_ body: (inout UnsafeMutableBufferPointer<Element>) throws -> R) rethrows -> R {}
@@ -712,7 +653,6 @@ extension DictionaryIterator {
 extension DictionaryLiteral {
 }
 extension EmptyCollection {
-    public var count: Int { get }
 }
 extension EmptyCollection.Iterator {
 }
@@ -749,19 +689,12 @@ extension LazyDropWhileSequence {
 extension LazyDropWhileSequence.Iterator {
 }
 extension LazyFilterCollection {
-    public var underestimatedCount: Int { get }
-    public func formIndex(_ i: inout Index, offsetBy n: Int) {}
-    public func formIndex(_ i: inout Index, offsetBy n: Int, limitedBy limit: Index) -> Bool {}
-    public func makeIterator() -> Iterator {}
 }
 extension LazyFilterSequence {
 }
 extension LazyFilterSequence.Iterator {
 }
 extension LazyMapCollection {
-    public var count: Int { get }
-    public var first: Element? { get }
-    public var isEmpty: Bool { get }
 }
 extension LazyMapSequence {
 }
@@ -770,7 +703,6 @@ extension LazyMapSequence.Iterator {
 extension LazyPrefixWhileCollection {
 }
 extension LazyPrefixWhileCollection.Index {
-    public func ==(lhs: LazyPrefixWhileCollection<Base>.Index, rhs: LazyPrefixWhileCollection<Base>.Index) -> Bool {}
 }
 extension LazyPrefixWhileSequence {
 }
@@ -803,7 +735,6 @@ extension Repeated {
 extension ReversedCollection {
 }
 extension ReversedCollection.Index {
-    public func ==(lhs: ReversedCollection<Base>.Index, rhs: ReversedCollection<Base>.Index) -> Bool {}
 }
 extension ReversedCollection.Iterator {
 }
@@ -826,25 +757,15 @@ extension Slice {
     public subscript(index: Index) -> Base.Element { get set } where Base : MutableCollection {}
 }
 extension StrideThrough {
-#if false
-    public var count: Int { get } where Element.Stride : BinaryInteger
-#endif
 }
 extension StrideThroughIterator {
 }
 extension StrideTo {
-#if false
-    public var count: Int { get } where Element.Stride : BinaryInteger
-#endif
 }
 extension StrideToIterator {
 }
 extension String.UTF16View {
     @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UTF16View.SubSequence { get } {}
-}
-extension String.UTF16View.Index {
-    public init?(_ sourcePosition: String.Index, within target: String.UTF16View) {}
-    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
 }
 extension String.UTF16View.Indices {
     public subscript(i: Index) -> Index { get } {}
@@ -854,13 +775,9 @@ extension String.UTF8View {
     @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UTF8View.SubSequence { get } {}
     public func makeIterator() -> Iterator {}
 }
-extension String.UTF8View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF8View) {}
-}
 extension String.UTF8View.Iterator {
 }
 extension String.UnicodeScalarView {
-    @available(swift, introduced: 4) public subscript(r: Range<Index>) -> String.UnicodeScalarView.SubSequence { get } {}
 }
 extension String._CharacterView {
     public subscript(i: Index) -> Character { get } {}
@@ -879,26 +796,7 @@ extension UTF8.CodeUnit {
 }
 extension UTF8.ReverseParser {
 }
-extension Unicode.ASCII {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
-}
-extension Unicode.ASCII.Parser {
-    public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
-}
 extension Unicode.Scalar {
-}
-extension Unicode.Scalar.UTF16View {
-}
-extension Unicode.UTF16.ForwardParser {
-}
-extension Unicode.UTF8 {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : _UnicodeEncoding {}
 }
 extension Unicode.UTF8.ForwardParser {
 }
