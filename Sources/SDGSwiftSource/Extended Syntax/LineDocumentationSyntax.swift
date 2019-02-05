@@ -85,8 +85,6 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Properties
 
-    // @documentation(SDGSwiftSource.LineDeveloperCommentSyntax.content)
-    /// The content.
     public var content: FragmentSyntax {
         return _content as! FragmentSyntax
     }

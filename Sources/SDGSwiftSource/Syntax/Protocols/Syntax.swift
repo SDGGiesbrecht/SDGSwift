@@ -193,7 +193,6 @@ extension Syntax {
         return APIElement.merge(elements: elements)
     }
 
-    // @documentation(SDGSwiftSource.Syntax.api())
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
         if let element = self as? APISyntax {

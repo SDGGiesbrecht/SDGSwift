@@ -163,8 +163,6 @@ public struct Package : TransparentWrapper {
 
     // MARK: - TransparentWrapper
 
-    // #documentation(SDGCornerstone.TransparentWrapper.wrapped)
-    /// The wrapped instance.
     public var wrappedInstance: Any {
         return url
     }

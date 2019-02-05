@@ -139,31 +139,18 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
 
     // MARK: - Comparable
 
-    // #documentation(SDGCornerstone.Comparable.<)
-    /// Returns `true` if the preceding value is less than the following value.
-    ///
-    /// - Parameters:
-    ///     - precedingValue: A value.
-    ///     - followingValue: Another value.
     public static func < (lhs: Version, rhs: Version) -> Bool {
         return (lhs.major, lhs.minor, lhs.patch) < (rhs.major, rhs.minor, rhs.patch)
     }
 
     // MARK: - CustomStringConvertible
 
-    // #documentation(SDGCornerstone.CustomStringConvertible.description)
-    /// A textual representation of the instance.
     public var description: String {
         return string()
     }
 
     // MARK: - ExpressibleByStringLiteral
 
-    // #documentation(SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:))
-    /// Creates an instance from a string literal.
-    ///
-    /// - Parameters:
-    ///     - stringLiteral: The string literal.
     public init(stringLiteral: String) {
         guard let result = Version(stringLiteral) else {
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in

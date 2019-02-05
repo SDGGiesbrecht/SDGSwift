@@ -26,8 +26,6 @@ public class LineDeveloperCommentSyntax : LineCommentSyntax {
 
     // MARK: - Properties
 
-    // @documentation(SDGSwiftSource.LineDeveloperCommentSyntax.content)
-    /// The content.
     public var content: CommentContentSyntax {
         return _content as! CommentContentSyntax
     }
