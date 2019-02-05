@@ -1,4 +1,3 @@
 TestCase • open class TestCase • #if canImport(XCTest) && (!(os(iOS) || os(watchOS) || os(tvOS)) || targetEnvironment(simulator)) 
- setUp() • open func setUp()
  testLinuxMainGenerationCompatibility() • func testLinuxMainGenerationCompatibility()
  XCTestCase
