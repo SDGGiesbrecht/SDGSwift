@@ -26,8 +26,6 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
 
     // MARK: - Properties
 
-    // @documentation(SDGSwiftSource.LineDeveloperCommentSyntax.content)
-    /// The documentation content.
     public var documentation: DocumentationSyntax {
         return internalSyntax as! DocumentationSyntax
     }

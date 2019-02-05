@@ -160,7 +160,6 @@ public class ExtendedSyntax : TextOutputStreamable {
         return [:]
     }
 
-    // @documentation(SDGSwiftSource.Syntax.renderedHTML)
     /// Returns the HTML result of documentation rendering.
     ///
     /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.

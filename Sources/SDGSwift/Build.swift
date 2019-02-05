@@ -29,8 +29,6 @@ public enum Build : Equatable, TextualPlaygroundDisplay {
 
     // MARK: - CustomStringConvertible
 
-    // #documentation(SDGCornerstone.CustomStringConvertible.description)
-    /// A textual representation of the instance.
     public var description: String {
         switch self {
         case .version(let version):
