@@ -30,3 +30,7 @@ public class Subclass : Superclass {
 public class AnotherSublass : UnknownSuperclass {
     public override func methodOverride() {}
 }
+
+public struct InheritingAssociatedType : RawRepresentable {
+    public typealias RawValue = Int
+}

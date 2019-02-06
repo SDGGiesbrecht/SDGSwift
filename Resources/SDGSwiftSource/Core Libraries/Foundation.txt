@@ -2593,6 +2593,7 @@ public protocol RecoverableError : Error {
     func attemptRecovery(optionIndex recoveryOptionIndex: Int, resultHandler handler: (_ recovered: Bool) -> Void)
 }
 public protocol ReferenceConvertible : CustomDebugStringConvertible, CustomStringConvertible, Hashable {
+    associatedtype ReferenceType
 }
 public protocol StreamDelegate : _ {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event)
