@@ -45,9 +45,6 @@ extension DeclModifierSyntax {
             case "convenience":
                 // Designation.
                 return normalize()
-            case "override":
-                // Subclassing.
-                return nil
             case "mutating", "nonmutating":
                 return normalize()
             case "indirect", "lazy":
