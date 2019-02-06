@@ -2,6 +2,8 @@ PackageToDocument • Package(name: "PackageToDocument")
  PrimaryProduct • .library(name: "PrimaryProduct")
   PrimaryModule
  PrimaryModule • .target(name: "PrimaryModule")
+  AnotherSublass • class AnotherSublass
+   UnknownSuperclass
   Enumeration • enum Enumeration
    visible • case visible
   Inherited • struct Inherited

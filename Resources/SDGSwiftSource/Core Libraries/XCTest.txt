@@ -18,7 +18,6 @@ open class XCTestCase : PerformanceMeterDelegate, XCTest {
     open func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: Int, expected: Bool) {}
 }
 open class XCTestCaseRun : XCTestRun {
-    open func recordFailure(withDescription description: String, inFile filePath: String?, atLine lineNumber: Int, expected: Bool) {}
 }
 open class XCTestRun {
     public required init(test: XCTest) {}
