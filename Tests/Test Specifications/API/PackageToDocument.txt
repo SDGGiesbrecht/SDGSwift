@@ -12,6 +12,8 @@ PackageToDocument • Package(name: "PackageToDocument")
    DependencyProtocol
    Equatable
    SubDependencyProtocol
+  InheritingAssociatedType • struct InheritingAssociatedType
+   RawRepresentable
   Structure • struct Structure
    staticProperty • static var staticProperty: Bool { get }
    staticMethod() • static func staticMethod()
