@@ -44,6 +44,8 @@ extension APIElement {
                     }
                     api.append("}")
                 }
+            case let associatedType as AssociatedtypeDeclSyntax:
+                append(simpleDeclaration: associatedType, implementation: false, to: &api)
             default:
                 break
             }
