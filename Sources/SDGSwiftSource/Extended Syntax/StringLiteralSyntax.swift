@@ -14,6 +14,7 @@
 
 import SDGLocalization
 
+/// A string literal.
 public class StringLiteralSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties

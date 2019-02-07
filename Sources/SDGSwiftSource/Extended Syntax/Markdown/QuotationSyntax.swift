@@ -16,6 +16,7 @@ import SDGCollections
 import SDGText
 import SDGCMarkShims
 
+/// A quotation in documentation.
 public class QuotationSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {

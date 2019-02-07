@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGMathematics
 
+/// A line documentation comment.
 public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties

@@ -14,44 +14,77 @@
 
 import SDGSwiftLocalizations
 
+/// A documentation callout.
 public enum Callout : String, CaseIterable {
 
     // MARK: - Cases
 
     // From https://github.com/apple/swift/blob/master/include/swift/Markup/SimpleFields.def
 
+    /// “Parameter”.
     case parameter = "Parameter"
+    /// “Parameters”.
     case parameters = "Parameters"
 
+    /// “Attention.”.
     case attention = "Attention"
+    /// “Author”.
     case author = "Author"
+    /// “Authors”.
     case authors = "Authors"
+    /// “Bug”.
     case bug = "Bug"
+    /// “Complexity”.
     case complexity = "Complexity"
+    /// “Copyright”.
     case copyright = "Copyright"
+    /// “Date”.
     case date = "Date"
+    /// “Experiment”.
     case experiment = "Experiment"
+    /// “Important”.
     case important = "Important"
+    /// “Invariant”.
     case invariant = "Invariant"
+    /// “LocalizationKey”.
     case localizationKey = "LocalizationKey"
+    /// “MutatingVariant”.
     case mutatingVariant = "MutatingVariant"
+    /// “NonmutatingVariant”.
     case nonmutatingVariant = "NonmutatingVariant"
+    /// “Note”.
     case note = "Note"
+    /// “Postcondition”.
     case postcondition = "Postcondition"
+    /// “Precondition”.
     case precondition = "Precondition"
+    /// “Remark”.
     case remark = "Remark"
+    /// “Remarks”.
     case remarks = "Remarks"
+    /// “Returns”.
     case returns = "Returns"
+    /// “Requires”.
     case requires = "Requires"
+    /// “SeeAlso”.
     case seeAlso = "SeeAlso"
+    /// “Since”.
     case since = "Since"
+    /// “Tag”.
     case tag = "Tag"
+    /// “ToDo”.
     case toDo = "ToDo"
+    /// “Throws”.
     case `throws` = "Throws"
+    /// “Version”.
     case version = "Version"
+    /// “Warning”.
     case warning = "Warning"
+    /// “Keyword”.
     case keyword = "Keyword"
+    /// “Recommended”.
     case recommended = "Recommended"
+    /// “RecommendedOver”.
     case recommendedOver = "RecommendedOver"
 
     // MARK: - Type Properties
@@ -76,6 +109,10 @@ public enum Callout : String, CaseIterable {
 
     // MARK: - Properties
 
+    /// Returns a localized heading for the generated callout.
+    ///
+    /// - Parameters:
+    ///     - localization: The code of the desired localization.
     public func localizedText(_ localization: String) -> StrictString {
         guard let match = InterfaceLocalization(reasonableMatchFor: localization) else {
             return StrictString(rawValue)

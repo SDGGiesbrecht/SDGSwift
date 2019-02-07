@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// An explicit line separator in documentation.
 public class LineSeparatorSyntax : MarkdownSyntax {
 
     internal init() {

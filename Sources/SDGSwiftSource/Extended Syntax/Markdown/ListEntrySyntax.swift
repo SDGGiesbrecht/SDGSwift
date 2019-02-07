@@ -18,6 +18,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 
+/// A list entry in documentation.
 public class ListEntrySyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {

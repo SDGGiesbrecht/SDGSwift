@@ -19,6 +19,7 @@ import SDGLogic
 import SDGCollections
 import SDGCMarkShims
 
+/// A Markdown node in documentation.
 public class MarkdownSyntax : ExtendedSyntax {
 
     // MARK: - Initialization

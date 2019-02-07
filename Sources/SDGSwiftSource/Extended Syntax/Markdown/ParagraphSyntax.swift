@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A paragraph in documentation.
 public class ParagraphSyntax : MarkdownSyntax {
 
     // MARK: - Properties

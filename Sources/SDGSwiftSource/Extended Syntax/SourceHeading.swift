@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A heading in source code.
 public class SourceHeadingSyntax : ExtendedSyntax {
 
     internal init(mark: String, heading: String) {

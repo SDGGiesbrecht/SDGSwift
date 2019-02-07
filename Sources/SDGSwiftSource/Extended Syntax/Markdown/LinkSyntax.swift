@@ -16,6 +16,7 @@ import SDGCollections
 
 import SDGCMarkShims
 
+/// A link in documentation.
 public class LinkSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {

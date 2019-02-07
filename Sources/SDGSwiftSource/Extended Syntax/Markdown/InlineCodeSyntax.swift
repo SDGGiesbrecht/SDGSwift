@@ -14,6 +14,7 @@
 
 import SDGCMarkShims
 
+/// Inline code use in documentation.
 public class InlineCodeSyntax : MarkdownSyntax {
 
     // MARK: - Initialization

@@ -18,6 +18,7 @@ import SDGCMarkShims
 
 private var documentationCache: [String: DocumentationSyntax] = [:]
 
+/// The content of a documentation comment.
 public class DocumentationSyntax : MarkdownSyntax {
 
     internal static func parse(source: String) -> DocumentationSyntax {

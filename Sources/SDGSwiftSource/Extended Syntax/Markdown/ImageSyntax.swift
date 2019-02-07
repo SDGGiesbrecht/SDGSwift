@@ -16,6 +16,7 @@ import SDGCollections
 
 import SDGCMarkShims
 
+/// An image insertion in documentation.
 public class ImageSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {

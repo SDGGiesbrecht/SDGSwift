@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGLocalization
 
+/// The content of a comment.
 public class CommentContentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization

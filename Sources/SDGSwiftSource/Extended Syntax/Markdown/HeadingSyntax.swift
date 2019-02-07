@@ -16,6 +16,7 @@ import SDGCollections
 import SDGText
 import SDGCMarkShims
 
+/// A documentation heading.
 public class HeadingSyntax : MarkdownSyntax {
 
     // MARK: - Initialization
