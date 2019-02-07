@@ -17,6 +17,7 @@ import SDGCollections
 
 import SDGSwiftPackageManager
 
+/// A Swift module.
 public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
 
     /// Creates a module API instance by parsing the specified target’s sources.
@@ -56,6 +57,8 @@ public final class ModuleAPI : _APIElementBase, NonOverloadableAPIElement, Sorta
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public let declaration: FunctionCallExprSyntax
 
     public let name: TokenSyntax

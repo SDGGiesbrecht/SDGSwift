@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 
+/// A function or method.
 public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
@@ -30,6 +31,8 @@ public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDe
 
     internal typealias Declaration = FunctionDeclSyntax
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public internal(set) var declaration: FunctionDeclSyntax
     public let name: FunctionDeclSyntax
 }

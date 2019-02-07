@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A variable or property.
 public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
@@ -25,6 +26,8 @@ public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDe
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public let declaration: VariableDeclSyntax
     public let name: VariableDeclSyntax
 }

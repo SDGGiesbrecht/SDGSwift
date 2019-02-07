@@ -14,6 +14,7 @@
 
 import SDGCollections
 
+/// A protocol.
 public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
@@ -31,6 +32,8 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, NonOverloa
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public internal(set) var declaration: ProtocolDeclSyntax
     public let name: ProtocolDeclSyntax
 }

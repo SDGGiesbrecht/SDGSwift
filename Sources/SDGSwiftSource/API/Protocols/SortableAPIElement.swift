@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// An API element type whose instances can be sorted.
 public protocol SortableAPIElement : APIElementProtocol, Comparable {}
 
 extension SortableAPIElement {

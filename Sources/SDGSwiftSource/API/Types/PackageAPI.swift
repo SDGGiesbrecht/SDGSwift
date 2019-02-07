@@ -21,6 +21,7 @@ import SDGSwiftLocalizations
 import SDGSwift
 import SDGSwiftPackageManager
 
+/// A package.
 public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
@@ -124,6 +125,8 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public let declaration: FunctionCallExprSyntax
 
     public let name: TokenSyntax

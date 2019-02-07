@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 
+/// An extension.
 public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, UndeclaredAPIElementProtocol {
 
     // MARK: - Initialization
@@ -26,19 +27,31 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
 
     // MARK: - Combining
 
+    /// Returns whether or not the extension extends the specified type.
+    ///
+    /// - Parameters:
+    ///     - type: The type to check.
     public func isExtension(of type: TypeAPI) -> Bool {
         return self.type.source() == type.genericName.source()
     }
-    public func nested(in type: TypeAPI) -> ExtensionAPI? {
+    internal func nested(in type: TypeAPI) -> ExtensionAPI? {
         guard let memberType = self.type as? MemberTypeIdentifierSyntax,
             memberType.rootType().source() == type.genericName.source() else {
             return nil
         }
         return ExtensionAPI(type: memberType.strippingRootType(), constraints: constraints, children: children)
     }
+    /// Returns whether or not the extension extends the specified protocol.
+    ///
+    /// - Parameters:
+    ///     - protocol: The protocol to check.
     public func isExtension(of protocol: ProtocolAPI) -> Bool {
         return self.type.source() == `protocol`.name.source()
     }
+    /// Returns whether or not the extension extends the same type as the other specified extension.
+    ///
+    /// - Parameters:
+    ///     - other: The other extension.
     public func extendsSameType(as other: ExtensionAPI) -> Bool {
         return type.source() == other.type.source()
     }
