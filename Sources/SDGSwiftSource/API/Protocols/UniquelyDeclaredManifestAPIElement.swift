@@ -22,7 +22,7 @@ extension UniquelyDeclaredManifestAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public func shallowIdentifierList() -> Set<String> {
+    public func _shallowIdentifierList() -> Set<String> {
         return []
     }
 }

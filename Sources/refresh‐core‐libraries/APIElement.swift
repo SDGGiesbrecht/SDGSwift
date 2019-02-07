@@ -105,7 +105,7 @@ extension APIElement {
         var result = " : "
         while ¬conformances.isEmpty {
             let next = conformances.removeFirst()
-            result.append(next.summaryName)
+            result.append(next._summaryName)
             if ¬conformances.isEmpty {
                 result.append(", ")
             }

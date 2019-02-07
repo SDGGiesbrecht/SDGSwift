@@ -16,20 +16,57 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public protocol APIElementProtocol : class {
+public protocol APIElementProtocol : AnyObject {
+
+    // #documentation(SDGSwiftSource.APIElement.documentation)
+    /// The element’s documentation.
     var documentation: DocumentationSyntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.declaration)
+    /// The element’s declaration.
     var possibleDeclaration: Syntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.constraints)
+    /// Any generic constraints the element has.
     var constraints: GenericWhereClauseSyntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.compilationConditions)
+    /// The compilation conditions under which the element is available.
     var compilationConditions: Syntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.name)
+    /// The name of the element.
     var genericName: Syntax { get }
+
+    // #documentation(SDGSwiftSource.APIElement.name)
+    /// The name of the element.
     var overloads: [APIElement] { get }
+
+    // #documentation(SDGSwiftSource.APIElement.children)
+    /// Any children the element has.
+    ///
+    /// For example, types may have methods and properties as children.
     var children: [APIElement] { get }
-    func shallowIdentifierList() -> Set<String>
+
+    func _shallowIdentifierList() -> Set<String>
+    // #documentation(SDGSwiftSource.APIElement.identifierList)
+    /// A list of all identifiers made available by the element.
     func identifierList() -> Set<String>
-    var summaryName: String { get }
+
+    var _summaryName: String { get }
+
+    // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+    /// Whether or not the element is a protocol requirement.
     var isProtocolRequirement: Bool { get }
+
+    // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+    /// Whether or not the element has a default implementation.
     var hasDefaultImplementation: Bool { get }
-    func summarySubentries() -> [String]
+
+    func _summarySubentries() -> [String]
+
+    // #documentation(SDGSwiftSource.APIElement.summary)
+    /// A summary of the element’s API.
     func summary() -> [String]
 }
 
@@ -38,12 +75,12 @@ extension APIElementProtocol {
     // MARK: - Identifiers
 
     public func identifierList() -> Set<String> {
-        return children.reduce(into: shallowIdentifierList()) { $0 ∪= $1.identifierList() }
+        return children.reduce(into: _shallowIdentifierList()) { $0 ∪= $1.identifierList() }
     }
 
     // MARK: - Summary
 
-    public var summaryName: String {
+    public var _summaryName: String {
         return genericName.source()
     }
 
@@ -59,7 +96,7 @@ extension APIElementProtocol {
         }
     }
 
-    public func summarySubentries() -> [String] {
+    public func _summarySubentries() -> [String] {
         var result: [String] = []
         for overload in overloads {
             if let declaration = overload.declaration {
@@ -82,13 +119,13 @@ extension APIElementProtocol {
                 entry += "(required) "
             }
         }
-        entry += summaryName
+        entry += _summaryName
         if let declaration = possibleDeclaration?.source() {
             entry += " • " + declaration
         }
         appendConstraints(to: &entry)
         appendCompilationConditions(to: &entry)
-        return [entry] + summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
+        return [entry] + _summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }
 
     // MARK: - Children

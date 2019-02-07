@@ -69,7 +69,7 @@ public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol,
 
     // MARK: - APIElementProtocol
 
-    public var summaryName: String {
+    public var _summaryName: String {
         return "(" + genericName.source() + ")"
     }
 }

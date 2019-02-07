@@ -198,31 +198,43 @@ public enum APIElement : Comparable, Hashable {
         }
     }
 
+    // @documentation(SDGSwiftSource.APIElement.declaration)
     /// The element’s declaration.
     public var declaration: Syntax? {
         return elementProtocol.possibleDeclaration
     }
 
+    // @documentation(SDGSwiftSource.APIElement.constraints)
     /// Any generic constraints the element has.
     public var constraints: GenericWhereClauseSyntax? {
         return elementProtocol.constraints
     }
 
+    // @documentation(SDGSwiftSource.APIElement.documentation)
     /// The element’s documentation.
     public var documentation: DocumentationSyntax? {
         return elementProtocol.documentation
     }
 
+    // @documentation(SDGSwiftSource.APIElement.compilationConditions)
     /// The compilation conditions under which the element is available.
     public var compilationConditions: Syntax? {
         return elementProtocol.compilationConditions
     }
 
+    // @documentation(SDGSwiftSource.APIElement.name)
     /// The name of the element.
     public var name: Syntax {
         return elementProtocol.genericName
     }
 
+    // @documentation(SDGSwiftSource.APIElement.overloads)
+    /// The element’s overloads.
+    public var overloads: [APIElement] {
+        return elementProtocol.overloads
+    }
+
+    // @documentation(SDGSwiftSource.APIElement.children)
     /// Any children the element has.
     ///
     /// For example, types may have methods and properties as children.
@@ -305,6 +317,18 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.conformances
     }
 
+    // @documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+    /// Whether or not the element is a protocol requirement.
+    public var isProtocolRequirement: Bool {
+        return elementProtocol.isProtocolRequirement
+    }
+
+    // @documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+    /// Whether or not the element has a default implementation.
+    public var hasDefaultImplementation: Bool {
+        return elementProtocol.hasDefaultImplementation
+    }
+
     private func nestedList<T>(of type: T.Type) -> [T] {
         var result: [T] = []
         if let element = elementProtocol as? T {
@@ -316,11 +340,13 @@ public enum APIElement : Comparable, Hashable {
         return result
     }
 
+    // @documentation(SDGSwiftSource.APIElement.summary)
     /// A summary of the element’s API.
     public func summary() -> [String] {
         return elementProtocol.summary()
     }
 
+    // @documentation(SDGSwiftSource.APIElement.identifierList)
     /// A list of all identifiers made available by the element.
     public func identifierList() -> Set<String> {
         return elementProtocol.identifierList()
