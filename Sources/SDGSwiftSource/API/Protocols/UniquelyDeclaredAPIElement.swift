@@ -19,6 +19,8 @@ internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
     // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     var declaration: Declaration { get }
+    // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     var name: Name { get }
 }
 

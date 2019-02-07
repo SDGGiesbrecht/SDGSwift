@@ -242,76 +242,91 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.children
     }
 
+    // @documentation(SDGSwiftSource.APIElement.libraries)
     /// The children which are libraries.
     public var libraries: AnyBidirectionalCollection<LibraryAPI> {
         return elementProtocol.libraries
     }
 
+    // @documentation(SDGSwiftSource.APIElement.modules)
     /// The children which are modules.
     public var modules: AnyBidirectionalCollection<ModuleAPI> {
         return elementProtocol.modules
     }
 
+    // @documentation(SDGSwiftSource.APIElement.types)
     /// The children which are types.
     public var types: AnyBidirectionalCollection<TypeAPI> {
         return elementProtocol.types
     }
 
+    // @documentation(SDGSwiftSource.APIElement.extensions)
     /// The children which are extensions.
     public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
         return elementProtocol.extensions
     }
 
+    // @documentation(SDGSwiftSource.APIElement.protocols)
     /// The children which are protocols.
     public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
         return elementProtocol.protocols
     }
 
+    // @documentation(SDGSwiftSource.APIElement.cases)
     /// The children which are cases.
     public var cases: AnyBidirectionalCollection<CaseAPI> {
         return elementProtocol.cases
     }
 
+    // @documentation(SDGSwiftSource.APIElement.properties)
     /// The children which are type properties.
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.typeProperties
     }
 
+    // @documentation(SDGSwiftSource.APIElement.typeMethods)
     /// The children which are type methods.
     public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.typeMethods
     }
 
+    // @documentation(SDGSwiftSource.APIElement.initializers)
     /// The children which are initializers.
     public var initializers: AnyBidirectionalCollection<InitializerAPI> {
         return elementProtocol.initializers
     }
 
+    // @documentation(SDGSwiftSource.APIElement.instanceProperties)
     /// The children which are instance properties or global variables.
     public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.instanceProperties
     }
 
+    // @documentation(SDGSwiftSource.APIElement.subscripts)
     /// The children which are subscripts.
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return elementProtocol.subscripts
     }
 
+    // @documentation(SDGSwiftSource.APIElement.instanceMethods)
     /// The children which are instance methods or global functions.
     public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.instanceMethods
     }
 
+    // @documentation(SDGSwiftSource.APIElement.operators)
     /// The children which are operators.
     public var operators: AnyBidirectionalCollection<OperatorAPI> {
         return elementProtocol.operators
     }
 
+    // @documentation(SDGSwiftSource.APIElement.precedenceGroups)
     /// The children which are operator precedence groups.
     public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
         return elementProtocol.precedenceGroups
     }
 
+    // @documentation(SDGSwiftSource.APIElement.conformances)
     /// The children which are conformances or superclasses.
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return elementProtocol.conformances

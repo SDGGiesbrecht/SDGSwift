@@ -34,6 +34,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     // MARK: - Properties
 
     internal let isSwift: Bool?
+    /// The unparsed source code of the fragment.
     public let source: ExtendedTokenSyntax
 
     internal let context: String

@@ -32,8 +32,10 @@ public class FontSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The opening delimiter.
     public let openingDelimiter: ExtendedTokenSyntax
 
+    /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
 
     // MARK: - ExtendedSyntax

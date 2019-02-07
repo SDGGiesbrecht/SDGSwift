@@ -15,7 +15,7 @@
 import SDGControlFlow
 
 /// An extension.
-public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, UndeclaredAPIElementProtocol {
+public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, _UndeclaredAPIElementProtocol {
 
     // MARK: - Initialization
 

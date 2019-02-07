@@ -16,7 +16,7 @@ import SDGLogic
 
 /// A declaration which can be either a type or instance member.
 public protocol Member : Syntax {
-    // The declaration modifiers.
+    /// The declaration modifiers.
     var modifiers: ModifierListSyntax? { get }
 }
 

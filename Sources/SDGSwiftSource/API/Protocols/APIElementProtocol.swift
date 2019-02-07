@@ -134,6 +134,7 @@ extension APIElementProtocol {
         return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
     }
 
+    // #documentation(SDGSwiftSource.APIElement.libraries)
     public var libraries: AnyBidirectionalCollection<LibraryAPI> {
         return filtered { (element) -> LibraryAPI? in
             switch element {
@@ -145,6 +146,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.modules)
     public var modules: AnyBidirectionalCollection<ModuleAPI> {
         return filtered { (element) -> ModuleAPI? in
             switch element {
@@ -156,6 +158,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.types)
     public var types: AnyBidirectionalCollection<TypeAPI> {
         return filtered { (element) -> TypeAPI? in
             switch element {
@@ -167,6 +170,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.extensions)
     public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
         return filtered { (element) -> ExtensionAPI? in
             switch element {
@@ -178,6 +182,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.protocols)
     public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
         return filtered { (element) -> ProtocolAPI? in
             switch element {
@@ -189,6 +194,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.cases)
     public var cases: AnyBidirectionalCollection<CaseAPI> {
         return filtered { (element) -> CaseAPI? in
             switch element {
@@ -200,6 +206,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.typeProperties)
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return filtered { (element) -> VariableAPI? in
             switch element {
@@ -215,6 +222,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.typeMethods)
     public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
         return filtered { (element) -> FunctionAPI? in
             switch element {
@@ -230,6 +238,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.initializers)
     public var initializers: AnyBidirectionalCollection<InitializerAPI> {
         return filtered { (element) -> InitializerAPI? in
             switch element {
@@ -241,6 +250,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.instanceProperties)
     public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return filtered { (element) -> VariableAPI? in
             switch element {
@@ -256,6 +266,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.subscripts)
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return filtered { (element) -> SubscriptAPI? in
             switch element {
@@ -267,6 +278,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.instanceMethods)
     public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return filtered { (element) -> FunctionAPI? in
             switch element {
@@ -282,6 +294,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.operators)
     public var operators: AnyBidirectionalCollection<OperatorAPI> {
         return filtered { (element) -> OperatorAPI? in
             switch element {
@@ -293,6 +306,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.precedenceGroups)
     public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
         return filtered { (element) -> PrecedenceAPI? in
             switch element {
@@ -304,6 +318,7 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.conformances)
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return filtered { (element) -> ConformanceAPI? in
             switch element {
@@ -363,11 +378,11 @@ extension APIElementProtocol {
         }
     }
 
-    private func overload<E>(for element: E, existsInParents parents: [APIElementProtocol]) -> Bool where E : OverloadableAPIElement {
+    private func overload<E>(for element: E, existsInParents parents: [APIElementProtocol]) -> Bool where E : _OverloadableAPIElement {
         return parents.contains(where: { $0.hasChildOverload(for: element) })
     }
 
-    private func hasChildOverload<E>(for element: E) -> Bool where E : OverloadableAPIElement {
+    private func hasChildOverload<E>(for element: E) -> Bool where E : _OverloadableAPIElement {
         return children.contains(where: { child in
             if let sameType = child.elementProtocol as? E {
                 return sameType.genericOverloadPattern().source() == element.genericOverloadPattern().source()

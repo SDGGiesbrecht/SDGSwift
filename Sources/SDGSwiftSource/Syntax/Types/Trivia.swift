@@ -16,12 +16,17 @@ extension Trivia {
 
     // MARK: - Properties
 
+    /// The source code of the trivia.
     public func source() -> String {
         return String(map({ $0.text }).joined())
     }
 
     // MARK: - Location
 
+    /// Returns the lower bound of the trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func lowerBound(in context: TriviaContext) -> String.ScalarView.Index {
         if context.leading {
             return context.token.lowerTriviaBound(in: context.tokenContext)
@@ -30,6 +35,10 @@ extension Trivia {
         }
     }
 
+    /// Returns the upper bound of the trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func upperBound(in context: TriviaContext) -> String.ScalarView.Index {
         if context.leading {
             return context.token.lowerSyntaxBound(in: context.tokenContext)
@@ -38,16 +47,25 @@ extension Trivia {
         }
     }
 
+    /// Returns the range of the trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func range(in context: TriviaContext) -> Range<String.ScalarView.Index> {
         return lowerBound(in: context) ..< upperBound(in: context)
     }
 
     // MARK: - Syntax Tree
 
+    /// Returns the token to which the trivia is attached.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func parentToken(context: TriviaContext) -> TokenSyntax? {
         return context.token
     }
 
+    /// Returns the last piece of trivia.
     public func last() -> TriviaPiece? {
         var result: TriviaPiece?
         for element in self {
@@ -56,10 +74,18 @@ extension Trivia {
         return result
     }
 
+    /// Returns the trivia group immediately preceding this one.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func previousTrivia(context: TriviaContext) -> Trivia? {
         return context.token.previousToken()?.trailingTrivia
     }
 
+    /// Returns the trivia group immediately following this one.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia’s context.
     public func nextTrivia(context: TriviaContext) -> Trivia? {
         return context.token.nextToken()?.leadingTrivia
     }

@@ -13,7 +13,7 @@
  */
 
 /// A protocol conformance or superclass inheritance.
-public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, UndeclaredAPIElementProtocol {
+public final class ConformanceAPI : _UndeclaredAPIElementBase, SortableAPIElement, _UndeclaredAPIElementProtocol {
     /// A weak reference to the protocol or superclass.
     public internal(set) var reference: ConformanceReference?
 }

@@ -36,6 +36,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     // MARK: - Syntax Tree
 
+    // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
     public func previousToken() -> ExtendedTokenSyntax? {
         func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
             var result: ExtendedSyntax?
@@ -56,6 +57,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
     }
 
+    // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
     public func nextToken() -> ExtendedTokenSyntax? {
         func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
             for sibling in relationship.parent.children

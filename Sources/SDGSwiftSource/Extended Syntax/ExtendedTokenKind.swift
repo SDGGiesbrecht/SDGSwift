@@ -111,6 +111,7 @@ public enum ExtendedTokenKind {
 
     // MARK: - Properties
 
+    // #documentation(SDGSwiftSource.TokenSyntax.textFreedom)
     public var textFreedom: TextFreedom {
         switch self {
         case .string, .whitespace, .commentText, .documentationText:

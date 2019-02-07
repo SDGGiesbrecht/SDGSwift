@@ -16,7 +16,7 @@ import SDGLogic
 import SDGCollections
 
 /// An initializer.
-public final class InitializerAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class InitializerAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
@@ -34,5 +34,7 @@ public final class InitializerAPI : _APIElementBase, SortableAPIElement, Uniquel
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     public internal(set) var declaration: InitializerDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: InitializerDeclSyntax
 }

@@ -27,6 +27,7 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
 
     // MARK: - Properties
 
+    /// The documentation content.
     public var documentation: DocumentationSyntax {
         return internalSyntax as! DocumentationSyntax
     }

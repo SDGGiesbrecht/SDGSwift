@@ -22,7 +22,7 @@ import SDGSwiftPackageManager
 import SDGSwiftLocalizations
 
 /// A library product of a package.
-public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
+public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
@@ -59,5 +59,7 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     public let declaration: FunctionCallExprSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: TokenSyntax
 }

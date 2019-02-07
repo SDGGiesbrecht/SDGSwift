@@ -67,12 +67,15 @@ public class DocumentationSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The description paragraph.
     public private(set) var descriptionSection: ParagraphSyntax?
 
+    /// The discussion section.
     public private(set) var discussionEntries: [ExtendedSyntax] = []
 
     private var parameters: ParametersCalloutSyntax?
     private var separateParameterEntries: [CalloutSyntax] = []
+    /// The parameter documentation.
     public var normalizedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] {
         if let parameters = self.parameters {
             return parameters.list
@@ -83,7 +86,9 @@ public class DocumentationSyntax : MarkdownSyntax {
         }
     }
 
+    /// The “Throws” callout.
     public private(set) var throwsCallout: CalloutSyntax?
 
+    /// The “Returns’ callout.
     public private(set) var returnsCallout: CalloutSyntax?
 }

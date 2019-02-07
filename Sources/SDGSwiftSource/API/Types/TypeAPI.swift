@@ -19,7 +19,7 @@ import SDGCollections
 /// A type.
 ///
 /// A type may be a structure, class, enumeration, type alias or associated type.
-public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, OverloadableAPIElement, SortableAPIElement {
+public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _OverloadableAPIElement, SortableAPIElement {
 
     // MARK: - Initialization
 

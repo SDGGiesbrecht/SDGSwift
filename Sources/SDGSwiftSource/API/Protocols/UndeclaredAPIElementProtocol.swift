@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UndeclaredAPIElementProtocol : NonOverloadableAPIElement, SortableAPIElement {
+internal protocol _UndeclaredAPIElementProtocol : _NonOverloadableAPIElement, SortableAPIElement {
     var type: TypeSyntax { get }
 }
 
-extension UndeclaredAPIElementProtocol {
+extension _UndeclaredAPIElementProtocol {
 
     public var possibleDeclaration: Syntax? {
         return nil

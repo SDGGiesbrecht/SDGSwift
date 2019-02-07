@@ -101,6 +101,7 @@ extension Syntax {
 
     // MARK: - Syntax Tree
 
+    // @documentation(SDGSwiftSource.Syntax.ancestors())
     /// All the node’s ancestors in order from its immediate parent to the root node.
     public func ancestors() -> AnySequence<Syntax> {
         if let parent = self.parent {
@@ -130,6 +131,7 @@ extension Syntax {
         return tokens
     }
 
+    // @documentation(SDGSwiftSource.Syntax.firstToken())
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax,
@@ -139,6 +141,7 @@ extension Syntax {
         return children.lazy.compactMap({ $0.firstToken() }).first
     }
 
+    // @documentation(SDGSwiftSource.Syntax.lastToken())
     /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax,

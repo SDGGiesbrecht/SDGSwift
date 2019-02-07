@@ -35,10 +35,13 @@ public class InlineCodeSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The opening delimiter.
     public let openingDelimiter: ExtendedTokenSyntax
 
+    /// The contents of the inline code.
     public let source: CodeFragmentSyntax
 
+    /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
 
     // MARK: - ExtendedSyntax

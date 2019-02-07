@@ -13,7 +13,7 @@
  */
 
 /// A variable or property.
-public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
@@ -29,5 +29,7 @@ public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDe
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     public let declaration: VariableDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: VariableDeclSyntax
 }

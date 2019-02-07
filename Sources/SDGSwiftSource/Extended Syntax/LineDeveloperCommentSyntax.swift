@@ -27,6 +27,7 @@ public class LineDeveloperCommentSyntax : LineCommentSyntax {
 
     // MARK: - Properties
 
+    /// The content of the comment.
     public var content: CommentContentSyntax {
         return _content as! CommentContentSyntax
     }

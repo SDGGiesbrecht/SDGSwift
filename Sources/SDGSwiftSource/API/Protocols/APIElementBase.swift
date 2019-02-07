@@ -99,7 +99,7 @@ public class _APIElementBase {
 
     // MARK: - Overloads
 
-    internal static func groupIntoOverloads<E>(_ elements: [E], convert: (E) -> APIElement) -> [E] where E : OverloadableAPIElement {
+    internal static func groupIntoOverloads<E>(_ elements: [E], convert: (E) -> APIElement) -> [E] where E : _OverloadableAPIElement {
         var grouped: [String: [E]] = [:]
 
         for element in elements {

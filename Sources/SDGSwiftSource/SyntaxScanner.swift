@@ -22,6 +22,9 @@ open class SyntaxScanner {
 
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
     /// Scans the node and its children.
+    ///
+    /// - Parameters:
+    ///     - node: The node to scan.
     public func scan(_ node: SourceFileSyntax) throws {
         try scan(node, context: SyntaxContext(fragmentContext: node.source(), fragmentOffset: 0, parentContext: nil))
     }

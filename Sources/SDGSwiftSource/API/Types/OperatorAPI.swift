@@ -13,13 +13,15 @@
  */
 
 /// An operator.
-public final class OperatorAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class OperatorAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     public internal(set) var declaration: OperatorDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: OperatorDeclSyntax
 
     // MARK: - UniquelyDeclaredAPIElement

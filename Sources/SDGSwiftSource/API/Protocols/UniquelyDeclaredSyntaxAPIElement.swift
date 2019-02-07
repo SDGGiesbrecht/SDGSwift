@@ -12,9 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UniquelyDeclaredSyntaxAPIElement : UniquelyDeclaredAPIElement where Declaration : APIDeclaration, Name == Declaration.Name {}
+internal protocol _UniquelyDeclaredSyntaxAPIElement : UniquelyDeclaredAPIElement where Declaration : APIDeclaration, Name == Declaration.Name {}
 
-extension UniquelyDeclaredSyntaxAPIElement {
+extension _UniquelyDeclaredSyntaxAPIElement {
 
     internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
         let normalized = declaration.normalizedAPIDeclaration()
@@ -28,7 +28,7 @@ extension UniquelyDeclaredSyntaxAPIElement {
     }
 }
 
-extension UniquelyDeclaredSyntaxAPIElement where Declaration : Constrained, Self : _APIElementBase {
+extension _UniquelyDeclaredSyntaxAPIElement where Declaration : Constrained, Self : _APIElementBase {
 
     internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
         var normalized = declaration.normalizedAPIDeclaration()

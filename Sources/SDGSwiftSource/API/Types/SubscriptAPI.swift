@@ -16,7 +16,7 @@ import SDGLogic
 import SDGCollections
 
 /// A subscript.
-public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - Initialization
 
@@ -34,5 +34,7 @@ public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyD
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     public internal(set) var declaration: SubscriptDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: SubscriptDeclSyntax
 }

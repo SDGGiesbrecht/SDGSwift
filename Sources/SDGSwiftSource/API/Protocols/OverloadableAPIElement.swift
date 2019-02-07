@@ -12,14 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol OverloadableAPIElement : SortableAPIElement {
+internal protocol _OverloadableAPIElement : SortableAPIElement {
     func genericOverloadPattern() -> Syntax
     var isProtocolRequirement: Bool { get }
     var hasDefaultImplementation: Bool { get set }
     var _overloads: [APIElement] { get set }
 }
 
-extension OverloadableAPIElement {
+extension _OverloadableAPIElement {
 
     // MARK: - Overloads
 

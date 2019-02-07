@@ -53,14 +53,19 @@ public class LinkSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The opening delimiter.
     public let openingDelimiter: ExtendedTokenSyntax
 
+    /// The contents of the link text.
     public private(set) var contents: [ExtendedSyntax] = []
 
+    /// The delimiter between the text and URL of the link.
     public let medialDelimiter: ExtendedTokenSyntax
 
+    /// The URL.
     public let url: ExtendedTokenSyntax
 
+    /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
 
     // MARK: - ExtendedSyntax
