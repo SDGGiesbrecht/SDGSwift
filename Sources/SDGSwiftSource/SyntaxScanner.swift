@@ -31,7 +31,7 @@ open class SyntaxScanner {
             try scan(token.leadingTrivia, context: leadingTriviaContext)
             if shouldExtend(token),
                 let extended = token.extended {
-                let newContext = ExtendedSyntaxContext.token(token, context: context)
+                let newContext = ExtendedSyntaxContext._token(token, context: context)
                 if visit(extended, context: newContext) {
                     for child in extended.children {
                         try scan(child, context: newContext)
@@ -63,10 +63,10 @@ open class SyntaxScanner {
                     try scan(node, context: newContext)
                     offset += node.source().scalars.count
                 case .extendedSyntax(let node):
-                    try scan(node, context: .fragment(code, context: context, offset: offset))
+                    try scan(node, context: ._fragment(code, context: context, offset: offset))
                     offset += node.text.scalars.count
                 case .trivia(let node, let siblings, let index):
-                    try scan(node, siblings: siblings, index: index, context: .fragment(code, context: context, offset: offset))
+                    try scan(node, siblings: siblings, index: index, context: ._fragment(code, context: context, offset: offset))
                     offset += node.text.scalars.count
                 }
             }
@@ -82,7 +82,7 @@ open class SyntaxScanner {
     private func scan(_ trivia: Trivia, context: TriviaContext) throws {
         if visit(trivia, context: context) {
             for index in trivia.indices {
-                let newContext = TriviaPieceContext.trivia(trivia, index: index, parent: context)
+                let newContext = TriviaPieceContext._trivia(trivia, index: index, parent: context)
                 let piece = trivia[index]
                 try scan(piece, siblings: trivia, index: index, context: newContext)
             }
@@ -91,7 +91,7 @@ open class SyntaxScanner {
 
     private func scan(_ piece: TriviaPiece, siblings: Trivia, index: Trivia.Index, context: TriviaPieceContext) throws {
         if visit(piece, context: context) {
-            let newContext = ExtendedSyntaxContext.trivia(piece, context: context)
+            let newContext = ExtendedSyntaxContext._trivia(piece, context: context)
             try scan(piece.syntax(siblings: siblings, index: index), context: newContext)
         }
     }

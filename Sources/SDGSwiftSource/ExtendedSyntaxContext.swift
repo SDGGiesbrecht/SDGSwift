@@ -12,23 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// The context of an extended syntax node.
 public indirect enum ExtendedSyntaxContext {
 
     // MARK: - Cases
 
-    case trivia(TriviaPiece, context: TriviaPieceContext)
-    case token(TokenSyntax, context: SyntaxContext)
-    case fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
+    case _trivia(TriviaPiece, context: TriviaPieceContext)
+    case _token(TokenSyntax, context: SyntaxContext)
+    case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
 
     // MARK: - Properties
 
     internal var source: String {
         switch self {
-        case .trivia(_, context: let context):
+        case ._trivia(_, context: let context):
             return context.source
-        case .token(_, context: let context):
+        case ._token(_, context: let context):
             return context.fragmentContext
-        case .fragment(_, context: let context, offset: _):
+        case ._fragment(_, context: let context, offset: _):
             return context.source
         }
     }

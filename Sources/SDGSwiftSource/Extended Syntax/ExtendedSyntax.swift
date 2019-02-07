@@ -80,13 +80,13 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, context: let triviaContext):
+        case ._trivia(let trivia, context: let triviaContext):
             let sourceStart = trivia.lowerBound(in: triviaContext)
             return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
-        case .token(let token, context: let tokenContext):
+        case ._token(let token, context: let tokenContext):
             let sourceStart = token.lowerSyntaxBound(in: tokenContext)
             return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
@@ -94,13 +94,13 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, context: let triviaContext):
+        case ._trivia(let trivia, context: let triviaContext):
             let sourceStart = trivia.lowerBound(in: triviaContext)
             return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
-        case .token(let token, context: let tokenContext):
+        case ._token(let token, context: let tokenContext):
             let sourceStart = token.lowerSyntaxBound(in: tokenContext)
             return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset + text.scalars.count)
         }

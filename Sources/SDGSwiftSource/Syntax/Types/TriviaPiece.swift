@@ -28,14 +28,14 @@ extension TriviaPiece {
 
     public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, index: let index, parent: let parent):
+        case ._trivia(let trivia, index: let index, parent: let parent):
             var location = trivia.lowerBound(in: parent)
             let source = parent.tokenContext.fragmentContext
             for predecessor in trivia.indices where predecessor < index {
                 location = source.scalars.index(location, offsetBy: trivia[predecessor].text.scalars.count)
             }
             return location
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
@@ -43,10 +43,10 @@ extension TriviaPiece {
 
     private func upperBound(from lowerBound: String.ScalarView.Index, in context: TriviaPieceContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(_, index: _, parent: let parent):
+        case ._trivia(_, index: _, parent: let parent):
             let source = parent.tokenContext.fragmentContext
             return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-        case .fragment(_, context: let codeContext, offset: _):
+        case ._fragment(_, context: let codeContext, offset: _):
             return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
         }
     }
@@ -63,9 +63,9 @@ extension TriviaPiece {
 
     private func parentRelationship(context: TriviaPieceContext) -> (parent: Trivia, index: Trivia.Index)? {
         switch context {
-        case .trivia(let trivia, index: let index, parent: _):
+        case ._trivia(let trivia, index: let index, parent: _):
             return (parent: trivia, index: index)
-        case .fragment:
+        case ._fragment:
             return nil
         }
     }

@@ -26,6 +26,7 @@ extension Syntax {
 
     // MARK: - Properties
 
+    /// Returns the source code of this syntax node.
     public func source() -> String {
         var result = ""
         write(to: &result)
@@ -50,32 +51,57 @@ extension Syntax {
         return parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
     }
 
+    /// Returns the lower bound of the leading trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
         return index(in: context, for: position)
     }
 
+    /// Returns the lower bound of the node excluding leading trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
         return index(in: context, for: positionAfterSkippingLeadingTrivia)
     }
 
+    /// Returns the upper bound of the node excluding trailing trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
         return index(in: context, for: endPosition)
     }
 
+    /// Returns the upper bound of the trailing trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
         return index(in: context, for: endPositionAfterTrailingTrivia)
     }
 
+    /// Returns the range of the node excluding trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
         return lowerSyntaxBound(in: context) ..< upperSyntaxBound(in: context)
     }
 
+    /// Returns the range of the node including trivia.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
         return lowerTriviaBound(in: context) ..< upperTriviaBound(in: context)
     }
 
     // MARK: - Syntax Tree
 
+    /// All the node’s ancestors in order from its immediate parent to the root node.
     public func ancestors() -> AnySequence<Syntax> {
         if let parent = self.parent {
             return AnySequence(sequence(first: parent, next: { $0.parent }))
@@ -104,6 +130,7 @@ extension Syntax {
         return tokens
     }
 
+    /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax,
             token.isPresent {
@@ -112,6 +139,7 @@ extension Syntax {
         return children.lazy.compactMap({ $0.firstToken() }).first
     }
 
+    /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
         if let token = self as? TokenSyntax,
             token.isPresent {

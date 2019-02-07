@@ -12,20 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// The context of a trivia piece.
 public indirect enum TriviaPieceContext {
 
     // MARK: - Cases
 
-    case trivia(Trivia, index: Trivia.Index, parent: TriviaContext)
-    case fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
+    case _trivia(Trivia, index: Trivia.Index, parent: TriviaContext)
+    case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
 
     // MARK: - Properties
 
     internal var source: String {
         switch self {
-        case .trivia(_, index: _, parent: let parent):
+        case ._trivia(_, index: _, parent: let parent):
             return parent.tokenContext.fragmentContext
-        case .fragment(_, context: let context, offset: _):
+        case ._fragment(_, context: let context, offset: _):
             return context.source
         }
     }
