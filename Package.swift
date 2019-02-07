@@ -46,9 +46,7 @@ let package = Package(
 
         // @documentation(SDGSwiftSource)
         /// Utilities for working with Swift source code.
-        // SDGSwiftSource is NOT YET READY FOR EXTERNAL USE. It is not a documented part of the package API, and the semantic versioning of releases does not take changes to it into account.
-        // #workaround(Until SDGSwiftSource is ready to publish.)
-        .library(name: /* NOT FOR EXTERNAL USE YET */"_SDGSwiftSource", targets: ["SDGSwiftSource"]),
+        .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
         // @documentation(SDGXcode)
         /// Xcode‐related utilities for working with Swift packages.

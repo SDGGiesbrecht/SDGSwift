@@ -17,6 +17,7 @@ import SDGLogic
 import SDGMathematics
 import SDGLocalization
 
+/// An element of API.
 public enum APIElement : Comparable, Hashable {
 
     // MARK: - Static Methods
@@ -85,19 +86,48 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Cases
 
+    /// A Swift package.
     case package(PackageAPI)
+
+    /// A library product of a package.
     case library(LibraryAPI)
+
+    /// A Swift module.
     case module(ModuleAPI)
+
+    /// A type.
+    ///
+    /// A type may be a structure, class, enumeration, type alias or associated type.
     case type(TypeAPI)
+
+    /// A protocol.
     case `protocol`(ProtocolAPI)
+
+    /// An extension.
     case `extension`(ExtensionAPI)
+
+    /// An enumeration case.
     case `case`(CaseAPI)
+
+    /// An initializer.
     case initializer(InitializerAPI)
+
+    /// A variable or property.
     case variable(VariableAPI)
+
+    /// A subscript.
     case `subscript`(SubscriptAPI)
+
+    /// A function or method.
     case function(FunctionAPI)
+
+    /// An operator.
     case `operator`(OperatorAPI)
+
+    /// An operator precedence group.
     case precedence(PrecedenceAPI)
+
+    /// A conformance or superclass.
     case conformance(ConformanceAPI)
 
     // MARK: - Methods
@@ -168,86 +198,109 @@ public enum APIElement : Comparable, Hashable {
         }
     }
 
+    /// The element’s declaration.
     public var declaration: Syntax? {
         return elementProtocol.possibleDeclaration
     }
 
+    /// Any generic constraints the element has.
     public var constraints: GenericWhereClauseSyntax? {
         return elementProtocol.constraints
     }
 
+    /// The element’s documentation.
     public var documentation: DocumentationSyntax? {
         return elementProtocol.documentation
     }
 
+    /// The compilation conditions under which the element is available.
     public var compilationConditions: Syntax? {
         return elementProtocol.compilationConditions
     }
 
+    /// The name of the element.
     public var name: Syntax {
         return elementProtocol.genericName
     }
 
+    /// Any children the element has.
+    ///
+    /// For example, types may have methods and properties as children.
     public var children: [APIElement] {
         return elementProtocol.children
     }
 
+    /// The children which are libraries.
     public var libraries: AnyBidirectionalCollection<LibraryAPI> {
         return elementProtocol.libraries
     }
 
+    /// The children which are modules.
     public var modules: AnyBidirectionalCollection<ModuleAPI> {
         return elementProtocol.modules
     }
 
+    /// The children which are types.
     public var types: AnyBidirectionalCollection<TypeAPI> {
         return elementProtocol.types
     }
 
+    /// The children which are extensions.
     public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
         return elementProtocol.extensions
     }
 
+    /// The children which are protocols.
     public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
         return elementProtocol.protocols
     }
 
+    /// The children which are cases.
     public var cases: AnyBidirectionalCollection<CaseAPI> {
         return elementProtocol.cases
     }
 
+    /// The children which are type properties.
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.typeProperties
     }
 
+    /// The children which are type methods.
     public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.typeMethods
     }
 
+    /// The children which are initializers.
     public var initializers: AnyBidirectionalCollection<InitializerAPI> {
         return elementProtocol.initializers
     }
 
+    /// The children which are instance properties or global variables.
     public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.instanceProperties
     }
 
+    /// The children which are subscripts.
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return elementProtocol.subscripts
     }
 
+    /// The children which are instance methods or global functions.
     public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.instanceMethods
     }
 
+    /// The children which are operators.
     public var operators: AnyBidirectionalCollection<OperatorAPI> {
         return elementProtocol.operators
     }
 
+    /// The children which are operator precedence groups.
     public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
         return elementProtocol.precedenceGroups
     }
 
+    /// The children which are conformances or superclasses.
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return elementProtocol.conformances
     }
@@ -263,10 +316,12 @@ public enum APIElement : Comparable, Hashable {
         return result
     }
 
+    /// A summary of the element’s API.
     public func summary() -> [String] {
         return elementProtocol.summary()
     }
 
+    /// A list of all identifiers made available by the element.
     public func identifierList() -> Set<String> {
         return elementProtocol.identifierList()
     }
