@@ -23,10 +23,10 @@ class SDGSwiftSourceInternalTests : TestCase {
     }
 
     func testExtendedSyntaxContext() {
-        let context = ExtendedSyntaxContext.token(SyntaxFactory.makeToken(.comma), context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil))
+        let context = ExtendedSyntaxContext._token(SyntaxFactory.makeToken(.comma), context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil))
         _ = context.source
         let source = ""
-        _ = ExtendedSyntaxContext.fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
+        _ = ExtendedSyntaxContext._fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
     }
 
     func testStringLiteral() {
