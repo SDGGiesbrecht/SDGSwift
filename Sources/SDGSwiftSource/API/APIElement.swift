@@ -278,7 +278,7 @@ public enum APIElement : Comparable, Hashable {
         return elementProtocol.cases
     }
 
-    // @documentation(SDGSwiftSource.APIElement.properties)
+    // @documentation(SDGSwiftSource.APIElement.typeProperties)
     /// The children which are type properties.
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.typeProperties

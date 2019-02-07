@@ -128,6 +128,7 @@ public class ExtendedSyntax : TextOutputStreamable {
     // MARK: - Syntax Tree
 
     // #documentation(SDGSwiftSource.Syntax.ancestors())
+    /// All the node’s ancestors in order from its immediate parent to the root node.
     public func ancestors() -> AnySequence<ExtendedSyntax> {
         if let parent = self.parent {
             return AnySequence(sequence(first: parent, next: { $0.parent }))
@@ -151,6 +152,7 @@ public class ExtendedSyntax : TextOutputStreamable {
     }
 
     // #documentation(SDGSwiftSource.Syntax.firstToken())
+    /// Return the first token of the node.
     public func firstToken() -> ExtendedTokenSyntax? {
         if let token = self as? ExtendedTokenSyntax,
             ¬token.text.isEmpty {
@@ -160,6 +162,7 @@ public class ExtendedSyntax : TextOutputStreamable {
     }
 
     // #documentation(SDGSwiftSource.Syntax.firstToken())
+    /// Return the first token of the node.
     public func lastToken() -> ExtendedTokenSyntax? {
         if let token = self as? ExtendedTokenSyntax,
             ¬token.text.isEmpty {
