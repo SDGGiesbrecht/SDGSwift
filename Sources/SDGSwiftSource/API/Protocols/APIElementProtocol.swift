@@ -16,6 +16,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+/// A type‐erased element of API.
 public protocol APIElementProtocol : AnyObject {
 
     // #documentation(SDGSwiftSource.APIElement.documentation)

@@ -13,7 +13,7 @@
  */
 
 /// An operator precedence group.
-public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 

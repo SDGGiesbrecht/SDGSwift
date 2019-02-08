@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
+internal protocol _UniquelyDeclaredAPIElement : DeclaredAPIElement {
     associatedtype Declaration : Syntax
     associatedtype Name : Syntax
     init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: Declaration, constraints: GenericWhereClauseSyntax?, name: Name, children: [APIElement])
@@ -24,7 +24,7 @@ internal protocol UniquelyDeclaredAPIElement : DeclaredAPIElement {
     var name: Name { get }
 }
 
-extension UniquelyDeclaredAPIElement {
+extension _UniquelyDeclaredAPIElement {
 
     public var genericDeclaration: Syntax {
         return declaration

@@ -35,7 +35,9 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
     ///     - triviaPiece: The trivia piece to check.
     ///     - triviaPieceContext: The context of the trivia piece.
     ///     - shouldExtendToken: Optional. A closure which decides whether or not to parse the token’s extended syntax.
+    ///     - token: A token to decide whether or not to parse.
     ///     - checkSyntax: Optional. A closure which decides whether or not to parse a code fragment.
+    ///     - codeFragment: A fragment to decide whether or not to parse.
     public init(
         checkSyntax: @escaping (_ node: Syntax, _ nodeContext: SyntaxContext) -> Bool = { _, _ in true },
         checkExtendedSyntax: @escaping (_ extendedNode: ExtendedSyntax, _ extendedNodeContext: ExtendedSyntaxContext) -> Bool = { _, _ in true },

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol _UniquelyDeclaredSyntaxAPIElement : UniquelyDeclaredAPIElement where Declaration : APIDeclaration, Name == Declaration.Name {}
+internal protocol _UniquelyDeclaredSyntaxAPIElement : _UniquelyDeclaredAPIElement where Declaration : APIDeclaration, Name == Declaration.Name {}
 
 extension _UniquelyDeclaredSyntaxAPIElement {
 
