@@ -20,13 +20,31 @@ public class FunctionalSyntaxScanner : SyntaxScanner {
     /// Creates a syntax scanner with behaviour defined by the provided closures.
     ///
     /// See the corresponding methods of `SyntaxScanner` for documentation relating to each closure.
+    ///
+    /// - Parameters:
+    ///     - checkSyntax: Optional. A closure which checks syntax nodes.
+    ///     - node: The syntax node to check.
+    ///     - nodeContext: The context of the syntax node.
+    ///     - checkExtendedSyntax: Optional. A closure which checks extended syntax nodes.
+    ///     - extendedNode: The extended syntax node to check.
+    ///     - extendedNodeContext: The context of the extended syntax node.
+    ///     - checkTrivia: Optional. A closure which checks trivia.
+    ///     - trivia: The trivia node to check.
+    ///     - triviaContext: The context of the trivia.
+    ///     - checkTriviaPiece: Optional. A closure which checks trivia pieces.
+    ///     - triviaPiece: The trivia piece to check.
+    ///     - triviaPieceContext: The context of the trivia piece.
+    ///     - shouldExtendToken: Optional. A closure which decides whether or not to parse the token’s extended syntax.
+    ///     - token: A token to decide whether or not to parse.
+    ///     - shouldExtendFragment: Optional. A closure which decides whether or not to parse a code fragment.
+    ///     - codeFragment: A fragment to decide whether or not to parse.
     public init(
-        checkSyntax: @escaping (Syntax, SyntaxContext) -> Bool = { _, _ in true },
-        checkExtendedSyntax: @escaping (ExtendedSyntax, ExtendedSyntaxContext) -> Bool = { _, _ in true },
-        checkTrivia: @escaping (Trivia, TriviaContext) -> Bool = { _, _ in true },
-        checkTriviaPiece: @escaping (TriviaPiece, TriviaPieceContext) -> Bool = { _, _ in true },
-        shouldExtendToken: @escaping (TokenSyntax) -> Bool = { _ in true },
-        shouldExtendFragment: @escaping (CodeFragmentSyntax) -> Bool = { _ in true }) {
+        checkSyntax: @escaping (_ node: Syntax, _ nodeContext: SyntaxContext) -> Bool = { _, _ in true },
+        checkExtendedSyntax: @escaping (_ extendedNode: ExtendedSyntax, _ extendedNodeContext: ExtendedSyntaxContext) -> Bool = { _, _ in true },
+        checkTrivia: @escaping (_ trivia: Trivia, _ triviaContext: TriviaContext) -> Bool = { _, _ in true },
+        checkTriviaPiece: @escaping (_ triviaPiece: TriviaPiece, _ triviaPieceContext: TriviaPieceContext) -> Bool = { _, _ in true },
+        shouldExtendToken: @escaping (_ token: TokenSyntax) -> Bool = { _ in true },
+        shouldExtendFragment: @escaping (_ codeFragment: CodeFragmentSyntax) -> Bool = { _ in true }) {
 
         self.checkSyntax = checkSyntax
         self.checkExtendedSyntax = checkExtendedSyntax

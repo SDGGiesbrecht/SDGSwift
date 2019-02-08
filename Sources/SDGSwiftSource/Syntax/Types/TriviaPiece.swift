@@ -18,6 +18,7 @@ import SDGSwiftLocalizations
 
 extension TriviaPiece {
 
+    /// The source code of the trivia piece.
     public var text: String {
         var result = ""
         write(to: &result)
@@ -26,16 +27,20 @@ extension TriviaPiece {
 
     // MARK: - Location
 
+    /// Returns the lower bound of the trivia piece.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, index: let index, parent: let parent):
+        case ._trivia(let trivia, index: let index, parent: let parent):
             var location = trivia.lowerBound(in: parent)
             let source = parent.tokenContext.fragmentContext
             for predecessor in trivia.indices where predecessor < index {
                 location = source.scalars.index(location, offsetBy: trivia[predecessor].text.scalars.count)
             }
             return location
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
@@ -43,17 +48,25 @@ extension TriviaPiece {
 
     private func upperBound(from lowerBound: String.ScalarView.Index, in context: TriviaPieceContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(_, index: _, parent: let parent):
+        case ._trivia(_, index: _, parent: let parent):
             let source = parent.tokenContext.fragmentContext
             return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-        case .fragment(_, context: let codeContext, offset: _):
+        case ._fragment(_, context: let codeContext, offset: _):
             return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
         }
     }
+    /// Returns the upper bound of the trivia piece.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
         return upperBound(from: lowerBound(in: context), in: context)
     }
 
+    /// Returns the range of the trivia piece.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func range(in context: TriviaPieceContext) -> Range<String.ScalarView.Index> {
         let lowerBound = self.lowerBound(in: context)
         return lowerBound ..< upperBound(from: lowerBound, in: context)
@@ -63,21 +76,33 @@ extension TriviaPiece {
 
     private func parentRelationship(context: TriviaPieceContext) -> (parent: Trivia, index: Trivia.Index)? {
         switch context {
-        case .trivia(let trivia, index: let index, parent: _):
+        case ._trivia(let trivia, index: let index, parent: _):
             return (parent: trivia, index: index)
-        case .fragment:
+        case ._fragment:
             return nil
         }
     }
 
+    /// Returns the trivia group to which the piece belongs.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func parentTrivia(context: TriviaPieceContext) -> Trivia? {
         return parentRelationship(context: context)?.parent
     }
 
+    /// Returns the index of the piece in its group.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func indexInParent(context: TriviaPieceContext) -> Trivia.Index? {
         return parentRelationship(context: context)?.index
     }
 
+    /// Returns the previous trivia piece in its group.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func previousTriviaPiece(context: TriviaPieceContext) -> TriviaPiece? {
         guard let relationship = parentRelationship(context: context) else {
             return nil
@@ -89,6 +114,10 @@ extension TriviaPiece {
         return resultIndex.map { relationship.parent[$0] }
     }
 
+    /// Returns the next trivia piece in its group.
+    ///
+    /// - Parameters:
+    ///     - context: The trivia piece’s context.
     public func nextTriviaPiece(context: TriviaPieceContext) -> TriviaPiece? {
         guard let relationship = parentRelationship(context: context),
             relationship.index ≠ relationship.parent.endIndex else {
@@ -99,6 +128,11 @@ extension TriviaPiece {
 
     // MARK: - Parsing
 
+    /// Returns the extended syntax of the trivia piece.
+    ///
+    /// - Parameters:
+    ///     - siblings: The group the piece belongs to.
+    ///     - index: The index of the piece in its group.
     public func syntax(siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
         let result: ExtendedSyntax
         switch self {

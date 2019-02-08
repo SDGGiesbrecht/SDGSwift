@@ -16,20 +16,58 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public protocol APIElementProtocol : class {
+/// A type‐erased element of API.
+public protocol APIElementProtocol : AnyObject {
+
+    // #documentation(SDGSwiftSource.APIElement.documentation)
+    /// The element’s documentation.
     var documentation: DocumentationSyntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.declaration)
+    /// The element’s declaration.
     var possibleDeclaration: Syntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.constraints)
+    /// Any generic constraints the element has.
     var constraints: GenericWhereClauseSyntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.compilationConditions)
+    /// The compilation conditions under which the element is available.
     var compilationConditions: Syntax? { get }
+
+    // #documentation(SDGSwiftSource.APIElement.name)
+    /// The name of the element.
     var genericName: Syntax { get }
+
+    // #documentation(SDGSwiftSource.APIElement.name)
+    /// The name of the element.
     var overloads: [APIElement] { get }
+
+    // #documentation(SDGSwiftSource.APIElement.children)
+    /// Any children the element has.
+    ///
+    /// For example, types may have methods and properties as children.
     var children: [APIElement] { get }
-    func shallowIdentifierList() -> Set<String>
+
+    func _shallowIdentifierList() -> Set<String>
+    // #documentation(SDGSwiftSource.APIElement.identifierList)
+    /// A list of all identifiers made available by the element.
     func identifierList() -> Set<String>
-    var summaryName: String { get }
+
+    var _summaryName: String { get }
+
+    // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+    /// Whether or not the element is a protocol requirement.
     var isProtocolRequirement: Bool { get }
+
+    // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+    /// Whether or not the element has a default implementation.
     var hasDefaultImplementation: Bool { get }
-    func summarySubentries() -> [String]
+
+    func _summarySubentries() -> [String]
+
+    // #documentation(SDGSwiftSource.APIElement.summary)
+    /// A summary of the element’s API.
     func summary() -> [String]
 }
 
@@ -38,12 +76,12 @@ extension APIElementProtocol {
     // MARK: - Identifiers
 
     public func identifierList() -> Set<String> {
-        return children.reduce(into: shallowIdentifierList()) { $0 ∪= $1.identifierList() }
+        return children.reduce(into: _shallowIdentifierList()) { $0 ∪= $1.identifierList() }
     }
 
     // MARK: - Summary
 
-    public var summaryName: String {
+    public var _summaryName: String {
         return genericName.source()
     }
 
@@ -59,7 +97,7 @@ extension APIElementProtocol {
         }
     }
 
-    public func summarySubentries() -> [String] {
+    public func _summarySubentries() -> [String] {
         var result: [String] = []
         for overload in overloads {
             if let declaration = overload.declaration {
@@ -82,13 +120,13 @@ extension APIElementProtocol {
                 entry += "(required) "
             }
         }
-        entry += summaryName
+        entry += _summaryName
         if let declaration = possibleDeclaration?.source() {
             entry += " • " + declaration
         }
         appendConstraints(to: &entry)
         appendCompilationConditions(to: &entry)
-        return [entry] + summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
+        return [entry] + _summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }
 
     // MARK: - Children
@@ -97,6 +135,8 @@ extension APIElementProtocol {
         return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
     }
 
+    // #documentation(SDGSwiftSource.APIElement.libraries)
+    /// The children which are libraries.
     public var libraries: AnyBidirectionalCollection<LibraryAPI> {
         return filtered { (element) -> LibraryAPI? in
             switch element {
@@ -108,6 +148,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.modules)
+    /// The children which are modules.
     public var modules: AnyBidirectionalCollection<ModuleAPI> {
         return filtered { (element) -> ModuleAPI? in
             switch element {
@@ -119,6 +161,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.types)
+    /// The children which are types.
     public var types: AnyBidirectionalCollection<TypeAPI> {
         return filtered { (element) -> TypeAPI? in
             switch element {
@@ -130,6 +174,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.extensions)
+    /// The children which are extensions.
     public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
         return filtered { (element) -> ExtensionAPI? in
             switch element {
@@ -141,6 +187,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.protocols)
+    /// The children which are protocols.
     public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
         return filtered { (element) -> ProtocolAPI? in
             switch element {
@@ -152,6 +200,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.cases)
+    /// The children which are cases.
     public var cases: AnyBidirectionalCollection<CaseAPI> {
         return filtered { (element) -> CaseAPI? in
             switch element {
@@ -163,6 +213,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.typeProperties)
+    /// The children which are type properties.
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return filtered { (element) -> VariableAPI? in
             switch element {
@@ -178,6 +230,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.typeMethods)
+    /// The children which are type methods.
     public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
         return filtered { (element) -> FunctionAPI? in
             switch element {
@@ -193,6 +247,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.initializers)
+    /// The children which are initializers.
     public var initializers: AnyBidirectionalCollection<InitializerAPI> {
         return filtered { (element) -> InitializerAPI? in
             switch element {
@@ -204,6 +260,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.instanceProperties)
+    /// The children which are instance properties or global variables.
     public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return filtered { (element) -> VariableAPI? in
             switch element {
@@ -219,6 +277,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.subscripts)
+    /// The children which are subscripts.
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return filtered { (element) -> SubscriptAPI? in
             switch element {
@@ -230,6 +290,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.instanceMethods)
+    /// The children which are instance methods or global functions.
     public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return filtered { (element) -> FunctionAPI? in
             switch element {
@@ -245,6 +307,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.operators)
+    /// The children which are operators.
     public var operators: AnyBidirectionalCollection<OperatorAPI> {
         return filtered { (element) -> OperatorAPI? in
             switch element {
@@ -256,6 +320,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.precedenceGroups)
+    /// The children which are operator precedence groups.
     public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
         return filtered { (element) -> PrecedenceAPI? in
             switch element {
@@ -267,6 +333,8 @@ extension APIElementProtocol {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.conformances)
+    /// The children which are conformances or superclasses.
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return filtered { (element) -> ConformanceAPI? in
             switch element {
@@ -326,11 +394,11 @@ extension APIElementProtocol {
         }
     }
 
-    private func overload<E>(for element: E, existsInParents parents: [APIElementProtocol]) -> Bool where E : OverloadableAPIElement {
+    private func overload<E>(for element: E, existsInParents parents: [APIElementProtocol]) -> Bool where E : _OverloadableAPIElement {
         return parents.contains(where: { $0.hasChildOverload(for: element) })
     }
 
-    private func hasChildOverload<E>(for element: E) -> Bool where E : OverloadableAPIElement {
+    private func hasChildOverload<E>(for element: E) -> Bool where E : _OverloadableAPIElement {
         return children.contains(where: { child in
             if let sameType = child.elementProtocol as? E {
                 return sameType.genericOverloadPattern().source() == element.genericOverloadPattern().source()

@@ -14,6 +14,7 @@
 
 import SDGLogic
 
+/// The context of a syntax node.
 public class SyntaxContext {
 
     // MARK: - Initialization
@@ -30,6 +31,7 @@ public class SyntaxContext {
     internal let fragmentOffset: Int
     internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
 
+    /// Returns whether or not the context is fragmented.
     public func isFragmented() -> Bool {
         return parentContext ≠ nil
     }

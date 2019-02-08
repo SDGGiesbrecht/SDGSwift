@@ -16,7 +16,10 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
-public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, OverloadableAPIElement, SortableAPIElement {
+/// A type.
+///
+/// A type may be a structure, class, enumeration, type alias or associated type.
+public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _OverloadableAPIElement, SortableAPIElement {
 
     // MARK: - Initialization
 
@@ -53,7 +56,7 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     // MARK: - APIElementProtocol
 
-    public func shallowIdentifierList() -> Set<String> {
+    public func _shallowIdentifierList() -> Set<String> {
         return declaration.identifierList()
     }
 

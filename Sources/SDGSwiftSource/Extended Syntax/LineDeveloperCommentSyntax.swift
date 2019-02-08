@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A line developer comment.
 public class LineDeveloperCommentSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties
@@ -26,6 +27,7 @@ public class LineDeveloperCommentSyntax : LineCommentSyntax {
 
     // MARK: - Properties
 
+    /// The content of the comment.
     public var content: CommentContentSyntax {
         return _content as! CommentContentSyntax
     }

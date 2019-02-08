@@ -59,7 +59,9 @@ public class ExtendedSyntax : TextOutputStreamable {
         }
     }
 
+    /// The parent node.
     public internal(set) weak var parent: ExtendedSyntax?
+    /// The index of the node in its parent.
     public internal(set) var indexInParent: Int = 0
     internal func setTreeRelationships() {
         for index in children.indices {
@@ -70,6 +72,7 @@ public class ExtendedSyntax : TextOutputStreamable {
         }
     }
 
+    /// The node’s source text.
     public var text: String {
         var result = ""
         write(to: &result)
@@ -78,40 +81,54 @@ public class ExtendedSyntax : TextOutputStreamable {
 
     // MARK: - Location
 
+    /// Returns the lower bound of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, context: let triviaContext):
+        case ._trivia(let trivia, context: let triviaContext):
             let sourceStart = trivia.lowerBound(in: triviaContext)
             return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
-        case .token(let token, context: let tokenContext):
+        case ._token(let token, context: let tokenContext):
             let sourceStart = token.lowerSyntaxBound(in: tokenContext)
             return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
         }
     }
 
+    /// Returns the upper bound of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
         switch context {
-        case .trivia(let trivia, context: let triviaContext):
+        case ._trivia(let trivia, context: let triviaContext):
             let sourceStart = trivia.lowerBound(in: triviaContext)
             return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
-        case .token(let token, context: let tokenContext):
+        case ._token(let token, context: let tokenContext):
             let sourceStart = token.lowerSyntaxBound(in: tokenContext)
             return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
-        case .fragment(let code, context: let codeContext, offset: let offset):
+        case ._fragment(let code, context: let codeContext, offset: let offset):
             let fragmentLocation = code.lowerBound(in: codeContext)
             return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset + text.scalars.count)
         }
     }
 
+    /// Returns the range of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
     public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
         return lowerBound(in: context) ..< upperBound(in: context)
     }
 
     // MARK: - Syntax Tree
 
+    // #documentation(SDGSwiftSource.Syntax.ancestors())
+    /// All the node’s ancestors in order from its immediate parent to the root node.
     public func ancestors() -> AnySequence<ExtendedSyntax> {
         if let parent = self.parent {
             return AnySequence(sequence(first: parent, next: { $0.parent }))
@@ -134,6 +151,8 @@ public class ExtendedSyntax : TextOutputStreamable {
         }
     }
 
+    // #documentation(SDGSwiftSource.Syntax.firstToken())
+    /// Return the first token of the node.
     public func firstToken() -> ExtendedTokenSyntax? {
         if let token = self as? ExtendedTokenSyntax,
             ¬token.text.isEmpty {
@@ -142,6 +161,8 @@ public class ExtendedSyntax : TextOutputStreamable {
         return children.lazy.compactMap({ $0.firstToken() }).first
     }
 
+    // #documentation(SDGSwiftSource.Syntax.firstToken())
+    /// Return the first token of the node.
     public func lastToken() -> ExtendedTokenSyntax? {
         if let token = self as? ExtendedTokenSyntax,
             ¬token.text.isEmpty {

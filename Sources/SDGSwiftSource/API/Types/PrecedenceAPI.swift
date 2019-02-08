@@ -12,11 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredAPIElement, UniquelyDeclaredSyntaxAPIElement {
+/// An operator precedence group.
+public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public internal(set) var declaration: PrecedenceGroupDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: PrecedenceGroupDeclSyntax
 
     // MARK: - UniquelyDeclaredAPIElement

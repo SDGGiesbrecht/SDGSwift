@@ -21,7 +21,8 @@ import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
 
-public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
+/// A library product of a package.
+public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
@@ -49,12 +50,16 @@ public final class LibraryAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - APIElementProtocol
 
-    public func summarySubentries() -> [String] {
+    public func _summarySubentries() -> [String] {
         return modules.map({ $0.name.source() })
     }
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public let declaration: FunctionCallExprSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: TokenSyntax
 }

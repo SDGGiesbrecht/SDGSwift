@@ -14,6 +14,7 @@
 
 import SDGLogic
 
+/// A list in documentation.
 public class ListSyntax : MarkdownSyntax {
 
     // MARK: - Initialization

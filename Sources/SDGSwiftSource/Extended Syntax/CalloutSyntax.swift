@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A documentation callout.
 public class CalloutSyntax : ExtendedSyntax {
 
     // MARK: - Initialization

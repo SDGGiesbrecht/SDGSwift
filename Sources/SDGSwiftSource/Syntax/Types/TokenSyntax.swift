@@ -20,6 +20,7 @@ extension TokenSyntax {
 
     // MARK: - Properties
 
+    /// The extended syntax of the token.
     public var extended: ExtendedSyntax? {
         if case .stringLiteral(let source) = tokenKind {
             let result = StringLiteralSyntax(source: source)
@@ -30,6 +31,8 @@ extension TokenSyntax {
         }
     }
 
+    // @documentation(SDGSwiftSource.TokenSyntax.textFreedom)
+    /// The amount of freedom avialable to the token’s text.
     public var textFreedom: TextFreedom {
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
@@ -114,14 +117,22 @@ extension TokenSyntax {
 
     // MARK: - Syntax Tree
 
+    /// Returns the first trivia piece preceding the token.
+    ///
+    /// This searches through the token’s own leading trivia and into the previous token’s trailing trivia.
     public func firstPrecedingTrivia() -> TriviaPiece? {
         return leadingTrivia.last() ?? previousToken()?.trailingTrivia.last()
     }
 
+    /// Returns the first trivia piece following the token.
+    ///
+    /// This searches through the token’s own trailing trivia and into the following token’s leading trivia.
     public func firstFollowingTrivia() -> TriviaPiece? {
         return trailingTrivia.first ?? nextToken()?.leadingTrivia.first
     }
 
+    // @documentation(SDGSwiftSource.TokenSyntax.previousToken())
+    /// Returns the previous token.
     public func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
             var result: Syntax?
@@ -142,6 +153,8 @@ extension TokenSyntax {
         return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
     }
 
+    // @documentation(SDGSwiftSource.TokenSyntax.nextToken())
+    /// Returns the next token.
     public func nextToken() -> TokenSyntax? {
         func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
             for sibling in relationship.parent.children

@@ -15,6 +15,7 @@
 import SDGMathematics
 import SDGCollections
 
+/// A smaller fragment of a larger syntax node.
 public class FragmentSyntax : ExtendedSyntax {
 
     // MARK: - Initialization

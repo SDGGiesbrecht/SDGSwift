@@ -48,6 +48,7 @@ let package = Package(
         .target(name: "MyTarget", dependencies: [
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftSource", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
@@ -62,6 +63,7 @@ The libraries’ modules can then be imported in source files:
 ```swift
 import SDGSwift
 import SDGSwiftPackageManager
+import SDGSwiftSource
 import SDGXcode
 import SDGSwiftConfiguration
 import SDGSwiftConfigurationLoading

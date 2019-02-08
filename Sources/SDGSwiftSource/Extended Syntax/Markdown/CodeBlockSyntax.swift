@@ -20,6 +20,7 @@ import SDGText
 
 import SDGCMarkShims
 
+/// A code block used in documentation.
 public class CodeBlockSyntax : MarkdownSyntax {
 
     // MARK: - Initialization

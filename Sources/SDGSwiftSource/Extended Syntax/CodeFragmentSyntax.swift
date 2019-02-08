@@ -16,6 +16,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
+/// A fragment of code used in documentation.
 public class CodeFragmentSyntax : ExtendedSyntax {
 
     internal init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
@@ -33,6 +34,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     // MARK: - Properties
 
     internal let isSwift: Bool?
+    /// The unparsed source code of the fragment.
     public let source: ExtendedTokenSyntax
 
     internal let context: String

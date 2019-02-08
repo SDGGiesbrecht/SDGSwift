@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A block documentation comment.
 public class BlockDocumentationSyntax : BlockCommentSyntax {
 
     // MARK: - Class Properties
@@ -26,6 +27,7 @@ public class BlockDocumentationSyntax : BlockCommentSyntax {
 
     // MARK: - Properties
 
+    /// The documentation content.
     public var documentation: DocumentationSyntax {
         return internalSyntax as! DocumentationSyntax
     }

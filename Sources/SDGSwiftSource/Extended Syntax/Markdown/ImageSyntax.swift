@@ -16,6 +16,7 @@ import SDGCollections
 
 import SDGCMarkShims
 
+/// An image insertion in documentation.
 public class ImageSyntax : MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
@@ -56,16 +57,22 @@ public class ImageSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The image delimiter.
     public let imageDelimiter: ExtendedTokenSyntax
 
+    /// The opening link delimiter.
     public let openingDelimiter: ExtendedTokenSyntax
 
+    /// The contents of the alternate text.
     public private(set) var contents: [ExtendedSyntax] = []
 
+    /// The delimiter between the alternate text and the URL.
     public let medialDelimiter: ExtendedTokenSyntax
 
+    /// The URL.
     public let url: ExtendedTokenSyntax
 
+    /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
 
     // MARK: - ExtendedSyntax

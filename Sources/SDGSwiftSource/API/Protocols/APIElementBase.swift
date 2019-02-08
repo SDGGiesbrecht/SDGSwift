@@ -27,9 +27,13 @@ public class _APIElementBase {
 
     // MARK: - Properties
 
+    // #documentation(SDGSwiftSource.APIElement.documentation)
+    /// The element’s documentation.
     public let documentation: DocumentationSyntax?
 
     private var _constraints: GenericWhereClauseSyntax?
+    // #documentation(SDGSwiftSource.APIElement.constraints)
+    /// Any generic constraints the element has.
     public internal(set) var constraints: GenericWhereClauseSyntax? {
         get {
             return _constraints
@@ -38,9 +42,15 @@ public class _APIElementBase {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.compilationConditions)
+    /// The compilation conditions under which the element is available.
     public internal(set) var compilationConditions: Syntax?
 
     private var _children: [APIElement] = []
+    // #documentation(SDGSwiftSource.APIElement.children)
+    /// Any children the element has.
+    ///
+    /// For example, types may have methods and properties as children.
     public internal(set) var children: [APIElement] {
         get {
             return _children
@@ -49,7 +59,11 @@ public class _APIElementBase {
         }
     }
 
+    // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+    /// Whether or not the element is a protocol requirement.
     public internal(set) var isProtocolRequirement: Bool = false
+    // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+    /// Whether or not the element has a default implementation.
     public internal(set) var hasDefaultImplementation: Bool = false
     internal var _overloads: [APIElement] = []
 
@@ -85,7 +99,7 @@ public class _APIElementBase {
 
     // MARK: - Overloads
 
-    internal static func groupIntoOverloads<E>(_ elements: [E], convert: (E) -> APIElement) -> [E] where E : OverloadableAPIElement {
+    internal static func groupIntoOverloads<E>(_ elements: [E], convert: (E) -> APIElement) -> [E] where E : _OverloadableAPIElement {
         var grouped: [String: [E]] = [:]
 
         for element in elements {

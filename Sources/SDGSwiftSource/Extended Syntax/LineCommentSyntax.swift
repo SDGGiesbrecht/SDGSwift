@@ -14,6 +14,7 @@
 
 import SDGLocalization
 
+/// A line comment.
 public class LineCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties

@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A section of documentation text with font modifications.
+///
+/// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.
 public class FontSyntax : MarkdownSyntax {
 
     // MARK: - Initialization
@@ -29,8 +32,10 @@ public class FontSyntax : MarkdownSyntax {
 
     // MARK: - Properties
 
+    /// The opening delimiter.
     public let openingDelimiter: ExtendedTokenSyntax
 
+    /// The closing delimiter.
     public let closingDelimiter: ExtendedTokenSyntax
 
     // MARK: - ExtendedSyntax

@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGMathematics
 
+/// A line documentation comment.
 public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Class Properties
@@ -85,6 +86,7 @@ public class LineDocumentationSyntax : LineCommentSyntax {
 
     // MARK: - Properties
 
+    /// The content of the line documentation comment.
     public var content: FragmentSyntax {
         return _content as! FragmentSyntax
     }

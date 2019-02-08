@@ -14,11 +14,16 @@
 
 import SDGLogic
 
-public final class CaseAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredSyntaxAPIElement {
+/// An enumeration case.
+public final class CaseAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public internal(set) var declaration: EnumCaseDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: EnumCaseDeclSyntax
 
     // MARK: - UniquelyDeclaredAPIElement

@@ -17,6 +17,7 @@ import SDGCollections
 import SDGText
 import SDGLocalization
 
+/// A block comment.
 public class BlockCommentSyntax : ExtendedSyntax {
 
     // MARK: - Class Properties

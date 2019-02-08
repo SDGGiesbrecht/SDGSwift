@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A fragment of a larger syntax tree.
 public enum SyntaxFragment {
 
     // MARK: - Cases

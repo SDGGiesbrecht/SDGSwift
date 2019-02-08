@@ -12,9 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol UniquelyDeclaredManifestAPIElement : UniquelyDeclaredAPIElement where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
+internal protocol _UniquelyDeclaredManifestAPIElement : _UniquelyDeclaredAPIElement where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
 
-extension UniquelyDeclaredManifestAPIElement {
+extension _UniquelyDeclaredManifestAPIElement {
 
     internal init(documentation: DocumentationSyntax?, declaration: Declaration) {
         self.init(documentation: documentation, alreadyNormalizedDeclaration: declaration, constraints: nil, name: declaration.manifestEntryName(), children: [])
@@ -22,7 +22,7 @@ extension UniquelyDeclaredManifestAPIElement {
 
     // MARK: - APIElementProtocol
 
-    public func shallowIdentifierList() -> Set<String> {
+    public func _shallowIdentifierList() -> Set<String> {
         return []
     }
 }

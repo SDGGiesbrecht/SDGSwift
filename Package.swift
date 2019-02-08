@@ -35,7 +35,7 @@ let package = Package(
         // @documentation(SDGSwift)
         /// A basic interface for the Swift compiler.
         ///
-        /// This module includes development time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
+        /// This module includes development‐time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
         .library(name: "SDGSwift", targets: ["SDGSwift"]),
 
         // @documentation(SDGSwiftPackageManager)
@@ -46,9 +46,9 @@ let package = Package(
 
         // @documentation(SDGSwiftSource)
         /// Utilities for working with Swift source code.
-        // SDGSwiftSource is NOT YET READY FOR EXTERNAL USE. It is not a documented part of the package API, and the semantic versioning of releases does not take changes to it into account.
-        // #workaround(Until SDGSwiftSource is ready to publish.)
-        .library(name: /* NOT FOR EXTERNAL USE YET */"_SDGSwiftSource", targets: ["SDGSwiftSource"]),
+        ///
+        /// This module is built on SwiftSyntax and provides utilities such as syntax colouring and API parsing.
+        .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
         // @documentation(SDGXcode)
         /// Xcode‐related utilities for working with Swift packages.
@@ -78,7 +78,7 @@ let package = Package(
         // #documentation(SDGSwift)
         /// A basic interface for the Swift compiler.
         ///
-        /// This module includes development time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
+        /// This module includes development‐time tasks such as building and testing. It uses the command‐line interface and provides the command line output in real time.
         .target(name: "SDGSwift", dependencies: [
             "SDGSwiftLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
@@ -101,6 +101,8 @@ let package = Package(
 
         // #documentation(SDGSwiftSource)
         /// Utilities for working with Swift source code.
+        ///
+        /// This module is built on SwiftSyntax and provides utilities such as syntax colouring and API parsing.
         .target(name: "SDGSwiftSource", dependencies: [
             "SDGSwift",
             "SDGSwiftPackageManager",

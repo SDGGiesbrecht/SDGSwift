@@ -21,11 +21,16 @@ import SDGSwiftLocalizations
 import SDGSwift
 import SDGSwiftPackageManager
 
-public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, SortableAPIElement, UniquelyDeclaredManifestAPIElement {
+/// A package.
+public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
 
     // MARK: - Initialization
 
     /// Creates a package API instance by parsing the specified package’s sources.
+    ///
+    /// - Parameters:
+    ///     - package: The package, already loaded by the `SwiftPM` package.
+    ///     - reportProgress: A closure to execute to report progress at significant milestones.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public convenience init(package: PackageGraph, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
@@ -116,7 +121,7 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - APIElementProtocol
 
-    public func summarySubentries() -> [String] {
+    public func _summarySubentries() -> [String] {
         var result = Array(libraries.lazy.map({ $0.summary() }).joined())
         result.append(contentsOf: modules.lazy.map({ $0.summary() }).joined())
         return result
@@ -124,7 +129,10 @@ public final class PackageAPI : _APIElementBase, NonOverloadableAPIElement, Sort
 
     // MARK: - DeclaredAPIElement
 
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
     public let declaration: FunctionCallExprSyntax
-
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
     public let name: TokenSyntax
 }

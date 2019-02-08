@@ -17,6 +17,7 @@ import SDGLogic
 import SDGMathematics
 import SDGLocalization
 
+/// An element of API.
 public enum APIElement : Comparable, Hashable {
 
     // MARK: - Static Methods
@@ -85,19 +86,48 @@ public enum APIElement : Comparable, Hashable {
 
     // MARK: - Cases
 
+    /// A Swift package.
     case package(PackageAPI)
+
+    /// A library product of a package.
     case library(LibraryAPI)
+
+    /// A Swift module.
     case module(ModuleAPI)
+
+    /// A type.
+    ///
+    /// A type may be a structure, class, enumeration, type alias or associated type.
     case type(TypeAPI)
+
+    /// A protocol.
     case `protocol`(ProtocolAPI)
+
+    /// An extension.
     case `extension`(ExtensionAPI)
+
+    /// An enumeration case.
     case `case`(CaseAPI)
+
+    /// An initializer.
     case initializer(InitializerAPI)
+
+    /// A variable or property.
     case variable(VariableAPI)
+
+    /// A subscript.
     case `subscript`(SubscriptAPI)
+
+    /// A function or method.
     case function(FunctionAPI)
+
+    /// An operator.
     case `operator`(OperatorAPI)
+
+    /// An operator precedence group.
     case precedence(PrecedenceAPI)
+
+    /// A conformance or superclass.
     case conformance(ConformanceAPI)
 
     // MARK: - Methods
@@ -168,88 +198,150 @@ public enum APIElement : Comparable, Hashable {
         }
     }
 
+    // @documentation(SDGSwiftSource.APIElement.declaration)
+    /// The element’s declaration.
     public var declaration: Syntax? {
         return elementProtocol.possibleDeclaration
     }
 
+    // @documentation(SDGSwiftSource.APIElement.constraints)
+    /// Any generic constraints the element has.
     public var constraints: GenericWhereClauseSyntax? {
         return elementProtocol.constraints
     }
 
+    // @documentation(SDGSwiftSource.APIElement.documentation)
+    /// The element’s documentation.
     public var documentation: DocumentationSyntax? {
         return elementProtocol.documentation
     }
 
+    // @documentation(SDGSwiftSource.APIElement.compilationConditions)
+    /// The compilation conditions under which the element is available.
     public var compilationConditions: Syntax? {
         return elementProtocol.compilationConditions
     }
 
+    // @documentation(SDGSwiftSource.APIElement.name)
+    /// The name of the element.
     public var name: Syntax {
         return elementProtocol.genericName
     }
 
+    // @documentation(SDGSwiftSource.APIElement.overloads)
+    /// The element’s overloads.
+    public var overloads: [APIElement] {
+        return elementProtocol.overloads
+    }
+
+    // @documentation(SDGSwiftSource.APIElement.children)
+    /// Any children the element has.
+    ///
+    /// For example, types may have methods and properties as children.
     public var children: [APIElement] {
         return elementProtocol.children
     }
 
+    // @documentation(SDGSwiftSource.APIElement.libraries)
+    /// The children which are libraries.
     public var libraries: AnyBidirectionalCollection<LibraryAPI> {
         return elementProtocol.libraries
     }
 
+    // @documentation(SDGSwiftSource.APIElement.modules)
+    /// The children which are modules.
     public var modules: AnyBidirectionalCollection<ModuleAPI> {
         return elementProtocol.modules
     }
 
+    // @documentation(SDGSwiftSource.APIElement.types)
+    /// The children which are types.
     public var types: AnyBidirectionalCollection<TypeAPI> {
         return elementProtocol.types
     }
 
+    // @documentation(SDGSwiftSource.APIElement.extensions)
+    /// The children which are extensions.
     public var extensions: AnyBidirectionalCollection<ExtensionAPI> {
         return elementProtocol.extensions
     }
 
+    // @documentation(SDGSwiftSource.APIElement.protocols)
+    /// The children which are protocols.
     public var protocols: AnyBidirectionalCollection<ProtocolAPI> {
         return elementProtocol.protocols
     }
 
+    // @documentation(SDGSwiftSource.APIElement.cases)
+    /// The children which are cases.
     public var cases: AnyBidirectionalCollection<CaseAPI> {
         return elementProtocol.cases
     }
 
+    // @documentation(SDGSwiftSource.APIElement.typeProperties)
+    /// The children which are type properties.
     public var typeProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.typeProperties
     }
 
+    // @documentation(SDGSwiftSource.APIElement.typeMethods)
+    /// The children which are type methods.
     public var typeMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.typeMethods
     }
 
+    // @documentation(SDGSwiftSource.APIElement.initializers)
+    /// The children which are initializers.
     public var initializers: AnyBidirectionalCollection<InitializerAPI> {
         return elementProtocol.initializers
     }
 
+    // @documentation(SDGSwiftSource.APIElement.instanceProperties)
+    /// The children which are instance properties or global variables.
     public var instanceProperties: AnyBidirectionalCollection<VariableAPI> {
         return elementProtocol.instanceProperties
     }
 
+    // @documentation(SDGSwiftSource.APIElement.subscripts)
+    /// The children which are subscripts.
     public var subscripts: AnyBidirectionalCollection<SubscriptAPI> {
         return elementProtocol.subscripts
     }
 
+    // @documentation(SDGSwiftSource.APIElement.instanceMethods)
+    /// The children which are instance methods or global functions.
     public var instanceMethods: AnyBidirectionalCollection<FunctionAPI> {
         return elementProtocol.instanceMethods
     }
 
+    // @documentation(SDGSwiftSource.APIElement.operators)
+    /// The children which are operators.
     public var operators: AnyBidirectionalCollection<OperatorAPI> {
         return elementProtocol.operators
     }
 
+    // @documentation(SDGSwiftSource.APIElement.precedenceGroups)
+    /// The children which are operator precedence groups.
     public var precedenceGroups: AnyBidirectionalCollection<PrecedenceAPI> {
         return elementProtocol.precedenceGroups
     }
 
+    // @documentation(SDGSwiftSource.APIElement.conformances)
+    /// The children which are conformances or superclasses.
     public var conformances: AnyBidirectionalCollection<ConformanceAPI> {
         return elementProtocol.conformances
+    }
+
+    // @documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+    /// Whether or not the element is a protocol requirement.
+    public var isProtocolRequirement: Bool {
+        return elementProtocol.isProtocolRequirement
+    }
+
+    // @documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+    /// Whether or not the element has a default implementation.
+    public var hasDefaultImplementation: Bool {
+        return elementProtocol.hasDefaultImplementation
     }
 
     private func nestedList<T>(of type: T.Type) -> [T] {
@@ -263,10 +355,14 @@ public enum APIElement : Comparable, Hashable {
         return result
     }
 
+    // @documentation(SDGSwiftSource.APIElement.summary)
+    /// A summary of the element’s API.
     public func summary() -> [String] {
         return elementProtocol.summary()
     }
 
+    // @documentation(SDGSwiftSource.APIElement.identifierList)
+    /// A list of all identifiers made available by the element.
     public func identifierList() -> Set<String> {
         return elementProtocol.identifierList()
     }
