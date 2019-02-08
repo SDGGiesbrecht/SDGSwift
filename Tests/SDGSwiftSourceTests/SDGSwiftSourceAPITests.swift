@@ -60,6 +60,9 @@ class SDGSwiftSourceAPITests : TestCase {
                 _ = element.operators
                 _ = element.precedenceGroups
                 _ = element.conformances
+                _ = element.overloads
+                _ = element.isProtocolRequirement
+                _ = element.hasDefaultImplementation
             }
             XCTAssertFalse(rootElement < rootElement)
             XCTAssertTrue(parsed == parsed)
