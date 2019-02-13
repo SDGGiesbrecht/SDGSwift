@@ -30,10 +30,11 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
     ///
     /// - Parameters:
     ///     - package: The package, already loaded by the `SwiftPM` package.
-    ///     - reportProgress: A closure to execute to report progress at significant milestones.
+    ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
+    ///     - progressReport: A line of text reporting a progress milestone.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
-    public convenience init(package: PackageGraph, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public convenience init(package: PackageGraph, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let root = package.rootPackages.first!.underlyingPackage
         try self.init(package: root, reportProgress: reportProgress)

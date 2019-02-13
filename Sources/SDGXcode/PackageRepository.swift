@@ -42,10 +42,11 @@ extension PackageRepository {
     /// Generates or refreshes the package’s Xcode project.
     ///
     /// - Parameters:
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func generateXcodeProject(reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
 
@@ -54,9 +55,10 @@ extension PackageRepository {
     /// - Parameters:
     ///     - sdk: The SDK to build for.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
 
@@ -64,10 +66,11 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - sdk: The SDK to run tests on.
-    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
@@ -76,12 +79,13 @@ extension PackageRepository {
     /// - Parameters:
     ///     - sdk: The SDK to run tests on.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+    public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         return try Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 

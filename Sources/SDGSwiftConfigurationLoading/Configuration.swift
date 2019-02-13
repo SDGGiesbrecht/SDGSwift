@@ -82,11 +82,12 @@ extension Configuration {
     ///     - package: The package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
+    ///     - progressReport: A line of output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
-    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
         let nullContext: NullContext? = nil
         return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, context: nullContext, reportProgress: reportProgress)
     }
@@ -105,7 +106,8 @@ extension Configuration {
     ///     - releaseVersion: The version of the package to link against.
     ///     - context: The context to provide to the configuration file.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
-    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, context: E?, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+    ///     - progressReport: A line of output.
+    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, context: E?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
