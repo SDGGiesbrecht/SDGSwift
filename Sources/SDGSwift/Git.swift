@@ -69,10 +69,11 @@ public enum Git {
     ///     - location: The location to create the clone.
     ///     - build: Optional. A specific version to check out.
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
 
         var command = [
             "clone",
@@ -144,9 +145,10 @@ public enum Git {
     ///     - workingDirectory: Optional. A different working directory.
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ git " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }

@@ -112,9 +112,10 @@ public enum SwiftCompiler {
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         var arguments = ["build"]
         if releaseConfiguration {
             arguments += ["\u{2D}\u{2D}configuration", "release"]
@@ -137,10 +138,11 @@ public enum SwiftCompiler {
     ///
     /// - Parameters:
     ///     - package: The package to test.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
         return try runCustomSubcommand(["test"], in: package.location, reportProgress: reportProgress)
     }
 
@@ -148,10 +150,11 @@ public enum SwiftCompiler {
     ///
     /// - Parameters:
     ///     - package: The package to resolve.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
     }
 
@@ -159,10 +162,11 @@ public enum SwiftCompiler {
     ///
     /// - Parameters:
     ///     - package: The package for which to regenerate the test list.
-    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         let result = try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
 
         // #workaround(Swift 4.2.1, Until swift does a better job on its own.)
@@ -195,9 +199,10 @@ public enum SwiftCompiler {
     ///     - workingDirectory: Optional. A different working directory.
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ swift " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }

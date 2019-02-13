@@ -206,9 +206,10 @@ public enum Xcode {
     ///     - package: The package to build.
     ///     - sdk: The SDK to build for.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         return try runCustomSubcommand([
             "build",
             "\u{2D}sdk", sdk.commandLineName,
@@ -239,10 +240,11 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
-    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
 
         if let coverage = try? coverageDirectory(for: package, on: sdk) {
             // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
@@ -273,12 +275,13 @@ public enum Xcode {
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-    ///     - reportProgress: Optional. A closure to execute for each line of Xcode’s command line output.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
         let directory = try coverageDirectory(for: package, on: sdk)
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
@@ -508,9 +511,10 @@ public enum Xcode {
     ///     - workingDirectory: Optional. A different working directory.
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
         return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
@@ -522,9 +526,10 @@ public enum Xcode {
     ///     - workingDirectory: Optional. A different working directory.
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
         reportProgress("$ xccov " + arguments.joined(separator: " "))
         return try coverageTool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
