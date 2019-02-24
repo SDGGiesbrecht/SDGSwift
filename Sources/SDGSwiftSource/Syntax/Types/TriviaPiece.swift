@@ -25,6 +25,16 @@ extension TriviaPiece {
         return result
     }
 
+    /// Whether or not the trivia piece represents a newline.
+    public var isNewline: Bool {
+        switch self {
+        case .spaces, .tabs, .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
+            return false
+        case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
+            return true
+        }
+    }
+
     // MARK: - Location
 
     /// Returns the lower bound of the trivia piece.
