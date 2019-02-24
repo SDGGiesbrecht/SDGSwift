@@ -62,7 +62,7 @@ public class ParametersCalloutSyntax : CalloutSyntax {
                                 let newParagraph = ParagraphSyntax(children: paragraph.children.prepending(remainderSyntax))
                                 replacements.append(newParagraph)
 
-                                self.list.append((parameter: parameter, description: Array(contents[contents.index(after: index)...]).prepending(newParagraph)))
+                                self.list.append(ParameterDocumentation(name: parameter, description: Array(contents[contents.index(after: index)...]).prepending(newParagraph)))
 
                                 contents.remove(at: index)
                                 contents.insert(contentsOf: replacements, at: index)
@@ -79,5 +79,5 @@ public class ParametersCalloutSyntax : CalloutSyntax {
 
     // MARK: - Parameters
 
-    internal private(set) var list: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
+    internal private(set) var list: [ParameterDocumentation] = []
 }

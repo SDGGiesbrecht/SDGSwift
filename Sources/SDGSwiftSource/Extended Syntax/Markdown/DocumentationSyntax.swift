@@ -80,12 +80,12 @@ public class DocumentationSyntax : MarkdownSyntax {
     /// - Parameters:
     ///     - parameter: The parameter name.
     ///     - description: The parameter’s documentation.
-    public var normalizedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] {
+    public var normalizedParameters: [ParameterDocumentation] {
         if let parameters = self.parameters {
             return parameters.list
         } else {
             return separateParameterEntries.map { entry in
-                return (parameter: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents) // @exempt(from: tests) Never nil in valid source.
+                return ParameterDocumentation(name: entry.parameterName ?? ExtendedTokenSyntax(text: "", kind: .parameter), description: entry.contents) // @exempt(from: tests) Never nil in valid source.
             }
         }
     }
