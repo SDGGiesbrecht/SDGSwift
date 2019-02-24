@@ -507,4 +507,9 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssert(foundLiteral)
         XCTAssert(foundString)
     }
+
+    func testTriviaPiece() {
+        XCTAssertTrue(TriviaPiece.newlines(1).isNewline)
+        XCTAssertFalse(TriviaPiece.spaces(1).isNewline)
+    }
 }
