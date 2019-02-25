@@ -25,7 +25,7 @@ extension DocumentationSyntax {
             specification.append(discussion.renderedHTML(localization: localization))
         }
         for parameter in normalizedParameters {
-            specification.append((parameter.parameter as ExtendedSyntax).renderedHTML(localization: localization))
+            specification.append((parameter.name as ExtendedSyntax).renderedHTML(localization: localization))
             for description in parameter.description {
                 specification.append(description.renderedHTML(localization: localization))
             }
