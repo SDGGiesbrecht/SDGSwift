@@ -76,10 +76,6 @@ public class DocumentationSyntax : MarkdownSyntax {
     private var parameters: ParametersCalloutSyntax?
     private var separateParameterEntries: [CalloutSyntax] = []
     /// The parameter documentation.
-    ///
-    /// - Parameters:
-    ///     - parameter: The parameter name.
-    ///     - description: The parameter’s documentation.
     public var normalizedParameters: [ParameterDocumentation] {
         if let parameters = self.parameters {
             return parameters.list
