@@ -131,36 +131,38 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        let cacheRoot = cacheDirectory ?? FileManager.default.url(in: .temporary, at: "Cache") // @exempt(from: tests)
-        let cache = try self.cacheDirectory(in: cacheRoot, for: build)
+        return try FileManager.default.withTemporaryDirectory(appropriateFor: cacheDirectory) { temporaryDirectory in
+            let cacheRoot = cacheDirectory ?? temporaryDirectory.appendingPathComponent("Cache") // @exempt(from: tests)
+            let cache = try self.cacheDirectory(in: cacheRoot, for: build)
 
-        if ¬FileManager.default.fileExists(atPath: cache.path) {
+            if ¬FileManager.default.fileExists(atPath: cache.path) {
 
-            switch build {
-            case .development:
-                // Clean up older builds.
-                try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
-            case .version:
-                break
+                switch build {
+                case .development:
+                    // Clean up older builds.
+                    try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
+                case .version:
+                    break
+                }
+
+                try self.build(build, to: cache, reportProgress: reportProgress)
             }
 
-            try self.build(build, to: cache, reportProgress: reportProgress)
-        }
+            for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
 
-        for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
+                #if os(Linux)
+                // The move from the temporary directory to the cache may lose permissions.
+                if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
+                    _ = try? Shell.default.run(command: ["chmod", "+x", executable.path])
+                }
+                #endif
 
-            #if os(Linux)
-            // The move from the temporary directory to the cache may lose permissions.
-            if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-                _ = try? Shell.default.run(command: ["chmod", "+x", executable.path])
+                reportProgress("")
+                reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
+                return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
             }
-            #endif
-
-            reportProgress("")
-            reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
-            return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
+            throw Package.Error.noSuchExecutable(requested: executableNames)
         }
-        throw Package.Error.noSuchExecutable(requested: executableNames)
     }
 
     // MARK: - TransparentWrapper
