@@ -66,7 +66,7 @@ public struct Package : TransparentWrapper {
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     public func build(_ build: Build, to destination: URL, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
         try FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
-            let temporaryCloneLocation = temporaryDirectory.appendingPathComponent("Package Clones/" + url.lastPathComponent)
+            let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
 
             reportProgress("")
 
@@ -131,8 +131,8 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try FileManager.default.withTemporaryDirectory(appropriateFor: cacheDirectory) { temporaryDirectory in
-            let cacheRoot = cacheDirectory ?? temporaryDirectory.appendingPathComponent("Cache") // @exempt(from: tests)
+        return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+            let cacheRoot = cacheDirectory ?? temporaryDirectory // @exempt(from: tests)
             let cache = try self.cacheDirectory(in: cacheRoot, for: build)
 
             if ¬FileManager.default.fileExists(atPath: cache.path) {

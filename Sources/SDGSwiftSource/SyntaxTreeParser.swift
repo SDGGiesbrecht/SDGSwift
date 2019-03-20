@@ -36,12 +36,14 @@ extension SyntaxTreeParser {
     /// - Parameters:
     ///     - source: A string with Swift source.
     public static func parse(_ source: String) throws -> SourceFileSyntax {
-        let temporary = FileManager.default.url(in: .temporary, at: UUID().uuidString + ".swift")
-        try? FileManager.default.removeItem(at: temporary)
+        return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+            let temporary = temporaryDirectory.appendingPathComponent(UUID().uuidString + ".swift")
+            try? FileManager.default.removeItem(at: temporary)
 
-        try source.save(to: temporary)
-        defer { try? FileManager.default.removeItem(at: temporary) }
+            try source.save(to: temporary)
+            defer { try? FileManager.default.removeItem(at: temporary) }
 
-        return try parseAndRetry(temporary)
+            return try parseAndRetry(temporary)
+        }
     }
 }
