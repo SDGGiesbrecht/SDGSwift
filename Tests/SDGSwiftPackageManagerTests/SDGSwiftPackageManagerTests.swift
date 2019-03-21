@@ -37,11 +37,9 @@ class SDGSwiftPackageManagerTests : TestCase {
         for localization in InterfaceLocalization.allCases {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                 do {
-                    let location = FileManager.default.url(in: .temporary, at: "Initialized")
-                    try? FileManager.default.removeItem(at: location)
-                    defer { try? FileManager.default.removeItem(at: location) }
-
-                    _ = try PackageRepository(initializingAt: location, type: .library)
+                    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
+                        _ = try PackageRepository(initializingAt: location, type: .library)
+                    }
                 } catch {
                     XCTFail("\(error)")
                 }

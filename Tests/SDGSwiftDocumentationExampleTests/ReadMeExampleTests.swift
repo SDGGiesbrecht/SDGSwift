@@ -19,18 +19,18 @@ import SDGSwift
 class ReadMeExampleTests : TestCase {
 
     func testReadMe() {
-        let temporaryDirectory = FileManager.default.url(in: .temporary, at: "Example")
-        defer { FileManager.default.delete(.temporary) }
+        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
-        func print(_ string: String) {} // Prevent test clutter.
+            func print(_ string: String) {} // Prevent test clutter.
 
-        // @example(readMe🇨🇦EN)
-        do {
-            let package = Package(url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!)
-            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory)
-        } catch {
-            XCTFail("\(error)")
+            // @example(readMe🇨🇦EN)
+            do {
+                let package = Package(url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!)
+                try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory)
+            } catch {
+                XCTFail("\(error)")
+            }
+            // @endExample
         }
-        // @endExample
     }
 }
