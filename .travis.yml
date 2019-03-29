@@ -27,7 +27,7 @@ matrix:
       script:
         - "git config --global protocol.version 1"
         - "swift package generate-xcodeproj"
-        - "xcodebuild test -sdk macosx -scheme SDGSwift-Package"
+        - "xcodebuild test -sdk macosx -scheme SDGSwift-Package > /dev/null"
     - os: linux
       env:
         - JOB="Linux"
