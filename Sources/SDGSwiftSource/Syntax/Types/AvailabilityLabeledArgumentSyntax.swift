@@ -19,6 +19,8 @@ extension AvailabilityLabeledArgumentSyntax {
     internal func normalized() -> AvailabilityLabeledArgumentSyntax {
         var value = self.value
         switch value {
+        case let token as TokenSyntax:
+            value = token.generallyNormalizedAndMissingInsteadOfNil()
         default: // @exempt(from: tests) Should never occur.
             if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unidentified labelled availability argument value: \(type(of: value))")
