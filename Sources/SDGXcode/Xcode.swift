@@ -103,6 +103,7 @@ public enum Xcode {
         "builtin\u{2D}copy",
         "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
+        "builtin\u{2D}swiftHeaderTool",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
         "chmod",
@@ -132,6 +133,7 @@ public enum Xcode {
         "MergeSwiftModule",
         "MkDir",
         "ProcessInfoPlistFile",
+        "SwiftMergeGeneratedHeaders",
         "SymLink",
         "Touch",
         "WriteAuxiliaryFile"
