@@ -29,7 +29,7 @@ extension Accessor {
             if let detail = modifier.detail {
                 let kind = modifier.name.tokenKind
                 if kind == .internalKeyword ∨ kind == .fileprivateKeyword ∨ kind == .privateKeyword,
-                    detail.contains(where: { $0.text == "set" }) {
+                    detail.text == "set" {
                     return true
                 }
             }
