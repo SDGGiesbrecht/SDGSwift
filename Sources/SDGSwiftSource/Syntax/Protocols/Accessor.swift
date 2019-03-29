@@ -16,7 +16,7 @@ import SDGLogic
 
 internal protocol Accessor : AccessControlled {
     var keyword: TokenSyntax { get }
-    var accessors: AccessorBlockSyntax? { get }
+    var accessors: Syntax? { get }
 }
 
 extension Accessor {
