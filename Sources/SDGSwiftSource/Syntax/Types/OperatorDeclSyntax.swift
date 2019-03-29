@@ -33,7 +33,7 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
             modifiers: nil,
             operatorKeyword: SyntaxFactory.makeToken(.operatorKeyword, presence: .missing),
             identifier: identifier,
-            infixOperatorGroup: nil)
+            operatorPrecedenceAndTypes: nil)
     }
 
     internal func identifierList() -> Set<String> {
