@@ -21,18 +21,16 @@ extension AttributeSyntax {
     internal func indicatesAbsence() -> Bool {
         switch attributeName.text {
         case "available":
-            return tokenList?.contains(where: { token in
-                switch token.tokenKind {
-                case .identifier(let name):
-                    if name ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
-                        return true
-                    } else {
-                        return false
-                    }
-                default:
-                    return false
+            guard let arguments = argument as? AvailabilitySpecListSyntax else {
+                return false
+            }
+            return arguments.contains(where: { argument in
+                if let labelled = argument as? AvailabilityLabeledArgumentSyntax,
+                    labelled.label.text ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
+                    return true
                 }
-            }) ?? false
+                return false
+            })
         default:
             return false
         }
