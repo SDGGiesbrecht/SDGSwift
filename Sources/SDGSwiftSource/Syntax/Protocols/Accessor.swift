@@ -81,7 +81,7 @@ extension Accessor {
         }
         return SyntaxFactory.makeAccessorBlock(
             leftBrace: SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessors),
+            accessors: SyntaxFactory.makeAccessorList(accessors),
             rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
     }
 }
