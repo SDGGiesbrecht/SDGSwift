@@ -34,11 +34,11 @@ public typealias Universal = B̲o̲o̲l̲
 public struct NestingStructure {
 
     #if canImport(AppKit)
-    public typealias WithAppKit = Bool
-    public typealias Universal = Bool
+    public typealias WithAppKit = B̲o̲o̲l̲
+    public typealias Universal = B̲o̲o̲l̲
     #elseif canImport(UIKit)
-    public typealias WithUIKit = Bool
-    public typealias Universal = Bool
+    public typealias WithUIKit = B̲o̲o̲l̲
+    public typealias Universal = B̲o̲o̲l̲
     #else
     public typealias Fallback = B̲o̲o̲l̲
     public typealias Universal = B̲o̲o̲l̲

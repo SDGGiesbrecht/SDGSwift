@@ -34,11 +34,11 @@
 ̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ NestingStructure {̲
 ̲
 ̲    #̲i̲f̲ c̲a̲n̲I̲m̲p̲o̲r̲t̲(̲A̲p̲p̲K̲i̲t̲)̲
-̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithAppKit =̲ B̲o̲o̲l̲
-̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ B̲o̲o̲l̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithAppKit =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
 ̲    #̲e̲l̲s̲e̲i̲f̲ c̲a̲n̲I̲m̲p̲o̲r̲t̲(̲U̲I̲K̲i̲t̲)̲
-̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithUIKit =̲ B̲o̲o̲l̲
-̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ B̲o̲o̲l̲
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ WithUIKit =̲ Bool
+̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
 ̲    #̲e̲l̲s̲e̲
 ̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Fallback =̲ Bool
 ̲    p̲u̲b̲l̲i̲c̲ t̲y̲p̲e̲a̲l̲i̲a̲s̲ Universal =̲ Bool
