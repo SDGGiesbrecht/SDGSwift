@@ -18,6 +18,7 @@ import SDGCollections
 
 extension AttributeSyntax {
 
+    private static let absenceIndicators = Set(["unavailable", "deprecated", "obsoleted"])
     internal func indicatesAbsence() -> Bool {
         switch attributeName.text {
         case "available":
@@ -25,8 +26,12 @@ extension AttributeSyntax {
                 return false
             }
             return arguments.contains(where: { argument in
+                if let token = argument.entry as? TokenSyntax,
+                    token.text ∈ AttributeSyntax.absenceIndicators {
+                    return true
+                }
                 if let labelled = argument.entry as? AvailabilityLabeledArgumentSyntax,
-                    labelled.label.text ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
+                    labelled.label.text ∈ AttributeSyntax.absenceIndicators {
                     return true
                 }
                 return false
