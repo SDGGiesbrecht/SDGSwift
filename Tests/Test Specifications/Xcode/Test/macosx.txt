@@ -47,7 +47,7 @@ MkDir [...]/Resources (in target: Mock)
 MkDir [...]/Versions (in target: Mock)
 ProcessInfoPlistFile [...]/MockTests_Info.plist (in target: MockTests)
 ProcessInfoPlistFile [...]/Mock_Info.plist (in target: Mock)
-Requested Swift ABI version based on scanned binaries: 
+Requested Swift ABI version based on scanned binaries: unstable()
 SymLink [...]/Current A (in target: Mock)
 SymLink [...]/Headers (in target: Mock)
 SymLink [...]/Mock (in target: Mock)
@@ -61,7 +61,6 @@ Test Suite 'MockTests' passed at -- ::..
 Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
-Test session results and logs:
 Testing started on 'My Mac'
 Touch [...]/Mock.framework (in target: Mock)
 Touch [...]/MockTests.xctest (in target: MockTests)
