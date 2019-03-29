@@ -105,7 +105,7 @@ extension AttributeSyntax {
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
                 leftParen: leftParen?.generallyNormalized(),
                 argument: normalizedArgument,
-                rightParen: leftParen?.generallyNormalized(trailingTrivia: .spaces(1)),
+                rightParen: rightParen?.generallyNormalized(trailingTrivia: .spaces(1)),
                 tokenList: nil)
         } else {
             return SyntaxFactory.makeAttribute(
