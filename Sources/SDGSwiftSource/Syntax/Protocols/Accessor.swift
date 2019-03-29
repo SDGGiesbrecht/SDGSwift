@@ -46,10 +46,9 @@ extension Accessor {
             if hasReducedSetterAccessLevel {
                 return false
             }
-            if let accessors = self.accessors {
+            if let accessors = self.accessors?.accessors {
                 // Computed.
-                if let list = accessors.accessorListOrStmtList as? AccessorListSyntax,
-                    list.count > 1 {
+                if accessors.count > 1 {
                     // Two accessors: get + set
                     return true
                 } else {
