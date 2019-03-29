@@ -21,7 +21,7 @@ extension AttributeSyntax {
     internal func indicatesAbsence() -> Bool {
         switch attributeName.text {
         case "available":
-            return balancedTokens.contains(where: { token in
+            return tokenList?.contains(where: { token in
                 switch token.tokenKind {
                 case .identifier(let name):
                     if name ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
@@ -32,7 +32,7 @@ extension AttributeSyntax {
                 default:
                     return false
                 }
-            })
+            }) ?? false
         default:
             return false
         }
