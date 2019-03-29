@@ -66,7 +66,10 @@ extension AttributeSyntax {
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
                 attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
-                balancedTokens: SyntaxFactory.makeTokenList([])).normalized()
+                leftParen: nil,
+                argument: nil,
+                rightParen: nil,
+                tokenList: nil)
         case "testable":
             // Not relevant to API symbols // @exempt(from: tests)
             return nil
