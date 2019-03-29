@@ -25,7 +25,7 @@ extension AttributeSyntax {
                 return false
             }
             return arguments.contains(where: { argument in
-                if let labelled = argument as? AvailabilityLabeledArgumentSyntax,
+                if let labelled = argument.entry as? AvailabilityLabeledArgumentSyntax,
                     labelled.label.text ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
                     return true
                 }
