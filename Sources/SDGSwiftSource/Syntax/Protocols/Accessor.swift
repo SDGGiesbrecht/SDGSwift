@@ -46,9 +46,9 @@ extension Accessor {
             if hasReducedSetterAccessLevel {
                 return false
             }
-            if let accessors = self.accessors?.accessors {
+            if let accessors = self.accessors as? AccessorBlockSyntax {
                 // Computed.
-                if accessors.count > 1 {
+                if accessors.accessors.count > 1 {
                     // Two accessors: get + set
                     return true
                 } else {
