@@ -90,7 +90,24 @@ extension AttributeSyntax {
     }
 
     private func normalized() -> AttributeSyntax {
-        if tokenList?.isEmpty ?? true {
+        if let argument = self.argument {
+            var normalizedArgument: Syntax?
+            switch argument {
+            case let availablitiy as AvailabilitySpecListSyntax:
+                normalizedArgument = availablitiy.normalized()
+            default: // @exempt(from: tests) Should never occur.
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified attribute argument: \(type(of: argument))")
+                }
+            }
+            return SyntaxFactory.makeAttribute(
+                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
+                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
+                leftParen: leftParen?.generallyNormalized(),
+                argument: normalizedArgument,
+                rightParen: leftParen?.generallyNormalized(trailingTrivia: .spaces(1)),
+                tokenList: nil)
+        } else {
             return SyntaxFactory.makeAttribute(
                 atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
@@ -98,14 +115,6 @@ extension AttributeSyntax {
                 argument: nil,
                 rightParen: nil,
                 tokenList: nil)
-        } else {
-            return SyntaxFactory.makeAttribute(
-                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
-                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
-                leftParen: leftParen?.generallyNormalized(),
-                argument: nil,
-                rightParen: leftParen?.generallyNormalized(),
-                tokenList: tokenList?.normalizedForAPIAttribute())
         }
     }
 
