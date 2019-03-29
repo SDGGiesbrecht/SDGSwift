@@ -93,7 +93,7 @@ public class ListEntrySyntax : MarkdownSyntax {
                     paragraph.children.prepend(remainderSyntax)
                     children.insert(contentsOf: [calloutSyntax, colon], at: index)
 
-                    let colonIndex = children.index(where: { $0 === colon })!
+                    let colonIndex = children.firstIndex(where: { $0 === colon })!
                     let contentsIndex = children.index(after: colonIndex)
 
                     var calloutType: CalloutSyntax.Type = CalloutSyntax.self
