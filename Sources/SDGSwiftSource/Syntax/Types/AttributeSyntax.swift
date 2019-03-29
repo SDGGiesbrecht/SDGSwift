@@ -90,16 +90,22 @@ extension AttributeSyntax {
     }
 
     private func normalized() -> AttributeSyntax {
-        if balancedTokens.isEmpty {
+        if tokenList?.isEmpty ?? true {
             return SyntaxFactory.makeAttribute(
-                atSignToken: SyntaxFactory.makeToken(.atSign),
+                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-                balancedTokens: SyntaxFactory.makeTokenList([]))
+                leftParen: nil,
+                argument: nil,
+                rightParen: nil,
+                tokenList: nil)
         } else {
             return SyntaxFactory.makeAttribute(
-                atSignToken: SyntaxFactory.makeToken(.atSign),
+                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
-                balancedTokens: balancedTokens.normalizedForAPIAttribute())
+                leftParen: leftParen?.generallyNormalized(),
+                argument: nil,
+                rightParen: leftParen?.generallyNormalized(),
+                tokenList: tokenList?.normalizedForAPIAttribute())
         }
     }
 
