@@ -68,7 +68,7 @@ extension AttributeSyntax {
             // Objective‐C implementation details
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
+                attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc"), trailingTrivia: .spaces(1)),
                 leftParen: nil,
                 argument: nil,
                 rightParen: nil,
