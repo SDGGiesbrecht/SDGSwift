@@ -31,6 +31,9 @@ import PackageDescription
 /// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 let package = Package(
     name: "SDGSwift",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     products: [
         // @documentation(SDGSwift)
         /// A basic interface for the Swift compiler.
