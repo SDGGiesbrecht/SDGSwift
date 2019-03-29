@@ -46,18 +46,22 @@ extension Accessor {
             if hasReducedSetterAccessLevel {
                 return false
             }
-            if let accessors = self.accessors as? AccessorBlockSyntax {
-                // Computed.
-                if accessors.accessors.count > 1 {
+            guard let accessors = self.accessors else {
+                // Stored.
+                return true
+            }
+            switch accessors {
+            case let accessorBlock as AccessorBlockSyntax:
+                if accessorBlock.accessors.count > 1 {
                     // Two accessors: get + set
                     return true
                 } else {
                     // Just one accessor: get
                     return false
                 }
-            } else {
-                // Stored.
-                return true
+            default:
+                // Computed.
+                return false
             }
         }
     }
