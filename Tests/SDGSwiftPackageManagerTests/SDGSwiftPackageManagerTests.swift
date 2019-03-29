@@ -38,7 +38,7 @@ class SDGSwiftPackageManagerTests : TestCase {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                 do {
                     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-                        _ = try PackageRepository(initializingAt: location, type: .library)
+                        _ = try PackageRepository(initializingAt: location, named: StrictString(location.lastPathComponent), type: .library)
                     }
                 } catch {
                     XCTFail("\(error)")
