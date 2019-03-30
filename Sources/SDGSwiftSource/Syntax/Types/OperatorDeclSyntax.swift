@@ -24,7 +24,7 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
             modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
             operatorKeyword: operatorKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            infixOperatorGroup: infixOperatorGroup?.normalizedForAPIDeclaration())
+            operatorPrecedenceAndTypes: operatorPrecedenceAndTypes?.normalizedForAPIDeclaration())
     }
 
     internal func name() -> OperatorDeclSyntax {
@@ -33,7 +33,7 @@ extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
             modifiers: nil,
             operatorKeyword: SyntaxFactory.makeToken(.operatorKeyword, presence: .missing),
             identifier: identifier,
-            infixOperatorGroup: nil)
+            operatorPrecedenceAndTypes: nil)
     }
 
     internal func identifierList() -> Set<String> {

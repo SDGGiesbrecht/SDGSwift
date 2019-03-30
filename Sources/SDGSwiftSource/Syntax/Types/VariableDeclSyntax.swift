@@ -23,7 +23,7 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
         return letOrVarKeyword
     }
 
-    var accessors: AccessorBlockSyntax? {
+    var accessors: Syntax? {
         let result = bindings.first?.accessor
 
         // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)

@@ -22,7 +22,7 @@ extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APIS
         return subscriptKeyword
     }
 
-    var accessors: AccessorBlockSyntax? {
+    var accessors: Syntax? {
         return accessor
     }
 

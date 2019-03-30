@@ -18,20 +18,23 @@ import SDGCollections
 
 extension AttributeSyntax {
 
+    private static let absenceIndicators = Set(["unavailable", "deprecated", "obsoleted"])
     internal func indicatesAbsence() -> Bool {
         switch attributeName.text {
         case "available":
-            return balancedTokens.contains(where: { token in
-                switch token.tokenKind {
-                case .identifier(let name):
-                    if name ∈ Set(["unavailable", "deprecated", "obsoleted"]) {
-                        return true
-                    } else {
-                        return false
-                    }
-                default:
-                    return false
+            guard let arguments = argument as? AvailabilitySpecListSyntax else {
+                return false
+            }
+            return arguments.contains(where: { argument in
+                if let token = argument.entry as? TokenSyntax,
+                    token.text ∈ AttributeSyntax.absenceIndicators {
+                    return true
                 }
+                if let labelled = argument.entry as? AvailabilityLabeledArgumentSyntax,
+                    labelled.label.text ∈ AttributeSyntax.absenceIndicators {
+                    return true
+                }
+                return false
             })
         default:
             return false
@@ -65,8 +68,11 @@ extension AttributeSyntax {
             // Objective‐C implementation details
             return SyntaxFactory.makeAttribute(
                 atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc")),
-                balancedTokens: SyntaxFactory.makeTokenList([])).normalized()
+                attributeName: SyntaxFactory.makeToken(.contextualKeyword("objc"), trailingTrivia: .spaces(1)),
+                leftParen: nil,
+                argument: nil,
+                rightParen: nil,
+                tokenList: nil)
         case "testable":
             // Not relevant to API symbols // @exempt(from: tests)
             return nil
@@ -87,16 +93,31 @@ extension AttributeSyntax {
     }
 
     private func normalized() -> AttributeSyntax {
-        if balancedTokens.isEmpty {
+        if let argument = self.argument {
+            var normalizedArgument: Syntax?
+            switch argument {
+            case let availablitiy as AvailabilitySpecListSyntax:
+                normalizedArgument = availablitiy.normalized()
+            default: // @exempt(from: tests) Should never occur.
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
+                    print("Unidentified attribute argument: \(type(of: argument))")
+                }
+            }
             return SyntaxFactory.makeAttribute(
-                atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-                balancedTokens: SyntaxFactory.makeTokenList([]))
+                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
+                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
+                leftParen: leftParen?.generallyNormalized(),
+                argument: normalizedArgument,
+                rightParen: rightParen?.generallyNormalized(trailingTrivia: .spaces(1)),
+                tokenList: nil)
         } else {
             return SyntaxFactory.makeAttribute(
-                atSignToken: SyntaxFactory.makeToken(.atSign),
-                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
-                balancedTokens: balancedTokens.normalizedForAPIAttribute())
+                atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
+                attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+                leftParen: nil,
+                argument: nil,
+                rightParen: nil,
+                tokenList: nil)
         }
     }
 

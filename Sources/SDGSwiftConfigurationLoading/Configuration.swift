@@ -204,7 +204,11 @@ extension Configuration {
                 script.append(String(data: json, encoding: .utf8)!)
             }
 
-            let json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
+            // #warning(Configuration dependency needs updating.)
+            var json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
+            if json.first ≠ "[" {
+                json.drop(upTo: "\n[")
+            }
 
             jsonData = json.file
         }

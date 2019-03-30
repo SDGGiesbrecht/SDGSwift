@@ -169,8 +169,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             return unknownSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
         }
 
-        if let tryResult = try? self.syntax(),
-            let syntax = tryResult,
+        if let syntax = try? self.syntax(),
             syntax.map({ $0.source() }).joined() == text {
             return String(syntax.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks) }).joined())
         } else {

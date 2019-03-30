@@ -34,7 +34,7 @@ private func withMock(file: StaticString = #file, line: UInt = #line, test: (URL
 public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) {
     do {
         return try withMock(file: file, line: line) { mock in
-            let repository = try PackageRepository(initializingAt: mock, type: .library)
+            let repository = try PackageRepository(initializingAt: mock, named: StrictString(mock.lastPathComponent), type: .library)
             try test(repository)
         }
     } catch {

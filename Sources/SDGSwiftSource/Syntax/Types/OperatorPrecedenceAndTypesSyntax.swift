@@ -1,5 +1,5 @@
 /*
- InfixOperatorGroupSyntax.swift
+ OperatorPrecedenceAndTypesSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension InfixOperatorGroupSyntax {
+extension OperatorPrecedenceAndTypesSyntax {
 
-    internal func normalizedForAPIDeclaration() -> InfixOperatorGroupSyntax {
-        return SyntaxFactory.makeInfixOperatorGroup(
+    internal func normalizedForAPIDeclaration() -> OperatorPrecedenceAndTypesSyntax {
+        return SyntaxFactory.makeOperatorPrecedenceAndTypes(
             colon: colon.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            precedenceGroupName: precedenceGroupName.generallyNormalizedAndMissingInsteadOfNil())
+            precedenceGroupAndDesignatedTypes: precedenceGroupAndDesignatedTypes.normalizedPrecedenceGroupAndDesignatedTypes())
     }
 }

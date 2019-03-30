@@ -29,7 +29,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public convenience init(module: PackageModel.Target, manifest: Syntax?) throws {
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        try self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name), sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.asString) }))
+        try self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name), sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) }))
     }
 
     /// Creates a module API instance by parsing the specified source files.

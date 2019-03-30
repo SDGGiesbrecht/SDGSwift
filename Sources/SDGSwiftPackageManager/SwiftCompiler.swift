@@ -28,7 +28,7 @@ extension SwiftCompiler {
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
-        return ManifestLoader(resources: try manifestResources())
+        return ManifestLoader(manifestResources: try manifestResources())
     }
 
     internal static func workspaceDelegate() -> WorkspaceDelegate {

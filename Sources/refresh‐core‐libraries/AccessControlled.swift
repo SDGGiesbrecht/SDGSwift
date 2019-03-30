@@ -30,7 +30,9 @@ extension AccessControlled {
         if ¬modifiers.contains(where: { $0.name.text == "open" }) {
             modifiers.prepend(SyntaxFactory.makeDeclModifier(
                 name: SyntaxFactory.makeToken(.publicKeyword, trailingTrivia: .spaces(1)),
-                detail: nil))
+                detailLeftParen: nil,
+                detail: nil,
+                detailRightParen: nil))
         }
         return withModifiers(SyntaxFactory.makeModifierList(modifiers))
     }

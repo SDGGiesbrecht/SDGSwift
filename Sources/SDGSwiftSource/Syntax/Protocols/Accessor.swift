@@ -16,7 +16,7 @@ import SDGLogic
 
 internal protocol Accessor : AccessControlled {
     var keyword: TokenSyntax { get }
-    var accessors: AccessorBlockSyntax? { get }
+    var accessors: Syntax? { get }
 }
 
 extension Accessor {
@@ -29,7 +29,7 @@ extension Accessor {
             if let detail = modifier.detail {
                 let kind = modifier.name.tokenKind
                 if kind == .internalKeyword ∨ kind == .fileprivateKeyword ∨ kind == .privateKeyword,
-                    detail.contains(where: { $0.text == "set" }) {
+                    detail.text == "set" {
                     return true
                 }
             }
@@ -46,19 +46,22 @@ extension Accessor {
             if hasReducedSetterAccessLevel {
                 return false
             }
-            if let accessors = self.accessors {
-                // Computed.
-                if let list = accessors.accessorListOrStmtList as? AccessorListSyntax,
-                    list.count > 1 {
+            guard let accessors = self.accessors else {
+                // Stored.
+                return true
+            }
+            switch accessors {
+            case let accessorBlock as AccessorBlockSyntax:
+                if accessorBlock.accessors.count > 1 {
                     // Two accessors: get + set
                     return true
                 } else {
                     // Just one accessor: get
                     return false
                 }
-            } else {
-                // Stored.
-                return true
+            default:
+                // Computed.
+                return false
             }
         }
     }
@@ -82,7 +85,7 @@ extension Accessor {
         }
         return SyntaxFactory.makeAccessorBlock(
             leftBrace: SyntaxFactory.makeToken(.leftBrace, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            accessorListOrStmtList: SyntaxFactory.makeAccessorList(accessors),
+            accessors: SyntaxFactory.makeAccessorList(accessors),
             rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .spaces(1)))
     }
 }

@@ -102,8 +102,14 @@ class SDGSwiftConfigurationAPITests : TestCase {
             abbreviate(logEntry: "Completed resolution in")
             abbreviate(logEntry: "Cloning")
             abbreviate(logEntry: "Resolving")
-            remove(logEntry: "Compile Swift Module") // These may occur out of order.
+
+            // These may occur out of order.
+            remove(logEntry: "Compile Swift Module")
+            remove(logEntry: "[2/5] Compiling Swift Module")
+            remove(logEntry: "[3/5] Compiling Swift Module")
             remove(logEntry: "Linking")
+            remove(logEntry: "warning: invalid duplicate target dependency declaration")
+
             compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
         } catch {
             XCTFail(error.localizedDescription)

@@ -21,7 +21,9 @@ extension DeclModifierSyntax {
         func normalize() -> DeclModifierSyntax {
             return SyntaxFactory.makeDeclModifier(
                 name: name.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-                detail: nil)
+                detailLeftParen: nil,
+                detail: nil,
+                detailRightParen: nil)
         }
         switch name.tokenKind {
         case .staticKeyword, .classKeyword:

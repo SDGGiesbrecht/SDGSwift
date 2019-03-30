@@ -12,7 +12,9 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-
+[1/5] Compiling Swift Module 'SDGSwiftConfiguration' (4 sources)
+[4/5] Compiling Swift Module 'configure' (1 sources)
+[5/5] 
 Cached
 Loading “SampleConfigurationFile.swift”...
 
@@ -34,5 +36,8 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-
+[1/4] Compiling Swift Module 'SDGSwiftConfiguration' (4 sources)
+[2/4] Compiling Swift Module 'SampleConfiguration' (2 sources)
+[3/4] Compiling Swift Module 'configure' (1 sources)
+[4/4] 
 Mock
