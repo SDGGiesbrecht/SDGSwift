@@ -241,7 +241,7 @@ let package = Package(
         .target(name: "llbuildBasic", dependencies: [
             "llvmSupport"
             ], path: "Sources/Shims/LLBuild/lib/Basic"),
-        .target(name: "llvmSupport", path: "Sources/Shims/LLBuild/lib/llvm/Support", linkerSettings: [.linkedLibrary("ncurses")]),
+        .target(name: "llvmSupport", path: "Sources/Shims/LLBuild/lib/llvm/Support", cSettings: [.define("SWIFT_PACKAGE")], linkerSettings: [.linkedLibrary("ncurses")]),
 
         .target(name: "refresh‐core‐libraries", dependencies: [
             "SDGSwiftPackageManager",
