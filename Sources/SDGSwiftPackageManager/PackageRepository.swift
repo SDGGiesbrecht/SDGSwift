@@ -29,12 +29,13 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - location: The location at which to initialize the new package.
+    ///     - name: A name for the package.
     ///     - type: The type of package.
     ///
     /// - Throws: A `Git.Error`, an `ExternalProcess.Error`, or a package manager error.
-    public init(initializingAt location: URL, type: InitPackage.PackageType) throws {
+    public init(initializingAt location: URL, named name: StrictString, type: InitPackage.PackageType) throws {
         self.init(at: location)
-        let initializer = try InitPackage(destinationPath: AbsolutePath(location.path), packageType: type)
+        let initializer = try InitPackage(name: String(name), destinationPath: AbsolutePath(location.path), packageType: type)
         try initializer.writePackageStructure()
         try Git.initialize(self)
         try commitChanges(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
