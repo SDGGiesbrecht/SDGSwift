@@ -41,7 +41,7 @@ extension JSON {
 
     /// Returns an optional JSON mappable object from a given key.
     public func get<T: JSONMappable>(_ key: String) -> T? {
-        return try? get(key)
+        return try? get(key) as T
     }
 
     /// Returns a JSON mappable array from a given key.

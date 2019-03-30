@@ -166,6 +166,7 @@ extension SPMLLBuild.Diagnostic: DiagnosticDataConvertible {
         case .error: return LLBuildErrorDiagnostic(message: message)
         case .warning: return LLBuildWarningDiagnostic(message: message)
         case .note: return LLBuildNoteDiagnostic(message: message)
+        default: fatalError("Unknown diagnostic data: \(kind)")
         }
     }
 }
@@ -196,6 +197,8 @@ public final class BuildDelegate: BuildSystemDelegate {
             case .isComplete:
                 scanningCount -= 1
                 completedCount += 1
+            default:
+                fatalError("Unknown command status: \(kind)")
             }
         }
     }
