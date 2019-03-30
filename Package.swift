@@ -234,7 +234,7 @@ let package = Package(
             ], path: "Sources/Shims/LLBuild/products/libllbuild"),
         .target(name: "llbuildCore", dependencies: [
             "llbuildBasic"
-            ], path: "Sources/Shims/LLBuild/lib/Core"),
+            ], path: "Sources/Shims/LLBuild/lib/Core", linkerSettings: [.linkedLibrary("sqlite3")]),
         .target(name: "llbuildBuildSystem", dependencies: [
             "llbuildCore"
             ], path: "Sources/Shims/LLBuild/lib/BuildSystem"),
