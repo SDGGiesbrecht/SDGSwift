@@ -314,5 +314,6 @@ let package = Package(
             "SDGSwift",
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
-    ]
+    ],
+    cxxLanguageStandard: .cxx14
 )
