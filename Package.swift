@@ -227,21 +227,21 @@ let package = Package(
             ], path: "Sources/Shims/SwiftPM/Xcodeproj"),
         .target(name: "llbuildSwift", dependencies: [
             "libllbuild",
-            ], path: "Sources/Shims/LLBuild/llbuildSwift", exclude: ["llbuild.swift"]),
+            ], path: "Sources/Shims/LLBuild/products/llbuildSwift", exclude: ["llbuild.swift"]),
         .target(name: "libllbuild", dependencies: [
             "llbuildCore",
             "llbuildBuildSystem"
-            ], path: "Sources/Shims/LLBuild/libllbuild"),
+            ], path: "Sources/Shims/LLBuild/products/libllbuild"),
         .target(name: "llbuildCore", dependencies: [
             "llbuildBasic"
-            ], path: "Sources/Shims/LLBuild/Core"),
+            ], path: "Sources/Shims/LLBuild/lib/Core"),
         .target(name: "llbuildBuildSystem", dependencies: [
             "llbuildCore"
-            ], path: "Sources/Shims/LLBuild/BuildSystem"),
+            ], path: "Sources/Shims/LLBuild/lib/BuildSystem"),
         .target(name: "llbuildBasic", dependencies: [
             "llvmSupport"
-            ], path: "Sources/Shims/LLBuild/Basic"),
-        .target(name: "llvmSupport", path: "Sources/Shims/LLBuild/Support"),
+            ], path: "Sources/Shims/LLBuild/lib/Basic"),
+        .target(name: "llvmSupport", path: "Sources/Shims/LLBuild/lib/llvm/Support", linkerSettings: [.linkedLibrary("ncurses")]),
 
         .target(name: "refresh‐core‐libraries", dependencies: [
             "SDGSwiftPackageManager",
