@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 /*
  Package.swift
@@ -18,6 +18,9 @@ import PackageDescription
 
 let package = Package(
     name: "configure",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     dependencies: [
         .package(url: "[*URL*]", .exact("[*version*]")),
 [*packages*]
