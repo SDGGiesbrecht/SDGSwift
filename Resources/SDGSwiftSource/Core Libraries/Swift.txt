@@ -30,8 +30,13 @@ public protocol BinaryFloatingPoint : AdditiveArithmetic, Comparable, Equatable,
     var significandWidth: Int { get }
 }
 public protocol BinaryInteger : AdditiveArithmetic, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
+    associatedtype Words where Int == Words.Index, UInt == Words.Element
     static var isSigned: Bool { get }
     init()
+    init<T>(_ source: T) where T : BinaryFloatingPoint
+    init<T>(_ source: T) where T : BinaryInteger
+    init<T>(clamping source: T) where T : BinaryInteger
+    init<T>(truncatingIfNeeded source: T) where T : BinaryInteger
     var bitWidth: Int { get }
     var trailingZeroBitCount: Int { get }
     var words: Words { get }
@@ -58,6 +63,7 @@ public protocol BinaryInteger : AdditiveArithmetic, Comparable, CustomStringConv
 public protocol CVarArg {
 }
 public protocol CaseIterable {
+    associatedtype AllCases where AllCases.Element == Self
     static var allCases: AllCases { get }
 }
 public protocol CodingKey : CustomDebugStringConvertible, CustomStringConvertible {
@@ -68,9 +74,12 @@ public protocol CodingKey : CustomDebugStringConvertible, CustomStringConvertibl
 }
 public protocol Collection : Sequence {
     associatedtype Index
+    associatedtype Indices where Index == Indices.Element, Index == Indices.Index, Indices == Indices.SubSequence
+    associatedtype SubSequence where Element == SubSequence.Element, Index == SubSequence.Index, SubSequence == SubSequence.SubSequence
     var count: Int { get }
     var endIndex: Index { get }
     var first: Element? { get }
+    var indices: DefaultIndices<Self> { get } where DefaultIndices<Self> == Indices
     var indices: Indices { get }
     var isEmpty: Bool { get }
     var isEmpty: Bool { get }
@@ -176,6 +185,7 @@ public protocol ExpressibleByNilLiteral {
     init(nilLiteral: Void)
 }
 public protocol ExpressibleByStringInterpolation : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral {
+    associatedtype StringInterpolation where StringInterpolation.StringLiteralType == StringLiteralType
     init(stringInterpolation: StringInterpolation)
 }
 public protocol ExpressibleByStringLiteral : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByUnicodeScalarLiteral {
@@ -194,6 +204,7 @@ public protocol FixedWidthInteger : AdditiveArithmetic, BinaryInteger, Comparabl
     static func random(in range: Range<Self>) -> Self
     static func random<T>(in range: ClosedRange<Self>, using generator: inout T) -> Self where T : RandomNumberGenerator
     static func random<T>(in range: Range<Self>, using generator: inout T) -> Self where T : RandomNumberGenerator
+    init?<S>(_ text: S, radix: Int = x) where S : StringProtocol
     init(bigEndian value: Self)
     init(littleEndian value: Self)
     var bigEndian: Self { get }
@@ -307,7 +318,9 @@ public protocol KeyedEncodingContainerProtocol {
 public protocol LazyCollectionProtocol : Collection, LazySequenceProtocol, Sequence {
 }
 public protocol LazySequenceProtocol : Sequence {
+    associatedtype Elements where Element == Elements.Element
     var elements: Elements { get }
+    var elements: Self { get } where Elements == Self
 }
 public protocol LosslessStringConvertible : CustomStringConvertible {
     init?(_ description: String)
@@ -323,6 +336,7 @@ public protocol MutableCollection : Collection, Sequence {
 }
 public protocol Numeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral {
     associatedtype Magnitude
+    init?<T>(exactly source: T) where T : BinaryInteger
     var magnitude: Magnitude { get }
     func *(lhs: Self, rhs: Self) -> Self
     func *=(lhs: inout Self, rhs: Self)
@@ -344,6 +358,8 @@ public protocol RangeExpression {
 }
 public protocol RangeReplaceableCollection : Collection, Sequence {
     init()
+    init<S>(_ elements: S) where S : Sequence, Element == S.Element
+    init<S>(_ elements: S) where S : Sequence, Element == S.Element
     init(repeating repeatedValue: Element, count: Int)
     init(repeating repeatedValue: Element, count: Int)
     func +<Other>(lhs: Other, rhs: Self) -> Self where Other : Sequence, Element == Other.Element
@@ -369,11 +385,19 @@ public protocol RangeReplaceableCollection : Collection, Sequence {
 public protocol RawRepresentable {
     associatedtype RawValue
     init?(rawValue: RawValue)
+    var hashValue: Int { get } where RawValue : Hashable, Self : Hashable
     var rawValue: RawValue { get }
 }
 public protocol SIMD : Codable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, SIMDStorage {
+    associatedtype MaskStorage where MaskStorage.Scalar : FixedWidthInteger & SignedInteger
 }
 public protocol SIMDScalar {
+    associatedtype SIMD16Storage where SIMD16Storage.Scalar == Self
+    associatedtype SIMD2Storage where SIMD2Storage.Scalar == Self
+    associatedtype SIMD32Storage where SIMD32Storage.Scalar == Self
+    associatedtype SIMD4Storage where SIMD4Storage.Scalar == Self
+    associatedtype SIMD64Storage where SIMD64Storage.Scalar == Self
+    associatedtype SIMD8Storage where SIMD8Storage.Scalar == Self
     associatedtype SIMDMaskScalar
 }
 public protocol SIMDStorage {
@@ -384,6 +408,7 @@ public protocol SIMDStorage {
 }
 public protocol Sequence {
     associatedtype Element
+    associatedtype Iterator where Element == Iterator.Element
     var lazy: LazySequence<Self> { get }
     var underestimatedCount: Int { get }
     func allSatisfy(_ predicate: (Element) throws -> Bool) rethrows -> Bool
@@ -423,6 +448,7 @@ public protocol Sequence {
 public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     associatedtype Element
     init()
+    init<S>(_ sequence: __owned S) where S : Sequence, Element == S.Element
     var isEmpty: Bool { get }
     func contains(_ member: Element) -> Bool
     mutating func formIntersection(_ other: Self)
@@ -445,6 +471,8 @@ public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     @discardableResult mutating func update(with newMember: __owned Element) -> Element?
 }
 public protocol SignedInteger : AdditiveArithmetic, BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
+    static var max: Self { get } where Self : FixedWidthInteger
+    static var min: Self { get } where Self : FixedWidthInteger
 }
 public protocol SignedNumeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral, Numeric {
     prefix func -(operand: Self) -> Self
@@ -472,7 +500,12 @@ public protocol StringInterpolationProtocol {
     mutating func appendLiteral(_ literal: StringLiteralType)
 }
 public protocol StringProtocol : BidirectionalCollection, Collection, Comparable, CustomStringConvertible, Equatable, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringInterpolation, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Hashable, LosslessStringConvertible, Sequence, TextOutputStream, TextOutputStreamable {
+    associatedtype UTF16View where Index == UTF16View.Index, UInt16 == UTF16View.Element
+    associatedtype UTF8View where Index == UTF8View.Index, UInt8 == UTF8View.Element
+    associatedtype UnicodeScalarView where Index == UnicodeScalarView.Index, Unicode.Scalar == UnicodeScalarView.Element
     init(cString nullTerminatedUTF8: UnsafePointer<CChar>)
+    init<C, Encoding>(decoding codeUnits: C, as sourceEncoding: Encoding.Type) where C : Collection, Encoding : Unicode.Encoding, C.Iterator.Element == Encoding.CodeUnit
+    init<Encoding>(decodingCString nullTerminatedCodeUnits: UnsafePointer<Encoding.CodeUnit>, as sourceEncoding: Encoding.Type) where Encoding : Unicode.Encoding
     var unicodeScalars: UnicodeScalarView { get }
     var utf16: UTF16View { get }
     var utf8: UTF8View { get }
@@ -518,21 +551,27 @@ public protocol UnkeyedEncodingContainer {
     mutating func superEncoder() -> Encoder
 }
 public protocol UnsignedInteger : AdditiveArithmetic, BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
+    static var max: Self { get } where Self : FixedWidthInteger
+    static var min: Self { get } where Self : FixedWidthInteger
 }
 extension AnyBidirectionalCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
+    public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
     public init?(_ other: AnyCollection<Element>) {}
 }
 extension AnyCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
+    public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
 }
 extension AnyIterator {
 }
 extension AnyRandomAccessCollection {
     public init(_ other: AnyRandomAccessCollection<Element>) {}
+    public init<C>(_ base: C) where C : RandomAccessCollection, C.Element == Element {}
     public init?(_ other: AnyBidirectionalCollection<Element>) {}
 }
 extension AnySequence {
+    public init<S>(_ base: S) where S : Sequence, Element == S.Element {}
 }
 extension Array {
     public var capacity: Int { get }
@@ -751,8 +790,11 @@ extension StrideTo {
 }
 extension StrideToIterator {
 }
+extension String.Index {
+    public init<S>(utf16Offset offset: Int, in s: S) where S : StringProtocol {}
+    public func utf16Offset<S>(in s: S) -> Int where S : StringProtocol {}
+}
 extension String.UTF16View {
-    public subscript(i: Index) -> UTF16.CodeUnit { get } {}
 }
 extension String.UTF16View.Index {
     public init?(_ idx: String.Index, within target: String.UTF16View) {}
@@ -793,10 +835,74 @@ extension Unicode.ASCII.Parser {
     public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
 }
 extension Unicode.Scalar {
-    public var isASCII: Bool { get }
-    public var utf16: UTF16View { get }
-    public var value: UInt32 { get }
-    public func escaped(asASCII forceASCII: Bool) -> String {}
+}
+extension Unicode.Scalar.Properties {
+    public var age: Unicode.Version? { get }
+    public var canonicalCombiningClass: Unicode.CanonicalCombiningClass { get }
+    public var changesWhenCaseFolded: Bool { get }
+    public var changesWhenCaseMapped: Bool { get }
+    public var changesWhenLowercased: Bool { get }
+    public var changesWhenNFKCCaseFolded: Bool { get }
+    public var changesWhenTitlecased: Bool { get }
+    public var changesWhenUppercased: Bool { get }
+    public var generalCategory: Unicode.GeneralCategory { get }
+    public var isASCIIHexDigit: Bool { get }
+    public var isAlphabetic: Bool { get }
+    public var isBidiControl: Bool { get }
+    public var isBidiMirrored: Bool { get }
+    public var isCaseIgnorable: Bool { get }
+    public var isCased: Bool { get }
+    public var isDash: Bool { get }
+    public var isDefaultIgnorableCodePoint: Bool { get }
+    public var isDeprecated: Bool { get }
+    public var isDiacritic: Bool { get }
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmoji: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifier: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifierBase: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiPresentation: Bool { get }
+#endif
+    public var isExtender: Bool { get }
+    public var isFullCompositionExclusion: Bool { get }
+    public var isGraphemeBase: Bool { get }
+    public var isGraphemeExtend: Bool { get }
+    public var isHexDigit: Bool { get }
+    public var isIDContinue: Bool { get }
+    public var isIDSBinaryOperator: Bool { get }
+    public var isIDSTrinaryOperator: Bool { get }
+    public var isIDStart: Bool { get }
+    public var isIdeographic: Bool { get }
+    public var isJoinControl: Bool { get }
+    public var isLogicalOrderException: Bool { get }
+    public var isLowercase: Bool { get }
+    public var isMath: Bool { get }
+    public var isNoncharacterCodePoint: Bool { get }
+    public var isPatternSyntax: Bool { get }
+    public var isPatternWhitespace: Bool { get }
+    public var isQuotationMark: Bool { get }
+    public var isRadical: Bool { get }
+    public var isSentenceTerminal: Bool { get }
+    public var isSoftDotted: Bool { get }
+    public var isTerminalPunctuation: Bool { get }
+    public var isUnifiedIdeograph: Bool { get }
+    public var isUppercase: Bool { get }
+    public var isVariationSelector: Bool { get }
+    public var isWhitespace: Bool { get }
+    public var isXIDContinue: Bool { get }
+    public var isXIDStart: Bool { get }
+    public var lowercaseMapping: String { get }
+    public var name: String? { get }
+    public var nameAlias: String? { get }
+    public var numericType: Unicode.NumericType? { get }
+    public var numericValue: Double? { get }
+    public var titlecaseMapping: String { get }
+    public var uppercaseMapping: String { get }
 }
 extension Unicode.Scalar.UTF16View {
 }

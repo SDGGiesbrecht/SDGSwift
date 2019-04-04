@@ -2596,8 +2596,6 @@ extension Measurement {
 extension Optional {
 }
 extension Range {
-    public init?(_ range: NSRange) where Bound : BinaryInteger {}
-    public init?(_ range: NSRange, in string: String) where Bound == String.Index {}
 }
 extension Repeated {
 }
