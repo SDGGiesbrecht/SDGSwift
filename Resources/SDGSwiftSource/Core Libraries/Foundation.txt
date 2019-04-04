@@ -2310,7 +2310,6 @@ public protocol CustomNSError : Error {
     var errorUserInfo: [String: Any] { get }
 }
 public protocol DataProtocol : RandomAccessCollection {
-    associatedtype Regions where Regions.Element : ContiguousBytes & DataProtocol, Regions.Element.SubSequence : ContiguousBytes
     var regions: Regions { get }
     @discardableResult func copyBytes(to ptr: UnsafeMutableRawBufferPointer) -> Int
     @discardableResult func copyBytes(to: UnsafeMutableRawBufferPointer, count: Int) -> Int
@@ -2586,22 +2585,16 @@ extension Measurement {
     public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func /(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func <<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
     public func ==<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
-    public mutating func convert(to otherUnit: UnitType) where UnitType : Dimension {}
-    public func converted(to otherUnit: UnitType) -> Measurement<UnitType> where UnitType : Dimension {}
     public func encode(to encoder: Encoder) throws {}
 }
 extension Optional {
 }
 extension Range {
-    public init?(_ range: NSRange) where Bound : BinaryInteger {}
-    public init?(_ range: NSRange, in string: String) where Bound == String.Index {}
 }
 extension Repeated {
 }
@@ -2614,7 +2607,6 @@ extension String {
     public static var defaultCStringEncoding: Encoding { get }
     public static func localizedName(of encoding: Encoding) -> String {}
     public static func localizedStringWithFormat(_ format: String, _ arguments: CVarArg...) -> String {}
-    public init?<S>(bytes: __shared S, encoding: Encoding) where S : Sequence, S.Iterator.Element == UInt8 {}
     public init?(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, encoding: Encoding, freeWhenDone flag: Bool) {}
     public init?(cString: UnsafePointer<CChar>, encoding enc: Encoding) {}
     public init(contentsOf url: __shared URL) throws {}
@@ -2638,46 +2630,20 @@ extension String.Encoding {
     public func ==(lhs: String.Encoding, rhs: String.Encoding) -> Bool {}
 }
 extension StringProtocol {
-    public var capitalized: String { get } where Index == String.Index
-    public var decomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var decomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var fastestEncoding: String.Encoding { get } where Index == String.Index
-    public var hash: Int { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedCapitalized: String { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedLowercase: String { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedUppercase: String { get } where Index == String.Index
-    public var precomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var precomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var removingPercentEncoding: String? { get } where Index == String.Index
-    public var smallestEncoding: String.Encoding { get } where Index == String.Index
-    public func addingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? where Index == String.Index {}
     public func appending<T>(_ aString: T) -> String where T : StringProtocol, Index == String.Index {}
     public func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol, Index == String.Index {}
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    @available(macOS 10.11, iOS 9.0, *) public func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String? where Index == String.Index {}
-#endif
-    public func cString(using encoding: String.Encoding) -> [CChar]? where Index == String.Index {}
-    public func canBeConverted(to encoding: String.Encoding) -> Bool where Index == String.Index {}
-    public func capitalized(with locale: Locale?) -> String where Index == String.Index {}
     public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
     public func commonPrefix<T>(with aString: T, options: String.CompareOptions = x) -> String where T : StringProtocol, Index == String.Index {}
     public func compare<T>(_ aString: T, options mask: String.CompareOptions = x, range: Range<Index>? = x, locale: Locale? = x) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
-    public func completePath(into outputName: UnsafeMutablePointer<String>? = x, caseSensitive: Bool, matchesInto outputArray: UnsafeMutablePointer<[String]>? = x, filterTypes: [String]? = x) -> Int where Index == String.Index {}
-    public func components(separatedBy separator: CharacterSet) -> [String] where Index == String.Index {}
     public func components<T>(separatedBy separator: T) -> [String] where T : StringProtocol, Index == String.Index {}
     public func contains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
-    public func data(using encoding: String.Encoding, allowLossyConversion: Bool = x) -> Data? where Index == String.Index {}
-    public func enumerateLines(invoking body: @escaping (_ line: String, _ stop: inout Bool) -> Void) where Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func enumerateLinguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, invoking body: (String, Range<Index>, Range<Index>, inout Bool) -> Void) where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
 #endif
     public func enumerateSubstrings<R>(in range: R, options opts: String.EnumerationOptions = x, _ body: @escaping (_ substring: String?, _ substringRange: Range<Index>, _ enclosingRange: Range<Index>, inout Bool) -> Void) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func folding(options: String.CompareOptions = x, locale: Locale?) -> String where Index == String.Index {}
     public func getBytes<R>(_ buffer: inout [UInt8], maxLength maxBufferCount: Int, usedLength usedBufferCount: UnsafeMutablePointer<Int>, encoding: String.Encoding, options: String.EncodingConversionOptions = x, range: R, remaining leftover: UnsafeMutablePointer<Range<Index>>) -> Bool where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func getCString(_ buffer: inout [CChar], maxLength: Int, encoding: String.Encoding) -> Bool where Index == String.Index {}
     public func getLineStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
     public func getParagraphStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func lengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
     public func lineRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func linguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, tokenRanges: UnsafeMutablePointer<[Range<Index>]>? = x) -> [String] where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
@@ -2688,27 +2654,14 @@ extension StringProtocol {
     public func localizedStandardCompare<T>(_ string: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
     @available(macOS 10.11, iOS 9.0, *) public func localizedStandardContains<T>(_ string: T) -> Bool where T : StringProtocol, Index == String.Index {}
     @available(macOS 10.11, iOS 9.0, *) public func localizedStandardRange<T>(of string: T) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
-    public func lowercased(with locale: Locale?) -> String where Index == String.Index {}
-    public func maximumLengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
     public func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String where T : StringProtocol, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func paragraphRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #endif
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyList() -> Any where Index == String.Index {}
-#endif
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyListFromStringsFileFormat() -> [String: String] where Index == String.Index {}
-#endif
     public func range<T>(of aString: T, options mask: String.CompareOptions = x, range searchRange: Range<Index>? = x, locale: Locale? = x) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
-    public func rangeOfCharacter(from aSet: CharacterSet, options mask: String.CompareOptions = x, range aRange: Range<Index>? = x) -> Range<Index>? where Index == String.Index {}
-    public func rangeOfComposedCharacterSequence(at anIndex: Index) -> Range<Index> where Index == String.Index {}
     public func rangeOfComposedCharacterSequences<R>(for range: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
     public func replacingCharacters<T, R>(in range: R, with replacement: T) -> String where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
     public func replacingOccurrences<Target, Replacement>(of target: Target, with replacement: Replacement, options: String.CompareOptions = x, range searchRange: Range<Index>? = x) -> String where Replacement : StringProtocol, Target : StringProtocol, Index == String.Index {}
-    public func trimmingCharacters(in set: CharacterSet) -> String where Index == String.Index {}
-    public func uppercased(with locale: Locale?) -> String where Index == String.Index {}
-    public func write(to url: URL, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where Index == String.Index {}
     public func write<T>(toFile path: T, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where T : StringProtocol, Index == String.Index {}
 }
 extension UInt {
