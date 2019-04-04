@@ -28,12 +28,6 @@ extension Generic {
             (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
         }
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        var genericWhereClause: GenericWhereClauseSyntax?
-        if self.genericWhereClause?.source().contains("where") == true {
-            genericWhereClause = self.genericWhereClause
-        }
-
         newGenericWhereClause.merge(with: genericWhereClause?.normalized())
         return (newGenericParemeterClause, newGenericWhereClause)
     }
