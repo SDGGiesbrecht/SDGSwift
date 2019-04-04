@@ -21,10 +21,16 @@ internal protocol Generic : Constrained {
 extension Generic {
 
     internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
+
+        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
+        var genericParameterClause = self.genericParameterClause
+        if genericParameterClause?.source().isEmpty == true {
+            genericParameterClause = nil
+        }
+
         var newGenericParemeterClause: GenericParameterClauseSyntax?
         var newGenericWhereClause: GenericWhereClauseSyntax?
-        if let originalGenericParameterClause = genericParameterClause,
-            originalGenericParameterClause.source() ≠ "" { // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
+        if let originalGenericParameterClause = genericParameterClause {
             (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
         }
 

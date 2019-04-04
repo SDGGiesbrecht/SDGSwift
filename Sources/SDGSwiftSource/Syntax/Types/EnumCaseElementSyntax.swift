@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension EnumCaseElementSyntax : Hidable {
 
     internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
@@ -25,11 +27,14 @@ extension EnumCaseElementSyntax : Hidable {
     internal func forName() -> EnumCaseElementSyntax {
 
         // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        let newAssociatedValue = source().contains("(") ? associatedValue?.forAssociatedValueName() : nil
+        var associatedValue = self.associatedValue
+        if ¬source().contains("(") {
+            associatedValue = nil
+        }
 
         return SyntaxFactory.makeEnumCaseElement(
             identifier: identifier,
-            associatedValue: newAssociatedValue,
+            associatedValue: associatedValue?.forAssociatedValueName(),
             rawValue: nil,
             trailingComma: nil)
     }
