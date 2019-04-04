@@ -18,7 +18,7 @@ extension TupleTypeElementSyntax {
 
     internal func normalized() -> TupleTypeElementSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
         let ellipsisToken: TokenSyntax?
         if ellipsis?.tokenKind == .comma {
             ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
