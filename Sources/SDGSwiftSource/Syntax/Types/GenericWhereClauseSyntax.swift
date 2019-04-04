@@ -18,7 +18,7 @@ extension GenericWhereClauseSyntax : Mergeable {
 
     internal func normalized() -> GenericWhereClauseSyntax? {
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
         if source().isEmpty {
             return nil
         }
