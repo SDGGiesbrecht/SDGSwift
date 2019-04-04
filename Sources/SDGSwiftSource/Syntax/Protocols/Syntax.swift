@@ -332,6 +332,26 @@ extension Syntax {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
+    internal func normalizedAvailability() -> Syntax {
+        switch self {
+        case let token as TokenSyntax:
+            return token.generallyNormalizedAndMissingInsteadOfNil()
+        case let version as VersionTupleSyntax:
+            return version.normalized()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
+    }
+
+    internal func normalizedVersion() -> Syntax {
+        switch self {
+        default:
+            warnUnidentified()
+            return self
+        }
+    }
+
     // MARK: - Compilation Conditions
 
     internal var isUnidentifiedConditionalCompilation: Bool {
