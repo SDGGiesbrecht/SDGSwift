@@ -38,6 +38,9 @@ extension DeclModifierSyntax {
             case "final":
                 // Internal overridability.
                 return nil
+            case "override":
+                // Inheritance.
+                return nil
             case "public", "internal", "fileprivate", "private":
                 // Access control.
                 return nil
