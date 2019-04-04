@@ -24,7 +24,7 @@ extension Generic {
         var newGenericParemeterClause: GenericParameterClauseSyntax?
         var newGenericWhereClause: GenericWhereClauseSyntax?
         if let originalGenericParameterClause = genericParameterClause,
-            originalGenericParameterClause.source() ≠ "" { // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            originalGenericParameterClause.source() ≠ "" { // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
             (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
         }
 
