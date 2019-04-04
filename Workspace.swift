@@ -60,3 +60,13 @@ configuration.testing.prohibitCompilerWarnings = false
 #endif
 
 // #workaround(workspace version 0.17.1, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
+
+// #workaround(workspace version 0.18.1, Generated test files are not ignored by default.)
+configuration.repository.ignoredPaths.insert("Tests/LinuxMain.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftConfigurationTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftDocumentationExampleTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftPackageManagerTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftSourceTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGSwiftTestUtilities/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("SDGXcodeTests/XCTestManifests.swift")
