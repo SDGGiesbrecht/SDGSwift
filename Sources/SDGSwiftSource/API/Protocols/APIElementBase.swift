@@ -78,13 +78,10 @@ public class _APIElementBase {
     internal func moveConditionsToChildren() {
         for child in children {
             child.elementBase.compilationConditions.prependCompilationConditions(compilationConditions)
-            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-            if constraints?.source().isEmpty == false {
-                if child.constraints?.source().isEmpty == false {
-                    child.elementBase.constraints.merge(with: constraints)
-                } else {
-                    child.elementBase.constraints = constraints
-                }
+            if child.constraints ≠ nil {
+                child.elementBase.constraints.merge(with: constraints)
+            } else {
+                child.elementBase.constraints = constraints
             }
         }
         compilationConditions = nil
