@@ -71,11 +71,7 @@ do {
             sources = sources.filter { $0.pathExtension == "swift" }
             for source in sources {
                 try autoreleasepool {
-                    var normalized = try StrictString(from: source)
-
-                    // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax cannot parse “#error”.)
-                    normalized.replaceMatches(for: "#error", with: "error")
-
+                    let normalized = try StrictString(from: source)
                     try normalized.save(to: source)
                 }
             }
