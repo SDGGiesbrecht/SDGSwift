@@ -28,7 +28,7 @@ extension TypeDeclaration {
         var result: Set<String> = [identifier.text]
         if let genericParameters = genericParameterClause {
 
-            // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+            // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
             if ¬genericParameters.source().contains("<") {
                 return result
             }
