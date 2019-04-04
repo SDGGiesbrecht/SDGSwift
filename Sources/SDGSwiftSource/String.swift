@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+
 extension String {
 
     internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
