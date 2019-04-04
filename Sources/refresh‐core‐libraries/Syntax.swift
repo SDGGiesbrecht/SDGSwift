@@ -26,6 +26,8 @@ extension Syntax {
 
              is VariableDeclSyntax:
             return nil
+        case let initializer as InitializerDeclSyntax:
+            return initializer.genericParameterClause
         case let `subscript` as SubscriptDeclSyntax:
             return `subscript`.genericParameterClause
         case let function as FunctionDeclSyntax:
