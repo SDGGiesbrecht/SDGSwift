@@ -122,6 +122,8 @@ let package = Package(
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
+            ], swiftSettings: [
+                .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),
 
         // #documentation(SDGXcode)

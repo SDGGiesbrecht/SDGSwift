@@ -290,10 +290,8 @@ extension Syntax {
             return conformance.normalized(comma: comma)
         case let sameType as SameTypeRequirementSyntax:
             return sameType.normalized(comma: comma)
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified generic requirement: \(Swift.type(of: self))")
-            }
+        default: // @exempt(from: tests)
+            warnUnidentified()
             return self
         }
     }
@@ -306,10 +304,8 @@ extension Syntax {
             return associativity.normalizedForAPIDeclaration()
         case let assignment as PrecedenceGroupAssignmentSyntax:
             return assignment.normalizedForAPIDeclaration()
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified preference group attribute: \(Swift.type(of: self))")
-            }
+        default: // @exempt(from: tests)
+            warnUnidentified()
             return self
         }
     }
@@ -326,10 +322,8 @@ extension Syntax {
             return .associativity
         case is PrecedenceGroupAssignmentSyntax:
             return .assignment
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified preference group attribute: \(Swift.type(of: self))")
-            }
+        default: // @exempt(from: tests)
+            warnUnidentified()
             return .unknown
         }
     }
@@ -366,5 +360,12 @@ extension Syntax {
             ] + existingCondition + [
                 SyntaxFactory.makeToken(.rightParen)
             ])
+    }
+
+    internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
+        #if UNIDENTIFIED_SYNTAX_WARNINGS
+        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension()
+        print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
+        #endif
     }
 }

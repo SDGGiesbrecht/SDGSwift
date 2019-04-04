@@ -23,10 +23,8 @@ extension AvailabilityArgumentSyntax {
             entry = token.generallyNormalizedAndMissingInsteadOfNil()
         case let labeled as AvailabilityLabeledArgumentSyntax:
             entry = labeled.normalized()
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified availability argument: \(type(of: entry))")
-            }
+        default: // @exempt(from: tests)
+            entry.warnUnidentified()
         }
         return SyntaxFactory.makeAvailabilityArgument(
             entry: entry,

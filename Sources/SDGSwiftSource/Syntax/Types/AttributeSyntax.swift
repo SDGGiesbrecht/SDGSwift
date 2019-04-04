@@ -83,10 +83,8 @@ extension AttributeSyntax {
             // Source checks // @exempt(from: tests)
             return nil
 
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified attribute: \(attribute)")
-            }
+        default: // @exempt(from: tests)
+            attribute.warnUnidentified()
             return nil
         }
 
@@ -98,10 +96,8 @@ extension AttributeSyntax {
             switch argument {
             case let availablitiy as AvailabilitySpecListSyntax:
                 normalizedArgument = availablitiy.normalized()
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified attribute argument: \(type(of: argument))")
-                }
+            default: // @exempt(from: tests)
+                argument.warnUnidentified()
             }
             return SyntaxFactory.makeAttribute(
                 atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
@@ -145,10 +141,8 @@ extension AttributeSyntax {
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
-        default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified attribute: \(attributeName.text)")
-            }
+        default: // @exempt(from: tests)
+            attributeName.text.warnUnidentified()
             return .unknown
         }
     }

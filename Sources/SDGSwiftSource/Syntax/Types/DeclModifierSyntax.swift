@@ -56,10 +56,8 @@ extension DeclModifierSyntax {
             case "infix", "prefix", "postfix":
                 // Operator position.
                 return normalize()
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(conditionalKeyword)")
-                }
+            default: // @exempt(from: tests)
+                conditionalKeyword.warnUnidentified()
                 return nil
             }
         }
@@ -96,10 +94,8 @@ extension DeclModifierSyntax {
                 return .mutation
             case "infix", "prefix", "postfix":
                 return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
-            default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(name.text)")
-                }
+            default: // @exempt(from: tests)
+                name.text.warnUnidentified()
                 return .unknown
             }
         }
@@ -129,10 +125,8 @@ extension DeclModifierSyntax {
                 return nil
             case "infix", "prefix", "postfix":
                 return self
-            default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(name.text)")
-                }
+            default: // @exempt(from: tests)
+                name.text.warnUnidentified()
                 return nil
             }
         }
