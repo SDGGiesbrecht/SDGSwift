@@ -16,7 +16,7 @@ extension FunctionSignatureSyntax {
 
     internal func normalizedForAPIDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionSignatureSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
         var output = self.output
         if output?.source() == "" {
             output = nil
