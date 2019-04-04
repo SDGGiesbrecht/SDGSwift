@@ -364,7 +364,7 @@ extension Syntax {
 
     internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
         #if UNIDENTIFIED_SYNTAX_WARNINGS
-        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension()
+        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
         print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
         #endif
     }
