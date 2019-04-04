@@ -332,6 +332,28 @@ extension Syntax {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
+    internal func normalizedAttributeArgument() -> Syntax {
+        switch self {
+        case let availablitiy as AvailabilitySpecListSyntax:
+            return availablitiy.normalized()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
+    }
+
+    internal func normalizedAvailabilityArgument() -> Syntax {
+        switch self {
+        case let token as TokenSyntax:
+            return token.generallyNormalizedAndMissingInsteadOfNil()
+        case let labeled as AvailabilityLabeledArgumentSyntax:
+            return labeled.normalized()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
+    }
+
     internal func normalizedAvailability() -> Syntax {
         switch self {
         case let token as TokenSyntax:

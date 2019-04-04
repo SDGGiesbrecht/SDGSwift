@@ -92,18 +92,11 @@ extension AttributeSyntax {
 
     private func normalized() -> AttributeSyntax {
         if let argument = self.argument {
-            var normalizedArgument: Syntax?
-            switch argument {
-            case let availablitiy as AvailabilitySpecListSyntax:
-                normalizedArgument = availablitiy.normalized()
-            default: // @exempt(from: tests)
-                argument.warnUnidentified()
-            }
             return SyntaxFactory.makeAttribute(
                 atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
                 leftParen: leftParen?.generallyNormalized(),
-                argument: normalizedArgument,
+                argument: argument.normalizedAttributeArgument(),
                 rightParen: rightParen?.generallyNormalized(trailingTrivia: .spaces(1)),
                 tokenList: nil)
         } else {

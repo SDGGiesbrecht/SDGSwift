@@ -17,17 +17,8 @@ import SDGControlFlow
 extension AvailabilityArgumentSyntax {
 
     internal func normalized() -> AvailabilityArgumentSyntax {
-        var entry = self.entry
-        switch entry {
-        case let token as TokenSyntax:
-            entry = token.generallyNormalizedAndMissingInsteadOfNil()
-        case let labeled as AvailabilityLabeledArgumentSyntax:
-            entry = labeled.normalized()
-        default: // @exempt(from: tests)
-            entry.warnUnidentified()
-        }
         return SyntaxFactory.makeAvailabilityArgument(
-            entry: entry,
+            entry: entry.normalizedAvailabilityArgument(),
             trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 }
