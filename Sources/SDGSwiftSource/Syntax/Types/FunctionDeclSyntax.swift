@@ -21,7 +21,7 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
 
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
         var signature = self.signature
         if self.signature.source() == "" {
             signature = SyntaxFactory.makeFunctionSignature(
