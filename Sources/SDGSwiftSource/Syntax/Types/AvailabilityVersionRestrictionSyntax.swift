@@ -16,7 +16,7 @@ extension AvailabilityVersionRestrictionSyntax {
 
     internal func normalized() -> AvailabilityVersionRestrictionSyntax {
         return SyntaxFactory.makeAvailabilityVersionRestriction(
-            platform: platform.generallyNormalizedAndMissingInsteadOfNil(),
+            platform: platform.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
             version: version.normalized())
     }
 }

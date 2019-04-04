@@ -69,6 +69,7 @@ do {
             }
 
             sources = sources.filter { $0.pathExtension == "swift" }
+            sources = sources.sorted()
             for source in sources {
                 try autoreleasepool {
                     let normalized = try StrictString(from: source)

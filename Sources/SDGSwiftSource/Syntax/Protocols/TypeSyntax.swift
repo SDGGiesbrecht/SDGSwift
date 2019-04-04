@@ -41,6 +41,8 @@ extension TypeSyntax {
             return function.normalized()
         case let attributed as AttributedTypeSyntax:
             return attributed.normalized()
+        case let restriction as ClassRestrictionTypeSyntax:
+            return restriction.normalized()
         default: // @exempt(from: tests)
             warnUnidentified()
             return SyntaxFactory.makeSimpleTypeIdentifier(
