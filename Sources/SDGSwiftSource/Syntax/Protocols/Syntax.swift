@@ -348,6 +348,8 @@ extension Syntax {
             return token.generallyNormalizedAndMissingInsteadOfNil()
         case let labeled as AvailabilityLabeledArgumentSyntax:
             return labeled.normalized()
+        case let restriction as AvailabilityVersionRestrictionSyntax:
+            return restriction.normalized()
         default: // @exempt(from: tests)
             warnUnidentified()
             return self
