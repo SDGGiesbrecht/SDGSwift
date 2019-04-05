@@ -23,4 +23,4 @@ extension O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲O̲b̲j̲e̲c̲t̲ {
     @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.2.1) @o̲b̲j̲c̲ @d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ public func everything(_ closure: @e̲s̲c̲a̲p̲i̲n̲g̲ @a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ () -> V̲o̲i̲d̲) {}
 }
 
-@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, o̲b̲s̲o̲l̲e̲t̲e̲d̲, m̲e̲s̲s̲a̲g̲e̲: "Obsolete.") func obsoletionMessage() {}
+@a̲v̲a̲i̲l̲a̲b̲l̲e̲(s̲w̲i̲f̲t̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.0, m̲e̲s̲s̲a̲g̲e̲: "Message.") public func introductionMessage() {}
