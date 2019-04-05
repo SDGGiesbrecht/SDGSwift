@@ -6,6 +6,7 @@ PackageToDocument • Package(name: "PackageToDocument")
    UnknownSuperclass
   CollectionType • struct CollectionType
    Collection
+   Sequence
   Enumeration • enum Enumeration
    visible • case visible
   Inherited • struct Inherited
