@@ -83,7 +83,7 @@ extension APIElement {
     }
 
     private func append(simpleDeclaration declarationSyntax: Syntax, implementation: Bool, to api: inout [String]) {
-        var declaration = "    " + declarationSyntax.source()
+        var declaration = "    " + declarationSyntax.withoutAccessors.source()
         if let constraints = self.constraints?.source() {
             declaration += constraints
             if declarationSyntax is InitializerDeclSyntax
@@ -95,6 +95,9 @@ extension APIElement {
                 // Constraints are only on the extension, so won’t be parsable once moved.
                 return
             }
+        }
+        if let accessors = declarationSyntax.accessors {
+            declaration += accessors.source()
         }
         if implementation ∧ ¬inProtocol {
             declaration += " {}"

@@ -86,7 +86,7 @@ public protocol Collection : Sequence {
     subscript(bounds: Range<Index>) -> SubSequence { get }
     subscript(position: Index) -> Element { get }
     subscript(x: UnboundedRange) -> SubSequence { get }
-    subscript<R>(r: R) -> SubSequence { get } where R : RangeExpression, Index == R.Bound
+    subscript<R>(r: R) -> SubSequence where R : RangeExpression, Index == R.Bound { get }
     func distance(from start: Index, to end: Index) -> Int
     func firstIndex(where predicate: (Element) throws -> Bool) rethrows -> Index?
     func formIndex(_ i: inout Index, offsetBy distance: Int)
@@ -783,17 +783,14 @@ extension StrideTo {
 }
 extension StrideToIterator {
 }
-extension String.Index {
-    public init<S>(utf16Offset offset: Int, in s: S) where S : StringProtocol {}
-    public func utf16Offset<S>(in s: S) -> Int where S : StringProtocol {}
-}
 extension String.UTF16View {
+    public subscript(i: Index) -> UTF16.CodeUnit { get } {}
+}
+extension String.UTF16View.Index {
+    public init?(_ idx: String.Index, within target: String.UTF16View) {}
+    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
 }
 extension String.UTF8View {
-    public subscript(i: Index) -> UTF8.CodeUnit { get } {}
-}
-extension String.UTF8View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF8View) {}
 }
 extension String.UnicodeScalarIndex {
     public init?(_ sourcePosition: String.Index, within unicodeScalars: String.UnicodeScalarView) {}
@@ -814,23 +811,13 @@ extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
 }
-extension Unicode.ASCII.Parser {
-    public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
-}
 extension Unicode.Scalar {
-    public var isASCII: Bool { get }
-    public var utf16: UTF16View { get }
-    public var value: UInt32 { get }
-    public func escaped(asASCII forceASCII: Bool) -> String {}
 }
 extension Unicode.Scalar.UTF16View {
 }
 extension Unicode.UTF16.ForwardParser {
 }
-extension Unicode.UTF32 {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+extension Unicode.UTF8.ForwardParser {
 }
 extension UnsafeBufferPointer {
     public init(_ other: UnsafeMutableBufferPointer<Element>) {}

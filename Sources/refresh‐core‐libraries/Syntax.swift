@@ -16,6 +16,49 @@ import SDGSwiftSource
 
 extension Syntax {
 
+    var accessors: Syntax? {
+        switch self {
+            case is StructDeclSyntax,
+                 is ClassDeclSyntax,
+                 is EnumDeclSyntax,
+                 is TypealiasDeclSyntax,
+                 is AssociatedtypeDeclSyntax,
+
+                 is InitializerDeclSyntax,
+                 is FunctionDeclSyntax:
+            return nil
+        case let variable as VariableDeclSyntax:
+            return variable.bindings.first?.accessor
+        case let `subscript` as SubscriptDeclSyntax:
+            return `subscript`.accessor
+        default:
+            print("Unidentified declaration type: \(self)")
+            return nil
+        }
+    }
+
+    var withoutAccessors: Syntax {
+        switch self {
+        case is StructDeclSyntax,
+             is ClassDeclSyntax,
+             is EnumDeclSyntax,
+             is TypealiasDeclSyntax,
+             is AssociatedtypeDeclSyntax,
+
+             is InitializerDeclSyntax,
+             is FunctionDeclSyntax:
+            return self
+        case let variable as VariableDeclSyntax:
+            let bindings = variable.bindings.map({ $0.withAccessor(nil) })
+            return variable.withBindings(SyntaxFactory.makePatternBindingList(bindings))
+        case let `subscript` as SubscriptDeclSyntax:
+            return `subscript`.withAccessor(nil)
+        default:
+            print("Unidentified declaration type: \(self)")
+            return self
+        }
+    }
+
     var genericParameters: GenericParameterClauseSyntax? {
         switch self {
         case is StructDeclSyntax,
