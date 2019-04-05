@@ -23,7 +23,7 @@ extension AttributeSyntax {
         switch attributeName.text {
         case "available":
             guard let arguments = argument as? AvailabilitySpecListSyntax else {
-                return false
+                return false // @exempt(from: tests) Should never occur.
             }
             return arguments.contains(where: { argument in
                 if let token = argument.entry as? TokenSyntax,
@@ -83,7 +83,8 @@ extension AttributeSyntax {
             // Source checks // @exempt(from: tests)
             return nil
 
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             attribute.warnUnidentified()
             return nil
         }
@@ -134,7 +135,8 @@ extension AttributeSyntax {
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             attributeName.text.warnUnidentified()
             return .unknown
         }
