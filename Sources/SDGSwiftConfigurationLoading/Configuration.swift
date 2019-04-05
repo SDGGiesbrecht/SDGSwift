@@ -202,9 +202,6 @@ extension Configuration {
 
             let resolvedMacOS = max(minimumMacOSVersion, Configuration.minimumMacOSVersion)
             var macOS = resolvedMacOS.string(droppingEmptyPatch: true)
-            if macOS.hasSuffix(".0") {
-                macOS.removeLast(2)
-            }
             macOS.replaceMatches(for: ".", with: "_")
 
             let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
