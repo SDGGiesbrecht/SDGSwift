@@ -32,6 +32,7 @@ import PackageDescription
 let package = Package(
     name: "SDGSwift",
     platforms: [
+        // These must also be updated in Sources/SDGSwiftConfigurationLoading/Configuration.swift.
         .macOS(.v10_13)
     ],
     products: [

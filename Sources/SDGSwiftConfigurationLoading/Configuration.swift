@@ -20,6 +20,8 @@ import SDGSwiftLocalizations
 
 extension Configuration {
 
+    private static let minimumMacOSVersion: Version = Version(10, 13)
+
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
     // #example(1, configurationFile) #example(2, configurationLoading)
@@ -81,15 +83,25 @@ extension Configuration {
     ///     - product: The name of the product which defines the `Configuration` subclass. Users will directly import it in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
     ///     - package: The package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
+    ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
     ///     - progressReport: A line of output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     ///
     /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
-    public class func load<C, L>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+    public class func load<C, L>(
+        configuration: C.Type,
+        named fileName: UserFacing<StrictString, L>,
+        from directory: URL,
+        linkingAgainst product: String,
+        in package: Package,
+        at releaseVersion: Version,
+        minimumMacOSVersion: Version,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+
         let nullContext: NullContext? = nil
-        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, context: nullContext, reportProgress: reportProgress)
+        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
     }
     private struct NullContext : Context {}
 
@@ -104,10 +116,20 @@ extension Configuration {
     ///     - product: The name of the product which defines the `Configuration` subclass.
     ///     - package: The package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
+    ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - context: The context to provide to the configuration file.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
     ///     - progressReport: A line of output.
-    public class func load<C, L, E>(configuration: C.Type, named fileName: UserFacing<StrictString, L>, from directory: URL, linkingAgainst product: String, in package: Package, at releaseVersion: Version, context: E?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+    public class func load<C, L, E>(
+        configuration: C.Type,
+        named fileName: UserFacing<StrictString, L>,
+        from directory: URL,
+        linkingAgainst product: String,
+        in package: Package,
+        at releaseVersion: Version,
+        minimumMacOSVersion: Version,
+        context: E?,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
@@ -178,8 +200,16 @@ extension Configuration {
                 return "            \u{22}\($0.product)\u{22},"
             }).joined(separator: "\n")
 
+            let resolvedMacOS = max(minimumMacOSVersion, Configuration.minimumMacOSVersion)
+            var macOS = resolvedMacOS.string(droppingEmptyPatch: true)
+            if macOS.hasSuffix(".0") {
+                macOS.removeLast(2)
+            }
+            macOS.replaceMatches(for: ".", with: "_")
+
             let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
             var manifest = String(data: Resources.package, encoding: .utf8)!
+            manifest.replaceMatches(for: "[*macOS*]", with: macOS)
             manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
             manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
             manifest.replaceMatches(for: "[*packages*]", with: packages)
