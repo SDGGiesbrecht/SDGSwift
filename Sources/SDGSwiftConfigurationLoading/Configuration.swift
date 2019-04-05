@@ -57,7 +57,8 @@ extension Configuration {
     /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.6.0/Sources/SampleConfiguration
     /// let product = "SampleConfiguration"
     /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-    /// let version = Version(0, 6, 0)
+    /// let minimumMacOSVersion = Version(10, 13)
+    /// let version = Version(0, 6, 1)
     /// let type = SampleConfiguration.self // Import it first if necessary.
     ///
     /// // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -72,7 +73,7 @@ extension Configuration {
     /// // A log to collect progress reports while loading. (Optional.)
     /// var log = String()
     ///
-    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, context: context, reportProgress: { print($0, to: &log) })
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) })
     /// XCTAssertEqual(loadedConfiguration.option, "Configured")
     /// ```
     ///
