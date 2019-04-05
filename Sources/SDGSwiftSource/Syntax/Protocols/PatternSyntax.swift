@@ -23,7 +23,8 @@ extension PatternSyntax {
             return identifier.isHidden
         case let tuple as TuplePatternSyntax:
             return tuple.elements.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return false
         }
@@ -46,7 +47,8 @@ extension PatternSyntax {
                 }
                 list.append(contentsOf: indexed)
             }
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
         }
         return list.filter({ ¬$0.identifier.isHidden })
@@ -56,7 +58,8 @@ extension PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax:
             return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -66,7 +69,8 @@ extension PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax:
             return identifier.variableBindingIdentifierForOverloadPattern()
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -76,7 +80,8 @@ extension PatternSyntax {
         switch self {
         case let identifier as IdentifierPatternSyntax:
             return identifier.variableBindingIdentifierForName()
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return self
         }
