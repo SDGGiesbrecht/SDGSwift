@@ -20,19 +20,6 @@ extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attr
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> FunctionDeclSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        var signature = self.signature
-        if self.signature.source() == "" {
-            signature = SyntaxFactory.makeFunctionSignature(
-                input: SyntaxFactory.makeParameterClause(
-                    leftParen: SyntaxFactory.makeToken(.leftParen),
-                    parameterList: SyntaxFactory.makeFunctionParameterList([]),
-                    rightParen: SyntaxFactory.makeToken(.rightParen)),
-                throwsOrRethrowsKeyword: nil,
-                output: nil)
-        }
-
         let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
         return SyntaxFactory.makeFunctionDecl(
             attributes: attributes?.normalizedForAPIDeclaration(),
