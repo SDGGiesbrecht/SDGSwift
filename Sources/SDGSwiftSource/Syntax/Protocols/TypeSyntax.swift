@@ -61,7 +61,8 @@ extension TypeSyntax {
             return simple.name
         case let member as MemberTypeIdentifierSyntax:
             return member.baseType.hidabilityIdentifier
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return nil
         }
