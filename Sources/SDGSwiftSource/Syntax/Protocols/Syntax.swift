@@ -233,9 +233,6 @@ extension Syntax {
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
             return conditionallyCompiledSection.conditionalAPI
         default:
-            if isUnidentifiedConditionalCompilation {
-                return unidentifiedConditionallyCompiledChildren
-            }
             return apiChildren()
         }
     }
@@ -383,19 +380,6 @@ extension Syntax {
 
     // MARK: - Compilation Conditions
 
-    internal var isUnidentifiedConditionalCompilation: Bool {
-        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
-            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
-            token.tokenKind == .poundIfKeyword {
-            return true
-        }
-        return false
-    }
-
-    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
-        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
-    }
-
     internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
         let existingCondition = Array(tokens().dropFirst())
         let newCondition = Array(addition.tokens().dropFirst())
@@ -420,6 +404,7 @@ extension Syntax {
              is UnknownTypeSyntax:
             break
         default:
+            // @exempt(from: tests)
             let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
             print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
         }
