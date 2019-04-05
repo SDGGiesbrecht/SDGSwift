@@ -68,3 +68,7 @@ configuration.repository.ignoredPaths.insert("SDGSwiftSourceTests/XCTestManifest
 configuration.repository.ignoredPaths.insert("SDGSwiftTests/XCTestManifests.swift")
 configuration.repository.ignoredPaths.insert("SDGSwiftTestUtilities/XCTestManifests.swift")
 configuration.repository.ignoredPaths.insert("SDGXcodeTests/XCTestManifests.swift")
+
+// #workaround(workspace version 0.18.1, CI times out.)
+configuration.documentation.api.generate = false
+configuration.documentation.api.enforceCoverage = false
