@@ -37,7 +37,8 @@ extension GenericRequirementListSyntax : Mergeable {
             return .conformance
         case is SameTypeRequirementSyntax:
             return .sameType
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             requirement.warnUnidentified()
             return .unknown
         }
