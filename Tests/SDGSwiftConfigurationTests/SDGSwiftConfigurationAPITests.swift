@@ -82,7 +82,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let mock = SampleConfiguration()
             mock.option = "Mock"
             Configuration.queue(mock: mock)
-            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, reportProgress: { print($0, to: &log) })
+            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, reportProgress: { print($0, to: &log) })
             XCTAssertEqual(loadedMock.option, "Mock")
 
             func abbreviate(logEntry: String) {

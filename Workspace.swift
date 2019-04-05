@@ -54,10 +54,8 @@ configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
-#if os(Linux)
-// #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
+// #workaround(SwiftSyntax 0.50000.0, Compiler warnings.)
 configuration.testing.prohibitCompilerWarnings = false
-#endif
 
 // #workaround(workspace version 0.17.1, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
 
