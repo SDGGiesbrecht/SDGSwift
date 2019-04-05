@@ -39,7 +39,7 @@ extension DeclModifierSyntax {
                 // Internal overridability.
                 return nil
             case "override":
-                // Inheritance.
+                // Inheritance. @exempt(from: tests) Filtered before it gets here.
                 return nil
             case "public", "internal", "fileprivate", "private":
                 // Access control.
