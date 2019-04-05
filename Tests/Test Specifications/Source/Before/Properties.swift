@@ -10,6 +10,9 @@ extension Int {
     public weak var optional: SomeType?
 
     public let (groupedInteger, groupedString) : (Int, String) = (0, "")
+
+    public fileprivate(set) var fileprivateSetter = 0
+    public private(set) var privateSetter = 0
 }
 
 public class ObjectiveCClass : NSObject {
