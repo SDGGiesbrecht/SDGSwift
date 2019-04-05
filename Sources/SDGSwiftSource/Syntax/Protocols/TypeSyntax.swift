@@ -43,7 +43,8 @@ extension TypeSyntax {
             return attributed.normalized()
         case let restriction as ClassRestrictionTypeSyntax:
             return restriction.normalized()
-        default: // @exempt(from: tests)
+        default:
+            // @exempt(from: tests)
             warnUnidentified()
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: SyntaxFactory.makeToken(.wildcardKeyword),
