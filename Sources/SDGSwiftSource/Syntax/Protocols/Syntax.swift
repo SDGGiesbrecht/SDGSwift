@@ -400,7 +400,8 @@ extension Syntax {
     internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
         #if UNIDENTIFIED_SYNTAX_WARNINGS
         switch self {
-        case is UnknownPatternSyntax,
+        case is UnknownSyntax,
+             is UnknownPatternSyntax,
              is UnknownTypeSyntax:
             break
         default:
