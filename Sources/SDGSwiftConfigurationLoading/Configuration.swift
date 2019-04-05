@@ -233,7 +233,7 @@ extension Configuration {
 
             var json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
             if json.first ≠ "[" {
-                json.drop(upTo: "\n[")
+                json.drop(upTo: "\n[") // @exempt(from: tests) Only reachable when new Swift releases flag new errors in old configurations.
             }
 
             jsonData = json.file
