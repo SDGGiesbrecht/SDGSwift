@@ -1,3 +1,5 @@
+ObjectOnlyProtocol • protocol ObjectOnlyProtocol
+ AnyObject
 Protocol • protocol Protocol
  AssociatedType • associatedtype AssociatedType
  OverridableAssociatedType • associatedtype OverridableAssociatedType

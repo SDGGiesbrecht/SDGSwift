@@ -51,3 +51,5 @@
 ̲
 ̲}̲
 ̲
+̲p̲u̲b̲l̲i̲c̲ p̲r̲o̲t̲o̲c̲o̲l̲ ObjectOnlyProtocol :̲ c̲l̲a̲s̲s̲ {̲}̲
+̲

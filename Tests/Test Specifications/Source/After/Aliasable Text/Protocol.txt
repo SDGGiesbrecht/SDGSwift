@@ -50,3 +50,5 @@ public protocol ProtocolWithInheritanceAndConstraints : I̲n̲h̲e̲r̲i̲t̲e̲
 where A̲s̲s̲o̲c̲i̲a̲t̲e̲d̲T̲y̲p̲e̲ : O̲t̲h̲e̲r̲P̲r̲o̲t̲o̲c̲o̲l̲ {
 
 }
+
+public protocol ObjectOnlyProtocol : class {}

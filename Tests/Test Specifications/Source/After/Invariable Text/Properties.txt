@@ -10,6 +10,9 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
 ̲    p̲u̲b̲l̲i̲c̲ w̲e̲a̲k̲ v̲a̲r̲ optional:̲ SomeType?̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ l̲e̲t̲ (̲groupedInteger,̲ groupedString)̲ :̲ (̲Int,̲ String)̲ =̲ (̲0,̲ "̲"̲)̲
+̲
+̲    p̲u̲b̲l̲i̲c̲ f̲i̲l̲e̲p̲r̲i̲v̲a̲t̲e̲(̲set)̲ v̲a̲r̲ fileprivateSetter =̲ 0
+̲    p̲u̲b̲l̲i̲c̲ p̲r̲i̲v̲a̲t̲e̲(̲set)̲ v̲a̲r̲ privateSetter =̲ 0
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCClass :̲ NSObject {̲
