@@ -57,8 +57,6 @@ configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 // #workaround(SwiftSyntax 0.50000.0, Compiler warnings.)
 configuration.testing.prohibitCompilerWarnings = false
 
-// #workaround(workspace version 0.17.1, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
-
 // #workaround(workspace version 0.18.1, Generated test files are not ignored by default.)
 configuration.repository.ignoredPaths.insert("Tests/LinuxMain.swift")
 configuration.repository.ignoredPaths.insert("Tests/SDGSwiftConfigurationTests/XCTestManifests.swift")
