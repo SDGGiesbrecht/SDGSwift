@@ -36,8 +36,8 @@ open ̲class ̲T̲y̲p̲e̲S̲c̲o̲p̲e̲ ̲: ̲Superclass ̲{
 
 public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲G̲e̲n̲e̲r̲i̲c̲s̲<T̲ ̲: ̲Equatable>(_ ̲p̲a̲r̲a̲m̲e̲t̲e̲r̲: ̲T) ̲{}
 
-public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲V̲o̲i̲d̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Void ̲{} ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲r̲e̲d̲u̲n̲d̲a̲n̲t̲_̲v̲o̲i̲d̲_̲r̲e̲t̲u̲r̲n̲
-public ̲func ̲w̲i̲t̲h̲V̲o̲i̲d̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲() ̲-> ̲()) ̲{} ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲v̲o̲i̲d̲_̲r̲e̲t̲u̲r̲n̲
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲V̲o̲i̲d̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Void ̲{}
+public ̲func ̲w̲i̲t̲h̲V̲o̲i̲d̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲() ̲-> ̲()) ̲{}
 
 public ̲func ̲t̲u̲p̲l̲e̲R̲e̲t̲u̲r̲n̲() ̲-> ̲(String, ̲Int) ̲{
  ̲ ̲ ̲ ̲return ̲("", ̲0̲)
@@ -46,14 +46,14 @@ public ̲func ̲t̲u̲p̲l̲e̲R̲e̲t̲u̲r̲n̲() ̲-> ̲(String, ̲Int) ̲{
 public ̲func ̲a̲r̲r̲a̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲[Bool] ̲{
  ̲ ̲ ̲ ̲return ̲[]
 }
-public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲A̲r̲r̲a̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Array<Bool> ̲{ ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲s̲y̲n̲t̲a̲c̲t̲i̲c̲_̲s̲u̲g̲a̲r̲
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲A̲r̲r̲a̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Array<Bool> ̲{
  ̲ ̲ ̲ ̲return ̲[]
 }
 
 public ̲func ̲d̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲[Bool: ̲Bool] ̲{
  ̲ ̲ ̲ ̲return ̲[]
 }
-public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Dictionary<Bool, ̲Bool> ̲{ ̲// ̲s̲w̲i̲f̲t̲l̲i̲n̲t̲:̲d̲i̲s̲a̲b̲l̲e̲:̲t̲h̲i̲s̲ ̲s̲y̲n̲t̲a̲c̲t̲i̲c̲_̲s̲u̲g̲a̲r̲
+public ̲func ̲n̲o̲n̲s̲t̲a̲n̲d̲a̲r̲d̲D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲R̲e̲t̲u̲r̲n̲() ̲-> ̲Dictionary<Bool, ̲Bool> ̲{
  ̲ ̲ ̲ ̲return ̲[]
 }
 

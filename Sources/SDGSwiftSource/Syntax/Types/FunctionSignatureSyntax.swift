@@ -15,13 +15,6 @@
 extension FunctionSignatureSyntax {
 
     internal func normalizedForAPIDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionSignatureSyntax {
-
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        var output = self.output
-        if output?.source() == "" {
-            output = nil
-        }
-
         return SyntaxFactory.makeFunctionSignature(
             input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
             throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),

@@ -17,18 +17,9 @@ import SDGControlFlow
 extension AvailabilityLabeledArgumentSyntax {
 
     internal func normalized() -> AvailabilityLabeledArgumentSyntax {
-        var value = self.value
-        switch value {
-        case let token as TokenSyntax:
-            value = token.generallyNormalizedAndMissingInsteadOfNil()
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified labelled availability argument value: \(type(of: value))")
-            }
-        }
         return SyntaxFactory.makeAvailabilityLabeledArgument(
             label: label.generallyNormalizedAndMissingInsteadOfNil(),
             colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            value: value)
+            value: value.normalizedAvailability())
     }
 }

@@ -25,12 +25,10 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
 
     var accessors: Syntax? {
         let result = bindings.first?.accessor
-
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        if result?.source() == "" {
+        if let unknown = result as? UnknownSyntax,
+            unknown.source().isEmpty {
             return nil
         }
-
         return result
     }
 

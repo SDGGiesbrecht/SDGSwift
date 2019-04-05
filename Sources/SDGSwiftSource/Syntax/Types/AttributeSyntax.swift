@@ -23,7 +23,7 @@ extension AttributeSyntax {
         switch attributeName.text {
         case "available":
             guard let arguments = argument as? AvailabilitySpecListSyntax else {
-                return false
+                return false // @exempt(from: tests) Should never occur.
             }
             return arguments.contains(where: { argument in
                 if let token = argument.entry as? TokenSyntax,
@@ -83,10 +83,9 @@ extension AttributeSyntax {
             // Source checks // @exempt(from: tests)
             return nil
 
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified attribute: \(attribute)")
-            }
+        default:
+            // @exempt(from: tests)
+            attribute.warnUnidentified()
             return nil
         }
 
@@ -94,20 +93,11 @@ extension AttributeSyntax {
 
     private func normalized() -> AttributeSyntax {
         if let argument = self.argument {
-            var normalizedArgument: Syntax?
-            switch argument {
-            case let availablitiy as AvailabilitySpecListSyntax:
-                normalizedArgument = availablitiy.normalized()
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified attribute argument: \(type(of: argument))")
-                }
-            }
             return SyntaxFactory.makeAttribute(
                 atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
                 attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
                 leftParen: leftParen?.generallyNormalized(),
-                argument: normalizedArgument,
+                argument: argument.normalizedAttributeArgument(),
                 rightParen: rightParen?.generallyNormalized(trailingTrivia: .spaces(1)),
                 tokenList: nil)
         } else {
@@ -146,9 +136,8 @@ extension AttributeSyntax {
             // Objective‐C implementation details
             return .interfaceBuilder
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified attribute: \(attributeName.text)")
-            }
+            // @exempt(from: tests)
+            attributeName.text.warnUnidentified()
             return .unknown
         }
     }

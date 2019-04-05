@@ -70,7 +70,7 @@ extension FunctionParameterSyntax {
 
     internal func normalizedForDeclaration(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
         let ellipsisToken: TokenSyntax?
         if ellipsis?.tokenKind == .comma {
             ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
@@ -133,7 +133,7 @@ extension FunctionParameterSyntax {
 
     internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
         let ellipsisToken: TokenSyntax?
         if ellipsis?.tokenKind == .comma {
             ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
@@ -154,7 +154,7 @@ extension FunctionParameterSyntax {
 
     internal func forAssociatedValueName() -> FunctionParameterSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, SwiftSyntax puts the trailing comma here.)
+        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
         let ellipsisToken: TokenSyntax?
         if ellipsis?.tokenKind == .comma {
             ellipsisToken = ellipsis

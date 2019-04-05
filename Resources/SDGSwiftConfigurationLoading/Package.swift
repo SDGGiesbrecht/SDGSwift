@@ -19,7 +19,7 @@ import PackageDescription
 let package = Package(
     name: "configure",
     platforms: [
-        .macOS(.v10_13)
+        .macOS(.v[*macOS*])
     ],
     dependencies: [
         .package(url: "[*URL*]", .exact("[*version*]")),

@@ -87,21 +87,6 @@ extension TokenSyntax {
                     argument.label == self {
                     return .aliasable
                 }
-
-                for ancestor in ancestors() {
-                    switch ancestor {
-                    case is IdentifierExprSyntax, is UnknownExprSyntax:
-                        continue
-                    case is UnknownStmtSyntax, is UnknownSyntax:
-                        if let token = ancestor.children.first(where: { _ in true }) as? TokenSyntax,
-                            token.tokenKind == .poundIfKeyword ∨ token.tokenKind == .poundElseifKeyword {
-                            // Part of an “#if” statement.
-                            return .invariable
-                        }
-                    default:
-                        break
-                    }
-                }
             }
 
             if text == "init" {

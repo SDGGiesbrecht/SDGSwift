@@ -50,3 +50,5 @@ public protocol ProtocolWithInheritanceAndConstraints : InheritedOne, InheritedT
 where AssociatedType : OtherProtocol {
 
 }
+
+public protocol ObjectOnlyProtocol : class {}

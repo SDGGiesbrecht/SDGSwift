@@ -41,10 +41,11 @@ extension TypeSyntax {
             return function.normalized()
         case let attributed as AttributedTypeSyntax:
             return attributed.normalized()
+        case let restriction as ClassRestrictionTypeSyntax:
+            return restriction.normalized()
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified type syntax class: \(type(of: self))")
-            }
+            // @exempt(from: tests)
+            warnUnidentified()
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: SyntaxFactory.makeToken(.wildcardKeyword),
                 genericArgumentClause: nil)
@@ -61,9 +62,8 @@ extension TypeSyntax {
         case let member as MemberTypeIdentifierSyntax:
             return member.baseType.hidabilityIdentifier
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified type syntax class: \(type(of: self))")
-            }
+            // @exempt(from: tests)
+            warnUnidentified()
             return nil
         }
     }

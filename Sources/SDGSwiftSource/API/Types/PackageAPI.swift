@@ -89,9 +89,7 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
 
         let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
-        // #workaround(Swift 4.2.1, Using UniquelyDeclaredManifestAPIElement currently causes a segmentation fault.)
-        // self.init(documentation: manifestDeclaration?.documentation, declaration: declaration)
-        self.init(documentation: manifestDeclaration?.documentation, alreadyNormalizedDeclaration: declaration, constraints: nil, name: declaration.manifestEntryName(), children: [])
+        self.init(documentation: manifestDeclaration?.documentation, declaration: declaration)
 
         for product in package.products where ¬product.name.hasPrefix("_") {
             switch product.type {

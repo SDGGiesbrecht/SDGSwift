@@ -50,3 +50,5 @@ public ̲protocol ̲P̲r̲o̲t̲o̲c̲o̲l̲W̲i̲t̲h̲I̲n̲h̲e̲r̲i̲t̲a̲
 where ̲AssociatedType ̲: ̲OtherProtocol ̲{
 
 }
+
+public ̲protocol ̲O̲b̲j̲e̲c̲t̲O̲n̲l̲y̲P̲r̲o̲t̲o̲c̲o̲l̲ ̲: ̲class ̲{}

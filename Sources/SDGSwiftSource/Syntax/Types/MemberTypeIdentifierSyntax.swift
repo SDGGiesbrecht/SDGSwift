@@ -16,7 +16,7 @@ extension MemberTypeIdentifierSyntax {
 
     // MARK: - Normalization
 
-    // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
+    // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
     private var safeGenericArgumentClause: GenericArgumentClauseSyntax? {
         var genericArgumentClause = self.genericArgumentClause
         if genericArgumentClause?.source() == "" {

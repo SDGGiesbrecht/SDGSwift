@@ -82,10 +82,22 @@ extension APIElement {
         }
     }
 
-    private func append(simpleDeclaration declaration: Syntax, implementation: Bool, to api: inout [String]) {
-        var declaration = "    " + declaration.source()
+    private func append(simpleDeclaration declarationSyntax: Syntax, implementation: Bool, to api: inout [String]) {
+        var declaration = "    " + declarationSyntax.withoutAccessors.source()
         if let constraints = self.constraints?.source() {
             declaration += constraints
+            if declarationSyntax is InitializerDeclSyntax
+                ∨ declarationSyntax is VariableDeclSyntax
+                ∨ declarationSyntax is SubscriptDeclSyntax
+                ∨ declarationSyntax is FunctionDeclSyntax,
+                declarationSyntax.genericParameters?.source().isEmpty ≠ false {
+                // Restricted default implementation.
+                // Constraints are only on the extension, so won’t be parsable once moved.
+                return
+            }
+        }
+        if let accessors = declarationSyntax.accessors {
+            declaration += accessors.source()
         }
         if implementation ∧ ¬inProtocol {
             declaration += " {}"

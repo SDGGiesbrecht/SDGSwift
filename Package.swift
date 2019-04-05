@@ -32,6 +32,7 @@ import PackageDescription
 let package = Package(
     name: "SDGSwift",
     platforms: [
+        // These must also be updated in Sources/SDGSwiftConfigurationLoading/Configuration.swift.
         .macOS(.v10_13)
     ],
     products: [
@@ -70,7 +71,7 @@ let package = Package(
         .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 15, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 16, 0))),
         .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 50000, 0)))
     ],
     targets: [
@@ -122,6 +123,8 @@ let package = Package(
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
+            ], swiftSettings: [
+                .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),
 
         // #documentation(SDGXcode)

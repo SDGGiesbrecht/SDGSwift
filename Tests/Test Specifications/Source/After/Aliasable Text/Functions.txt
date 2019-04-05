@@ -36,8 +36,8 @@ open class TypeScope : S̲u̲p̲e̲r̲c̲l̲a̲s̲s̲ {
 
 public func nonstandardGenerics<T : E̲q̲u̲a̲t̲a̲b̲l̲e̲>(_ parameter: T̲) {}
 
-public func nonstandardVoidReturn() -> V̲o̲i̲d̲ {} // swiftlint:disable:this redundant_void_return
-public func withVoid(_ closure: () -> ()) {} // swiftlint:disable:this void_return
+public func nonstandardVoidReturn() -> V̲o̲i̲d̲ {}
+public func withVoid(_ closure: () -> ()) {}
 
 public func tupleReturn() -> (S̲t̲r̲i̲n̲g̲, I̲n̲t̲) {
     return ("", 0)
@@ -46,14 +46,14 @@ public func tupleReturn() -> (S̲t̲r̲i̲n̲g̲, I̲n̲t̲) {
 public func arrayReturn() -> [B̲o̲o̲l̲] {
     return []
 }
-public func nonstandardArrayReturn() -> A̲r̲r̲a̲y̲<B̲o̲o̲l̲> { // swiftlint:disable:this syntactic_sugar
+public func nonstandardArrayReturn() -> A̲r̲r̲a̲y̲<B̲o̲o̲l̲> {
     return []
 }
 
 public func dictionaryReturn() -> [B̲o̲o̲l̲: B̲o̲o̲l̲] {
     return []
 }
-public func nonstandardDictionaryReturn() -> D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲<B̲o̲o̲l̲, B̲o̲o̲l̲> { // swiftlint:disable:this syntactic_sugar
+public func nonstandardDictionaryReturn() -> D̲i̲c̲t̲i̲o̲n̲a̲r̲y̲<B̲o̲o̲l̲, B̲o̲o̲l̲> {
     return []
 }
 

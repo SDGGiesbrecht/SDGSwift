@@ -38,9 +38,8 @@ extension GenericRequirementListSyntax : Mergeable {
         case is SameTypeRequirementSyntax:
             return .sameType
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified generic requirement: \(type(of: requirement))")
-            }
+            // @exempt(from: tests)
+            requirement.warnUnidentified()
             return .unknown
         }
     }

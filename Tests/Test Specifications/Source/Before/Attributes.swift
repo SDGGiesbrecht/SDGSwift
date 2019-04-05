@@ -22,3 +22,5 @@ public func auto(closure: @autoclosure () -> Void) {}
 extension ObjectiveCObject {
     @available(*, introduced: 4.2.1) @objc @discardableResult public func everything(_ closure: @escaping @autoclosure () -> Void) {}
 }
+
+@available(swift, introduced: 4.0, message: "Message.") public func introductionMessage() {}

@@ -38,6 +38,9 @@ extension DeclModifierSyntax {
             case "final":
                 // Internal overridability.
                 return nil
+            case "override":
+                // Inheritance. @exempt(from: tests) Filtered before it gets here.
+                return nil
             case "public", "internal", "fileprivate", "private":
                 // Access control.
                 return nil
@@ -56,10 +59,9 @@ extension DeclModifierSyntax {
             case "infix", "prefix", "postfix":
                 // Operator position.
                 return normalize()
-            default: // @exempt(from: tests) Should never occur.
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(conditionalKeyword)")
-                }
+            default:
+                // @exempt(from: tests)
+                conditionalKeyword.warnUnidentified()
                 return nil
             }
         }
@@ -97,9 +99,8 @@ extension DeclModifierSyntax {
             case "infix", "prefix", "postfix":
                 return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
             default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(name.text)")
-                }
+                // @exempt(from: tests)
+                name.text.warnUnidentified()
                 return .unknown
             }
         }
@@ -130,9 +131,8 @@ extension DeclModifierSyntax {
             case "infix", "prefix", "postfix":
                 return self
             default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unidentified modifier: \(name.text)")
-                }
+                // @exempt(from: tests)
+                name.text.warnUnidentified()
                 return nil
             }
         }

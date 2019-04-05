@@ -22,3 +22,5 @@ public ̲func ̲a̲u̲t̲o̲(c̲l̲o̲s̲u̲r̲e̲: ̲@autoclosure ̲() ̲-> ̲V
 extension ̲ObjectiveCObject ̲{
  ̲ ̲ ̲ ̲@available(*, ̲introduced: ̲4̲.̲2̲.1̲) ̲@objc ̲@discardableResult ̲public ̲func ̲e̲v̲e̲r̲y̲t̲h̲i̲n̲g̲(_ ̲c̲l̲o̲s̲u̲r̲e̲: ̲@escaping ̲@autoclosure ̲() ̲-> ̲Void) ̲{}
 }
+
+@available(swift, ̲introduced: ̲4̲.̲0̲, ̲message: ̲"M̲e̲s̲s̲a̲g̲e̲.̲") ̲public ̲func ̲i̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲M̲e̲s̲s̲a̲g̲e̲() ̲{}

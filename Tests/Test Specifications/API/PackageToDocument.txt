@@ -4,6 +4,9 @@ PackageToDocument • Package(name: "PackageToDocument")
  PrimaryModule • .target(name: "PrimaryModule")
   AnotherSublass • class AnotherSublass
    UnknownSuperclass
+  CollectionType • struct CollectionType
+   Collection
+   Sequence
   Enumeration • enum Enumeration
    visible • case visible
   Inherited • struct Inherited

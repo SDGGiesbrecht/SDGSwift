@@ -10,6 +10,9 @@ extension ̲Int ̲{
  ̲ ̲ ̲ ̲public ̲weak ̲var ̲o̲p̲t̲i̲o̲n̲a̲l̲: ̲SomeType?
 
  ̲ ̲ ̲ ̲public ̲let ̲(g̲r̲o̲u̲p̲e̲d̲I̲n̲t̲e̲g̲e̲r̲, ̲g̲r̲o̲u̲p̲e̲d̲S̲t̲r̲i̲n̲g̲) ̲: ̲(Int, ̲String) ̲= ̲(0̲, ̲"")
+
+ ̲ ̲ ̲ ̲public ̲fileprivate(set) ̲var ̲f̲i̲l̲e̲p̲r̲i̲v̲a̲t̲e̲S̲e̲t̲t̲e̲r̲ ̲= ̲0̲
+ ̲ ̲ ̲ ̲public ̲private(set) ̲var ̲p̲r̲i̲v̲a̲t̲e̲S̲e̲t̲t̲e̲r̲ ̲= ̲0̲
 }
 
 public ̲class ̲O̲b̲j̲e̲c̲t̲i̲v̲e̲C̲C̲l̲a̲s̲s̲ ̲: ̲NSObject ̲{

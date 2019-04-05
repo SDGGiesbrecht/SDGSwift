@@ -1,11 +1,11 @@
 public protocol DispatchSourceFileSystemObject : DispatchSourceProtocol {
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var data: DispatchSource.FileSystemEvent { get }
 #endif
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var handle: Int32 { get }
 #endif
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var mask: DispatchSource.FileSystemEvent { get }
 #endif
 }
@@ -34,13 +34,13 @@ public protocol DispatchSourceMemoryPressure : DispatchSourceProtocol {
 #endif
 }
 public protocol DispatchSourceProcess : DispatchSourceProtocol {
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var data: DispatchSource.ProcessEvent { get }
 #endif
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var handle: pid_t { get }
 #endif
-#if !os(Linux) && !os(Android)
+#if !os(Linux) && !os(Android) && !os(Windows)
     var mask: DispatchSource.ProcessEvent { get }
 #endif
 }
@@ -49,14 +49,14 @@ public protocol DispatchSourceProtocol {
     var handle: UInt { get }
     var isCancelled: Bool { get }
     var mask: UInt { get }
-    @available(macOS10.12, iOS10.0, tvOS10.0, watchOS3.0, *) func activate()
+    @available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *) func activate()
     func cancel()
     func resume()
-    @available(macOS10.10, iOS8.0, *) func setCancelHandler(handler: DispatchWorkItem)
+    @available(macOS 10.10, iOS 8.0, *) func setCancelHandler(handler: DispatchWorkItem)
     func setCancelHandler(qos: DispatchQoS = x, flags: DispatchWorkItemFlags = x, handler: DispatchSourceHandler?)
-    @available(macOS10.10, iOS8.0, *) func setEventHandler(handler: DispatchWorkItem)
+    @available(macOS 10.10, iOS 8.0, *) func setEventHandler(handler: DispatchWorkItem)
     func setEventHandler(qos: DispatchQoS = x, flags: DispatchWorkItemFlags = x, handler: DispatchSourceHandler?)
-    @available(macOS10.10, iOS8.0, *) func setRegistrationHandler(handler: DispatchWorkItem)
+    @available(macOS 10.10, iOS 8.0, *) func setRegistrationHandler(handler: DispatchWorkItem)
     func setRegistrationHandler(qos: DispatchQoS = x, flags: DispatchWorkItemFlags = x, handler: DispatchSourceHandler?)
     func suspend()
 }

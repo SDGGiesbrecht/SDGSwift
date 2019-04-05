@@ -54,9 +54,19 @@ configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
-#if os(Linux)
-// #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
+// #workaround(SwiftSyntax 0.50000.0, Compiler warnings.)
 configuration.testing.prohibitCompilerWarnings = false
-#endif
 
-// #workaround(workspace version 0.17.1, Inline SwiftLint statements can be removed when SwiftLint is deprecated.)
+// #workaround(workspace version 0.18.1, Generated test files are not ignored by default.)
+configuration.repository.ignoredPaths.insert("Tests/LinuxMain.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftConfigurationTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftDocumentationExampleTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftPackageManagerTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftSourceTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftTests/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGSwiftTestUtilities/XCTestManifests.swift")
+configuration.repository.ignoredPaths.insert("Tests/SDGXcodeTests/XCTestManifests.swift")
+
+// #workaround(workspace version 0.18.1, CI times out.)
+configuration.documentation.api.generate = false
+configuration.documentation.api.enforceCoverage = false

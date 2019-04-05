@@ -1,9 +1,9 @@
-open class BlockOperation : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Operation, _ {
+open class BlockOperation : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Operation {
     public init(block: @escaping () -> Void) {}
     open var executionBlocks: [() -> Void] { get }
     open func addExecutionBlock(_ block: @escaping () -> Void) {}
 }
-open class Bundle : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Bundle : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var allBundles: [Bundle] { get }
     open class var main: Bundle { get }
     open class func path(forResource name: String?, ofType ext: String?, inDirectory bundlePath: String) -> String? {}
@@ -59,7 +59,7 @@ open class Bundle : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open func urls(forResourcesWithExtension ext: String?, subdirectory subpath: String?) -> [NSURL]? {}
     open func urls(forResourcesWithExtension ext: String?, subdirectory subpath: String?, localization localizationName: String?) -> [NSURL]? {}
 }
-open class ByteCountFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class ByteCountFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func string(fromByteCount byteCount: Int64, countStyle: ByteCountFormatter.CountStyle) -> String {}
     open var allowedUnits: Units { get set }
     open var allowsNonnumericFormatting: Bool { get set }
@@ -72,7 +72,7 @@ open class ByteCountFormatter : CustomDebugStringConvertible, CustomStringConver
     open var zeroPadsFractionDigits: Bool { get set }
     open func string(fromByteCount byteCount: Int64) -> String {}
 }
-open class CachedURLResponse : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class CachedURLResponse : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(response: URLResponse, data: Data) {}
     public init(response: URLResponse, data: Data, userInfo: [AnyHashable: Any]? = x, storagePolicy: URLCache.StoragePolicy) {}
     open var data: Data { get }
@@ -80,7 +80,7 @@ open class CachedURLResponse : CustomDebugStringConvertible, CustomStringConvert
     open var storagePolicy: URLCache.StoragePolicy { get }
     open var userInfo: [AnyHashable: Any]? { get }
 }
-open class DateComponentsFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class DateComponentsFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func localizedString(from components: DateComponents, unitsStyle: UnitsStyle) -> String? {}
     open var allowedUnits: NSCalendar.Unit { get set }
     open var allowsFractionalUnits: Bool { get set }
@@ -95,7 +95,7 @@ open class DateComponentsFormatter : CustomDebugStringConvertible, CustomStringC
     open func string(from components: DateComponents) -> String? {}
     open func string(from startDate: Date, to endDate: Date) -> String? {}
 }
-open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class DateFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func dateFormat(fromTemplate tmplate: String, options opts: Int, locale: Locale?) -> String? {}
     open class func localizedString(from date: Date, dateStyle dstyle: Style, timeStyle tstyle: Style) -> String {}
     open var amSymbol: String! { get set }
@@ -109,7 +109,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open var generatesCalendarDates { get }
     open var gregorianStartDate: Date? { get set }
     open var isLenient { get }
-    open var locale: Locale! { get }
+    open var locale: Locale! { get set }
     open var longEraSymbols: [String]! { get set }
     open var monthSymbols: [String]! { get set }
     open var pmSymbol: String! { get set }
@@ -124,7 +124,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open var standaloneQuarterSymbols: [String]! { get set }
     open var standaloneWeekdaySymbols: [String]! { get set }
     open var timeStyle: Style { get set }
-    open var timeZone: TimeZone! { get }
+    open var timeZone: TimeZone! { get set }
     open var twoDigitStartDate: Date? { get set }
     open var veryShortMonthSymbols: [String]! { get set }
     open var veryShortStandaloneMonthSymbols: [String]! { get set }
@@ -136,7 +136,7 @@ open class DateFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open func setLocalizedDateFormatFromTemplate(_ dateFormatTemplate: String) {}
     open func string(from date: Date) -> String {}
 }
-open class DateIntervalFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class DateIntervalFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open var calendar: Calendar! { get set }
     open var dateStyle: Style { get set }
     open var dateTemplate: String! { get set }
@@ -146,12 +146,12 @@ open class DateIntervalFormatter : CustomDebugStringConvertible, CustomStringCon
     open func string(from dateInterval: DateInterval) -> String? {}
     open func string(from fromDate: Date, to toDate: Date) -> String {}
 }
-open class Dimension : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
+open class Dimension : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit {
     open class func baseUnit() -> Self {}
     public required init(symbol: String, converter: UnitConverter) {}
     open var converter: UnitConverter { get }
 }
-open class EnergyFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class EnergyFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open var isForFoodEnergyUse: Bool { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitStyle: UnitStyle { get set }
@@ -160,7 +160,7 @@ open class EnergyFormatter : CustomDebugStringConvertible, CustomStringConvertib
     open func unitString(fromJoules numberInJoules: Double, usedUnit unitp: UnsafeMutablePointer<Unit>?) -> String {}
     open func unitString(fromValue value: Double, unit: Unit) -> String {}
 }
-open class FileHandle : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class FileHandle : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding {
     open class var nullDevice: FileHandle { get }
     public static var readCompletionNotification { get }
     open class var standardError: FileHandle { get }
@@ -177,27 +177,27 @@ open class FileHandle : CustomDebugStringConvertible, CustomStringConvertible, E
     open var availableData: Data { get }
     open var fileDescriptor: Int32 { get }
     open var offsetInFile: UInt64 { get }
-    open var readabilityHandler: ((FileHandle) -> Void)? { get }
-    open var writeabilityHandler: ((FileHandle) -> Void)? { get }
+    open var readabilityHandler: ((FileHandle) -> Void)? { get set }
+    open var writeabilityHandler: ((FileHandle) -> Void)? { get set }
     open func acceptConnectionInBackgroundAndNotify() {}
-    open func acceptConnectionInBackgroundAndNotify(forModes modes: [RunLoopMode]?) {}
+    open func acceptConnectionInBackgroundAndNotify(forModes modes: [RunLoop.Mode]?) {}
     open func closeFile() {}
     open func readData(ofLength length: Int) -> Data {}
     open func readDataToEndOfFile() -> Data {}
     open func readInBackgroundAndNotify() {}
-    open func readInBackgroundAndNotify(forModes modes: [RunLoopMode]?) {}
+    open func readInBackgroundAndNotify(forModes modes: [RunLoop.Mode]?) {}
     open func readToEndOfFileInBackgroundAndNotify() {}
-    open func readToEndOfFileInBackgroundAndNotify(forModes modes: [RunLoopMode]?) {}
+    open func readToEndOfFileInBackgroundAndNotify(forModes modes: [RunLoop.Mode]?) {}
     open func seek(toFileOffset offset: UInt64) {}
     @discardableResult open func seekToEndOfFile() -> UInt64 {}
     open func synchronizeFile() {}
     open func truncateFile(atOffset offset: UInt64) {}
     open func waitForDataInBackgroundAndNotify() {}
-    open func waitForDataInBackgroundAndNotify(forModes modes: [RunLoopMode]?) {}
+    open func waitForDataInBackgroundAndNotify(forModes modes: [RunLoop.Mode]?) {}
     open func write(_ data: Data) {}
 }
-open class FileManager : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
-open class DirectoryEnumerator : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSEnumerator, NSObject, NSObjectProtocol, Sequence, _ {
+open class FileManager : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
+open class DirectoryEnumerator : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSEnumerator, NSObject, NSObjectProtocol, Sequence {
     open var directoryAttributes: [FileAttributeKey: Any]? { get }
     open var fileAttributes: [FileAttributeKey: Any]? { get }
     open var level: Int { get }
@@ -205,7 +205,7 @@ open class DirectoryEnumerator : CustomDebugStringConvertible, CustomStringConve
 }
     open class var default: FileManager { get }
     open var currentDirectoryPath: String { get }
-    open weak var delegate: FileManagerDelegate? { get }
+    open weak var delegate: FileManagerDelegate? { get set }
     open var homeDirectoryForCurrentUser: URL { get }
     open var temporaryDirectory: URL { get }
 #if !(os(Android))
@@ -222,7 +222,7 @@ open class DirectoryEnumerator : CustomDebugStringConvertible, CustomStringConve
     open func copyItem(atPath srcPath: String, toPath dstPath: String) throws {}
     open func createDirectory(at url: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = x) throws {}
     open func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = x) throws {}
-    open func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]? = x) -> Bool {}
+    @discardableResult open func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]? = x) -> Bool {}
     open func createSymbolicLink(at url: URL, withDestinationURL destURL: URL) throws {}
     open func createSymbolicLink(atPath path: String, withDestinationPath destPath: String) throws {}
     open func destinationOfSymbolicLink(atPath path: String) throws -> String {}
@@ -253,14 +253,16 @@ open class DirectoryEnumerator : CustomDebugStringConvertible, CustomStringConve
     open func subpaths(atPath path: String) -> [String]? {}
     open func subpathsOfDirectory(atPath path: String) throws -> [String] {}
     open func url(for directory: SearchPathDirectory, in domain: SearchPathDomainMask, appropriateFor url: URL?, create shouldCreate: Bool) throws -> URL {}
+#if !(os(Windows) )
     open func urls(for directory: SearchPathDirectory, in domainMask: SearchPathDomainMask) -> [URL] {}
+#endif
 }
-open class Formatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class Formatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open func editingString(for obj: Any) -> String? {}
     open func objectValue(_ string: String) throws -> Any? {}
     open func string(for obj: Any) -> String? {}
 }
-open class HTTPCookie : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class HTTPCookie : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func cookies(withResponseHeaderFields headerFields: [String: String], for URL: URL) -> [HTTPCookie] {}
     open class func requestHeaderFields(with cookies: [HTTPCookie]) -> [String: String] {}
     public init?(properties: [HTTPCookiePropertyKey: Any]) {}
@@ -278,7 +280,7 @@ open class HTTPCookie : CustomDebugStringConvertible, CustomStringConvertible, E
     open var value: String { get }
     open var version: Int { get }
 }
-open class HTTPCookieStorage : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class HTTPCookieStorage : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var shared: HTTPCookieStorage { get }
     open class func sharedCookieStorage(forGroupContainerIdentifier identifier: String) -> HTTPCookieStorage {}
     open var cookieAcceptPolicy: HTTPCookie.AcceptPolicy { get set }
@@ -290,13 +292,13 @@ open class HTTPCookieStorage : CustomDebugStringConvertible, CustomStringConvert
     open func setCookies(_ cookies: [HTTPCookie], for url: URL?, mainDocumentURL: URL?) {}
     open func sortedCookies(using sortOrder: [NSSortDescriptor]) -> [HTTPCookie] {}
 }
-open class HTTPURLResponse : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, URLResponse, _ {
+open class HTTPURLResponse : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, URLResponse {
     open class func localizedString(forStatusCode statusCode: Int) -> String {}
     public init?(url: URL, statusCode: Int, httpVersion: String?, headerFields: [String: String]?) {}
     public var allHeaderFields: [AnyHashable: Any] { get }
     public var statusCode: Int { get }
 }
-open class Host : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Host : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func current() -> Host {}
     public convenience init(address: String) {}
     public convenience init(name: String?) {}
@@ -307,14 +309,14 @@ open class Host : CustomDebugStringConvertible, CustomStringConvertible, Equatab
     open var names: [String] { get }
     open func isEqual(to aHost: Host) -> Bool {}
 }
-open class ISO8601DateFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class ISO8601DateFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     open class func string(from date: Date, timeZone: TimeZone, formatOptions: ISO8601DateFormatter.Options = x) -> String {}
     open var formatOptions: ISO8601DateFormatter.Options { get }
     open var timeZone: TimeZone! { get }
     open func date(from string: String) -> Date? {}
     open func string(from date: Date) -> String {}
 }
-open class InputStream : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream, _ {
+open class InputStream : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream {
     public init(data: Data) {}
     public convenience init?(fileAtPath path: String) {}
     public init?(url: URL) {}
@@ -341,13 +343,13 @@ open class JSONEncoder {
     open var userInfo: [CodingUserInfoKey: Any] { get set }
     open func encode<T>(_ value: T) throws -> Data where T : Encodable {}
 }
-open class JSONSerialization : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class JSONSerialization : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func data(withJSONObject value: Any, options opt: WritingOptions = x) throws -> Data {}
     open class func isValidJSONObject(_ obj: Any) -> Bool {}
     open class func jsonObject(with data: Data, options opt: ReadingOptions = x) throws -> Any {}
     open class func writeJSONObject(_ obj: Any, toStream stream: OutputStream, options opt: WritingOptions) throws -> Int {}
 }
-open class LengthFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class LengthFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open var isForPersonHeightUse: Bool { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitStyle: UnitStyle { get set }
@@ -356,7 +358,7 @@ open class LengthFormatter : CustomDebugStringConvertible, CustomStringConvertib
     open func unitString(fromMeters numberInMeters: Double, usedUnit unitp: UnsafeMutablePointer<Unit>?) -> String {}
     open func unitString(fromValue value: Double, unit: Unit) -> String {}
 }
-open class MassFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class MassFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open var isForPersonMassUse: Bool { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitStyle: UnitStyle { get set }
@@ -366,16 +368,16 @@ open class MassFormatter : CustomDebugStringConvertible, CustomStringConvertible
     open func unitString(fromValue value: Double, unit: Unit) -> String {}
     open func unitStringDisplayedAdjacent(toValue value: Double, unit: Unit) -> String {}
 }
-open class MeasurementFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class MeasurementFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     open var locale: Locale! { get set }
     open var numberFormatter: NumberFormatter! { get set }
     open var unitOptions: MeasurementFormatter.UnitOptions { get set }
     open var unitStyle: Formatter.UnitStyle { get set }
     public func string<UnitType>(from measurement: Measurement<UnitType>) -> String {}
 }
-open class MessagePort : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port, _ {
+open class MessagePort : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port {
 }
-open class NSAffineTransform : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable {
+open class NSAffineTransform : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable {
     public convenience init(transform: AffineTransform) {}
     public var transformStruct: NSAffineTransformStruct { get set }
     open func append(_ transform: AffineTransform) {}
@@ -389,7 +391,7 @@ open class NSAffineTransform : CustomDebugStringConvertible, CustomStringConvert
     open func transform(_ aSize: NSSize) -> NSSize {}
     open func translateX(by deltaX: CGFloat, yBy deltaY: CGFloat) {}
 }
-open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSArray : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public convenience init(array: [Any]) {}
     public convenience init(array: [Any], copyItems: Bool) {}
     public required convenience init(arrayLiteral elements: Any...) {}
@@ -440,7 +442,7 @@ open class NSArray : CustomDebugStringConvertible, CustomReflectable, CustomStri
     open func subarray(with range: NSRange) -> [Any] {}
     open func write(to url: URL) throws {}
 }
-open class NSAttributedString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable {
+open class NSAttributedString : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable {
     public init(attributedString: NSAttributedString) {}
     public init(string: String) {}
     public init(string: String, attributes attrs: [NSAttributedStringKey: Any]? = x) {}
@@ -455,7 +457,7 @@ open class NSAttributedString : CustomDebugStringConvertible, CustomStringConver
     open func enumerateAttributes(in enumerationRange: NSRange, options opts: NSAttributedString.EnumerationOptions = x, using block: ([NSAttributedStringKey: Any], NSRange, UnsafeMutablePointer<ObjCBool>) -> Swift.Void) {}
     open func isEqual(to other: NSAttributedString) -> Bool {}
 }
-open class NSCache<KeyType, ObjectType> : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class NSCache<KeyType, ObjectType> : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open var countLimit: Int { get set }
     open weak var delegate: NSCacheDelegate? { get set }
     open var evictsObjectsWithDiscardedContent: Bool { get set }
@@ -467,7 +469,7 @@ open class NSCache<KeyType, ObjectType> : CustomDebugStringConvertible, CustomSt
     open func setObject(_ obj: ObjectType, forKey key: KeyType) {}
     open func setObject(_ obj: ObjectType, forKey key: KeyType, cost g: Int) {}
 }
-open class NSCalendar : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSCalendar : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class var autoupdatingCurrent: Calendar { get }
     open class var current: Calendar { get }
     public init?(calendarIdentifier ident: Identifier) {}
@@ -532,7 +534,7 @@ open class NSCalendar : CustomDebugStringConvertible, CustomStringConvertible, E
     open func range(ofWeekendContaining date: Date) -> DateInterval? {}
     open func startOfDay(for date: Date) -> Date {}
 }
-open class NSCharacterSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSCharacterSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, _StructTypeBridgeable, _SwiftBridgeable {
     open class var alphanumerics: CharacterSet { get }
     open class var capitalizedLetters: CharacterSet { get }
     open class var controlCharacters: CharacterSet { get }
@@ -565,7 +567,7 @@ open class NSCharacterSet : CustomDebugStringConvertible, CustomStringConvertibl
     open func isSuperset(of theOtherSet: CharacterSet) -> Bool {}
     open func longCharacterIsMember(_ theLongChar: UInt32) -> Bool {}
 }
-open class NSCoder : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class NSCoder : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open var allowedClasses: [AnyClass]? { get }
     open var allowsKeyedCoding: Bool { get }
     open var decodingFailurePolicy: NSCoder.DecodingFailurePolicy { get }
@@ -619,7 +621,7 @@ open class NSCoder : CustomDebugStringConvertible, CustomStringConvertible, Equa
     open func version(forClassName className: String) -> Int {}
     open func withDecodedUnsafeBufferPointer<ResultType>(forKey key: String, body: (UnsafeBufferPointer<UInt8>?) throws -> ResultType) rethrows -> ResultType {}
 }
-open class NSComparisonPredicate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding, _ {
+open class NSComparisonPredicate : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding {
     public init(leftExpression lhs: NSExpression, rightExpression rhs: NSExpression, modifier: Modifier, type: Operator, options: Options) {}
     open var comparisonPredicateModifier: Modifier { get }
     open var leftExpression: NSExpression { get }
@@ -627,7 +629,7 @@ open class NSComparisonPredicate : CustomDebugStringConvertible, CustomStringCon
     open var predicateOperatorType: Operator { get }
     open var rightExpression: NSExpression { get }
 }
-open class NSCompoundPredicate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding, _ {
+open class NSCompoundPredicate : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSPredicate, NSSecureCoding {
     public convenience init(andPredicateWithSubpredicates subpredicates: [NSPredicate]) {}
     public convenience init(notPredicateWithSubpredicate predicate: NSPredicate) {}
     public convenience init(orPredicateWithSubpredicates subpredicates: [NSPredicate]) {}
@@ -635,14 +637,14 @@ open class NSCompoundPredicate : CustomDebugStringConvertible, CustomStringConve
     open var compoundPredicateType: LogicalType { get set }
     open var subpredicates: [NSPredicate] { get set }
 }
-open class NSCondition : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol, _ {
+open class NSCondition : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     open var name: String? { get set }
     open func broadcast() {}
     open func signal() {}
     open func wait() {}
     open func wait(until limit: Date) -> Bool {}
 }
-open class NSConditionLock : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol, _ {
+open class NSConditionLock : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     public init(condition: Int) {}
     open var condition: Int { get }
     open var name: String? { get set }
@@ -653,10 +655,10 @@ open class NSConditionLock : CustomDebugStringConvertible, CustomStringConvertib
     open func tryLock(whenCondition condition: Int) -> Bool {}
     open func unlock(withCondition condition: Int) {}
 }
-open class NSCountedSet : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSMutableSet, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSCountedSet : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSMutableSet, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open func count(for object: Any) -> Int {}
 }
-open class NSData : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSData : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, DataProtocol, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, RandomAccessCollection, _CFBridgeable, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(base64Encoded base64Data: Data, options: Base64DecodingOptions = x) {}
     public init?(base64Encoded base64String: String, options: Base64DecodingOptions = x) {}
     public init(bytes: UnsafeRawPointer?, length: Int) {}
@@ -669,7 +671,10 @@ open class NSData : CustomDebugStringConvertible, CustomStringConvertible, Equat
     public init(contentsOfFile path: String, options readOptionsMask: ReadingOptions = x) throws {}
     public init(data: Data) {}
     open var bytes: UnsafeRawPointer { get }
+    @nonobjc public var endIndex: Int { get }
     open var length: Int { get }
+    @nonobjc public var startIndex: Int { get }
+    @nonobjc public subscript(position: Int) -> UInt8 { get } {}
     open func base64EncodedData(options: Base64EncodingOptions = x) -> Data {}
     open func base64EncodedString(options: Base64EncodingOptions = x) -> String {}
     open func enumerateBytes(_ block: (UnsafeRawPointer, NSRange, UnsafeMutablePointer<Bool>) -> Void) {}
@@ -683,7 +688,7 @@ open class NSData : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open func write(toFile path: String, atomically useAuxiliaryFile: Bool) -> Bool {}
     open func write(toFile path: String, options writeOptionsMask: WritingOptions = x) throws {}
 }
-open class NSDate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSDate : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class var distantFuture: Date { get }
     open class var distantPast: Date { get }
     open class var timeIntervalSinceReferenceDate: TimeInterval { get }
@@ -702,7 +707,7 @@ open class NSDate : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open func laterDate(_ anotherDate: Date) -> Date {}
     open func timeIntervalSince(_ anotherDate: Date) -> TimeInterval {}
 }
-open class NSDateComponents : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSDateComponents : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable, _SwiftBridgeable {
     open var calendar: Calendar? { get set }
     open var date: Date? { get }
     open var day: Int { get set }
@@ -726,7 +731,7 @@ open class NSDateComponents : CustomDebugStringConvertible, CustomStringConverti
     open func setValue(_ value: Int, forComponent unit: NSCalendar.Unit) {}
     open func value(forComponent unit: NSCalendar.Unit) -> Int {}
 }
-open class NSDateInterval : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable {
+open class NSDateInterval : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable {
     public init(start startDate: Date, duration: TimeInterval) {}
     public convenience init(start startDate: Date, end endDate: Date) {}
     open var duration: TimeInterval { get }
@@ -738,7 +743,7 @@ open class NSDateInterval : CustomDebugStringConvertible, CustomStringConvertibl
     open func intersects(_ dateInterval: DateInterval) -> Bool {}
     open func isEqual(to dateInterval: DateInterval) -> Bool {}
 }
-open class NSDecimalNumber : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByBooleanLiteral, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, NSCoding, NSCopying, NSNumber, NSObject, NSObjectProtocol, NSSecureCoding, NSValue, _, _Factory, _NSNumberCastingWithoutBridging {
+open class NSDecimalNumber : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByBooleanLiteral, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, NSCoding, NSCopying, NSNumber, NSObject, NSObjectProtocol, NSSecureCoding, NSValue, _Factory, _NSNumberCastingWithoutBridging {
     open class var defaultBehavior: NSDecimalNumberBehaviors { get }
     open class var maximum: NSDecimalNumber { get }
     open class var minimum: NSDecimalNumber { get }
@@ -763,11 +768,11 @@ open class NSDecimalNumber : CustomDebugStringConvertible, CustomStringConvertib
     open func subtracting(_ other: NSDecimalNumber) -> NSDecimalNumber {}
     open func subtracting(_ other: NSDecimalNumber, withBehavior b: NSDecimalNumberBehaviors?) -> NSDecimalNumber {}
 }
-open class NSDecimalNumberHandler : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSDecimalNumberBehaviors, NSObject, NSObjectProtocol, _ {
+open class NSDecimalNumberHandler : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSDecimalNumberBehaviors, NSObject, NSObjectProtocol {
     open class var default: NSDecimalNumberHandler { get }
     public init(roundingMode: NSDecimalNumber.RoundingMode, scale: Int16, raiseOnExactness exact: Bool, raiseOnOverflow overflow: Bool, raiseOnUnderflow underflow: Bool, raiseOnDivideByZero divideByZero: Bool) {}
 }
-open class NSDictionary : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSDictionary : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class func sharedKeySet(forKeys keys: [NSCopying]) -> Any {}
     public convenience init(dictionary otherDictionary: [AnyHashable: Any]) {}
     public required convenience init(dictionaryLiteral elements: (Any, Any)...) {}
@@ -800,12 +805,12 @@ open class NSDictionary : CustomDebugStringConvertible, CustomReflectable, Custo
     open func write(to url: URL, atomically: Bool) -> Bool {}
     open func write(toFile path: String, atomically useAuxiliaryFile: Bool) -> Bool {}
 }
-open class NSEnumerator : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Sequence, _ {
+open class NSEnumerator : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Sequence {
     public var allObjects: [Any] { get }
     public func makeIterator() -> Iterator {}
     open func nextObject() -> Any? {}
 }
-open class NSError : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Swift.Error, _, _CFBridgeable {
+open class NSError : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Swift.Error, _CFBridgeable {
     open class func setUserInfoValueProvider(forDomain errorDomain: String, provider: ((Error, String) -> Any?)?) {}
     open class func userInfoValueProvider(forDomain errorDomain: String) -> ((Error, String) -> Any?)? {}
     public init(domain: String, code: Int, userInfo dict: [String: Any]? = x) {}
@@ -819,7 +824,7 @@ open class NSError : CustomDebugStringConvertible, CustomStringConvertible, Equa
     open var recoveryAttempter: Any? { get }
     open var userInfo: [String: Any] { get }
 }
-open class NSExpression : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class NSExpression : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     open class func expressionForAnyKey() -> NSExpression {}
     open class func expressionForEvaluatedObject() -> NSExpression {}
     public init(block: @escaping (Any?, [Any], NSMutableDictionary?) -> Any, arguments: [NSExpression]?) {}
@@ -855,18 +860,17 @@ open class NSExpression : CustomDebugStringConvertible, CustomStringConvertible,
     open func allowEvaluation() {}
     open func expressionValue(with object: Any?, context: NSMutableDictionary?) -> Any? {}
 }
-open class NSIndexPath : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSIndexPath : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public convenience init(index: Int) {}
-    public init(indexes: UnsafePointer<Int>!, length: Int) {}
+    public init(indexes: UnsafePointer<Int>?, length: Int) {}
     open var length: Int { get }
     open func adding(_ index: Int) -> IndexPath {}
     open func compare(_ otherObject: IndexPath) -> ComparisonResult {}
-    open func getIndexes(_ indexes: UnsafeMutablePointer<Int>) {}
     open func getIndexes(_ indexes: UnsafeMutablePointer<Int>, range positionRange: NSRange) {}
     open func index(atPosition position: Int) -> Int {}
     open func removingLastIndex() -> IndexPath {}
 }
-open class NSIndexSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSIndexSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public convenience init(index value: Int) {}
     public init(indexSet: IndexSet) {}
     public init(indexesIn range: NSRange) {}
@@ -897,7 +901,7 @@ open class NSIndexSet : CustomDebugStringConvertible, CustomStringConvertible, E
     open func isEqual(to indexSet: IndexSet) -> Bool {}
     public func makeIterator() -> NSIndexSetIterator {}
 }
-open class NSKeyedArchiver : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol, _ {
+open class NSKeyedArchiver : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol {
     open class func archiveRootObject(_ rootObject: Any, toFile path: String) -> Bool {}
     open class func archivedData(withRootObject rootObject: Any) -> Data {}
     open class func classNameForClass(_ cls: AnyClass) -> String? {}
@@ -911,7 +915,7 @@ open class NSKeyedArchiver : CustomDebugStringConvertible, CustomStringConvertib
     open func finishEncoding() {}
     open func setClassName(_ codedName: String?, for cls: AnyClass) {}
 }
-open class NSKeyedUnarchiver : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol, _ {
+open class NSKeyedUnarchiver : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol {
     open class func class(forClassName codedName: String) -> AnyClass? {}
     open class func setClass(_ cls: AnyClass?, forClassName codedName: String) {}
     open class func unarchiveObject(with data: Data) -> Any? {}
@@ -923,7 +927,7 @@ open class NSKeyedUnarchiver : CustomDebugStringConvertible, CustomStringConvert
     open func finishDecoding() {}
     open func setClass(_ cls: AnyClass?, forClassName codedName: String) {}
 }
-open class NSLocale : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSLocale : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable, _SwiftBridgeable {
     open class var availableLocaleIdentifiers: [String] { get }
     open class var commonISOCurrencyCodes: [String] { get }
     open class var current: Locale { get }
@@ -946,12 +950,12 @@ open class NSLocale : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func displayName(forKey key: Key, value: String) -> String? {}
     open func object(forKey key: NSLocale.Key) -> Any? {}
 }
-open class NSLock : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol, _ {
+open class NSLock : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     open var name: String? { get set }
     open func lock(before limit: Date) -> Bool {}
     open func try() -> Bool {}
 }
-open class NSMeasurement : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSMeasurement : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public init(doubleValue: Double, unit: Unit) {}
     open var doubleValue: Double { get }
     open var unit: Unit { get }
@@ -960,7 +964,7 @@ open class NSMeasurement : CustomDebugStringConvertible, CustomStringConvertible
     open func converting(to unit: Unit) -> Measurement<Unit> {}
     open func subtracting(_ measurement: Measurement<Unit>) -> Measurement<Unit> {}
 }
-open class NSMutableArray : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSArray, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableArray : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSArray, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public init(capacity numItems: Int) {}
     open func add(_ anObject: Any) {}
     open func addObjects(from otherArray: [Any]) {}
@@ -986,7 +990,7 @@ open class NSMutableArray : CustomDebugStringConvertible, CustomReflectable, Cus
     open func sort(options opts: NSSortOptions = x, usingComparator cmptr: Comparator) {}
     public func sort(using sortDescriptors: [NSSortDescriptor]) {}
 }
-open class NSMutableAttributedString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSAttributedString, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable {
+open class NSMutableAttributedString : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSAttributedString, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable {
     open var mutableString: NSMutableString { get }
     open func addAttribute(_ name: NSAttributedStringKey, value: Any, range: NSRange) {}
     open func addAttributes(_ attrs: [NSAttributedStringKey: Any], range: NSRange) {}
@@ -1000,7 +1004,7 @@ open class NSMutableAttributedString : CustomDebugStringConvertible, CustomStrin
     open func setAttributedString(_ attrString: NSAttributedString) {}
     open func setAttributes(_ attrs: [NSAttributedStringKey: Any]?, range: NSRange) {}
 }
-open class NSMutableCharacterSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCharacterSet, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableCharacterSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCharacterSet, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, _StructTypeBridgeable, _SwiftBridgeable {
     open class func alphanumeric() -> NSMutableCharacterSet {}
     open class func capitalizedLetter() -> NSMutableCharacterSet {}
     open class func control() -> NSMutableCharacterSet {}
@@ -1022,7 +1026,7 @@ open class NSMutableCharacterSet : CustomDebugStringConvertible, CustomStringCon
     open func invert() {}
     open func removeCharacters(in aRange: NSRange) {}
 }
-open class NSMutableData : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSData, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableData : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSData, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(capacity: Int) {}
     public init?(length: Int) {}
     open var mutableBytes: UnsafeMutableRawPointer { get }
@@ -1034,7 +1038,7 @@ open class NSMutableData : CustomDebugStringConvertible, CustomStringConvertible
     open func resetBytes(in range: NSRange) {}
     open func setData(_ data: Data) {}
 }
-open class NSMutableDictionary : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSDictionary, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableDictionary : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSDictionary, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public convenience init(capacity numItems: Int) {}
     public convenience init(sharedKeySet keyset: Any) {}
     open func addEntries(from otherDictionary: [AnyHashable: Any]) {}
@@ -1044,7 +1048,7 @@ open class NSMutableDictionary : CustomDebugStringConvertible, CustomReflectable
     open func setDictionary(_ otherDictionary: [AnyHashable: Any]) {}
     open func setObject(_ anObject: Any, forKey aKey: AnyHashable) {}
 }
-open class NSMutableIndexSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSIndexSet, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _StructTypeBridgeable {
+open class NSMutableIndexSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSIndexSet, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _StructTypeBridgeable {
     open func add(_ indexSet: IndexSet) {}
     open func add(in r: NSRange) {}
     open func remove(_ indexSet: IndexSet) {}
@@ -1052,7 +1056,7 @@ open class NSMutableIndexSet : CustomDebugStringConvertible, CustomStringConvert
     open func removeAllIndexes() {}
     open func shiftIndexesStarting(at index: Int, by delta: Int) {}
 }
-open class NSMutableOrderedSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSOrderedSet, NSSecureCoding, Sequence, _ {
+open class NSMutableOrderedSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSOrderedSet, NSSecureCoding, Sequence {
     public init(capacity numItems: Int) {}
     open func add(_ object: Any) {}
     open func add(_ objects: UnsafePointer<AnyObject>!, count: Int) {}
@@ -1081,7 +1085,7 @@ open class NSMutableOrderedSet : CustomDebugStringConvertible, CustomStringConve
     open func union(_ other: NSOrderedSet) {}
     open func unionSet(_ other: Set<AnyHashable>) {}
 }
-open class NSMutableSet : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableSet : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSSet, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public required init(capacity numItems: Int) {}
     open func add(_ object: Any) {}
     open func addObjects(from array: [Any]) {}
@@ -1093,7 +1097,7 @@ open class NSMutableSet : CustomDebugStringConvertible, CustomReflectable, Custo
     open func setSet(_ otherSet: Set<AnyHashable>) {}
     open func union(_ otherSet: Set<AnyHashable>) {}
 }
-open class NSMutableString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSString, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSMutableString : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSString, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public required init(capacity: Int) {}
     public func append(_ aString: String) {}
     public func applyTransform(_ transform: String, reverse: Bool, range: NSRange, updatedRange resultingRange: NSRangePointer?) -> Bool {}
@@ -1103,19 +1107,19 @@ open class NSMutableString : CustomDebugStringConvertible, CustomStringConvertib
     public func replaceOccurrences(of target: String, with replacement: String, options: CompareOptions = x, range searchRange: NSRange) -> Int {}
     public func setString(_ aString: String) {}
 }
-open class NSMutableURLRequest : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSURLRequest, _, _StructTypeBridgeable {
+open class NSMutableURLRequest : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSURLRequest, _StructTypeBridgeable {
     open func addValue(_ value: String, forHTTPHeaderField field: String) {}
     open func setValue(_ value: String?, forHTTPHeaderField field: String) {}
 }
-open class NSNotification : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class NSNotification : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     public init(name: Name, object: Any?, userInfo: [AnyHashable: Any]? = x) {}
     open var name: Name { get }
     open var object: Any? { get }
     open var userInfo: [AnyHashable: Any]? { get }
 }
-open class NSNull : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class NSNull : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
 }
-open class NSNumber : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByBooleanLiteral, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSValue, _, _Factory, _NSNumberCastingWithoutBridging {
+open class NSNumber : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByBooleanLiteral, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, NSValue, _Factory, _NSNumberCastingWithoutBridging {
     public required convenience init(booleanLiteral value: Bool) {}
     public required convenience init(floatLiteral value: Double) {}
     public required convenience init(integerLiteral value: Int) {}
@@ -1138,20 +1142,21 @@ open class NSNumber : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func compare(_ otherNumber: NSNumber) -> ComparisonResult {}
     open func description(withLocale locale: Locale?) -> String {}
 }
-open class NSObject : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObjectProtocol, _ {
+open class NSObject : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObjectProtocol {
     open class func classFallbacksForKeyedArchiver() -> [String] {}
     open class func classForKeyedUnarchiver() -> AnyClass {}
     public init() {}
     open var classForCoder: AnyClass { get }
     open var classForKeyedArchiver: AnyClass? { get }
-    open var hashValue: Int { get }
+    public var hashValue: Int { get }
     public func ==(lhs: NSObject, rhs: NSObject) -> Bool {}
     open func copy() -> Any {}
+    public func hash(into hasher: inout Hasher) {}
     open func mutableCopy() -> Any {}
     open func replacementObject(for aCoder: NSCoder) -> Any? {}
     open func replacementObject(for archiver: NSKeyedArchiver) -> Any? {}
 }
-open class NSOrderedSet : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _ {
+open class NSOrderedSet : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence {
     public convenience init(array: [Any]) {}
     public convenience init(array set: [Any], copyItems flag: Bool) {}
     public convenience init(array set: [Any], range: NSRange, copyItems flag: Bool) {}
@@ -1200,7 +1205,7 @@ open class NSOrderedSet : CustomDebugStringConvertible, CustomStringConvertible,
     open func sortedArray(options opts: NSSortOptions = x, usingComparator cmptr: (Any, Any) -> ComparisonResult) -> [Any] {}
     public func sortedArray(using sortDescriptors: [NSSortDescriptor]) -> [Any] {}
 }
-open class NSPersonNameComponents : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSPersonNameComponents : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     open var familyName: String? { get set }
     open var givenName: String? { get set }
     open var middleName: String? { get set }
@@ -1209,7 +1214,7 @@ open class NSPersonNameComponents : CustomDebugStringConvertible, CustomStringCo
     open var nickname: String? { get set }
     open var phoneticRepresentation: PersonNameComponents? { get set }
 }
-open class NSPredicate : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class NSPredicate : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(block: @escaping (Any?, [String: Any]?) -> Bool) {}
     public convenience init(format predicateFormat: String, _ args: CVarArg...) {}
     public init(format predicateFormat: String, argumentArray arguments: [Any]?) {}
@@ -1222,12 +1227,12 @@ open class NSPredicate : CustomDebugStringConvertible, CustomStringConvertible, 
     open func evaluate(with object: Any?, substitutionVariables bindings: [String: Any]?) -> Bool {}
     open func withSubstitutionVariables(_ variables: [String: Any]) -> Self {}
 }
-open class NSRecursiveLock : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol, _ {
+open class NSRecursiveLock : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     open var name: String? { get set }
     open func lock(before limit: Date) -> Bool {}
     open func try() -> Bool {}
 }
-open class NSRegularExpression : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class NSRegularExpression : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func escapedPattern(for string: String) -> String {}
     open class func escapedTemplate(for string: String) -> String {}
     public init(pattern: String, options: Options = x) throws {}
@@ -1243,7 +1248,7 @@ open class NSRegularExpression : CustomDebugStringConvertible, CustomStringConve
     public func replacementString(for result: NSTextCheckingResult, in string: String, offset: Int, template templ: String) -> String {}
     public func stringByReplacingMatches(in string: String, options: NSRegularExpression.MatchingOptions = x, range: NSRange, withTemplate templ: String) -> String {}
 }
-open class NSSet : CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSSet : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     public convenience init(array: [Any]) {}
     public convenience init(object: Any) {}
     public init(objects: UnsafePointer<AnyObject>!, count cnt: Int) {}
@@ -1270,7 +1275,7 @@ open class NSSet : CustomDebugStringConvertible, CustomReflectable, CustomString
     open func objects(passingTest predicate: (Any, UnsafeMutablePointer<ObjCBool>) -> Bool) -> Set<AnyHashable> {}
     public func sortedArray(using sortDescriptors: [NSSortDescriptor]) -> [Any] {}
 }
-open class NSSortDescriptor : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class NSSortDescriptor : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(key: String?, ascending: Bool) {}
     public init(key: String?, ascending: Bool, comparator cmptr: Comparator) {}
     public convenience init<Root, Value>(keyPath: KeyPath<Root, Value>, ascending: Bool) {}
@@ -1283,7 +1288,7 @@ open class NSSortDescriptor : CustomDebugStringConvertible, CustomStringConverti
     open func allowEvaluation() {}
     open func compare(_ object1: Any, to object2: Any) -> ComparisonResult {}
 }
-open class NSString : CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSString : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, ExpressibleByStringLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class var availableStringEncodings: UnsafePointer<UInt> { get }
     open class var defaultCStringEncoding: UInt { get }
     open class func localizedName(of encoding: UInt) -> String {}
@@ -1402,7 +1407,7 @@ open class NSString : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func write(to url: URL, atomically useAuxiliaryFile: Bool, encoding enc: UInt) throws {}
     open func write(toFile path: String, atomically useAuxiliaryFile: Bool, encoding enc: UInt) throws {}
 }
-open class NSTextCheckingResult : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class NSTextCheckingResult : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func regularExpressionCheckingResultWithRanges(_ ranges: NSRangePointer, count: Int, regularExpression: NSRegularExpression) -> NSTextCheckingResult {}
     open var numberOfRanges: Int { get }
     open var range: NSRange { get }
@@ -1411,7 +1416,7 @@ open class NSTextCheckingResult : CustomDebugStringConvertible, CustomStringConv
     public func adjustingRanges(offset: Int) -> NSTextCheckingResult {}
     open func range(at idx: Int) -> NSRange {}
 }
-open class NSTimeZone : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _SwiftBridgeable {
+open class NSTimeZone : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _SwiftBridgeable {
     open class var abbreviationDictionary: [String: String] { get set }
     open class var default: TimeZone { get set }
     open class var knownTimeZoneNames: [String] { get }
@@ -1438,7 +1443,7 @@ open class NSTimeZone : CustomDebugStringConvertible, CustomStringConvertible, E
     open func nextDaylightSavingTimeTransition(after aDate: Date) -> Date? {}
     open func secondsFromGMT(for aDate: Date) -> Int {}
 }
-open class NSURL : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSURL : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
     open class func fileURL(withPathComponents components: [String]) -> URL? {}
     public init(absoluteURLWithDataRepresentation data: Data, relativeTo baseURL: URL?) {}
     public init(dataRepresentation data: Data, relativeTo baseURL: URL?) {}
@@ -1489,7 +1494,7 @@ open class NSURL : CustomDebugStringConvertible, CustomStringConvertible, Equata
     open func setResourceValues(_ keyedValues: [URLResourceKey: Any]) throws {}
     open func setTemporaryResourceValue(_ value: Any?, forKey key: URLResourceKey) {}
 }
-open class NSURLComponents : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSURLComponents : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(string URLString: String) {}
     public init?(url: URL, resolvingAgainstBaseURL resolve: Bool) {}
     open var fragment: String? { get set }
@@ -1519,12 +1524,12 @@ open class NSURLComponents : CustomDebugStringConvertible, CustomStringConvertib
     open var user: String? { get set }
     open func url(relativeTo baseURL: URL?) -> URL? {}
 }
-open class NSURLQueryItem : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable, _SwiftBridgeable {
+open class NSURLQueryItem : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable, _SwiftBridgeable {
     public init(name: String, value: String?) {}
     open var name: String { get }
     open var value: String? { get }
 }
-open class NSURLRequest : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _StructTypeBridgeable {
+open class NSURLRequest : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable {
     public convenience init(url: URL) {}
     public init(url: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {}
     open var allHTTPHeaderFields: [String: String]? { get }
@@ -1541,13 +1546,13 @@ open class NSURLRequest : CustomDebugStringConvertible, CustomStringConvertible,
     open var url: URL? { get }
     open func value(forHTTPHeaderField field: String) -> String? {}
 }
-open class NSUUID : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
+open class NSUUID : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public init(uuidBytes bytes: UnsafePointer<UInt8>) {}
     public convenience init?(uuidString string: String) {}
     open var uuidString: String { get }
     open func getBytes(_ uuid: UnsafeMutablePointer<UInt8>) {}
 }
-open class NSValue : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _, _Factory {
+open class NSValue : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _Factory {
     public required convenience init(bytes value: UnsafeRawPointer, objCType type: UnsafePointer<Int8>) {}
     public convenience init(edgeInsets insets: NSEdgeInsets) {}
     public convenience init(point: NSPoint) {}
@@ -1566,7 +1571,7 @@ open class NSValue : CustomDebugStringConvertible, CustomStringConvertible, Equa
     public var sizeValue: NSSize { get }
     open func getValue(_ value: UnsafeMutableRawPointer) {}
 }
-open class NotificationCenter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class NotificationCenter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var default: NotificationCenter { get }
     open func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {}
     open func post(_ notification: Notification) {}
@@ -1574,14 +1579,14 @@ open class NotificationCenter : CustomDebugStringConvertible, CustomStringConver
     open func removeObserver(_ observer: Any) {}
     open func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object: Any?) {}
 }
-open class NotificationQueue : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class NotificationQueue : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var default: NotificationQueue { get }
     public init(notificationCenter: NotificationCenter) {}
     open func dequeueNotifications(matching notification: Notification, coalesceMask: NotificationCoalescing) {}
     open func enqueue(_ notification: Notification, postingStyle: PostingStyle) {}
-    open func enqueue(_ notification: Notification, postingStyle: PostingStyle, coalesceMask: NotificationCoalescing, forModes modes: [RunLoopMode]?) {}
+    open func enqueue(_ notification: Notification, postingStyle: PostingStyle, coalesceMask: NotificationCoalescing, forModes modes: [RunLoop.Mode]?) {}
 }
-open class NumberFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class NumberFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func localizedString(from num: NSNumber, number nstyle: Style) -> String {}
     open var allowsFloats: Bool { get set }
     open var alwaysShowsDecimalSeparator: Bool { get set }
@@ -1651,7 +1656,7 @@ open class NumberFormatter : CustomDebugStringConvertible, CustomStringConvertib
     open func objectValue(_ string: String, range: inout NSRange) throws -> Any? {}
     open func string(from number: NSNumber) -> String? {}
 }
-open class Operation : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Operation : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public var completionBlock: (() -> Void)? { get set }
     open var dependencies: [Operation] { get }
     open var isAsynchronous: Bool { get }
@@ -1672,7 +1677,7 @@ open class Operation : CustomDebugStringConvertible, CustomStringConvertible, Eq
     open func waitUntilFinished() {}
     public func willChangeValue(forKey key: String) {}
 }
-open class OperationQueue : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class OperationQueue : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var current: OperationQueue? { get }
     public static var defaultMaxConcurrentOperationCount: Int { get }
     open class var main: OperationQueue { get }
@@ -1690,7 +1695,7 @@ open class OperationQueue : CustomDebugStringConvertible, CustomStringConvertibl
     open func cancelAllOperations() {}
     open func waitUntilAllOperationsAreFinished() {}
 }
-open class OutputStream : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream, _ {
+open class OutputStream : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, Stream {
     open class func toMemory() -> Self {}
     public init(toBuffer buffer: UnsafeMutablePointer<UInt8>, capacity: Int) {}
     public convenience init?(toFileAtPath path: String, append shouldAppend: Bool) {}
@@ -1699,7 +1704,7 @@ open class OutputStream : CustomDebugStringConvertible, CustomStringConvertible,
     open var hasSpaceAvailable: Bool { get }
     open func write(_ buffer: UnsafePointer<UInt8>, maxLength len: Int) -> Int {}
 }
-open class PersonNameComponentsFormatter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class PersonNameComponentsFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     open class func localizedString(from components: PersonNameComponents, style nameFormatStyle: Style, options nameOptions: Options = x) -> String {}
     open var isPhonetic: Bool { get set }
     open var style: Style { get set }
@@ -1707,21 +1712,21 @@ open class PersonNameComponentsFormatter : CustomDebugStringConvertible, CustomS
     open func personNameComponents(from string: String) -> PersonNameComponents? {}
     open func string(from components: PersonNameComponents) -> String {}
 }
-open class Pipe : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
-    open var fileHandleForReading: FileHandle { get }
-    open var fileHandleForWriting: FileHandle { get }
+open class Pipe : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
+    public var fileHandleForReading: FileHandle { get }
+    public var fileHandleForWriting: FileHandle { get }
 }
-open class Port : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, _ {
+open class Port : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
     public static var didBecomeInvalidNotification { get }
     open var isValid: Bool { get }
     open var reservedSpaceLength: Int { get }
     open func invalidate() {}
-    open func remove(from runLoop: RunLoop, forMode mode: RunLoopMode) {}
-    open func schedule(in runLoop: RunLoop, forMode mode: RunLoopMode) {}
+    open func remove(from runLoop: RunLoop, forMode mode: RunLoop.Mode) {}
+    open func schedule(in runLoop: RunLoop, forMode mode: RunLoop.Mode) {}
     open func sendBeforeDate(_ limitDate: Date, components: NSMutableArray?, from receivePort: Port?, reserved headerSpaceReserved: Int) -> Bool {}
     open func sendBeforeDate(_ limitDate: Date, msgid msgID: Int, components: NSMutableArray?, from receivePort: Port?, reserved headerSpaceReserved: Int) -> Bool {}
 }
-open class PortMessage : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class PortMessage : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public init(sendPort: Port?, receivePort replyPort: Port?, components: [AnyObject]?) {}
     open var components: [AnyObject]? { get }
     open var msgid: UInt32 { get set }
@@ -1729,32 +1734,30 @@ open class PortMessage : CustomDebugStringConvertible, CustomStringConvertible, 
     open var sendPort: Port? { get }
     open func sendBeforeDate(_ date: Date) -> Bool {}
 }
-open class Process : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Process : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public static var didTerminateNotification { get }
-    open class func launchedProcess(launchPath path: String, arguments: [String]) -> Process {}
+    open class func run(_ url: URL, arguments: [String], terminationHandler: ((Process) -> Void)? = x) throws -> Process {}
     open var arguments: [String]? { get set }
-    open var currentDirectoryPath: String { get set }
-    open var currentDirectoryURL: URL { get set }
+    open var currentDirectoryURL { get set }
     open var environment: [String: String]? { get set }
     open var executableURL: URL? { get set }
     open var isRunning: Bool { get }
-    open var launchPath: String? { get set }
     open var processIdentifier: Int32 { get }
     open var qualityOfService: QualityOfService { get set }
     open var standardError: Any? { get }
     open var standardInput: Any? { get }
     open var standardOutput: Any? { get }
     open var terminationHandler: ((Process) -> Void)? { get set }
-    open var terminationReason: TerminationReason { get }
-    open var terminationStatus: Int32 { get }
+    public var terminationReason: TerminationReason { get }
+    public var terminationStatus: Int32 { get }
     open func interrupt() {}
-    open func launch() {}
     open func resume() -> Bool {}
+    open func run() throws {}
     open func suspend() -> Bool {}
     open func terminate() {}
     open func waitUntilExit() {}
 }
-open class ProcessInfo : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class ProcessInfo : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public static var processInfo { get }
     open var activeProcessorCount: Int { get }
     open var arguments: [String] { get }
@@ -1772,7 +1775,7 @@ open class ProcessInfo : CustomDebugStringConvertible, CustomStringConvertible, 
     open var userName: String { get }
     open func isOperatingSystemAtLeast(_ version: OperatingSystemVersion) -> Bool {}
 }
-open class Progress : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Progress : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func current() -> Progress? {}
     open class func discreteProgress(totalUnitCount unitCount: Int64) -> Progress {}
     public init(parent parentProgress: Progress?, userInfo userInfoOrNil: [ProgressUserInfoKey: Any]? = x) {}
@@ -1802,28 +1805,28 @@ open class Progress : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func resume() {}
     open func setUserInfoObject(_ objectOrNil: Any?, forKey key: ProgressUserInfoKey) {}
 }
-open class PropertyListSerialization : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class PropertyListSerialization : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func data(fromPropertyList plist: Any, format: PropertyListFormat, options opt: WriteOptions) throws -> Data {}
     open class func propertyList(_ plist: Any, isValidFor format: PropertyListFormat) -> Bool {}
     open class func propertyList(from data: Data, options opt: ReadOptions = x, format: UnsafeMutablePointer<PropertyListFormat>?) throws -> Any {}
     open class func propertyList(with stream: InputStream, options opt: ReadOptions = x, format: UnsafeMutablePointer<PropertyListFormat>?) throws -> Any {}
 }
-open class RunLoop : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class RunLoop : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var current: RunLoop { get }
     open class var main: RunLoop { get }
-    open var currentMode: RunLoopMode? { get }
+    open var currentMode: RunLoop.Mode? { get }
     open func acceptInput(forMode mode: String, before limitDate: Date) {}
-    open func add(_ aPort: Port, forMode mode: RunLoopMode) {}
+    open func add(_ aPort: Port, forMode mode: RunLoop.Mode) {}
     open func getCFRunLoop() -> CFRunLoop {}
-    open func limitDate(forMode mode: RunLoopMode) -> Date? {}
+    open func limitDate(forMode mode: RunLoop.Mode) -> Date? {}
     public func perform(_ block: @escaping () -> Void) {}
-    public func perform(inModes modes: [RunLoopMode], block: @escaping () -> Void) {}
-    open func remove(_ aPort: Port, forMode mode: RunLoopMode) {}
+    public func perform(inModes modes: [RunLoop.Mode], block: @escaping () -> Void) {}
+    open func remove(_ aPort: Port, forMode mode: RunLoop.Mode) {}
     public func run() {}
-    public func run(mode: RunLoopMode, before limitDate: Date) -> Bool {}
+    public func run(mode: RunLoop.Mode, before limitDate: Date) -> Bool {}
     public func run(until limitDate: Date) {}
 }
-open class Scanner : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _ {
+open class Scanner : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
     open class func localizedScannerWithString(_ string: String) -> AnyObject {}
     public init(string: String) {}
     open var caseSensitive: Bool { get set }
@@ -1836,32 +1839,32 @@ open class Scanner : CustomDebugStringConvertible, CustomStringConvertible, Equa
     public func scanDecimal() -> Decimal? {}
     public func scanDecimal(_ dcm: inout Decimal) -> Bool {}
     public func scanDouble() -> Double? {}
-    public func scanDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
+    @discardableResult public func scanDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
     public func scanFloat() -> Float? {}
-    public func scanFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
+    @discardableResult public func scanFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
     public func scanHexDouble() -> Double? {}
-    public func scanHexDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
+    @discardableResult public func scanHexDouble(_ result: UnsafeMutablePointer<Double>) -> Bool {}
     public func scanHexFloat() -> Float? {}
-    public func scanHexFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
+    @discardableResult public func scanHexFloat(_ result: UnsafeMutablePointer<Float>) -> Bool {}
     public func scanHexInt32() -> UInt32? {}
-    public func scanHexInt32(_ result: UnsafeMutablePointer<UInt32>) -> Bool {}
+    @discardableResult public func scanHexInt32(_ result: UnsafeMutablePointer<UInt32>) -> Bool {}
     public func scanHexInt64() -> UInt64? {}
-    public func scanHexInt64(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
+    @discardableResult public func scanHexInt64(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
     public func scanInt() -> Int? {}
-    public func scanInt(_ result: UnsafeMutablePointer<Int>) -> Bool {}
+    @discardableResult public func scanInt(_ result: UnsafeMutablePointer<Int>) -> Bool {}
     public func scanInt32() -> Int32? {}
-    public func scanInt32(_ result: UnsafeMutablePointer<Int32>) -> Bool {}
+    @discardableResult public func scanInt32(_ result: UnsafeMutablePointer<Int32>) -> Bool {}
     public func scanInt64() -> Int64? {}
-    public func scanInt64(_ result: UnsafeMutablePointer<Int64>) -> Bool {}
+    @discardableResult public func scanInt64(_ result: UnsafeMutablePointer<Int64>) -> Bool {}
     public func scanString(_ searchString: String) -> String? {}
-    public func scanString(_ string: String, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
+    @discardableResult public func scanString(_ string: String, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
     public func scanUnsignedLongLong() -> UInt64? {}
-    public func scanUnsignedLongLong(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
-    public func scanUpToCharacters(from set: CharacterSet, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
+    @discardableResult public func scanUnsignedLongLong(_ result: UnsafeMutablePointer<UInt64>) -> Bool {}
+    @discardableResult public func scanUpToCharacters(from set: CharacterSet, into ptr: UnsafeMutablePointer<String?>?) -> Bool {}
     public func scanUpToCharactersFromSet(_ set: CharacterSet) -> String? {}
     public func scanUpToString(_ string: String) -> String? {}
 }
-open class SocketPort : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port, _ {
+open class SocketPort : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port {
     public init?(protocolFamily family: Int32, socketType type: Int32, protocol: Int32, address: Data) {}
     public init?(protocolFamily family: Int32, socketType type: Int32, protocol: Int32, socket sock: SocketNativeHandle) {}
     public init(remoteWithProtocolFamily family: Int32, socketType type: Int32, protocol: Int32, address: Data) {}
@@ -1873,7 +1876,7 @@ open class SocketPort : CustomDebugStringConvertible, CustomStringConvertible, E
     open var socket: SocketNativeHandle { get }
     open var socketType: Int32 { get }
 }
-open class Stream : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Stream : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
 #if false
     open class func getBoundStreams(withBufferSize bufferSize: Int, inputStream: AutoreleasingUnsafeMutablePointer<InputStream?>?, outputStream: AutoreleasingUnsafeMutablePointer<OutputStream?>?) {}
 #endif
@@ -1886,11 +1889,11 @@ open class Stream : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open func close() {}
     open func open() {}
     open func property(forKey key: PropertyKey) -> AnyObject? {}
-    open func remove(from aRunLoop: RunLoop, forMode mode: RunLoopMode) {}
-    open func schedule(in aRunLoop: RunLoop, forMode mode: RunLoopMode) {}
+    open func remove(from aRunLoop: RunLoop, forMode mode: RunLoop.Mode) {}
+    open func schedule(in aRunLoop: RunLoop, forMode mode: RunLoop.Mode) {}
     open func setProperty(_ property: AnyObject?, forKey key: PropertyKey) -> Bool {}
 }
-open class Thread : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Thread : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var callStackReturnAddresses: [NSNumber] { get }
     open class var callStackSymbols: [String] { get }
     open class var current: Thread { get }
@@ -1908,12 +1911,12 @@ open class Thread : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open var isMainThread: Bool { get }
     open var name: String? { get }
     open var stackSize: Int { get set }
-    open var threadDictionary { get set }
+    open var threadDictionary: NSMutableDictionary { get }
     open func cancel() {}
     open func main() {}
     open func start() {}
 }
-open class Timer : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class Timer : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void) -> Timer {}
     public init(fire date: Date, interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Swift.Void) {}
     public convenience init(timeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Swift.Void) {}
@@ -1925,7 +1928,7 @@ open class Timer : CustomDebugStringConvertible, CustomStringConvertible, Equata
     open func fire() {}
     open func invalidate() {}
 }
-open class URLAuthenticationChallenge : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class URLAuthenticationChallenge : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(authenticationChallenge challenge: URLAuthenticationChallenge, sender: URLAuthenticationChallengeSender) {}
     public init(protectionSpace space: URLProtectionSpace, proposedCredential credential: URLCredential?, previousFailureCount: Int, failureResponse response: URLResponse?, error: Error?, sender: URLAuthenticationChallengeSender) {}
     open var error: Error? { get }
@@ -1935,7 +1938,7 @@ open class URLAuthenticationChallenge : CustomDebugStringConvertible, CustomStri
     open var protectionSpace: URLProtectionSpace { get }
     open var sender: URLAuthenticationChallengeSender? { get }
 }
-open class URLCache : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class URLCache : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var shared: URLCache { get set }
     public init(memoryCapacity: Int, diskCapacity: Int, diskPath path: String?) {}
     open var currentDiskUsage: Int { get }
@@ -1949,14 +1952,14 @@ open class URLCache : CustomDebugStringConvertible, CustomStringConvertible, Equ
     open func removeCachedResponses(since date: Date) {}
     public func storeCachedResponse(_ cachedResponse: CachedURLResponse, for dataTask: URLSessionDataTask) {}
 }
-open class URLCredential : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class URLCredential : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(user: String, password: String, persistence: Persistence) {}
     open var hasPassword: Bool { get }
     open var password: String? { get }
     open var persistence: Persistence { get }
     open var user: String? { get }
 }
-open class URLCredentialStorage : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class URLCredentialStorage : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class var shared: URLCredentialStorage { get }
     open var allCredentials: [URLProtectionSpace: [String: URLCredential]] { get }
     open func credentials(for space: URLProtectionSpace) -> [String: URLCredential]? {}
@@ -1971,7 +1974,7 @@ open class URLCredentialStorage : CustomDebugStringConvertible, CustomStringConv
     open func setDefaultCredential(_ credential: URLCredential, for space: URLProtectionSpace) {}
     public func setDefaultCredential(_ credential: URLCredential, for protectionSpace: URLProtectionSpace, task: URLSessionTask) {}
 }
-open class URLProtectionSpace : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class URLProtectionSpace : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(host: String, port: Int, protocol: String?, realm: String?, authenticationMethod: String?) {}
     public init(proxyHost host: String, port: Int, type: String?, realm: String?, authenticationMethod: String?) {}
     open var authenticationMethod: String { get }
@@ -1983,7 +1986,7 @@ open class URLProtectionSpace : CustomDebugStringConvertible, CustomStringConver
     open var realm: String? { get }
     open var receivesCredentialSecurely: Bool { get }
 }
-open class URLProtocol : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class URLProtocol : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open class func canInit(with request: URLRequest) -> Bool {}
     open class func canonicalRequest(for request: URLRequest) -> URLRequest {}
     open class func property(forKey key: String, in request: URLRequest) -> Any? {}
@@ -2001,7 +2004,7 @@ open class URLProtocol : CustomDebugStringConvertible, CustomStringConvertible, 
     open func startLoading() {}
     open func stopLoading() {}
 }
-open class URLResponse : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class URLResponse : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public init(url: URL, mimeType: String?, expectedContentLength length: Int, textEncodingName name: String?) {}
     open var expectedContentLength: Int64 { get }
     open var mimeType: String? { get }
@@ -2009,7 +2012,7 @@ open class URLResponse : CustomDebugStringConvertible, CustomStringConvertible, 
     open var textEncodingName: String? { get }
     open var url: URL? { get }
 }
-open class URLSession : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, URLSessionProtocol, _ {
+open class URLSession : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, URLSessionProtocol {
     open class var shared: URLSession { get }
     public init(configuration: URLSessionConfiguration) {}
     public init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {}
@@ -2036,13 +2039,12 @@ open class URLSession : CustomDebugStringConvertible, CustomStringConvertible, E
     open func uploadTask(with request: URLRequest, fromFile fileURL: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionUploadTask {}
     open func uploadTask(withStreamedRequest request: URLRequest) -> URLSessionUploadTask {}
 }
-open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _ {
+open class URLSessionConfiguration : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
     open class var default: URLSessionConfiguration { get }
     open class var ephemeral: URLSessionConfiguration { get }
     open class func background(withIdentifier identifier: String) -> URLSessionConfiguration {}
     open var allowsCellularAccess: Bool { get set }
     open var connectionProxyDictionary: [AnyHashable: Any]? { get set }
-    open var discretionary: Bool { get set }
     open var httpAdditionalHeaders: [AnyHashable: Any]? { get set }
     open var httpCookieAcceptPolicy: HTTPCookie.AcceptPolicy { get set }
     open var httpCookieStorage: HTTPCookieStorage? { get set }
@@ -2050,6 +2052,7 @@ open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringC
     open var httpShouldSetCookies: Bool { get set }
     open var httpShouldUsePipelining: Bool { get set }
     open var identifier: String? { get set }
+    open var isDiscretionary: Bool { get set }
     open var networkServiceType: URLRequest.NetworkServiceType { get set }
     open var protocolClasses: [AnyClass]? { get set }
     open var requestCachePolicy: URLRequest.CachePolicy { get set }
@@ -2060,12 +2063,12 @@ open class URLSessionConfiguration : CustomDebugStringConvertible, CustomStringC
     open var urlCache: URLCache? { get set }
     open var urlCredentialStorage: URLCredentialStorage? { get set }
 }
-open class URLSessionDataTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask, _ {
+open class URLSessionDataTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask {
 }
-open class URLSessionDownloadTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask, _ {
+open class URLSessionDownloadTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask {
     open func cancel(byProducingResumeData completionHandler: @escaping (Data?) -> Void) {}
 }
-open class URLSessionStreamTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask, _ {
+open class URLSessionStreamTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask {
     open func captureStreams() {}
     open func closeRead() {}
     open func closeWrite() {}
@@ -2074,7 +2077,7 @@ open class URLSessionStreamTask : CustomDebugStringConvertible, CustomStringConv
     open func stopSecureConnection() {}
     open func write(_ data: Data, timeout: TimeInterval, completionHandler: @escaping (Error?) -> Void) {}
 }
-open class URLSessionTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, _ {
+open class URLSessionTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting {
     public static var defaultPriority: Float { get }
     public static var highPriority: Float { get }
     public static var lowPriority: Float { get }
@@ -2097,229 +2100,23 @@ open class URLSessionTask : CustomDebugStringConvertible, CustomStringConvertibl
     open func resume() {}
     open func suspend() {}
 }
-open class URLSessionUploadTask : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionDataTask, URLSessionTask, _ {
+open class URLSessionUploadTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionDataTask, URLSessionTask {
 }
-open class Unit : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _ {
+open class Unit : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     public required init(symbol: String) {}
     open var symbol: String { get }
 }
-open class UnitAcceleration : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var gravity: UnitAcceleration { get }
-    open class var metersPerSecondSquared: UnitAcceleration { get }
-}
-open class UnitAngle : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var arcMinutes: UnitAngle { get }
-    open class var arcSeconds: UnitAngle { get }
-    open class var degrees: UnitAngle { get }
-    open class var gradians: UnitAngle { get }
-    open class var radians: UnitAngle { get }
-    open class var revolutions: UnitAngle { get }
-}
-open class UnitArea : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var acres: UnitArea { get }
-    open class var ares: UnitArea { get }
-    open class var hectares: UnitArea { get }
-    open class var squareCentimeters: UnitArea { get }
-    open class var squareFeet: UnitArea { get }
-    open class var squareInches: UnitArea { get }
-    open class var squareKilometers: UnitArea { get }
-    open class var squareMegameters: UnitArea { get }
-    open class var squareMeters: UnitArea { get }
-    open class var squareMicrometers: UnitArea { get }
-    open class var squareMiles: UnitArea { get }
-    open class var squareMillimeters: UnitArea { get }
-    open class var squareNanometers: UnitArea { get }
-    open class var squareYards: UnitArea { get }
-}
-open class UnitConcentrationMass : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var gramsPerLiter: UnitConcentrationMass { get }
-    open class var milligramsPerDeciliter: UnitConcentrationMass { get }
-    open class func millimolesPerLiter(withGramsPerMole gramsPerMole: Double) -> UnitConcentrationMass {}
-}
-open class UnitConverter : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class UnitConverter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     open func baseUnitValue(fromValue value: Double) -> Double {}
     open func value(fromBaseUnitValue baseUnitValue: Double) -> Double {}
 }
-open class UnitConverterLinear : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding, UnitConverter, _ {
+open class UnitConverterLinear : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding, UnitConverter {
     public convenience init(coefficient: Double) {}
     public init(coefficient: Double, constant: Double) {}
     open var coefficient: Double { get }
     open var constant: Double { get }
 }
-open class UnitDispersion : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var partsPerMillion: UnitDispersion { get }
-}
-open class UnitDuration : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var hours: UnitDuration { get }
-    open class var minutes: UnitDuration { get }
-    open class var seconds: UnitDuration { get }
-}
-open class UnitElectricCharge : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var ampereHours: UnitElectricCharge { get }
-    open class var coulombs: UnitElectricCharge { get }
-    open class var kiloampereHours: UnitElectricCharge { get }
-    open class var megaampereHours: UnitElectricCharge { get }
-    open class var microampereHours: UnitElectricCharge { get }
-    open class var milliampereHours: UnitElectricCharge { get }
-}
-open class UnitElectricCurrent : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var amperes: UnitElectricCurrent { get }
-    open class var kiloamperes: UnitElectricCurrent { get }
-    open class var megaamperes: UnitElectricCurrent { get }
-    open class var microamperes: UnitElectricCurrent { get }
-    open class var milliamperes: UnitElectricCurrent { get }
-}
-open class UnitElectricPotentialDifference : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var kilovolts: UnitElectricPotentialDifference { get }
-    open class var megavolts: UnitElectricPotentialDifference { get }
-    open class var microvolts: UnitElectricPotentialDifference { get }
-    open class var millivolts: UnitElectricPotentialDifference { get }
-    open class var volts: UnitElectricPotentialDifference { get }
-}
-open class UnitElectricResistance : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var kiloohms: UnitElectricResistance { get }
-    open class var megaohms: UnitElectricResistance { get }
-    open class var microohms: UnitElectricResistance { get }
-    open class var milliohms: UnitElectricResistance { get }
-    open class var ohms: UnitElectricResistance { get }
-}
-open class UnitEnergy : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var calories: UnitEnergy { get }
-    open class var joules: UnitEnergy { get }
-    open class var kilocalories: UnitEnergy { get }
-    open class var kilojoules: UnitEnergy { get }
-    open class var kilowattHours: UnitEnergy { get }
-}
-open class UnitFrequency : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var gigahertz: UnitFrequency { get }
-    open class var hertz: UnitFrequency { get }
-    open class var kilohertz: UnitFrequency { get }
-    open class var megahertz: UnitFrequency { get }
-    open class var microhertz: UnitFrequency { get }
-    open class var millihertz: UnitFrequency { get }
-    open class var nanohertz: UnitFrequency { get }
-    open class var terahertz: UnitFrequency { get }
-}
-open class UnitFuelEfficiency : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var litersPer100Kilometers: UnitFuelEfficiency { get }
-    open class var milesPerGallon: UnitFuelEfficiency { get }
-    open class var milesPerImperialGallon: UnitFuelEfficiency { get }
-}
-open class UnitIlluminance : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var lux: UnitIlluminance { get }
-}
-open class UnitLength : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var astronomicalUnits: UnitLength { get }
-    open class var centimeters: UnitLength { get }
-    open class var decameters: UnitLength { get }
-    open class var decimeters: UnitLength { get }
-    open class var fathoms: UnitLength { get }
-    open class var feet: UnitLength { get }
-    open class var furlongs: UnitLength { get }
-    open class var hectometers: UnitLength { get }
-    open class var inches: UnitLength { get }
-    open class var kilometers: UnitLength { get }
-    open class var lightyears: UnitLength { get }
-    open class var megameters: UnitLength { get }
-    open class var meters: UnitLength { get }
-    open class var micrometers: UnitLength { get }
-    open class var miles: UnitLength { get }
-    open class var millimeters: UnitLength { get }
-    open class var nanometers: UnitLength { get }
-    open class var nauticalMiles: UnitLength { get }
-    open class var parsecs: UnitLength { get }
-    open class var picometers: UnitLength { get }
-    open class var scandinavianMiles: UnitLength { get }
-    open class var yards: UnitLength { get }
-}
-open class UnitMass : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var carats: UnitMass { get }
-    open class var centigrams: UnitMass { get }
-    open class var decigrams: UnitMass { get }
-    open class var grams: UnitMass { get }
-    open class var kilograms: UnitMass { get }
-    open class var metricTons: UnitMass { get }
-    open class var micrograms: UnitMass { get }
-    open class var milligrams: UnitMass { get }
-    open class var nanograms: UnitMass { get }
-    open class var ounces: UnitMass { get }
-    open class var ouncesTroy: UnitMass { get }
-    open class var picograms: UnitMass { get }
-    open class var pounds: UnitMass { get }
-    open class var shortTons: UnitMass { get }
-    open class var slugs: UnitMass { get }
-    open class var stones: UnitMass { get }
-}
-open class UnitPower : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var femtowatts: UnitPower { get }
-    open class var gigawatts: UnitPower { get }
-    open class var horsepower: UnitPower { get }
-    open class var kilowatts: UnitPower { get }
-    open class var megawatts: UnitPower { get }
-    open class var microwatts: UnitPower { get }
-    open class var milliwatts: UnitPower { get }
-    open class var nanowatts: UnitPower { get }
-    open class var picowatts: UnitPower { get }
-    open class var terawatts: UnitPower { get }
-    open class var watts: UnitPower { get }
-}
-open class UnitPressure : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var bars: UnitPressure { get }
-    open class var gigapascals: UnitPressure { get }
-    open class var hectopascals: UnitPressure { get }
-    open class var inchesOfMercury: UnitPressure { get }
-    open class var kilopascals: UnitPressure { get }
-    open class var megapascals: UnitPressure { get }
-    open class var millibars: UnitPressure { get }
-    open class var millimetersOfMercury: UnitPressure { get }
-    open class var newtonsPerMetersSquared: UnitPressure { get }
-    open class var poundsForcePerSquareInch: UnitPressure { get }
-}
-open class UnitSpeed : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var kilometersPerHour: UnitSpeed { get }
-    open class var knots: UnitSpeed { get }
-    open class var metersPerSecond: UnitSpeed { get }
-    open class var milesPerHour: UnitSpeed { get }
-}
-open class UnitTemperature : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var celsius: UnitTemperature { get }
-    open class var fahrenheit: UnitTemperature { get }
-    open class var kelvin: UnitTemperature { get }
-}
-open class UnitVolume : CustomDebugStringConvertible, CustomStringConvertible, Dimension, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, Unit, _ {
-    open class var acreFeet: UnitVolume { get }
-    open class var bushels: UnitVolume { get }
-    open class var centiliters: UnitVolume { get }
-    open class var cubicCentimeters: UnitVolume { get }
-    open class var cubicDecimeters: UnitVolume { get }
-    open class var cubicFeet: UnitVolume { get }
-    open class var cubicInches: UnitVolume { get }
-    open class var cubicKilometers: UnitVolume { get }
-    open class var cubicMeters: UnitVolume { get }
-    open class var cubicMiles: UnitVolume { get }
-    open class var cubicMillimeters: UnitVolume { get }
-    open class var cubicYards: UnitVolume { get }
-    open class var cups: UnitVolume { get }
-    open class var deciliters: UnitVolume { get }
-    open class var fluidOunces: UnitVolume { get }
-    open class var gallons: UnitVolume { get }
-    open class var imperialFluidOunces: UnitVolume { get }
-    open class var imperialGallons: UnitVolume { get }
-    open class var imperialPints: UnitVolume { get }
-    open class var imperialQuarts: UnitVolume { get }
-    open class var imperialTablespoons: UnitVolume { get }
-    open class var imperialTeaspoons: UnitVolume { get }
-    open class var kiloliters: UnitVolume { get }
-    open class var liters: UnitVolume { get }
-    open class var megaliters: UnitVolume { get }
-    open class var metricCups: UnitVolume { get }
-    open class var milliliters: UnitVolume { get }
-    open class var pints: UnitVolume { get }
-    open class var quarts: UnitVolume { get }
-    open class var tablespoons: UnitVolume { get }
-    open class var teaspoons: UnitVolume { get }
-}
-open class UserDefaults : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class UserDefaults : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public static var argumentDomain: String { get }
     public static var didChangeNotification { get }
     public static var globalDomain: String { get }
@@ -2355,7 +2152,7 @@ open class UserDefaults : CustomDebugStringConvertible, CustomStringConvertible,
     open func url(forKey defaultName: String) -> URL? {}
     open func volatileDomain(forName domainName: String) -> [String: Any] {}
 }
-open class XMLDTD : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _, _NSXMLNodeCollectionType {
+open class XMLDTD : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _NSXMLNodeCollectionType {
     open class func predefinedEntityDeclaration(forName name: String) -> XMLDTDNode? {}
     public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
     public convenience init(data: Data, options mask: XMLNode.Options = x) throws {}
@@ -2372,7 +2169,7 @@ open class XMLDTD : CustomDebugStringConvertible, CustomStringConvertible, Equat
     open func replaceChild(at index: Int, with node: XMLNode) {}
     open func setChildren(_ children: [XMLNode]?) {}
 }
-open class XMLDTDNode : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _, _NSXMLNodeCollectionType {
+open class XMLDTDNode : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _NSXMLNodeCollectionType {
     public init?(xmlString string: String) {}
     open var dtdKind: XMLDTDNode.DTDKind { get }
     open var isExternal: Bool { get }
@@ -2380,7 +2177,7 @@ open class XMLDTDNode : CustomDebugStringConvertible, CustomStringConvertible, E
     open var publicID: String? { get set }
     open var systemID: String? { get set }
 }
-open class XMLDocument : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _, _NSXMLNodeCollectionType {
+open class XMLDocument : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _NSXMLNodeCollectionType {
     open class func replacementClass(for cls: AnyClass) -> AnyClass {}
     public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
     public init(data: Data, options mask: XMLNode.Options = x) throws {}
@@ -2407,7 +2204,7 @@ open class XMLDocument : CustomDebugStringConvertible, CustomStringConvertible, 
     open func validate() throws {}
     open func xmlData(options: XMLNode.Options = x) -> Data {}
 }
-open class XMLElement : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _, _NSXMLNodeCollectionType {
+open class XMLElement : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _NSXMLNodeCollectionType {
     public convenience init(name: String) {}
     public convenience init(name: String, stringValue string: String?) {}
     public init(name: String, uri URI: String?) {}
@@ -2434,7 +2231,7 @@ open class XMLElement : CustomDebugStringConvertible, CustomStringConvertible, E
     open func setAttributesWith(_ attributes: [String: String]) {}
     open func setChildren(_ children: [XMLNode]?) {}
 }
-open class XMLNode : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _, _NSXMLNodeCollectionType {
+open class XMLNode : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, _NSXMLNodeCollectionType {
     open class func attribute(withName name: String, stringValue: String) -> Any {}
     open class func attribute(withName name: String, uri: String, stringValue: String) -> Any {}
     open class func comment(withStringValue stringValue: String) -> Any {}
@@ -2485,7 +2282,7 @@ open class XMLNode : CustomDebugStringConvertible, CustomStringConvertible, Equa
     open func setStringValue(_ string: String, resolvingEntities resolve: Bool) {}
     open func xmlString(options: Options) -> String {}
 }
-open class XMLParser : CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol, _ {
+open class XMLParser : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public static var errorDomain: String { get }
     public convenience init?(contentsOf url: URL) {}
     public init(data: Data) {}
@@ -2504,12 +2301,26 @@ open class XMLParser : CustomDebugStringConvertible, CustomStringConvertible, Eq
     open func abortParsing() {}
     open func parse() -> Bool {}
 }
+public protocol ContiguousBytes {
+    func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R
+}
 public protocol CustomNSError : Error {
     static var errorDomain: String { get }
     var errorCode: Int { get }
     var errorUserInfo: [String: Any] { get }
 }
-public protocol FileManagerDelegate : NSObjectProtocol, _ {
+public protocol DataProtocol : RandomAccessCollection {
+    associatedtype Regions where Regions.Element : ContiguousBytes & DataProtocol, Regions.Element.SubSequence : ContiguousBytes
+    var regions: Regions { get }
+    @discardableResult func copyBytes(to ptr: UnsafeMutableRawBufferPointer) -> Int
+    @discardableResult func copyBytes(to: UnsafeMutableRawBufferPointer, count: Int) -> Int
+    @discardableResult func copyBytes<DestinationType, R>(to: UnsafeMutableBufferPointer<DestinationType>, from: R) -> Int where R : RangeExpression, Index == R.Bound
+    func firstRange<D>(of data: D) -> Range<Index>? where D : DataProtocol
+    func firstRange<D, R>(of: D, in: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
+    func lastRange<D>(of data: D) -> Range<Index>? where D : DataProtocol
+    func lastRange<D, R>(of: D, in: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
+}
+public protocol FileManagerDelegate : AnyObject, NSObjectProtocol {
     func fileManager(_ fileManager: FileManager, shouldCopyItemAt srcURL: URL, to dstURL: URL) -> Bool
     func fileManager(_ fileManager: FileManager, shouldCopyItemAtPath srcPath: String, toPath dstPath: String) -> Bool
     func fileManager(_ fileManager: FileManager, shouldLinkItemAt srcURL: URL, to dstURL: URL) -> Bool
@@ -2533,7 +2344,10 @@ public protocol LocalizedError : Error {
     var helpAnchor: String? { get }
     var recoverySuggestion: String? { get }
 }
-public protocol NSCacheDelegate : NSObjectProtocol, _ {
+public protocol MutableDataProtocol : DataProtocol, MutableCollection, RandomAccessCollection, RangeReplaceableCollection {
+    mutating func resetBytes<R>(in range: R) where R : RangeExpression, Index == R.Bound
+}
+public protocol NSCacheDelegate : AnyObject, NSObjectProtocol {
     func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any)
 }
 public protocol NSCoding {
@@ -2548,14 +2362,14 @@ public protocol NSDecimalNumberBehaviors {
     func roundingMode() -> NSDecimalNumber.RoundingMode
     func scale() -> Int16
 }
-public protocol NSKeyedArchiverDelegate : _ {
+public protocol NSKeyedArchiverDelegate : AnyObject {
     func archiver(_ archiver: NSKeyedArchiver, didEncode object: Any?)
     func archiver(_ archiver: NSKeyedArchiver, willEncode object: Any) -> Any?
     func archiver(_ archiver: NSKeyedArchiver, willReplace object: Any?, withObject newObject: Any?)
     func archiverDidFinish(_ archiver: NSKeyedArchiver)
     func archiverWillFinish(_ archiver: NSKeyedArchiver)
 }
-public protocol NSKeyedUnarchiverDelegate : _ {
+public protocol NSKeyedUnarchiverDelegate : AnyObject {
     func unarchiver(_ unarchiver: NSKeyedUnarchiver, cannotDecodeObjectOfClassName name: String, originalClasses classNames: [String]) -> AnyClass?
     func unarchiver(_ unarchiver: NSKeyedUnarchiver, didDecode object: Any?) -> Any?
     func unarchiver(_ unarchiver: NSKeyedUnarchiver, willReplace object: Any, with newObject: Any)
@@ -2570,7 +2384,7 @@ public protocol NSMutableCopying {
     func mutableCopy() -> Any
     func mutableCopy(with zone: NSZone?) -> Any
 }
-public protocol NSObjectProtocol : _ {
+public protocol NSObjectProtocol : AnyObject {
     var debugDescription: String { get }
     var description: String { get }
     var hash: Int { get }
@@ -2581,10 +2395,10 @@ public protocol NSObjectProtocol : _ {
 public protocol NSSecureCoding : NSCoding {
     static var supportsSecureCoding: Bool { get }
 }
-public protocol PortDelegate : _ {
+public protocol PortDelegate : AnyObject {
     func handlePortMessage(_ message: PortMessage)
 }
-public protocol ProgressReporting : NSObjectProtocol, _ {
+public protocol ProgressReporting : AnyObject, NSObjectProtocol {
     var progress: Progress { get }
 }
 public protocol RecoverableError : Error {
@@ -2595,17 +2409,17 @@ public protocol RecoverableError : Error {
 public protocol ReferenceConvertible : CustomDebugStringConvertible, CustomStringConvertible, Hashable {
     associatedtype ReferenceType
 }
-public protocol StreamDelegate : _ {
+public protocol StreamDelegate : AnyObject {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event)
 }
-public protocol URLAuthenticationChallengeSender : NSObjectProtocol, _ {
+public protocol URLAuthenticationChallengeSender : AnyObject, NSObjectProtocol {
     func cancel(_ challenge: URLAuthenticationChallenge)
     func continueWithoutCredential(for challenge: URLAuthenticationChallenge)
     func performDefaultHandling(for challenge: URLAuthenticationChallenge)
     func rejectProtectionSpaceAndContinue(with challenge: URLAuthenticationChallenge)
     func use(_ credential: URLCredential, for challenge: URLAuthenticationChallenge)
 }
-public protocol URLProtocolClient : NSObjectProtocol, _ {
+public protocol URLProtocolClient : AnyObject, NSObjectProtocol {
     func urlProtocol(_ protocol: URLProtocol, cachedResponseIsValid cachedResponse: CachedURLResponse)
     func urlProtocol(_ protocol: URLProtocol, didCancel challenge: URLAuthenticationChallenge)
     func urlProtocol(_ protocol: URLProtocol, didFailWithError error: Error)
@@ -2615,28 +2429,28 @@ public protocol URLProtocolClient : NSObjectProtocol, _ {
     func urlProtocol(_ protocol: URLProtocol, wasRedirectedTo request: URLRequest, redirectResponse: URLResponse)
     func urlProtocolDidFinishLoading(_ protocol: URLProtocol)
 }
-public protocol URLSessionDataDelegate : NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate, _ {
+public protocol URLSessionDataDelegate : AnyObject, NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask)
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void)
 }
-public protocol URLSessionDelegate : NSObjectProtocol, _ {
+public protocol URLSessionDelegate : AnyObject, NSObjectProtocol {
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 }
-public protocol URLSessionDownloadDelegate : NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate, _ {
+public protocol URLSessionDownloadDelegate : AnyObject, NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64)
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
-public protocol URLSessionStreamDelegate : NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate, _ {
+public protocol URLSessionStreamDelegate : AnyObject, NSObjectProtocol, URLSessionDelegate, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, betterRouteDiscoveredFor streamTask: URLSessionStreamTask)
     func urlSession(_ session: URLSession, readClosedFor streamTask: URLSessionStreamTask)
     func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream)
     func urlSession(_ session: URLSession, writeClosedFor streamTask: URLSessionStreamTask)
 }
-public protocol URLSessionTaskDelegate : NSObjectProtocol, URLSessionDelegate, _ {
+public protocol URLSessionTaskDelegate : AnyObject, NSObjectProtocol, URLSessionDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
     func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
@@ -2644,7 +2458,7 @@ public protocol URLSessionTaskDelegate : NSObjectProtocol, URLSessionDelegate, _
     func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest request: URLRequest, completionHandler: @escaping (URLSession.DelayedRequestDisposition, URLRequest?) -> Void)
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
 }
-public protocol XMLParserDelegate : _ {
+public protocol XMLParserDelegate : AnyObject {
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
     func parser(_ parser: XMLParser, didEndMappingPrefix prefix: String)
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String])
@@ -2667,6 +2481,8 @@ public protocol XMLParserDelegate : _ {
     func parserDidStartDocument(_ parser: XMLParser)
 }
 extension Array {
+}
+extension ArraySlice {
 }
 extension Bool {
     public init?(exactly number: NSNumber) {}
@@ -2713,14 +2529,22 @@ extension CFURLSessionMultiCode {
 extension CFURLSessionPoll {
     public func ==(lhs: CFURLSessionPoll, rhs: CFURLSessionPoll) -> Bool {}
 }
+extension CollectionOfOne {
+}
+extension ContiguousArray {
+}
 extension DecodingError {
 }
 extension Dictionary {
+}
+extension DispatchData {
 }
 extension Double {
     public init(_ value: CGFloat) {}
     public init?(exactly number: NSNumber) {}
     public init(truncating number: NSNumber) {}
+}
+extension EmptyCollection {
 }
 extension EncodingError {
 }
@@ -2762,44 +2586,42 @@ extension Measurement {
     public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
-    public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> where UnitType : Dimension {}
     public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func /(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func <<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
     public func ==<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
-    public mutating func convert(to otherUnit: UnitType) where UnitType : Dimension {}
-    public func converted(to otherUnit: UnitType) -> Measurement<UnitType> where UnitType : Dimension {}
     public func encode(to encoder: Encoder) throws {}
 }
 extension Optional {
 }
 extension Range {
-    public init?(_ range: NSRange) where Bound : BinaryInteger {}
-    public init?(_ range: NSRange, in string: String) where Bound == String.Index {}
+}
+extension Repeated {
 }
 extension Set {
+}
+extension Slice {
 }
 extension String {
     public static var availableStringEncodings: [Encoding] { get }
     public static var defaultCStringEncoding: Encoding { get }
     public static func localizedName(of encoding: Encoding) -> String {}
     public static func localizedStringWithFormat(_ format: String, _ arguments: CVarArg...) -> String {}
-    public init?<S>(bytes: S, encoding: Encoding) where S : Sequence, S.Iterator.Element == UInt8 {}
+    public init?<S>(bytes: __shared S, encoding: Encoding) where S : Sequence, S.Iterator.Element == UInt8 {}
     public init?(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, encoding: Encoding, freeWhenDone flag: Bool) {}
     public init?(cString: UnsafePointer<CChar>, encoding enc: Encoding) {}
-    public init(contentsOf url: URL) throws {}
-    public init(contentsOf url: URL, encoding enc: Encoding) throws {}
-    public init(contentsOf url: URL, usedEncoding: inout Encoding) throws {}
-    public init(contentsOfFile path: String) throws {}
-    public init(contentsOfFile path: String, encoding enc: Encoding) throws {}
-    public init(contentsOfFile path: String, usedEncoding: inout Encoding) throws {}
-    public init?(data: Data, encoding: Encoding) {}
-    public init(format: String, _ arguments: CVarArg...) {}
-    public init(format: String, arguments: [CVarArg]) {}
-    public init(format: String, locale: Locale?, _ args: CVarArg...) {}
-    public init(format: String, locale: Locale?, arguments: [CVarArg]) {}
+    public init(contentsOf url: __shared URL) throws {}
+    public init(contentsOf url: __shared URL, encoding enc: Encoding) throws {}
+    public init(contentsOf url: __shared URL, usedEncoding: inout Encoding) throws {}
+    public init(contentsOfFile path: __shared String) throws {}
+    public init(contentsOfFile path: __shared String, encoding enc: Encoding) throws {}
+    public init(contentsOfFile path: __shared String, usedEncoding: inout Encoding) throws {}
+    public init?(data: __shared Data, encoding: Encoding) {}
+    public init(format: __shared String, _ arguments: CVarArg...) {}
+    public init(format: __shared String, arguments: __shared [CVarArg]) {}
+    public init(format: __shared String, locale: __shared Locale?, _ args: CVarArg...) {}
+    public init(format: __shared String, locale: __shared Locale?, arguments: __shared [CVarArg]) {}
     public init(utf16CodeUnits: UnsafePointer<unichar>, count: Int) {}
     public init(utf16CodeUnitsNoCopy: UnsafePointer<unichar>, count: Int, freeWhenDone flag: Bool) {}
     public init?(utf8String bytes: UnsafePointer<CChar>) {}
@@ -2810,46 +2632,20 @@ extension String.Encoding {
     public func ==(lhs: String.Encoding, rhs: String.Encoding) -> Bool {}
 }
 extension StringProtocol {
-    public var capitalized: String { get } where Index == String.Index
-    public var decomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var decomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var fastestEncoding: String.Encoding { get } where Index == String.Index
-    public var hash: Int { get } where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedCapitalized: String { get } where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedLowercase: String { get } where Index == String.Index
-    @available(macOS10.11, iOS9.0, *) public var localizedUppercase: String { get } where Index == String.Index
-    public var precomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var precomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var removingPercentEncoding: String? { get } where Index == String.Index
-    public var smallestEncoding: String.Encoding { get } where Index == String.Index
-    public func addingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? where Index == String.Index {}
     public func appending<T>(_ aString: T) -> String where T : StringProtocol, Index == String.Index {}
     public func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol, Index == String.Index {}
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    @available(macOS10.11, iOS9.0, *) public func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String? where Index == String.Index {}
-#endif
-    public func cString(using encoding: String.Encoding) -> [CChar]? where Index == String.Index {}
-    public func canBeConverted(to encoding: String.Encoding) -> Bool where Index == String.Index {}
-    public func capitalized(with locale: Locale?) -> String where Index == String.Index {}
     public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
     public func commonPrefix<T>(with aString: T, options: String.CompareOptions = x) -> String where T : StringProtocol, Index == String.Index {}
     public func compare<T>(_ aString: T, options mask: String.CompareOptions = x, range: Range<Index>? = x, locale: Locale? = x) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
-    public func completePath(into outputName: UnsafeMutablePointer<String>? = x, caseSensitive: Bool, matchesInto outputArray: UnsafeMutablePointer<[String]>? = x, filterTypes: [String]? = x) -> Int where Index == String.Index {}
-    public func components(separatedBy separator: CharacterSet) -> [String] where Index == String.Index {}
     public func components<T>(separatedBy separator: T) -> [String] where T : StringProtocol, Index == String.Index {}
     public func contains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
-    public func data(using encoding: String.Encoding, allowLossyConversion: Bool = x) -> Data? where Index == String.Index {}
-    public func enumerateLines(invoking body: @escaping (_ line: String, _ stop: inout Bool) -> Void) where Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func enumerateLinguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, invoking body: (String, Range<Index>, Range<Index>, inout Bool) -> Void) where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
 #endif
     public func enumerateSubstrings<R>(in range: R, options opts: String.EnumerationOptions = x, _ body: @escaping (_ substring: String?, _ substringRange: Range<Index>, _ enclosingRange: Range<Index>, inout Bool) -> Void) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func folding(options: String.CompareOptions = x, locale: Locale?) -> String where Index == String.Index {}
     public func getBytes<R>(_ buffer: inout [UInt8], maxLength maxBufferCount: Int, usedLength usedBufferCount: UnsafeMutablePointer<Int>, encoding: String.Encoding, options: String.EncodingConversionOptions = x, range: R, remaining leftover: UnsafeMutablePointer<Range<Index>>) -> Bool where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func getCString(_ buffer: inout [CChar], maxLength: Int, encoding: String.Encoding) -> Bool where Index == String.Index {}
     public func getLineStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
     public func getParagraphStart<R>(_ start: UnsafeMutablePointer<Index>, end: UnsafeMutablePointer<Index>, contentsEnd: UnsafeMutablePointer<Index>, for range: R) where R : RangeExpression, Index == R.Bound, Index == String.Index {}
-    public func lengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
     public func lineRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func linguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, tokenRanges: UnsafeMutablePointer<[Range<Index>]>? = x) -> [String] where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
@@ -2858,29 +2654,16 @@ extension StringProtocol {
     public func localizedCaseInsensitiveContains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
     public func localizedCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
     public func localizedStandardCompare<T>(_ string: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
-    @available(macOS10.11, iOS9.0, *) public func localizedStandardContains<T>(_ string: T) -> Bool where T : StringProtocol, Index == String.Index {}
-    @available(macOS10.11, iOS9.0, *) public func localizedStandardRange<T>(of string: T) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
-    public func lowercased(with locale: Locale?) -> String where Index == String.Index {}
-    public func maximumLengthOfBytes(using encoding: String.Encoding) -> Int where Index == String.Index {}
+    @available(macOS 10.11, iOS 9.0, *) public func localizedStandardContains<T>(_ string: T) -> Bool where T : StringProtocol, Index == String.Index {}
+    @available(macOS 10.11, iOS 9.0, *) public func localizedStandardRange<T>(of string: T) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
     public func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String where T : StringProtocol, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func paragraphRange<R>(for aRange: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
 #endif
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyList() -> Any where Index == String.Index {}
-#endif
-#if !DEPLOYMENT_RUNTIME_SWIFT
-    public func propertyListFromStringsFileFormat() -> [String: String] where Index == String.Index {}
-#endif
     public func range<T>(of aString: T, options mask: String.CompareOptions = x, range searchRange: Range<Index>? = x, locale: Locale? = x) -> Range<Index>? where T : StringProtocol, Index == String.Index {}
-    public func rangeOfCharacter(from aSet: CharacterSet, options mask: String.CompareOptions = x, range aRange: Range<Index>? = x) -> Range<Index>? where Index == String.Index {}
-    public func rangeOfComposedCharacterSequence(at anIndex: Index) -> Range<Index> where Index == String.Index {}
     public func rangeOfComposedCharacterSequences<R>(for range: R) -> Range<Index> where R : RangeExpression, Index == R.Bound, Index == String.Index {}
     public func replacingCharacters<T, R>(in range: R, with replacement: T) -> String where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
     public func replacingOccurrences<Target, Replacement>(of target: Target, with replacement: Replacement, options: String.CompareOptions = x, range searchRange: Range<Index>? = x) -> String where Replacement : StringProtocol, Target : StringProtocol, Index == String.Index {}
-    public func trimmingCharacters(in set: CharacterSet) -> String where Index == String.Index {}
-    public func uppercased(with locale: Locale?) -> String where Index == String.Index {}
-    public func write(to url: URL, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where Index == String.Index {}
     public func write<T>(toFile path: T, atomically useAuxiliaryFile: Bool, encoding enc: String.Encoding) throws where T : StringProtocol, Index == String.Index {}
 }
 extension UInt {
@@ -2907,4 +2690,12 @@ extension UInt8 {
     public init(_ value: CGFloat) {}
     public init?(exactly number: NSNumber) {}
     public init(truncating number: NSNumber) {}
+}
+extension UnsafeBufferPointer {
+}
+extension UnsafeMutableBufferPointer {
+}
+extension UnsafeMutableRawBufferPointer {
+}
+extension UnsafeRawBufferPointer {
 }

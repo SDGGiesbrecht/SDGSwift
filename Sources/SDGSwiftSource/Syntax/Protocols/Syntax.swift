@@ -233,13 +233,6 @@ extension Syntax {
         case let conditionallyCompiledSection as IfConfigDeclSyntax:
             return conditionallyCompiledSection.conditionalAPI
         default:
-            if isUnidentifiedConditionalCompilation {
-                return unidentifiedConditionallyCompiledChildren
-            }
-            if let unknown = (self as? UnknownDeclSyntax)?.unknownAPI(),
-                ¬unknown.isEmpty {
-                return unknown
-            }
             return apiChildren()
         }
     }
@@ -290,10 +283,9 @@ extension Syntax {
             return conformance.normalized(comma: comma)
         case let sameType as SameTypeRequirementSyntax:
             return sameType.normalized(comma: comma)
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified generic requirement: \(Swift.type(of: self))")
-            }
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
             return self
         }
     }
@@ -306,10 +298,9 @@ extension Syntax {
             return associativity.normalizedForAPIDeclaration()
         case let assignment as PrecedenceGroupAssignmentSyntax:
             return assignment.normalizedForAPIDeclaration()
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified preference group attribute: \(Swift.type(of: self))")
-            }
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
             return self
         }
     }
@@ -326,10 +317,9 @@ extension Syntax {
             return .associativity
         case is PrecedenceGroupAssignmentSyntax:
             return .assignment
-        default: // @exempt(from: tests) Should never occur.
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified preference group attribute: \(Swift.type(of: self))")
-            }
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
             return .unknown
         }
     }
@@ -338,20 +328,57 @@ extension Syntax {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
-    // MARK: - Compilation Conditions
-
-    internal var isUnidentifiedConditionalCompilation: Bool {
-        if let statement = children.first(where: { _ in true }) as? UnknownSyntax,
-            let token = statement.children.first(where: { _ in true }) as? TokenSyntax,
-            token.tokenKind == .poundIfKeyword {
-            return true
+    internal func normalizedAttributeArgument() -> Syntax {
+        switch self {
+        case let availablitiy as AvailabilitySpecListSyntax:
+            return availablitiy.normalized()
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
+            return self
         }
-        return false
     }
 
-    internal var unidentifiedConditionallyCompiledChildren: [APIElement] {
-        return (try? SyntaxTreeParser.parse(source()).apiChildren()) ?? [] // @exempt(from: tests)
+    internal func normalizedAvailabilityArgument() -> Syntax {
+        switch self {
+        case let token as TokenSyntax:
+            return token.generallyNormalizedAndMissingInsteadOfNil()
+        case let labeled as AvailabilityLabeledArgumentSyntax:
+            return labeled.normalized()
+        case let restriction as AvailabilityVersionRestrictionSyntax:
+            return restriction.normalized()
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
     }
+
+    internal func normalizedAvailability() -> Syntax {
+        switch self {
+        case let token as TokenSyntax:
+            return token.generallyNormalizedAndMissingInsteadOfNil()
+        case let version as VersionTupleSyntax:
+            return version.normalized()
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
+    }
+
+    internal func normalizedVersion() -> Syntax {
+        switch self {
+        case let token as TokenSyntax:
+            return token.generallyNormalizedAndMissingInsteadOfNil()
+        default:
+            // @exempt(from: tests)
+            warnUnidentified()
+            return self
+        }
+    }
+
+    // MARK: - Compilation Conditions
 
     internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
         let existingCondition = Array(tokens().dropFirst())
@@ -366,5 +393,22 @@ extension Syntax {
             ] + existingCondition + [
                 SyntaxFactory.makeToken(.rightParen)
             ])
+    }
+
+    // MARK: - Debugging
+
+    internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
+        #if UNIDENTIFIED_SYNTAX_WARNINGS
+        switch self {
+        case is UnknownSyntax,
+             is UnknownPatternSyntax,
+             is UnknownTypeSyntax:
+            break
+        default:
+            // @exempt(from: tests)
+            let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
+            print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
+        }
+        #endif
     }
 }

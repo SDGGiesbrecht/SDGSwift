@@ -12,12 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 extension SimpleTypeIdentifierSyntax {
 
     internal func normalized() -> TypeSyntax {
 
-        // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index use by SwiftSyntax.)
-        let newGenericArgumentClause = source().contains("<") ? genericArgumentClause?.normalized() : nil
+        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
+        var genericArgumentClause = self.genericArgumentClause
+        if ¬source().contains("<") {
+            genericArgumentClause = nil
+        }
+
+        let newGenericArgumentClause = genericArgumentClause?.normalized()
 
         let result = SyntaxFactory.makeSimpleTypeIdentifier(
             name: name.generallyNormalizedAndMissingInsteadOfNil(),
