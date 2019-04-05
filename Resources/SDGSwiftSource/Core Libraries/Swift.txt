@@ -79,7 +79,6 @@ public protocol Collection : Sequence {
     var count: Int { get }
     var endIndex: Index { get }
     var first: Element? { get }
-    var indices: DefaultIndices<Self> { get } where DefaultIndices<Self> == Indices
     var indices: Indices { get }
     var isEmpty: Bool { get }
     var isEmpty: Bool { get }
@@ -320,7 +319,6 @@ public protocol LazyCollectionProtocol : Collection, LazySequenceProtocol, Seque
 public protocol LazySequenceProtocol : Sequence {
     associatedtype Elements where Element == Elements.Element
     var elements: Elements { get }
-    var elements: Self { get } where Elements == Self
 }
 public protocol LosslessStringConvertible : CustomStringConvertible {
     init?(_ description: String)
@@ -385,7 +383,6 @@ public protocol RangeReplaceableCollection : Collection, Sequence {
 public protocol RawRepresentable {
     associatedtype RawValue
     init?(rawValue: RawValue)
-    var hashValue: Int { get } where RawValue : Hashable, Self : Hashable
     var rawValue: RawValue { get }
 }
 public protocol SIMD : Codable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, SIMDStorage {
@@ -471,8 +468,6 @@ public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     @discardableResult mutating func update(with newMember: __owned Element) -> Element?
 }
 public protocol SignedInteger : AdditiveArithmetic, BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
-    static var max: Self { get } where Self : FixedWidthInteger
-    static var min: Self { get } where Self : FixedWidthInteger
 }
 public protocol SignedNumeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral, Numeric {
     prefix func -(operand: Self) -> Self
@@ -551,8 +546,6 @@ public protocol UnkeyedEncodingContainer {
     mutating func superEncoder() -> Encoder
 }
 public protocol UnsignedInteger : AdditiveArithmetic, BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, Strideable {
-    static var max: Self { get } where Self : FixedWidthInteger
-    static var min: Self { get } where Self : FixedWidthInteger
 }
 extension AnyBidirectionalCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
@@ -796,10 +789,6 @@ extension String.Index {
 }
 extension String.UTF16View {
 }
-extension String.UTF16View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF16View) {}
-    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
-}
 extension String.UTF8View {
     public subscript(i: Index) -> UTF8.CodeUnit { get } {}
 }
@@ -825,94 +814,23 @@ extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
 }
-extension Unicode.ASCII {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
-}
 extension Unicode.ASCII.Parser {
     public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
 }
 extension Unicode.Scalar {
-}
-extension Unicode.Scalar.Properties {
-    public var age: Unicode.Version? { get }
-    public var canonicalCombiningClass: Unicode.CanonicalCombiningClass { get }
-    public var changesWhenCaseFolded: Bool { get }
-    public var changesWhenCaseMapped: Bool { get }
-    public var changesWhenLowercased: Bool { get }
-    public var changesWhenNFKCCaseFolded: Bool { get }
-    public var changesWhenTitlecased: Bool { get }
-    public var changesWhenUppercased: Bool { get }
-    public var generalCategory: Unicode.GeneralCategory { get }
-    public var isASCIIHexDigit: Bool { get }
-    public var isAlphabetic: Bool { get }
-    public var isBidiControl: Bool { get }
-    public var isBidiMirrored: Bool { get }
-    public var isCaseIgnorable: Bool { get }
-    public var isCased: Bool { get }
-    public var isDash: Bool { get }
-    public var isDefaultIgnorableCodePoint: Bool { get }
-    public var isDeprecated: Bool { get }
-    public var isDiacritic: Bool { get }
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmoji: Bool { get }
-#endif
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifier: Bool { get }
-#endif
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifierBase: Bool { get }
-#endif
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiPresentation: Bool { get }
-#endif
-    public var isExtender: Bool { get }
-    public var isFullCompositionExclusion: Bool { get }
-    public var isGraphemeBase: Bool { get }
-    public var isGraphemeExtend: Bool { get }
-    public var isHexDigit: Bool { get }
-    public var isIDContinue: Bool { get }
-    public var isIDSBinaryOperator: Bool { get }
-    public var isIDSTrinaryOperator: Bool { get }
-    public var isIDStart: Bool { get }
-    public var isIdeographic: Bool { get }
-    public var isJoinControl: Bool { get }
-    public var isLogicalOrderException: Bool { get }
-    public var isLowercase: Bool { get }
-    public var isMath: Bool { get }
-    public var isNoncharacterCodePoint: Bool { get }
-    public var isPatternSyntax: Bool { get }
-    public var isPatternWhitespace: Bool { get }
-    public var isQuotationMark: Bool { get }
-    public var isRadical: Bool { get }
-    public var isSentenceTerminal: Bool { get }
-    public var isSoftDotted: Bool { get }
-    public var isTerminalPunctuation: Bool { get }
-    public var isUnifiedIdeograph: Bool { get }
-    public var isUppercase: Bool { get }
-    public var isVariationSelector: Bool { get }
-    public var isWhitespace: Bool { get }
-    public var isXIDContinue: Bool { get }
-    public var isXIDStart: Bool { get }
-    public var lowercaseMapping: String { get }
-    public var name: String? { get }
-    public var nameAlias: String? { get }
-    public var numericType: Unicode.NumericType? { get }
-    public var numericValue: Double? { get }
-    public var titlecaseMapping: String { get }
-    public var uppercaseMapping: String { get }
+    public var isASCII: Bool { get }
+    public var utf16: UTF16View { get }
+    public var value: UInt32 { get }
+    public func escaped(asASCII forceASCII: Bool) -> String {}
 }
 extension Unicode.Scalar.UTF16View {
 }
-extension Unicode.UTF8 {
+extension Unicode.UTF16.ForwardParser {
+}
+extension Unicode.UTF32 {
     public static var encodedReplacementCharacter: EncodedScalar { get }
     public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
     public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : _UnicodeEncoding {}
-}
-extension Unicode.UTF8.ForwardParser {
 }
 extension UnsafeBufferPointer {
     public init(_ other: UnsafeMutableBufferPointer<Element>) {}

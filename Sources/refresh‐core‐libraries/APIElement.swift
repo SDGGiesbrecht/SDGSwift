@@ -87,6 +87,7 @@ extension APIElement {
         if let constraints = self.constraints?.source() {
             declaration += constraints
             if declarationSyntax is InitializerDeclSyntax
+                ∨ declarationSyntax is VariableDeclSyntax
                 ∨ declarationSyntax is SubscriptDeclSyntax
                 ∨ declarationSyntax is FunctionDeclSyntax,
                 declarationSyntax.genericParameters?.source().isEmpty ≠ false {

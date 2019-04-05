@@ -2632,18 +2632,6 @@ extension String.Encoding {
     public func ==(lhs: String.Encoding, rhs: String.Encoding) -> Bool {}
 }
 extension StringProtocol {
-    public var capitalized: String { get } where Index == String.Index
-    public var decomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var decomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var fastestEncoding: String.Encoding { get } where Index == String.Index
-    public var hash: Int { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedCapitalized: String { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedLowercase: String { get } where Index == String.Index
-    @available(macOS 10.11, iOS 9.0, *) public var localizedUppercase: String { get } where Index == String.Index
-    public var precomposedStringWithCanonicalMapping: String { get } where Index == String.Index
-    public var precomposedStringWithCompatibilityMapping: String { get } where Index == String.Index
-    public var removingPercentEncoding: String? { get } where Index == String.Index
-    public var smallestEncoding: String.Encoding { get } where Index == String.Index
     public func appending<T>(_ aString: T) -> String where T : StringProtocol, Index == String.Index {}
     public func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol, Index == String.Index {}
     public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
