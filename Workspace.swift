@@ -56,17 +56,3 @@ configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
 // #workaround(SwiftSyntax 0.50000.0, Compiler warnings.)
 configuration.testing.prohibitCompilerWarnings = false
-
-// #workaround(workspace version 0.18.1, Generated test files are not ignored by default.)
-configuration.repository.ignoredPaths.insert("Tests/LinuxMain.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftConfigurationTests/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftDocumentationExampleTests/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftPackageManagerTests/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftSourceTests/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftTests/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGSwiftTestUtilities/XCTestManifests.swift")
-configuration.repository.ignoredPaths.insert("Tests/SDGXcodeTests/XCTestManifests.swift")
-
-// #workaround(workspace version 0.18.1, CI times out.)
-configuration.documentation.api.generate = false
-configuration.documentation.api.enforceCoverage = false
