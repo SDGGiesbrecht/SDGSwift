@@ -25,6 +25,10 @@ class SDGSwiftRegressionTests : TestCase {
     func testDependencyWarnings() throws {
         // Untracked.
 
+        try withMock(named: "Warnings") { package in
+            let build = try package.build()
+            XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+        }
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             let build = try package.build()
             XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
