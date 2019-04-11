@@ -10,7 +10,7 @@ let package = Package(
             targets: ["DependentOnWarnings"]),
     ],
     dependencies: [
-        .package(path: "../Warnings"),
+        .package(url: "/tmp/Warnings", .branch("master"))
     ],
     targets: [
         .target(

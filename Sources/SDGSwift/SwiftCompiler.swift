@@ -131,7 +131,11 @@ public enum SwiftCompiler {
     /// - Parameters:
     ///     - log: The output log to be checked.
     public static func warningsOccurred(during log: String) -> Bool {
-        return log.contains("warning:")
+        for line in log.lines.lazy.map({ $0.line }) where line.contains("warning:".scalars) {
+            print(String(line))
+            return true
+        }
+        return false
     }
 
     /// Tests the package.
