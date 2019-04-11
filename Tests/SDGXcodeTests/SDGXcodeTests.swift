@@ -29,6 +29,16 @@ import SDGSwiftTestUtilities
 
 class SDGXcodeTests : TestCase {
 
+    func testDependencyWarnings() throws {
+        #if !os(Linux)
+        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+            try package.generateXcodeProject()
+            let build = try package.build(for: .macOS)
+            XCTAssertFalse(Xcode.warningsOccurred(during: build))
+        }
+        #endif
+    }
+
     func testXcode() {
         #if !os(Linux)
         do {
