@@ -25,14 +25,10 @@ class SDGSwiftRegressionTests : TestCase {
     func testDependencyWarnings() throws {
         // Untracked.
 
-        let mock = mocksDirectory.appendingPathComponent("DependentOnWarnings")
-        let build = mock.appendingPathComponent(".build")
-        try? FileManager.default.removeItem(at: build)
-        defer { try? FileManager.default.removeItem(at: build) }
-
-        let package = PackageRepository(at: mock)
-        let buildLog = try package.build()
-        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: buildLog))
+        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+            let build = try package.build()
+            XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+        }
     }
 
     func testDynamicLinking() throws {
