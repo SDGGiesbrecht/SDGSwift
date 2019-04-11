@@ -24,6 +24,7 @@ extension SDGSwiftRegressionTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__SDGSwiftRegressionTests = [
+        ("testDependencyWarnings", testDependencyWarnings),
         ("testDynamicLinking", testDynamicLinking),
     ]
 }

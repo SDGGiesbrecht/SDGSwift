@@ -6,6 +6,7 @@ extension SDGXcodeTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__SDGXcodeTests = [
+        ("testDependencyWarnings", testDependencyWarnings),
         ("testXcode", testXcode),
         ("testXcodeCoverage", testXcodeCoverage),
         ("testXcodeError", testXcodeError),
