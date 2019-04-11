@@ -132,7 +132,10 @@ public enum SwiftCompiler {
     ///     - log: The output log to be checked.
     public static func warningsOccurred(during log: String) -> Bool {
         for line in log.lines.lazy.map({ $0.line }) where line.contains("warning:".scalars) {
-            print(String(line))
+            if let possiblePath = line.prefix(upTo: ":".scalars)?.contents,
+                String(possiblePath).contains("/.build/") {
+                continue // The warning belongs to a dependency.
+            }
             return true
         }
         return false
