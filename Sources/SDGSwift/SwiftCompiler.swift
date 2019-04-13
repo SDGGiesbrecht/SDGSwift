@@ -126,12 +126,25 @@ public enum SwiftCompiler {
         return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
     }
 
+    public static func _warningBelongsToDependency(_ line: String.UnicodeScalarView.SubSequence) -> Bool {
+        if let possiblePath = line.prefix(upTo: ":".scalars)?.contents,
+            possiblePath.contains("/.build/".scalars) {
+            return true
+        }
+        return false
+    }
     /// Returns whether the log contains warnings.
     ///
     /// - Parameters:
     ///     - log: The output log to be checked.
     public static func warningsOccurred(during log: String) -> Bool {
-        return log.contains("warning:")
+        for line in log.lines.lazy.map({ $0.line }) where line.contains("warning:".scalars) {
+            if SwiftCompiler._warningBelongsToDependency(line) {
+                continue
+            }
+            return true
+        }
+        return false
     }
 
     /// Tests the package.

@@ -22,12 +22,25 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftRegressionTests : TestCase {
 
-    func testDynamicLinking() {
+    func testDependencyWarnings() throws {
+        // Untracked.
+
+        try withMock(named: "Warnings") { package in
+            let build = try package.build()
+            XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+        }
+        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+            let build = try package.build()
+            XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+        }
+    }
+
+    func testDynamicLinking() throws {
         // Untracked.
 
         #if os(macOS) // Never was an issue on Linux.
-        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-            withMockDynamicLinkedExecutable { mock in
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+            try withMockDynamicLinkedExecutable { mock in
                 XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
                 XCTAssertEqual(try Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
             }
