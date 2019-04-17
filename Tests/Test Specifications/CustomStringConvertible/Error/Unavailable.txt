@@ -7,6 +7,9 @@ Make sure it is installed at one of the following paths or register it in $PATH 
 ~/Library/Developer/Toolchains/swift-5.0-RELEASE.xctoolchain/usr/bin/swift
 ~/.swiftenv/shims/swift
 ~/.swiftenv/versions/5.0/usr/bin/swift
+/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/versions/5.0.1/usr/bin/swift
 
 🇺🇸EN
 Swift 5.0.0 could not be located.
@@ -17,6 +20,9 @@ Make sure it is installed at one of the following paths or register it in $PATH 
 ~/Library/Developer/Toolchains/swift-5.0-RELEASE.xctoolchain/usr/bin/swift
 ~/.swiftenv/shims/swift
 ~/.swiftenv/versions/5.0/usr/bin/swift
+/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/versions/5.0.1/usr/bin/swift
 
 🇨🇦EN
 Swift 5.0.0 could not be located.
@@ -27,4 +33,7 @@ Make sure it is installed at one of the following paths or register it in $PATH 
 ~/Library/Developer/Toolchains/swift-5.0-RELEASE.xctoolchain/usr/bin/swift
 ~/.swiftenv/shims/swift
 ~/.swiftenv/versions/5.0/usr/bin/swift
+/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/Library/Developer/Toolchains/swift-5.0.1-RELEASE.xctoolchain/usr/bin/swift
+~/.swiftenv/versions/5.0.1/usr/bin/swift
 
