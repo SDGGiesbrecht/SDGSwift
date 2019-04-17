@@ -106,6 +106,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
 
             // These may occur out of order.
             remove(logEntry: "Compile Swift Module")
+            remove(logEntry: "[1/5] Compiling Swift Module")
             remove(logEntry: "[2/5] Compiling Swift Module")
             remove(logEntry: "[3/5] Compiling Swift Module")
             remove(logEntry: "Linking")
