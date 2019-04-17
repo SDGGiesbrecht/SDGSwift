@@ -346,8 +346,17 @@ public enum Xcode {
                 }
                 func toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
                     let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
-                    let utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
-                    return utf8Index.samePosition(in: source.scalars)
+                    var utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
+                    var result: String.ScalarView.Index? = nil
+                    while result == nil {
+                        result = utf8Index.samePosition(in: source.scalars)
+                        if result == nil { // @exempt(from: tests)
+                            // Xcode sometimes erratically reports invalid offsets.
+                            // Rounding is better than trapping.
+                            utf8Index = source.utf8.index(before: utf8Index)
+                        }
+                    }
+                    return result!
                 }
 
                 var regions: [CoverageRegion] = []
