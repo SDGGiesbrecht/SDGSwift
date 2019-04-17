@@ -350,7 +350,8 @@ public enum Xcode {
                     var result: String.ScalarView.Index? = nil
                     while result == nil {
                         result = utf8Index.samePosition(in: source.scalars)
-                        if result == nil { // @exempt(from: tests)
+                        if result == nil {
+                            // @exempt(from: tests)
                             // Xcode sometimes erratically reports invalid offsets.
                             // Rounding is better than trapping.
                             utf8Index = source.utf8.index(before: utf8Index)
