@@ -4,6 +4,7 @@ Make sure it (xcodebuild) is installed at one of the following paths or register
 /usr/bin/xcodebuild
 /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
 /Applications/Xcode 10.2.app/Contents/Developer/usr/bin/xcodebuild
+/Applications/Xcode 10.2.1.app/Contents/Developer/usr/bin/xcodebuild
 
 🇺🇸EN
 Xcode 10.2.0 could not be located.
@@ -11,6 +12,7 @@ Make sure it (xcodebuild) is installed at one of the following paths or register
 /usr/bin/xcodebuild
 /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
 /Applications/Xcode 10.2.app/Contents/Developer/usr/bin/xcodebuild
+/Applications/Xcode 10.2.1.app/Contents/Developer/usr/bin/xcodebuild
 
 🇨🇦EN
 Xcode 10.2.0 could not be located.
@@ -18,4 +20,5 @@ Make sure it (xcodebuild) is installed at one of the following paths or register
 /usr/bin/xcodebuild
 /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
 /Applications/Xcode 10.2.app/Contents/Developer/usr/bin/xcodebuild
+/Applications/Xcode 10.2.1.app/Contents/Developer/usr/bin/xcodebuild
 

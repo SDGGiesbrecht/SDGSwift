@@ -9,7 +9,6 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-[1/5] Compiling Swift Module 'SDGSwiftConfiguration' (4 sources)
 [4/5] Compiling Swift Module 'configure' (1 sources)
 [5/5] 
 Cached
