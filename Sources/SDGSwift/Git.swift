@@ -27,7 +27,6 @@ public enum Git {
     public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
 
     internal static let standardLocations = [
-        // #workaround(Can Git be outsourced?)
         // Git
         "/usr/bin/git"
         ].lazy.map({ URL(fileURLWithPath: $0) })
