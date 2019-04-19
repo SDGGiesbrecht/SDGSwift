@@ -164,7 +164,7 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
-        // #workaround(This is duplicated from the Swift project itself, since stable releases do not expose the API.)
+        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
 
