@@ -22,16 +22,19 @@ extension SwiftCompiler {
     // MARK: - Properties
 
     private static func manifestResources() throws -> ManifestResources {
+        // #workaround(Can manifest resources be moved upstream?)
         return ManifestResources(
             swiftCompiler: try _compilerLocation(),
             librariesDirectory: try _packageManagerLibraries())
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
+        // #workaround(Can the manifest loader be moved upstream?)
         return ManifestLoader(manifestResources: try manifestResources())
     }
 
     internal static func workspaceDelegate() -> WorkspaceDelegate {
+        // #workaround(Can the delegate loader be moved upstream?)
         return DefaultWorkspaceDelegate()
     }
 }

@@ -92,6 +92,7 @@ public struct Package : TransparentWrapper {
             for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
                 let filename = component.lastPathComponent
 
+                // #workaround(Can the product filters be moved upstream?)
                 if filename ≠ "ModuleCache",
                     ¬filename.hasSuffix(".product"),
                     ¬filename.hasSuffix(".build"),

@@ -28,6 +28,7 @@ public enum SwiftCompiler {
     public static let _standardLibraryVersion = versions.lowerBound
 
     private static func standardLocations(for version: Version) -> [URL] {
+        // #workaround(Can Swift be outsourced?)
         return [
             // Swift
             "/usr/bin/swift",
@@ -50,6 +51,7 @@ public enum SwiftCompiler {
     }()
 
     private static func compilerLocation(for swift: URL) -> URL {
+        // #workaround(Can the compiler location be moved upstream?)
         return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
     }
     public static func _compilerLocation() throws -> URL {
@@ -57,6 +59,7 @@ public enum SwiftCompiler {
     }
 
     private static func packageManagerLibraries(for swift: URL) -> URL {
+        // #workaround(Can the libraries location be moved upstream?)
         return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/swift/pm")
     }
     public static func _packageManagerLibraries() throws -> URL {

@@ -52,14 +52,17 @@ public struct PackageRepository : TransparentWrapper {
 
     /// The directory where build data is stored.
     public var dataDirectory: URL {
+        // #workaround(Can the data directory be moved upstream?)
         return location.appendingPathComponent(".build")
     }
 
     /// The directory where editable dependencies are stored.
     public var editablesDirectory: URL {
+        // #workaround(Can the editables directory be moved upstream?)
         return location.appendingPathComponent("Packages")
     }
 
+    // #workaround(Can the product’s directory be moved upstream?)
     private static let releaseProductsDirectory = ".build/release"
 
     /// The directory to which release products are built.

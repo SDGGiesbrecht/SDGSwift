@@ -16,6 +16,7 @@ import Basic
 import PackageGraph
 import Workspace
 
+// #workaround(Can the delegate be moved upstream?)
 extension WorkspaceDelegate {
     internal func packageGraphWillLoad(currentGraph: PackageGraph, dependencies: AnySequence<ManagedDependency>, missingURLs: Set<String>) {} // @exempt(from: tests)
     internal func fetchingWillBegin(repository: String) {}

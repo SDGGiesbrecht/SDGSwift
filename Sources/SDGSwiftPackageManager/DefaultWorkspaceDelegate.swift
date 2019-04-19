@@ -14,4 +14,5 @@
 
 import Workspace
 
+// #workaround(Can the delegate be moved upstream?)
 internal class DefaultWorkspaceDelegate : WorkspaceDelegate {}

@@ -19,6 +19,7 @@ import PackageLoading
 
 extension SwiftCompiler {
 
+    // #workaround(Can manifest resources be moved upstream?)
     internal struct ManifestResources : ManifestResourceProvider {
 
         // MARK: - Initialization
