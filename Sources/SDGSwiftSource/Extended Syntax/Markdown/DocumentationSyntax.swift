@@ -16,6 +16,7 @@ import SDGControlFlow
 import SDGMathematics
 import SDGCMarkShims
 
+// #workaround(Can NSCache be used?)
 private var documentationCache: [String: DocumentationSyntax] = [:]
 
 /// The content of a documentation comment.
