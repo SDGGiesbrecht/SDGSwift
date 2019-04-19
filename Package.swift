@@ -100,7 +100,7 @@ let package = Package(
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
-            .product(name: "SwiftPM-auto", package: "SwiftPM")
+            .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // #documentation(SDGSwiftSource)
