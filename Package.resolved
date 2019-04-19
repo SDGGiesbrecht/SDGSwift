@@ -11,6 +11,24 @@
         }
       },
       {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild.git",
+        "state": {
+          "branch": null,
+          "revision": "ed2b4e08e46be355edff390c8aa245e929af1331",
+          "version": "0.0.50000"
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
+        "state": {
+          "branch": null,
+          "revision": "964c312fc4112dcb24ee71a53ad297db69c1a720",
+          "version": "0.0.50000"
+        }
+      },
+      {
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
