@@ -23,6 +23,7 @@ import SDGExternalProcess
 
 import SDGSwiftLocalizations
 import SDGSwift
+import SDGSwiftPackageManager
 
 /// Xcode.
 public enum Xcode {

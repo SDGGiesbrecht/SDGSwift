@@ -50,12 +50,6 @@ public struct PackageRepository : TransparentWrapper {
     /// The location of the repository.
     public let location: URL
 
-    /// The directory where build data is stored.
-    public var dataDirectory: URL {
-        // #workaround(Can the data directory be moved upstream?)
-        return location.appendingPathComponent(".build")
-    }
-
     /// The directory where editable dependencies are stored.
     public var editablesDirectory: URL {
         // #workaround(Can the editables directory be moved upstream?)

@@ -128,6 +128,7 @@ let package = Package(
         /// Xcode‐related utilities for working with Swift packages.
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
+            "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),

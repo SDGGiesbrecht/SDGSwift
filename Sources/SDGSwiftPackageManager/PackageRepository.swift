@@ -50,6 +50,12 @@ extension PackageRepository {
 
     // MARK: - Properties
 
+    /// The directory where build data is stored.
+    public var dataDirectory: URL {
+        // #workaround(Can the data directory be moved upstream?)
+        return location.appendingPathComponent(".build")
+    }
+
     private var pinsFile: URL {
         // #workaround(Can the pins file be moved upstream?)
         return location.appendingPathComponent("Package.resolved")
