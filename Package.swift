@@ -72,6 +72,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 16, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager", .exact(Version(0, 0, 50000))),
         .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 50000, 0)))
     ],
     targets: [
@@ -99,11 +100,7 @@ let package = Package(
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
-            .target(name: "Basic"),
-            .target(name: "PackageModel"),
-            .target(name: "PackageLoading"),
-            .target(name: "PackageGraph"),
-            .target(name: "Workspace")
+            .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // #documentation(SDGSwiftSource)
@@ -167,84 +164,9 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
-        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
+        // #workaround(This is duplicated from the Swift project itself, since stable releases do not expose the API.)
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
-        // These are duplicated from the Swift project itself until semantic version releases exist.
-        .target(name: "Basic", dependencies: [
-            "SPMLibc",
-            "POSIX"
-            ], path: "Sources/Shims/SwiftPM/Basic"),
-        .target(name: "PackageModel", dependencies: [
-            "Basic",
-            "SPMUtility"
-            ], path: "Sources/Shims/SwiftPM/PackageModel"),
-        .target(name: "PackageLoading", dependencies: [
-            "Basic",
-            "PackageModel",
-            "SPMUtility",
-            "SPMLLBuild"
-            ], path: "Sources/Shims/SwiftPM/PackageLoading"),
-        .target(name: "PackageGraph", dependencies: [
-            "Basic",
-            "PackageLoading",
-            "PackageModel",
-            "SourceControl",
-            "SPMUtility"
-            ], path: "Sources/Shims/SwiftPM/PackageGraph"),
-        .target(name: "Workspace", dependencies: [
-            "Basic",
-            "Build",
-            "PackageGraph",
-            "PackageModel",
-            "SourceControl",
-            "Xcodeproj"
-            ], path: "Sources/Shims/SwiftPM/Workspace"),
-        .target(name: "SPMLibc", dependencies: [
-            "clibc"
-            ], path: "Sources/Shims/SwiftPM/SPMLibc"),
-        .target(name: "SPMUtility", dependencies: [
-            "POSIX",
-            "Basic"
-            ], path: "Sources/Shims/SwiftPM/SPMUtility"),
-        .target(name: "POSIX", dependencies: [
-            "SPMLibc"
-            ], path: "Sources/Shims/SwiftPM/POSIX"),
-        .target(name: "clibc", path: "Sources/Shims/SwiftPM/clibc"),
-        .target(name: "SPMLLBuild", dependencies: [
-            "Basic",
-            "SPMUtility",
-            "llbuildSwift"
-            ], path: "Sources/Shims/SwiftPM/SPMLLBuild"),
-        .target(name: "Build", dependencies: [
-            "Basic",
-            "PackageGraph"
-            ], path: "Sources/Shims/SwiftPM/Build"),
-        .target(name: "SourceControl", dependencies: [
-            "Basic",
-            "SPMUtility"
-            ], path: "Sources/Shims/SwiftPM/SourceControl"),
-        .target(name: "Xcodeproj", dependencies: [
-            "Basic",
-            "PackageGraph"
-            ], path: "Sources/Shims/SwiftPM/Xcodeproj"),
-        .target(name: "llbuildSwift", dependencies: [
-            "libllbuild",
-            ], path: "Sources/Shims/LLBuild/products/llbuildSwift", exclude: ["llbuild.swift"]),
-        .target(name: "libllbuild", dependencies: [
-            "llbuildCore",
-            "llbuildBuildSystem"
-            ], path: "Sources/Shims/LLBuild/products/libllbuild"),
-        .target(name: "llbuildCore", dependencies: [
-            "llbuildBasic"
-            ], path: "Sources/Shims/LLBuild/lib/Core", linkerSettings: [.linkedLibrary("sqlite3")]),
-        .target(name: "llbuildBuildSystem", dependencies: [
-            "llbuildCore"
-            ], path: "Sources/Shims/LLBuild/lib/BuildSystem"),
-        .target(name: "llbuildBasic", dependencies: [
-            "llvmSupport"
-            ], path: "Sources/Shims/LLBuild/lib/Basic"),
-        .target(name: "llvmSupport", path: "Sources/Shims/LLBuild/lib/llvm/Support", cSettings: [.define("SWIFT_PACKAGE")], linkerSettings: [.linkedLibrary("ncurses")]),
 
         .target(name: "refresh‐core‐libraries", dependencies: [
             "SDGSwiftPackageManager",
