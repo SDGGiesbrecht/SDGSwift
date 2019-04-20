@@ -50,11 +50,6 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    private var pinsFile: URL {
-        // #workaround(Can the pins file be moved upstream?)
-        return location.appendingPathComponent("Package.resolved")
-    }
-
     /// Returns the package manifest.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
@@ -77,7 +72,6 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
         // #workaround(Can workspace loading complexity be moved upstream?)
-        _ = AbsolutePath(pinsFile.path)
         _ = SwiftCompiler.workspaceDelegate()
         return Workspace.create(
             forRootPackage: AbsolutePath(location.path),
