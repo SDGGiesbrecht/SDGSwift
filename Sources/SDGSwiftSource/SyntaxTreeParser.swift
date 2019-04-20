@@ -36,7 +36,6 @@ extension SyntaxTreeParser {
     /// - Parameters:
     ///     - source: A string with Swift source.
     public static func parse(_ source: String) throws -> SourceFileSyntax {
-        // #workaround(Can string parsing be moved upstream?) // Otherwise use cache.
         return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
             let temporary = temporaryDirectory.appendingPathComponent(UUID().uuidString + ".swift")
             try? FileManager.default.removeItem(at: temporary)
