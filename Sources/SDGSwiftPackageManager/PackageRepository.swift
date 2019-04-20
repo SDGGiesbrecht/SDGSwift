@@ -50,6 +50,12 @@ extension PackageRepository {
 
     // MARK: - Properties
 
+    /// The directory where editable dependencies are stored.
+    public var editablesDirectory: URL {
+        // #workaround(Can the editables directory be moved upstream?)
+        return location.appendingPathComponent("Packages")
+    }
+
     private var pinsFile: URL {
         // #workaround(Can the pins file be moved upstream?)
         return location.appendingPathComponent("Package.resolved")
@@ -77,7 +83,6 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
         // #workaround(Can workspace loading complexity be moved upstream?)
-        _ = AbsolutePath(editablesDirectory.path)
         _ = AbsolutePath(pinsFile.path)
         _ = SwiftCompiler.workspaceDelegate()
         return Workspace.create(

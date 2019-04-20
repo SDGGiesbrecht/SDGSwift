@@ -50,12 +50,6 @@ public struct PackageRepository : TransparentWrapper {
     /// The location of the repository.
     public let location: URL
 
-    /// The directory where editable dependencies are stored.
-    public var editablesDirectory: URL {
-        // #workaround(Can the editables directory be moved upstream?)
-        return location.appendingPathComponent("Packages")
-    }
-
     // #workaround(Can the product’s directory be moved upstream?)
     private static let releaseProductsDirectory = ".build/release"
 
