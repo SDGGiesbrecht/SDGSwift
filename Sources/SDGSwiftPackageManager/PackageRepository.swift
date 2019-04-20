@@ -56,7 +56,10 @@ extension PackageRepository {
     public func manifest() throws -> Manifest {
         // #workaround(Can manifest loading complexity be moved upstream?)
         let loader = try SwiftCompiler.manifestLoader()
-        return try loader.load(packagePath: AbsolutePath(location.path), baseURL: location.path, version: nil, manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
+        return try loader.load(
+            package: AbsolutePath(location.path),
+            baseURL: location.path,
+            manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
     }
 
     /// Returns the package structure.
