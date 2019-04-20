@@ -29,15 +29,16 @@ public enum SwiftCompiler {
 
     private static func standardLocations(for version: Version) -> [URL] {
         return [
+            // Swift Version Manager
+            // (This must come first, since it often means a later entry has been only partially replaced.)
+            NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift",
+
             // Swift
             "/usr/bin/swift",
             // Xcode
             "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
             "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            // Swift Version Manager
-            NSHomeDirectory() + "/.swiftenv/shims/swift",
-            NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
+            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift"
             ].map({ URL(fileURLWithPath: $0) })
     }
 
@@ -49,30 +50,11 @@ public enum SwiftCompiler {
         return locations
     }()
 
-    private static func compilerLocation(for swift: URL) -> URL {
-        return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
-    }
-    public static func _compilerLocation() throws -> URL {
-        return compilerLocation(for: try location())
-    }
-
-    private static func packageManagerLibraries(for swift: URL) -> URL {
-        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/swift/pm")
-    }
-    public static func _packageManagerLibraries() throws -> URL {
-        return packageManagerLibraries(for: try location())
-    }
-
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
             func validate(_ swift: ExternalProcess) -> Bool {
-                // Make sure necessary relative libraries are available. (Otherwise it is a shim of some sort.)
-                if ¬FileManager.default.fileExists(atPath: compilerLocation(for: swift.executable).path)
-                    ∨ ¬FileManager.default.fileExists(atPath: packageManagerLibraries(for: swift.executable).path) {
-                    return false
-                }
 
                 // Make sure version matches.
                 if let output = try? swift.run(["\u{2D}\u{2D}version"]),
