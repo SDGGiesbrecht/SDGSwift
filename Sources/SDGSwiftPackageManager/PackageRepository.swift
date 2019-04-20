@@ -67,7 +67,12 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func package() throws -> PackageModel.Package {
         // #workaround(Can package loading complexity be moved upstream?)
-        return try PackageBuilder(manifest: try manifest(), path: AbsolutePath(location.path), diagnostics: DiagnosticsEngine(), isRootPackage: true).construct()
+        let builder = PackageBuilder(
+            manifest: try manifest(),
+            path: AbsolutePath(location.path),
+            diagnostics: DiagnosticsEngine(),
+            isRootPackage: true)
+        return try builder.construct()
     }
 
     /// Returns the package workspace.
