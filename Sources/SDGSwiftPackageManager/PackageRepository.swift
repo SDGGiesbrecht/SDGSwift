@@ -50,12 +50,6 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    /// The directory where editable dependencies are stored.
-    public var editablesDirectory: URL {
-        // #workaround(Can the editables directory be moved upstream?)
-        return location.appendingPathComponent("Packages")
-    }
-
     private var pinsFile: URL {
         // #workaround(Can the pins file be moved upstream?)
         return location.appendingPathComponent("Package.resolved")
