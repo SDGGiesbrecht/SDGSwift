@@ -50,12 +50,6 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    /// The directory where build data is stored.
-    public var dataDirectory: URL {
-        // #workaround(Can the data directory be moved upstream?)
-        return location.appendingPathComponent(".build")
-    }
-
     private var pinsFile: URL {
         // #workaround(Can the pins file be moved upstream?)
         return location.appendingPathComponent("Package.resolved")
@@ -83,13 +77,12 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
         // #workaround(Can workspace loading complexity be moved upstream?)
-        return Workspace(
-            dataPath: AbsolutePath(dataDirectory.path),
-            editablesPath: AbsolutePath(editablesDirectory.path),
-            pinsFile: AbsolutePath(pinsFile.path),
-            manifestLoader: try SwiftCompiler.manifestLoader(),
-            delegate: SwiftCompiler.workspaceDelegate()
-        )
+        _ = AbsolutePath(editablesDirectory.path)
+        _ = AbsolutePath(pinsFile.path)
+        _ = SwiftCompiler.workspaceDelegate()
+        return Workspace.create(
+            forRootPackage: AbsolutePath(location.path),
+            manifestLoader: try SwiftCompiler.manifestLoader())
     }
 
     /// Returns the package graph.
