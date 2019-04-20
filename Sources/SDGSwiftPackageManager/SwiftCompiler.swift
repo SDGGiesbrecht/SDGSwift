@@ -32,9 +32,4 @@ extension SwiftCompiler {
         // #workaround(Can the manifest loader be moved upstream?)
         return ManifestLoader(manifestResources: try manifestResources())
     }
-
-    internal static func workspaceDelegate() -> WorkspaceDelegate {
-        // #workaround(Can the delegate loader be moved upstream?)
-        return DefaultWorkspaceDelegate()
-    }
 }

@@ -72,7 +72,6 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
         // #workaround(Can workspace loading complexity be moved upstream?)
-        _ = SwiftCompiler.workspaceDelegate()
         return Workspace.create(
             forRootPackage: AbsolutePath(location.path),
             manifestLoader: try SwiftCompiler.manifestLoader())
