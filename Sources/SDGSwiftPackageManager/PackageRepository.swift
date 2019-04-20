@@ -90,7 +90,9 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageGraph() throws -> PackageGraph {
         // #workaround(Can graph loading complexity be moved upstream?)
-        return try packageWorkspace().loadPackageGraph(root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]), diagnostics: DiagnosticsEngine())
+        return try packageWorkspace().loadPackageGraph(
+            root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]),
+            diagnostics: DiagnosticsEngine())
     }
 
     /// Checks for uncommitted changes or additions.
