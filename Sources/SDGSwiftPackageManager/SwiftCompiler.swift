@@ -22,7 +22,8 @@ extension SwiftCompiler {
     // MARK: - Properties
 
     private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        return try UserToolchain(destination: try Destination.hostDestination()).manifestResources
+        let destination = try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
+        return try UserToolchain(destination: destination).manifestResources
         /*return UserManifestResources(
             swiftCompiler: AbsolutePath(try _compilerLocation().path),
             libDir: AbsolutePath(try _packageManagerLibraries().path))*/
