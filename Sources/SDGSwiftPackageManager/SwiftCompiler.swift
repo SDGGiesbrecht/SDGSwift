@@ -22,9 +22,10 @@ extension SwiftCompiler {
     // MARK: - Properties
 
     private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        return UserManifestResources(
+        return try UserToolchain(destination: try Destination.hostDestination()).manifestResources
+        /*return UserManifestResources(
             swiftCompiler: AbsolutePath(try _compilerLocation().path),
-            libDir: AbsolutePath(try _packageManagerLibraries().path))
+            libDir: AbsolutePath(try _packageManagerLibraries().path))*/
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
