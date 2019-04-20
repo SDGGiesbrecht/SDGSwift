@@ -50,43 +50,45 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    private var pinsFile: URL {
-        return location.appendingPathComponent("Package.resolved")
-    }
-
     /// Returns the package manifest.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func manifest() throws -> Manifest {
         let loader = try SwiftCompiler.manifestLoader()
-        return try loader.load(packagePath: AbsolutePath(location.path), baseURL: location.path, version: nil, manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
+        return try loader.load(
+            package: AbsolutePath(location.path),
+            baseURL: location.path,
+            manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
     }
 
     /// Returns the package structure.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func package() throws -> PackageModel.Package {
-        return try PackageBuilder(manifest: try manifest(), path: AbsolutePath(location.path), diagnostics: DiagnosticsEngine(), isRootPackage: true).construct()
+        let builder = PackageBuilder(
+            manifest: try manifest(),
+            path: AbsolutePath(location.path),
+            diagnostics: DiagnosticsEngine(),
+            isRootPackage: true)
+        return try builder.construct()
     }
 
     /// Returns the package workspace.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
-        return Workspace(
-            dataPath: AbsolutePath(dataDirectory.path),
-            editablesPath: AbsolutePath(editablesDirectory.path),
-            pinsFile: AbsolutePath(pinsFile.path),
-            manifestLoader: try SwiftCompiler.manifestLoader(),
-            delegate: SwiftCompiler.workspaceDelegate()
-        )
+        return Workspace.create(
+            forRootPackage: AbsolutePath(location.path),
+            manifestLoader: try SwiftCompiler.manifestLoader())
     }
 
     /// Returns the package graph.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageGraph() throws -> PackageGraph {
-        return try packageWorkspace().loadPackageGraph(root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]), diagnostics: DiagnosticsEngine())
+        return try packageWorkspace().loadPackageGraph(
+            root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]),
+            diagnostics: DiagnosticsEngine())
     }
 
     /// Checks for uncommitted changes or additions.

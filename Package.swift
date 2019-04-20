@@ -128,6 +128,7 @@ let package = Package(
         /// Xcode‐related utilities for working with Swift packages.
         .target(name: "SDGXcode", dependencies: [
             "SDGSwift",
+            "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -164,7 +165,7 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
-        // #workaround(This is duplicated from the Swift project itself, since stable releases do not expose the API.)
+        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
         .target(name: "SDGCMarkShims", dependencies: [
             ], path: "Sources/Shims/SDGCMarkShims"),
 

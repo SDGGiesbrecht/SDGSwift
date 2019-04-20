@@ -21,17 +21,13 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
-    private static func manifestResources() throws -> ManifestResources {
-        return ManifestResources(
-            swiftCompiler: try _compilerLocation(),
-            librariesDirectory: try _packageManagerLibraries())
+    private static func manifestResourceProvider() throws -> ManifestResourceProvider {
+        return UserManifestResources(
+            swiftCompiler: AbsolutePath(try _compilerLocation().path),
+            libDir: AbsolutePath(try _packageManagerLibraries().path))
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
-        return ManifestLoader(manifestResources: try manifestResources())
-    }
-
-    internal static func workspaceDelegate() -> WorkspaceDelegate {
-        return DefaultWorkspaceDelegate()
+        return ManifestLoader(manifestResources: try manifestResourceProvider())
     }
 }
