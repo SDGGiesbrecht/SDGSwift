@@ -21,9 +21,11 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
+    private static func hostDestination() throws -> Destination {
+        return try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
+    }
     private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        let destination = try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
-        return try UserToolchain(destination: destination).manifestResources
+        return try UserToolchain(destination: hostDestination()).manifestResources
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
