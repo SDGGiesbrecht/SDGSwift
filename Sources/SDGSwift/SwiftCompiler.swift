@@ -29,27 +29,27 @@ public enum SwiftCompiler {
 
     private static func standardLocations(for version: Version) -> [URL] {
         return [
-            // Swift
-            "/usr/bin/swift",
-            // Xcode
+            "/usr/bin/swift"
+            ].map({ URL(fileURLWithPath: $0) })
+    }
+    private static func xcodeLocations(for version: Version) -> [URL] {
+        return [
             "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
             "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
             NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift"
-            ].map({ URL(fileURLWithPath: $0) })
+        ].map({ URL(fileURLWithPath: $0) })
     }
-    private static func versionManagerLocations(for version: Version) -> [URL] {
+    private static func swiftVersionManagerLocations(for version: Version) -> [URL] {
         return [
-            // (This must come first, since it often means a later entry has been only partially replaced.)
-            // Swift Version Manager
             NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
             ].map({ URL(fileURLWithPath: $0) })
     }
-
     internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
+        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.)
         if searchOrder {
-            return versionManagerLocations(for: version) + standardLocations(for: version)
+            return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
         } else {
-            return standardLocations(for: version) + versionManagerLocations(for: version)
+            return standardLocations(for: version) + xcodeLocations(for: version) + swiftVersionManagerLocations(for: version)
         }
     }
     internal static func searchLocations(searchOrder: Bool) -> [URL] {
