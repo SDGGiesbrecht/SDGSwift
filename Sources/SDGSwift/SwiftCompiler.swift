@@ -45,7 +45,7 @@ public enum SwiftCompiler {
             ].map({ URL(fileURLWithPath: $0) })
     }
     internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
-        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.)
+        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.
         if searchOrder {
             return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
         } else {
