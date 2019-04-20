@@ -50,7 +50,6 @@ public struct PackageRepository : TransparentWrapper {
     /// The location of the repository.
     public let location: URL
 
-    // #workaround(Can the product’s directory be moved upstream?)
     private static let releaseProductsDirectory = ".build/release"
 
     /// The directory to which release products are built.

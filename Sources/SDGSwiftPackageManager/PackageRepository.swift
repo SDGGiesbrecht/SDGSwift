@@ -54,7 +54,6 @@ extension PackageRepository {
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func manifest() throws -> Manifest {
-        // #workaround(Can manifest loading complexity be moved upstream?)
         let loader = try SwiftCompiler.manifestLoader()
         return try loader.load(
             package: AbsolutePath(location.path),
@@ -66,7 +65,6 @@ extension PackageRepository {
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func package() throws -> PackageModel.Package {
-        // #workaround(Can package loading complexity be moved upstream?)
         let builder = PackageBuilder(
             manifest: try manifest(),
             path: AbsolutePath(location.path),
@@ -79,7 +77,6 @@ extension PackageRepository {
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageWorkspace() throws -> Workspace {
-        // #workaround(Can workspace loading complexity be moved upstream?)
         return Workspace.create(
             forRootPackage: AbsolutePath(location.path),
             manifestLoader: try SwiftCompiler.manifestLoader())
@@ -89,7 +86,6 @@ extension PackageRepository {
     ///
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageGraph() throws -> PackageGraph {
-        // #workaround(Can graph loading complexity be moved upstream?)
         return try packageWorkspace().loadPackageGraph(
             root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]),
             diagnostics: DiagnosticsEngine())
