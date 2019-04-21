@@ -156,7 +156,7 @@ public struct Version : Codable, Comparable, Equatable, ExpressibleByStringLiter
             preconditionFailure(UserFacing<StrictString, APILocalization>({ localization in
                 switch localization {
                 case .englishCanada: // @exempt(from: tests)
-                    return StrictString("“\(stringLiteral)” is not a version number.")
+                    return "“\(stringLiteral)” is not a version number."
                 }
             }))
         }

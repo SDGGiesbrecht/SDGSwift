@@ -41,7 +41,7 @@ extension Git {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
-                            StrictString("No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))"),
+                            "No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
                             "Make sure it is installed at one of the following paths or register it in $PATH so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
                     }
