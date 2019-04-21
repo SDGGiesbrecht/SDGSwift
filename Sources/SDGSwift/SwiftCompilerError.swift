@@ -35,7 +35,7 @@ extension SwiftCompiler {
             switch self {
             case .unavailable:
                 var details: String = "\n"
-                details += SwiftCompiler.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+                details += SwiftCompiler.searchLocations(searchOrder: false).map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

@@ -29,38 +29,35 @@ public enum SwiftCompiler {
 
     private static func standardLocations(for version: Version) -> [URL] {
         return [
-            // Swift
-            "/usr/bin/swift",
-            // Xcode
+            "/usr/bin/swift"
+            ].map({ URL(fileURLWithPath: $0) })
+    }
+    private static func xcodeLocations(for version: Version) -> [URL] {
+        return [
             "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
             "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            // Swift Version Manager
-            NSHomeDirectory() + "/.swiftenv/shims/swift",
+            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift"
+        ].map({ URL(fileURLWithPath: $0) })
+    }
+    private static func swiftVersionManagerLocations(for version: Version) -> [URL] {
+        return [
             NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
             ].map({ URL(fileURLWithPath: $0) })
     }
-
-    internal static let standardLocations: [URL] = {
-        var locations = SwiftCompiler.standardLocations(for: versions.lowerBound)
-        for location in SwiftCompiler.standardLocations(for: versions.upperBound) where ¬locations.contains(location) {
+    internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
+        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.
+        if searchOrder {
+            return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
+        } else {
+            return standardLocations(for: version) + xcodeLocations(for: version) + swiftVersionManagerLocations(for: version)
+        }
+    }
+    internal static func searchLocations(searchOrder: Bool) -> [URL] {
+        var locations = SwiftCompiler.searchLocations(for: versions.lowerBound, searchOrder: searchOrder)
+        for location in SwiftCompiler.searchLocations(for: versions.upperBound, searchOrder: searchOrder) where ¬locations.contains(location) {
             locations.append(location)
         }
         return locations
-    }()
-
-    private static func compilerLocation(for swift: URL) -> URL {
-        return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
-    }
-    public static func _compilerLocation() throws -> URL {
-        return compilerLocation(for: try location())
-    }
-
-    private static func packageManagerLibraries(for swift: URL) -> URL {
-        return swift.deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("lib/swift/pm")
-    }
-    public static func _packageManagerLibraries() throws -> URL {
-        return packageManagerLibraries(for: try location())
     }
 
     private static var located: ExternalProcess?
@@ -68,11 +65,6 @@ public enum SwiftCompiler {
         return try cached(in: &located) {
 
             func validate(_ swift: ExternalProcess) -> Bool {
-                // Make sure necessary relative libraries are available. (Otherwise it is a shim of some sort.)
-                if ¬FileManager.default.fileExists(atPath: compilerLocation(for: swift.executable).path)
-                    ∨ ¬FileManager.default.fileExists(atPath: packageManagerLibraries(for: swift.executable).path) {
-                    return false
-                }
 
                 // Make sure version matches.
                 if let output = try? swift.run(["\u{2D}\u{2D}version"]),
@@ -85,7 +77,7 @@ public enum SwiftCompiler {
                 }
             }
 
-            if let found = ExternalProcess(searching: standardLocations, commandName: "swift", validate: validate) {
+            if let found = ExternalProcess(searching: searchLocations(searchOrder: true), commandName: "swift", validate: validate) {
                 return found
             } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
                 // @exempt(from: tests)
