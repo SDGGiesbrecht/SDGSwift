@@ -87,7 +87,7 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`.
     public func packageGraph() throws -> PackageGraph {
         return try packageWorkspace().loadPackageGraph(
-            root: PackageGraphRootInput(packages: [AbsolutePath(location.path)]),
+            root: AbsolutePath(location.path),
             diagnostics: DiagnosticsEngine())
     }
 
