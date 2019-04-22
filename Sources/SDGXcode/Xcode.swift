@@ -327,7 +327,7 @@ public enum Xcode {
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Parsing report for “\(fileURL.path(relativeTo: package.location))”...")
+                        return "Parsing report for “\(fileURL.path(relativeTo: package.location))”..."
                     }
                 }).resolved()))
 
