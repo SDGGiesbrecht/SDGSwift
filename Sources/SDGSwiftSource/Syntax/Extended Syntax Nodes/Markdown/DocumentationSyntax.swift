@@ -16,19 +16,14 @@ import SDGControlFlow
 import SDGMathematics
 import SDGCMarkShims
 
-private var documentationCache: [String: DocumentationSyntax] = [:]
-
 /// The content of a documentation comment.
 public class DocumentationSyntax : MarkdownSyntax {
 
+    private static let documentationCache = ParsedDocumentationCache()
     internal static func parse(source: String) -> DocumentationSyntax {
-        let result = cached(in: &documentationCache[source]) {
+        return cached(in: &documentationCache[source]) {
             return DocumentationSyntax(source: source)
         }
-        if documentationCache.underestimatedCount ≥ 100 {
-            documentationCache = [:] // @exempt(from: tests)
-        }
-        return result
     }
 
     // MARK: - Initialization
