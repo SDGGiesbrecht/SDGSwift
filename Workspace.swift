@@ -53,3 +53,7 @@ configuration._validateSDGStandards()
 configuration.repository.ignoredPaths.insert("Sources/Shims")
 configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
+
+// #workaround(workspace version 0.19.0, Takes too long.)
+configuration.documentation.api.generate = false
+configuration.documentation.api.enforceCoverage = false
