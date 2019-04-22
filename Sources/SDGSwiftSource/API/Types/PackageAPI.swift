@@ -30,11 +30,12 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
     ///
     /// - Parameters:
     ///     - package: The package, already loaded by the `SwiftPM` package.
+    ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
     ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
     ///     - progressReport: A line of text reporting a progress milestone.
     ///
     /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
-    public convenience init(package: PackageGraph, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public convenience init(package: PackageGraph, ignoredDependencies: Set<String> = [], reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let root = package.rootPackages.first!.underlyingPackage
         try self.init(package: root, reportProgress: reportProgress)
@@ -46,7 +47,7 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
             ("Foundation", Resources.CoreLibraries.foundation),
             ("Dispatch", Resources.CoreLibraries.dispatch),
             ("XCTest", Resources.CoreLibraries.xctest)
-            ] {
+            ] where name ∉ ignoredDependencies {
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -64,7 +65,7 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
                 return ¬root.targets.contains(module.underlyingTarget)
             }
         })
-        for module in declaredDependencies.sorted(by: { $0.name < $1.name }) {
+        for module in declaredDependencies.sorted(by: { $0.name < $1.name }) where module.name ∉ ignoredDependencies {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
