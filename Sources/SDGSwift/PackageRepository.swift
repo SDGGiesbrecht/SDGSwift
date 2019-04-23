@@ -75,12 +75,13 @@ public struct PackageRepository : TransparentWrapper {
     /// Tests the package.
     ///
     /// - Parameters:
+    ///     - trackingCodeCoverage: Optional. Whether or not to enable code coverage tracking.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
-        return try SwiftCompiler.test(self, reportProgress: reportProgress)
+    @discardableResult public func test(trackingCodeCoverage: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
+        return try SwiftCompiler.test(self, trackingCodeCoverage: trackingCodeCoverage, reportProgress: reportProgress)
     }
 
     /// Resolves the package, fetching its dependencies.
