@@ -34,8 +34,24 @@ extension SwiftCompiler {
 
     // MARK: - Test Coverage
 
+    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL {
+        return try package.packageWorkspace().dataPath.asURL
+    }
+
+    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
+        return try package.manifest().name
+    }
+
+    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
+        let directory = try codeCoverageDirectory(for: package)
+        #warning("Incorrect")
+        let fileName = try codeCoverageDataFileName(for: package).appending(".json")
+        return directory.appendingPathComponent(fileName)
+    }
+
     public static func _codeCoverageReport(for package: PackageRepository, ignoreCoveredRegions: Bool, reportProgress: (_ progressReport: String) -> Void) throws -> [URL] {
-        return try package.directoriesIgnoredForTestCoverage()
+        let ignoredDirectories = try package.directoriesIgnoredForTestCoverage()
+        return ignoredDirectories
     }
 
     /// Returns the code coverage report for the package.
