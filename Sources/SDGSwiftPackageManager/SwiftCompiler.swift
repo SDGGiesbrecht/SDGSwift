@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGSwift
 
 import PackageLoading
@@ -68,7 +70,14 @@ extension SwiftCompiler {
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
-        let coverageData = try codeCoverageDataFile(for: package)
+        let coverageDataFile = try codeCoverageDataFile(for: package)
+        if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
+            return nil
+        }
+
+        let coverageData = try Data(from: coverageDataFile)
+        let json = try JSONSerialization.jsonObject(with: coverageData)
+        print(json)
 
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
 
