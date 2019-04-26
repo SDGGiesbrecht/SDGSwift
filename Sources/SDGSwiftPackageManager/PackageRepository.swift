@@ -16,6 +16,7 @@ import Basic
 import PackageModel
 import PackageLoading
 import PackageGraph
+import Build
 import Workspace
 
 import SDGSwift
@@ -80,6 +81,14 @@ extension PackageRepository {
         return Workspace.create(
             forRootPackage: AbsolutePath(location.path),
             manifestLoader: try SwiftCompiler.manifestLoader())
+    }
+
+    internal func hostBuildParameters() throws -> BuildParameters {
+        return BuildParameters(
+            dataPath: try packageWorkspace().dataPath,
+            configuration: .debug,
+            toolchain: try SwiftCompiler.hostToolchain(),
+            flags: BuildFlags())
     }
 
     /// Returns the package graph.
