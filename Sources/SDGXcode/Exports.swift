@@ -13,3 +13,7 @@
  */
 
 @_exported import struct SDGSwift.PackageRepository
+
+@_exported import struct SDGSwiftPackageManager.TestCoverageReport
+@_exported import struct SDGSwiftPackageManager.FileTestCoverage
+@_exported import struct SDGSwiftPackageManager.CoverageRegion

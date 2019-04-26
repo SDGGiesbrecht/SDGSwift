@@ -275,8 +275,6 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
-    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}", "(", ")"]
-
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:
@@ -291,9 +289,7 @@ public enum Xcode {
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
-        let workspace = try package.packageWorkspace()
-        let dependencies = workspace.dataPath.asURL
-        let editableDependencies = workspace.editablesPath.asURL
+        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
 
         let coverageDirectory = try self.coverageDirectory(for: package, on: sdk)
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
@@ -312,7 +308,7 @@ public enum Xcode {
                     // The report is unlikely to be readable.
                     return false
                 }
-                if file.is(in: dependencies) ∨ file.is(in: editableDependencies) {
+                if ignoredDirectories.contains(where: { file.is(in: $0) }) {
                     // @exempt(from: tests)
                     // Belongs to a dependency.
                     return false
@@ -350,21 +346,6 @@ public enum Xcode {
                     }
                     return nil
                 }
-                func toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
-                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
-                    var utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
-                    var result: String.ScalarView.Index? = nil
-                    while result == nil {
-                        result = utf8Index.samePosition(in: source.scalars)
-                        if result == nil {
-                            // @exempt(from: tests)
-                            // Xcode sometimes erratically reports invalid offsets.
-                            // Rounding is better than trapping.
-                            utf8Index = source.utf8.index(before: utf8Index)
-                        }
-                    }
-                    return result!
-                }
 
                 var regions: [CoverageRegion] = []
                 while ¬report.isEmpty {
@@ -396,7 +377,7 @@ public enum Xcode {
                             // @exempt(from: tests)
                             throw Xcode.Error.corruptTestCoverageReport
                     }
-                    regions.append(CoverageRegion(region: toIndex(line: lineNumber) ..< toIndex(line: lineNumber + 1), count: count))
+                    regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
@@ -417,54 +398,15 @@ public enum Xcode {
                                     // @exempt(from: tests)
                                     throw Xcode.Error.corruptTestCoverageReport
                             }
-                            regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
+                            regions.append(CoverageRegion(region: source._toIndex(line: lineNumber, column: start) ..< source._toIndex(line: lineNumber, column: start + length), count: count))
                         }
                     }
                 }
 
-                // Combine to one coherent list.
-                regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
-                    if ignoreCoveredRegions ∧ next.count ≠ 0 {
-                        return // Drop
-                    }
-
-                    guard var last = regions.last else {
-                        // First one; just append.
-                        regions.append(next)
-                        return
-                    }
-                    if last.region.upperBound > next.region.lowerBound { // @exempt(from: tests)
-                        // @exempt(from: tests) False coverage result in Xocde 9.3.
-
-                        // Fix overlap.
-                        regions.removeLast()
-                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
-                        regions.append(replacement)
-                    }
-
-                    last = regions.last!
-                    if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {
-                        // Join contiguous regions.
-                        regions.removeLast()
-                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
-                        regions.append(replacement)
-                    } else {
-                        // Unrelated to anything else, so just append.
-                        regions.append(next)
-                    }
-                }
-
-                // Remove false positives
-                regions = regions.filter { region in
-
-                    if ¬source.scalars[region.region].contains(where: { $0 ∉ Xcode.charactersIrrelevantToCoverage }) {
-                        // Region has no effect.
-                        return false
-                    }
-
-                    // Otherwise keep.
-                    return true
-                }
+                CoverageRegion._normalize(
+                    regions: &regions,
+                    source: source,
+                    ignoreCoveredRegions: ignoreCoveredRegions)
 
                 files.append(FileTestCoverage(file: fileURL, regions: regions))
             }

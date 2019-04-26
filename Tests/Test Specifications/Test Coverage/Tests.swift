@@ -15,7 +15,7 @@
 import XCTest
 @testable import Mock
 
-class CoverageTests : XCTestCase {
+final class MockTests : XCTestCase {
 
     func testCoverage() {
         _ = covered()
@@ -29,4 +29,8 @@ class CoverageTests : XCTestCase {
 
         _ = withSupplementalPlaneCharacters()
     }
+
+    static var allTests = [
+        ("testCoverage", testCoverage),
+    ]
 }

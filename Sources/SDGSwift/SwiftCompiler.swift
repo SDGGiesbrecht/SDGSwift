@@ -143,17 +143,15 @@ public enum SwiftCompiler {
     ///
     /// - Parameters:
     ///     - package: The package to test.
-    ///     - trackingCodeCoverage: Optional. Whether or not to enable code coverage tracking.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, trackingCodeCoverage: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
-        var arguments = ["test"]
-        if trackingCodeCoverage {
-            arguments += ["\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"]
-        }
-        return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String { // @exempt(from: tests) Xcode hijacks this.
+        return try runCustomSubcommand([
+            "test",
+            "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"
+            ], in: package.location, reportProgress: reportProgress)
     }
 
     /// Resolves the package, fetching its dependencies.

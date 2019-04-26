@@ -16,6 +16,7 @@ import Basic
 import PackageModel
 import PackageLoading
 import PackageGraph
+import Build
 import Workspace
 
 import SDGSwift
@@ -82,6 +83,14 @@ extension PackageRepository {
             manifestLoader: try SwiftCompiler.manifestLoader())
     }
 
+    internal func hostBuildParameters() throws -> BuildParameters { // @exempt(from: tests) Unreachable within Xcode.
+        return BuildParameters(
+            dataPath: try packageWorkspace().dataPath,
+            configuration: .debug,
+            toolchain: try SwiftCompiler.hostToolchain(),
+            flags: BuildFlags())
+    }
+
     /// Returns the package graph.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
@@ -101,6 +110,37 @@ extension PackageRepository {
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public func uncommittedChanges(excluding exclusionPatterns: [String] = []) throws -> String {
         return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
+    }
+
+    /// Returns the list of files ignored by source control.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func ignoredFiles() throws -> [URL] {
+        return try Git.ignoredFiles(in: self)
+    }
+
+    public func _directoriesIgnoredForTestCoverage() throws -> [URL] {
+        let workspace = try packageWorkspace()
+        return [
+            workspace.dataPath.asURL,
+            workspace.editablesPath.asURL
+        ]
+    }
+
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Throws: A `SwiftCompiler.Error`, a package manager error or a `Foundation` error.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public func codeCoverageReport(
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? { // @exempt(from: tests) Unreachable within Xcode.
+        return try SwiftCompiler.codeCoverageReport(for: self, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
     // MARK: - Workflow
@@ -123,12 +163,5 @@ extension PackageRepository {
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public func tag(version releaseVersion: SDGSwift.Version) throws {
         try Git.tag(version: releaseVersion, in: self)
-    }
-
-    /// Returns the list of files ignored by source control.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func ignoredFiles() throws -> [URL] {
-        return try Git.ignoredFiles(in: self)
     }
 }

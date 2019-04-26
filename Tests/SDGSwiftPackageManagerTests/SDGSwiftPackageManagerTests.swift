@@ -13,6 +13,7 @@
  */
 
 import SDGPersistence
+import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftLocalizations
@@ -53,5 +54,42 @@ class SDGSwiftPackageManagerTests : TestCase {
 
     func testPackageGraphLoading() {
         XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
+    }
+
+    func testTestCoverage() {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            // When run from within Xcode, Xcode interferes with the child test process.
+
+            withDefaultMockRepository { mock in
+                let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
+                let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
+                let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
+                let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
+                try? FileManager.default.removeItem(at: sourceDestination)
+                try FileManager.default.copy(
+                    sourceURL,
+                    to: sourceDestination)
+                try? FileManager.default.removeItem(at: testDestination)
+                try FileManager.default.copy(
+                    coverageFiles.appendingPathComponent("Tests.swift"),
+                    to: testDestination)
+
+                try mock.test()
+                guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true) else {
+                    XCTFail("No test coverage report found.")
+                    return
+                }
+                guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
+                    XCTFail("File missing from coverage report.")
+                    return
+                }
+                var specification = try String(from: sourceURL)
+                for range in file.regions.reversed() {
+                    specification.insert("!", at: range.region.upperBound)
+                    specification.insert("¡", at: range.region.lowerBound)
+                }
+                compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
+            }
+        }
     }
 }
