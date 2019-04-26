@@ -291,9 +291,7 @@ public enum Xcode {
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
-        let workspace = try package.packageWorkspace()
-        let dependencies = workspace.dataPath.asURL
-        let editableDependencies = workspace.editablesPath.asURL
+        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
 
         let coverageDirectory = try self.coverageDirectory(for: package, on: sdk)
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
@@ -312,7 +310,7 @@ public enum Xcode {
                     // The report is unlikely to be readable.
                     return false
                 }
-                if file.is(in: dependencies) ∨ file.is(in: editableDependencies) {
+                if ignoredDirectories.contains(where: { file.is(in: $0) }) {
                     // @exempt(from: tests)
                     // Belongs to a dependency.
                     return false
