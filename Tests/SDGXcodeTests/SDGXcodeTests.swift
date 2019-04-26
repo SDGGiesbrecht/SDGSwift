@@ -139,11 +139,18 @@ class SDGXcodeTests : TestCase {
         }
 
         withDefaultMockRepository { mock in
-            let source = try String(file: Resources.source, origin: nil)
-            try source.save(to: mock.location.appendingPathComponent("Sources/Mock/Mock.swift"))
-
-            let tests = try String(file: Resources.tests, origin: nil)
-            try tests.save(to: mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift"))
+            let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
+            let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
+            let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
+            let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
+            try? FileManager.default.removeItem(at: sourceDestination)
+            try FileManager.default.copy(
+                sourceURL,
+                to: sourceDestination)
+            try? FileManager.default.removeItem(at: testDestination)
+            try FileManager.default.copy(
+                coverageFiles.appendingPathComponent("Tests.swift"),
+                to: testDestination)
 
             try mock.generateXcodeProject()
             try mock.test(on: .macOS)
@@ -155,7 +162,7 @@ class SDGXcodeTests : TestCase {
                 XCTFail("File missing from coverage report.")
                 return
             }
-            var specification = source
+            var specification = try String(from: sourceURL)
             for range in file.regions.reversed() {
                 specification.insert("!", at: range.region.upperBound)
                 specification.insert("¡", at: range.region.lowerBound)
