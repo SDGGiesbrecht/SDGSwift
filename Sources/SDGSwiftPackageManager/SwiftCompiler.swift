@@ -31,4 +31,32 @@ extension SwiftCompiler {
     internal static func manifestLoader() throws -> ManifestLoader {
         return ManifestLoader(manifestResources: try manifestResourceProvider())
     }
+
+    // MARK: - Test Coverage
+
+    public static func _codeCoverageReport(for package: PackageRepository, ignoreCoveredRegions: Bool, reportProgress: (_ progressReport: String) -> Void) throws -> [URL] {
+        return try package.directoriesIgnoredForTestCoverage()
+    }
+
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public static func codeCoverageReport(
+        for package: PackageRepository,
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> [URL] {
+        return try _codeCoverageReport(
+            for: package,
+            ignoreCoveredRegions: ignoreCoveredRegions,
+            reportProgress: reportProgress
+        )
+    }
 }
