@@ -275,8 +275,6 @@ public enum Xcode {
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
 
-    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}", "(", ")"]
-
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:
@@ -420,49 +418,10 @@ public enum Xcode {
                     }
                 }
 
-                // Combine to one coherent list.
-                regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
-                    if ignoreCoveredRegions ∧ next.count ≠ 0 {
-                        return // Drop
-                    }
-
-                    guard var last = regions.last else {
-                        // First one; just append.
-                        regions.append(next)
-                        return
-                    }
-                    if last.region.upperBound > next.region.lowerBound { // @exempt(from: tests)
-                        // @exempt(from: tests) False coverage result in Xocde 9.3.
-
-                        // Fix overlap.
-                        regions.removeLast()
-                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
-                        regions.append(replacement)
-                    }
-
-                    last = regions.last!
-                    if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {
-                        // Join contiguous regions.
-                        regions.removeLast()
-                        let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
-                        regions.append(replacement)
-                    } else {
-                        // Unrelated to anything else, so just append.
-                        regions.append(next)
-                    }
-                }
-
-                // Remove false positives
-                regions = regions.filter { region in
-
-                    if ¬source.scalars[region.region].contains(where: { $0 ∉ Xcode.charactersIrrelevantToCoverage }) {
-                        // Region has no effect.
-                        return false
-                    }
-
-                    // Otherwise keep.
-                    return true
-                }
+                CoverageRegion._normalize(
+                    regions: &regions,
+                    source: source,
+                    ignoreCoveredRegions: ignoreCoveredRegions)
 
                 files.append(FileTestCoverage(file: fileURL, regions: regions))
             }

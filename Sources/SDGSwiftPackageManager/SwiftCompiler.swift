@@ -107,10 +107,9 @@ extension SwiftCompiler {
                                 }
                             }).resolved()))
 
-                            var fileReport: [CoverageRegion] = []
-                            defer { fileReports.append(FileTestCoverage(file: url, regions: fileReport)) }
+                            let source = try String(from: url)
+                            var regions: [CoverageRegion] = []
                             try autoreleasepool {
-                                let source = try String(from: url)
                                 let sourceLines = source.lines
                                 func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
                                     #warning("Unify and put in a better place.")
@@ -150,13 +149,19 @@ extension SwiftCompiler {
                                                 end = source.scalars.endIndex
                                             }
 
-                                            fileReport.append(CoverageRegion(region: start ..< end, count: count))
+                                            regions.append(CoverageRegion(region: start ..< end, count: count))
                                             print(url.path)
                                             print(segmentData)
                                         }
                                     }
                                 }
                             }
+
+                            CoverageRegion._normalize(
+                                regions: &regions,
+                                source: source,
+                                ignoreCoveredRegions: ignoreCoveredRegions)
+                            fileReports.append(FileTestCoverage(file: url, regions: regions))
                         }
                     }
                 }
