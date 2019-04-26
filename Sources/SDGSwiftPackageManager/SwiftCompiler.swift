@@ -49,11 +49,6 @@ extension SwiftCompiler {
         return directory.appendingPathComponent(fileName)
     }
 
-    public static func _codeCoverageReport(for package: PackageRepository, ignoreCoveredRegions: Bool, reportProgress: (_ progressReport: String) -> Void) throws -> [URL] {
-        let ignoredDirectories = try package.directoriesIgnoredForTestCoverage()
-        return ignoredDirectories
-    }
-
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:
@@ -68,11 +63,8 @@ extension SwiftCompiler {
     public static func codeCoverageReport(
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> [URL] {
-        return try _codeCoverageReport(
-            for: package,
-            ignoreCoveredRegions: ignoreCoveredRegions,
-            reportProgress: reportProgress
-        )
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        return TestCoverageReport(files: [])
     }
 }

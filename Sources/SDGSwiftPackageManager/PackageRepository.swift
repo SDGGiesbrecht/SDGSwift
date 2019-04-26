@@ -110,7 +110,7 @@ extension PackageRepository {
         return try Git.ignoredFiles(in: self)
     }
 
-    internal func directoriesIgnoredForTestCoverage() throws -> [URL] {
+    public func _directoriesIgnoredForTestCoverage() throws -> [URL] {
         let workspace = try packageWorkspace()
         return [
             workspace.dataPath.asURL,

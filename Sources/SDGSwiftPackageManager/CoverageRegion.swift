@@ -15,6 +15,18 @@
 /// A region with the same contiguous coverage status.
 public struct CoverageRegion {
 
+    // MARK: - Initialization
+
+    /// Creates a coverage region.
+    ///
+    /// - Parameters:
+    ///     - region: The region of the source code.
+    ///     - count: The execution count.
+    public init(region: Range<String.ScalarView.Index>, count: Int) {
+        self.region = region
+        self.count = count
+    }
+
     // MARK: - Properties
 
     /// The region.

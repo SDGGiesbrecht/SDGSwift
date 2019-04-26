@@ -291,10 +291,7 @@ public enum Xcode {
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
-        let ignoredDirectories: [URL] = try SwiftCompiler.codeCoverageReport(
-            for: package,
-            ignoreCoveredRegions: ignoreCoveredRegions,
-            reportProgress: reportProgress)
+        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
 
         let coverageDirectory = try self.coverageDirectory(for: package, on: sdk)
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
