@@ -152,8 +152,6 @@ extension SwiftCompiler {
                                             }
 
                                             regions.append(CoverageRegion(region: start ..< end, count: count))
-                                            print(url.path)
-                                            print(segmentData)
                                         }
                                     }
                                 }
