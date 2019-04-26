@@ -100,6 +100,9 @@ let package = Package(
         .target(name: "SDGSwiftPackageManager", dependencies: [
             "SDGSwift",
             "SDGSwiftLocalizations",
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
@@ -199,8 +202,6 @@ let package = Package(
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             "SDGSwiftTestUtilities",
-            .product(name: "SDGLogic", package: "SDGCornerstone"),
-            .product(name: "SDGMathematics", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),

@@ -16,7 +16,9 @@ import Foundation
 
 import SDGLogic
 import SDGMathematics
+import SDGLocalization
 
+import SDGSwiftLocalizations
 import SDGSwift
 
 import PackageLoading
@@ -97,6 +99,13 @@ extension SwiftCompiler {
 
                         if ¬ignoredDirectories.contains(where: { url.is(in: $0) })
                             ∧ url.pathExtension == "swift" {
+
+                            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                switch localization {
+                                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                    return "Parsing report for “\(url.path(relativeTo: package.location))”..."
+                                }
+                            }).resolved()))
 
                             var fileReport: [CoverageRegion] = []
                             defer { fileReports.append(FileTestCoverage(file: url, regions: fileReport)) }
