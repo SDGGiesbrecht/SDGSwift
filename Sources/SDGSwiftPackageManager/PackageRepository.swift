@@ -118,6 +118,20 @@ extension PackageRepository {
         ]
     }
 
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Throws: A `SwiftCompiler.Error`, a package manager error or a `Foundation` error.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public func codeCoverageReport(ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+        return try SwiftCompiler.codeCoverageReport(for: self, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
+    }
+
     // MARK: - Workflow
 
     /// Commits existing changes.
