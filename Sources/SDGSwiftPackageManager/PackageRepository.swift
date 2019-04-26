@@ -103,6 +103,13 @@ extension PackageRepository {
         return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
     }
 
+    /// Returns the list of files ignored by source control.
+    ///
+    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
+    public func ignoredFiles() throws -> [URL] {
+        return try Git.ignoredFiles(in: self)
+    }
+
     // MARK: - Workflow
 
     /// Commits existing changes.
@@ -123,12 +130,5 @@ extension PackageRepository {
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public func tag(version releaseVersion: SDGSwift.Version) throws {
         try Git.tag(version: releaseVersion, in: self)
-    }
-
-    /// Returns the list of files ignored by source control.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func ignoredFiles() throws -> [URL] {
-        return try Git.ignoredFiles(in: self)
     }
 }
