@@ -17,9 +17,9 @@ func covered() -> Bool {
 }
 
 ¡func notCovered() -> Bool {
-    return true
+    return true!
 }
-!
+
 var `switch` = false
 func branching() -> Bool {
     if `switch` {
@@ -32,8 +32,8 @@ func branching() -> Bool {
 var 😀 = false
 func withSupplementalPlaneCharacters() -> Bool {
     if 😀 {
-¡        return true
-    }!
+        ¡return true!
+    }
     return false
 }
 

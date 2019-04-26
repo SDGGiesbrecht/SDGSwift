@@ -67,6 +67,21 @@ public struct CoverageRegion {
             // Otherwise keep.
             return true
         }
+
+        // Trim irrelevant characters.
+        regions = regions.map { region in
+            var start = region.region.lowerBound
+            while source.scalars[start] ∈ charactersIrrelevantToCoverage {
+                start = source.scalars.index(after: start)
+            }
+            var end = region.region.upperBound
+            var before = source.index(before: end)
+            while source.scalars[before]  ∈ charactersIrrelevantToCoverage {
+                end = before
+                before = source.index(before: end)
+            }
+            return CoverageRegion(region: start ..< end, count: region.count)
+        }
     }
 
     // MARK: - Initialization
