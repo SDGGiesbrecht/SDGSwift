@@ -109,7 +109,7 @@ extension SwiftCompiler {
 
                             let source = try String(from: url)
                             var regions: [CoverageRegion] = []
-                            try autoreleasepool {
+                            autoreleasepool {
                                 let sourceLines = source.lines
                                 func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
                                     #warning("Unify and put in a better place.")
@@ -134,7 +134,9 @@ extension SwiftCompiler {
                                             segmentData.count ≥ 5,
                                             let line = segmentData[0] as? Int,
                                             let column = segmentData[1] as? Int,
-                                            let count = segmentData[2] as? Int {
+                                            let count = segmentData[2] as? Int,
+                                            let isExectuable = segmentData[3] as? Int,
+                                            isExectuable == 1 {
 
                                             let start = toIndex(line: line, column: column)
                                             let end: String.ScalarView.Index
@@ -150,6 +152,8 @@ extension SwiftCompiler {
                                             }
 
                                             regions.append(CoverageRegion(region: start ..< end, count: count))
+                                            print(url.path)
+                                            print(segmentData)
                                         }
                                     }
                                 }
