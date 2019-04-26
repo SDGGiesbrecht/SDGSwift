@@ -110,24 +110,6 @@ extension SwiftCompiler {
                             let source = try String(from: url)
                             var regions: [CoverageRegion] = []
                             autoreleasepool {
-                                let sourceLines = source.lines
-                                func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
-                                    #warning("Unify and put in a better place.")
-                                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
-                                    var utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
-                                    var result: String.ScalarView.Index? = nil
-                                    while result == nil {
-                                        result = utf8Index.samePosition(in: source.scalars)
-                                        if result == nil {
-                                            // @exempt(from: tests)
-                                            // Xcode sometimes erratically reports invalid offsets.
-                                            // Rounding is better than trapping.
-                                            utf8Index = source.utf8.index(before: utf8Index)
-                                        }
-                                    }
-                                    return result!
-                                }
-
                                 if let segments = fileDictionary["segments"] as? [Any] {
                                     for (index, segment) in segments.enumerated() {
                                         if let segmentData = segment as? [Any],
@@ -138,7 +120,7 @@ extension SwiftCompiler {
                                             let isExectuable = segmentData[3] as? Int,
                                             isExectuable == 1 {
 
-                                            let start = toIndex(line: line, column: column)
+                                            let start = source._toIndex(line: line, column: column)
                                             let end: String.ScalarView.Index
                                             let nextIndex = segments.index(after: index)
                                             if nextIndex ≠ segments.endIndex,
@@ -146,7 +128,7 @@ extension SwiftCompiler {
                                                 nextSegmentData.count ≥ 5,
                                                 let nextLine = nextSegmentData[0] as? Int,
                                                 let nextColumn = nextSegmentData[1] as? Int {
-                                                end = toIndex(line: nextLine, column: nextColumn)
+                                                end = source._toIndex(line: nextLine, column: nextColumn)
                                             } else {
                                                 end = source.scalars.endIndex
                                             }
