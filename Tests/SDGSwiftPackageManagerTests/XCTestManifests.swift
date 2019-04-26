@@ -11,6 +11,7 @@ extension SDGSwiftPackageManagerTests {
         ("testInitialization", testInitialization),
         ("testManifestLoading", testManifestLoading),
         ("testPackageGraphLoading", testPackageGraphLoading),
+        ("testTestCoverage", testTestCoverage),
     ]
 }
 
