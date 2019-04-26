@@ -24,8 +24,11 @@ extension SwiftCompiler {
     private static func hostDestination() throws -> Destination {
         return try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
     }
+    private static func hostToolchain() throws -> UserToolchain {
+        return try UserToolchain(destination: hostDestination())
+    }
     private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        return try UserToolchain(destination: hostDestination()).manifestResources
+        return try hostToolchain().manifestResources
     }
 
     internal static func manifestLoader() throws -> ManifestLoader {
@@ -44,7 +47,6 @@ extension SwiftCompiler {
 
     private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
         let directory = try codeCoverageDirectory(for: package)
-        #warning("Incorrect")
         let fileName = try codeCoverageDataFileName(for: package).appending(".json")
         return directory.appendingPathComponent(fileName)
     }
@@ -64,7 +66,12 @@ extension SwiftCompiler {
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+
+        let coverageData = try codeCoverageDataFile(for: package)
+        print(coverageData.path)
+
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
-        return TestCoverageReport(files: [])
+
+        return nil
     }
 }
