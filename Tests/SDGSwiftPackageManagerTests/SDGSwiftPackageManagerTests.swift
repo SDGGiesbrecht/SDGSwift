@@ -88,7 +88,7 @@ class SDGSwiftPackageManagerTests : TestCase {
                     specification.insert("!", at: range.region.upperBound)
                     specification.insert("¡", at: range.region.lowerBound)
                 }
-                compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
+                compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
             }
         }
     }
