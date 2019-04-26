@@ -16,8 +16,8 @@ func covered() -> Bool {
     return true
 }
 
-¡func notCovered() -> Bool {
-    return true!
+func notCovered() -> Bool {
+    ¡return true!
 }
 
 var `switch` = false
