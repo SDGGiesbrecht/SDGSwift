@@ -83,7 +83,7 @@ extension PackageRepository {
             manifestLoader: try SwiftCompiler.manifestLoader())
     }
 
-    internal func hostBuildParameters() throws -> BuildParameters {
+    internal func hostBuildParameters() throws -> BuildParameters { // @exempt(from: tests) Unreachable within Xcode.
         return BuildParameters(
             dataPath: try packageWorkspace().dataPath,
             configuration: .debug,
@@ -137,7 +137,9 @@ extension PackageRepository {
     /// - Throws: A `SwiftCompiler.Error`, a package manager error or a `Foundation` error.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public func codeCoverageReport(ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+    public func codeCoverageReport(
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? { // @exempt(from: tests) Unreachable within Xcode.
         return try SwiftCompiler.codeCoverageReport(for: self, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
