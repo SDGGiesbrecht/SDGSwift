@@ -346,21 +346,6 @@ public enum Xcode {
                     }
                     return nil
                 }
-                func toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
-                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
-                    var utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
-                    var result: String.ScalarView.Index? = nil
-                    while result == nil {
-                        result = utf8Index.samePosition(in: source.scalars)
-                        if result == nil {
-                            // @exempt(from: tests)
-                            // Xcode sometimes erratically reports invalid offsets.
-                            // Rounding is better than trapping.
-                            utf8Index = source.utf8.index(before: utf8Index)
-                        }
-                    }
-                    return result!
-                }
 
                 var regions: [CoverageRegion] = []
                 while ¬report.isEmpty {
@@ -392,7 +377,7 @@ public enum Xcode {
                             // @exempt(from: tests)
                             throw Xcode.Error.corruptTestCoverageReport
                     }
-                    regions.append(CoverageRegion(region: toIndex(line: lineNumber) ..< toIndex(line: lineNumber + 1), count: count))
+                    regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
@@ -413,7 +398,7 @@ public enum Xcode {
                                     // @exempt(from: tests)
                                     throw Xcode.Error.corruptTestCoverageReport
                             }
-                            regions.append(CoverageRegion(region: toIndex(line: lineNumber, column: start) ..< toIndex(line: lineNumber, column: start + length), count: count))
+                            regions.append(CoverageRegion(region: source._toIndex(line: lineNumber, column: start) ..< source._toIndex(line: lineNumber, column: start + length), count: count))
                         }
                     }
                 }
