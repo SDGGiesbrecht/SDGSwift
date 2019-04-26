@@ -46,7 +46,7 @@ extension SwiftCompiler {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
+    /// - Throws: Errors from the package manager.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(
