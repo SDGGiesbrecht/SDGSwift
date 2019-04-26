@@ -14,6 +14,9 @@
 
 import Foundation
 
+import SDGLogic
+import SDGMathematics
+
 import SDGSwift
 
 import PackageLoading
@@ -77,10 +80,80 @@ extension SwiftCompiler {
 
         let coverageData = try Data(from: coverageDataFile)
         let json = try JSONSerialization.jsonObject(with: coverageData)
-        print(json)
+        guard let coverageDataDictionary = json as? [String: Any],
+            let data = coverageDataDictionary["data"] as? [Any] else {
+            throw SwiftCompiler.Error.corruptTestCoverageReport
+        }
 
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        var fileReports: [FileTestCoverage] = []
+        for entry in data {
+            if let dictionary = entry as? [String: Any],
+                let files = dictionary["files"] as? [Any] {
+                for file in files {
+                    if let fileDictionary = file as? [String: Any],
+                        let fileName = fileDictionary["filename"] as? String {
+                        let url = URL(fileURLWithPath: fileName)
 
-        return nil
+                        if ¬ignoredDirectories.contains(where: { url.is(in: $0) })
+                            ∧ url.pathExtension == "swift" {
+
+                            var fileReport: [CoverageRegion] = []
+                            defer { fileReports.append(FileTestCoverage(file: url, regions: fileReport)) }
+                            try autoreleasepool {
+                                let source = try String(from: url)
+                                let sourceLines = source.lines
+                                func toIndex(line: Int, column: Int) -> String.ScalarView.Index {
+                                    #warning("Unify and put in a better place.")
+                                    let lineInUTF8: String.UTF8View.Index = sourceLines.index(sourceLines.startIndex, offsetBy: line − 1).samePosition(in: source.scalars).samePosition(in: source.utf8)!
+                                    var utf8Index: String.UTF8View.Index = source.utf8.index(lineInUTF8, offsetBy: column − 1)
+                                    var result: String.ScalarView.Index? = nil
+                                    while result == nil {
+                                        result = utf8Index.samePosition(in: source.scalars)
+                                        if result == nil {
+                                            // @exempt(from: tests)
+                                            // Xcode sometimes erratically reports invalid offsets.
+                                            // Rounding is better than trapping.
+                                            utf8Index = source.utf8.index(before: utf8Index)
+                                        }
+                                    }
+                                    return result!
+                                }
+
+                                if let segments = fileDictionary["segments"] as? [Any] {
+                                    for (index, segment) in segments.enumerated() {
+                                        if let segmentData = segment as? [Any],
+                                            segmentData.count ≥ 5,
+                                            let line = segmentData[0] as? Int,
+                                            let column = segmentData[1] as? Int,
+                                            let count = segmentData[2] as? Int {
+
+                                            let start = toIndex(line: line, column: column)
+                                            let end: String.ScalarView.Index
+                                            let nextIndex = segments.index(after: index)
+                                            if nextIndex ≠ segments.endIndex,
+                                                let nextSegmentData = segments[nextIndex] as? [Any],
+                                                nextSegmentData.count ≥ 5,
+                                                let nextLine = nextSegmentData[0] as? Int,
+                                                let nextColumn = nextSegmentData[1] as? Int {
+                                                end = toIndex(line: nextLine, column: nextColumn)
+                                            } else {
+                                                end = source.scalars.endIndex
+                                            }
+
+                                            fileReport.append(CoverageRegion(region: start ..< end, count: count))
+                                            print(url.path)
+                                            print(segmentData)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return TestCoverageReport(files: fileReports)
     }
 }

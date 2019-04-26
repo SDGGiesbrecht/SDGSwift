@@ -29,6 +29,9 @@ extension SwiftCompiler {
         /// The required version of Swift is unavailable.
         case unavailable
 
+        /// The test coverage report could not be parsed.
+        case corruptTestCoverageReport
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
@@ -44,6 +47,13 @@ extension SwiftCompiler {
                             "Swift \(SwiftCompiler.versions.lowerBound.string()) could not be located.",
                             "Make sure it is installed at one of the following paths or register it in $PATH so it can be located with “which”."
                             ] as [StrictString]).joined(separator: "\n") + StrictString(details)
+                    }
+                }).resolved()
+            case .corruptTestCoverageReport:
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "The test coverage report could not be parsed."
                     }
                 }).resolved()
             }
