@@ -98,8 +98,9 @@ extension SwiftCompiler {
                         let fileName = fileDictionary["filename"] as? String {
                         let url = URL(fileURLWithPath: fileName)
 
-                        if ¬ignoredDirectories.contains(where: { url.is(in: $0) })
-                            ∧ url.pathExtension == "swift" {
+                        if ¬ignoredDirectories.contains(where: { url.is(in: $0) }),
+                            url.pathExtension == "swift",
+                            url.lastPathComponent ≠ "LinuxMain.swift" {
 
                             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                                 switch localization {
