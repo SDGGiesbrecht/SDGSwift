@@ -160,8 +160,8 @@ extension TriviaPiece {
             result = LineDocumentationSyntax(source: text, siblings: siblings, index: index)
         case .docBlockComment:
             result = BlockDocumentationSyntax(source: text)
-        case .garbageText:
-            result = ExtendedTokenSyntax(text: text, kind: .source) // @exempt(from: tests)
+        case .garbageText: // @exempt(from: tests)
+            result = ExtendedTokenSyntax(text: text, kind: .source)
         }
         result.determinePositions()
         return result

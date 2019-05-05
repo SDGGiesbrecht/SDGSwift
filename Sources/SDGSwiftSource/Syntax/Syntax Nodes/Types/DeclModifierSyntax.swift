@@ -38,8 +38,8 @@ extension DeclModifierSyntax {
             case "final":
                 // Internal overridability.
                 return nil
-            case "override":
-                // Inheritance. @exempt(from: tests) Filtered before it gets here.
+            case "override": // @exempt(from: tests) Filtered before it gets here.
+                // Inheritance.
                 return nil
             case "public", "internal", "fileprivate", "private":
                 // Access control.
@@ -59,8 +59,7 @@ extension DeclModifierSyntax {
             case "infix", "prefix", "postfix":
                 // Operator position.
                 return normalize()
-            default:
-                // @exempt(from: tests)
+            default: // @exempt(from: tests)
                 conditionalKeyword.warnUnidentified()
                 return nil
             }
@@ -88,18 +87,17 @@ extension DeclModifierSyntax {
             switch name.text {
             case "open", "public", "internal", "fileprivate", "private":
                 return .accessControl
-            case "required":
-                return .requirement // @exempt(from: tests) Cannot appear with any other groups for sorting.
-            case "convenience":
-                return .designation // @exempt(from: tests) Cannot appear with any other groups for sorting.
+            case "required": // @exempt(from: tests) Cannot appear with any other groups for sorting.
+                return .requirement
+            case "convenience": // @exempt(from: tests) Cannot appear with any other groups for sorting.
+                return .designation
             case "weak":
                 return .memoryManagement
             case "mutating", "nonmutating":
                 return .mutation
-            case "infix", "prefix", "postfix":
-                return .operatorPosition // @exempt(from: tests) Cannot appear with any other groups for sorting.
-            default:
-                // @exempt(from: tests)
+            case "infix", "prefix", "postfix": // @exempt(from: tests) Cannot appear with any other groups for sorting.
+                return .operatorPosition
+            default: // @exempt(from: tests)
                 name.text.warnUnidentified()
                 return .unknown
             }
@@ -130,8 +128,7 @@ extension DeclModifierSyntax {
                 return nil
             case "infix", "prefix", "postfix":
                 return self
-            default:
-                // @exempt(from: tests)
+            default: // @exempt(from: tests)
                 name.text.warnUnidentified()
                 return nil
             }

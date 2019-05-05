@@ -85,7 +85,7 @@ extension SwiftCompiler {
         let json = try JSONSerialization.jsonObject(with: coverageData)
         guard let coverageDataDictionary = json as? [String: Any],
             let data = coverageDataDictionary["data"] as? [Any] else {
-            throw SwiftCompiler.Error.corruptTestCoverageReport
+                throw SwiftCompiler.Error.corruptTestCoverageReport // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
@@ -132,7 +132,7 @@ extension SwiftCompiler {
                                                 let nextColumn = nextSegmentData[1] as? Int {
                                                 end = source._toIndex(line: nextLine, column: nextColumn)
                                             } else {
-                                                end = source.scalars.endIndex
+                                                end = source.scalars.endIndex // @exempt(from: tests) Can a test region even be at the very end of a file?
                                             }
 
                                             regions.append(CoverageRegion(region: start ..< end, count: count))

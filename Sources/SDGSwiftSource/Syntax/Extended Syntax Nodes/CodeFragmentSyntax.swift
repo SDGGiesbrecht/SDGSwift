@@ -107,8 +107,8 @@ public class CodeFragmentSyntax : ExtendedSyntax {
                 return [.trivia(trivia, siblings, index)]
             } else {
                 switch trivia {
-                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText:
-                    return [.trivia(trivia, siblings, index)] // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
+                case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .backticks, .lineComment, .docLineComment, .garbageText: // @exempt(from: tests) Unreachable. Never multiline; never split between multiple fragments.
+                    return [.trivia(trivia, siblings, index)]
                 case .blockComment, .docBlockComment:
                     let extended = trivia.syntax(siblings: siblings, index: index)
 

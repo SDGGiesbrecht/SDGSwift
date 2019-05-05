@@ -283,8 +283,7 @@ extension Syntax {
             return conformance.normalized(comma: comma)
         case let sameType as SameTypeRequirementSyntax:
             return sameType.normalized(comma: comma)
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -298,8 +297,7 @@ extension Syntax {
             return associativity.normalizedForAPIDeclaration()
         case let assignment as PrecedenceGroupAssignmentSyntax:
             return assignment.normalizedForAPIDeclaration()
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -317,8 +315,7 @@ extension Syntax {
             return .associativity
         case is PrecedenceGroupAssignmentSyntax:
             return .assignment
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return .unknown
         }
@@ -332,8 +329,7 @@ extension Syntax {
         switch self {
         case let availablitiy as AvailabilitySpecListSyntax:
             return availablitiy.normalized()
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -347,8 +343,7 @@ extension Syntax {
             return labeled.normalized()
         case let restriction as AvailabilityVersionRestrictionSyntax:
             return restriction.normalized()
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -360,8 +355,7 @@ extension Syntax {
             return token.generallyNormalizedAndMissingInsteadOfNil()
         case let version as VersionTupleSyntax:
             return version.normalized()
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -371,8 +365,7 @@ extension Syntax {
         switch self {
         case let token as TokenSyntax:
             return token.generallyNormalizedAndMissingInsteadOfNil()
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             warnUnidentified()
             return self
         }
@@ -404,8 +397,7 @@ extension Syntax {
              is UnknownPatternSyntax,
              is UnknownTypeSyntax:
             break
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
             print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
         }
