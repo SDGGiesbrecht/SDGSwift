@@ -46,15 +46,15 @@ extension SwiftCompiler {
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL {
         return try package.hostBuildParameters().codeCovPath.asURL
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
         return try package.manifest().name
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
         let directory = try codeCoverageDirectory(for: package)
         let fileName = try codeCoverageDataFileName(for: package).appending(".json")
         return directory.appendingPathComponent(fileName)
@@ -74,7 +74,7 @@ extension SwiftCompiler {
     public static func codeCoverageReport(
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? { // @exempt(from: tests) Unreachable within Xcode.
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
         let coverageDataFile = try codeCoverageDataFile(for: package)
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {

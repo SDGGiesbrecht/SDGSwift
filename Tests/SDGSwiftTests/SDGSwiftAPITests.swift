@@ -75,10 +75,7 @@ class SDGSwiftAPITests : TestCase {
             #if canImport(ObjectiveC)
             try mock.regenerateTestLists()
             #endif
-            if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-                // When run from within Xcode, Xcode interferes with the child test process.
-                try mock.test()
-            }
+            try mock.test()
         }
         XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
     }
