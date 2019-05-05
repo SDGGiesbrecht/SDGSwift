@@ -170,9 +170,9 @@ public enum Xcode {
         let logComponents: [String] = output.components(separatedBy: " ")
         if logComponents.count ≥ 4,
             logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"] }),
+            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"] }), // @exempt(from: tests) False coverage result.
             let process = logComponents[2].prefix(upTo: "[")?.contents {
-            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ") // @exempt(from: tests) False coverage result.
         }
 
         // Command style entry.
