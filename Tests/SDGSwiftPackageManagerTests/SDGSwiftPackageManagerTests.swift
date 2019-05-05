@@ -74,6 +74,7 @@ class SDGSwiftPackageManagerTests : TestCase {
                     coverageFiles.appendingPathComponent("Tests.swift"),
                     to: testDestination)
 
+                XCTAssertNil(try? mock.codeCoverageReport()) // Not generated yet.
                 try mock.test()
                 guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true) else {
                     XCTFail("No test coverage report found.")
