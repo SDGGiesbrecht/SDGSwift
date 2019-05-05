@@ -148,10 +148,14 @@ public enum SwiftCompiler {
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+
+        var environment = ProcessInfo.processInfo.environment
+        environment["XCTestConfigurationFilePath"] = nil // Causes issues when run from within Xcode.
+
         return try runCustomSubcommand([
             "test",
             "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"
-            ], in: package.location, reportProgress: reportProgress)
+            ], in: package.location, with: environment, reportProgress: reportProgress)
     }
 
     /// Resolves the package, fetching its dependencies.
