@@ -74,6 +74,8 @@ class SDGSwiftAPITests : TestCase {
             try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
             #if canImport(ObjectiveC)
             try mock.regenerateTestLists()
+            #else
+            try? mock.regenerateTestLists()
             #endif
             try mock.test()
         }
