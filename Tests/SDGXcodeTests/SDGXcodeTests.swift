@@ -41,7 +41,7 @@ class SDGXcodeTests : TestCase {
 
     func testXcode() throws {
         #if os(Linux)
-        try? Xcode.runCustomSubcommand(["\u{2D}version"])
+        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"])
         #else
         try Xcode.runCustomSubcommand(["\u{2D}version"])
         #endif
@@ -84,7 +84,7 @@ class SDGXcodeTests : TestCase {
                     }
                 }
                 #if os(Linux)
-                try? mock.build(for: sdk, reportProgress: processLog)
+                _ = try? mock.build(for: sdk, reportProgress: processLog)
                 #else
                 try mock.build(for: sdk, reportProgress: processLog)
                 #endif
@@ -121,7 +121,7 @@ class SDGXcodeTests : TestCase {
                     }
                 }
                 #if os(Linux)
-                try? mock.test(on: sdk, reportProgress: processLog)
+                _ = try? mock.test(on: sdk, reportProgress: processLog)
                 #else
                 try mock.test(on: sdk, reportProgress: processLog)
                 #endif
@@ -141,7 +141,11 @@ class SDGXcodeTests : TestCase {
     }
 
     func testXcodeCoverage() throws {
+        #if os(Linux)
+        _ = try? Xcode.runCustomCoverageSubcommand(["help"])
+        #else
         try Xcode.runCustomCoverageSubcommand(["help"])
+        #endif
 
         try withDefaultMockRepository { mock in
             let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
@@ -158,8 +162,14 @@ class SDGXcodeTests : TestCase {
                 to: testDestination)
 
             try mock.generateXcodeProject()
+            #if os(Linux)
+            _ = try? mock.test(on: .macOS)
+            #else
             try mock.test(on: .macOS)
-            guard let coverageReport = try mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true) else {
+            #endif
+            let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true)
+            #if !os(Linux)
+            guard let coverageReport = possibleReport else {
                 XCTFail("No test coverage report found.")
                 return
             }
@@ -173,6 +183,7 @@ class SDGXcodeTests : TestCase {
                 specification.insert("¡", at: range.region.lowerBound)
             }
             compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
+            #endif
         }
     }
 
