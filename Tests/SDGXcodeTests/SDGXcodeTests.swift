@@ -40,42 +40,31 @@ class SDGXcodeTests : TestCase {
     }
 
     func testXcode() {
-        let sdks: [Xcode.SDK] = [
-            .macOS,
-            .iOS(simulator: false),
-            .iOS(simulator: true),
-            .watchOS,
-            .tvOS(simulator: false),
-            .tvOS(simulator: true)
-        ]
-
-        #if os(Linux)
-
-        withDefaultMockRepository { mock in
-            XCTAssertNil(try? mock.xcodeProject())
-            XCTAssertNil(try? mock.scheme())
-            XCTAssertNil(try? mock.generateXcodeProject())
-            for sdk in sdks {
-                XCTAssertNil(try? mock.build(for: sdk))
-                XCTAssertNil(try? mock.codeCoverageReport(on: sdk))
-                XCTAssertNil(try? mock.derivedData(for: sdk))
-            }
-        }
-
-        #else
-
         do {
             try Xcode.runCustomSubcommand(["\u{2D}version"])
         } catch {
+            #if !os(Linux)
             XCTFail("Could not locate Xcode.")
+            #endif
         }
-        XCTAssertNotNil(try? Xcode.location())
+        let xcodeLocation = try? Xcode.location()
+        #if !os(Linux)
+        XCTAssertNotNil(xcodeLocation)
+        #endif
 
         withDefaultMockRepository { mock in
             try mock.generateXcodeProject()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
 
+            let sdks: [Xcode.SDK] = [
+                .macOS,
+                .iOS(simulator: false),
+                .iOS(simulator: true),
+                .watchOS,
+                .tvOS(simulator: false),
+                .tvOS(simulator: true)
+            ]
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
 
@@ -142,7 +131,6 @@ class SDGXcodeTests : TestCase {
         }
 
         XCTAssert(¬Xcode.warningsOccurred(during: ""))
-        #endif
     }
 
     func testXcodeCoverage() {
