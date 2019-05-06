@@ -247,6 +247,7 @@ public enum Xcode {
             }
             return true
         }
+        // @exempt(from: tests)
         return false
     }
 
