@@ -74,7 +74,7 @@ class SDGXcodeTests : TestCase {
                 }
 
                 var log = Set<String>() // Xcode’s order is not deterministic.
-                try mock.build(for: sdk) { outputLine in
+                let processLog: (String) -> Void = { outputLine in
                     if let abbreviated = Xcode.abbreviate(output: outputLine) {
                         XCTAssert(abbreviated.count < 100
                             ∨ abbreviated.contains("warning:")
@@ -83,11 +83,18 @@ class SDGXcodeTests : TestCase {
                         log.insert(abbreviated)
                     }
                 }
+                #if os(Linux)
+                try? mock.build(for: sdk, reportProgress: processLog)
+                #else
+                try mock.build(for: sdk, reportProgress: processLog)
+                #endif
 
                 var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
                 filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                 filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                #if !os(Linux)
                 compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                #endif
             }
 
             let testSDKs: [Xcode.SDK] = [
@@ -103,7 +110,7 @@ class SDGXcodeTests : TestCase {
                 }
 
                 var log = Set<String>() // Xcode’s order is not deterministic.
-                try mock.test(on: sdk) { outputLine in
+                let processLog: (String) -> Void = { outputLine in
                     if let abbreviated = Xcode.abbreviate(output: outputLine) {
                         XCTAssert(abbreviated.count < 100
                             ∨ abbreviated.contains("warning:")
@@ -113,13 +120,20 @@ class SDGXcodeTests : TestCase {
                         log.insert(abbreviated)
                     }
                 }
+                #if os(Linux)
+                try? mock.test(on: sdk, reportProgress: processLog)
+                #else
+                try mock.test(on: sdk, reportProgress: processLog)
+                #endif
 
                 var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
                 filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
                 filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
                 filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                 filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                #if !os(Linux)
                 compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                #endif
             }
         }
 
