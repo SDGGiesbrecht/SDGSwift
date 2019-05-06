@@ -53,7 +53,10 @@ class SDGXcodeTests : TestCase {
         try withDefaultMockRepository { mock in
             try mock.generateXcodeProject()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-            XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
+            let mockScheme = try? mock.scheme()
+            #if !os(Linux)
+            XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
+            #endif
 
             let sdks: [Xcode.SDK] = [
                 .macOS,
