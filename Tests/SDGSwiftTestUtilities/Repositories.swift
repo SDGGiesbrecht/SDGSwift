@@ -63,15 +63,10 @@ public func withMock(named name: String, dependentOn dependencies: [String] = []
     }
 }
 
-public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) {
-    do {
-        return try withMock(file: file, line: line) { mock in
-            let repository = try PackageRepository(initializingAt: mock, named: StrictString(mock.lastPathComponent), type: .library)
-            try test(repository)
-        }
-    } catch {
-        // @exempt(from: tests)
-        XCTFail("\(error)", file: file, line: line)
+public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) throws {
+    return try withMock(file: file, line: line) { mock in
+        let repository = try PackageRepository(initializingAt: mock, named: StrictString(mock.lastPathComponent), type: .library)
+        try test(repository)
     }
 }
 

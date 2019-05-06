@@ -30,29 +30,27 @@ import SDGSwiftTestUtilities
 class SDGXcodeTests : TestCase {
 
     func testDependencyWarnings() throws {
-        #if !os(Linux)
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             try package.generateXcodeProject()
+            #if !os(Linux)
             let build = try package.build(for: .macOS)
             XCTAssertFalse(Xcode.warningsOccurred(during: build))
-        }
-        #endif
-    }
-
-    func testXcode() {
-        do {
-            try Xcode.runCustomSubcommand(["\u{2D}version"])
-        } catch {
-            #if !os(Linux)
-            XCTFail("Could not locate Xcode.")
             #endif
         }
+    }
+
+    func testXcode() throws {
+        #if os(Linux)
+        try? Xcode.runCustomSubcommand(["\u{2D}version"])
+        #else
+        try Xcode.runCustomSubcommand(["\u{2D}version"])
+        #endif
         let xcodeLocation = try? Xcode.location()
         #if !os(Linux)
         XCTAssertNotNil(xcodeLocation)
         #endif
 
-        withDefaultMockRepository { mock in
+        try withDefaultMockRepository { mock in
             try mock.generateXcodeProject()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             XCTAssertNotNil(try mock.scheme(), "Failed to locate Xcode scheme.")
@@ -72,25 +70,21 @@ class SDGXcodeTests : TestCase {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
-                do {
-                    var log = Set<String>() // Xcode’s order is not deterministic.
-                    try mock.build(for: sdk) { outputLine in
-                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                            XCTAssert(abbreviated.count < 100
-                                ∨ abbreviated.contains("warning:")
-                                ∨ abbreviated.contains("error:"),
-                                      "Output is too long: " + abbreviated)
-                            log.insert(abbreviated)
-                        }
+                var log = Set<String>() // Xcode’s order is not deterministic.
+                try mock.build(for: sdk) { outputLine in
+                    if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                        XCTAssert(abbreviated.count < 100
+                            ∨ abbreviated.contains("warning:")
+                            ∨ abbreviated.contains("error:"),
+                                  "Output is too long: " + abbreviated)
+                        log.insert(abbreviated)
                     }
-
-                    var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
-                    filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
-                    filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
-                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
-                } catch {
-                    XCTFail("\(error)")
                 }
+
+                var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
+                filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
+                filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
             }
 
             let testSDKs: [Xcode.SDK] = [
@@ -105,41 +99,32 @@ class SDGXcodeTests : TestCase {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
-                do {
-                    var log = Set<String>() // Xcode’s order is not deterministic.
-                    try mock.test(on: sdk) { outputLine in
-                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                            XCTAssert(abbreviated.count < 100
-                                ∨ abbreviated.contains("warning:")
-                                ∨ abbreviated.contains("error:")
-                                ∨ abbreviated.contains("Failed"),
-                                      "Output is too long: " + abbreviated)
-                            log.insert(abbreviated)
-                        }
+                var log = Set<String>() // Xcode’s order is not deterministic.
+                try mock.test(on: sdk) { outputLine in
+                    if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                        XCTAssert(abbreviated.count < 100
+                            ∨ abbreviated.contains("warning:")
+                            ∨ abbreviated.contains("error:")
+                            ∨ abbreviated.contains("Failed"),
+                                  "Output is too long: " + abbreviated)
+                        log.insert(abbreviated)
                     }
-
-                    var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
-                    filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
-                    filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
-                    filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
-                    filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
-                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
-                } catch {
-                    XCTFail("\(error)")
                 }
+
+                var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
+                filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
+                filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
+                filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
+                filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
             }
         }
 
         XCTAssert(¬Xcode.warningsOccurred(during: ""))
     }
 
-    func testXcodeCoverage() {
-        #if !os(Linux)
-        do {
-            try Xcode.runCustomCoverageSubcommand(["help"])
-        } catch {
-            XCTFail("\(error)")
-        }
+    func testXcodeCoverage() throws {
+        try Xcode.runCustomCoverageSubcommand(["help"])
 
         withDefaultMockRepository { mock in
             let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
@@ -172,7 +157,6 @@ class SDGXcodeTests : TestCase {
             }
             compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
         }
-        #endif
     }
 
     func testXcodeError() {
