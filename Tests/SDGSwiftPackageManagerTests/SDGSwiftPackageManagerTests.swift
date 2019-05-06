@@ -22,8 +22,8 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 
-    func testChangeDetection() {
-        withDefaultMockRepository { mock in
+    func testChangeDetection() throws {
+        try withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
             XCTAssertNotEqual(try mock.uncommittedChanges(), "", "Change unnoticed.")
             XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]), "", "No change should have been detected.")
@@ -56,8 +56,8 @@ class SDGSwiftPackageManagerTests : TestCase {
         XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
     }
 
-    func testTestCoverage() {
-        withDefaultMockRepository { mock in
+    func testTestCoverage() throws {
+        try withDefaultMockRepository { mock in
             let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
             let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
             let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")

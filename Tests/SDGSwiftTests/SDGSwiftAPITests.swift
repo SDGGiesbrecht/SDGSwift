@@ -54,22 +54,18 @@ class SDGSwiftAPITests : TestCase {
         testCustomStringConvertibleConformance(of: Package.Error.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testPackageRepository() {
+    func testPackageRepository() throws {
         testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
 
-        withDefaultMockRepository { mock in
+        try withDefaultMockRepository { mock in
             try mock.tag(version: Version(10, 0, 0))
         }
     }
 
-    func testSwiftCompiler() {
-        do {
-            try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
-        } catch {
-            XCTFail("\(error)")
-        }
+    func testSwiftCompiler() throws {
+        try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
 
-        withDefaultMockRepository { mock in
+        try withDefaultMockRepository { mock in
             try mock.resolve()
             try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
             #if canImport(ObjectiveC)

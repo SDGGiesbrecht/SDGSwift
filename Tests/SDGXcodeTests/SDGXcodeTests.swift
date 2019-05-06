@@ -126,7 +126,7 @@ class SDGXcodeTests : TestCase {
     func testXcodeCoverage() throws {
         try Xcode.runCustomCoverageSubcommand(["help"])
 
-        withDefaultMockRepository { mock in
+        try withDefaultMockRepository { mock in
             let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
             let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
             let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
