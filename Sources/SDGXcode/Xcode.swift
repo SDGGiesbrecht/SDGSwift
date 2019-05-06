@@ -50,6 +50,7 @@ public enum Xcode {
     }()
 
     private static func coverageToolLocation(for xcode: URL) -> URL {
+        // @exempt(from: tests) Unreachable on Linux.
         return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
     }
 
@@ -58,6 +59,8 @@ public enum Xcode {
         return try cached(in: &located) {
 
             func validate(_ xcode: ExternalProcess) -> Bool {
+                // @exempt(from: tests) Unreachable on Linux.
+
                 // Make sure necessary relative tools are available. (Otherwise it is a shim of some sort.)
                 if ¬FileManager.default.fileExists(atPath: coverageToolLocation(for: xcode.executable).path) {
                     return false
@@ -75,6 +78,7 @@ public enum Xcode {
             }
 
             if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {
+                // @exempt(from: tests) Unreachable on Linux.
                 return found
             } else { // @exempt(from: tests)
                  // @exempt(from: tests) Xcode is necessarily available when tests are run.
@@ -157,6 +161,7 @@ public enum Xcode {
     /// - Parameters:
     ///     - output: The Xcode output to abbreviate.
     public static func abbreviate(output: String) -> String? {
+        // @exempt(from: tests) Meaningless on Linux.
         if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
             return nil
         }
@@ -170,9 +175,9 @@ public enum Xcode {
         let logComponents: [String] = output.components(separatedBy: " ")
         if logComponents.count ≥ 4,
             logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"] }),
+            logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"] }), // @exempt(from: tests) False coverage result.
             let process = logComponents[2].prefix(upTo: "[")?.contents {
-            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+            return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ") // @exempt(from: tests) False coverage result.
         }
 
         // Command style entry.
@@ -227,6 +232,7 @@ public enum Xcode {
     public static func warningsOccurred(during log: String) -> Bool {
         for line in log.lines.lazy.map({ $0.line }) where line.contains(" warning:".scalars) {
             if SwiftCompiler._warningBelongsToDependency(line) {
+                // @exempt(from: tests) Meaningless on Linux.
                 continue
             }
             if line.contains(" directory not found for option \u{27}\u{2D}F/Applications/Xcode".scalars) {
@@ -241,6 +247,7 @@ public enum Xcode {
             }
             return true
         }
+        // @exempt(from: tests)
         return false
     }
 
@@ -260,6 +267,7 @@ public enum Xcode {
     @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
 
         if let coverage = try? coverageDirectory(for: package, on: sdk) {
+            // @exempt(from: tests) Unreachable on Linux.
             // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
             try? FileManager.default.removeItem(at: coverage)
         }
@@ -267,10 +275,10 @@ public enum Xcode {
         var command = ["test"]
 
         switch sdk {
-        case .iOS(simulator: true):
-            command += ["\u{2D}destination", "name=iPhone 8"] // @exempt(from: tests) Tested separately.
-        case .tvOS(simulator: true):
-            command += ["\u{2D}destination", "name=Apple TV 4K"] // @exempt(from: tests) Tested separately.
+        case .iOS(simulator: true): // @exempt(from: tests) Tested separately.
+            command += ["\u{2D}destination", "name=iPhone 8"]
+        case .tvOS(simulator: true): // @exempt(from: tests) Tested separately.
+            command += ["\u{2D}destination", "name=Apple TV 4K"]
         default:
             command += ["\u{2D}sdk", sdk.commandLineName]
         }
@@ -307,7 +315,7 @@ public enum Xcode {
             "view",
             "\u{2D}\u{2D}file\u{2D}list",
             archive.path
-            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in
+            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
                 if file.pathExtension ≠ "swift" {
                     // @exempt(from: tests)
                     // The report is unlikely to be readable.
@@ -323,6 +331,7 @@ public enum Xcode {
 
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {
+            // @exempt(from: tests) Unreachable on Linux.
             try autoreleasepool {
 
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -440,6 +449,7 @@ public enum Xcode {
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
         for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
+            // @exempt(from: tests) Unreachable on Linux.
             return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
         }
         // @exempt(from: tests)

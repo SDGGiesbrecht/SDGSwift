@@ -46,15 +46,15 @@ extension SwiftCompiler {
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL {
         return try package.hostBuildParameters().codeCovPath.asURL
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
         return try package.manifest().name
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL { // @exempt(from: tests) Unreachable within Xcode.
+    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
         let directory = try codeCoverageDirectory(for: package)
         let fileName = try codeCoverageDataFileName(for: package).appending(".json")
         return directory.appendingPathComponent(fileName)
@@ -74,7 +74,7 @@ extension SwiftCompiler {
     public static func codeCoverageReport(
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? { // @exempt(from: tests) Unreachable within Xcode.
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
 
         let coverageDataFile = try codeCoverageDataFile(for: package)
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
@@ -85,7 +85,7 @@ extension SwiftCompiler {
         let json = try JSONSerialization.jsonObject(with: coverageData)
         guard let coverageDataDictionary = json as? [String: Any],
             let data = coverageDataDictionary["data"] as? [Any] else {
-            throw SwiftCompiler.Error.corruptTestCoverageReport
+                throw SwiftCompiler.Error.corruptTestCoverageReport // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
@@ -132,7 +132,7 @@ extension SwiftCompiler {
                                                 let nextColumn = nextSegmentData[1] as? Int {
                                                 end = source._toIndex(line: nextLine, column: nextColumn)
                                             } else {
-                                                end = source.scalars.endIndex
+                                                end = source.scalars.endIndex // @exempt(from: tests) Can a test region even be at the very end of a file?
                                             }
 
                                             regions.append(CoverageRegion(region: start ..< end, count: count))

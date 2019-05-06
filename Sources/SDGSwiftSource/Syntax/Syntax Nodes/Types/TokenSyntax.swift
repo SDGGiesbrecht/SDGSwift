@@ -195,8 +195,8 @@ extension TokenSyntax {
         case .stringSegment:
             return "text"
 
-        case .stringLiteral:
-            return nil // Disected elsewhere. @exempt(from: tests)
+        case .stringLiteral: // @exempt(from: tests) Disected elsewhere.
+            return nil
         }
     }
 

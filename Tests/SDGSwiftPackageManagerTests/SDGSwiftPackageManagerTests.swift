@@ -22,8 +22,8 @@ import SDGSwiftTestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 
-    func testChangeDetection() {
-        withDefaultMockRepository { mock in
+    func testChangeDetection() throws {
+        try withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
             XCTAssertNotEqual(try mock.uncommittedChanges(), "", "Change unnoticed.")
             XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]), "", "No change should have been detected.")
@@ -56,40 +56,37 @@ class SDGSwiftPackageManagerTests : TestCase {
         XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
     }
 
-    func testTestCoverage() {
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            // When run from within Xcode, Xcode interferes with the child test process.
+    func testTestCoverage() throws {
+        try withDefaultMockRepository { mock in
+            let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
+            let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
+            let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
+            let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
+            try? FileManager.default.removeItem(at: sourceDestination)
+            try FileManager.default.copy(
+                sourceURL,
+                to: sourceDestination)
+            try? FileManager.default.removeItem(at: testDestination)
+            try FileManager.default.copy(
+                coverageFiles.appendingPathComponent("Tests.swift"),
+                to: testDestination)
 
-            withDefaultMockRepository { mock in
-                let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
-                let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
-                let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
-                let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
-                try? FileManager.default.removeItem(at: sourceDestination)
-                try FileManager.default.copy(
-                    sourceURL,
-                    to: sourceDestination)
-                try? FileManager.default.removeItem(at: testDestination)
-                try FileManager.default.copy(
-                    coverageFiles.appendingPathComponent("Tests.swift"),
-                    to: testDestination)
-
-                try mock.test()
-                guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true) else {
-                    XCTFail("No test coverage report found.")
-                    return
-                }
-                guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
-                    XCTFail("File missing from coverage report.")
-                    return
-                }
-                var specification = try String(from: sourceURL)
-                for range in file.regions.reversed() {
-                    specification.insert("!", at: range.region.upperBound)
-                    specification.insert("¡", at: range.region.lowerBound)
-                }
-                compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
+            XCTAssertNil(try? mock.codeCoverageReport()) // Not generated yet.
+            try mock.test()
+            guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true) else {
+                XCTFail("No test coverage report found.")
+                return
             }
+            guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
+                XCTFail("File missing from coverage report.")
+                return
+            }
+            var specification = try String(from: sourceURL)
+            for range in file.regions.reversed() {
+                specification.insert("!", at: range.region.upperBound)
+                specification.insert("¡", at: range.region.lowerBound)
+            }
+            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"), overwriteSpecificationInsteadOfFailing: false)
         }
     }
 }

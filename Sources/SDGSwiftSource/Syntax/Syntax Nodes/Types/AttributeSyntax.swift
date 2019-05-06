@@ -73,18 +73,17 @@ extension AttributeSyntax {
                 argument: nil,
                 rightParen: nil,
                 tokenList: nil)
-        case "testable":
-            // Not relevant to API symbols // @exempt(from: tests)
+        case "testable": // @exempt(from: tests)
+            // Not relevant to API symbols
             return nil
-        case "NSApplicationMain", "UIApplicationMain":
-            // Not relevant to API // @exempt(from: tests)
+        case "NSApplicationMain", "UIApplicationMain": // @exempt(from: tests)
+            // Not relevant to API
             return nil
-        case "requires_stored_property_inits", "warn_unqualified_access":
-            // Source checks // @exempt(from: tests)
+        case "requires_stored_property_inits", "warn_unqualified_access": // @exempt(from: tests)
+            // Source checks
             return nil
 
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             attribute.warnUnidentified()
             return nil
         }
@@ -135,8 +134,7 @@ extension AttributeSyntax {
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
-        default:
-            // @exempt(from: tests)
+        default: // @exempt(from: tests)
             attributeName.text.warnUnidentified()
             return .unknown
         }

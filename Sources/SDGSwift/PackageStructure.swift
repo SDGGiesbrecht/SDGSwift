@@ -153,7 +153,7 @@ public struct Package : TransparentWrapper {
                 #if os(Linux)
                 // The move from the temporary directory to the cache may lose permissions.
                 if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-                    _ = try? Shell.default.run(command: ["chmod", "+x", executable.path])
+                    _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]) // @exempt(from: tests)
                 }
                 #endif
 
