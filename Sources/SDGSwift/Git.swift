@@ -26,14 +26,15 @@ public enum Git {
     /// The range of compatible Git versions.
     public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
 
-    internal static let standardLocations = [
-        // Git
-        "/usr/bin/git"
-        ].lazy.map({ URL(fileURLWithPath: $0) })
+    internal static let searchCommands: [[String]] = [
+        ["which", "git"]
+    ]
 
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
+
+            let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
             func validate(_ swift: ExternalProcess) -> Bool {
                 // Make sure version is compatible.
@@ -44,7 +45,7 @@ public enum Git {
                 return version ∈ compatibleVersionRange
             }
 
-            if let found = ExternalProcess(searching: standardLocations, commandName: "git", validate: validate) {
+            if let found = ExternalProcess(searching: searchLocations, commandName: "git", validate: validate) {
                 return found
             } else { // @exempt(from: tests)
                 // @exempt(from: tests) Git is necessarily available when tests are run.

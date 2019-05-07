@@ -45,8 +45,7 @@ public enum Xcode {
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
-            let searchLocations = Xcode.searchCommands.lazy.reversed()
-                .lazy.compactMap({ SwiftCompiler._search(command: $0) })
+            let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
             func validate(_ xcode: ExternalProcess) -> Bool {
                 // @exempt(from: tests) Unreachable on Linux.
