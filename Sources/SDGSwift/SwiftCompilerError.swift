@@ -40,15 +40,14 @@ extension SwiftCompiler {
 
                 let commands: [StrictString] = SwiftCompiler.searchCommands
                     .map({ "$ \($0.joined(separator: " "))" })
-                let details = commands.joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return ([
+                        return (([
                             "Swift \(SwiftCompiler.versions.lowerBound.string()) could not be located.",
                             "Make sure it is installed and can be located with one of the following commands:",
-                            ] as [StrictString]).joined(separator: "\n") + details
+                            ] as [StrictString]) + commands).joined(separator: "\n")
                     }
                 }).resolved()
 
