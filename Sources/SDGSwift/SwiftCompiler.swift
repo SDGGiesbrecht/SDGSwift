@@ -33,12 +33,8 @@ public enum SwiftCompiler {
         ["swiftenv", "which", "swift"] // Swift Version Manager
     ]
     public static func _search(command: [String]) -> URL? {
-        guard var output = try? Shell.default.run(command: command) else {
+        guard let output = try? Shell.default.run(command: command) else {
             return nil
-        }
-        if let last = output.last,
-            last.isNewline {
-            output.removeLast()
         }
         return URL(fileURLWithPath: output)
     }
