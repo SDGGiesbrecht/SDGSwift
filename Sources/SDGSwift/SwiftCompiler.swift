@@ -29,7 +29,7 @@ public enum SwiftCompiler {
 
     internal static let searchCommands: [[String]] = [
         ["which", "swift"], // Swift
-        ["xcrun", "--find", "swift"], // Xcode
+        ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
         ["swiftenv", "which", "swift"] // Swift Version Manager
     ]
     private static func search(command: [String]) -> URL? {
@@ -41,35 +41,6 @@ public enum SwiftCompiler {
             output.removeLast()
         }
         return URL(fileURLWithPath: output)
-    }
-    private static func standardLocations(for version: Version) -> [URL] {
-        #warning("Remove.")
-        return search(command: searchCommands[0]).map({ [$0] }) ?? []
-    }
-    private static func xcodeLocations(for version: Version) -> [URL] {
-        #warning("Remove.")
-        return search(command: searchCommands[1]).map({ [$0] }) ?? []
-    }
-    private static func swiftVersionManagerLocations(for version: Version) -> [URL] {
-        #warning("Remove.")
-        return search(command: searchCommands[2]).map({ [$0] }) ?? []
-    }
-    internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
-        #warning("Remove.")
-        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.
-        if searchOrder {
-            return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
-        } else {
-            return standardLocations(for: version) + xcodeLocations(for: version) + swiftVersionManagerLocations(for: version)
-        }
-    }
-    internal static func searchLocations(searchOrder: Bool) -> [URL] {
-        #warning("Remove.")
-        var locations = SwiftCompiler.searchLocations(for: versions.lowerBound, searchOrder: searchOrder)
-        for location in SwiftCompiler.searchLocations(for: versions.upperBound, searchOrder: searchOrder) where ¬locations.contains(location) {
-            locations.append(location)
-        }
-        return locations
     }
 
     private static var located: ExternalProcess?
