@@ -46,7 +46,7 @@ extension SwiftCompiler {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return (([
                             "Swift \(SwiftCompiler.versions.lowerBound.string()) could not be located.",
-                            "Make sure it is installed and can be located with one of the following commands:",
+                            "Make sure it is installed and can be found with one of the following commands:",
                             ] as [StrictString]) + commands).joined(separator: "\n")
                     }
                 }).resolved()
