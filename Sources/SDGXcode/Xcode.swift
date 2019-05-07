@@ -50,11 +50,6 @@ public enum Xcode {
             func validate(_ xcode: ExternalProcess) -> Bool {
                 // @exempt(from: tests) Unreachable on Linux.
 
-                // Make sure necessary relative tools are available. (Otherwise it is a shim of some sort.)
-                if ¬FileManager.default.fileExists(atPath: coverageToolLocation(for: xcode.executable).path) {
-                    return false
-                }
-
                 // Make sure version matches.
                 if let output = try? xcode.run(["\u{2D}version"]),
                     let version = Version(firstIn: output),
