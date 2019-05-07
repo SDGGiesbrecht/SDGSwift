@@ -27,24 +27,35 @@ public enum SwiftCompiler {
     internal static let versions = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
     public static let _standardLibraryVersion = versions.lowerBound
 
+    private static let searchCommands: [[String]] = [
+        ["which", "swift"], // Swift
+        ["xcrun", "--find", "swift"], // Xcode
+        ["swiftenv", "which", "swift"] // Swift Version Manager
+    ]
+    private static func search(command: [String]) -> URL? {
+        guard var output = try? Shell.default.run(command: command) else {
+            return nil
+        }
+        if let last = output.last,
+            last.isNewline {
+            output.removeLast()
+        }
+        return URL(fileURLWithPath: output)
+    }
     private static func standardLocations(for version: Version) -> [URL] {
-        return [
-            "/usr/bin/swift"
-            ].map({ URL(fileURLWithPath: $0) })
+        #warning("Remove.")
+        return search(command: searchCommands[0]).map({ [$0] }) ?? []
     }
     private static func xcodeLocations(for version: Version) -> [URL] {
-        return [
-            "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
-            "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift"
-        ].map({ URL(fileURLWithPath: $0) })
+        #warning("Remove.")
+        return search(command: searchCommands[1]).map({ [$0] }) ?? []
     }
     private static func swiftVersionManagerLocations(for version: Version) -> [URL] {
-        return [
-            NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
-            ].map({ URL(fileURLWithPath: $0) })
+        #warning("Remove.")
+        return search(command: searchCommands[2]).map({ [$0] }) ?? []
     }
     internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
+        #warning("Remove.")
         // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.
         if searchOrder {
             return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
@@ -53,6 +64,7 @@ public enum SwiftCompiler {
         }
     }
     internal static func searchLocations(searchOrder: Bool) -> [URL] {
+        #warning("Remove.")
         var locations = SwiftCompiler.searchLocations(for: versions.lowerBound, searchOrder: searchOrder)
         for location in SwiftCompiler.searchLocations(for: versions.upperBound, searchOrder: searchOrder) where ¬locations.contains(location) {
             locations.append(location)
@@ -63,6 +75,9 @@ public enum SwiftCompiler {
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
+
+            let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
+                .lazy.compactMap({ search(command: $0) })
 
             func validate(_ swift: ExternalProcess) -> Bool {
 
@@ -77,7 +92,7 @@ public enum SwiftCompiler {
                 }
             }
 
-            if let found = ExternalProcess(searching: searchLocations(searchOrder: true), commandName: "swift", validate: validate) {
+            if let found = ExternalProcess(searching: searchLocations, commandName: "swift", validate: validate) {
                 return found
             } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
                 // @exempt(from: tests)
