@@ -45,18 +45,20 @@ extension Xcode {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-                var details: String = "\n"
-                details += Xcode.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+
+                let commands: [StrictString] = Xcode.searchCommands
+                    .map({ "$ \($0.joined(separator: " "))" })
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return ([
+                        return (([
                             "Xcode \(Xcode.versions.lowerBound.string()) could not be located.",
-                            "Make sure it (xcodebuild) is installed at one of the following paths or register it in $PATH so it can be located with “which”."
-                            ] as [StrictString]).joined(separator: "\n") + StrictString(details)
+                            "Make sure it is installed and can be found with one of the following commands:",
+                            ] as [StrictString]) + commands).joined(separator: "\n")
                     }
                 }).resolved()
+
             case .noXcodeProject:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

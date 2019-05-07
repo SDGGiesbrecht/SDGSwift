@@ -32,7 +32,7 @@ public enum SwiftCompiler {
         ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
         ["swiftenv", "which", "swift"] // Swift Version Manager
     ]
-    private static func search(command: [String]) -> URL? {
+    public static func _search(command: [String]) -> URL? {
         guard var output = try? Shell.default.run(command: command) else {
             return nil
         }
@@ -48,7 +48,7 @@ public enum SwiftCompiler {
         return try cached(in: &located) {
 
             let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
-                .lazy.compactMap({ search(command: $0) })
+                .lazy.compactMap({ _search(command: $0) })
 
             func validate(_ swift: ExternalProcess) -> Bool {
 
