@@ -45,7 +45,7 @@ extension SwiftCompiler {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return (([
-                            "Swift \(SwiftCompiler.versions.lowerBound.string()) could not be located.",
+                            "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
                             "Make sure it is installed and can be found with one of the following commands:",
                             ] as [StrictString]) + commands).joined(separator: "\n")
                     }

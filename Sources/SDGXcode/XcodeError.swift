@@ -53,7 +53,7 @@ extension Xcode {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return (([
-                            "Xcode \(Xcode.versions.lowerBound.string()) could not be located.",
+                            "No compatible version of Xcode could be located. (\(Xcode.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
                             "Make sure it is installed and can be found with one of the following commands:",
                             ] as [StrictString]) + commands).joined(separator: "\n")
                     }

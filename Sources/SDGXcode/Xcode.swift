@@ -30,7 +30,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let versions = Version(10, 2, 0) /* Travis CI */ ... Version(10, 2, 1) /* Current */
+    internal static let compatibleVersionRange = Version(10, 2, 0) /* Travis CI */ ... Version(10, 2, 1) /* Current */
 
     internal static let searchCommands: [[String]] = [
         ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
@@ -58,7 +58,7 @@ public enum Xcode {
                 // Make sure version matches.
                 if let output = try? xcode.run(["\u{2D}version"]),
                     let version = Version(firstIn: output),
-                    version ∈ versions {
+                    version ∈ compatibleVersionRange {
                     return true
                 } else { // @exempt(from: tests)
                     // @exempt(from: tests) Would require Xcode to be absent.

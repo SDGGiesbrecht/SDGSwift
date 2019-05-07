@@ -24,8 +24,8 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let versions = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
-    public static let _standardLibraryVersion = versions.lowerBound
+    internal static let compatibleVersionRange = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
+    public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
     internal static let searchCommands: [[String]] = [
         ["which", "swift"], // Swift
@@ -55,7 +55,7 @@ public enum SwiftCompiler {
                 // Make sure version matches.
                 if let output = try? swift.run(["\u{2D}\u{2D}version"]),
                     let version = Version(firstIn: output),
-                    version ∈ versions {
+                    version ∈ compatibleVersionRange {
                     return true
                 } else { // @exempt(from: tests)
                     // @exempt(from: tests) Would require Xcode to be absent.
