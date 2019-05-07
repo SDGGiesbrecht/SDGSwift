@@ -24,52 +24,34 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let versions = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
-    public static let _standardLibraryVersion = versions.lowerBound
+    internal static let compatibleVersionRange = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
+    public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
-    private static func standardLocations(for version: Version) -> [URL] {
-        return [
-            "/usr/bin/swift"
-            ].map({ URL(fileURLWithPath: $0) })
-    }
-    private static func xcodeLocations(for version: Version) -> [URL] {
-        return [
-            "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
-            "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift",
-            NSHomeDirectory() + "/Library/Developer/Toolchains/swift\u{2D}\(version.string(droppingEmptyPatch: true))\u{2D}RELEASE.xctoolchain/usr/bin/swift"
-        ].map({ URL(fileURLWithPath: $0) })
-    }
-    private static func swiftVersionManagerLocations(for version: Version) -> [URL] {
-        return [
-            NSHomeDirectory() + "/.swiftenv/versions/\(version.string(droppingEmptyPatch: true))/usr/bin/swift"
-            ].map({ URL(fileURLWithPath: $0) })
-    }
-    internal static func searchLocations(for version: Version, searchOrder: Bool) -> [URL] {
-        // Searching must be done opposite to the recommendation order, since the existence of more tailored entries often means simpler entries contain partially replaced toolchains.
-        if searchOrder {
-            return swiftVersionManagerLocations(for: version) + xcodeLocations(for: version) + standardLocations(for: version)
-        } else {
-            return standardLocations(for: version) + xcodeLocations(for: version) + swiftVersionManagerLocations(for: version)
+    internal static let searchCommands: [[String]] = [
+        ["which", "swift"], // Swift
+        ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
+        ["swiftenv", "which", "swift"] // Swift Version Manager
+    ]
+    public static func _search(command: [String]) -> URL? {
+        guard let output = try? Shell.default.run(command: command) else {
+            return nil
         }
-    }
-    internal static func searchLocations(searchOrder: Bool) -> [URL] {
-        var locations = SwiftCompiler.searchLocations(for: versions.lowerBound, searchOrder: searchOrder)
-        for location in SwiftCompiler.searchLocations(for: versions.upperBound, searchOrder: searchOrder) where ¬locations.contains(location) {
-            locations.append(location)
-        }
-        return locations
+        return URL(fileURLWithPath: output)
     }
 
     private static var located: ExternalProcess?
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
+            let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
+                .lazy.compactMap({ _search(command: $0) })
+
             func validate(_ swift: ExternalProcess) -> Bool {
 
                 // Make sure version matches.
                 if let output = try? swift.run(["\u{2D}\u{2D}version"]),
                     let version = Version(firstIn: output),
-                    version ∈ versions {
+                    version ∈ compatibleVersionRange {
                     return true
                 } else { // @exempt(from: tests)
                     // @exempt(from: tests) Would require Xcode to be absent.
@@ -77,7 +59,7 @@ public enum SwiftCompiler {
                 }
             }
 
-            if let found = ExternalProcess(searching: searchLocations(searchOrder: true), commandName: "swift", validate: validate) {
+            if let found = ExternalProcess(searching: searchLocations, commandName: "swift", validate: validate) {
                 return found
             } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
                 // @exempt(from: tests)

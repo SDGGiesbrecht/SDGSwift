@@ -34,16 +34,17 @@ extension Git {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-                var details: String = "\n"
-                details += Git.standardLocations.map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+
+                let commands: [StrictString] = Git.searchCommands
+                    .map({ "$ \($0.joined(separator: " "))" })
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return ([
+                        return (([
                             "No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed at one of the following paths or register it in $PATH so it can be located with “which”."
-                            ] as [StrictString]).joined(separator: "\n") + StrictString(details)
+                            "Make sure it is installed and can be found with one of the following commands:",
+                            ] as [StrictString]) + commands).joined(separator: "\n")
                     }
                 }).resolved()
             }

@@ -30,24 +30,11 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let versions = Version(10, 2, 0) /* Travis CI */ ... Version(10, 2, 1) /* Current */
+    internal static let compatibleVersionRange = Version(10, 2, 0) /* Travis CI */ ... Version(10, 2, 1) /* Current */
 
-    private static func standardLocations(for version: Version) -> [URL] {
-        return [
-            // Xcode
-            "/usr/bin/xcodebuild",
-            "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
-            "/Applications/Xcode \(version.string(droppingEmptyPatch: true)).app/Contents/Developer/usr/bin/xcodebuild"
-            ].lazy.map({ URL(fileURLWithPath: $0) })
-    }
-
-    internal static let standardLocations: [URL] = {
-        var locations = Xcode.standardLocations(for: versions.lowerBound)
-        for location in Xcode.standardLocations(for: versions.upperBound) where ¬locations.contains(location) {
-            locations.append(location)
-        }
-        return locations
-    }()
+    internal static let searchCommands: [[String]] = [
+        ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
+    ]
 
     private static func coverageToolLocation(for xcode: URL) -> URL {
         // @exempt(from: tests) Unreachable on Linux.
@@ -58,18 +45,15 @@ public enum Xcode {
     private static func tool() throws -> ExternalProcess {
         return try cached(in: &located) {
 
+            let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
+
             func validate(_ xcode: ExternalProcess) -> Bool {
                 // @exempt(from: tests) Unreachable on Linux.
-
-                // Make sure necessary relative tools are available. (Otherwise it is a shim of some sort.)
-                if ¬FileManager.default.fileExists(atPath: coverageToolLocation(for: xcode.executable).path) {
-                    return false
-                }
 
                 // Make sure version matches.
                 if let output = try? xcode.run(["\u{2D}version"]),
                     let version = Version(firstIn: output),
-                    version ∈ versions {
+                    version ∈ compatibleVersionRange {
                     return true
                 } else { // @exempt(from: tests)
                     // @exempt(from: tests) Would require Xcode to be absent.
@@ -77,7 +61,7 @@ public enum Xcode {
                 }
             }
 
-            if let found = ExternalProcess(searching: standardLocations, commandName: "xcodebuild", validate: validate) {
+            if let found = ExternalProcess(searching: searchLocations, commandName: "xcodebuild", validate: validate) {
                 // @exempt(from: tests) Unreachable on Linux.
                 return found
             } else { // @exempt(from: tests)
