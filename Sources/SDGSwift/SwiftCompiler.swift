@@ -27,7 +27,7 @@ public enum SwiftCompiler {
     internal static let versions = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
     public static let _standardLibraryVersion = versions.lowerBound
 
-    private static let searchCommands: [[String]] = [
+    internal static let searchCommands: [[String]] = [
         ["which", "swift"], // Swift
         ["xcrun", "--find", "swift"], // Xcode
         ["swiftenv", "which", "swift"] // Swift Version Manager

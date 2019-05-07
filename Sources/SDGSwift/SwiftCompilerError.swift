@@ -37,18 +37,21 @@ extension SwiftCompiler {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-                var details: String = "\n"
-                details += SwiftCompiler.searchLocations(searchOrder: false).map({ $0.path.replacingOccurrences(of: NSHomeDirectory(), with: "~") }).joined(separator: "\n")
+
+                let commands: [StrictString] = SwiftCompiler.searchCommands
+                    .map({ "$ \($0.joined(separator: " "))" })
+                let details = commands.joined(separator: "\n")
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return ([
                             "Swift \(SwiftCompiler.versions.lowerBound.string()) could not be located.",
-                            "Make sure it is installed at one of the following paths or register it in $PATH so it can be located with “which”."
-                            ] as [StrictString]).joined(separator: "\n") + StrictString(details)
+                            "Make sure it is installed and can be located with one of the following commands:",
+                            ] as [StrictString]).joined(separator: "\n") + details
                     }
                 }).resolved()
+
             case .corruptTestCoverageReport:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
