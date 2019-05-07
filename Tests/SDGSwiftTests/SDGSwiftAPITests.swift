@@ -71,7 +71,7 @@ class SDGSwiftAPITests : TestCase {
             #if canImport(ObjectiveC)
             try mock.regenerateTestLists()
             #else
-            try? mock.regenerateTestLists()
+            _ = try? mock.regenerateTestLists()
             #endif
             try mock.test()
         }
