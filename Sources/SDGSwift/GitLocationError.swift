@@ -18,8 +18,13 @@ import SDGSwiftLocalizations
 
 extension Git {
 
-    /// No compatible version of Git could be located.
-    public struct LocationError : PresentableError {
+    /// An error encountered while locating Git.
+    public enum LocationError : PresentableError {
+        
+        // MARK: - Cases
+
+        /// No compatible version of Git could be located.
+        case unavailable
 
         // MARK: - PresentableError
 

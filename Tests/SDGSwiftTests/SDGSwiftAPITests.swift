@@ -34,11 +34,11 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testGit() {
-        XCTAssertNotNil(try? Git.location())
+        XCTAssertNotNil(try? Git.location().get())
     }
 
     func testGitError() {
-        testCustomStringConvertibleConformance(of: Git.Error.locationError(LocationError()), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Git.Error.locationError(Git.LocationError()), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testLocalizations() {

@@ -20,7 +20,7 @@ import SDGSwiftLocalizations
 
 extension Git {
 
-    /// An error encountered while using Git.
+    /// An error encountered while locating Git.
     public enum Error : PresentableError {
 
         /// An error occurred while attempting to locate Git.
