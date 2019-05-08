@@ -201,5 +201,6 @@ class SDGXcodeTests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.hostDestinationError(.packageManagerError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
     }
 }
