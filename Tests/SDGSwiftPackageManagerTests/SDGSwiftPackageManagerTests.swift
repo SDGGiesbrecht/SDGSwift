@@ -25,13 +25,13 @@ class SDGSwiftPackageManagerTests : TestCase {
     func testChangeDetection() throws {
         try withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
-            XCTAssertNotEqual(try mock.uncommittedChanges(), "", "Change unnoticed.")
-            XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]), "", "No change should have been detected.")
+            XCTAssertNotEqual(try mock.uncommittedChanges().get(), "", "Change unnoticed.")
+            XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]).get(), "", "No change should have been detected.")
         }
     }
 
     func testIgnoredFileDetection() {
-        XCTAssert(try thisRepository.ignoredFiles().contains(where: { $0.lastPathComponent == ".build" }))
+        XCTAssert(try thisRepository.ignoredFiles().get().contains(where: { $0.lastPathComponent == ".build" }))
     }
 
     func testInitialization() {
@@ -39,7 +39,7 @@ class SDGSwiftPackageManagerTests : TestCase {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                 do {
                     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-                        _ = try PackageRepository(initializingAt: location, named: StrictString(location.lastPathComponent), type: .library)
+                        _ = try PackageRepository.initializePackage(at: location, named: StrictString(location.lastPathComponent), type: .library).get()
                     }
                 } catch {
                     XCTFail("\(error)")
@@ -49,11 +49,11 @@ class SDGSwiftPackageManagerTests : TestCase {
     }
 
     func testManifestLoading() {
-        XCTAssert(try thisRepository.package().name == "SDGSwift")
+        XCTAssert(try thisRepository.package().get().name == "SDGSwift")
     }
 
     func testPackageGraphLoading() {
-        XCTAssert(try thisRepository.packageGraph().packages.contains(where: { $0.name == "SDGCornerstone" }))
+        XCTAssert(try thisRepository.packageGraph().get().packages.contains(where: { $0.name == "SDGCornerstone" }))
     }
 
     func testTestCoverage() throws {
@@ -72,8 +72,8 @@ class SDGSwiftPackageManagerTests : TestCase {
                 to: testDestination)
 
             XCTAssertNil(try? mock.codeCoverageReport()) // Not generated yet.
-            try mock.test()
-            guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true) else {
+            try mock.test().get()
+            guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get() else {
                 XCTFail("No test coverage report found.")
                 return
             }
