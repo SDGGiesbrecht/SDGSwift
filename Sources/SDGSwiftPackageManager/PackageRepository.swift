@@ -140,10 +140,12 @@ extension PackageRepository {
     /// Returns the package graph.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
-    public func packageGraph() throws -> PackageGraph {
-        return try packageWorkspace().loadPackageGraph(
-            root: AbsolutePath(location.path),
-            diagnostics: DiagnosticsEngine())
+    public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.HostDestinationError> {
+        return packageWorkspace().map { workspace in
+            return workspace.loadPackageGraph(
+                root: AbsolutePath(location.path),
+                diagnostics: DiagnosticsEngine())
+        }
     }
 
     /// Checks for uncommitted changes or additions.
