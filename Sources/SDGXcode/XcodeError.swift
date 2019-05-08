@@ -41,17 +41,4 @@ extension Xcode {
             }
         }
     }
-
-    /// An error encountered while using Xcode.
-    public enum OldError : PresentableError {
-        #warning("Remove?")
-
-        // MARK: - Cases
-
-        // MARK: - PresentableError
-
-        public func presentableDescription() -> StrictString {
-            switch self {
-        }
-    }
 }
