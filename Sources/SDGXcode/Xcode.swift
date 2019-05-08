@@ -455,7 +455,7 @@ public enum Xcode {
 
         guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
             // @exempt(from: tests)
-            throw Xcode.Error.noPackageScheme
+            return .failure(.noPackageScheme)
         }
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
@@ -464,7 +464,7 @@ public enum Xcode {
             return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
         }
         // @exempt(from: tests)
-        throw Xcode.Error.noPackageScheme
+        return .failure(.noPackageScheme)
     }
 
     private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
