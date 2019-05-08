@@ -91,7 +91,7 @@ extension PackageRepository {
 
     /// Returns the package structure.
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.HostDestinationError> {
-        switch try manifest() {
+        switch manifest() {
         case .failure(let error):
             return .failure(error)
         case .success(let manifest):
@@ -111,12 +111,12 @@ extension PackageRepository {
     }
 
     /// Returns the package workspace.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
-    public func packageWorkspace() throws -> Workspace {
-        return Workspace.create(
-            forRootPackage: AbsolutePath(location.path),
-            manifestLoader: try SwiftCompiler.manifestLoader())
+    public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.HostDestinationError> {
+        return SwiftCompiler.manifestLoader().map { loader in
+            return Workspace.create(
+                forRootPackage: AbsolutePath(location.path),
+                manifestLoader: loader)
+        }
     }
 
     internal func hostBuildParameters() throws -> BuildParameters {
