@@ -39,9 +39,9 @@ public enum SwiftCompiler {
         return URL(fileURLWithPath: output)
     }
 
-    private static var located: ExternalProcess?
-    private static func tool() throws -> ExternalProcess {
-        return try cached(in: &located) {
+    private static var located: Result<ExternalProcess, SwiftCompiler.LocationError>?
+    private static func tool() -> Result<ExternalProcess, SwiftCompiler.LocationError> {
+        return cached(in: &located) {
 
             let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
                 .lazy.compactMap({ _search(command: $0) })
@@ -49,7 +49,7 @@ public enum SwiftCompiler {
             func validate(_ swift: ExternalProcess) -> Bool {
 
                 // Make sure version matches.
-                if let output = try? swift.run(["\u{2D}\u{2D}version"]),
+                if let output = try? swift.run(["\u{2D}\u{2D}version"]).get(),
                     let version = Version(firstIn: output),
                     version ∈ compatibleVersionRange {
                     return true
@@ -60,10 +60,10 @@ public enum SwiftCompiler {
             }
 
             if let found = ExternalProcess(searching: searchLocations, commandName: "swift", validate: validate) {
-                return found
+                return .success(found)
             } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
                 // @exempt(from: tests)
-                throw SwiftCompiler.Error.unavailable
+                return .failure(SwiftCompiler.LocationError())
             }
         }
     }
