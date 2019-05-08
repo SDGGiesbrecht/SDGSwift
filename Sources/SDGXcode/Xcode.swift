@@ -262,7 +262,7 @@ public enum Xcode {
         _ package: PackageRepository,
         on sdk: SDK,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<String, BuildDirectoryError> {
+        ) -> Result<String, SchemeError> {
 
         if let coverage = try? coverageDirectory(for: package, on: sdk).get() {
             // @exempt(from: tests) Unreachable on Linux.
