@@ -25,9 +25,6 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The required version of Xcode is unavailable.
-        case unavailable
-
         /// The package has no Xcode project.
         case noXcodeProject
 
@@ -45,19 +42,6 @@ extension Xcode {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-
-                let commands: [StrictString] = Xcode.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Xcode could be located. (\(Xcode.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
-                    }
-                }).resolved()
 
             case .noXcodeProject:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in

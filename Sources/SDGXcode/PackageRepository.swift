@@ -44,10 +44,8 @@ extension PackageRepository {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
+    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> Result<String, SwiftCompiler.Error> {
+        return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
 
     /// Builds the package.
