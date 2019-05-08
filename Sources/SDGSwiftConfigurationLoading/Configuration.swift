@@ -159,7 +159,7 @@ extension Configuration {
                         return "No configuration found. Using defaults..."
                     }
                 }).resolved()))
-                return C()
+                return .success(C())
             }
 
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
