@@ -161,11 +161,11 @@ class SDGXcodeTests : TestCase {
                 coverageFiles.appendingPathComponent("Tests.swift"),
                 to: testDestination)
 
-            try mock.generateXcodeProject()
+            try mock.generateXcodeProject().get()
             #if os(Linux)
-            _ = try? mock.test(on: .macOS)
+            _ = try? mock.test(on: .macOS).get()
             #else
-            try mock.test(on: .macOS).ge
+            try mock.test(on: .macOS).get()
             #endif
             let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
             #if !os(Linux)
@@ -188,10 +188,10 @@ class SDGXcodeTests : TestCase {
     }
 
     func testXcodeError() {
-        testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.BuildDirectoryError.schemeError(.xcodeError(.locationError(LocationError()))), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.BuildDirectoryError.schemeError(.noXcodeProject), localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.BuildDirectoryError.schemeError(.noPackageScheme), localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.BuildDirectoryError.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
     }
 }
