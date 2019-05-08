@@ -47,33 +47,33 @@ class SDGSwiftAPITests : TestCase {
 
     func testPackage() {
         testCustomStringConvertibleConformance(of: Package(url: URL(string: "https://domain.tld/Package")!), localizations: InterfaceLocalization.self, uniqueTestName: "Mock Package", overwriteSpecificationInsteadOfFailing: false)
-        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions().get() ∋ Version(0, 1, 0), "Failed to detect available versions.")
     }
 
     func testPackageError() {
-        testCustomStringConvertibleConformance(of: Package.Error.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPackageRepository() throws {
         testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
 
         try withDefaultMockRepository { mock in
-            try mock.tag(version: Version(10, 0, 0))
+            _ = try mock.tag(version: Version(10, 0, 0)).get()
         }
     }
 
     func testSwiftCompiler() throws {
-        try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
+        _ = try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"]).get()
 
         try withDefaultMockRepository { mock in
-            try mock.resolve()
-            try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
+            _ = try mock.resolve().get()
+            _ = try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true).get()
             #if canImport(ObjectiveC)
-            try mock.regenerateTestLists()
+            _ = try mock.regenerateTestLists().get()
             #else
-            _ = try? mock.regenerateTestLists()
+            _ = try? mock.regenerateTestLists().get()
             #endif
-            try mock.test()
+            _ = try mock.test().get()
         }
         XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
     }

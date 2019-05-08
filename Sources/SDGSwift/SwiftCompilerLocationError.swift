@@ -18,8 +18,13 @@ import SDGSwiftLocalizations
 
 extension SwiftCompiler {
 
-    /// No compatible version of Swift could be located.
+    /// An error encountered while locating Swift.
     public struct LocationError : PresentableError {
+        
+        // MARK: - Cases
+        
+        /// No compatible version of Swift could be located.
+        case unavailable
 
         // MARK: - PresentableError
 
