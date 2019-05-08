@@ -230,13 +230,22 @@ extension Configuration {
                 existingManifest == manifest {
                 // Already there.
             } else {
-                try manifest.save(to: manifestLocation)
+                do {
+                    try manifest.save(to: manifestLocation)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
-            try configurationRepository.build { report in
+            switch configurationRepository.build(reportProgress: { report in
                 if ¬report.hasPrefix("$") {
                     reportProgress(report)
                 }
+            }) {
+            case .failure(let error):
+                return .failure(.swiftError(error))
+            case .success:
+                break
             }
 
             var script = ["run", "configure"]

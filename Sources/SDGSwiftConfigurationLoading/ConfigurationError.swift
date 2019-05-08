@@ -14,6 +14,8 @@
 
 import SDGSwiftLocalizations
 
+import SDGSwift
+
 extension Configuration {
 
     /// An error encountered while loading a configuration.
@@ -23,6 +25,9 @@ extension Configuration {
 
         /// Foundation encountered an error.
         case foundationError(Swift.Error)
+
+        /// Swift encountered an error.
+        case swiftError(SwiftCompiler.Error)
 
         /// The configuration is empty.
         case emptyConfiguration
@@ -36,6 +41,8 @@ extension Configuration {
             switch self {
             case .foundationError(let error):
                 return StrictString(error.localizedDescription)
+            case .swiftError(let error):
+                return error.presentableDescription()
             case .emptyConfiguration:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
