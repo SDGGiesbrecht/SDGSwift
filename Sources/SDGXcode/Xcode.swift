@@ -288,7 +288,10 @@ public enum Xcode {
             command += ["\u{2D}scheme", scheme]
         }
 
-        return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
+        return runCustomSubcommand(
+            command,
+            in: package.location,
+            reportProgress: reportProgress).mapError { .xcodeError($0) }
     }
 
     /// Returns the code coverage report for the package.
