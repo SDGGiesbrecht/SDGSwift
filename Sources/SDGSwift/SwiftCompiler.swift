@@ -71,8 +71,6 @@ public enum SwiftCompiler {
     // MARK: - Usage
 
     /// Returns the location of the Swift compiler.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
     public static func location() -> Result<URL, SwiftCompiler.LocationError> {
         return tool().map { $0.executable }
     }
@@ -127,14 +125,12 @@ public enum SwiftCompiler {
     ///     - package: The package to test.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
 
         var environment = ProcessInfo.processInfo.environment
         environment["XCTestConfigurationFilePath"] = nil // Causes issues when run from within Xcode.
 
-        return try runCustomSubcommand([
+        return runCustomSubcommand([
             "test",
             "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"
             ], in: package.location, with: environment, reportProgress: reportProgress)
@@ -146,10 +142,8 @@ public enum SwiftCompiler {
     ///     - package: The package to resolve.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
+    @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
     }
 
     /// Regenerates the package’s test lists.
@@ -158,10 +152,8 @@ public enum SwiftCompiler {
     ///     - package: The package for which to regenerate the test list.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
+    @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
     }
 
     /// Runs a custom subcommand.
@@ -172,8 +164,6 @@ public enum SwiftCompiler {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
         reportProgress("$ swift " + arguments.joined(separator: " "))
         switch tool() {
