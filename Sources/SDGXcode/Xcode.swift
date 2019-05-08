@@ -332,11 +332,11 @@ public enum Xcode {
         do {
             coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
         } catch {
-            throw
+            return .failure(.foundationError(error))
         }
         guard let resultDirectory = coverageDirectoryContents.first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
-            return nil
+            return .success(nil)
         }
         let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
