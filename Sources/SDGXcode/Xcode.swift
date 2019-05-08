@@ -434,7 +434,7 @@ public enum Xcode {
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
-        if try package.xcodeProject() == nil {
+        if (try? package.xcodeProject()) == nil {
             // @exempt(from: tests)
             return .failure(.noXcodeProject)
         }
