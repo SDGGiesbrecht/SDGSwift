@@ -205,12 +205,18 @@ public enum Xcode {
         _ package: PackageRepository,
         for sdk: SDK,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<String, Xcode.Error> {
-        return runCustomSubcommand([
-            "build",
-            "\u{2D}sdk", sdk.commandLineName,
-            "\u{2D}scheme", try scheme(for: package)
-            ], in: package.location, reportProgress: reportProgress)
+        ) -> Result<String, SchemeError> {
+
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme):
+            return runCustomSubcommand([
+                "build",
+                "\u{2D}sdk", sdk.commandLineName,
+                "\u{2D}scheme", scheme
+                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) }
+        }
     }
 
     /// Returns whether the log contains warnings.

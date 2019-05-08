@@ -14,10 +14,10 @@ extension Xcode {
 
         /// The package has no Xcode project.
         case noXcodeProject
-        
+
         /// Xcode encountered an error.
         case xcodeError(Xcode.Error)
-        
+
         /// The Xcode project has no package scheme.
         case noPackageScheme
 
