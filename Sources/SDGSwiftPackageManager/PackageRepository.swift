@@ -71,7 +71,7 @@ extension PackageRepository {
     // MARK: - Properties
 
     /// Returns the package manifest.
-    public func manifest() -> Result<Manifest, SwiftCompiler.HostDestinationError> {
+    public func manifest() -> Swift.Result<Manifest, SwiftCompiler.HostDestinationError> {
         switch SwiftCompiler.manifestLoader() {
         case .failure(let error):
             return .failure(error)
@@ -90,15 +90,24 @@ extension PackageRepository {
     }
 
     /// Returns the package structure.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
-    public func package() throws -> PackageModel.Package {
-        let builder = PackageBuilder(
-            manifest: try manifest(),
-            path: AbsolutePath(location.path),
-            diagnostics: DiagnosticsEngine(),
-            isRootPackage: true)
-        return try builder.construct()
+    public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.HostDestinationError> {
+        switch try manifest() {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let manifest):
+            let builder = PackageBuilder(
+                manifest: manifest,
+                path: AbsolutePath(location.path),
+                diagnostics: DiagnosticsEngine(),
+                isRootPackage: true)
+            let package: PackageModel.Package
+            do {
+                package = try builder.construct()
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(package)
+        }
     }
 
     /// Returns the package workspace.
