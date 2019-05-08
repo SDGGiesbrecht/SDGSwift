@@ -493,14 +493,21 @@ public enum Xcode {
         _ arguments: [String],
         in workingDirectory: URL? = nil,
         with environment: [String: String]? = nil,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error> {
 
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
 
         switch tool() {
-            case .failure(<#T##Failure#>)
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let xcode):
+            switch xcode.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
         }
-        return try .run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 
     /// Runs a custom subcommand of xccov.
