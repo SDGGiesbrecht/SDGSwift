@@ -16,11 +16,16 @@ import SDGLocalization
 
 extension Package {
 
+    /// An error encountered while executing a tool from a Swift package.
     public enum ExecutionError : PresentableError {
+
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
 
         public func presentableDescription() -> StrictString {
             switch self {
-
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             }
         }
     }
