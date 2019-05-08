@@ -448,7 +448,9 @@ public enum Xcode {
         let information: String
         switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
         case .failure(let error):
-            return .failure(error)
+            return .failure(.xcodeError(error))
+        case .success(let output):
+            information = output
         }
 
         guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
@@ -507,7 +509,8 @@ public enum Xcode {
         _ arguments: [String],
         in workingDirectory: URL? = nil,
         with environment: [String: String]? = nil,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error> {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.Error> {
 
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
 
@@ -538,7 +541,8 @@ public enum Xcode {
         _ arguments: [String],
         in workingDirectory: URL? = nil,
         with environment: [String: String]? = nil,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error> {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.Error> {
 
         reportProgress("$ xccov " + arguments.joined(separator: " "))
 
