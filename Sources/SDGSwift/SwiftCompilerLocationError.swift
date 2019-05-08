@@ -1,5 +1,5 @@
 /*
- GitLocationError.swift
+ SwiftCompilerLocationError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -16,23 +16,23 @@ import SDGLocalization
 
 import SDGSwiftLocalizations
 
-extension Git {
+extension SwiftCompiler {
 
-    /// No compatible version of Git could be located.
+    /// No compatible version of Swift could be located.
     public struct LocationError : PresentableError {
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
 
-            let commands: [StrictString] = Git.searchCommands
+            let commands: [StrictString] = SwiftCompiler.searchCommands
                 .map({ "$ \($0.joined(separator: " "))" })
 
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return (([
-                        "No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
+                        "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
                         "Make sure it is installed and can be found with one of the following commands:",
                         ] as [StrictString]) + commands).joined(separator: "\n")
                 }

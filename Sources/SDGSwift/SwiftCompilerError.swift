@@ -26,9 +26,6 @@ extension SwiftCompiler {
 
         // MARK: - Cases
 
-        /// The required version of Swift is unavailable.
-        case unavailable
-
         /// The test coverage report could not be parsed.
         case corruptTestCoverageReport
 
@@ -36,21 +33,6 @@ extension SwiftCompiler {
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .unavailable:
-
-                let commands: [StrictString] = SwiftCompiler.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
-                    }
-                }).resolved()
-
             case .corruptTestCoverageReport:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
