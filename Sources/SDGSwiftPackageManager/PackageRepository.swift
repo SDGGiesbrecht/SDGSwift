@@ -71,14 +71,22 @@ extension PackageRepository {
     // MARK: - Properties
 
     /// Returns the package manifest.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
-    public func manifest() throws -> Manifest {
-        let loader = try SwiftCompiler.manifestLoader()
-        return try loader.load(
-            package: AbsolutePath(location.path),
-            baseURL: location.path,
-            manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
+    public func manifest() -> Result<Manifest, SwiftCompiler.HostDestinationError> {
+        switch SwiftCompiler.manifestLoader() {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let loader):
+            let manifest: Manifest
+            do {
+                manifest = try loader.load(
+                    package: AbsolutePath(location.path),
+                    baseURL: location.path,
+                    manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(manifest)
+        }
     }
 
     /// Returns the package structure.
