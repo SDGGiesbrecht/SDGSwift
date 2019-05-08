@@ -435,6 +435,7 @@ public enum Xcode {
                         let columnString = components.last,
                         let count = toIntegerIgnoringWhitespace(columnString) else {
                             // @exempt(from: tests)
+                            return .failure(<#T##Failure#>)
                             throw Xcode.Error.corruptTestCoverageReport
                     }
                     regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))

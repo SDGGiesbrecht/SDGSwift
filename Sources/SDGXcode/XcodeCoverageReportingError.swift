@@ -14,6 +14,8 @@
 
 import SDGLocalization
 
+import SDGSwiftLocalizations
+
 import SDGSwift
 import SDGSwiftPackageManager
 
@@ -36,6 +38,9 @@ extension Xcode {
         /// Xcode encountered an error.
         case xcodeError(Xcode.Error)
 
+        /// The test coverage report could not be parsed.
+        case corruptTestCoverageReport
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
@@ -48,6 +53,13 @@ extension Xcode {
                 return StrictString(error.localizedDescription)
             case .xcodeError(let error):
                 return error.presentableDescription()
+            case .corruptTestCoverageReport:
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "The test coverage report could not be parsed."
+                    }
+                }).resolved()
             }
         }
     }

@@ -48,21 +48,10 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The test coverage report could not be parsed.
-        case corruptTestCoverageReport
-
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .corruptTestCoverageReport:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The test coverage report could not be parsed."
-                    }
-                }).resolved()
-            }
         }
     }
 }
