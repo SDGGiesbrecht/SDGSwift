@@ -9,6 +9,9 @@ extension Xcode {
 
         // MARK: - Cases
 
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
+
         /// The package has no Xcode project.
         case noXcodeProject
 
@@ -16,6 +19,8 @@ extension Xcode {
 
         public func presentableDescription() -> StrictString {
             switch self {
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             case .noXcodeProject:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
