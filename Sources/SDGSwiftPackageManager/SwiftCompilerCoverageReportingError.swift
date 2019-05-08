@@ -39,7 +39,7 @@ extension SwiftCompiler {
             switch self {
             case .packageManagerError(let error),
                  .foundationError(let error):
-                return error.localizedDescription
+                return StrictString(error.localizedDescription)
             case .corruptTestCoverageReport:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
