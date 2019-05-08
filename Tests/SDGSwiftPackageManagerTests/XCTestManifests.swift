@@ -7,6 +7,7 @@ extension SDGSwiftPackageManagerTests {
     // to regenerate.
     static let __allTests__SDGSwiftPackageManagerTests = [
         ("testChangeDetection", testChangeDetection),
+        ("testErrors", testErrors),
         ("testIgnoredFileDetection", testIgnoredFileDetection),
         ("testInitialization", testInitialization),
         ("testManifestLoading", testManifestLoading),
