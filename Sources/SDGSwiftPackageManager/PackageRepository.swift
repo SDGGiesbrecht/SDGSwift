@@ -32,7 +32,7 @@ extension PackageRepository {
     ///     - location: The location at which to initialize the new package.
     ///     - name: A name for the package.
     ///     - type: The type of package.
-    public static func initializePackage(at location: URL, named name: StrictString, type: InitPackage.PackageType) -> Result<PackageRepository, InitializationError> {
+    public static func initializePackage(at location: URL, named name: StrictString, type: InitPackage.PackageType) -> Swift.Result<PackageRepository, InitializationError> {
 
         let repository = PackageRepository(at: location)
 
