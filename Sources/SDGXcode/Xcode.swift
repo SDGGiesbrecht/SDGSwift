@@ -518,8 +518,8 @@ public enum Xcode {
     ///     - sdk: The SDK.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func derivedData(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        return try buildDirectory(for: package, on: sdk).deletingLastPathComponent()
+    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() }
     }
 
     /// Runs a custom subcommand of xcodebuild.
