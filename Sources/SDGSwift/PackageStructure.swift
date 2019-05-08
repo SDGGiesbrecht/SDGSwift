@@ -106,12 +106,14 @@ public struct Package : TransparentWrapper {
         return cache.appendingPathComponent("Development")
     }
 
-    private func cacheDirectory(in cache: URL, for version: Build) throws -> URL {
+    private func cacheDirectory(in cache: URL, for version: Build) -> Result<URL, Git.Error> {
         switch version {
         case .version(let specific):
-            return cache.appendingPathComponent(specific.string())
+            return .success(cache.appendingPathComponent(specific.string()))
         case .development:
-            return developmentCache(for: cache).appendingPathComponent(try latestCommitIdentifier())
+            return latestCommitIdentifier().map { identifier in
+                return developmentCache(for: cache).appendingPathComponent(identifier)
+            }
         }
     }
 
