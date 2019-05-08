@@ -367,7 +367,7 @@ public enum Xcode {
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {
             // @exempt(from: tests) Unreachable on Linux.
-            try autoreleasepool {
+            let result = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
@@ -376,11 +376,17 @@ public enum Xcode {
                     }
                 }).resolved()))
 
-                var report = try runCustomCoverageSubcommand([
+                var report: String
+                switch runCustomCoverageSubcommand([
                     "view",
                     "\u{2D}\u{2D}file", fileURL.path,
                     archive.path
-                    ])
+                    ]) {
+                case .failure(let error):
+                    return .failure(.xcodeError(error))
+                case .success(let output):
+                    report = output
+                }
 
                 let source = try String(from: fileURL)
                 let sourceLines = source.lines
