@@ -272,17 +272,17 @@ extension Configuration {
             jsonData = json.file
         }
 
-        let decoded: C
+        let decoded: [C?]
         do {
             decoded = try JSONDecoder().decode([C?].self, from: jsonData)
         } catch {
             return .failure(.foundationError(error))
         }
         guard let registry = decoded.first else {
-            throw Configuration.Error.corruptConfiguration // @exempt(from: tests)
+            return .failure(.corruptConfiguration) // @exempt(from: tests)
         }
         guard let registered = registry else {
-            throw Configuration.Error.emptyConfiguration
+            return .failure(.emptyConfiguration)
         }
         return registered
     }
