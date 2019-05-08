@@ -24,6 +24,28 @@ extension SwiftCompiler {
     /// An error encountered while using Swift.
     public enum Error : PresentableError {
 
+        /// An error occurred while attempting to locate Swift.
+        case locationError(LocationError)
+
+        /// Swift encountered an error during its execution.
+        case executionError(ExternalProcess.Error)
+
+        // MARK: - PresentableError
+
+        public func presentableDescription() -> StrictString {
+            switch self {
+            case .locationError(let error):
+                return error.presentableDescription()
+            case .executionError(let error):
+                return error.presentableDescription()
+            }
+        }
+    }
+
+    /// An error encountered while using Swift.
+    public enum CoverageReportingError : PresentableError {
+        #warning("Move.")
+
         // MARK: - Cases
 
         /// The test coverage report could not be parsed.
