@@ -26,11 +26,11 @@ class SDGSwiftRegressionTests : TestCase {
         // Untracked.
 
         try withMock(named: "Warnings") { package in
-            let build = try package.build()
+            let build = try package.build().get()
             XCTAssert(SwiftCompiler.warningsOccurred(during: build))
         }
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            let build = try package.build()
+            let build = try package.build().get()
             XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
         }
     }
@@ -40,8 +40,8 @@ class SDGSwiftRegressionTests : TestCase {
 
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
             try withMockDynamicLinkedExecutable { mock in
-                XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
-                XCTAssertEqual(try Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: [], cacheDirectory: moved), "Hello, world!")
+                XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved).get(), "Hello, world!")
+                XCTAssertEqual(try Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: [], cacheDirectory: moved).get(), "Hello, world!")
             }
         }
     }
