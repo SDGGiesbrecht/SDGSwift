@@ -48,9 +48,6 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The build directory could not be found in the project build settings.
-        case noBuildDirectory
-
         /// The test coverage report could not be parsed.
         case corruptTestCoverageReport
 
@@ -58,15 +55,6 @@ extension Xcode {
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .noBuildDirectory:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom:
-                        return "‘BUILD_DIR’ could not be found in the project build settings."
-                    case .englishUnitedStates, .englishCanada:
-                        return "“BUILD_DIR” could not be found in the project build settings."
-                    }
-                }).resolved()
             case .corruptTestCoverageReport:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

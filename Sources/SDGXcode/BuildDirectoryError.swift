@@ -26,12 +26,24 @@ extension Xcode {
         /// The Xcode scheme could not be loaded.
         case schemeError(SchemeError)
 
+        /// The build directory could not be found in the project build settings.
+        case noBuildDirectory
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
             case .schemeError(let error):
                 return error.presentableDescription()
+            case .noBuildDirectory:
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return "‘BUILD_DIR’ could not be found in the project build settings."
+                    case .englishUnitedStates, .englishCanada:
+                        return "“BUILD_DIR” could not be found in the project build settings."
+                    }
+                }).resolved()
             }
         }
     }
