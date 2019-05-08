@@ -36,7 +36,7 @@ extension SwiftCompiler {
         case .success(let location):
             let destination: Destination
             do {
-                try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
+                destination = try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
             } catch {
                 return .failure(.packageManagerError(error))
             }
