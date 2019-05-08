@@ -30,15 +30,15 @@ public enum Git {
         ["which", "git"]
     ]
 
-    private static var located: ExternalProcess?
-    private static func tool() throws -> ExternalProcess {
-        return try cached(in: &located) {
+    private static var located: Result<ExternalProcess, Git.LocationError>?
+    private static func tool() -> Result<ExternalProcess, Git.LocationError> {
+        return cached(in: &located) {
 
             let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
             func validate(_ swift: ExternalProcess) -> Bool {
                 // Make sure version is compatible.
-                guard let output = try? swift.run(["\u{2D}\u{2D}version"]),
+                guard let output = try? swift.run(["\u{2D}\u{2D}version"]).get(),
                     let version = Version(firstIn: output) else {
                     return false // @exempt(from: tests) Git is necessarily available when tests are run.
                 }
@@ -46,10 +46,10 @@ public enum Git {
             }
 
             if let found = ExternalProcess(searching: searchLocations, commandName: "git", validate: validate) {
-                return found
+                return .success(found)
             } else { // @exempt(from: tests)
                 // @exempt(from: tests) Git is necessarily available when tests are run.
-                throw Git.Error.unavailable
+                return .failure(Git.LocationError())
             }
         }
     }
