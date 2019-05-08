@@ -340,23 +340,28 @@ public enum Xcode {
         }
         let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
-        let fileURLs: [URL] = try runCustomCoverageSubcommand([
+        let fileURLs: [URL]
+        switch runCustomCoverageSubcommand([
             "view",
             "\u{2D}\u{2D}file\u{2D}list",
             archive.path
-            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
-                if file.pathExtension ≠ "swift" {
-                    // @exempt(from: tests)
-                    // The report is unlikely to be readable.
-                    return false
-                }
-                if ignoredDirectories.contains(where: { file.is(in: $0) }) {
-                    // @exempt(from: tests)
-                    // Belongs to a dependency.
-                    return false
-                }
-                return true
-            }).sorted()
+            ]) {
+        case .failure(let error):
+            return.failure(.xcodeError(error))
+        }
+        .lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
+            if file.pathExtension ≠ "swift" {
+                // @exempt(from: tests)
+                // The report is unlikely to be readable.
+                return false
+            }
+            if ignoredDirectories.contains(where: { file.is(in: $0) }) {
+                // @exempt(from: tests)
+                // Belongs to a dependency.
+                return false
+            }
+            return true
+        }).sorted()
 
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {

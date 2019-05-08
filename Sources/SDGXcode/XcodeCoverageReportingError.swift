@@ -33,6 +33,9 @@ extension Xcode {
         /// Foundation encountered an error.
         case foundationError(Swift.Error)
 
+        /// Xcode encountered an error.
+        case xcodeError(Xcode.Error)
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
@@ -43,6 +46,8 @@ extension Xcode {
                 return error.presentableDescription()
             case .foundationError(let error):
                 return StrictString(error.localizedDescription)
+            case .xcodeError(let error):
+                return error.presentableDescription()
             }
         }
     }
