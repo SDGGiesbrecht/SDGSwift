@@ -130,12 +130,16 @@ extension Configuration {
         at releaseVersion: Version,
         minimumMacOSVersion: Version,
         context: E?,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
             configuration.mockQueue.removeFirst()
-            jsonData = try JSONEncoder().encode([mock])
+            do {
+                jsonData = try JSONEncoder().encode([mock])
+            } catch {
+                return .failure(.foundationError(error))
+            }
         } else {
 
             var possibleConfigurationFile: URL?

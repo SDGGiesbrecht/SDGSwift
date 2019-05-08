@@ -21,6 +21,9 @@ extension Configuration {
 
         // MARK: - Cases
 
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
+
         /// The configuration is empty.
         case emptyConfiguration
 
@@ -31,6 +34,8 @@ extension Configuration {
 
         public func presentableDescription() -> StrictString {
             switch self {
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             case .emptyConfiguration:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
