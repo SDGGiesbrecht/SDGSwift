@@ -30,8 +30,8 @@ public enum Git {
         ["which", "git"]
     ]
 
-    private static var located: Result<ExternalProcess, Git.LocationError>?
-    private static func tool() -> Result<ExternalProcess, Git.LocationError> {
+    private static var located: Result<ExternalProcess, LocationError>?
+    private static func tool() -> Result<ExternalProcess, LocationError> {
         return cached(in: &located) {
 
             let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
@@ -49,7 +49,7 @@ public enum Git {
                 return .success(found)
             } else { // @exempt(from: tests)
                 // @exempt(from: tests) Git is necessarily available when tests are run.
-                return .failure(Git.LocationError())
+                return .failure(.unavailable)
             }
         }
     }
@@ -59,8 +59,8 @@ public enum Git {
     /// Returns the location of the Swift compiler.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
-    public static func location() throws -> URL {
-        return try tool().executable
+    public static func location() -> Result<URL, LocationError> {
+        return tool().map { $0.executable }
     }
 
     /// Creates a local repository by cloning the remote package.
