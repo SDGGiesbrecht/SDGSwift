@@ -64,7 +64,7 @@ public struct Package : TransparentWrapper {
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<Void, BuildError> {
 
-        try FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
+        FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
             let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
 
             reportProgress("")

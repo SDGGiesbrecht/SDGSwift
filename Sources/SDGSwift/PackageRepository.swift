@@ -38,11 +38,21 @@ public struct PackageRepository : TransparentWrapper {
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public init(cloning package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        self.init(at: location)
-        try Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress)
+    public static func clone(
+        _ package: Package,
+        to location: URL,
+        at build: Build = .development,
+        shallow: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<PackageRepository, Git.Error> {
+
+        let repository = PackageRepository(at: location)
+        switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
+        case .failure(let error):
+            return .failure(error)
+        case .success:
+            return .success(repository)
+        }
     }
 
     // MARK: - Properties
