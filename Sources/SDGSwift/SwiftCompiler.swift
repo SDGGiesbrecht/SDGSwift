@@ -73,8 +73,8 @@ public enum SwiftCompiler {
     /// Returns the location of the Swift compiler.
     ///
     /// - Throws: A `SwiftCompiler.Error`.
-    public static func location() throws -> URL {
-        return try tool().executable
+    public static func location() -> Result<URL, SwiftCompiler.LocationError> {
+        return tool().map { $0.executable }
     }
 
     public static func _ignoreProgress(_ output: String) {}
