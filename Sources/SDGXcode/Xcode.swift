@@ -258,7 +258,11 @@ public enum Xcode {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func test(
+        _ package: PackageRepository,
+        on sdk: SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, SchemeError> {
 
         if let coverage = try? coverageDirectory(for: package, on: sdk) {
             // @exempt(from: tests) Unreachable on Linux.
@@ -277,7 +281,12 @@ public enum Xcode {
             command += ["\u{2D}sdk", sdk.commandLineName]
         }
 
-        command += ["\u{2D}scheme", try scheme(for: package)]
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme):
+            command += ["\u{2D}scheme", scheme]
+        }
 
         return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
     }
