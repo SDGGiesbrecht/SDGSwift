@@ -13,6 +13,7 @@
  */
 
 import SDGLocalization
+import SDGExternalProcess
 
 extension Package {
 
@@ -28,15 +29,20 @@ extension Package {
         /// Foundation encountered an error.
         case foundationError(Swift.Error)
 
+        /// The tool encountered an error during its execution.
+        case executionError(ExternalProcess.Error)
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
             case .gitError(let error):
                 return error.presentableDescription()
             case .buildError(let error):
+                return error.presentableDescription()
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
+            case .executionError(let error):
                 return error.presentableDescription()
             }
         }

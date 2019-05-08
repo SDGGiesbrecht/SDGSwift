@@ -192,18 +192,22 @@ public struct Package : TransparentWrapper {
                 } catch {
                     return .failure(.foundationError(error))
                 }
-                for executable in cacheContents where StrictString(executable.lastPathComponent) ∈ executableNames {
+                for executable in cacheContents
+                    where StrictString(executable.lastPathComponent) ∈ executableNames {
 
-                    #if os(Linux)
-                    // The move from the temporary directory to the cache may lose permissions.
-                    if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-                        _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]) // @exempt(from: tests)
-                    }
-                    #endif
+                        #if os(Linux)
+                        // The move from the temporary directory to the cache may lose permissions.
+                        if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
+                            _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get() // @exempt(from: tests)
+                        }
+                        #endif
 
-                    reportProgress("")
-                    reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
-                    return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
+                        reportProgress("")
+                        reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
+                        return ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress).mapError { error in
+                            return .externalProcess
+
+                        }
                 }
                 throw Package.Error.noSuchExecutable(requested: executableNames)
             }
