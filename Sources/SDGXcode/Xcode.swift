@@ -472,6 +472,13 @@ public enum Xcode {
 
                 return .success(())
             }
+
+            switch result {
+            case .failure(let error):
+                return .failure(error)
+            case .success:
+                break
+            }
         }
         return .success(TestCoverageReport(files: files))
     }
