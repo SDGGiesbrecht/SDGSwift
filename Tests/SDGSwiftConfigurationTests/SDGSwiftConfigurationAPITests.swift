@@ -57,24 +57,24 @@ class SDGSwiftConfigurationAPITests : TestCase {
             // A log to collect progress reports while loading. (Optional.)
             var log = String()
 
-            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) })
+            let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
             XCTAssertEqual(loadedConfiguration.option, "Configured")
             // @endExample
 
             print("", to: &log)
             print("Cached", to: &log)
-            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) })
+            let cached = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
             XCTAssertEqual(cached.option, "Configured")
 
             print("", to: &log)
             print("None", to: &log)
             let none = specifications.appendingPathComponent("None")
-            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).option, "Default")
+            XCTAssertEqual(try SampleConfiguration.load(configuration: type, named: name, from: none, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get().option, "Default")
 
             print("", to: &log)
             print("Empty", to: &log)
             let emptyDirectory = specifications.appendingPathComponent("Empty")
-            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }))
+            XCTAssertNil(try? SampleConfiguration.load(configuration: type, named: name, from: emptyDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get())
 
             print("", to: &log)
             print("Mock", to: &log)
@@ -82,7 +82,7 @@ class SDGSwiftConfigurationAPITests : TestCase {
             let mock = SampleConfiguration()
             mock.option = "Mock"
             Configuration.queue(mock: mock)
-            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, reportProgress: { print($0, to: &log) })
+            let loadedMock = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, reportProgress: { print($0, to: &log) }).get()
             XCTAssertEqual(loadedMock.option, "Mock")
 
             func abbreviate(logEntry: String) {

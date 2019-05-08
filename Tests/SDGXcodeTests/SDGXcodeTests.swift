@@ -33,7 +33,7 @@ class SDGXcodeTests : TestCase {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             try package.generateXcodeProject()
             #if !os(Linux)
-            let build = try package.build(for: .macOS)
+            let build = try package.build(for: .macOS).get()
             XCTAssertFalse(Xcode.warningsOccurred(during: build))
             #endif
         }
@@ -41,11 +41,11 @@ class SDGXcodeTests : TestCase {
 
     func testXcode() throws {
         #if os(Linux)
-        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"])
+        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"]).get()
         #else
-        try Xcode.runCustomSubcommand(["\u{2D}version"])
+        _ = try Xcode.runCustomSubcommand(["\u{2D}version"]).get()
         #endif
-        let xcodeLocation = try? Xcode.location()
+        let xcodeLocation = try? Xcode.location().get()
         #if !os(Linux)
         XCTAssertNotNil(xcodeLocation)
         #endif
@@ -53,7 +53,7 @@ class SDGXcodeTests : TestCase {
         try withDefaultMockRepository { mock in
             try mock.generateXcodeProject()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-            let mockScheme = try? mock.scheme()
+            let mockScheme = try? mock.scheme().get()
             #if !os(Linux)
             XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
@@ -69,7 +69,7 @@ class SDGXcodeTests : TestCase {
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
 
-                if let derived = try? mock.derivedData(for: sdk) {
+                if let derived = try? mock.derivedData(for: sdk).get() {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
@@ -84,9 +84,9 @@ class SDGXcodeTests : TestCase {
                     }
                 }
                 #if os(Linux)
-                _ = try? mock.build(for: sdk, reportProgress: processLog)
+                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
                 #else
-                try mock.build(for: sdk, reportProgress: processLog)
+                _ = try mock.build(for: sdk, reportProgress: processLog).get()
                 #endif
 
                 var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
@@ -105,7 +105,7 @@ class SDGXcodeTests : TestCase {
             for sdk in testSDKs {
                 print("Testing testing on \(sdk.commandLineName)...")
 
-                if let derived = try? mock.derivedData(for: sdk) {
+                if let derived = try? mock.derivedData(for: sdk).get() {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
@@ -144,7 +144,7 @@ class SDGXcodeTests : TestCase {
         #if os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(["help"])
         #else
-        try Xcode.runCustomCoverageSubcommand(["help"])
+        _ = try Xcode.runCustomCoverageSubcommand(["help"]).get()
         #endif
 
         try withDefaultMockRepository { mock in
@@ -165,9 +165,9 @@ class SDGXcodeTests : TestCase {
             #if os(Linux)
             _ = try? mock.test(on: .macOS)
             #else
-            try mock.test(on: .macOS)
+            try mock.test(on: .macOS).ge
             #endif
-            let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true)
+            let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
             #if !os(Linux)
             guard let coverageReport = possibleReport else {
                 XCTFail("No test coverage report found.")

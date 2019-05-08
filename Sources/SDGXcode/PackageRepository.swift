@@ -44,7 +44,7 @@ extension PackageRepository {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
         return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
 
@@ -68,7 +68,7 @@ extension PackageRepository {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> Result<String, Xcode.SchemeError> {
+    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.SchemeError> {
         return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
@@ -87,7 +87,7 @@ extension PackageRepository {
         on sdk: Xcode.SDK,
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) throws -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
+        ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
         return Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
