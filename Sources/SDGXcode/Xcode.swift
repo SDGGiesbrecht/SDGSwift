@@ -489,9 +489,18 @@ public enum Xcode {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(
+        _ arguments: [String],
+        in workingDirectory: URL? = nil,
+        with environment: [String: String]? = nil,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error {
+
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
-        return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+
+        switch tool() {
+            case .failure(<#T##Failure#>)
+        }
+        return try .run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
     }
 
     /// Runs a custom subcommand of xccov.
