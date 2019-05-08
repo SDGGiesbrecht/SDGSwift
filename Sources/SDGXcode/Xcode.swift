@@ -367,7 +367,7 @@ public enum Xcode {
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {
             // @exempt(from: tests) Unreachable on Linux.
-            let result = autoreleasepool { () -> Result<Void, CoverageReportingError> in
+            let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
@@ -469,9 +469,11 @@ public enum Xcode {
                     ignoreCoveredRegions: ignoreCoveredRegions)
 
                 files.append(FileTestCoverage(file: fileURL, regions: regions))
+
+                return .success(())
             }
         }
-        return TestCoverageReport(files: files)
+        return .success(TestCoverageReport(files: files))
     }
 
     /// Returns the main package scheme.
