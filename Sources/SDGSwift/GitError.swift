@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
+import SDGControlFlow
 import SDGLocalization
 import SDGExternalProcess
 
@@ -24,5 +23,21 @@ extension Git {
     /// An error encountered while using Git.
     public enum Error : PresentableError {
 
+        /// An error occurred while attempting to locate Git.
+        case locationError(LocationError)
+
+        /// Git encountered an error.
+        case executionError(ExternalProcess.Error)
+
+        // MARK: - PresentableError
+
+        public func presentableDescription() -> StrictString {
+            switch self {
+            case .locationError(let error):
+                return error.presentableDescription()
+            case .executionError(let error):
+                return error.presentableDescription()
+            }
+        }
     }
 }
