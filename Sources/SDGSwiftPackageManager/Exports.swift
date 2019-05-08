@@ -23,5 +23,7 @@
 @_exported import class PackageModel.Target
 @_exported import class Workspace.Workspace
 
+@_exported import enum SDGSwift.SwiftCompiler
+@_exported import enum SDGSwift.Git
 @_exported import struct SDGSwift.Package
 @_exported import struct SDGSwift.PackageRepository

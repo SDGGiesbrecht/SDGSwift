@@ -40,6 +40,8 @@ class SDGSwiftPackageManagerTests : TestCase {
         }
         testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.HostDestinationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testIgnoredFileDetection() {
