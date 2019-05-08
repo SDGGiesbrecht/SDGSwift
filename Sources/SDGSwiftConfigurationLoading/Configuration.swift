@@ -73,7 +73,7 @@ extension Configuration {
     /// // A log to collect progress reports while loading. (Optional.)
     /// var log = String()
     ///
-    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) })
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
     /// XCTAssertEqual(loadedConfiguration.option, "Configured")
     /// ```
     ///
