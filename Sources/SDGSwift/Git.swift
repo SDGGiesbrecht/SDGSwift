@@ -103,24 +103,25 @@ public enum Git {
     ///     - package: The package.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func versions(of package: Package) throws -> Set<Version> {
-        let output = try runCustomSubcommand([
+    public static func versions(of package: Package) -> Result<Set<Version>, Git.Error> {
+        return runCustomSubcommand([
             "ls\u{2D}remote",
             "\u{2D}\u{2D}tags",
             package.url.absoluteString
-            ])
+            ]).map { output in
 
-        var versions: Set<Version> = []
-        for line in output.lines {
-            let lineText = line.line
-            if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
-                let tag = String(lineText[tagPrefix.range.upperBound...])
-                if let version = Version(tag) {
-                    versions.insert(version)
+                var versions: Set<Version> = []
+                for line in output.lines {
+                    let lineText = line.line
+                    if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
+                        let tag = String(lineText[tagPrefix.range.upperBound...])
+                        if let version = Version(tag) {
+                            versions.insert(version)
+                        }
+                    }
                 }
-            }
+                return versions
         }
-        return versions
     }
 
     /// Retrieves the latest commit identifier in the master branch of the package.
