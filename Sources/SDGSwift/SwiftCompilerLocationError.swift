@@ -19,29 +19,31 @@ import SDGSwiftLocalizations
 extension SwiftCompiler {
 
     /// An error encountered while locating Swift.
-    public struct LocationError : PresentableError {
-        
+    public enum LocationError : PresentableError {
+
         // MARK: - Cases
-        
+
         /// No compatible version of Swift could be located.
         case unavailable
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
+            switch self {
+            case .unavailable:
+                let commands: [StrictString] = SwiftCompiler.searchCommands
+                    .map({ "$ \($0.joined(separator: " "))" })
 
-            let commands: [StrictString] = SwiftCompiler.searchCommands
-                .map({ "$ \($0.joined(separator: " "))" })
-
-            return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return (([
-                        "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                        "Make sure it is installed and can be found with one of the following commands:",
-                        ] as [StrictString]) + commands).joined(separator: "\n")
-                }
-            }).resolved()
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return (([
+                            "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
+                            "Make sure it is installed and can be found with one of the following commands:",
+                            ] as [StrictString]) + commands).joined(separator: "\n")
+                    }
+                }).resolved()
+            }
         }
     }
 }
