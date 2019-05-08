@@ -20,18 +20,18 @@ import SDGExternalProcess
 import SDGSwiftLocalizations
 
 extension Xcode {
-    
+
     /// An error encountered while using Xcode.
     public enum Error : PresentableError {
-        
+
         /// An error occurred while attempting to locate Xcode.
         case locationError(LocationError)
-        
+
         /// Xcode encountered an error during its execution.
         case executionError(ExternalProcess.Error)
-        
+
         // MARK: - PresentableError
-        
+
         public func presentableDescription() -> StrictString {
             switch self {
             case .locationError(let error):
