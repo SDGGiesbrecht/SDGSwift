@@ -64,7 +64,7 @@ public struct Package : TransparentWrapper {
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<Void, BuildError> {
 
-        FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
+        return FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
             let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
 
             reportProgress("")
@@ -101,7 +101,7 @@ public struct Package : TransparentWrapper {
                             _ = try? Shell.default.run(command: [
                                 "install_name_tool",
                                 "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
-                                ])
+                                ]).get()
                         }
                     }
                     #endif
