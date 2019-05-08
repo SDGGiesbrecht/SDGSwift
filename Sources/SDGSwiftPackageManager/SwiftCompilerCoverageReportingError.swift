@@ -37,6 +37,9 @@ extension SwiftCompiler {
 
         public func presentableDescription() -> StrictString {
             switch self {
+            case .packageManagerError(let error),
+                 .foundationError(let error):
+                return error.localizedDescription
             case .corruptTestCoverageReport:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
