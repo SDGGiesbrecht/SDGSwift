@@ -14,6 +14,8 @@
 
 import SDGCollections
 import SDGLocalization
+import SDGExternalProcess
+
 import SDGLogicTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
@@ -95,6 +97,10 @@ class SDGSwiftAPITests : TestCase {
         testCustomStringConvertibleConformance(of: Package.BuildError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Package.BuildError.swiftError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Package.BuildError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.buildError(.gitError(.locationError(.unavailable))), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testVersion() {
