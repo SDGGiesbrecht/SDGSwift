@@ -262,9 +262,9 @@ public enum Xcode {
         _ package: PackageRepository,
         on sdk: SDK,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<String, SchemeError> {
+        ) -> Result<String, BuildDirectoryError> {
 
-        if let coverage = try? coverageDirectory(for: package, on: sdk) {
+        if let coverage = try? coverageDirectory(for: package, on: sdk).get() {
             // @exempt(from: tests) Unreachable on Linux.
             // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
             try? FileManager.default.removeItem(at: coverage)
