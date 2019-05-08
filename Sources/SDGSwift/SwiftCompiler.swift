@@ -85,9 +85,7 @@ public enum SwiftCompiler {
     ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
         var arguments = ["build"]
         if releaseConfiguration {
             arguments += ["\u{2D}\u{2D}configuration", "release"]
@@ -95,7 +93,7 @@ public enum SwiftCompiler {
         if staticallyLinkStandardLibrary {
             arguments += ["\u{2D}\u{2D}static\u{2D}swift\u{2D}stdlib"]
         }
-        return try runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
+        return runCustomSubcommand(arguments, in: package.location, reportProgress: reportProgress)
     }
 
     public static func _warningBelongsToDependency(_ line: String.UnicodeScalarView.SubSequence) -> Bool {
