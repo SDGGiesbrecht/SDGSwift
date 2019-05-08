@@ -250,11 +250,21 @@ extension Configuration {
 
             var script = ["run", "configure"]
             if let information = context {
-                let json = try JSONEncoder().encode([information])
-                script.append(String(data: json, encoding: .utf8)!)
+                do {
+                    let json = try JSONEncoder().encode([information])
+                    script.append(String(data: json, encoding: .utf8)!)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
-            var json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
+            var json: String
+            switch SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location) {
+            case .failure(let error):
+                return .failure(.swiftError(error))
+            case .success(let output):
+                json = output
+            }
             if json.first ≠ "[" {
                 json.drop(upTo: "\n[") // @exempt(from: tests) Only reachable when new Swift releases flag new errors in old configurations.
             }
@@ -262,7 +272,12 @@ extension Configuration {
             jsonData = json.file
         }
 
-        let decoded = try JSONDecoder().decode([C?].self, from: jsonData)
+        let decoded: C
+        do {
+            decoded = try JSONDecoder().decode([C?].self, from: jsonData)
+        } catch {
+            return .failure(.foundationError(error))
+        }
         guard let registry = decoded.first else {
             throw Configuration.Error.corruptConfiguration // @exempt(from: tests)
         }
