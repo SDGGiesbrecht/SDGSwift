@@ -520,8 +520,28 @@ public enum Xcode {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomCoverageSubcommand(
+        _ arguments: [String],
+        in workingDirectory: URL? = nil,
+        with environment: [String: String]? = nil,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.Error> {
+
         reportProgress("$ xccov " + arguments.joined(separator: " "))
-        return try coverageTool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+
+        switch coverageTool() {
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let coverage):
+            switch coverage.run(
+                arguments,
+                in: workingDirectory,
+                with: environment,
+                reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
+        }
     }
 }
