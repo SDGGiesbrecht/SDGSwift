@@ -31,7 +31,7 @@ class SDGXcodeTests : TestCase {
 
     func testDependencyWarnings() throws {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            try package.generateXcodeProject()
+            _ = try package.generateXcodeProject().get()
             #if !os(Linux)
             let build = try package.build(for: .macOS).get()
             XCTAssertFalse(Xcode.warningsOccurred(during: build))
@@ -51,7 +51,7 @@ class SDGXcodeTests : TestCase {
         #endif
 
         try withDefaultMockRepository { mock in
-            try mock.generateXcodeProject()
+            _ = try mock.generateXcodeProject().get()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             let mockScheme = try? mock.scheme().get()
             #if !os(Linux)
@@ -123,7 +123,7 @@ class SDGXcodeTests : TestCase {
                 #if os(Linux)
                 _ = try? mock.test(on: sdk, reportProgress: processLog)
                 #else
-                try mock.test(on: sdk, reportProgress: processLog)
+                _ = try mock.test(on: sdk, reportProgress: processLog).get()
                 #endif
 
                 var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
@@ -161,11 +161,11 @@ class SDGXcodeTests : TestCase {
                 coverageFiles.appendingPathComponent("Tests.swift"),
                 to: testDestination)
 
-            try mock.generateXcodeProject().get()
+            _ = try mock.generateXcodeProject().get()
             #if os(Linux)
             _ = try? mock.test(on: .macOS).get()
             #else
-            try mock.test(on: .macOS).get()
+            _ = try mock.test(on: .macOS).get()
             #endif
             let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
             #if !os(Linux)
