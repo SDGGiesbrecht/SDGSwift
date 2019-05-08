@@ -461,7 +461,7 @@ public enum Xcode {
 
         for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
             // @exempt(from: tests) Unreachable on Linux.
-            return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
+            return .success(String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces }))))
         }
         // @exempt(from: tests)
         return .failure(.noPackageScheme)
