@@ -40,8 +40,16 @@ class SDGSwiftRegressionTests : TestCase {
 
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
             try withMockDynamicLinkedExecutable { mock in
+
                 XCTAssertEqual(try Package(url: mock.location).execute(.development, of: ["tool"], with: [], cacheDirectory: moved).get(), "Hello, world!")
                 XCTAssertEqual(try Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: [], cacheDirectory: moved).get(), "Hello, world!")
+
+                switch Package(url: mock.location).execute(.version(Version(1, 0, 0)), of: ["tool"], with: ["fail"], cacheDirectory: moved) {
+                case .success:
+                    XCTFail("Should have failed.")
+                case .failure:
+                    break
+                }
             }
         }
     }

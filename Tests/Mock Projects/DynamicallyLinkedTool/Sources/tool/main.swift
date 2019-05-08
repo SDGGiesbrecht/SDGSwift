@@ -12,6 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import LibraryB
+
+if CommandLine.arguments.contains("fail") {
+    print("Failed.")
+    exit(1)
+}
 
 print(libraryB())
