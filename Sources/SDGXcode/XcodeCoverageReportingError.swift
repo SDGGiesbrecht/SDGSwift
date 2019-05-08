@@ -30,6 +30,9 @@ extension Xcode {
         /// The build directory could not be located.
         case buildDirectoryError(BuildDirectoryError)
 
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
@@ -38,6 +41,8 @@ extension Xcode {
                 return error.presentableDescription()
             case .buildDirectoryError(let error):
                 return error.presentableDescription()
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             }
         }
     }

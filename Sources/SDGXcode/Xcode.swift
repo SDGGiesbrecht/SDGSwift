@@ -328,7 +328,13 @@ public enum Xcode {
         case .success(let directory):
             coverageDirectory = directory
         }
-        guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
+        let coverageDirectoryContents: [URL]
+        do {
+            coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
+        } catch {
+            throw
+        }
+        guard let resultDirectory = coverageDirectoryContents.first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
         }
