@@ -27,6 +27,9 @@ extension SwiftCompiler {
         /// The package manager encountered an error.
         case packageManagerError(Swift.Error)
 
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
+
         /// The test coverage report could not be parsed.
         case corruptTestCoverageReport
 

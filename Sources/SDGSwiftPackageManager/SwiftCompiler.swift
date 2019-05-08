@@ -90,8 +90,6 @@ extension SwiftCompiler {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     ///
-    /// - Throws: Errors from the package manager.
-    ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(
         for package: PackageRepository,
@@ -105,14 +103,19 @@ extension SwiftCompiler {
             return .failure(.packageManagerError(error))
         }
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
-            return nil
+            return .success(nil)
         }
 
-        let coverageData = try Data(from: coverageDataFile)
-        let json = try JSONSerialization.jsonObject(with: coverageData)
+        let json: Any
+        do {
+            let coverageData = try Data(from: coverageDataFile)
+            json = try JSONSerialization.jsonObject(with: coverageData)
+        } catch {
+            return .failure(.foundationError(error))
+        }
         guard let coverageDataDictionary = json as? [String: Any],
             let data = coverageDataDictionary["data"] as? [Any] else {
-                throw SwiftCompiler.Error.corruptTestCoverageReport // @exempt(from: tests) Unreachable without mismatched Swift version.
+                return .failure(.corruptTestCoverageReport) // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
         let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
