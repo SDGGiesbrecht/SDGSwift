@@ -29,8 +29,19 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
-    private static func hostDestination() throws -> Destination {
-        return try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
+    private static func hostDestination() -> Result<Destination, HostDestinationError> {
+        switch location() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let location):
+            let destination: Destination
+            do {
+                try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(destination)
+        }
     }
     internal static func hostToolchain() throws -> UserToolchain {
         return try UserToolchain(destination: hostDestination())
