@@ -498,10 +498,10 @@ public enum Xcode {
         }
     }
 
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, SchemeError> {
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
         switch buildSettings(for: package, on: sdk) {
         case .failure(let error):
-            return .failure(error)
+            return .failure(.schemeError(error))
         case .success(let settings):
             guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
                 // @exempt(from: tests) Unreachable without corrupt project.
