@@ -106,17 +106,13 @@ extension PackageRepository {
     ///     - exclusionPatterns: Patterns describing paths or files to ignore.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func uncommittedChanges(excluding exclusionPatterns: [String] = []) throws -> String {
-        return try Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
+    public func uncommittedChanges(excluding exclusionPatterns: [String] = []) -> Swift.Result<String, SDGSwift.Git.Error> {
+        return Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
     }
 
     /// Returns the list of files ignored by source control.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func ignoredFiles() throws -> [URL] {
-        return try Git.ignoredFiles(in: self)
+    public func ignoredFiles() -> Swift.Result<[URL], SDGSwift.Git.Error> {
+        return Git.ignoredFiles(in: self)
     }
 
     public func _directoriesIgnoredForTestCoverage() throws -> [URL] {
