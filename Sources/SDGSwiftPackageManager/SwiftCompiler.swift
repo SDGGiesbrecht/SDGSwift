@@ -72,14 +72,22 @@ extension SwiftCompiler {
         return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
-        return try package.manifest().name
+    private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<String, SwiftCompiler.HostDestinationError> {
+        return package.manifest().map { $0.name }
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
-        let directory = try codeCoverageDirectory(for: package)
-        let fileName = try codeCoverageDataFileName(for: package).appending(".json")
-        return directory.appendingPathComponent(fileName)
+    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+        switch codeCoverageDirectory(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let directory):
+            switch codeCoverageDataFileName(for: package) {
+            case .failure(let error):
+                return .failure(error)
+            case .success(let fileName):
+                return .success(directory.appendingPathComponent(fileName.appending(".json")))
+            }
+        }
     }
 
     /// Returns the code coverage report for the package.
