@@ -199,8 +199,6 @@ public enum Xcode {
     ///     - sdk: The SDK to build for.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func build(
         _ package: PackageRepository,
         for sdk: SDK,
@@ -256,8 +254,6 @@ public enum Xcode {
     ///     - sdk: The SDK to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func test(
         _ package: PackageRepository,
         on sdk: SDK,
@@ -302,8 +298,6 @@ public enum Xcode {
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(
@@ -487,8 +481,6 @@ public enum Xcode {
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
         let xcodeProject: URL?
         do {
@@ -554,8 +546,6 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     ///     - sdk: The SDK.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
         return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() }
     }
@@ -568,8 +558,6 @@ public enum Xcode {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func runCustomSubcommand(
         _ arguments: [String],
         in workingDirectory: URL? = nil,
@@ -600,8 +588,6 @@ public enum Xcode {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func runCustomCoverageSubcommand(
         _ arguments: [String],
         in workingDirectory: URL? = nil,

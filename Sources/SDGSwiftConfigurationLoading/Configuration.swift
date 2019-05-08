@@ -89,8 +89,6 @@ extension Configuration {
     ///     - progressReport: A line of output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
-    ///
-    /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
     public class func load<C, L>(
         configuration: C.Type,
         named fileName: UserFacing<StrictString, L>,

@@ -31,8 +31,6 @@ extension PackageRepository {
     }
 
     /// Returns the main package scheme.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public func scheme() -> Result<String, Xcode.SchemeError> {
         return Xcode.scheme(for: self)
     }
@@ -54,9 +52,10 @@ extension PackageRepository {
     ///     - sdk: The SDK to build for.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.SchemeError> {
+    @discardableResult public func build(
+        for sdk: Xcode.SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.SchemeError> {
         return Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
 
@@ -66,9 +65,10 @@ extension PackageRepository {
     ///     - sdk: The SDK to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.SchemeError> {
+    @discardableResult public func test(
+        on sdk: Xcode.SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.SchemeError> {
         return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
@@ -79,8 +79,6 @@ extension PackageRepository {
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(
@@ -95,8 +93,6 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - sdk: The SDK.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     public func derivedData(for sdk: Xcode.SDK) -> Result<URL, Xcode.BuildDirectoryError> {
         return Xcode.derivedData(for: self, on: sdk)
     }
