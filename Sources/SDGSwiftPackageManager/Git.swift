@@ -54,7 +54,7 @@ extension Git {
         return runCustomSubcommand([
             "tag",
             releaseVersion.string()
-            ], in: repository.location)
+            ], in: repository.location).map { _ in () }
     }
 
     /// Checks for uncommitted changes or additions in the repository.
