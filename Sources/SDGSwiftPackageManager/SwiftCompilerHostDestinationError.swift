@@ -18,6 +18,7 @@ import SDGSwift
 
 extension SwiftCompiler {
 
+    /// An error encountered while determining the host destination.
     public enum HostDestinationError : PresentableError {
 
         // MARK: - Cases

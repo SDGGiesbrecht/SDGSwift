@@ -105,10 +105,11 @@ extension SwiftCompiler {
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
         let coverageDataFile: URL
-        do {
-            coverageDataFile = try codeCoverageDataFile(for: package)
-        } catch {
-            return .failure(.packageManagerError(error))
+        switch codeCoverageDataFile(for: package) {
+        case .failure(let error):
+            return .failure(.packageManagerError(<#T##Error#>))
+        case .success(let file):
+            coverageDataFile = file
         }
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
             return .success(nil)
