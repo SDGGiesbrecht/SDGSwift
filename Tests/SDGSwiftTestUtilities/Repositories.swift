@@ -65,7 +65,7 @@ public func withMock(named name: String, dependentOn dependencies: [String] = []
 
 public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) throws {
     return try withMock(file: file, line: line) { mock in
-        let repository = try PackageRepository(initializingAt: mock, named: StrictString(mock.lastPathComponent), type: .library)
+        let repository = try PackageRepository.initializePackage(at: mock, named: StrictString(mock.lastPathComponent), type: .library).get()
         try test(repository)
     }
 }
