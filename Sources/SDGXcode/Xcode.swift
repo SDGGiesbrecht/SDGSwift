@@ -348,20 +348,21 @@ public enum Xcode {
             ]) {
         case .failure(let error):
             return.failure(.xcodeError(error))
+        case .success(let output):
+            fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
+                if file.pathExtension ≠ "swift" {
+                    // @exempt(from: tests)
+                    // The report is unlikely to be readable.
+                    return false
+                }
+                if ignoredDirectories.contains(where: { file.is(in: $0) }) {
+                    // @exempt(from: tests)
+                    // Belongs to a dependency.
+                    return false
+                }
+                return true
+            }).sorted()
         }
-        .lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
-            if file.pathExtension ≠ "swift" {
-                // @exempt(from: tests)
-                // The report is unlikely to be readable.
-                return false
-            }
-            if ignoredDirectories.contains(where: { file.is(in: $0) }) {
-                // @exempt(from: tests)
-                // Belongs to a dependency.
-                return false
-            }
-            return true
-        }).sorted()
 
         var files: [FileTestCoverage] = []
         for fileURL in fileURLs {
