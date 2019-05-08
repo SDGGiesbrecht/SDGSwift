@@ -1,5 +1,5 @@
 /*
- SwiftCompilerCoverageReportingError.swift
+ XcodeCoverageReportingError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -15,9 +15,9 @@
 import SDGLocalization
 
 import SDGSwift
-import SDGSwiftLocalizations
+import SDGSwiftPackageManager
 
-extension SwiftCompiler {
+extension Xcode {
 
     /// An error encountered while checking test coverage.
     public enum CoverageReportingError : PresentableError {
@@ -25,13 +25,7 @@ extension SwiftCompiler {
         // MARK: - Cases
 
         /// The host destination could not be determined.
-        case hostDestinationError(HostDestinationError)
-
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
-
-        /// The test coverage report could not be parsed.
-        case corruptTestCoverageReport
+        case hostDestinationError(SwiftCompiler.HostDestinationError)
 
         // MARK: - PresentableError
 
@@ -39,15 +33,6 @@ extension SwiftCompiler {
             switch self {
             case .hostDestinationError(let error):
                 return error.presentableDescription()
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
-            case .corruptTestCoverageReport:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The test coverage report could not be parsed."
-                    }
-                }).resolved()
             }
         }
     }
