@@ -40,17 +40,13 @@ public struct Package : TransparentWrapper {
     public let url: URL
 
     /// Retrieves the list of available versions.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func versions() throws -> Set<Version> {
-        return try Git.versions(of: self)
+    public func versions() -> Result<Set<Version>, Git.Error> {
+        return Git.versions(of: self)
     }
 
     /// Retrieves the latest commit identifier in the master branch of the package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func latestCommitIdentifier() throws -> String {
-        return try Git.latestCommitIdentifier(in: self)
+    public func latestCommitIdentifier() -> Result<String, Git.Error> {
+        return Git.latestCommitIdentifier(in: self)
     }
 
     // MARK: - Workflow
