@@ -18,6 +18,7 @@ import SDGSwift
 
 extension PackageRepository {
 
+    /// An error encountered while initializing a package repository.
     public enum InitializationError : PresentableError {
 
         /// The package manager encountered an error.
