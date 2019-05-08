@@ -29,7 +29,7 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
-    private static func hostDestination() -> Result<Destination, HostDestinationError> {
+    private static func hostDestination() -> Swift.Result<Destination, HostDestinationError> {
         switch location() {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
@@ -43,7 +43,7 @@ extension SwiftCompiler {
             return .success(destination)
         }
     }
-    internal static func hostToolchain() -> Result<UserToolchain, HostDestinationError> {
+    internal static func hostToolchain() -> Swift.Result<UserToolchain, HostDestinationError> {
         switch hostDestination() {
         case .failure(let error):
             return .failure(error)
@@ -58,12 +58,12 @@ extension SwiftCompiler {
         }
     }
 
-    private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        return try hostToolchain().manifestResources
+    private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, HostDestinationError> {
+        return hostToolchain().map { $0.manifestResources }
     }
 
-    internal static func manifestLoader() throws -> ManifestLoader {
-        return ManifestLoader(manifestResources: try manifestResourceProvider())
+    internal static func manifestLoader() -> Swift.Result<ManifestLoader, HostDestinationError> {
+        return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
 
     // MARK: - Test Coverage
