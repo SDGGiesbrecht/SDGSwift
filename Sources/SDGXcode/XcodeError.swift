@@ -41,8 +41,6 @@ extension Xcode {
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .unavailable:
-
             case .noXcodeProject:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

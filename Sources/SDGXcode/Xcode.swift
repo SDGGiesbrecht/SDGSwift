@@ -41,9 +41,9 @@ public enum Xcode {
         return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
     }
 
-    private static var located: ExternalProcess?
-    private static func tool() throws -> ExternalProcess {
-        return try cached(in: &located) {
+    private static var located: Result<ExternalProcess, Xcode.LocationError>?
+    private static func tool() -> Result<ExternalProcess, Xcode.LocationError> {
+        return cached(in: &located) {
 
             let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
@@ -51,7 +51,7 @@ public enum Xcode {
                 // @exempt(from: tests) Unreachable on Linux.
 
                 // Make sure version matches.
-                if let output = try? xcode.run(["\u{2D}version"]),
+                if let output = try? xcode.run(["\u{2D}version"]).get(),
                     let version = Version(firstIn: output),
                     version ∈ compatibleVersionRange {
                     return true
@@ -63,10 +63,10 @@ public enum Xcode {
 
             if let found = ExternalProcess(searching: searchLocations, commandName: "xcodebuild", validate: validate) {
                 // @exempt(from: tests) Unreachable on Linux.
-                return found
+                return .success(found)
             } else { // @exempt(from: tests)
                  // @exempt(from: tests) Xcode is necessarily available when tests are run.
-                throw Xcode.Error.unavailable
+                return .failure(Xcode.LocationError())
             }
         }
     }
