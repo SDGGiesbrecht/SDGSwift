@@ -107,7 +107,7 @@ extension SwiftCompiler {
         let coverageDataFile: URL
         switch codeCoverageDataFile(for: package) {
         case .failure(let error):
-            return .failure(.packageManagerError(<#T##Error#>))
+            return .failure(.hostDestinationError(error))
         case .success(let file):
             coverageDataFile = file
         }
@@ -128,10 +128,11 @@ extension SwiftCompiler {
         }
 
         let ignoredDirectories: [URL]
-        do {
-            ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
-        } catch {
-            return .failure(.packageManagerError(error))
+        switch package._directoriesIgnoredForTestCoverage() {
+        case .failure(let error):
+            return .failure(.hostDestinationError(error))
+        case .success(let directories):
+            ignoredDirectories = directories
         }
         var fileReports: [FileTestCoverage] = []
         for entry in data {
