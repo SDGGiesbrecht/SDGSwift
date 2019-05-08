@@ -210,7 +210,7 @@ public struct Package : TransparentWrapper {
                             return .executionError(error)
                         }
                 }
-                throw Package.Error.noSuchExecutable(requested: executableNames)
+                return .failure(.noSuchExecutable(requested: executableNames))
             }
         }
     }
