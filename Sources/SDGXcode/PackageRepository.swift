@@ -33,8 +33,8 @@ extension PackageRepository {
     /// Returns the main package scheme.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public func scheme() throws -> String {
-        return try Xcode.scheme(for: self)
+    public func scheme() -> Result<String, Xcode.SchemeError> {
+        return Xcode.scheme(for: self)
     }
 
     // MARK: - Workflow
@@ -56,8 +56,8 @@ extension PackageRepository {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try Xcode.build(self, for: sdk, reportProgress: reportProgress)
+    @discardableResult public func build(for sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Xcode.SchemeError> {
+        return Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
 
     /// Tests the package.
@@ -68,8 +68,8 @@ extension PackageRepository {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try Xcode.test(self, on: sdk, reportProgress: reportProgress)
+    @discardableResult public func test(on sdk: Xcode.SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> Result<String, Xcode.SchemeError> {
+        return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
     /// Returns the code coverage report for the package.
@@ -83,8 +83,12 @@ extension PackageRepository {
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public func codeCoverageReport(on sdk: Xcode.SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
-        return try Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
+    public func codeCoverageReport(
+        on sdk: Xcode.SDK,
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) throws -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
+        return Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
     /// The derived data directory for the package.
