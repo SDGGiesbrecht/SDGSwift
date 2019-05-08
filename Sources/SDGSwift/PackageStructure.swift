@@ -58,9 +58,12 @@ public struct Package : TransparentWrapper {
     ///     - destination: The directory to put the products in.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    public func build(_ build: Build, to destination: URL, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
+    public func build(
+        _ build: Build,
+        to destination: URL,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<Void, BuildError> {
+
         try FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
             let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
 
