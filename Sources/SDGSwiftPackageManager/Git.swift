@@ -20,10 +20,8 @@ extension Git {
     ///
     /// - Parameters:
     ///     - repository: The uninitialized repository.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func initialize(_ repository: PackageRepository) throws {
-        try runCustomSubcommand(["init"], in: repository.location)
+    public static func initialize(_ repository: PackageRepository) -> Result<Void, Git.Error> {
+        return runCustomSubcommand(["init"], in: repository.location).map { _ in () }
     }
 
     /// Commits existing changes.
@@ -31,18 +29,20 @@ extension Git {
     /// - Parameters:
     ///     - repository: The repository for which to perform the commit.
     ///     - description: A description for the commit.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func commitChanges(in repository: PackageRepository, description: StrictString) throws {
-        try runCustomSubcommand([
+    public static func commitChanges(
+        in repository: PackageRepository,
+        description: StrictString) -> Result<Void, Git.Error> {
+        return runCustomSubcommand([
             "add",
             "."
-            ], in: repository.location)
-        try runCustomSubcommand([
-            "commit",
-            "\u{2D}\u{2D}message",
-            String(description)
-            ], in: repository.location)
+            ], in: repository.location).map { _ in
+
+                return runCustomSubcommand([
+                    "commit",
+                    "\u{2D}\u{2D}message",
+                    String(description)
+                    ], in: repository.location)
+        }
     }
 
     /// Tags a version.
