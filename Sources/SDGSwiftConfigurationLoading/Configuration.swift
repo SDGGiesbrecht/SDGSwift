@@ -99,10 +99,11 @@ extension Configuration {
         in package: Package,
         at releaseVersion: Version,
         minimumMacOSVersion: Version,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization {
 
         let nullContext: NullContext? = nil
-        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
+        return load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
     }
     private struct NullContext : Context {}
 
@@ -130,7 +131,8 @@ extension Configuration {
         at releaseVersion: Version,
         minimumMacOSVersion: Version,
         context: E?,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization, E : Context {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
@@ -284,7 +286,7 @@ extension Configuration {
         guard let registered = registry else {
             return .failure(.emptyConfiguration)
         }
-        return registered
+        return .success(registered)
     }
 
     private static var mockQueue: [Configuration] = []
