@@ -41,28 +41,4 @@ extension SwiftCompiler {
             }
         }
     }
-
-    /// An error encountered while using Swift.
-    public enum CoverageReportingError : PresentableError {
-        #warning("Move.")
-
-        // MARK: - Cases
-
-        /// The test coverage report could not be parsed.
-        case corruptTestCoverageReport
-
-        // MARK: - PresentableError
-
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .corruptTestCoverageReport:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The test coverage report could not be parsed."
-                    }
-                }).resolved()
-            }
-        }
-    }
 }

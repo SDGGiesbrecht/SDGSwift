@@ -96,9 +96,14 @@ extension SwiftCompiler {
     public static func codeCoverageReport(
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
-        let coverageDataFile = try codeCoverageDataFile(for: package)
+        let coverageDataFile: URL
+        do {
+            coverageDataFile = try codeCoverageDataFile(for: package)
+        } catch {
+            return .failure(.packageManagerError(error))
+        }
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
             return nil
         }
