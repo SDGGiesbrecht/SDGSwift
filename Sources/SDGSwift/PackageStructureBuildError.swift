@@ -19,20 +19,25 @@ extension Package {
     /// An error encountered while building a Swift package.
     public enum BuildError : PresentableError {
 
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
+        /// Git encountered an error.
+        case gitError(Git.Error)
 
         /// Swift encountered an error.
-        case swiftError(Git.Error)
+        case swiftError(SwiftCompiler.Error)
+
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
+            case .gitError(let error):
+                return error.presentableDescription()
             case .swiftError(let error):
                 return error.presentableDescription()
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             }
         }
     }
