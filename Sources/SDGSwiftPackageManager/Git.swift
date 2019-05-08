@@ -50,10 +50,8 @@ extension Git {
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
     ///     - repository: The repository to tag.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func tag(version releaseVersion: Version, in repository: PackageRepository) throws {
-        try runCustomSubcommand([
+    public static func tag(version releaseVersion: Version, in repository: PackageRepository) -> Result<Void, Git.Error> {
+        return runCustomSubcommand([
             "tag",
             releaseVersion.string()
             ], in: repository.location)
@@ -66,15 +64,22 @@ extension Git {
     ///     - exclusionPatterns: Patterns describing paths or files to ignore.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func uncommittedChanges(in repository: PackageRepository, excluding exclusionPatterns: [String] = []) throws -> String {
-        _ = try runCustomSubcommand([
+    public static func uncommittedChanges(
+        in repository: PackageRepository,
+        excluding exclusionPatterns: [String] = []) -> Result<String, Git.Error> {
+
+        switch runCustomSubcommand([
             "add",
             ".",
             "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
-            ], in: repository.location)
-        return try runCustomSubcommand([
+            ], in: repository.location) {
+        case .failure(let error):
+            return .failure(error)
+        case .success:
+            break
+        }
+
+        return runCustomSubcommand([
             "diff",
             "\u{2D}\u{2D}",
             "."
