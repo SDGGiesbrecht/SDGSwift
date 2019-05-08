@@ -505,9 +505,9 @@ public enum Xcode {
         case .success(let settings):
             guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
                 // @exempt(from: tests) Unreachable without corrupt project.
-                throw Xcode.Error.noBuildDirectory
+                return .failure(.noBuildDirectory)
             }
-            return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+            return .success(URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent())
         }
     }
 
