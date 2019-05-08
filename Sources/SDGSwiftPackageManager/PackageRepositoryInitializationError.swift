@@ -23,12 +23,17 @@ extension PackageRepository {
         /// The package manager encountered an error.
         case packageManagerError(Swift.Error)
 
+        /// Git encountered an error.
+        case gitError(Git.Error)
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
             case .packageManagerError(let error):
                 return StrictString(error.localizedDescription)
+            case .gitError(let error):
+                return error.presentableDescription()
             }
         }
     }

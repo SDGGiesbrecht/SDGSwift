@@ -46,15 +46,26 @@ extension PackageRepository {
             return .failure(.packageManagerError(error))
         }
 
-        try Git.initialize(repository)
-        try commitChanges(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-                return "Initialised."
-            case .englishUnitedStates, .englishCanada:
-                return "Initialized."
-            }
-        }).resolved())
+        switch Git.initialize(repository) {
+        case .failure(let error):
+            return .failure(.gitError(error))
+        case .success:
+            break
+        }
+        switch repository.commitChanges(
+            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom:
+                    return "Initialised."
+                case .englishUnitedStates, .englishCanada:
+                    return "Initialized."
+                }
+            }).resolved()) {
+        case .failure(let error):
+            return .failure(.gitError(error))
+        case .success:
+            return .success(repository)
+        }
     }
 
     // MARK: - Properties
