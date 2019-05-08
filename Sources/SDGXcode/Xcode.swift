@@ -485,12 +485,17 @@ public enum Xcode {
         return .failure(.noPackageScheme)
     }
 
-    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
-        return try runCustomSubcommand([
-            "\u{2D}showBuildSettings",
-            "\u{2D}scheme", try scheme(for: package),
-            "\u{2D}sdk", sdk.commandLineName
-            ], in: package.location)
+    private static func buildSettings(for package: PackageRepository, on sdk: SDK) -> Result<String, SchemeError> {
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme):
+            return runCustomSubcommand([
+                "\u{2D}showBuildSettings",
+                "\u{2D}scheme", scheme,
+                "\u{2D}sdk", sdk.commandLineName
+                ], in: package.location).mapError { .xcodeError($0) }
+        }
     }
 
     private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
