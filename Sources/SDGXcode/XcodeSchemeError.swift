@@ -17,6 +17,9 @@ extension Xcode {
         
         /// Xcode encountered an error.
         case xcodeError(Xcode.Error)
+        
+        /// The Xcode project has no package scheme.
+        case noPackageScheme
 
         // MARK: - PresentableError
 
@@ -33,6 +36,13 @@ extension Xcode {
                 }).resolved()
             case .xcodeError(let error):
                 return error.presentableDescription()
+            case .noPackageScheme:
+                return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "The Xcode project has no package scheme."
+                    }
+                }).resolved()
             }
         }
     }

@@ -48,9 +48,6 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The Xcode project has no package scheme.
-        case noPackageScheme
-
         /// The build directory could not be found in the project build settings.
         case noBuildDirectory
 
@@ -60,13 +57,7 @@ extension Xcode {
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
-            switch self {            case .noPackageScheme:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The Xcode project has no package scheme."
-                    }
-                }).resolved()
+            switch self {
             case .noBuildDirectory:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
