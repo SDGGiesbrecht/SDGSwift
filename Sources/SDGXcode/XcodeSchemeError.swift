@@ -14,6 +14,9 @@ extension Xcode {
 
         /// The package has no Xcode project.
         case noXcodeProject
+        
+        /// Xcode encountered an error.
+        case xcodeError(Xcode.Error)
 
         // MARK: - PresentableError
 
@@ -28,6 +31,8 @@ extension Xcode {
                         return "The package has no Xcode project."
                     }
                 }).resolved()
+            case .xcodeError(let error):
+                return error.presentableDescription()
             }
         }
     }

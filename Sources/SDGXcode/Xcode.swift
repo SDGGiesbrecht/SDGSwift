@@ -445,7 +445,11 @@ public enum Xcode {
             return .failure(.noXcodeProject)
         }
 
-        let information = try runCustomSubcommand(["\u{2D}list"], in: package.location)
+        let information: String
+        switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
+        case .failure(let error):
+            return .failure(error)
+        }
 
         guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
             // @exempt(from: tests)
