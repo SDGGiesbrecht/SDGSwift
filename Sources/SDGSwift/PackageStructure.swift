@@ -186,7 +186,13 @@ public struct Package : TransparentWrapper {
                     }
                 }
 
-                for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
+                let cacheContents: [URL]
+                do {
+                    cacheContents = try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: [])
+                } catch {
+                    return .failure(.foundationError(error))
+                }
+                for executable in cacheContents where StrictString(executable.lastPathComponent) ∈ executableNames {
 
                     #if os(Linux)
                     // The move from the temporary directory to the cache may lose permissions.

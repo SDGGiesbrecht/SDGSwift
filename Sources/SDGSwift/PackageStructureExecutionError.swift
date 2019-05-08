@@ -19,15 +19,14 @@ extension Package {
     /// An error encountered while executing a tool from a Swift package.
     public enum ExecutionError : PresentableError {
 
-        #warning("Is this necessary?")
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
-
         /// Git encountered an error.
         case gitError(Git.Error)
 
         /// Failed to build the tool.
         case buildError(BuildError)
+
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
 
         // MARK: - PresentableError
 
