@@ -177,7 +177,12 @@ extension Configuration {
             let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
 
             let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
-            var configurationContents = try String(from: configurationFile)
+            var configurationContents: String
+            do {
+                configurationContents = try String(from: configurationFile)
+            } catch {
+                return .failure(.foundationError(error))
+            }
             configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
             if let existingMain = try? String(from: mainLocation),
                 existingMain == configurationContents {
