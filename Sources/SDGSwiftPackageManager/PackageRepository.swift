@@ -145,19 +145,15 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - description: A description for the commit.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func commitChanges(description: StrictString) throws {
-        try Git.commitChanges(in: self, description: description)
+    public func commitChanges(description: StrictString) -> Swift.Result<Void, SDGSwift.Git.Error> {
+        return Git.commitChanges(in: self, description: description)
     }
 
     /// Tags a version.
     ///
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func tag(version releaseVersion: SDGSwift.Version) throws {
-        try Git.tag(version: releaseVersion, in: self)
+    public func tag(version releaseVersion: SDGSwift.Version) -> Swift.Result<Void, SDGSwift.Git.Error> {
+        return Git.tag(version: releaseVersion, in: self)
     }
 }
