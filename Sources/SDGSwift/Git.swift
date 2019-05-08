@@ -129,12 +129,14 @@ public enum Git {
     ///     - package: The package.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func latestCommitIdentifier(in package: Package) throws -> String {
-        return try runCustomSubcommand([
+    public static func latestCommitIdentifier(in package: Package) -> Result<String, Git.Error> {
+        return runCustomSubcommand([
             "ls\u{2D}remote",
             package.url.absoluteString,
             "master"
-            ]).truncated(before: "\u{9}")
+            ]).map { output in
+                return output.truncated(before: "\u{9}")
+        }
     }
 
     /// Runs a custom subcommand.
