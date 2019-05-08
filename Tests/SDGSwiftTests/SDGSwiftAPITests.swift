@@ -79,8 +79,8 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testSwiftCompilerError() {
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage Report", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.hostDestinationError(.swiftLocationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage Report", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testVersion() {

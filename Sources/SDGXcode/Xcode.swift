@@ -66,7 +66,7 @@ public enum Xcode {
                 return .success(found)
             } else { // @exempt(from: tests)
                  // @exempt(from: tests) Xcode is necessarily available when tests are run.
-                return .failure(Xcode.LocationError())
+                return .failure(.unavailable)
             }
         }
     }

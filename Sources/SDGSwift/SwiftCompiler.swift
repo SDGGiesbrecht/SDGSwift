@@ -63,7 +63,7 @@ public enum SwiftCompiler {
                 return .success(found)
             } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
                 // @exempt(from: tests)
-                return .failure(SwiftCompiler.LocationError())
+                return .failure(.unavailable)
             }
         }
     }
