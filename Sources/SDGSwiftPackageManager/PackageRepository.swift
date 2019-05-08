@@ -138,8 +138,6 @@ extension PackageRepository {
     }
 
     /// Returns the package graph.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.HostDestinationError> {
         return packageWorkspace().map { workspace in
             return workspace.loadPackageGraph(
@@ -163,12 +161,13 @@ extension PackageRepository {
         return Git.ignoredFiles(in: self)
     }
 
-    public func _directoriesIgnoredForTestCoverage() throws -> [URL] {
-        let workspace = try packageWorkspace()
-        return [
-            workspace.dataPath.asURL,
-            workspace.editablesPath.asURL
-        ]
+    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[URL], SwiftCompiler.HostDestinationError> {
+        return packageWorkspace().map { workspace in
+            return [
+                workspace.dataPath.asURL,
+                workspace.editablesPath.asURL
+            ]
+        }
     }
 
     /// Returns the code coverage report for the package.
