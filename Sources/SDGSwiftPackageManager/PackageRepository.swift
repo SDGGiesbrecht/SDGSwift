@@ -180,7 +180,7 @@ extension PackageRepository {
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
         return SwiftCompiler.codeCoverageReport(for: self, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
