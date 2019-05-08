@@ -49,7 +49,7 @@ public enum Git {
                 return .success(found)
             } else { // @exempt(from: tests)
                 // @exempt(from: tests) Git is necessarily available when tests are run.
-                return .failure(LocationError())
+                return .failure(.unavailable)
             }
         }
     }
