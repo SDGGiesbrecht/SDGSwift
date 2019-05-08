@@ -69,39 +69,49 @@ public struct Package : TransparentWrapper {
 
             reportProgress("")
 
-            let temporaryRepository = try PackageRepository(cloning: self, to: temporaryCloneLocation, at: build, shallow: true, reportProgress: reportProgress)
+            switch PackageRepository.clone(
+                self,
+                to: temporaryCloneLocation,
+                at: build,
+                shallow: true,
+                reportProgress: reportProgress) {
 
-            reportProgress("")
+            case .failure(let error):
+                return .failure(.gitError(error))
+            case .success(let temporaryRepository):
 
-            try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
-            let products = temporaryRepository.releaseProductsDirectory()
-            #if os(macOS)
-            // #workaround(Swift 5.0.1, Swift links with absolute paths on macOS.)
-            for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
+                reportProgress("")
+
+                try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
+                let products = temporaryRepository.releaseProductsDirectory()
+                #if os(macOS)
+                // #workaround(Swift 5.0.1, Swift links with absolute paths on macOS.)
+                for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
+                    for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+                        _ = try? Shell.default.run(command: [
+                            "install_name_tool",
+                            "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
+                            ])
+                    }
+                }
+                #endif
+
+                let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
                 for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                    _ = try? Shell.default.run(command: [
-                        "install_name_tool",
-                        "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
-                        ])
+                    let filename = component.lastPathComponent
+
+                    if filename ≠ "ModuleCache",
+                        ¬filename.hasSuffix(".product"),
+                        ¬filename.hasSuffix(".build"),
+                        ¬filename.hasSuffix(".swiftdoc"),
+                        ¬filename.hasSuffix(".swiftmodule") {
+
+                        try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
+                    }
                 }
+
+                try FileManager.default.move(intermediateDirectory, to: destination)
             }
-            #endif
-
-            let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
-            for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                let filename = component.lastPathComponent
-
-                if filename ≠ "ModuleCache",
-                    ¬filename.hasSuffix(".product"),
-                    ¬filename.hasSuffix(".build"),
-                    ¬filename.hasSuffix(".swiftdoc"),
-                    ¬filename.hasSuffix(".swiftmodule") {
-
-                    try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
-                }
-            }
-
-            try FileManager.default.move(intermediateDirectory, to: destination)
         }
     }
 
