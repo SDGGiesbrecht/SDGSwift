@@ -13,6 +13,8 @@
  */
 
 import SDGPersistence
+
+import SDGLocalizationTestUtilities
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
@@ -28,6 +30,16 @@ class SDGSwiftPackageManagerTests : TestCase {
             XCTAssertNotEqual(try mock.uncommittedChanges().get(), "", "Change unnoticed.")
             XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]).get(), "", "No change should have been detected.")
         }
+    }
+
+    func testErrors() {
+        struct StandInError : PresentableError {
+            func presentableDescription() -> StrictString {
+                return "[...]"
+            }
+        }
+        testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testIgnoredFileDetection() {
