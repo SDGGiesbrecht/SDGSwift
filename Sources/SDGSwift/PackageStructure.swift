@@ -204,9 +204,10 @@ public struct Package : TransparentWrapper {
 
                         reportProgress("")
                         reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
-                        return ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress).mapError { error in
-                            return .externalProcess
-
+                        return ExternalProcess(at: executable).run(
+                            arguments,
+                            reportProgress: reportProgress).mapError { error in
+                            return .executionError(error)
                         }
                 }
                 throw Package.Error.noSuchExecutable(requested: executableNames)
