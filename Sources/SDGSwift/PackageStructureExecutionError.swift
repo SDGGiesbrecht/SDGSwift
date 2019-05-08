@@ -26,6 +26,9 @@ extension Package {
         /// Git encountered an error.
         case gitError(Git.Error)
 
+        /// Failed to build the tool.
+        case buildError(BuildError)
+
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
@@ -33,6 +36,8 @@ extension Package {
             case .foundationError(let error):
                 return StrictString(error.localizedDescription)
             case .gitError(let error):
+                return error.presentableDescription()
+            case .buildError(let error):
                 return error.presentableDescription()
             }
         }

@@ -160,8 +160,6 @@ public struct Package : TransparentWrapper {
     ///     - cacheDirectory: Optional. A directory to store the executable in for future use. If the executable is already in the cache, the cached version will be used instead of fetching and rebuilding.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, ExecutionError> {
 
         return FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
@@ -180,7 +178,12 @@ public struct Package : TransparentWrapper {
                         break
                     }
 
-                    try self.build(build, to: cache, reportProgress: reportProgress)
+                    switch self.build(build, to: cache, reportProgress: reportProgress) {
+                    case .failure(let error):
+                        return .failure(.buildError(error))
+                    case .success:
+                        break
+                    }
                 }
 
                 for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
