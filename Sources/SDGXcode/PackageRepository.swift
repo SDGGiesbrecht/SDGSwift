@@ -97,7 +97,7 @@ extension PackageRepository {
     ///     - sdk: The SDK.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public func derivedData(for sdk: Xcode.SDK) throws -> URL {
-        return try Xcode.derivedData(for: self, on: sdk)
+    public func derivedData(for sdk: Xcode.SDK) -> Result<URL, Xcode.BuildDirectoryError> {
+        return Xcode.derivedData(for: self, on: sdk)
     }
 }
