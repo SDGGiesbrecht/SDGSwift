@@ -1,9 +1,0 @@
-🇬🇧EN
-The Xcode project has no package scheme.
-
-🇺🇸EN
-The Xcode project has no package scheme.
-
-🇨🇦EN
-The Xcode project has no package scheme.
-
