@@ -498,13 +498,17 @@ public enum Xcode {
         }
     }
 
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        let settings = try buildSettings(for: package, on: sdk)
-        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
-            // @exempt(from: tests) Unreachable without corrupt project.
-            throw Xcode.Error.noBuildDirectory
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, SchemeError> {
+        switch buildSettings(for: package, on: sdk) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let settings):
+            guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
+                // @exempt(from: tests) Unreachable without corrupt project.
+                throw Xcode.Error.noBuildDirectory
+            }
+            return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
         }
-        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
     }
 
     /// The derived data directory for the package.
