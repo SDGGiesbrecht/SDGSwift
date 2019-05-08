@@ -74,7 +74,7 @@ public enum Xcode {
     private static var locatedCoverage: Result<ExternalProcess, LocationError>?
     private static func coverageTool() -> Result<ExternalProcess, LocationError> {
         return cached(in: &locatedCoverage) {
-            return tool().map { tool in
+            return tool().map { tool in // @exempt(from: tests) Unreachable on Linux.
                 return ExternalProcess(at: coverageToolLocation(for: tool.executable))
             }
         }
@@ -84,7 +84,7 @@ public enum Xcode {
 
     /// Returns the location of Xcode.
     public static func location() -> Result<URL, LocationError> {
-        return tool().map { $0.executable }
+        return tool().map { $0.executable } // @exempt(from: tests) Unreachable on Linux.
     }
 
     private static let ignorableCommands: [String] = [
@@ -208,7 +208,7 @@ public enum Xcode {
         switch scheme(for: package) {
         case .failure(let error):
             return .failure(error)
-        case .success(let scheme):
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
             return runCustomSubcommand([
                 "build",
                 "\u{2D}sdk", sdk.commandLineName,
@@ -244,7 +244,7 @@ public enum Xcode {
     }
 
     private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") }
+        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") } // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Tests the package.
@@ -280,7 +280,7 @@ public enum Xcode {
         switch scheme(for: package) {
         case .failure(let error):
             return .failure(error)
-        case .success(let scheme):
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
             command += ["\u{2D}scheme", scheme]
         }
 
@@ -319,7 +319,7 @@ public enum Xcode {
         switch self.coverageDirectory(for: package, on: sdk) {
         case .failure(let error):
             return .failure(.buildDirectoryError(error))
-        case .success(let directory):
+        case .success(let directory): // @exempt(from: tests) Unreachable on Linux.
             coverageDirectory = directory
         }
         let coverageDirectoryContents: [URL]
@@ -341,8 +341,8 @@ public enum Xcode {
             archive.path
             ]) {
         case .failure(let error):
-            return.failure(.xcodeError(error))
-        case .success(let output):
+            return .failure(.xcodeError(error))
+        case .success(let output): // @exempt(from: tests) Unreachable on Linux.
             fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
                 if file.pathExtension ≠ "swift" {
                     // @exempt(from: tests)
@@ -358,7 +358,7 @@ public enum Xcode {
             }).sorted()
         }
 
-        var files: [FileTestCoverage] = []
+        var files: [FileTestCoverage] = [] // @exempt(from: tests) Unreachable on Linux.
         for fileURL in fileURLs {
             // @exempt(from: tests) Unreachable on Linux.
             let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
@@ -497,7 +497,7 @@ public enum Xcode {
         switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
         case .failure(let error):
             return .failure(.xcodeError(error))
-        case .success(let output):
+        case .success(let output): // @exempt(from: tests) Unreachable on Linux.
             information = output
         }
 
@@ -519,7 +519,7 @@ public enum Xcode {
         switch scheme(for: package) {
         case .failure(let error):
             return .failure(error)
-        case .success(let scheme):
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
             return runCustomSubcommand([
                 "\u{2D}showBuildSettings",
                 "\u{2D}scheme", scheme,
@@ -532,7 +532,7 @@ public enum Xcode {
         switch buildSettings(for: package, on: sdk) {
         case .failure(let error):
             return .failure(.schemeError(error))
-        case .success(let settings):
+        case .success(let settings): // @exempt(from: tests) Unreachable on Linux.
             guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
                 // @exempt(from: tests) Unreachable without corrupt project.
                 return .failure(.noBuildDirectory)
@@ -547,7 +547,7 @@ public enum Xcode {
     ///     - package: The package.
     ///     - sdk: The SDK.
     public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() }
+        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() } // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Runs a custom subcommand of xcodebuild.
@@ -570,7 +570,7 @@ public enum Xcode {
         switch tool() {
         case .failure(let error):
             return .failure(.locationError(error))
-        case .success(let xcode):
+        case .success(let xcode): // @exempt(from: tests) Unreachable on Linux.
             switch xcode.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
             case .failure(let error):
                 return .failure(.executionError(error))
@@ -600,7 +600,7 @@ public enum Xcode {
         switch coverageTool() {
         case .failure(let error):
             return .failure(.locationError(error))
-        case .success(let coverage):
+        case .success(let coverage): // @exempt(from: tests) Unreachable on Linux.
             switch coverage.run(
                 arguments,
                 in: workingDirectory,
