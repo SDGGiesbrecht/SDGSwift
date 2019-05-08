@@ -40,13 +40,13 @@ do {
         let gitHubRepository = URL(string: "https://github.com/apple/" + module.url)!
         try FileManager.default.withTemporaryDirectory(appropriateFor: URL(fileURLWithPath: #file)) { temporaryDirectory in
             let cloneURL = temporaryDirectory.appendingPathComponent(module.url)
-            try Shell.default.run(command: [
+            _ = try Shell.default.run(command: [
                 "git", "clone",
                 gitHubRepository.absoluteString,
                 cloneURL.path,
                 "\u{2D}\u{2D}branch", branchName,
                 "\u{2D}\u{2D}depth", "1"
-                ], reportProgress: { print($0) })
+                ], reportProgress: { print($0) }).get()
 
             var interface: [String] = []
 
@@ -58,11 +58,11 @@ do {
                         normalized.replaceMatches(for: "CMAKE_SIZEOF_VOID_P", with: "64")
                         try normalized.save(to: source)
 
-                        try Shell.default.run(command: [
+                        _ = try Shell.default.run(command: [
                             "utils/gyb",
                             source.path,
                             "\u{2D}o", source.deletingPathExtension().path
-                            ], in: cloneURL)
+                            ], in: cloneURL).get()
                     }
                 }
                 sources = try FileManager.default.deepFileEnumeration(in: cloneURL.appendingPathComponent(module.path))
