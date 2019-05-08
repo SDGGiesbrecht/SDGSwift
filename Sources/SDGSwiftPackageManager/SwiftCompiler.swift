@@ -144,7 +144,12 @@ extension SwiftCompiler {
                                 }
                             }).resolved()))
 
-                            let source = try String(from: url)
+                            let source: String
+                            do {
+                                source = try String(from: url)
+                            } catch {
+                                return .failure(.foundationError(error))
+                            }
                             var regions: [CoverageRegion] = []
                             autoreleasepool {
                                 if let segments = fileDictionary["segments"] as? [Any] {
@@ -187,6 +192,6 @@ extension SwiftCompiler {
             }
         }
 
-        return TestCoverageReport(files: fileReports)
+        return .success(TestCoverageReport(files: fileReports))
     }
 }
