@@ -149,8 +149,18 @@ public enum Git {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
         reportProgress("$ git " + arguments.joined(separator: " "))
-        return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+        switch tool() {
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let git):
+            switch git.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
+        }
     }
 }

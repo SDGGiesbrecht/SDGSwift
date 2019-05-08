@@ -26,7 +26,7 @@ extension Git {
         /// An error occurred while attempting to locate Git.
         case locationError(LocationError)
 
-        /// Git encountered an error.
+        /// Git encountered an error during its execution.
         case executionError(ExternalProcess.Error)
 
         // MARK: - PresentableError
