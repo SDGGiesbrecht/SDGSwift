@@ -24,7 +24,7 @@ extension Xcode {
     /// An error encountered while using Xcode.
     public enum Error : PresentableError {
 
-        /// An error occurred while attempting to locate Xcode.
+        /// Xcode could not be located.
         case locationError(LocationError)
 
         /// Xcode encountered an error during its execution.

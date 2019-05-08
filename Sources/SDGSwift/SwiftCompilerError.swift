@@ -24,7 +24,7 @@ extension SwiftCompiler {
     /// An error encountered while using Swift.
     public enum Error : PresentableError {
 
-        /// An error occurred while attempting to locate Swift.
+        /// Swift could not be located.
         case locationError(LocationError)
 
         /// Swift encountered an error during its execution.

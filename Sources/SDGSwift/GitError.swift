@@ -20,10 +20,10 @@ import SDGSwiftLocalizations
 
 extension Git {
 
-    /// An error encountered while locating Git.
+    /// An error encountered while using Git.
     public enum Error : PresentableError {
 
-        /// An error occurred while attempting to locate Git.
+        /// Git could not be located.
         case locationError(LocationError)
 
         /// Git encountered an error during its execution.

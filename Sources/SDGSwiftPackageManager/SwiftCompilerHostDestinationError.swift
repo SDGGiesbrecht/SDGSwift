@@ -23,7 +23,7 @@ extension SwiftCompiler {
 
         // MARK: - Cases
 
-        /// An error encountered while locating Swift.
+        /// Swift could not be located.
         case swiftLocationError(LocationError)
 
         /// The package manager encountered an error.

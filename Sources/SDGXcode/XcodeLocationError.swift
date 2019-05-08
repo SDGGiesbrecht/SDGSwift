@@ -18,8 +18,11 @@ import SDGSwiftLocalizations
 
 extension Xcode {
 
-    /// No compatible version of Xcode could be located.
+    /// An error encountered while locating Xcode.
     public struct LocationError : PresentableError {
+        
+        /// No compatible version of Xcode could be located.
+        case unavailable
 
         // MARK: - PresentableError
 
