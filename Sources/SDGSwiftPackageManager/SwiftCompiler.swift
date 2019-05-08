@@ -43,8 +43,19 @@ extension SwiftCompiler {
             return .success(destination)
         }
     }
-    internal static func hostToolchain() throws -> UserToolchain {
-        return try UserToolchain(destination: hostDestination())
+    internal static func hostToolchain() -> Result<UserToolchain, HostDestinationError> {
+        switch hostDestination() {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let destination):
+            let toolchain: UserToolchain
+            do {
+                toolchain = try UserToolchain(destination: destination)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(toolchain)
+        }
     }
 
     private static func manifestResourceProvider() throws -> ManifestResourceProvider {
