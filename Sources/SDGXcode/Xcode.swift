@@ -245,8 +245,8 @@ public enum Xcode {
         return false
     }
 
-    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        return try derivedData(for: package, on: sdk).appendingPathComponent("Logs/Test")
+    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") }
     }
 
     /// Tests the package.
