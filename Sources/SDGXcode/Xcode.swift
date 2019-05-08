@@ -41,8 +41,8 @@ public enum Xcode {
         return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
     }
 
-    private static var located: Result<ExternalProcess, Xcode.LocationError>?
-    private static func tool() -> Result<ExternalProcess, Xcode.LocationError> {
+    private static var located: Result<ExternalProcess, LocationError>?
+    private static func tool() -> Result<ExternalProcess, LocationError> {
         return cached(in: &located) {
 
             let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
@@ -71,8 +71,8 @@ public enum Xcode {
         }
     }
 
-    private static var locatedCoverage: Result<ExternalProcess, Xcode.LocationError>?
-    private static func coverageTool() -> Result<ExternalProcess, Xcode.LocationError> {
+    private static var locatedCoverage: Result<ExternalProcess, LocationError>?
+    private static func coverageTool() -> Result<ExternalProcess, LocationError> {
         return cached(in: &locatedCoverage) {
             return tool().map { tool in
                 return ExternalProcess(at: coverageToolLocation(for: tool.executable))
@@ -82,11 +82,9 @@ public enum Xcode {
 
     // MARK: - Usage
 
-    /// Returns the location of the Swift compiler.
-    ///
-    /// - Throws: An `Xcode.Error`.
-    public static func location() throws -> URL {
-        return try tool().executable
+    /// Returns the location of Xcode.
+    public static func location() -> Result<URL, LocationError> {
+        return tool().map { $0.executable }
     }
 
     private static let ignorableCommands: [String] = [
