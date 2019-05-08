@@ -68,8 +68,8 @@ extension SwiftCompiler {
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL {
-        return try package.hostBuildParameters().codeCovPath.asURL
+    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+        return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
     private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
