@@ -74,7 +74,7 @@ public enum Git {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
 
         var command = [
             "clone",
@@ -94,7 +94,7 @@ public enum Git {
             command += ["\u{2D}\u{2D}depth", "1"]
         }
 
-        return try runCustomSubcommand(command, reportProgress: reportProgress)
+        return runCustomSubcommand(command, reportProgress: reportProgress)
     }
 
     /// Retrieves the list of available versions of the package.
