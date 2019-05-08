@@ -57,8 +57,6 @@ public enum Git {
     // MARK: - Usage
 
     /// Returns the location of the Swift compiler.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
     public static func location() -> Result<URL, LocationError> {
         return tool().map { $0.executable }
     }
@@ -72,8 +70,6 @@ public enum Git {
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
 
         var command = [
@@ -101,8 +97,6 @@ public enum Git {
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func versions(of package: Package) -> Result<Set<Version>, Git.Error> {
         return runCustomSubcommand([
             "ls\u{2D}remote",
@@ -128,8 +122,6 @@ public enum Git {
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
     public static func latestCommitIdentifier(in package: Package) -> Result<String, Git.Error> {
         return runCustomSubcommand([
             "ls\u{2D}remote",
@@ -150,8 +142,6 @@ public enum Git {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
     @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
         reportProgress("$ git " + arguments.joined(separator: " "))
         switch tool() {
