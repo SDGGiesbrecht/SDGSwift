@@ -435,15 +435,14 @@ public enum Xcode {
                         let columnString = components.last,
                         let count = toIntegerIgnoringWhitespace(columnString) else {
                             // @exempt(from: tests)
-                            return .failure(<#T##Failure#>)
-                            throw Xcode.Error.corruptTestCoverageReport
+                            return .failure(.corruptTestCoverageReport)
                     }
                     regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
                             // @exempt(from: tests)
-                            throw Xcode.Error.corruptTestCoverageReport
+                            return .failure(.corruptTestCoverageReport)
                         }
                         var substring = String(report[subrange])
                         report.removeSubrange(subrange)
@@ -457,7 +456,7 @@ public enum Xcode {
                                 let length = toIntegerIgnoringWhitespace(components[1]),
                                 let count = toIntegerIgnoringWhitespace(components[2]) else {
                                     // @exempt(from: tests)
-                                    throw Xcode.Error.corruptTestCoverageReport
+                                    return .failure(.corruptTestCoverageReport)
                             }
                             regions.append(CoverageRegion(region: source._toIndex(line: lineNumber, column: start) ..< source._toIndex(line: lineNumber, column: start + length), count: count))
                         }
