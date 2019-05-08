@@ -26,12 +26,17 @@ extension Xcode {
 
         /// The host destination could not be determined.
         case hostDestinationError(SwiftCompiler.HostDestinationError)
+        
+        /// The build directory could not be located.
+        case buildDirectoryError(BuildDirectoryError)
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
             case .hostDestinationError(let error):
+                return error.presentableDescription()
+            case .buildDirectoryError(let error):
                 return error.presentableDescription()
             }
         }

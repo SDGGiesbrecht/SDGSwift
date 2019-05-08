@@ -321,7 +321,13 @@ public enum Xcode {
             ignoredDirectories = directories
         }
 
-        let coverageDirectory = try self.coverageDirectory(for: package, on: sdk)
+        let coverageDirectory: URL
+        switch self.coverageDirectory(for: package, on: sdk) {
+        case .failure(let error):
+            return .failure(.hostDestinationError(<#T##SwiftCompiler.HostDestinationError#>))
+        case .success(let directory):
+            coverageDirectory = directory
+        }
         guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return nil
