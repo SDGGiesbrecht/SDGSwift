@@ -433,10 +433,10 @@ public enum Xcode {
     ///     - package: The package.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func scheme(for package: PackageRepository) throws -> String {
+    public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
         if try package.xcodeProject() == nil {
             // @exempt(from: tests)
-            throw Xcode.Error.noXcodeProject
+            return .failure(.noXcodeProject)
         }
 
         let information = try runCustomSubcommand(["\u{2D}list"], in: package.location)

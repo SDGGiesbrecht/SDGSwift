@@ -48,9 +48,6 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The package has no Xcode project.
-        case noXcodeProject
-
         /// The Xcode project has no package scheme.
         case noPackageScheme
 
@@ -63,15 +60,7 @@ extension Xcode {
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
-            switch self {
-            case .noXcodeProject:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The package has no Xcode project."
-                    }
-                }).resolved()
-            case .noPackageScheme:
+            switch self {            case .noPackageScheme:
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
