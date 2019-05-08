@@ -118,7 +118,12 @@ extension SwiftCompiler {
                 return .failure(.corruptTestCoverageReport) // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
-        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        let ignoredDirectories: [URL]
+        do {
+            ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        } catch {
+            return .failure(.packageManagerError(error))
+        }
         var fileReports: [FileTestCoverage] = []
         for entry in data {
             if let dictionary = entry as? [String: Any],
