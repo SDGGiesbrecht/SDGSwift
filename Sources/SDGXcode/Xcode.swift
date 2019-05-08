@@ -388,7 +388,12 @@ public enum Xcode {
                     report = output
                 }
 
-                let source = try String(from: fileURL)
+                let source: String
+                do {
+                    source = try String(from: fileURL)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
                 let sourceLines = source.lines
                 func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
                     let digitsOnly = string.replacingOccurrences(of: " ", with: "")
