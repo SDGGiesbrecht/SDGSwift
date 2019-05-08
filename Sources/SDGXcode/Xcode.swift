@@ -201,8 +201,12 @@ public enum Xcode {
     ///     - progressReport: A line of output.
     ///
     /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try runCustomSubcommand([
+    @discardableResult public static func build(
+        _ package: PackageRepository,
+        for sdk: SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.Error> {
+        return runCustomSubcommand([
             "build",
             "\u{2D}sdk", sdk.commandLineName,
             "\u{2D}scheme", try scheme(for: package)
