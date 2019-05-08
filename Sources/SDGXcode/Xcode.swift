@@ -473,7 +473,7 @@ public enum Xcode {
                 return .success(())
             }
 
-            switch result {
+            switch fileResult {
             case .failure(let error):
                 return .failure(error)
             case .success:
