@@ -129,11 +129,13 @@ public struct Package : TransparentWrapper {
     ///
     /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
     @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, ExecutionError> {
-        do {
-            return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
-                let cacheRoot = cacheDirectory ?? temporaryDirectory // @exempt(from: tests)
-                let cache = try self.cacheDirectory(in: cacheRoot, for: build)
 
+        return FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+            let cacheRoot = cacheDirectory ?? temporaryDirectory // @exempt(from: tests)
+            switch self.cacheDirectory(in: cacheRoot, for: build) {
+            case .failure(let error):
+                return .failure(.gitError(error))
+            case .success(let cache):
                 if ¬FileManager.default.fileExists(atPath: cache.path) {
 
                     switch build {
@@ -162,8 +164,6 @@ public struct Package : TransparentWrapper {
                 }
                 throw Package.Error.noSuchExecutable(requested: executableNames)
             }
-        } catch {
-            return .failure(.foundationError(error))
         }
     }
 
