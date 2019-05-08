@@ -213,7 +213,7 @@ public enum Xcode {
                 "build",
                 "\u{2D}sdk", sdk.commandLineName,
                 "\u{2D}scheme", scheme
-                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) }
+                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
         }
     }
 
@@ -287,7 +287,7 @@ public enum Xcode {
         return runCustomSubcommand(
             command,
             in: package.location,
-            reportProgress: reportProgress).mapError { .xcodeError($0) }
+            reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
     }
 
     /// Returns the code coverage report for the package.
@@ -524,7 +524,7 @@ public enum Xcode {
                 "\u{2D}showBuildSettings",
                 "\u{2D}scheme", scheme,
                 "\u{2D}sdk", sdk.commandLineName
-                ], in: package.location).mapError { .xcodeError($0) }
+                ], in: package.location).mapError { .xcodeError($0) } // @exempt(from: tests)
         }
     }
 
