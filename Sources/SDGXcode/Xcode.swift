@@ -324,7 +324,7 @@ public enum Xcode {
         let coverageDirectory: URL
         switch self.coverageDirectory(for: package, on: sdk) {
         case .failure(let error):
-            return .failure(.hostDestinationError(<#T##SwiftCompiler.HostDestinationError#>))
+            return .failure(.buildDirectoryError(error))
         case .success(let directory):
             coverageDirectory = directory
         }

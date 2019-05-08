@@ -26,7 +26,7 @@ extension Xcode {
 
         /// The host destination could not be determined.
         case hostDestinationError(SwiftCompiler.HostDestinationError)
-        
+
         /// The build directory could not be located.
         case buildDirectoryError(BuildDirectoryError)
 
