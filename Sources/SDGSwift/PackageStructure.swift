@@ -87,10 +87,17 @@ public struct Package : TransparentWrapper {
                     return .failure(.swiftError(error))
                 case .success:
                     let products = temporaryRepository.releaseProductsDirectory()
+                    let enumeratedProducts: [URL]
+                    do {
+                        enumeratedProducts = try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: [])
+                    } catch {
+                        return .failure(.foundationError(error))
+                    }
+
                     #if os(macOS)
                     // #workaround(Swift 5.0.1, Swift links with absolute paths on macOS.)
-                    for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
-                        for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+                    for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib" {
+                        for component in enumeratedProducts {
                             _ = try? Shell.default.run(command: [
                                 "install_name_tool",
                                 "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
@@ -100,7 +107,7 @@ public struct Package : TransparentWrapper {
                     #endif
 
                     let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
-                    for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
+                    for component in enumeratedProducts {
                         let filename = component.lastPathComponent
 
                         if filename ≠ "ModuleCache",
@@ -109,11 +116,21 @@ public struct Package : TransparentWrapper {
                             ¬filename.hasSuffix(".swiftdoc"),
                             ¬filename.hasSuffix(".swiftmodule") {
 
-                            try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
+                            do {
+                                try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
+                            } catch {
+                                return .failure(.foundationError(error))
+                            }
                         }
                     }
 
-                    try FileManager.default.move(intermediateDirectory, to: destination)
+                    do {
+                        try FileManager.default.move(intermediateDirectory, to: destination)
+                    } catch {
+                        return .failure(.foundationError(error))
+                    }
+
+                    return .success(())
                 }
             }
         }
