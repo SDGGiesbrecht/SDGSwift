@@ -188,7 +188,11 @@ extension Configuration {
                 existingMain == configurationContents {
                 // Already there.
             } else {
-                try configurationContents.save(to: mainLocation)
+                do {
+                    try configurationContents.save(to: mainLocation)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
             var dependencies: [(package: URL, version: Version, product: String)] = []
