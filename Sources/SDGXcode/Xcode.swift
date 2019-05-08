@@ -71,10 +71,12 @@ public enum Xcode {
         }
     }
 
-    private static var locatedCoverage: ExternalProcess?
-    private static func coverageTool() throws -> ExternalProcess {
-        return try cached(in: &locatedCoverage) {
-            return ExternalProcess(at: coverageToolLocation(for: try tool().executable))
+    private static var locatedCoverage: Result<ExternalProcess, Xcode.LocationError>?
+    private static func coverageTool() -> Result<ExternalProcess, Xcode.LocationError> {
+        return cached(in: &locatedCoverage) {
+            return tool().map { tool in
+                return ExternalProcess(at: coverageToolLocation(for: tool.executable))
+            }
         }
     }
 
