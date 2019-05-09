@@ -85,7 +85,12 @@ public enum SwiftCompiler {
     ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public static func build(_ package: PackageRepository, releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public static func build(
+        _ package: PackageRepository,
+        releaseConfiguration: Bool = false,
+        staticallyLinkStandardLibrary: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, SwiftCompiler.Error> {
         var arguments = ["build"]
         if releaseConfiguration {
             arguments += ["\u{2D}\u{2D}configuration", "release"]
@@ -115,6 +120,31 @@ public enum SwiftCompiler {
             return true
         }
         return false
+    }
+
+    /// The directory to which the products are built.
+    ///
+    /// - Parameters:
+    ///     - package: The package to build.
+    ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
+    public static func build(
+        _ package: PackageRepository,
+        releaseConfiguration: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<URL, SwiftCompiler.Error> {
+        var arguments = [
+            "build",
+            "\u{2D}\u{2D}show\u{2D}bin\u{2D}path"
+        ]
+        if releaseConfiguration {
+            arguments += ["\u{2D}\u{2D}configuration", "release"]
+        }
+        return runCustomSubcommand(
+            arguments,
+            in: package.location,
+            reportProgress: reportProgress).map { URL(fileURLWithPath: $0) }
     }
 
     /// Tests the package.
