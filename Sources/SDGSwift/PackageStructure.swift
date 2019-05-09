@@ -86,7 +86,14 @@ public struct Package : TransparentWrapper {
                 case .failure(let error):
                     return .failure(.swiftError(error))
                 case .success:
-                    let products = temporaryRepository.releaseProductsDirectory()
+                    let products: URL
+                    switch temporaryRepository.releaseProductsDirectory() {
+                    case .failure(let error):
+                        return .failure(.swiftError(error))
+                    case .success(let directory):
+                        products = directory
+                    }
+
                     let enumeratedProducts: [URL]
                     do {
                         enumeratedProducts = try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: [])
