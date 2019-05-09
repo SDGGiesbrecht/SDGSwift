@@ -50,8 +50,6 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "UnR8vHpiMV+K/h
 configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
-configuration.repository.ignoredPaths.insert("Sources/Shims")
-configuration.testing.exemptPaths.insert("Sources/Shims")
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 
 configuration.documentation.api.ignoredDependencies = [

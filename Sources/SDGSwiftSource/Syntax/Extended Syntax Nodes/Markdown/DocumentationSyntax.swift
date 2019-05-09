@@ -14,7 +14,8 @@
 
 import SDGControlFlow
 import SDGMathematics
-import SDGCMarkShims
+
+import CCommonMark
 
 /// The content of a documentation comment.
 public class DocumentationSyntax : MarkdownSyntax {

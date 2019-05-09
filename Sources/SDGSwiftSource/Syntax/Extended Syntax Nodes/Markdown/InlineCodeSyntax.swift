@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCMarkShims
+import CCommonMark
 
 /// Inline code use in documentation.
 public class InlineCodeSyntax : MarkdownSyntax {
