@@ -18,7 +18,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 
-import SDGCMarkShims
+import CCommonMark
 
 /// A code block used in documentation.
 public class CodeBlockSyntax : MarkdownSyntax {

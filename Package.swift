@@ -73,7 +73,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 18, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager", .exact(Version(0, 0, 50000))),
-        .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 50000, 0)))
+        .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 50000, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark", .exact(Version(0, 0 ,50000)))
     ],
     targets: [
 
@@ -116,7 +117,6 @@ let package = Package(
             "SDGSwift",
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
-            "SDGCMarkShims",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGMathematics", package: "SDGCornerstone"),
@@ -124,7 +124,8 @@ let package = Package(
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
-            .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
+            .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+            .product(name: "CommonMark", package: "swift\u{2D}cmark")
             ], swiftSettings: [
                 .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),
@@ -169,10 +170,6 @@ let package = Package(
         .target(name: "SDGSwiftLocalizations", dependencies: [
             .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
-
-        // This is duplicated from the Swift project itself, since stable releases do not expose the API.
-        .target(name: "SDGCMarkShims", dependencies: [
-            ], path: "Sources/Shims/SDGCMarkShims"),
 
         .target(name: "refresh‐core‐libraries", dependencies: [
             "SDGSwiftPackageManager",

@@ -14,7 +14,7 @@
 
 import SDGCollections
 
-import SDGCMarkShims
+import CCommonMark
 
 /// An image insertion in documentation.
 public class ImageSyntax : MarkdownSyntax {

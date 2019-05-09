@@ -1,4 +1,0 @@
-module SDGCMarkShims {
-    header "cmark.h"
-    export *
-}

@@ -14,7 +14,8 @@
 
 import SDGCollections
 import SDGText
-import SDGCMarkShims
+
+import CCommonMark
 
 /// A quotation in documentation.
 public class QuotationSyntax : MarkdownSyntax {

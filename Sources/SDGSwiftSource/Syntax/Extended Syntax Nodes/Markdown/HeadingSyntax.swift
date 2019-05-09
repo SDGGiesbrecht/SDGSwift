@@ -14,7 +14,8 @@
 
 import SDGCollections
 import SDGText
-import SDGCMarkShims
+
+import CCommonMark
 
 /// A documentation heading.
 public class HeadingSyntax : MarkdownSyntax {

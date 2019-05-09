@@ -17,7 +17,8 @@ import Foundation
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
-import SDGCMarkShims
+
+import CCommonMark
 
 /// A Markdown node in documentation.
 public class MarkdownSyntax : ExtendedSyntax {
