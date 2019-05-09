@@ -129,8 +129,8 @@ public enum SwiftCompiler {
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    public static func build(
-        _ package: PackageRepository,
+    public static func productsDirectory(
+        for package: PackageRepository,
         releaseConfiguration: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<URL, SwiftCompiler.Error> {
