@@ -37,10 +37,10 @@ private func withMock(named name: String? = nil, dependentOn dependencies: [Stri
         try? FileManager.default.removeItem(at: mock.location)
         mocks.append(mock.location)
         try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-        try Shell.default.run(command: ["git", "init"], in: mock.location)
-        try Shell.default.run(command: ["git", "add", "."], in: mock.location)
-        try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."], in: mock.location)
-        try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location)
+        _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+        _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
+        _ = try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."], in: mock.location).get()
+        _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
         return mock
     }
     for dependency in dependencies {
@@ -65,7 +65,7 @@ public func withMock(named name: String, dependentOn dependencies: [String] = []
 
 public func withDefaultMockRepository(file: StaticString = #file, line: UInt = #line, test: (PackageRepository) throws -> Void) throws {
     return try withMock(file: file, line: line) { mock in
-        let repository = try PackageRepository(initializingAt: mock, named: StrictString(mock.lastPathComponent), type: .library)
+        let repository = try PackageRepository.initializePackage(at: mock, named: StrictString(mock.lastPathComponent), type: .library).get()
         try test(repository)
     }
 }

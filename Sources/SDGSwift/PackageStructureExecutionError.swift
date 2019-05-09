@@ -1,10 +1,10 @@
 /*
- PackageError.swift
+ PackageStructureExecutionError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2019 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,23 +13,40 @@
  */
 
 import SDGLocalization
+import SDGExternalProcess
 
 import SDGSwiftLocalizations
 
 extension Package {
 
-    /// An error that occurs while trying to use a remote package.
-    public enum Error : PresentableError {
+    /// An error encountered while executing a tool from a Swift package.
+    public enum ExecutionError : PresentableError {
 
-        // MARK: - Cases
+        /// Git encountered an error.
+        case gitError(Git.Error)
+
+        /// Failed to build the tool.
+        case buildError(BuildError)
+
+        /// Foundation encountered an error.
+        case foundationError(Swift.Error)
 
         /// The package did not produce an executable with any of the requested names.
         case noSuchExecutable(requested: Set<StrictString>)
+
+        /// The tool encountered an error during its execution.
+        case executionError(ExternalProcess.Error)
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
+            case .gitError(let error):
+                return error.presentableDescription()
+            case .buildError(let error):
+                return error.presentableDescription()
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             case .noSuchExecutable(requested: let requested):
                 var details: StrictString = "\n"
                 details += StrictString(requested.sorted().joined(separator: "\n".scalars))
@@ -40,6 +57,8 @@ extension Package {
                         return "The package did not produce an executable with any of the requested names:" + StrictString(details)
                     }
                 }).resolved()
+            case .executionError(let error):
+                return error.presentableDescription()
             }
         }
     }

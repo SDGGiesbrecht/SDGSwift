@@ -31,9 +31,9 @@ class SDGXcodeTests : TestCase {
 
     func testDependencyWarnings() throws {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            try package.generateXcodeProject()
+            _ = try package.generateXcodeProject().get()
             #if !os(Linux)
-            let build = try package.build(for: .macOS)
+            let build = try package.build(for: .macOS).get()
             XCTAssertFalse(Xcode.warningsOccurred(during: build))
             #endif
         }
@@ -41,19 +41,19 @@ class SDGXcodeTests : TestCase {
 
     func testXcode() throws {
         #if os(Linux)
-        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"])
+        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"]).get()
         #else
-        try Xcode.runCustomSubcommand(["\u{2D}version"])
+        _ = try Xcode.runCustomSubcommand(["\u{2D}version"]).get()
         #endif
-        let xcodeLocation = try? Xcode.location()
+        let xcodeLocation = try? Xcode.location().get()
         #if !os(Linux)
         XCTAssertNotNil(xcodeLocation)
         #endif
 
         try withDefaultMockRepository { mock in
-            try mock.generateXcodeProject()
+            _ = try mock.generateXcodeProject().get()
             XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-            let mockScheme = try? mock.scheme()
+            let mockScheme = try? mock.scheme().get()
             #if !os(Linux)
             XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
@@ -69,7 +69,7 @@ class SDGXcodeTests : TestCase {
             for sdk in sdks {
                 print("Testing build for \(sdk.commandLineName)...")
 
-                if let derived = try? mock.derivedData(for: sdk) {
+                if let derived = try? mock.derivedData(for: sdk).get() {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
@@ -84,9 +84,9 @@ class SDGXcodeTests : TestCase {
                     }
                 }
                 #if os(Linux)
-                _ = try? mock.build(for: sdk, reportProgress: processLog)
+                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
                 #else
-                try mock.build(for: sdk, reportProgress: processLog)
+                _ = try mock.build(for: sdk, reportProgress: processLog).get()
                 #endif
 
                 var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
@@ -105,7 +105,7 @@ class SDGXcodeTests : TestCase {
             for sdk in testSDKs {
                 print("Testing testing on \(sdk.commandLineName)...")
 
-                if let derived = try? mock.derivedData(for: sdk) {
+                if let derived = try? mock.derivedData(for: sdk).get() {
                     try? FileManager.default.removeItem(at: derived)
                 }
 
@@ -123,7 +123,7 @@ class SDGXcodeTests : TestCase {
                 #if os(Linux)
                 _ = try? mock.test(on: sdk, reportProgress: processLog)
                 #else
-                try mock.test(on: sdk, reportProgress: processLog)
+                _ = try mock.test(on: sdk, reportProgress: processLog).get()
                 #endif
 
                 var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
@@ -144,7 +144,7 @@ class SDGXcodeTests : TestCase {
         #if os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(["help"])
         #else
-        try Xcode.runCustomCoverageSubcommand(["help"])
+        _ = try Xcode.runCustomCoverageSubcommand(["help"]).get()
         #endif
 
         try withDefaultMockRepository { mock in
@@ -161,13 +161,13 @@ class SDGXcodeTests : TestCase {
                 coverageFiles.appendingPathComponent("Tests.swift"),
                 to: testDestination)
 
-            try mock.generateXcodeProject()
+            _ = try mock.generateXcodeProject().get()
             #if os(Linux)
-            _ = try? mock.test(on: .macOS)
+            _ = try? mock.test(on: .macOS).get()
             #else
-            try mock.test(on: .macOS)
+            _ = try mock.test(on: .macOS).get()
             #endif
-            let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true)
+            let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
             #if !os(Linux)
             guard let coverageReport = possibleReport else {
                 XCTFail("No test coverage report found.")
@@ -188,10 +188,20 @@ class SDGXcodeTests : TestCase {
     }
 
     func testXcodeError() {
-        testCustomStringConvertibleConformance(of: Xcode.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noXcodeProject, localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.noBuildDirectory, localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
+        struct StandInError : PresentableError {
+            func presentableDescription() -> StrictString {
+                return "[...]"
+            }
+        }
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.xcodeError(.locationError(.unavailable)))), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.noXcodeProject)), localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.noPackageScheme)), localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.noBuildDirectory), localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.hostDestinationError(.packageManagerError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.Error.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.SchemeError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
     }
 }

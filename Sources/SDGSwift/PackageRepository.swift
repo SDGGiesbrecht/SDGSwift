@@ -38,11 +38,21 @@ public struct PackageRepository : TransparentWrapper {
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public init(cloning package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        self.init(at: location)
-        try Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress)
+    public static func clone(
+        _ package: Package,
+        to location: URL,
+        at build: Build = .development,
+        shallow: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<PackageRepository, Git.Error> {
+
+        let repository = PackageRepository(at: location)
+        switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
+        case .failure(let error):
+            return .failure(error)
+        case .success:
+            return .success(repository)
+        }
     }
 
     // MARK: - Properties
@@ -66,10 +76,8 @@ public struct PackageRepository : TransparentWrapper {
     ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
+    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
     }
 
     /// Tests the package.
@@ -77,10 +85,8 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try SwiftCompiler.test(self, reportProgress: reportProgress)
+    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return SwiftCompiler.test(self, reportProgress: reportProgress)
     }
 
     /// Resolves the package, fetching its dependencies.
@@ -88,10 +94,8 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try SwiftCompiler.resolve(self, reportProgress: reportProgress)
+    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
 
     /// Regenerates the package’s test lists.
@@ -99,10 +103,8 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
+    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+        return SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
     }
 
     // MARK: - TransparentWrapper

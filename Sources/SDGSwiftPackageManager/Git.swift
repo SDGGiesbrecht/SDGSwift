@@ -20,10 +20,8 @@ extension Git {
     ///
     /// - Parameters:
     ///     - repository: The uninitialized repository.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func initialize(_ repository: PackageRepository) throws {
-        try runCustomSubcommand(["init"], in: repository.location)
+    public static func initialize(_ repository: PackageRepository) -> Result<Void, Git.Error> {
+        return runCustomSubcommand(["init"], in: repository.location).map { _ in () }
     }
 
     /// Commits existing changes.
@@ -31,18 +29,20 @@ extension Git {
     /// - Parameters:
     ///     - repository: The repository for which to perform the commit.
     ///     - description: A description for the commit.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func commitChanges(in repository: PackageRepository, description: StrictString) throws {
-        try runCustomSubcommand([
+    public static func commitChanges(
+        in repository: PackageRepository,
+        description: StrictString) -> Result<Void, Git.Error> {
+        return runCustomSubcommand([
             "add",
             "."
-            ], in: repository.location)
-        try runCustomSubcommand([
-            "commit",
-            "\u{2D}\u{2D}message",
-            String(description)
-            ], in: repository.location)
+            ], in: repository.location).map { _ in
+
+                return runCustomSubcommand([
+                    "commit",
+                    "\u{2D}\u{2D}message",
+                    String(description)
+                    ], in: repository.location)
+        }
     }
 
     /// Tags a version.
@@ -50,13 +50,11 @@ extension Git {
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
     ///     - repository: The repository to tag.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func tag(version releaseVersion: Version, in repository: PackageRepository) throws {
-        try runCustomSubcommand([
+    public static func tag(version releaseVersion: Version, in repository: PackageRepository) -> Result<Void, Git.Error> {
+        return runCustomSubcommand([
             "tag",
             releaseVersion.string()
-            ], in: repository.location)
+            ], in: repository.location).map { _ in () }
     }
 
     /// Checks for uncommitted changes or additions in the repository.
@@ -66,15 +64,22 @@ extension Git {
     ///     - exclusionPatterns: Patterns describing paths or files to ignore.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func uncommittedChanges(in repository: PackageRepository, excluding exclusionPatterns: [String] = []) throws -> String {
-        _ = try runCustomSubcommand([
+    public static func uncommittedChanges(
+        in repository: PackageRepository,
+        excluding exclusionPatterns: [String] = []) -> Result<String, Git.Error> {
+
+        switch runCustomSubcommand([
             "add",
             ".",
             "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
-            ], in: repository.location)
-        return try runCustomSubcommand([
+            ], in: repository.location) {
+        case .failure(let error):
+            return .failure(error)
+        case .success:
+            break
+        }
+
+        return runCustomSubcommand([
             "diff",
             "\u{2D}\u{2D}",
             "."
@@ -85,22 +90,22 @@ extension Git {
     ///
     /// - Parameters:
     ///     - repository: The repository.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func ignoredFiles(in repository: PackageRepository) throws -> [URL] {
-        let ignoredSummary = try runCustomSubcommand([
+    public static func ignoredFiles(in repository: PackageRepository) -> Result<[URL], Git.Error> {
+
+        return runCustomSubcommand([
             "status",
             "\u{2D}\u{2D}ignored"
-            ], in: repository.location)
+            ], in: repository.location).map { ignoredSummary in
 
-        var result: [URL] = []
-        if let headerRange = ignoredSummary.scalars.firstMatch(for: "Ignored files:".scalars)?.range {
-            let remainder = String(ignoredSummary[headerRange.upperBound...])
-            for line in remainder.lines.lazy.dropFirst(3).lazy.map({ $0.line }) where ¬line.isEmpty {
-                let relativePath = String(StrictString(line.dropFirst()))
-                result.append(repository.location.appendingPathComponent(relativePath))
-            }
+                var result: [URL] = []
+                if let headerRange = ignoredSummary.scalars.firstMatch(for: "Ignored files:".scalars)?.range {
+                    let remainder = String(ignoredSummary[headerRange.upperBound...])
+                    for line in remainder.lines.lazy.dropFirst(3).lazy.map({ $0.line }) where ¬line.isEmpty {
+                        let relativePath = String(StrictString(line.dropFirst()))
+                        result.append(repository.location.appendingPathComponent(relativePath))
+                    }
+                }
+                return result
         }
-        return result
     }
 }

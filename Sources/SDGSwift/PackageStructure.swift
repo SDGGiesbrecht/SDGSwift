@@ -40,17 +40,13 @@ public struct Package : TransparentWrapper {
     public let url: URL
 
     /// Retrieves the list of available versions.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func versions() throws -> Set<Version> {
-        return try Git.versions(of: self)
+    public func versions() -> Result<Set<Version>, Git.Error> {
+        return Git.versions(of: self)
     }
 
     /// Retrieves the latest commit identifier in the master branch of the package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public func latestCommitIdentifier() throws -> String {
-        return try Git.latestCommitIdentifier(in: self)
+    public func latestCommitIdentifier() -> Result<String, Git.Error> {
+        return Git.latestCommitIdentifier(in: self)
     }
 
     // MARK: - Workflow
@@ -62,47 +58,81 @@ public struct Package : TransparentWrapper {
     ///     - destination: The directory to put the products in.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    public func build(_ build: Build, to destination: URL, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
-        try FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
+    public func build(
+        _ build: Build,
+        to destination: URL,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<Void, BuildError> {
+
+        return FileManager.default.withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
             let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
 
             reportProgress("")
 
-            let temporaryRepository = try PackageRepository(cloning: self, to: temporaryCloneLocation, at: build, shallow: true, reportProgress: reportProgress)
+            switch PackageRepository.clone(
+                self,
+                to: temporaryCloneLocation,
+                at: build,
+                shallow: true,
+                reportProgress: reportProgress) {
 
-            reportProgress("")
+            case .failure(let error):
+                return .failure(.gitError(error))
+            case .success(let temporaryRepository):
 
-            try temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
-            let products = temporaryRepository.releaseProductsDirectory()
-            #if os(macOS)
-            // #workaround(Swift 5.0.1, Swift links with absolute paths on macOS.)
-            for dynamicLibrary in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) where dynamicLibrary.pathExtension == "dylib" {
-                for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                    _ = try? Shell.default.run(command: [
-                        "install_name_tool",
-                        "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
-                        ])
+                reportProgress("")
+
+                switch temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress) {
+                case .failure(let error):
+                    return .failure(.swiftError(error))
+                case .success:
+                    let products = temporaryRepository.releaseProductsDirectory()
+                    let enumeratedProducts: [URL]
+                    do {
+                        enumeratedProducts = try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: [])
+                    } catch {
+                        return .failure(.foundationError(error))
+                    }
+
+                    #if os(macOS)
+                    // #workaround(Swift 5.0.1, Swift links with absolute paths on macOS.)
+                    for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib" {
+                        for component in enumeratedProducts {
+                            _ = try? Shell.default.run(command: [
+                                "install_name_tool",
+                                "\u{2D}change", Shell.quote(dynamicLibrary.path), Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent), Shell.quote(component.path)
+                                ]).get()
+                        }
+                    }
+                    #endif
+
+                    let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
+                    for component in enumeratedProducts {
+                        let filename = component.lastPathComponent
+
+                        if filename ≠ "ModuleCache",
+                            ¬filename.hasSuffix(".product"),
+                            ¬filename.hasSuffix(".build"),
+                            ¬filename.hasSuffix(".swiftdoc"),
+                            ¬filename.hasSuffix(".swiftmodule") {
+
+                            do {
+                                try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
+                            } catch {
+                                return .failure(.foundationError(error))
+                            }
+                        }
+                    }
+
+                    do {
+                        try FileManager.default.move(intermediateDirectory, to: destination)
+                    } catch {
+                        return .failure(.foundationError(error))
+                    }
+
+                    return .success(())
                 }
             }
-            #endif
-
-            let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
-            for component in try FileManager.default.contentsOfDirectory(at: products, includingPropertiesForKeys: nil, options: []) {
-                let filename = component.lastPathComponent
-
-                if filename ≠ "ModuleCache",
-                    ¬filename.hasSuffix(".product"),
-                    ¬filename.hasSuffix(".build"),
-                    ¬filename.hasSuffix(".swiftdoc"),
-                    ¬filename.hasSuffix(".swiftmodule") {
-
-                    try FileManager.default.move(component, to: intermediateDirectory.appendingPathComponent(filename))
-                }
-            }
-
-            try FileManager.default.move(intermediateDirectory, to: destination)
         }
     }
 
@@ -110,12 +140,14 @@ public struct Package : TransparentWrapper {
         return cache.appendingPathComponent("Development")
     }
 
-    private func cacheDirectory(in cache: URL, for version: Build) throws -> URL {
+    private func cacheDirectory(in cache: URL, for version: Build) -> Result<URL, Git.Error> {
         switch version {
         case .version(let specific):
-            return cache.appendingPathComponent(specific.string())
+            return .success(cache.appendingPathComponent(specific.string()))
         case .development:
-            return developmentCache(for: cache).appendingPathComponent(try latestCommitIdentifier())
+            return latestCommitIdentifier().map { identifier in
+                return developmentCache(for: cache).appendingPathComponent(identifier)
+            }
         }
     }
 
@@ -128,40 +160,58 @@ public struct Package : TransparentWrapper {
     ///     - cacheDirectory: Optional. A directory to store the executable in for future use. If the executable is already in the cache, the cached version will be used instead of fetching and rebuilding.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: A `Git.Error`, a `SwiftCompiler.Error`, or an `ExternalProcess.Error`.
-    @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+    @discardableResult public func execute(_ build: Build, of executableNames: Set<StrictString>, with arguments: [String], cacheDirectory: URL?, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, ExecutionError> {
+
+        return FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
             let cacheRoot = cacheDirectory ?? temporaryDirectory // @exempt(from: tests)
-            let cache = try self.cacheDirectory(in: cacheRoot, for: build)
+            switch self.cacheDirectory(in: cacheRoot, for: build) {
+            case .failure(let error):
+                return .failure(.gitError(error))
+            case .success(let cache):
+                if ¬FileManager.default.fileExists(atPath: cache.path) {
 
-            if ¬FileManager.default.fileExists(atPath: cache.path) {
+                    switch build {
+                    case .development:
+                        // Clean up older builds.
+                        try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
+                    case .version:
+                        break
+                    }
 
-                switch build {
-                case .development:
-                    // Clean up older builds.
-                    try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
-                case .version:
-                    break
+                    switch self.build(build, to: cache, reportProgress: reportProgress) {
+                    case .failure(let error):
+                        return .failure(.buildError(error))
+                    case .success:
+                        break
+                    }
                 }
 
-                try self.build(build, to: cache, reportProgress: reportProgress)
-            }
-
-            for executable in try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: []) where StrictString(executable.lastPathComponent) ∈ executableNames {
-
-                #if os(Linux)
-                // The move from the temporary directory to the cache may lose permissions.
-                if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-                    _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]) // @exempt(from: tests)
+                let cacheContents: [URL]
+                do {
+                    cacheContents = try FileManager.default.contentsOfDirectory(at: cache, includingPropertiesForKeys: nil, options: [])
+                } catch {
+                    return .failure(.foundationError(error))
                 }
-                #endif
+                for executable in cacheContents
+                    where StrictString(executable.lastPathComponent) ∈ executableNames {
 
-                reportProgress("")
-                reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
-                return try ExternalProcess(at: executable).run(arguments, reportProgress: reportProgress)
+                        #if os(Linux)
+                        // The move from the temporary directory to the cache may lose permissions.
+                        if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
+                            _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get() // @exempt(from: tests)
+                        }
+                        #endif
+
+                        reportProgress("")
+                        reportProgress("$ " + executable.lastPathComponent + " " + arguments.joined(separator: " "))
+                        return ExternalProcess(at: executable).run(
+                            arguments,
+                            reportProgress: reportProgress).mapError { error in
+                            return .executionError(error)
+                        }
+                }
+                return .failure(.noSuchExecutable(requested: executableNames))
             }
-            throw Package.Error.noSuchExecutable(requested: executableNames)
         }
     }
 

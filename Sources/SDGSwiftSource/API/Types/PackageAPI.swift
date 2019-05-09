@@ -33,8 +33,6 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
     ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
     ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
     ///     - progressReport: A line of text reporting a progress milestone.
-    ///
-    /// - Throws: Errors inherited from `SyntaxTreeParser.parse(_:)`.
     public convenience init(package: PackageGraph, ignoredDependencies: Set<String> = [], reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let root = package.rootPackages.first!.underlyingPackage

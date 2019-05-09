@@ -30,15 +30,15 @@ public enum Git {
         ["which", "git"]
     ]
 
-    private static var located: ExternalProcess?
-    private static func tool() throws -> ExternalProcess {
-        return try cached(in: &located) {
+    private static var located: Result<ExternalProcess, LocationError>?
+    private static func tool() -> Result<ExternalProcess, LocationError> {
+        return cached(in: &located) {
 
             let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
             func validate(_ swift: ExternalProcess) -> Bool {
                 // Make sure version is compatible.
-                guard let output = try? swift.run(["\u{2D}\u{2D}version"]),
+                guard let output = try? swift.run(["\u{2D}\u{2D}version"]).get(),
                     let version = Version(firstIn: output) else {
                     return false // @exempt(from: tests) Git is necessarily available when tests are run.
                 }
@@ -46,10 +46,10 @@ public enum Git {
             }
 
             if let found = ExternalProcess(searching: searchLocations, commandName: "git", validate: validate) {
-                return found
+                return .success(found)
             } else { // @exempt(from: tests)
                 // @exempt(from: tests) Git is necessarily available when tests are run.
-                throw Git.Error.unavailable
+                return .failure(.unavailable)
             }
         }
     }
@@ -57,10 +57,8 @@ public enum Git {
     // MARK: - Usage
 
     /// Returns the location of the Swift compiler.
-    ///
-    /// - Throws: A `SwiftCompiler.Error`.
-    public static func location() throws -> URL {
-        return try tool().executable
+    public static func location() -> Result<URL, LocationError> {
+        return tool().map { $0.executable }
     }
 
     /// Creates a local repository by cloning the remote package.
@@ -72,9 +70,7 @@ public enum Git {
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
 
         var command = [
             "clone",
@@ -94,47 +90,46 @@ public enum Git {
             command += ["\u{2D}\u{2D}depth", "1"]
         }
 
-        return try runCustomSubcommand(command, reportProgress: reportProgress)
+        return runCustomSubcommand(command, reportProgress: reportProgress)
     }
 
     /// Retrieves the list of available versions of the package.
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func versions(of package: Package) throws -> Set<Version> {
-        let output = try runCustomSubcommand([
+    public static func versions(of package: Package) -> Result<Set<Version>, Git.Error> {
+        return runCustomSubcommand([
             "ls\u{2D}remote",
             "\u{2D}\u{2D}tags",
             package.url.absoluteString
-            ])
+            ]).map { output in
 
-        var versions: Set<Version> = []
-        for line in output.lines {
-            let lineText = line.line
-            if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
-                let tag = String(lineText[tagPrefix.range.upperBound...])
-                if let version = Version(tag) {
-                    versions.insert(version)
+                var versions: Set<Version> = []
+                for line in output.lines {
+                    let lineText = line.line
+                    if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
+                        let tag = String(lineText[tagPrefix.range.upperBound...])
+                        if let version = Version(tag) {
+                            versions.insert(version)
+                        }
+                    }
                 }
-            }
+                return versions
         }
-        return versions
     }
 
     /// Retrieves the latest commit identifier in the master branch of the package.
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either a `Git.Error` or an `ExternalProcess.Error`.
-    public static func latestCommitIdentifier(in package: Package) throws -> String {
-        return try runCustomSubcommand([
+    public static func latestCommitIdentifier(in package: Package) -> Result<String, Git.Error> {
+        return runCustomSubcommand([
             "ls\u{2D}remote",
             package.url.absoluteString,
             "master"
-            ]).truncated(before: "\u{9}")
+            ]).map { output in
+                return output.truncated(before: "\u{9}")
+        }
     }
 
     /// Runs a custom subcommand.
@@ -147,10 +142,18 @@ public enum Git {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either a `SwiftCompiler.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
         reportProgress("$ git " + arguments.joined(separator: " "))
-        return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+        switch tool() {
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let git):
+            switch git.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
+        }
     }
 }

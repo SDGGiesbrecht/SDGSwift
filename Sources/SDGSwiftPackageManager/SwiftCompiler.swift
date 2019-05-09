@@ -29,35 +29,65 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
-    private static func hostDestination() throws -> Destination {
-        return try Destination.hostDestination(AbsolutePath(location().deletingLastPathComponent().path))
+    private static func hostDestination() -> Swift.Result<Destination, HostDestinationError> {
+        switch location() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let location):
+            let destination: Destination
+            do {
+                destination = try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(destination)
+        }
     }
-    internal static func hostToolchain() throws -> UserToolchain {
-        return try UserToolchain(destination: hostDestination())
+    internal static func hostToolchain() -> Swift.Result<UserToolchain, HostDestinationError> {
+        switch hostDestination() {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let destination):
+            let toolchain: UserToolchain
+            do {
+                toolchain = try UserToolchain(destination: destination)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+            return .success(toolchain)
+        }
     }
 
-    private static func manifestResourceProvider() throws -> ManifestResourceProvider {
-        return try hostToolchain().manifestResources
+    private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, HostDestinationError> {
+        return hostToolchain().map { $0.manifestResources }
     }
 
-    internal static func manifestLoader() throws -> ManifestLoader {
-        return ManifestLoader(manifestResources: try manifestResourceProvider())
+    internal static func manifestLoader() -> Swift.Result<ManifestLoader, HostDestinationError> {
+        return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) throws -> URL {
-        return try package.hostBuildParameters().codeCovPath.asURL
+    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+        return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) throws -> String {
-        return try package.manifest().name
+    private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<String, SwiftCompiler.HostDestinationError> {
+        return package.manifest().map { $0.name }
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) throws -> URL {
-        let directory = try codeCoverageDirectory(for: package)
-        let fileName = try codeCoverageDataFileName(for: package).appending(".json")
-        return directory.appendingPathComponent(fileName)
+    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+        switch codeCoverageDirectory(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let directory):
+            switch codeCoverageDataFileName(for: package) {
+            case .failure(let error):
+                return .failure(error)
+            case .success(let fileName):
+                return .success(directory.appendingPathComponent(fileName.appending(".json")))
+            }
+        }
     }
 
     /// Returns the code coverage report for the package.
@@ -68,27 +98,42 @@ extension SwiftCompiler {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     ///
-    /// - Throws: Errors from the package manager.
-    ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(
         for package: PackageRepository,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
-        let coverageDataFile = try codeCoverageDataFile(for: package)
+        let coverageDataFile: URL
+        switch codeCoverageDataFile(for: package) {
+        case .failure(let error):
+            return .failure(.hostDestinationError(error))
+        case .success(let file):
+            coverageDataFile = file
+        }
         if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
-            return nil
+            return .success(nil)
         }
 
-        let coverageData = try Data(from: coverageDataFile)
-        let json = try JSONSerialization.jsonObject(with: coverageData)
+        let json: Any
+        do {
+            let coverageData = try Data(from: coverageDataFile)
+            json = try JSONSerialization.jsonObject(with: coverageData)
+        } catch {
+            return .failure(.foundationError(error))
+        }
         guard let coverageDataDictionary = json as? [String: Any],
             let data = coverageDataDictionary["data"] as? [Any] else {
-                throw SwiftCompiler.Error.corruptTestCoverageReport // @exempt(from: tests) Unreachable without mismatched Swift version.
+                return .failure(.corruptTestCoverageReport) // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
-        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        let ignoredDirectories: [URL]
+        switch package._directoriesIgnoredForTestCoverage() {
+        case .failure(let error):
+            return .failure(.hostDestinationError(error))
+        case .success(let directories):
+            ignoredDirectories = directories
+        }
         var fileReports: [FileTestCoverage] = []
         for entry in data {
             if let dictionary = entry as? [String: Any],
@@ -109,7 +154,12 @@ extension SwiftCompiler {
                                 }
                             }).resolved()))
 
-                            let source = try String(from: url)
+                            let source: String
+                            do {
+                                source = try String(from: url)
+                            } catch {
+                                return .failure(.foundationError(error))
+                            }
                             var regions: [CoverageRegion] = []
                             autoreleasepool {
                                 if let segments = fileDictionary["segments"] as? [Any] {
@@ -152,6 +202,6 @@ extension SwiftCompiler {
             }
         }
 
-        return TestCoverageReport(files: fileReports)
+        return .success(TestCoverageReport(files: fileReports))
     }
 }

@@ -73,7 +73,7 @@ extension Configuration {
     /// // A log to collect progress reports while loading. (Optional.)
     /// var log = String()
     ///
-    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) })
+    /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
     /// XCTAssertEqual(loadedConfiguration.option, "Configured")
     /// ```
     ///
@@ -89,8 +89,6 @@ extension Configuration {
     ///     - progressReport: A line of output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
-    ///
-    /// - Throws: A `Foundation` file system error, a `SwiftCompiler.Error`, an `ExternalProcess.Error` a `Foundation` JSON error, or a `Configuration.Error`.
     public class func load<C, L>(
         configuration: C.Type,
         named fileName: UserFacing<StrictString, L>,
@@ -99,10 +97,11 @@ extension Configuration {
         in package: Package,
         at releaseVersion: Version,
         minimumMacOSVersion: Version,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization {
 
         let nullContext: NullContext? = nil
-        return try load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
+        return load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
     }
     private struct NullContext : Context {}
 
@@ -130,12 +129,17 @@ extension Configuration {
         at releaseVersion: Version,
         minimumMacOSVersion: Version,
         context: E?,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> C where C : Configuration, L : InputLocalization, E : Context {
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization, E : Context {
 
         var jsonData: Data
         if let mock = Configuration.mockQueue.first {
             configuration.mockQueue.removeFirst()
-            jsonData = try JSONEncoder().encode([mock])
+            do {
+                jsonData = try JSONEncoder().encode([mock])
+            } catch {
+                return .failure(.foundationError(error))
+            }
         } else {
 
             var possibleConfigurationFile: URL?
@@ -155,7 +159,7 @@ extension Configuration {
                         return "No configuration found. Using defaults..."
                     }
                 }).resolved()))
-                return C()
+                return .success(C())
             }
 
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -173,13 +177,22 @@ extension Configuration {
             let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
 
             let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
-            var configurationContents = try String(from: configurationFile)
+            var configurationContents: String
+            do {
+                configurationContents = try String(from: configurationFile)
+            } catch {
+                return .failure(.foundationError(error))
+            }
             configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
             if let existingMain = try? String(from: mainLocation),
                 existingMain == configurationContents {
                 // Already there.
             } else {
-                try configurationContents.save(to: mainLocation)
+                do {
+                    try configurationContents.save(to: mainLocation)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
             var dependencies: [(package: URL, version: Version, product: String)] = []
@@ -217,22 +230,41 @@ extension Configuration {
                 existingManifest == manifest {
                 // Already there.
             } else {
-                try manifest.save(to: manifestLocation)
+                do {
+                    try manifest.save(to: manifestLocation)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
-            try configurationRepository.build { report in
+            switch configurationRepository.build(reportProgress: { report in
                 if ¬report.hasPrefix("$") {
                     reportProgress(report)
                 }
+            }) {
+            case .failure(let error):
+                return .failure(.swiftError(error))
+            case .success:
+                break
             }
 
             var script = ["run", "configure"]
             if let information = context {
-                let json = try JSONEncoder().encode([information])
-                script.append(String(data: json, encoding: .utf8)!)
+                do {
+                    let json = try JSONEncoder().encode([information])
+                    script.append(String(data: json, encoding: .utf8)!)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
             }
 
-            var json = try SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location)
+            var json: String
+            switch SwiftCompiler.runCustomSubcommand(script, in: configurationRepository.location) {
+            case .failure(let error):
+                return .failure(.swiftError(error))
+            case .success(let output):
+                json = output
+            }
             if json.first ≠ "[" {
                 json.drop(upTo: "\n[") // @exempt(from: tests) Only reachable when new Swift releases flag new errors in old configurations.
             }
@@ -240,14 +272,19 @@ extension Configuration {
             jsonData = json.file
         }
 
-        let decoded = try JSONDecoder().decode([C?].self, from: jsonData)
+        let decoded: [C?]
+        do {
+            decoded = try JSONDecoder().decode([C?].self, from: jsonData)
+        } catch {
+            return .failure(.foundationError(error))
+        }
         guard let registry = decoded.first else {
-            throw Configuration.Error.corruptConfiguration // @exempt(from: tests)
+            return .failure(.corruptConfiguration) // @exempt(from: tests)
         }
         guard let registered = registry else {
-            throw Configuration.Error.emptyConfiguration
+            return .failure(.emptyConfiguration)
         }
-        return registered
+        return .success(registered)
     }
 
     private static var mockQueue: [Configuration] = []

@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
+import SDGControlFlow
 import SDGLocalization
 import SDGExternalProcess
 
@@ -24,29 +23,20 @@ extension Git {
     /// An error encountered while using Git.
     public enum Error : PresentableError {
 
-        // MARK: - Cases
+        /// Git could not be located.
+        case locationError(LocationError)
 
-        /// No compatible version of Git is available.
-        case unavailable
+        /// Git encountered an error during its execution.
+        case executionError(ExternalProcess.Error)
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .unavailable:
-
-                let commands: [StrictString] = Git.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Git could be located. (\(Git.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
-                    }
-                }).resolved()
+            case .locationError(let error):
+                return error.presentableDescription()
+            case .executionError(let error):
+                return error.presentableDescription()
             }
         }
     }

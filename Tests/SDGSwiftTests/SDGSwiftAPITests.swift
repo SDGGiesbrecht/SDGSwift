@@ -14,6 +14,8 @@
 
 import SDGCollections
 import SDGLocalization
+import SDGExternalProcess
+
 import SDGLogicTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
@@ -34,11 +36,17 @@ class SDGSwiftAPITests : TestCase {
     }
 
     func testGit() {
-        XCTAssertNotNil(try? Git.location())
+        XCTAssertNotNil(try? Git.location().get())
     }
 
     func testGitError() {
-        testCustomStringConvertibleConformance(of: Git.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Git.Error.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        switch Git.runCustomSubcommand(["fail"]) {
+        case .success:
+            XCTFail()
+        case .failure(let error):
+            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: "Git Execution", overwriteSpecificationInsteadOfFailing: false)
+        }
     }
 
     func testLocalizations() {
@@ -47,40 +55,54 @@ class SDGSwiftAPITests : TestCase {
 
     func testPackage() {
         testCustomStringConvertibleConformance(of: Package(url: URL(string: "https://domain.tld/Package")!), localizations: InterfaceLocalization.self, uniqueTestName: "Mock Package", overwriteSpecificationInsteadOfFailing: false)
-        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions() ∋ Version(0, 1, 0), "Failed to detect available versions.")
+        XCTAssert(try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions().get() ∋ Version(0, 1, 0), "Failed to detect available versions.")
     }
 
     func testPackageError() {
-        testCustomStringConvertibleConformance(of: Package.Error.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.noSuchExecutable(requested: ["tool"]), localizations: InterfaceLocalization.self, uniqueTestName: "No Such Executable", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPackageRepository() throws {
         testCustomStringConvertibleConformance(of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")), localizations: InterfaceLocalization.self, uniqueTestName: "Mock", overwriteSpecificationInsteadOfFailing: false)
 
         try withDefaultMockRepository { mock in
-            try mock.tag(version: Version(10, 0, 0))
+            _ = try mock.tag(version: Version(10, 0, 0)).get()
         }
     }
 
     func testSwiftCompiler() throws {
-        try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"])
+        _ = try SwiftCompiler.runCustomSubcommand(["\u{2D}\u{2D}version"]).get()
 
         try withDefaultMockRepository { mock in
-            try mock.resolve()
-            try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true)
+            _ = try mock.resolve().get()
+            _ = try mock.build(releaseConfiguration: true, staticallyLinkStandardLibrary: true).get()
             #if canImport(ObjectiveC)
-            try mock.regenerateTestLists()
+            _ = try mock.regenerateTestLists().get()
             #else
-            _ = try? mock.regenerateTestLists()
+            _ = try? mock.regenerateTestLists().get()
             #endif
-            try mock.test()
+            _ = try mock.test().get()
         }
         XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
     }
 
     func testSwiftCompilerError() {
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.unavailable, localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage Report", overwriteSpecificationInsteadOfFailing: false)
+        struct StandInError : PresentableError {
+            func presentableDescription() -> StrictString {
+                return "[...]"
+            }
+        }
+        testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.hostDestinationError(.swiftLocationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage Report", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.BuildError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.BuildError.swiftError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.BuildError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.buildError(.gitError(.locationError(.unavailable))), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Package.ExecutionError.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Execution", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testVersion() {

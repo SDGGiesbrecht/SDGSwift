@@ -41,9 +41,9 @@ public enum Xcode {
         return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
     }
 
-    private static var located: ExternalProcess?
-    private static func tool() throws -> ExternalProcess {
-        return try cached(in: &located) {
+    private static var located: Result<ExternalProcess, LocationError>?
+    private static func tool() -> Result<ExternalProcess, LocationError> {
+        return cached(in: &located) {
 
             let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
 
@@ -51,7 +51,7 @@ public enum Xcode {
                 // @exempt(from: tests) Unreachable on Linux.
 
                 // Make sure version matches.
-                if let output = try? xcode.run(["\u{2D}version"]),
+                if let output = try? xcode.run(["\u{2D}version"]).get(),
                     let version = Version(firstIn: output),
                     version ∈ compatibleVersionRange {
                     return true
@@ -63,28 +63,28 @@ public enum Xcode {
 
             if let found = ExternalProcess(searching: searchLocations, commandName: "xcodebuild", validate: validate) {
                 // @exempt(from: tests) Unreachable on Linux.
-                return found
+                return .success(found)
             } else { // @exempt(from: tests)
                  // @exempt(from: tests) Xcode is necessarily available when tests are run.
-                throw Xcode.Error.unavailable
+                return .failure(.unavailable)
             }
         }
     }
 
-    private static var locatedCoverage: ExternalProcess?
-    private static func coverageTool() throws -> ExternalProcess {
-        return try cached(in: &locatedCoverage) {
-            return ExternalProcess(at: coverageToolLocation(for: try tool().executable))
+    private static var locatedCoverage: Result<ExternalProcess, LocationError>?
+    private static func coverageTool() -> Result<ExternalProcess, LocationError> {
+        return cached(in: &locatedCoverage) {
+            return tool().map { tool in // @exempt(from: tests) Unreachable on Linux.
+                return ExternalProcess(at: coverageToolLocation(for: tool.executable))
+            }
         }
     }
 
     // MARK: - Usage
 
-    /// Returns the location of the Swift compiler.
-    ///
-    /// - Throws: An `Xcode.Error`.
-    public static func location() throws -> URL {
-        return try tool().executable
+    /// Returns the location of Xcode.
+    public static func location() -> Result<URL, LocationError> {
+        return tool().map { $0.executable } // @exempt(from: tests) Unreachable on Linux.
     }
 
     private static let ignorableCommands: [String] = [
@@ -199,14 +199,22 @@ public enum Xcode {
     ///     - sdk: The SDK to build for.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func build(_ package: PackageRepository, for sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
-        return try runCustomSubcommand([
-            "build",
-            "\u{2D}sdk", sdk.commandLineName,
-            "\u{2D}scheme", try scheme(for: package)
-            ], in: package.location, reportProgress: reportProgress)
+    @discardableResult public static func build(
+        _ package: PackageRepository,
+        for sdk: SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, SchemeError> {
+
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+            return runCustomSubcommand([
+                "build",
+                "\u{2D}sdk", sdk.commandLineName,
+                "\u{2D}scheme", scheme
+                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+        }
     }
 
     /// Returns whether the log contains warnings.
@@ -235,8 +243,8 @@ public enum Xcode {
         return false
     }
 
-    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        return try derivedData(for: package, on: sdk).appendingPathComponent("Logs/Test")
+    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") } // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Tests the package.
@@ -246,11 +254,13 @@ public enum Xcode {
     ///     - sdk: The SDK to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func test(_ package: PackageRepository, on sdk: SDK, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func test(
+        _ package: PackageRepository,
+        on sdk: SDK,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, SchemeError> {
 
-        if let coverage = try? coverageDirectory(for: package, on: sdk) {
+        if let coverage = try? coverageDirectory(for: package, on: sdk).get() {
             // @exempt(from: tests) Unreachable on Linux.
             // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
             try? FileManager.default.removeItem(at: coverage)
@@ -267,9 +277,17 @@ public enum Xcode {
             command += ["\u{2D}sdk", sdk.commandLineName]
         }
 
-        command += ["\u{2D}scheme", try scheme(for: package)]
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+            command += ["\u{2D}scheme", scheme]
+        }
 
-        return try runCustomSubcommand(command, in: package.location, reportProgress: reportProgress)
+        return runCustomSubcommand(
+            command,
+            in: package.location,
+            reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
     }
 
     /// Returns the code coverage report for the package.
@@ -281,25 +299,51 @@ public enum Xcode {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public static func codeCoverageReport(for package: PackageRepository, on sdk: SDK, ignoreCoveredRegions: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> TestCoverageReport? {
+    public static func codeCoverageReport(
+        for package: PackageRepository,
+        on sdk: SDK,
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
-        let ignoredDirectories = try package._directoriesIgnoredForTestCoverage()
+        let ignoredDirectories: [URL]
+        switch package._directoriesIgnoredForTestCoverage() {
+        case .failure(let error):
+            return .failure(.hostDestinationError(error))
+        case .success(let directories):
+            ignoredDirectories = directories
+        }
 
-        let coverageDirectory = try self.coverageDirectory(for: package, on: sdk)
-        guard let resultDirectory = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: []).first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
+        let coverageDirectory: URL
+        switch self.coverageDirectory(for: package, on: sdk) {
+        case .failure(let error):
+            return .failure(.buildDirectoryError(error))
+        case .success(let directory): // @exempt(from: tests) Unreachable on Linux.
+            coverageDirectory = directory
+        }
+        let coverageDirectoryContents: [URL]
+        do {
+            coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
+        } catch {
+            return .failure(.foundationError(error))
+        }
+        guard let resultDirectory = coverageDirectoryContents.first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
-            return nil
+            return .success(nil)
         }
         let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
-        let fileURLs: [URL] = try runCustomCoverageSubcommand([
+        let fileURLs: [URL]
+        switch runCustomCoverageSubcommand([
             "view",
             "\u{2D}\u{2D}file\u{2D}list",
             archive.path
-            ]).lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
+            ]) {
+        case .failure(let error):
+            return .failure(.xcodeError(error))
+        case .success(let output): // @exempt(from: tests) Unreachable on Linux.
+            fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
                 if file.pathExtension ≠ "swift" {
                     // @exempt(from: tests)
                     // The report is unlikely to be readable.
@@ -312,11 +356,12 @@ public enum Xcode {
                 }
                 return true
             }).sorted()
+        }
 
-        var files: [FileTestCoverage] = []
+        var files: [FileTestCoverage] = [] // @exempt(from: tests) Unreachable on Linux.
         for fileURL in fileURLs {
             // @exempt(from: tests) Unreachable on Linux.
-            try autoreleasepool {
+            let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
@@ -325,13 +370,24 @@ public enum Xcode {
                     }
                 }).resolved()))
 
-                var report = try runCustomCoverageSubcommand([
+                var report: String
+                switch runCustomCoverageSubcommand([
                     "view",
                     "\u{2D}\u{2D}file", fileURL.path,
                     archive.path
-                    ])
+                    ]) {
+                case .failure(let error):
+                    return .failure(.xcodeError(error))
+                case .success(let output):
+                    report = output
+                }
 
-                let source = try String(from: fileURL)
+                let source: String
+                do {
+                    source = try String(from: fileURL)
+                } catch {
+                    return .failure(.foundationError(error))
+                }
                 let sourceLines = source.lines
                 func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
                     let digitsOnly = string.replacingOccurrences(of: " ", with: "")
@@ -373,14 +429,14 @@ public enum Xcode {
                         let columnString = components.last,
                         let count = toIntegerIgnoringWhitespace(columnString) else {
                             // @exempt(from: tests)
-                            throw Xcode.Error.corruptTestCoverageReport
+                            return .failure(.corruptTestCoverageReport)
                     }
                     regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))
 
                     if hasSubranges {
                         guard let subrange = report.prefix(through: "]\n")?.range else {
                             // @exempt(from: tests)
-                            throw Xcode.Error.corruptTestCoverageReport
+                            return .failure(.corruptTestCoverageReport)
                         }
                         var substring = String(report[subrange])
                         report.removeSubrange(subrange)
@@ -394,7 +450,7 @@ public enum Xcode {
                                 let length = toIntegerIgnoringWhitespace(components[1]),
                                 let count = toIntegerIgnoringWhitespace(components[2]) else {
                                     // @exempt(from: tests)
-                                    throw Xcode.Error.corruptTestCoverageReport
+                                    return .failure(.corruptTestCoverageReport)
                             }
                             regions.append(CoverageRegion(region: source._toIndex(line: lineNumber, column: start) ..< source._toIndex(line: lineNumber, column: start + length), count: count))
                         }
@@ -407,54 +463,82 @@ public enum Xcode {
                     ignoreCoveredRegions: ignoreCoveredRegions)
 
                 files.append(FileTestCoverage(file: fileURL, regions: regions))
+
+                return .success(())
+            }
+
+            switch fileResult {
+            case .failure(let error):
+                return .failure(error)
+            case .success:
+                break
             }
         }
-        return TestCoverageReport(files: files)
+        return .success(TestCoverageReport(files: files))
     }
 
     /// Returns the main package scheme.
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func scheme(for package: PackageRepository) throws -> String {
-        if try package.xcodeProject() == nil {
+    public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
+        let xcodeProject: URL?
+        do {
+            xcodeProject = try package.xcodeProject()
+        } catch {
+            return .failure(.foundationError(error))
+        }
+        if xcodeProject == nil {
             // @exempt(from: tests)
-            throw Xcode.Error.noXcodeProject
+            return .failure(.noXcodeProject)
         }
 
-        let information = try runCustomSubcommand(["\u{2D}list"], in: package.location)
+        let information: String
+        switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
+        case .failure(let error):
+            return .failure(.xcodeError(error))
+        case .success(let output): // @exempt(from: tests) Unreachable on Linux.
+            information = output
+        }
 
         guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
             // @exempt(from: tests)
-            throw Xcode.Error.noPackageScheme
+            return .failure(.noPackageScheme)
         }
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
         for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
             // @exempt(from: tests) Unreachable on Linux.
-            return String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces })))
+            return .success(String(String.ScalarView(line.line.filter({ $0 ∉ CharacterSet.whitespaces }))))
         }
         // @exempt(from: tests)
-        throw Xcode.Error.noPackageScheme
+        return .failure(.noPackageScheme)
     }
 
-    private static func buildSettings(for package: PackageRepository, on sdk: SDK) throws -> String {
-        return try runCustomSubcommand([
-            "\u{2D}showBuildSettings",
-            "\u{2D}scheme", try scheme(for: package),
-            "\u{2D}sdk", sdk.commandLineName
-            ], in: package.location)
-    }
-
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        let settings = try buildSettings(for: package, on: sdk)
-        guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
-            // @exempt(from: tests) Unreachable without corrupt project.
-            throw Xcode.Error.noBuildDirectory
+    private static func buildSettings(for package: PackageRepository, on sdk: SDK) -> Result<String, SchemeError> {
+        switch scheme(for: package) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+            return runCustomSubcommand([
+                "\u{2D}showBuildSettings",
+                "\u{2D}scheme", scheme,
+                "\u{2D}sdk", sdk.commandLineName
+                ], in: package.location).mapError { .xcodeError($0) } // @exempt(from: tests)
         }
-        return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+    }
+
+    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        switch buildSettings(for: package, on: sdk) {
+        case .failure(let error):
+            return .failure(.schemeError(error))
+        case .success(let settings): // @exempt(from: tests) Unreachable on Linux.
+            guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
+                // @exempt(from: tests) Unreachable without corrupt project.
+                return .failure(.noBuildDirectory)
+            }
+            return .success(URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent())
+        }
     }
 
     /// The derived data directory for the package.
@@ -462,10 +546,8 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     ///     - sdk: The SDK.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    public static func derivedData(for package: PackageRepository, on sdk: SDK) throws -> URL {
-        return try buildDirectory(for: package, on: sdk).deletingLastPathComponent()
+    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() } // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Runs a custom subcommand of xcodebuild.
@@ -476,11 +558,26 @@ public enum Xcode {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomSubcommand(
+        _ arguments: [String],
+        in workingDirectory: URL? = nil,
+        with environment: [String: String]? = nil,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.Error> {
+
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
-        return try tool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+
+        switch tool() {
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let xcode): // @exempt(from: tests) Unreachable on Linux.
+            switch xcode.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
+        }
     }
 
     /// Runs a custom subcommand of xccov.
@@ -491,10 +588,29 @@ public enum Xcode {
     ///     - environment: Optional. A different set of environment variables.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    ///
-    /// - Throws: Either an `Xcode.Error` or an `ExternalProcess.Error`.
-    @discardableResult public static func runCustomCoverageSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) throws -> String {
+    @discardableResult public static func runCustomCoverageSubcommand(
+        _ arguments: [String],
+        in workingDirectory: URL? = nil,
+        with environment: [String: String]? = nil,
+        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        ) -> Result<String, Xcode.Error> {
+
         reportProgress("$ xccov " + arguments.joined(separator: " "))
-        return try coverageTool().run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress)
+
+        switch coverageTool() {
+        case .failure(let error):
+            return .failure(.locationError(error))
+        case .success(let coverage): // @exempt(from: tests) Unreachable on Linux.
+            switch coverage.run(
+                arguments,
+                in: workingDirectory,
+                with: environment,
+                reportProgress: reportProgress) {
+            case .failure(let error):
+                return .failure(.executionError(error))
+            case .success(let output):
+                return .success(output)
+            }
+        }
     }
 }

@@ -24,40 +24,20 @@ extension SwiftCompiler {
     /// An error encountered while using Swift.
     public enum Error : PresentableError {
 
-        // MARK: - Cases
+        /// Swift could not be located.
+        case locationError(LocationError)
 
-        /// The required version of Swift is unavailable.
-        case unavailable
-
-        /// The test coverage report could not be parsed.
-        case corruptTestCoverageReport
+        /// Swift encountered an error during its execution.
+        case executionError(ExternalProcess.Error)
 
         // MARK: - PresentableError
 
         public func presentableDescription() -> StrictString {
             switch self {
-            case .unavailable:
-
-                let commands: [StrictString] = SwiftCompiler.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
-                    }
-                }).resolved()
-
-            case .corruptTestCoverageReport:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The test coverage report could not be parsed."
-                    }
-                }).resolved()
+            case .locationError(let error):
+                return error.presentableDescription()
+            case .executionError(let error):
+                return error.presentableDescription()
             }
         }
     }
