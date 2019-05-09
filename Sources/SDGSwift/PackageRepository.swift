@@ -60,11 +60,9 @@ public struct PackageRepository : TransparentWrapper {
     /// The location of the repository.
     public let location: URL
 
-    private static let releaseProductsDirectory = ".build/release"
-
     /// The directory to which release products are built.
-    public func releaseProductsDirectory() -> URL {
-        return location.appendingPathComponent(PackageRepository.releaseProductsDirectory).resolvingSymlinksInPath()
+    public func releaseProductsDirectory() -> Result<URL, SwiftCompiler.Error> {
+        return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: true)
     }
 
     // MARK: - Workflow
