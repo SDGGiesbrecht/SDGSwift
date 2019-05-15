@@ -85,6 +85,16 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         return manifestDeclaration?.documentation
     }
 
+    /// Returns the documentation of the package declaration.
+    ///
+    /// - Parameters:
+    ///     - package: The package, already loaded by the `SwiftPM` package.
+    public static func documentation(for package: PackageModel.Package) throws -> DocumentationSyntax? {
+        let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
+        let manifest = try SyntaxTreeParser.parseAndRetry(manifestURL)
+        return documentation(for: package, from: manifest)
+    }
+
     internal convenience init(package: PackageModel.Package, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
 
         let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
