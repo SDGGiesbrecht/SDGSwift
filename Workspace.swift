@@ -51,7 +51,6 @@ configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
-
 configuration.documentation.api.ignoredDependencies = [
 
     // SDGCornerstone
