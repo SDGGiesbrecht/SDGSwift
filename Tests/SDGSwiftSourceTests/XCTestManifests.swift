@@ -16,6 +16,7 @@ extension SDGSwiftSourceAPITests {
         ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
         ("testLineDocumentationCommentSyntax", testLineDocumentationCommentSyntax),
         ("testLocations", testLocations),
+        ("testPackageDocumentation", testPackageDocumentation),
         ("testParsing", testParsing),
         ("testTree", testTree),
         ("testTriviaPiece", testTriviaPiece),

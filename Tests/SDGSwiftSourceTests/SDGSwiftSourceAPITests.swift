@@ -345,6 +345,11 @@ class SDGSwiftSourceAPITests : TestCase {
         XCTAssertTrue(statementsFound)
     }
 
+    func testPackageDocumentation() throws {
+        let package = try thisRepository.package().get()
+        XCTAssertNotNil(try PackageAPI.documentation(for: package))
+    }
+
     func testParsing() throws {
         for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory) where url.lastPathComponent ≠ ".DS_Store" {
             let sourceFile = try SyntaxTreeParser.parseAndRetry(url)
