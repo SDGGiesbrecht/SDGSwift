@@ -15,6 +15,7 @@
 import SDGCollections
 
 import CCommonMark
+import enum SDGHTML.HTML
 
 /// A link in documentation.
 public class LinkSyntax : MarkdownSyntax {
@@ -76,7 +77,7 @@ public class LinkSyntax : MarkdownSyntax {
 
     internal override var renderedHTMLAttributes: [String: String] {
         return [
-            "href": HTML.escapeAttribute(url.text)
+            "href": HTML.escapeTextForAttribute(url.text)
         ]
     }
 }

@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import enum SDGHTML.HTML
+
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
@@ -86,9 +88,9 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
         case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .parameter, .colon:
             return ""
         case .documentationText:
-            return HTML.escape(text)
+            return HTML.escapeTextForCharacterData(text)
         case .callout:
-            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escape(String(Callout(text)!.localizedText(localization))) + "</p>"
+            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization))) + "</p>"
         case .lineSeparator:
             return "<br>"
         }
@@ -125,9 +127,9 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         if kind == .commentURL ∨ kind == .linkURL {
-            return "<a href=\u{22}\(HTML.escapeAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
+            return "<a href=\u{22}\(HTML.escapeTextForAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
         } else {
-            var source = HTML.escape(_text)
+            var source = HTML.escapeTextForCharacterData(_text)
             if let `class` = syntaxHighlightingClass() {
                 source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                 source.append(contentsOf: "</span>")

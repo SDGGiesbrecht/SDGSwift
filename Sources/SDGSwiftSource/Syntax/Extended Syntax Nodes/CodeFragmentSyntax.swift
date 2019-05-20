@@ -16,6 +16,8 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
+import enum SDGHTML.HTML
+
 /// A fragment of code used in documentation.
 public class CodeFragmentSyntax : ExtendedSyntax {
 
@@ -138,7 +140,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
 
         if context == self.source.text, // Not part of something bigger.
             let selectorLink = symbolLinks[context] {
-            source = HTML.escape(context)
+            source = HTML.escapeTextForCharacterData(context)
 
             func mark(_ searchTerm: String, as class: String) {
                 source.replaceMatches(for: searchTerm, with: "</span><span class=\u{22}\(`class`)\u{22}>\(searchTerm)</span><span class=\u{22}internal identifier\u{22}>")
@@ -151,7 +153,7 @@ public class CodeFragmentSyntax : ExtendedSyntax {
             source.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
             source.append(contentsOf: "</span>")
 
-            source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeAttribute(selectorLink))\u{22}>")
+            source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(selectorLink))\u{22}>")
             source.append(contentsOf: "</a>")
         } else {
             source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
