@@ -74,7 +74,8 @@ let package = Package(
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 18, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager", .exact(Version(0, 0, 50000))),
         .package(url: "https://github.com/apple/swift\u{2D}syntax", .exact(Version(0, 50000, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark", .exact(Version(0, 0 ,50000)))
+        .package(url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark", .exact(Version(0, 0, 50000))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .upToNextMinor(from: Version(0, 1, 0)))
     ],
     targets: [
 
@@ -125,7 +126,8 @@ let package = Package(
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-            .product(name: "CommonMark", package: "swift\u{2D}cmark")
+            .product(name: "CommonMark", package: "swift\u{2D}cmark"),
+            .product(name: "SDGHTML", package: "SDGWeb")
             ], swiftSettings: [
                 .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),

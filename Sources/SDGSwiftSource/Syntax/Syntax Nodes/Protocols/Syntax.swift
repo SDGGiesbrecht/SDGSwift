@@ -22,6 +22,8 @@ import SDGText
 import SDGPersistence
 import SDGLocalization
 
+import enum SDGHTML.HTML
+
 extension Syntax {
 
     // MARK: - Properties
@@ -181,13 +183,13 @@ extension Syntax {
             if let extended = token.extended {
                 result = extended.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
             } else {
-                var source = HTML.escape(token.text)
+                var source = HTML.escapeTextForCharacterData(token.text)
                 if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
                     source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                     source.append(contentsOf: "</span>")
                 }
                 if let url = symbolLinks[token.text] {
-                    source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeAttribute(url))\u{22}>")
+                    source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
                     source.append(contentsOf: "</a>")
                 }
                 result += source

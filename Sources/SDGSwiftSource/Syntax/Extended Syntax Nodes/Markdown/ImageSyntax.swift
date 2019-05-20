@@ -15,6 +15,7 @@
 import SDGCollections
 
 import CCommonMark
+import enum SDGHTML.HTML
 
 /// An image insertion in documentation.
 public class ImageSyntax : MarkdownSyntax {
@@ -78,7 +79,7 @@ public class ImageSyntax : MarkdownSyntax {
     // MARK: - ExtendedSyntax
 
     public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        let alternate = HTML.escape(contents.map({ $0.text }).joined())
-        return "<img alt=\u{22}" + alternate + "\u{22} src=\u{22}" + HTML.escapeAttribute(url.text) + "\u{22}>"
+        let alternate = HTML.escapeTextForCharacterData(contents.map({ $0.text }).joined())
+        return "<img alt=\u{22}" + alternate + "\u{22} src=\u{22}" + HTML.escapeTextForAttribute(url.text) + "\u{22}>"
     }
 }
