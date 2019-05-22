@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import SDGText
 
@@ -45,6 +46,31 @@ public class QuotationSyntax : MarkdownSyntax {
         }
 
         super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+
+        // Fix intervening delimiters.
+        do {
+            var children = self.children
+            for index in children.indices.reversed() {
+                if children[index] is ParagraphSyntax,
+                    index ≠ children.startIndex {
+                    let newlineIndex = children.index(before: index)
+                    if let newlineToken = children[newlineIndex] as? ExtendedTokenSyntax,
+                        newlineToken.kind == .newlines,
+                        newlineIndex ≠ children.startIndex {
+                        let predecessor = children.index(before: newlineIndex)
+                        if children[predecessor] is ParagraphSyntax {
+                            children.insert(contentsOf: [
+                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter), // @exempt(from: tests)
+                                ExtendedTokenSyntax(text: "\n", kind: .newlines),
+                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter), // @exempt(from: tests)
+                                ExtendedTokenSyntax(text: indent?.text ?? " ", kind: .whitespace) // @exempt(from: tests)
+                                ], at: index)
+                        }
+                    }
+                }
+            }
+            self.children = children
+        }
 
         if let last = children.last,
             let lastParagraph = last as? ParagraphSyntax,
