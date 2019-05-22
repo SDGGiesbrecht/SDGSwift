@@ -60,10 +60,10 @@ public class QuotationSyntax : MarkdownSyntax {
                         let predecessor = children.index(before: newlineIndex)
                         if children[predecessor] is ParagraphSyntax {
                             children.insert(contentsOf: [
-                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter),
+                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter), // @exempt(from: tests)
                                 ExtendedTokenSyntax(text: "\n", kind: .newlines),
-                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter),
-                                ExtendedTokenSyntax(text: indent?.text ?? " ", kind: .whitespace)
+                                ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter), // @exempt(from: tests)
+                                ExtendedTokenSyntax(text: indent?.text ?? " ", kind: .whitespace) // @exempt(from: tests)
                                 ], at: index)
                         }
                     }
