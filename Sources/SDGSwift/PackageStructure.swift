@@ -87,7 +87,7 @@ public struct Package : TransparentWrapper {
                     return .failure(.swiftError(error))
                 case .success:
                     let products: URL
-                    switch temporaryRepository.releaseProductsDirectory() {
+                    switch temporaryRepository.productsDirectory(releaseConfiguration: true) {
                     case .failure(let error):
                         return .failure(.swiftError(error))
                     case .success(let directory):

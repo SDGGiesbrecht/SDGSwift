@@ -60,9 +60,12 @@ public struct PackageRepository : TransparentWrapper {
     /// The location of the repository.
     public let location: URL
 
-    /// The directory to which release products are built.
-    public func releaseProductsDirectory() -> Result<URL, SwiftCompiler.Error> {
-        return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: true)
+    /// The directory to which products are built.
+    ///
+    /// - Parameters:
+    ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
+    public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, SwiftCompiler.Error> {
+        return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
     }
 
     // MARK: - Workflow
