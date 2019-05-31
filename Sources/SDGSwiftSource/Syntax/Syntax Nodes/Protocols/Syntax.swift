@@ -250,7 +250,9 @@ extension Syntax {
                     let comment = trivia.syntax(siblings: leading, index: index)
                     if let line = comment as? LineDocumentationSyntax,
                         let documentation = line.content.context as? DocumentationSyntax {
-                        result.append(SymbolDocumentation(documentation))
+                        if documentation.text ≠ result.last?.documentationComment.text {
+                            result.append(SymbolDocumentation(documentation))
+                        }
                     } else if let block = comment as? BlockDocumentationSyntax {
                         result.append(SymbolDocumentation(block.documentation))
                     } else if let other = comment as? LineCommentSyntax,
@@ -258,7 +260,7 @@ extension Syntax {
                         result[result.indices.last!].developerComments.prepend(other)
                     }
                 default:
-                    continue
+                    break
                 }
             }
         }
