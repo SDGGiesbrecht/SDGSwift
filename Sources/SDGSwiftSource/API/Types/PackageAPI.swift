@@ -85,7 +85,7 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
 
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        return manifestDeclaration?.documentation ?? []
+        return manifestDeclaration?.documentation ?? [] // @exempt(from: tests)
     }
 
     /// Returns the documentation of the package declaration.

@@ -29,7 +29,7 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
     internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
         self.init(
-            documentation: manifestDeclaration?.documentation ?? [],
+            documentation: manifestDeclaration?.documentation ?? [], // @exempt(from: tests)
             declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
         for module in product.targets where ¬module.name.hasPrefix("_") {
