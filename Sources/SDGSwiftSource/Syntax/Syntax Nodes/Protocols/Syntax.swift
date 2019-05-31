@@ -255,7 +255,7 @@ extension Syntax {
                         }
                     } else if let block = comment as? BlockDocumentationSyntax {
                         result.append(SymbolDocumentation(block.documentation))
-                    } else if let other = comment as? LineCommentSyntax,
+                    } else if let other = comment as? LineDeveloperCommentSyntax,
                         ¬result.isEmpty {
                         result[result.indices.last!].developerComments.prepend(other)
                     }

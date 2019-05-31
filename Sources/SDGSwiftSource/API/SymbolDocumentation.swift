@@ -24,7 +24,7 @@ public struct SymbolDocumentation {
     /// Any developer line comments preceding the documentation.
     ///
     /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
-    public internal(set) var developerComments: [LineCommentSyntax] = []
+    public internal(set) var developerComments: [LineDeveloperCommentSyntax] = []
 
     /// The documentation itself.
     public let documentationComment: DocumentationSyntax
