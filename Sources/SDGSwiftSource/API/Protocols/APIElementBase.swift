@@ -133,7 +133,7 @@ public class _APIElementBase {
                             shouldAppendNew = false
                             break partnerSearch
                         }
-                    } else if element.documentation ≠ nil {
+                    } else if element.documentation.last ≠ nil {
                         // Only the new element has documentation.
                         element.overloads.append(convert(merged.remove(at: index)))
                         break partnerSearch
