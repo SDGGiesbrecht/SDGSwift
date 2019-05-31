@@ -79,17 +79,20 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         APIElement.resolveConformances(elements: [.package(self)] + dependencyModules.lazy.map({ APIElement.module($0) }))
     }
 
-    private static func documentation(for package: PackageModel.Package, from manifest: SourceFileSyntax) -> DocumentationSyntax? {
+    private static func documentation(
+        for package: PackageModel.Package,
+        from manifest: SourceFileSyntax) -> [SymbolDocumentation] {
+
         let node = (manifest.smallestSubnode(containing: "Package(\n    name: \u{22}\(package.name)\u{22}") ?? manifest.smallestSubnode(containing: "Package(name: \u{22}\(package.name)\u{22}"))
         let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
-        return manifestDeclaration?.documentation
+        return manifestDeclaration?.documentation ?? []
     }
 
     /// Returns the documentation of the package declaration.
     ///
     /// - Parameters:
     ///     - package: The package, already loaded by the `SwiftPM` package.
-    public static func documentation(for package: PackageModel.Package) throws -> DocumentationSyntax? {
+    public static func documentation(for package: PackageModel.Package) throws -> [SymbolDocumentation] {
         let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
         let manifest = try SyntaxTreeParser.parseAndRetry(manifestURL)
         return documentation(for: package, from: manifest)
@@ -121,7 +124,13 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         }
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: TokenSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

@@ -21,7 +21,7 @@ public protocol APIElementProtocol : AnyObject {
 
     // #documentation(SDGSwiftSource.APIElement.documentation)
     /// The element’s documentation.
-    var documentation: DocumentationSyntax? { get }
+    var documentation: [SymbolDocumentation] { get }
 
     // #documentation(SDGSwiftSource.APIElement.declaration)
     /// The element’s declaration.

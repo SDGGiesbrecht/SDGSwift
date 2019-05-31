@@ -17,7 +17,13 @@ public final class VariableAPI : _APIElementBase, SortableAPIElement, UniquelyDe
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: VariableDeclSyntax, constraints: GenericWhereClauseSyntax?, name: VariableDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: VariableDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: VariableDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

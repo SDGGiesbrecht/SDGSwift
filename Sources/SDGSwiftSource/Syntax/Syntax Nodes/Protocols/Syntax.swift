@@ -239,7 +239,7 @@ extension Syntax {
         }
     }
 
-    internal var documentation: [SymbolDocumentation]? {
+    internal var documentation: [SymbolDocumentation] {
         var result: [SymbolDocumentation] = []
         if let token = firstToken() {
             let leading = token.leadingTrivia

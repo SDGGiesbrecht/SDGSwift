@@ -16,7 +16,7 @@ internal protocol _UniquelyDeclaredManifestAPIElement : _UniquelyDeclaredAPIElem
 
 extension _UniquelyDeclaredManifestAPIElement {
 
-    internal init(documentation: DocumentationSyntax?, declaration: Declaration) {
+    internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
         self.init(documentation: documentation, alreadyNormalizedDeclaration: declaration, constraints: nil, name: declaration.manifestEntryName(), children: [])
     }
 

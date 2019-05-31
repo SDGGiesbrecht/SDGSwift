@@ -18,7 +18,7 @@ public class _UndeclaredAPIElementBase : _APIElementBase {
 
     init(type: TypeSyntax) {
         self.type = type.normalized()
-        super.init(documentation: nil)
+        super.init(documentation: [])
     }
 
     // MARK: - Properties

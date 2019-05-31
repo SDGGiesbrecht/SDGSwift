@@ -56,7 +56,7 @@ extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
         var list: [APIElement] = []
         for element in elements where ¬element.isHidden {
             list.append(.case(CaseAPI(
-                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                documentation: list.isEmpty ? documentation : [], // The documentation only applies to the first.
                 declaration: SyntaxFactory.makeEnumCaseDecl(
                     attributes: attributes,
                     modifiers: modifiers,

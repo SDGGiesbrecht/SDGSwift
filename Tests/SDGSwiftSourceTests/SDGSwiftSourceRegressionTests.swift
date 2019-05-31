@@ -34,6 +34,6 @@ class SDGSwiftSourceRegressionTests : TestCase {
         let parsed = try SyntaxTreeParser.parse(source)
         XCTAssertEqual(try SyntaxTreeParser.parse(source).source(), source)
         let documentation = parsed.api().first?.documentation
-        XCTAssertEqual(documentation?.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
+        XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
     }
 }

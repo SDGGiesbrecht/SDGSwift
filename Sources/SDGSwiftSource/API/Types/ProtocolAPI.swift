@@ -19,7 +19,13 @@ public final class ProtocolAPI : _APIElementBase, APIElementProtocol, _NonOverlo
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax, constraints: GenericWhereClauseSyntax?, name: ProtocolDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: ProtocolDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation, children: children)

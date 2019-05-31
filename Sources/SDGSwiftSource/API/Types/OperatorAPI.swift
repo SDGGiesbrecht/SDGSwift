@@ -26,7 +26,13 @@ public final class OperatorAPI : _APIElementBase, APIElementProtocol, DeclaredAP
 
     // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: OperatorDeclSyntax, constraints: GenericWhereClauseSyntax?, name: OperatorDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: OperatorDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: OperatorDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

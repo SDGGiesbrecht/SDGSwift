@@ -20,7 +20,13 @@ public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyD
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: SubscriptDeclSyntax, constraints: GenericWhereClauseSyntax?, name: SubscriptDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: SubscriptDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: SubscriptDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

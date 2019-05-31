@@ -403,10 +403,10 @@ class SDGSwiftSourceAPITests : TestCase {
                         found = true
                         let method = `extension`.instanceMethods.first(where: { $0.name.source().hasPrefix("performAction") })!
                         let methods = [method, `extension`.instanceMethods.first(where: { $0.name.source().hasPrefix("withSeparateParameters") })!]
-                        _ = method.documentation!.renderedHTML(localization: "zxx")
+                        _ = method.documentation.last!.documentationComment.renderedHTML(localization: "zxx")
 
                         for localization in InterfaceLocalization.allCases {
-                            let rendered = methods.map({ $0.documentation!.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
+                            let rendered = methods.map({ $0.documentation.last!.documentationComment.renderedSpecification(localization: localization.code) }).joined(separator: "\n")
 
                             let specification = testSpecificationDirectory().appendingPathComponent("Source/After/Rendered Documentation/\(localization.icon!).html")
                             SDGPersistenceTestUtilities.compare(HTMLPage(content: rendered, cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"), against: specification, overwriteSpecificationInsteadOfFailing: false)
