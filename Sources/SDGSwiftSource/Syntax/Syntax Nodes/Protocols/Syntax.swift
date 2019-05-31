@@ -239,26 +239,30 @@ extension Syntax {
         }
     }
 
-    internal var documentation: DocumentationSyntax? {
-        guard let token = firstToken() else {
-            return nil
-        }
-        let leading = token.leadingTrivia
-        for index in leading.indices.lazy.reversed() {
-            let trivia = leading[index]
-            switch trivia {
-            case .docLineComment, .docBlockComment:
-                let comment = trivia.syntax(siblings: leading, index: index)
-                if let line = comment as? LineDocumentationSyntax {
-                    return line.content.context as? DocumentationSyntax
-                } else if let block = comment as? BlockDocumentationSyntax {
-                    return block.documentation
+    internal var documentation: [SymbolDocumentation]? {
+        var result: [SymbolDocumentation] = []
+        if let token = firstToken() {
+            let leading = token.leadingTrivia
+            for index in leading.indices.lazy.reversed() {
+                let trivia = leading[index]
+                switch trivia {
+                case .docLineComment, .docBlockComment, .lineComment:
+                    let comment = trivia.syntax(siblings: leading, index: index)
+                    if let line = comment as? LineDocumentationSyntax,
+                        let documentation = line.content.context as? DocumentationSyntax {
+                        result.append(SymbolDocumentation(documentation))
+                    } else if let block = comment as? BlockDocumentationSyntax {
+                        result.append(SymbolDocumentation(block.documentation))
+                    } else if let other = comment as? LineCommentSyntax,
+                        ¬result.isEmpty {
+                        result[result.indices.last!].developerComments.prepend(other)
+                    }
+                default:
+                    continue
                 }
-            default:
-                continue
             }
         }
-        return nil
+        return result.reversed()
     }
 
     internal func smallestSubnode(containing searchTerm: String) -> Syntax? {
