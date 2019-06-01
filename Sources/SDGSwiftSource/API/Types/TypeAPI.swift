@@ -23,7 +23,9 @@ public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIEle
 
     // MARK: - Initialization
 
-    internal init<T>(documentation: DocumentationSyntax?, declaration: T, children: [APIElement]) where T : TypeDeclaration {
+    internal init<T>(documentation: [SymbolDocumentation], declaration: T, children: [APIElement])
+        where T : TypeDeclaration {
+
         let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
         self.declaration = normalizedDeclaration
         genericName = normalizedDeclaration.name()

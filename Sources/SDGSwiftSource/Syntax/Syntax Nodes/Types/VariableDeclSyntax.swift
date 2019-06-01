@@ -73,7 +73,7 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
         var list: [APIElement] = []
         for separate in bindings.flattenedForAPI() {
             list.append(.variable(VariableAPI(
-                documentation: list.isEmpty ? documentation : nil, // The documentation only applies to the first.
+                documentation: list.isEmpty ? documentation : [], // The documentation only applies to the first.
                 declaration: SyntaxFactory.makeVariableDecl(
                     attributes: attributes,
                     modifiers: modifiers,

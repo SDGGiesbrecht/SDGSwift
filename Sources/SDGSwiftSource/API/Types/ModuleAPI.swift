@@ -27,7 +27,10 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     ///     - manifest: The syntax of the package manifest.
     public convenience init(module: PackageModel.Target, manifest: Syntax?) throws {
         let manifestDeclaration = manifest?.smallestSubnode(containing: ".target(name: \u{22}\(module.name)\u{22}")?.parent
-        try self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name), sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) }))
+        try self.init(
+            documentation: manifestDeclaration?.documentation ?? [],
+            declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name),
+            sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) }))
     }
 
     /// Creates a module API instance by parsing the specified source files.
@@ -36,7 +39,11 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     ///     - documentation: The documentation for the module.
     ///     - declaration: The module’s declaration from the package manifest.
     /// 	- sources: The source files.
-    public convenience init(documentation: DocumentationSyntax?, declaration: FunctionCallExprSyntax, sources: [URL]) throws {
+    public convenience init(
+        documentation: [SymbolDocumentation],
+        declaration: FunctionCallExprSyntax,
+        sources: [URL]) throws {
+
         self.init(documentation: documentation, declaration: declaration)
         var api: [APIElement] = []
         for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
@@ -48,7 +55,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
         apply(parsedElements: api)
     }
     internal convenience init(source: String) throws {
-        self.init(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr())
+        self.init(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr())
         let syntax = try SyntaxTreeParser.parse(source)
         apply(parsedElements: syntax.api())
     }
@@ -56,7 +63,13 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
         children.append(contentsOf: APIElement.merge(elements: parsedElements))
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: TokenSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

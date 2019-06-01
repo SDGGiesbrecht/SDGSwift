@@ -18,7 +18,12 @@ public class _APIElementBase {
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, constraints: GenericWhereClauseSyntax? = nil, compilationConditions: Syntax? = nil, children: [APIElement] = []) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        constraints: GenericWhereClauseSyntax? = nil,
+        compilationConditions: Syntax? = nil,
+        children: [APIElement] = []) {
+
         self.documentation = documentation
         self.compilationConditions = compilationConditions
         self.constraints = constraints
@@ -29,7 +34,7 @@ public class _APIElementBase {
 
     // #documentation(SDGSwiftSource.APIElement.documentation)
     /// The element’s documentation.
-    public let documentation: DocumentationSyntax?
+    public let documentation: [SymbolDocumentation]
 
     private var _constraints: GenericWhereClauseSyntax?
     // #documentation(SDGSwiftSource.APIElement.constraints)
@@ -111,8 +116,8 @@ public class _APIElementBase {
                 partnerSearch: for index in merged.indices {
                     let existing = merged[index]
 
-                    if let existingDocumenation = existing.documentation {
-                        if let elementDocumentation = element.documentation {
+                    if let existingDocumenation = existing.documentation.last?.documentationComment {
+                        if let elementDocumentation = element.documentation.last?.documentationComment {
                             if existingDocumenation.text == elementDocumentation.text {
                                 // Same documentation.
                                 existing.overloads.append(convert(element))
@@ -128,7 +133,7 @@ public class _APIElementBase {
                             shouldAppendNew = false
                             break partnerSearch
                         }
-                    } else if element.documentation ≠ nil {
+                    } else if element.documentation.last ≠ nil {
                         // Only the new element has documentation.
                         element.overloads.append(convert(merged.remove(at: index)))
                         break partnerSearch

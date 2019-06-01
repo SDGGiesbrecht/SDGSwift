@@ -20,7 +20,13 @@ public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDe
 
     // MARK: - Initialization
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionDeclSyntax, constraints: GenericWhereClauseSyntax?, name: FunctionDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: FunctionDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

@@ -28,7 +28,9 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
 
     internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
         let manifestDeclaration = manifest.smallestSubnode(containing: ".library(name: \u{22}\(product.name)\u{22}")?.parent
-        self.init(documentation: manifestDeclaration?.documentation, declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
+        self.init(
+            documentation: manifestDeclaration?.documentation ?? [], // @exempt(from: tests)
+            declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
         for module in product.targets where ¬module.name.hasPrefix("_") {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -41,7 +43,13 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         }
     }
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax, constraints: GenericWhereClauseSyntax?, name: TokenSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: TokenSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

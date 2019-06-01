@@ -16,7 +16,7 @@ internal protocol _UniquelyDeclaredSyntaxAPIElement : _UniquelyDeclaredAPIElemen
 
 extension _UniquelyDeclaredSyntaxAPIElement {
 
-    internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
+    internal init(documentation: [SymbolDocumentation], declaration: Declaration, children: [APIElement] = []) {
         let normalized = declaration.normalizedAPIDeclaration()
         self.init(documentation: documentation, alreadyNormalizedDeclaration: normalized, constraints: nil, name: normalized.name(), children: children)
     }
@@ -30,7 +30,7 @@ extension _UniquelyDeclaredSyntaxAPIElement {
 
 extension _UniquelyDeclaredSyntaxAPIElement where Declaration : Constrained, Self : _APIElementBase {
 
-    internal init(documentation: DocumentationSyntax?, declaration: Declaration, children: [APIElement] = []) {
+    internal init(documentation: [SymbolDocumentation], declaration: Declaration, children: [APIElement] = []) {
         var normalized = declaration.normalizedAPIDeclaration()
         let constraints = normalized.genericWhereClause
         normalized = normalized.withGenericWhereClause(nil)

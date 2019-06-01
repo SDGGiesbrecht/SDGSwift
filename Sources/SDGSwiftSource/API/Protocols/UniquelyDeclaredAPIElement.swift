@@ -15,7 +15,14 @@
 internal protocol _UniquelyDeclaredAPIElement : DeclaredAPIElement {
     associatedtype Declaration : Syntax
     associatedtype Name : Syntax
-    init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: Declaration, constraints: GenericWhereClauseSyntax?, name: Name, children: [APIElement])
+
+    init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: Declaration,
+        constraints: GenericWhereClauseSyntax?,
+        name: Name,
+        children: [APIElement])
+
     // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
     /// The element’s declaration.
     var declaration: Declaration { get }

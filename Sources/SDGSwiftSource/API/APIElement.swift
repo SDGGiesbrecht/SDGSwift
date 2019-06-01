@@ -212,7 +212,7 @@ public enum APIElement : Comparable, Hashable {
 
     // @documentation(SDGSwiftSource.APIElement.documentation)
     /// The element’s documentation.
-    public var documentation: DocumentationSyntax? {
+    public var documentation: [SymbolDocumentation] {
         return elementProtocol.documentation
     }
 

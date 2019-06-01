@@ -28,7 +28,13 @@ public final class CaseAPI : _APIElementBase, _NonOverloadableAPIElement, Sortab
 
     // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax, constraints: GenericWhereClauseSyntax?, name: EnumCaseDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: EnumCaseDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

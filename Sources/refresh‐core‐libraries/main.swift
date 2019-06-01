@@ -77,7 +77,7 @@ do {
                 }
             }
 
-            let api = try ModuleAPI(documentation: nil, declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
+            let api = try ModuleAPI(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
             APIElement.module(api).appendInheritables(to: &interface)
             interface = interface.map({ $0.replacingMatches(for: "= default", with: "= x") })
 

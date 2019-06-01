@@ -26,7 +26,13 @@ public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, Declared
 
     // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(documentation: DocumentationSyntax?, alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax, constraints: GenericWhereClauseSyntax?, name: PrecedenceGroupDeclSyntax, children: [APIElement]) {
+    internal init(
+        documentation: [SymbolDocumentation],
+        alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax,
+        constraints: GenericWhereClauseSyntax?,
+        name: PrecedenceGroupDeclSyntax,
+        children: [APIElement]) {
+
         self.declaration = declaration
         self.name = name
         super.init(documentation: documentation)

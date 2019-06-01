@@ -19,7 +19,7 @@ import SDGXCTestUtilities
 class SDGSwiftSourceInternalTests : TestCase {
 
     func testEmptySyntax() {
-        XCTAssertNil(SyntaxFactory.makeBlankUnknownExpr().documentation)
+        XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
     }
 
     func testExtendedSyntaxContext() {
