@@ -29,6 +29,8 @@ import PackageDescription
 /// - Compiler operations such as building and testing: `SDGSwift`, `SDGXcode`
 /// - Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
 /// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
+///
+/// Versioning note: Most products are already “finalized” at a state comparable to a semantic version one (`SDGSwift`, `SDGSwiftSource`, `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`). The package as a whole remains zero‐versioned because `SDGSwiftPackageManager` and `SDGXcode` still rely on hidden implementation details of the package manager and Xcode respectively.
 let package = Package(
     name: "SDGSwift",
     platforms: [
@@ -68,6 +70,8 @@ let package = Package(
 
         // @documentation(SampleConfiguration)
         /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
+        ///
+        /// (`SampleConfiguration` is not intended as a real product. It is does not factor into the SDGSwift’s semantic version and should not be used as a real dependency.)
         .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
     ],
     dependencies: [
@@ -167,6 +171,8 @@ let package = Package(
 
         // #documentation(SampleConfiguration)
         /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
+        ///
+        /// (`SampleConfiguration` is not intended as a real product. It is does not factor into the SDGSwift’s semantic version and should not be used as a real dependency.)
         .target(name: "SampleConfiguration", dependencies: ["SDGSwiftConfiguration"]),
 
         // Internal
