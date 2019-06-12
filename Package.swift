@@ -199,22 +199,26 @@ let package = Package(
             "SDGSwift",
             "SDGSwiftTestUtilities",
             .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftPackageManagerTests", dependencies: [
+            "SDGSwift",
             "SDGSwiftPackageManager",
             "SDGSwiftLocalizations",
             "SDGSwiftTestUtilities",
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftSourceTests", dependencies: [
+            "SDGSwift",
             "SDGSwiftLocalizations",
             "SDGSwiftSource",
             "SDGSwiftTestUtilities",
@@ -224,7 +228,8 @@ let package = Package(
             .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
             ]),
         .testTarget(name: "SDGXcodeTests", dependencies: [
             "SDGXcode",
@@ -233,18 +238,22 @@ let package = Package(
             "SDGSwiftTestUtilities",
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ]),
         .testTarget(name: "SDGSwiftConfigurationTests", dependencies: [
+            "SDGSwift",
             "SDGSwiftConfiguration",
             "SDGSwiftConfigurationLoading",
             "SampleConfiguration",
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")

@@ -15,9 +15,12 @@
 import Foundation
 
 import SDGLogic
-import SDGPersistenceTestUtilities
+
+import SwiftSyntax
 
 import SDGSwiftSource
+
+import SDGPersistenceTestUtilities
 
 class Highlighter : SyntaxScanner {
 

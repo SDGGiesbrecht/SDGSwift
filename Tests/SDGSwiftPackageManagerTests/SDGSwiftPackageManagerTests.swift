@@ -14,10 +14,14 @@
 
 import Foundation
 
+import SDGText
 import SDGPersistence
+import SDGLocalization
+
+import SDGSwift
+import SDGSwiftPackageManager
 
 import SDGSwiftLocalizations
-import SDGSwiftPackageManager
 
 import XCTest
 

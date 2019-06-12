@@ -14,7 +14,9 @@
 
 import SDGLogic
 import SDGCollections
+import SDGText
 import SDGPersistence
+import SDGLocalization
 import SDGExternalProcess
 
 import SDGSwift

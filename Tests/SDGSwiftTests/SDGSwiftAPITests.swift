@@ -13,6 +13,7 @@
  */
 
 import SDGCollections
+import SDGText
 import SDGLocalization
 import SDGExternalProcess
 

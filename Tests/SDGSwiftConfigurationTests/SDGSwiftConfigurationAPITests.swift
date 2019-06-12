@@ -15,10 +15,14 @@
 import SDGLogic
 import SDGCollections
 import SDGText
+import SDGLocalization
 
-import SDGSwiftLocalizations
+import SDGSwift
+import SDGSwiftConfiguration
 import SDGSwiftConfigurationLoading
 import SampleConfiguration
+
+import SDGSwiftLocalizations
 
 import XCTest
 

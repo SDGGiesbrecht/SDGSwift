@@ -16,6 +16,9 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
+import SwiftSyntax
+
+import SDGSwift
 import SDGSwiftLocalizations
 import SDGSwiftPackageManager
 import SDGSwiftSource
