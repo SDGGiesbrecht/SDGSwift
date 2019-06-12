@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 extension FunctionParameterListSyntax {
 
     internal func normalizedForDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> FunctionParameterListSyntax {

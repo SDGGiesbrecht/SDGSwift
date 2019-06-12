@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// A declaration syntax node which includes constraints.
 public protocol Constrained : Syntax {
     /// The constraint clause.

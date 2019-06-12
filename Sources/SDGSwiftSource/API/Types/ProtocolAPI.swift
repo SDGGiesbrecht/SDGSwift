@@ -14,6 +14,8 @@
 
 import SDGCollections
 
+import SwiftSyntax
+
 /// A protocol.
 public final class ProtocolAPI : _APIElementBase, APIElementProtocol, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

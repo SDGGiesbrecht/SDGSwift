@@ -14,6 +14,8 @@
 
 import SDGMathematics
 
+import SwiftSyntax
+
 extension PrecedenceGroupAttributeListSyntax {
 
     internal enum PrecedenceAttributeGroup : OrderedEnumeration {

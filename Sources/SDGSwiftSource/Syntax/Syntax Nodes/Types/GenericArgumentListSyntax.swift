@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension GenericArgumentListSyntax {
 
     internal func normalized() -> GenericArgumentListSyntax {

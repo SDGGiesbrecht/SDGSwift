@@ -15,6 +15,7 @@
 import Foundation
 import XCTest
 
+import SDGText
 import SDGExternalProcess
 
 import SDGSwift

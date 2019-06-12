@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// An API element which has a unique declaration.
 public protocol DeclaredAPIElement : APIElementProtocol {
     /// The unique declaration.

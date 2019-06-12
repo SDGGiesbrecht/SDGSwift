@@ -22,6 +22,7 @@ import SDGText
 import SDGPersistence
 import SDGLocalization
 
+import SwiftSyntax
 import enum SDGHTML.HTML
 
 extension Syntax {

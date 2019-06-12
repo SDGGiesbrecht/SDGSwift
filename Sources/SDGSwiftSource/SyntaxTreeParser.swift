@@ -16,6 +16,8 @@ import Foundation
 
 import SDGPersistence
 
+import SwiftSyntax
+
 extension SyntaxTreeParser {
 
     /// Parses the Swift file at the provided URL, retrying in the event of an error.

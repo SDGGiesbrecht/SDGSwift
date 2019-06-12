@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension SubscriptDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Accessor

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 extension Optional : Mergeable where Wrapped : Mergeable {
 
     internal mutating func merge(with other: Wrapped?) {

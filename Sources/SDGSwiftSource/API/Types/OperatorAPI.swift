@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// An operator.
 public final class OperatorAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

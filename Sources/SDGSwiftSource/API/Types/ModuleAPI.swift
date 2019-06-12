@@ -17,6 +17,9 @@ import Foundation
 import SDGControlFlow
 import SDGCollections
 
+import SwiftSyntax
+import PackageModel
+
 import SDGSwiftPackageManager
 
 /// A Swift module.

@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hidable {
 
     // MARK: - APIDeclaration

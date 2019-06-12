@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGLogic
 
+import SwiftSyntax
+
 extension TypeSyntax {
 
     internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {

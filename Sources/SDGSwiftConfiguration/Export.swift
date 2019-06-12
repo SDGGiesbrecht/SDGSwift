@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 public func _exportConfiguration(file: StaticString = #file, line: UInt = #line) { // @exempt(from: tests) Testing occurs beyond the reach of coverage tracking.
     do {
         let json = try JSONEncoder().encode([Configuration.registered])

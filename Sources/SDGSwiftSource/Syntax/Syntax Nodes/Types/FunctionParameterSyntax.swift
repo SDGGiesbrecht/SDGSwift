@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension FunctionParameterSyntax {
 
     // MARK: - Names & Labels

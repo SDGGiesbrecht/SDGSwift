@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension GenericParameterListSyntax {
 
     internal func normalizedForAPIDeclaration() -> (GenericParameterListSyntax, GenericRequirementListSyntax?) {

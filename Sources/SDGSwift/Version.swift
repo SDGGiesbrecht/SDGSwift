@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGText
+import SDGLocalization
 
 import SDGSwiftLocalizations
 

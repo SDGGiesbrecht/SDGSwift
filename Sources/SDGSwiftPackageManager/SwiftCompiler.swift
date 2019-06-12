@@ -17,6 +17,7 @@ import Foundation
 import SDGControlFlow
 import SDGLogic
 import SDGMathematics
+import SDGText
 import SDGLocalization
 
 import SDGSwiftLocalizations
@@ -68,7 +69,7 @@ extension SwiftCompiler {
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.HostDestinationError> {
         return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
@@ -76,7 +77,7 @@ extension SwiftCompiler {
         return package.manifest().map { $0.name }
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<URL, SwiftCompiler.HostDestinationError> {
+    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.HostDestinationError> {
         switch codeCoverageDirectory(for: package) {
         case .failure(let error):
             return .failure(error)
@@ -104,7 +105,7 @@ extension SwiftCompiler {
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
-        let coverageDataFile: URL
+        let coverageDataFile: Foundation.URL
         switch codeCoverageDataFile(for: package) {
         case .failure(let error):
             return .failure(.hostDestinationError(error))
@@ -127,7 +128,7 @@ extension SwiftCompiler {
                 return .failure(.corruptTestCoverageReport) // @exempt(from: tests) Unreachable without mismatched Swift version.
         }
 
-        let ignoredDirectories: [URL]
+        let ignoredDirectories: [Foundation.URL]
         switch package._directoriesIgnoredForTestCoverage() {
         case .failure(let error):
             return .failure(.hostDestinationError(error))

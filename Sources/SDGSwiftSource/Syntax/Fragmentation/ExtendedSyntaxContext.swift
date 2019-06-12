@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// The context of an extended syntax node.
 public indirect enum ExtendedSyntaxContext {
 

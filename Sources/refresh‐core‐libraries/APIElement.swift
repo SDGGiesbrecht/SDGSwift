@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 import SDGSwiftSource
 
 var inProtocol = false

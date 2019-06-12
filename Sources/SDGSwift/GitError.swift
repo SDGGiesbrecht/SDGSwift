@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGText
 import SDGLocalization
 import SDGExternalProcess
 

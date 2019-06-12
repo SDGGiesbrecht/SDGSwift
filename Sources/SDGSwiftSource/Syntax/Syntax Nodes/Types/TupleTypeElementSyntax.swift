@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension TupleTypeElementSyntax {
 
     internal func normalized() -> TupleTypeElementSyntax {

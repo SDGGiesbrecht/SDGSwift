@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGLogic
 
+import SwiftSyntax
+
 extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Accessor

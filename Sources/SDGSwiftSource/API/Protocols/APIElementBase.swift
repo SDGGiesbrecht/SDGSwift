@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 public class _APIElementBase {
 
     // MARK: - Initialization

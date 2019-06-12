@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension GenericWhereClauseSyntax : Mergeable {
 
     internal func normalized() -> GenericWhereClauseSyntax? {

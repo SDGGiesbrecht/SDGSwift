@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension ProtocolDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Hidable, Inheritor {
 
     // MARK: - Hidable

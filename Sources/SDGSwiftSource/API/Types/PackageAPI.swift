@@ -16,10 +16,17 @@ import Foundation
 
 import SDGLogic
 import SDGCollections
-import SDGSwiftLocalizations
+import SDGText
+import SDGLocalization
+
+import SwiftSyntax
+import PackageModel
+import PackageGraph
 
 import SDGSwift
 import SDGSwiftPackageManager
+
+import SDGSwiftLocalizations
 
 /// A package.
 public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {

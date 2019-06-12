@@ -16,8 +16,11 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGText
 import SDGPersistence
 import SDGExternalProcess
+
+import SwiftSyntax
 
 import SDGSwift
 import SDGSwiftPackageManager

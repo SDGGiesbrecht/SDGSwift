@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 internal protocol AccessControlled : Syntax {
     var modifiers: ModifierListSyntax? { get }
 }

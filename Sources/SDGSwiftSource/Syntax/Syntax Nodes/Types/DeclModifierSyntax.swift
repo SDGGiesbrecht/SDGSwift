@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGMathematics
 
+import SwiftSyntax
+
 extension DeclModifierSyntax {
 
     internal func normalizedForAPIDeclaration(operatorFunction: Bool) -> DeclModifierSyntax? {

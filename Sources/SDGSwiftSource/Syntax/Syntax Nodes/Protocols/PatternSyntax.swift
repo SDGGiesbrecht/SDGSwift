@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGLogic
 
+import SwiftSyntax
+
 extension PatternSyntax {
 
     internal var concreteSyntaxIsHidden: Bool {

@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 internal class TriviaNormalizer : SyntaxRewriter {
     override func visit(_ token: TokenSyntax) -> Syntax {
         var token = token

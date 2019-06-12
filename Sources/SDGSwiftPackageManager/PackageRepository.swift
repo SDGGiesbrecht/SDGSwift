@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGText
+import SDGLocalization
+
 import Basic
 import PackageModel
 import PackageLoading
@@ -32,7 +37,7 @@ extension PackageRepository {
     ///     - location: The location at which to initialize the new package.
     ///     - name: A name for the package.
     ///     - type: The type of package.
-    public static func initializePackage(at location: URL, named name: StrictString, type: InitPackage.PackageType) -> Swift.Result<PackageRepository, InitializationError> {
+    public static func initializePackage(at location: Foundation.URL, named name: StrictString, type: InitPackage.PackageType) -> Swift.Result<PackageRepository, InitializationError> {
 
         let repository = PackageRepository(at: location)
 
@@ -157,11 +162,11 @@ extension PackageRepository {
     }
 
     /// Returns the list of files ignored by source control.
-    public func ignoredFiles() -> Swift.Result<[URL], SDGSwift.Git.Error> {
+    public func ignoredFiles() -> Swift.Result<[Foundation.URL], SDGSwift.Git.Error> {
         return Git.ignoredFiles(in: self)
     }
 
-    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[URL], SwiftCompiler.HostDestinationError> {
+    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[Foundation.URL], SwiftCompiler.HostDestinationError> {
         return packageWorkspace().map { workspace in
             return [
                 workspace.dataPath.asURL,

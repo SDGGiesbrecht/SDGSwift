@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 import SDGSwiftLocalizations
 
 extension TriviaPiece {

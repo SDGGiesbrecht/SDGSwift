@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension EnumCaseElementSyntax : Hidable {
 
     internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {

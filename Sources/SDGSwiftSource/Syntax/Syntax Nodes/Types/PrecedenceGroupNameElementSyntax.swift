@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 extension PrecedenceGroupNameElementSyntax {
 
     internal func normalizedForAPIDeclaration(comma: Bool) -> PrecedenceGroupNameElementSyntax {

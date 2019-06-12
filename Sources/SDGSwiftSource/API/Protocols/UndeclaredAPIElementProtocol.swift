@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 internal protocol _UndeclaredAPIElementProtocol : _NonOverloadableAPIElement, SortableAPIElement {
     var type: TypeSyntax { get }
 }

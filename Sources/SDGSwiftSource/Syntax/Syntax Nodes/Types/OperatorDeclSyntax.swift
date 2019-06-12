@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension OperatorDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     // MARK: - APIDeclaration

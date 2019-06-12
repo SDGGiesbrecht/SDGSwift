@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 internal protocol Hidable {
     var hidabilityIdentifier: TokenSyntax? { get }
 }

@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 extension IfConfigDeclSyntax {
 
     internal var conditionalAPI: [APIElement] {
