@@ -282,7 +282,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 if let codeDelimiter = syntax as? ExtendedTokenSyntax,
                     codeDelimiter.kind == .codeDelimiter {
                     foundCodeDelimiter = true
-                    XCTAssert(codeDelimiter.parent is CodeBlockSyntax)
+                    XCTAssert(codeDelimiter.parent is SDGSwiftSource.CodeBlockSyntax)
                 }
                 return true
         },
