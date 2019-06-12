@@ -14,6 +14,8 @@
 
 import SDGLocalization
 
+import SwiftSyntax
+
 extension FunctionCallExprSyntax {
 
     internal static func normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {

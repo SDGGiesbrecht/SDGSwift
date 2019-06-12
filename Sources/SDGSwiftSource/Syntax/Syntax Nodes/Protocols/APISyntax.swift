@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 internal protocol APISyntax : Syntax {
     func isPublic() -> Bool
     func isUnavailable() -> Bool

@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension SimpleTypeIdentifierSyntax {
 
     internal func normalized() -> TypeSyntax {

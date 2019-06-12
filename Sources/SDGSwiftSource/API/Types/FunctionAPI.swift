@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 /// A function or method.
 public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

@@ -14,6 +14,8 @@
 
 import SDGControlFlow
 
+import SwiftSyntax
+
 /// An extension.
 public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, _UndeclaredAPIElementProtocol {
 

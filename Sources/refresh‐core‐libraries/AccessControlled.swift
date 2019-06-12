@@ -13,6 +13,9 @@
  */
 
 import SDGLogic
+
+import SwiftSyntax
+
 import SDGSwiftSource
 
 internal protocol AccessControlled : Syntax {

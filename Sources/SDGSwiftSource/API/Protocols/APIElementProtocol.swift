@@ -16,6 +16,8 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 /// A type‐erased element of API.
 public protocol APIElementProtocol : AnyObject {
 

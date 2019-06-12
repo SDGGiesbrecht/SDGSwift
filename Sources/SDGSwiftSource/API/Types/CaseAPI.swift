@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 /// An enumeration case.
 public final class CaseAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

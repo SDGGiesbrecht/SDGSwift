@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 internal protocol Accessor : AccessControlled {
     var keyword: TokenSyntax { get }
     var accessors: Syntax? { get }

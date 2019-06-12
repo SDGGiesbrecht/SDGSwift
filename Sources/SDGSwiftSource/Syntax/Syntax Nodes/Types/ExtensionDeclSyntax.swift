@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Hidable, Inheritor {
 
     // MARK: - APISyntax

@@ -17,6 +17,8 @@ import SDGLogic
 import SDGMathematics
 import SDGLocalization
 
+import SwiftSyntax
+
 /// An element of API.
 public enum APIElement : Comparable, Hashable {
 

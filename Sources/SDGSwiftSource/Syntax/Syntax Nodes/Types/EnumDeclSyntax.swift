@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension EnumDeclSyntax : AccessControlled, Attributed, Constrained, Generic, Hidable, TypeDeclaration {
 
     // MARK: - Hidable

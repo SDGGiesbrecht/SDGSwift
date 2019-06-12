@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension InitializerDeclSyntax : AccessControlled, APISyntax, APIDeclaration, Attributed, Constrained, Generic, Hidable, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - Hidable

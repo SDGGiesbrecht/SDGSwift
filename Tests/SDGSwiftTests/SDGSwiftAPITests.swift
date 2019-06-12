@@ -13,15 +13,18 @@
  */
 
 import SDGCollections
+import SDGText
 import SDGLocalization
 import SDGExternalProcess
+
+import SDGSwiftLocalizations
+import SDGSwift
+
+import XCTest
 
 import SDGLogicTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
-
-import SDGSwiftLocalizations
-import SDGSwift
 
 import SDGSwiftTestUtilities
 

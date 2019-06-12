@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension GenericParameterClauseSyntax {
 
     internal func normalizedForAPIDeclaration() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {

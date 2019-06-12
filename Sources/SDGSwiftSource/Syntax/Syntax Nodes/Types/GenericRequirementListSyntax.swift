@@ -13,7 +13,10 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 import SDGMathematics
+
+import SwiftSyntax
 
 extension GenericRequirementListSyntax : Mergeable {
 

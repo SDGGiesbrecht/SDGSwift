@@ -14,6 +14,8 @@
 
 import SDGLocalization
 
+import SwiftSyntax
+
 import SDGSwiftSource
 
 class TextFreedomHighlighter : Highlighter {

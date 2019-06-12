@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// A syntax scanner that can be used by providing closures instead of subclassing.
 public class FunctionalSyntaxScanner : SyntaxScanner {
 

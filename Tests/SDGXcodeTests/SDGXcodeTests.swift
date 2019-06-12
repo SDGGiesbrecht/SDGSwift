@@ -14,16 +14,21 @@
 
 import SDGLogic
 import SDGCollections
+import SDGText
 import SDGPersistence
+import SDGLocalization
 import SDGExternalProcess
+
+import SDGSwift
+import SDGXcode
+
+import SDGSwiftLocalizations
+
+import XCTest
 
 import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
-
-import SDGSwift
-import SDGXcode
-import SDGSwiftLocalizations
 
 import SDGSwiftTestUtilities
 

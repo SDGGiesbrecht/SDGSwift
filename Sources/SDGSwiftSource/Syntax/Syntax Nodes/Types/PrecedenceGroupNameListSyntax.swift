@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension PrecedenceGroupNameListSyntax {
 
     internal func normalizedForAPIDeclaration() -> PrecedenceGroupNameListSyntax {

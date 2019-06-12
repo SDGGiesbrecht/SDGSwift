@@ -14,6 +14,8 @@
 
 import SDGControlFlow
 
+import SwiftSyntax
+
 extension AvailabilityLabeledArgumentSyntax {
 
     internal func normalized() -> AvailabilityLabeledArgumentSyntax {

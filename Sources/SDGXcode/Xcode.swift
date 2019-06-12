@@ -19,6 +19,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 import SDGText
+import SDGLocalization
 import SDGExternalProcess
 
 import SDGSwiftLocalizations

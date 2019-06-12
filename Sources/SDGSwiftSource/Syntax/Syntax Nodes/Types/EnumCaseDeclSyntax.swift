@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 extension EnumCaseDeclSyntax : APIDeclaration, APISyntax, Attributed {
 
     // MARK: - APIDeclaration

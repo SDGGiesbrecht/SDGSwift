@@ -15,9 +15,13 @@
 import Foundation
 
 import SDGPersistence
-import SDGXCTestUtilities
 
 import SDGSwift
+
+import XCTest
+
+import SDGXCTestUtilities
+
 import SDGSwiftTestUtilities
 
 class SDGSwiftRegressionTests : TestCase {

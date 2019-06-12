@@ -13,14 +13,21 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
-import SDGPersistenceTestUtilities
-import SDGLocalizationTestUtilities
-import SDGXCTestUtilities
 
+import SwiftSyntax
+
+import SDGSwift
 import SDGSwiftLocalizations
 import SDGSwiftPackageManager
 import SDGSwiftSource
+
+import XCTest
+
+import SDGPersistenceTestUtilities
+import SDGLocalizationTestUtilities
+import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
@@ -275,7 +282,7 @@ class SDGSwiftSourceAPITests : TestCase {
                 if let codeDelimiter = syntax as? ExtendedTokenSyntax,
                     codeDelimiter.kind == .codeDelimiter {
                     foundCodeDelimiter = true
-                    XCTAssert(codeDelimiter.parent is CodeBlockSyntax)
+                    XCTAssert(codeDelimiter.parent is SDGSwiftSource.CodeBlockSyntax)
                 }
                 return true
         },

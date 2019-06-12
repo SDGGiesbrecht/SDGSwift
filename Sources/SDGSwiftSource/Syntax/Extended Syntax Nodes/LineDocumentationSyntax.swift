@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGMathematics
 
+import SwiftSyntax
+
 /// A line documentation comment.
 public class LineDocumentationSyntax : LineCommentSyntax {
 

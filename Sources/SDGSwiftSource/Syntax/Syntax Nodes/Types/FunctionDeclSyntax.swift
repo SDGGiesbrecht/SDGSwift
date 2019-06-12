@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 extension FunctionDeclSyntax : AccessControlled, APIDeclaration, APISyntax, Attributed, Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration {
 
     // MARK: - APIDeclaration

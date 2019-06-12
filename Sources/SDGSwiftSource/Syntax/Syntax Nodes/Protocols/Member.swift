@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import SwiftSyntax
+
 /// A declaration which can be either a type or instance member.
 public protocol Member : Syntax {
     /// The declaration modifiers.

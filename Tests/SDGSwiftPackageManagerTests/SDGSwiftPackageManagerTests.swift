@@ -12,15 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGText
 import SDGPersistence
+import SDGLocalization
+
+import SDGSwift
+import SDGSwiftPackageManager
+
+import SDGSwiftLocalizations
+
+import XCTest
+
+import SDGSwiftTestUtilities
 
 import SDGLocalizationTestUtilities
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
-
-import SDGSwiftLocalizations
-import SDGSwiftPackageManager
-import SDGSwiftTestUtilities
 
 class SDGSwiftPackageManagerTests : TestCase {
 

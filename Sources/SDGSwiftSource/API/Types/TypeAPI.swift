@@ -16,6 +16,8 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 /// A type.
 ///
 /// A type may be a structure, class, enumeration, type alias or associated type.

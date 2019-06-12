@@ -16,6 +16,8 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
+import SwiftSyntax
+
 extension TokenSyntax {
 
     // MARK: - Properties

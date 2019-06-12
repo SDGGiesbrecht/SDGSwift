@@ -14,6 +14,8 @@
 
 import SDGLocalization
 
+import SwiftSyntax
+
 /// A line comment.
 public class LineCommentSyntax : ExtendedSyntax {
 

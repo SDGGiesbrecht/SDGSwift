@@ -16,6 +16,8 @@ import SDGControlFlow
 import SDGMathematics
 import SDGCollections
 
+import SwiftSyntax
+
 extension AttributeSyntax {
 
     private static let absenceIndicators = Set(["unavailable", "deprecated", "obsoleted"])

@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 /// A subscript.
 public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// An operator precedence group.
 public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
 

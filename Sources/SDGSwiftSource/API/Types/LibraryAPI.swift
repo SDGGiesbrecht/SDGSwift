@@ -15,6 +15,11 @@
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGText
+import SDGLocalization
+
+import SwiftSyntax
+import PackageModel
 
 import SDGSwift
 import SDGSwiftPackageManager

@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGCollections
 
+import SwiftSyntax
+
 internal protocol TypeDeclaration : AccessControlled, Attributed, APISyntax, Generic, Inheritor {
     var identifier: TokenSyntax { get }
 
