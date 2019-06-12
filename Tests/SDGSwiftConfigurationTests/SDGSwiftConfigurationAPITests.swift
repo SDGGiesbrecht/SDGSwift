@@ -14,13 +14,17 @@
 
 import SDGLogic
 import SDGCollections
-import SDGPersistenceTestUtilities
-import SDGLocalizationTestUtilities
-import SDGXCTestUtilities
+import SDGText
 
 import SDGSwiftLocalizations
 import SDGSwiftConfigurationLoading
 import SampleConfiguration
+
+import XCTest
+
+import SDGPersistenceTestUtilities
+import SDGLocalizationTestUtilities
+import SDGXCTestUtilities
 
 class SDGSwiftConfigurationAPITests : TestCase {
 

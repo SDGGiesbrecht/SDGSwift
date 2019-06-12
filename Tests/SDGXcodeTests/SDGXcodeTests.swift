@@ -17,13 +17,16 @@ import SDGCollections
 import SDGPersistence
 import SDGExternalProcess
 
+import SDGSwift
+import SDGXcode
+
+import SDGSwiftLocalizations
+
+import XCTest
+
 import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
-
-import SDGSwift
-import SDGXcode
-import SDGSwiftLocalizations
 
 import SDGSwiftTestUtilities
 

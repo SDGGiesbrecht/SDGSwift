@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 import SDGMathematics
 
 extension GenericRequirementListSyntax : Mergeable {

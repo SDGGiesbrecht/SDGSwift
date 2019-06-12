@@ -214,6 +214,7 @@ let package = Package(
             "SDGSwiftSource",
             "SDGSwiftTestUtilities",
             .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
@@ -238,6 +239,7 @@ let package = Package(
             "SampleConfiguration",
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
+            .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")

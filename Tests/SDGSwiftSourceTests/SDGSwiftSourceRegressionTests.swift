@@ -12,9 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGXCTestUtilities
-
 import SDGSwiftSource
+
+import XCTest
+
+import SDGXCTestUtilities
 
 class SDGSwiftSourceRegressionTests : TestCase {
 

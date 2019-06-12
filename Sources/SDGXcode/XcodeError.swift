@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGText
 import SDGLocalization
 import SDGExternalProcess
 
