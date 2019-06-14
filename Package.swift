@@ -16,6 +16,7 @@
 
 import PackageDescription
 
+// #example(1, readMe🇨🇦EN)
 /// SDGSwift enables use of the Swift compiler as a package dependency.
 ///
 /// > [השֹּׁלֵחַ אִמְרָתוֹ אָרֶץ עַד־מְהֵרָה יָרוּץ דְּבָרוֹ׃](https://www.biblegateway.com/passage/?search=Psalm+147:15&version=WLC;NIV)
@@ -31,6 +32,13 @@ import PackageDescription
 /// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 ///
 /// Versioning note: Most products are already “finalized” at a state comparable to a semantic version one (`SDGSwift`, `SDGSwiftSource`, `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`). The package as a whole remains zero‐versioned because `SDGSwiftPackageManager` and `SDGXcode` still rely on hidden implementation details of the package manager and Xcode respectively.
+///
+/// ### Example Usage
+///
+/// ```swift
+/// let package = Package(url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!)
+/// try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+/// ```
 let package = Package(
     name: "SDGSwift",
     platforms: [
