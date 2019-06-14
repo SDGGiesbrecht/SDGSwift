@@ -37,6 +37,8 @@ Versioning note: Most products are already “finalized” at a state comparable
 ### Example Usage
 
 ```swift
+let package = Package(url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!)
+try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
 ```
 
 ## Importing
