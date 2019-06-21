@@ -271,7 +271,7 @@ public enum Xcode {
 
         switch sdk {
         case .iOS(simulator: true): // @exempt(from: tests) Tested separately.
-            command += ["\u{2D}destination", "name=iPhone 8"]
+            command += ["\u{2D}destination", "name=iPhone X"]
         case .tvOS(simulator: true): // @exempt(from: tests) Tested separately.
             command += ["\u{2D}destination", "name=Apple TV 4K"]
         default:
