@@ -31,7 +31,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let compatibleVersionRange = Version(10, 2, 0) /* Travis CI */ ... Version(10, 2, 1) /* Current */
+    internal static let compatibleVersionRange = Version(10, 2, 0) /* Travis CI */ ... Version(10, 3, 0) /* Current */
 
     internal static let searchCommands: [[String]] = [
         ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
