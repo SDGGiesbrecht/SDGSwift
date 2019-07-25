@@ -38,7 +38,9 @@ public enum Build : Equatable, TextualPlaygroundDisplay {
             return String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "development"
+                    return "development state"
+                case .deutschDeutschland:
+                    return "Entwicklungsstand"
                 }
             }).resolved())
         }

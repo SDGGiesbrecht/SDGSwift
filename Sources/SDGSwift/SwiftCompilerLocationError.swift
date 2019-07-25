@@ -32,17 +32,28 @@ extension SwiftCompiler {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-                let commands: [StrictString] = SwiftCompiler.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    var lines: [StrictString] = []
+                    let range: StrictString
+                    switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                             .deutschDeutschland:
+                        range = SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })
+                    }
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Swift could be located. (\(SwiftCompiler.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
+                        lines += [
+                            "No compatible version of Swift could be located. (\(range))",
+                            "It must be installed and locatable with one of the following commands:",
+                            ]
+                    case .deutschDeutschland:
+                        lines += [
+                            "Keine passende Version von Swift wurde gefunden. (\(range))",
+                            "Es muss installiert und unter einem der folgenden Befehle vorhanden sein:",
+                        ]
                     }
+                    lines += SwiftCompiler.searchCommands.map({ "$ \($0.joined(separator: " "))" })
+                    return lines.joined(separator: "\n")
                 }).resolved()
             }
         }
