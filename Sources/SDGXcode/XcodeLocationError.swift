@@ -30,9 +30,6 @@ extension Xcode {
         public func presentableDescription() -> StrictString {
             switch self {
             case .unavailable:
-                let commands: [StrictString] = Xcode.searchCommands
-                    .map({ "$ \($0.joined(separator: " "))" })
-
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     var lines: [StrictString]
                     let range: StrictString
