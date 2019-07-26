@@ -158,28 +158,10 @@ extension Configuration {
             }
 
             guard let configurationFile = possibleConfigurationFile else {
-                reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "No configuration found. Using defaults..."
-                    case .deutschDeutschland:
-                        return "Keine Konfiguration gefunden. Standardeinstellungen werden verwendet ..."
-                    }
-                }).resolved()))
+                reportProgress(String(noConfigurationFound().resolved()))
                 return .success(C())
             }
-
-            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                let file = StrictString(configurationFile.lastPathComponent)
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "Loading ‘\(file)’..."
-                case .englishUnitedStates, .englishCanada:
-                    return "Loading “\(file)”..."
-                case .deutschDeutschland:
-                    return "„\(file)“ wird geladen ..."
-                }
-            }).resolved()))
+            reportProgress(String(loading(file: configurationFile).resolved()))
 
             let extensionRemoved = configurationFile.deletingPathExtension()
             let fileNameOnly = extensionRemoved.lastPathComponent
@@ -297,6 +279,31 @@ extension Configuration {
             return .failure(.emptyConfiguration)
         }
         return .success(registered)
+    }
+
+    internal static func noConfigurationFound() -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "No configuration found. Using defaults..."
+            case .deutschDeutschland:
+                return "Keine Konfiguration gefunden. Standardeinstellungen werden verwendet ..."
+            }
+        })
+    }
+
+    internal static func loading(file: URL) -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            let file = StrictString(file.lastPathComponent)
+            switch localization {
+            case .englishUnitedKingdom:
+                return "Loading ‘\(file)’..."
+            case .englishUnitedStates, .englishCanada:
+                return "Loading “\(file)”..."
+            case .deutschDeutschland:
+                return "„\(file)“ wird geladen ..."
+            }
+        })
     }
 
     private static var mockQueue: [Configuration] = []
