@@ -1,9 +1,12 @@
 🇬🇧EN
-development
+development state
 
 🇺🇸EN
-development
+development state
 
 🇨🇦EN
-development
+development state
+
+🇩🇪DE
+Entwicklungsstand
 

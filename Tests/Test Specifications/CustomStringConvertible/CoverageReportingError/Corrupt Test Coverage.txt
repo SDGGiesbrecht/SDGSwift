@@ -7,3 +7,6 @@ The test coverage report could not be parsed.
 🇨🇦EN
 The test coverage report could not be parsed.
 
+🇩🇪DE
+Die Testabdeckungsergebnisse konnten nicht zerteilt werden.
+

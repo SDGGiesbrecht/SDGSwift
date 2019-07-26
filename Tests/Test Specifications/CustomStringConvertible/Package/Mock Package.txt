@@ -7,3 +7,6 @@ https://domain.tld/Package
 🇨🇦EN
 https://domain.tld/Package
 
+🇩🇪DE
+https://domain.tld/Package
+

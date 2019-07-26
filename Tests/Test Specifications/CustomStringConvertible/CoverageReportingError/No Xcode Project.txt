@@ -7,3 +7,6 @@ The package has no Xcode project.
 🇨🇦EN
 The package has no Xcode project.
 
+🇩🇪DE
+Das Paket hat keine Xcode‐Projekt.
+
