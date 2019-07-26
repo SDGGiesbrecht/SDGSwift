@@ -47,6 +47,8 @@ extension Xcode {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The package has no Xcode project."
+                    case .deutschDeutschland:
+                        return "Das Paket hat keine Xcode‐Projekt."
                     }
                 }).resolved()
             case .xcodeError(let error):
@@ -56,6 +58,8 @@ extension Xcode {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The Xcode project has no package scheme."
+                    case .deutschDeutschland:
+                        return "Das Xcode‐Projekt hat kein Paketenschema."
                     }
                 }).resolved()
             }

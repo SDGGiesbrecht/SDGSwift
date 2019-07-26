@@ -162,15 +162,22 @@ extension Configuration {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "No configuration found. Using defaults..."
+                    case .deutschDeutschland:
+                        return "Keine Konfiguration gefunden. Standardeinstellungen werden verwendet ..."
                     }
                 }).resolved()))
                 return .success(C())
             }
 
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                let file = StrictString(configurationFile.lastPathComponent)
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Loading “" + StrictString(configurationFile.lastPathComponent) + "”..."
+                case .englishUnitedKingdom:
+                    return "Loading ‘\(file)’..."
+                case .englishUnitedStates, .englishCanada:
+                    return "Loading “\(file)”..."
+                case .deutschDeutschland:
+                    return "„\(file)“ wird geladen ..."
                 }
             }).resolved()))
 

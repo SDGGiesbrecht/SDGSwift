@@ -49,13 +49,14 @@ extension Package {
             case .foundationError(let error):
                 return StrictString(error.localizedDescription)
             case .noSuchExecutable(requested: let requested):
-                var details: StrictString = "\n"
-                details += StrictString(requested.sorted().joined(separator: "\n".scalars))
+                let list = StrictString(requested.sorted().joined(separator: "\n".scalars))
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The package did not produce an executable with any of the requested names:" + StrictString(details)
+                        return "The package did not produce an executable with any of the requested names:\n\(list)"
+                    case .deutschDeutschland:
+                        return "Das Paket hat keine ausführbare Datei erzeugt, die mit einem der angeforderten Namen übereinstimmt:\n\(list)"
                     }
                 }).resolved()
             case .executionError(let error):

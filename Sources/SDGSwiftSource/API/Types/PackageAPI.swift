@@ -55,8 +55,12 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
             ] where name ∉ ignoredDependencies {
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    case .englishUnitedKingdom:
+                        return "Loading inheritance from ‘" + StrictString(name) + "’..."
+                    case .englishUnitedStates, .englishCanada:
                         return "Loading inheritance from “" + StrictString(name) + "”..."
+                    case .deutschDeutschland:
+                        return "Erbe von „" + StrictString(name) + "“ wird geladen ..."
                     }
                 }).resolved()))
                 dependencyModules.append(try ModuleAPI(source: source))
@@ -72,9 +76,14 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
         })
         for module in declaredDependencies.sorted(by: { $0.name < $1.name }) where module.name ∉ ignoredDependencies {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                let moduleName = StrictString(module.name)
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Loading inheritance from “" + StrictString(module.name) + "”..."
+                case .englishUnitedKingdom:
+                    return "Loading inheritance from ‘\(moduleName)’..."
+                case .englishUnitedStates, .englishCanada:
+                    return "Loading inheritance from “\(moduleName)”..."
+                case .deutschDeutschland:
+                    return "Erbe von „\(moduleName)“ wird geladen ..."
                 }
             }).resolved()))
             dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))

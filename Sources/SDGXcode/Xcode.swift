@@ -365,9 +365,14 @@ public enum Xcode {
             let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
                 reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    let relativePath = fileURL.path(relativeTo: package.location)
                     switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Parsing report for “\(fileURL.path(relativeTo: package.location))”..."
+                    case .englishUnitedKingdom:
+                        return "Parsing report for ‘\(relativePath)’..."
+                    case .englishUnitedStates, .englishCanada:
+                        return "Parsing report for “\(relativePath)”..."
+                    case .deutschDeutschland:
+                        return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
                     }
                 }).resolved()))
 

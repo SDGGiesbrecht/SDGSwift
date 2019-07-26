@@ -34,13 +34,28 @@ extension Xcode {
                     .map({ "$ \($0.joined(separator: " "))" })
 
                 return UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    var lines: [StrictString]
+                    let range: StrictString
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                         .deutschDeutschland:
+                        range = Xcode.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })
+                    }
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return (([
-                            "No compatible version of Xcode could be located. (\(Xcode.compatibleVersionRange.inInequalityNotation({ StrictString($0.string()) })))",
-                            "Make sure it is installed and can be found with one of the following commands:",
-                            ] as [StrictString]) + commands).joined(separator: "\n")
+                        lines = [
+                            "No compatible version of Xcode could be located. (\(range))",
+                            "It must be installed and locatable with one of the following commands:",
+                        ]
+                    case .deutschDeutschland:
+                        lines = [
+                            "Keine passende Version von Xcode wurde gefunden. (\(range))",
+                            "Es muss installiert und unter einem der folgenden Befehle vorhanden sein:",
+                        ]
                     }
+                    lines += Xcode.searchCommands
+                        .map({ "$ \($0.joined(separator: " "))" })
+                    return lines.joined(separator: "\n")
                 }).resolved()
             }
         }

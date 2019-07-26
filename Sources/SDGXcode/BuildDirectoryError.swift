@@ -43,6 +43,8 @@ extension Xcode {
                         return "‘BUILD_DIR’ could not be found in the project build settings."
                     case .englishUnitedStates, .englishCanada:
                         return "“BUILD_DIR” could not be found in the project build settings."
+                    case .deutschDeutschland:
+                        return "„BUILD_DIR“ konnte nicht in der Ersellungseinstellungen des Projekts gefunden werden."
                     }
                 }).resolved()
             }

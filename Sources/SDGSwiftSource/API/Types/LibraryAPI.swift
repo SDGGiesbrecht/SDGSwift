@@ -39,9 +39,14 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
 
         for module in product.targets where ¬module.name.hasPrefix("_") {
             reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                let moduleName = StrictString(module.name)
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Parsing “" + StrictString(module.name) + "”..."
+                case .englishUnitedKingdom:
+                    return "Parsing ‘\(moduleName)’..."
+                case .englishUnitedStates, .englishCanada:
+                    return "Parsing “\(moduleName)”..."
+                case .deutschDeutschland:
+                    return "„\(moduleName)“ wird zerteilt ..."
                 }
             }).resolved()))
             children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
