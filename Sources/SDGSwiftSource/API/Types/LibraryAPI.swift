@@ -29,6 +29,22 @@ import SDGSwiftLocalizations
 /// A library product of a package.
 public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
 
+    // MARK: - Static Methods
+
+    internal static func reportForParsing(
+        module: StrictString) -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+                return "Parsing ‘\(module)’..."
+            case .englishUnitedStates, .englishCanada:
+                return "Parsing “\(module)”..."
+            case .deutschDeutschland:
+                return "„\(module)“ wird zerteilt ..."
+            }
+        })
+    }
+
     // MARK: - Initialization
 
     internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
@@ -38,17 +54,7 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
             declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
 
         for module in product.targets where ¬module.name.hasPrefix("_") {
-            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                let moduleName = StrictString(module.name)
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "Parsing ‘\(moduleName)’..."
-                case .englishUnitedStates, .englishCanada:
-                    return "Parsing “\(moduleName)”..."
-                case .deutschDeutschland:
-                    return "„\(moduleName)“ wird zerteilt ..."
-                }
-            }).resolved()))
+            reportProgress(String(LibraryAPI.reportForParsing(module: StrictString(module.name)).resolved()))
             children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
         }
     }
