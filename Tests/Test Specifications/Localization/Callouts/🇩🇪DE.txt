@@ -1,0 +1,32 @@
+Übergabewert
+Übergabewerte
+Achtung
+Verfasser
+Verfasser
+Programmfehler
+Komplexität
+Urheberrecht
+Datum
+Versuch
+Wichtig
+Invariante
+Lokalisierungsschlüssel
+Ändernde Nebenform
+Nicht ändernde Nebenform
+Hinweis
+Nachbedingung
+Vorbedingung
+Anmerkung
+Anmerkungen
+Ergibt
+Setzt voraus
+Siehe auch
+Seit
+Etikett
+Aufgabe
+Wirft
+Version
+Warnung
+Schlagwort
+Empfohlen
+Empfohlen über
