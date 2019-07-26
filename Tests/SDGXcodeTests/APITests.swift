@@ -1,5 +1,5 @@
 /*
- SDGXcodeTests.swift
+ APITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -32,7 +32,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class SDGXcodeTests : TestCase {
+class APITests : TestCase {
 
     func testDependencyWarnings() throws {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in

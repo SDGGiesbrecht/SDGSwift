@@ -1,5 +1,5 @@
 /*
- SDGSwiftSourceInternalTests.swift
+ InternalTests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -20,7 +20,7 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class SDGSwiftSourceInternalTests : TestCase {
+class InternalTests : TestCase {
 
     func testEmptySyntax() {
         XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)

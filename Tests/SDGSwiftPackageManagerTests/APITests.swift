@@ -1,5 +1,5 @@
 /*
- SDGSwiftPackageManagerTests.swift
+ APITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -31,7 +31,7 @@ import SDGLocalizationTestUtilities
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-class SDGSwiftPackageManagerTests : TestCase {
+class APITests : TestCase {
 
     func testChangeDetection() throws {
         try withDefaultMockRepository { mock in

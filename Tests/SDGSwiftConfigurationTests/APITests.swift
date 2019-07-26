@@ -1,5 +1,5 @@
 /*
- SDGSwiftConfigurationAPITests.swift
+ APITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -30,7 +30,7 @@ import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class SDGSwiftConfigurationAPITests : TestCase {
+class APITests : TestCase {
 
     func testConfiguration() {
         do {
