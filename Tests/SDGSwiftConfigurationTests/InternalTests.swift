@@ -13,3 +13,24 @@
  */
 
 import Foundation
+
+import SDGLocalization
+
+import SDGSwiftConfiguration
+@testable import SDGSwiftConfigurationLoading
+
+import SDGSwiftLocalizations
+
+import SDGXCTestUtilities
+
+class InternalTests : TestCase {
+
+    func testLocalization() {
+        for localization in InterfaceLocalization.allCases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                _ = Configuration.reportForNoConfigurationFound().resolved()
+                _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file))
+            }
+        }
+    }
+}

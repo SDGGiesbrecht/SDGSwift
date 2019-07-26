@@ -158,10 +158,10 @@ extension Configuration {
             }
 
             guard let configurationFile = possibleConfigurationFile else {
-                reportProgress(String(noConfigurationFound().resolved()))
+                reportProgress(String(reportForNoConfigurationFound().resolved()))
                 return .success(C())
             }
-            reportProgress(String(loading(file: configurationFile).resolved()))
+            reportProgress(String(reportForLoading(file: configurationFile).resolved()))
 
             let extensionRemoved = configurationFile.deletingPathExtension()
             let fileNameOnly = extensionRemoved.lastPathComponent
@@ -281,7 +281,7 @@ extension Configuration {
         return .success(registered)
     }
 
-    internal static func noConfigurationFound() -> UserFacing<StrictString, InterfaceLocalization> {
+    internal static func reportForNoConfigurationFound() -> UserFacing<StrictString, InterfaceLocalization> {
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -292,7 +292,7 @@ extension Configuration {
         })
     }
 
-    internal static func loading(file: URL) -> UserFacing<StrictString, InterfaceLocalization> {
+    internal static func reportForLoading(file: URL) -> UserFacing<StrictString, InterfaceLocalization> {
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
             let file = StrictString(file.lastPathComponent)
             switch localization {
