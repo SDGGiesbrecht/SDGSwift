@@ -12,9 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 import SwiftSyntax
 
 @testable import SDGSwiftSource
+
+import SDGSwiftLocalizations
 
 import XCTest
 
@@ -31,6 +35,15 @@ class InternalTests : TestCase {
         _ = context.source
         let source = ""
         _ = ExtendedSyntaxContext._fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
+    }
+
+    func testLocalizations() {
+        for localization in InterfaceLocalization.allCases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                _ = LibraryAPI.reportForParsing(module: "[...]")
+                _ = PackageAPI.reportForLoadingInheritance(from: "[...]")
+            }
+        }
     }
 
     func testStringLiteral() {
