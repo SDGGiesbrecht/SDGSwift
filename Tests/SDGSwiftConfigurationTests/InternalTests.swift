@@ -29,7 +29,7 @@ class InternalTests : TestCase {
         for localization in InterfaceLocalization.allCases {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                 _ = Configuration.reportForNoConfigurationFound().resolved()
-                _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file))
+                _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file)).resolved()
             }
         }
     }
