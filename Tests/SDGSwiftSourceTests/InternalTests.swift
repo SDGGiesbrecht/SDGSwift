@@ -40,8 +40,8 @@ class InternalTests : TestCase {
     func testLocalizations() {
         for localization in InterfaceLocalization.allCases {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                _ = LibraryAPI.reportForParsing(module: "[...]")
-                _ = PackageAPI.reportForLoadingInheritance(from: "[...]")
+                _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
+                _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
             }
         }
     }
