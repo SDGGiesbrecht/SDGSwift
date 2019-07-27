@@ -7,3 +7,6 @@
 🇨🇦EN
 “BUILD_DIR” could not be found in the project build settings.
 
+🇩🇪DE
+„BUILD_DIR“ konnte nicht in der Ersellungseinstellungen des Projekts gefunden werden.
+

@@ -52,6 +52,8 @@ extension Configuration {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The configuration is empty."
+                    case .deutschDeutschland:
+                        return "Die Konfiguration ist lehr."
                     }
                 }).resolved()
             case .corruptConfiguration:
@@ -59,6 +61,8 @@ extension Configuration {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The configuration is corrupt."
+                    case .deutschDeutschland:
+                        return "Die Konfiguration ist beschädigt."
                     }
                 }).resolved()
             }

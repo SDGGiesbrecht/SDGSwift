@@ -31,6 +31,22 @@ import SDGSwiftLocalizations
 /// A package.
 public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
 
+    // MARK: - Static Methods
+
+    internal static func reportForLoadingInheritance(
+        from module: StrictString) -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+                return "Loading inheritance from ‘\(module)’..."
+            case .englishUnitedStates, .englishCanada:
+                return "Loading inheritance from “\(module)”..."
+            case .deutschDeutschland:
+                return "Erbe von „\(module)“ wird geladen ..."
+            }
+        })
+    }
+
     // MARK: - Initialization
 
     /// Creates a package API instance by parsing the specified package’s sources.
@@ -53,12 +69,7 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
             ("Dispatch", Resources.CoreLibraries.dispatch),
             ("XCTest", Resources.CoreLibraries.xctest)
             ] where name ∉ ignoredDependencies {
-                reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Loading inheritance from “" + StrictString(name) + "”..."
-                    }
-                }).resolved()))
+                reportProgress(String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved()))
                 dependencyModules.append(try ModuleAPI(source: source))
         }
 
@@ -71,12 +82,8 @@ public final class PackageAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
             }
         })
         for module in declaredDependencies.sorted(by: { $0.name < $1.name }) where module.name ∉ ignoredDependencies {
-            reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Loading inheritance from “" + StrictString(module.name) + "”..."
-                }
-            }).resolved()))
+            reportProgress(
+                String(PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved()))
             dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))
         }
 

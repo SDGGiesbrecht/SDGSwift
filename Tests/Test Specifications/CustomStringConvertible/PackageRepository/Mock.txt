@@ -7,3 +7,6 @@
 🇨🇦EN
 /path/to/Mock Package
 
+🇩🇪DE
+/path/to/Mock Package
+

@@ -125,61 +125,85 @@ public enum Callout : String, CaseIterable {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Parameter"
+            case .deutschDeutschland:
+                return "Übergabewert"
             }
         case .parameters:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Parameters"
+            case .deutschDeutschland:
+                return "Übergabewerte"
             }
         case .attention:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Attention"
+            case .deutschDeutschland:
+                return "Achtung"
             }
         case .author:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Author"
+            case .deutschDeutschland:
+                return "Verfasser"
             }
         case .authors:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Authors"
+            case .deutschDeutschland:
+                return "Verfasser"
             }
         case .bug:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Bug"
+            case .deutschDeutschland:
+                return "Programmfehler"
             }
         case .complexity:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Complexity"
+            case .deutschDeutschland:
+                return "Komplexität"
             }
         case .copyright:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Copyright"
+            case .deutschDeutschland:
+                return "Urheberrecht"
             }
         case .date:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Date"
+            case .deutschDeutschland:
+                return "Datum"
             }
         case .experiment:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Experiment"
+            case .deutschDeutschland:
+                return "Versuch"
             }
         case .important:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Important"
+            case .deutschDeutschland:
+                return "Wichtig"
             }
         case .invariant:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Invariant"
+            case .deutschDeutschland:
+                return "Invariante"
             }
         case .localizationKey:
             switch match {
@@ -187,101 +211,140 @@ public enum Callout : String, CaseIterable {
                 return "Localisation Key"
             case .englishUnitedStates, .englishCanada:
                 return "Localization Key"
+            case .deutschDeutschland:
+                return "Lokalisierungsschlüssel"
             }
         case .mutatingVariant:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Mutating Variant"
+            case .deutschDeutschland:
+                return "Ändernde Nebenform"
             }
         case .nonmutatingVariant:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Non‐mutating Variant"
+            case .deutschDeutschland:
+                return "Nicht ändernde Nebenform"
             }
         case .note:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Note"
+            case .deutschDeutschland:
+                return "Hinweis"
             }
         case .postcondition:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Postcondition"
+            case .deutschDeutschland:
+                return "Nachbedingung"
             }
         case .precondition:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Precondition"
+            case .deutschDeutschland:
+                return "Vorbedingung"
             }
         case .remark:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Remark"
+            case .deutschDeutschland:
+                return "Anmerkung"
             }
         case .remarks:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Remarks"
+            case .deutschDeutschland:
+                return "Anmerkungen"
             }
         case .returns:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Returns"
+            case .deutschDeutschland:
+                return "Ergibt"
             }
         case .requires:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Requires"
+            case .deutschDeutschland:
+                return "Setzt voraus"
             }
         case .seeAlso:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "See Also"
+            case .deutschDeutschland:
+                return "Siehe auch"
             }
         case .since:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Since"
+            case .deutschDeutschland:
+                return "Seit"
             }
         case .tag:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Tag"
+            case .deutschDeutschland:
+                return "Etikett"
             }
         case .toDo:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "To Do"
+            case .deutschDeutschland:
+                return "Aufgabe"
             }
         case .`throws`:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Throws"
+            case .deutschDeutschland:
+                return "Wirft"
             }
         case .version:
             switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "Version"
             }
         case .warning:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Warning"
+            case .deutschDeutschland:
+                return "Warnung"
             }
         case .keyword:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Keyword"
+            case .deutschDeutschland:
+                return "Schlagwort"
             }
         case .recommended:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Recommended"
+            case .deutschDeutschland:
+                return "Empfohlen"
             }
         case .recommendedOver:
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Recommended over"
+            case .deutschDeutschland:
+                return "Empfohlen über"
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- SDGSwiftSourceInternalTests.swift
+ InternalTests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,15 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 import SwiftSyntax
 
 @testable import SDGSwiftSource
+
+import SDGSwiftLocalizations
 
 import XCTest
 
 import SDGXCTestUtilities
 
-class SDGSwiftSourceInternalTests : TestCase {
+class InternalTests : TestCase {
 
     func testEmptySyntax() {
         XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
@@ -31,6 +35,15 @@ class SDGSwiftSourceInternalTests : TestCase {
         _ = context.source
         let source = ""
         _ = ExtendedSyntaxContext._fragment(CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false), context: context, offset: 0).source
+    }
+
+    func testLocalizations() {
+        for localization in InterfaceLocalization.allCases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
+                _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
+            }
+        }
     }
 
     func testStringLiteral() {

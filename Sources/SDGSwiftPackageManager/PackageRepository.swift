@@ -64,6 +64,8 @@ extension PackageRepository {
                     return "Initialised."
                 case .englishUnitedStates, .englishCanada:
                     return "Initialized."
+                case .deutschDeutschland:
+                    return "Stellte vorein."
                 }
             }).resolved()) {
         case .failure(let error):

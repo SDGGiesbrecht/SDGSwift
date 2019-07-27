@@ -47,6 +47,8 @@ extension SwiftCompiler {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "The test coverage report could not be parsed."
+                    case .deutschDeutschland:
+                        return "Die Testabdeckungsergebnisse konnten nicht zerteilt werden."
                     }
                 }).resolved()
             }

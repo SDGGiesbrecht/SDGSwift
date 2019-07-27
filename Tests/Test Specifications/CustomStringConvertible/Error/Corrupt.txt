@@ -7,3 +7,6 @@ The configuration is corrupt.
 🇨🇦EN
 The configuration is corrupt.
 
+🇩🇪DE
+Die Konfiguration ist beschädigt.
+

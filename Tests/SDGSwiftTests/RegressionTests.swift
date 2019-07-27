@@ -1,5 +1,5 @@
 /*
- SDGSwiftRegressionTests.swift
+ RegressionTests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -24,7 +24,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class SDGSwiftRegressionTests : TestCase {
+class RegressionTests : TestCase {
 
     func testDependencyWarnings() throws {
         // Untracked.

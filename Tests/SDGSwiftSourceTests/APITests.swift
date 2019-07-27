@@ -1,5 +1,5 @@
 /*
- SDGSwiftSourceAPITests.swift
+ APITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -31,7 +31,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class SDGSwiftSourceAPITests : TestCase {
+class APITests : TestCase {
 
     func testAPIParsing() throws {
         for packageName in ["PackageToDocument", "PackageToDocument2"] {

@@ -1,5 +1,5 @@
 /*
- SDGSwiftAPITests.swift
+ APITests.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -28,7 +28,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class SDGSwiftAPITests : TestCase {
+class APITests : TestCase {
 
     func testBuild() {
         testEquatableConformance(differingInstances: (Build.development, Build.version(Version(1, 0, 0))))

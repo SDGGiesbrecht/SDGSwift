@@ -10,3 +10,7 @@ tool
 The package did not produce an executable with any of the requested names:
 tool
 
+🇩🇪DE
+Das Paket hat keine ausführbare Datei erzeugt, die mit einem der angeforderten Namen übereinstimmt:
+tool
+
