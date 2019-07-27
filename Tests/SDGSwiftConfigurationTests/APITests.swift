@@ -32,8 +32,8 @@ import SDGXCTestUtilities
 
 class APITests : TestCase {
 
-    func testConfiguration() {
-        do {
+    func testConfiguration() throws {
+        try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
             FileManager.default.delete(.cache)
             defer { FileManager.default.delete(.cache) }
 
@@ -121,8 +121,6 @@ class APITests : TestCase {
             remove(logEntry: "warning: invalid duplicate target dependency declaration")
 
             compare(log, against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"), overwriteSpecificationInsteadOfFailing: false)
-        } catch {
-            XCTFail(error.localizedDescription)
         }
     }
 
