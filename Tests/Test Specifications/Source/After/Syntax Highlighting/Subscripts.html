@@ -8,11 +8,11 @@
 
 <code class="swift blockquote"><span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">Subscripted</span> <span class="punctuation">{</span>
 
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">readOnly</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">readOnly</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">readOnly</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">readWrite</span><span class="punctuation">:</span> <span class="external identifier">String</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">String</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">readWrite</span><span class="punctuation">:</span> <span class="external identifier">String</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">String</span> <span class="punctuation">{</span>
         <span class="keyword">get</span> <span class="punctuation">{</span>
             <span class="keyword">return</span> <span class="internal identifier">readWrite</span>
         <span class="punctuation">}</span>
@@ -21,25 +21,25 @@
         <span class="punctuation">}</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">x</span> <span class="internal identifier">x</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">,</span> <span class="internal identifier">y</span> <span class="internal identifier">y</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">x</span> <span class="internal identifier">x</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">,</span> <span class="internal identifier">y</span> <span class="internal identifier">y</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">x</span> <span class="external identifier">×</span> <span class="internal identifier">y</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">private</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">private</span><span class="punctuation">:</span> <span class="external identifier">UInt</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">UInt</span> <span class="punctuation">{</span>
+    <span class="keyword">private</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">private</span><span class="punctuation">:</span> <span class="external identifier">UInt</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">UInt</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="punctuation">`</span><span class="internal identifier">private</span><span class="punctuation">`</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">inOutParameter</span><span class="punctuation">:</span> <span class="keyword">inout</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">inOutParameter</span><span class="punctuation">:</span> <span class="keyword">inout</span> <span class="external identifier">Bool</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Bool</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="keyword">false</span>
     <span class="punctuation">}</span>
 
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">unlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="internal identifier">unlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">unlabelledIndex</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
 <span class="keyword">public</span> <span class="keyword">struct</span> <span class="external identifier">AlsoSubscripted</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">explicitlyUnlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-></span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">subscript</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="internal identifier">explicitlyUnlabelledIndex</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">explicitlyUnlabelledIndex</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
