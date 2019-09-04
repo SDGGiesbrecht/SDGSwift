@@ -17,7 +17,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "DependentOnWarnings",
+    name: "Dependent On Warnings",
     products: [
         .library(
             name: "DependentOnWarnings",
