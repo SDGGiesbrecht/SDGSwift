@@ -53,7 +53,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
         var api: [APIElement] = []
         for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
             try autoreleasepool {
-                let source = try SyntaxTreeParser.parseAndRetry(sourceFile)
+                let source = try SyntaxParser.parseAndRetry(sourceFile)
                 api.append(contentsOf: source.api())
             }
         }
@@ -61,7 +61,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     }
     internal convenience init(source: String) throws {
         self.init(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr())
-        let syntax = try SyntaxTreeParser.parse(source)
+        let syntax = try SyntaxParser.parse(source)
         apply(parsedElements: syntax.api())
     }
     private func apply(parsedElements: [APIElement]) {
