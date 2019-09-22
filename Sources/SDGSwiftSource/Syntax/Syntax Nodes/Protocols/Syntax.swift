@@ -75,7 +75,7 @@ extension Syntax {
     /// - Parameters:
     ///     - context: The node’s context.
     public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
-        return index(in: context, for: endPosition)
+        return index(in: context, for: endPositionBeforeTrailingTrivia)
     }
 
     /// Returns the upper bound of the trailing trivia.
@@ -83,7 +83,7 @@ extension Syntax {
     /// - Parameters:
     ///     - context: The node’s context.
     public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
-        return index(in: context, for: endPositionAfterTrailingTrivia)
+        return index(in: context, for: endPosition)
     }
 
     /// Returns the range of the node excluding trivia.
