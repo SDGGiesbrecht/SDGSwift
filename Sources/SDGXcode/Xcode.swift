@@ -348,13 +348,12 @@ public enum Xcode {
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return .success(nil)
         }
-        let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
         let fileURLs: [URL]
         switch runCustomCoverageSubcommand([
             "view",
             "\u{2D}\u{2D}file\u{2D}list",
-            archive.path
+            "\u{2D}\u{2D}archive", resultDirectory.path
             ]) {
         case .failure(let error):
             return .failure(.xcodeError(error))
@@ -395,12 +394,15 @@ public enum Xcode {
                 switch runCustomCoverageSubcommand([
                     "view",
                     "\u{2D}\u{2D}file", fileURL.path,
-                    archive.path
+                    "\u{2D}\u{2D}archive", resultDirectory.path
                     ]) {
                 case .failure(let error):
                     return .failure(.xcodeError(error))
                 case .success(let output):
                     report = output
+                }
+                if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
+                    report.removeSubrange(..<match.range.upperBound)
                 }
 
                 let source: String
