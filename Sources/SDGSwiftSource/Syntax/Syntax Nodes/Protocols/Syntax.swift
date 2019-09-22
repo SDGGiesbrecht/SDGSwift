@@ -334,6 +334,26 @@ extension Syntax {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
     }
 
+    internal func attributeIndicatesAbsence() -> Bool {
+        switch self {
+        case let attribute as AttributeSyntax:
+            return attribute.indicatesAbsence()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return false
+        }
+    }
+
+    internal func normalizedAttributeForAPIDeclaration() -> AttributeSyntax? {
+        switch self {
+        case let attribute as AttributeSyntax:
+            return attribute.normalizedForAPIDeclaration()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return self as? AttributeSyntax
+        }
+    }
+
     internal func normalizedAttributeArgument() -> Syntax {
         switch self {
         case let availablitiy as AvailabilitySpecListSyntax:
