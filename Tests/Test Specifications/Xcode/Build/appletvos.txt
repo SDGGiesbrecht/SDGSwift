@@ -1,14 +1,14 @@
 $ xcodebuild build -sdk appletvos -scheme Mock-Package
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
-CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ld [...]/Mock normal arm64
-MergeSwiftModule [...]/MergeSwiftModule normal arm64
+MergeSwiftModule normal arm64
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist

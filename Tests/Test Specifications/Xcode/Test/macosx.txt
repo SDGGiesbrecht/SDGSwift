@@ -1,15 +1,13 @@
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-./macosx/libswiftCore.dylib -r -o /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
 CodeSign [...]/A
 CodeSign [...]/MockTests.xctest
 Codesigning /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'MockTests' from project 'Mock')
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
 Ditto [...]/Mock-Swift.h
@@ -20,7 +18,7 @@ Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ld [...]/Mock normal x_
 Ld [...]/MockTests normal x_
-MergeSwiftModule [...]/MergeSwiftModule normal x_
+MergeSwiftModule normal x_
 MkDir [...]/A
 MkDir [...]/Contents
 MkDir [...]/Headers

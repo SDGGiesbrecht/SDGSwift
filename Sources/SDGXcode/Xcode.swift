@@ -90,6 +90,7 @@ public enum Xcode {
 
     private static let ignorableCommands: [String] = [
         "/bin/sh",
+        "bitcode_strip",
         "builtin\u{2D}copy",
         "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
@@ -114,6 +115,7 @@ public enum Xcode {
         "CodeSign",
         "CompileC",
         "CompileSwift",
+        "CompileSwiftSources",
         "Copying",
         "CopySwiftLibs",
         "CreateBuildDirectory",
@@ -179,17 +181,24 @@ public enum Xcode {
                 return nil
             }
             for abbreviableCommand in Xcode.abbreviableCommands where abbreviableCommand == command {
-                var file = String(commandLine.components(separatedBy: "/").last!.contents)
-                if let last = file.lastMatch(for: " (") {
-                    file.truncate(at: last.range.lowerBound)
-                }
-                let abbreviatedPath: String
-                if path == command {
-                    abbreviatedPath = command
+                let components = commandLine.components(separatedBy: "/")
+                var result: String
+                if components.count == 1 {
+                    result = commandLine
                 } else {
-                    abbreviatedPath = "[...]/" + command
+                    let file = String(components.last!.contents)
+                    let abbreviatedPath: String
+                    if path == command {
+                        abbreviatedPath = command
+                    } else {
+                        abbreviatedPath = "[...]/" + command
+                    }
+                    result = indentation + abbreviatedPath + " [...]/" + file
                 }
-                return indentation + abbreviatedPath + " [...]/" + file
+                if let last = result.lastMatch(for: " (") {
+                    result.truncate(at: last.range.lowerBound)
+                }
+                return result
             }
         }
 
