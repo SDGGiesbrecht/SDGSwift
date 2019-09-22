@@ -2,43 +2,42 @@
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-./macosx/libswiftCore.dylib -r -o /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
-CodeSign [...]/A (in target 'Mock' from project 'Mock')
-CodeSign [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
+CodeSign [...]/A
+CodeSign [...]/MockTests.xctest
 Codesigning /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
-CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
-CompileSwift [...]/MockTests.swift (in target 'MockTests' from project 'Mock')
-CompileSwift [...]/XCTestManifests.swift (in target 'MockTests' from project 'Mock')
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'MockTests' from project 'Mock')
-CopySwiftLibs [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
+CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
-Ditto [...]/Mock-Swift.h (in target 'Mock' from project 'Mock')
-Ditto [...]/Mock.swiftdoc (in target 'Mock' from project 'Mock')
-Ditto [...]/Mock.swiftmodule (in target 'Mock' from project 'Mock')
-Ditto [...]/MockTests-Swift.h (in target 'MockTests' from project 'Mock')
-Ditto [...]/MockTests.swiftdoc (in target 'MockTests' from project 'Mock')
-Ditto [...]/MockTests.swiftmodule (in target 'MockTests' from project 'Mock')
-Ld [...]/Mock normal x_ (in target 'Mock' from project 'Mock')
-Ld [...]/MockTests normal x_ (in target 'MockTests' from project 'Mock')
-MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target 'Mock' from project 'Mock')
-MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target 'MockTests' from project 'Mock')
-MkDir [...]/A (in target 'Mock' from project 'Mock')
-MkDir [...]/Contents (in target 'MockTests' from project 'Mock')
-MkDir [...]/Headers (in target 'Mock' from project 'Mock')
-MkDir [...]/MacOS (in target 'MockTests' from project 'Mock')
-MkDir [...]/Mock.framework (in target 'Mock' from project 'Mock')
-MkDir [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
-MkDir [...]/Resources (in target 'Mock' from project 'Mock')
-MkDir [...]/Versions (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests-Swift.h
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ld [...]/Mock normal x_
+Ld [...]/MockTests normal x_
+MergeSwiftModule [...]/MergeSwiftModule normal x_
+MkDir [...]/A
+MkDir [...]/Contents
+MkDir [...]/Headers
+MkDir [...]/MacOS
+MkDir [...]/Mock.framework
+MkDir [...]/MockTests.xctest
+MkDir [...]/Resources
+MkDir [...]/Versions
 Probing signature of /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
-ProcessInfoPlistFile [...]/MockTests_Info.plist (in target 'MockTests' from project 'Mock')
-ProcessInfoPlistFile [...]/Mock_Info.plist (in target 'Mock' from project 'Mock')
+ProcessInfoPlistFile [...]/MockTests_Info.plist
+ProcessInfoPlistFile [...]/Mock_Info.plist
 Signing Identity:     "-"
-SymLink [...]/Current A (in target 'Mock' from project 'Mock')
-SymLink [...]/Headers (in target 'Mock' from project 'Mock')
-SymLink [...]/Mock (in target 'Mock' from project 'Mock')
-SymLink [...]/Modules (in target 'Mock' from project 'Mock')
-SymLink [...]/Resources (in target 'Mock' from project 'Mock')
+SymLink [...]/Current A
+SymLink [...]/Headers
+SymLink [...]/Mock
+SymLink [...]/Modules
+SymLink [...]/Resources
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -49,14 +48,14 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started on 'My Mac'
-Touch [...]/Mock.framework (in target 'Mock' from project 'Mock')
-Touch [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock.LinkFileList (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock.SwiftFileList (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json (in target 'MockTests' from project 'Mock')
-WriteAuxiliaryFile [...]/MockTests.LinkFileList (in target 'MockTests' from project 'Mock')
-WriteAuxiliaryFile [...]/MockTests.SwiftFileList (in target 'MockTests' from project 'Mock')
+Touch [...]/Mock.framework
+Touch [...]/MockTests.xctest
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 note: Constructing build description
 note: Planning build
 note: Using new build system

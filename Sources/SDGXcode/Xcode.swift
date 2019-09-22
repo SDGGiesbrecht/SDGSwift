@@ -179,7 +179,10 @@ public enum Xcode {
                 return nil
             }
             for abbreviableCommand in Xcode.abbreviableCommands where abbreviableCommand == command {
-                let file = String(commandLine.components(separatedBy: "/").last!.contents)
+                var file = String(commandLine.components(separatedBy: "/").last!.contents)
+                if let last = file.lastMatch(for: " (") {
+                    file.truncate(at: last.range.lowerBound)
+                }
                 let abbreviatedPath: String
                 if path == command {
                     abbreviatedPath = command

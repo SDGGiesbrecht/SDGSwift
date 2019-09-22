@@ -1,21 +1,21 @@
 $ xcodebuild build -sdk appletvos -scheme Mock-Package
 ** BUILD SUCCEEDED **
-CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
+CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
-CreateBuildDirectory [...]/Intermediates.noindex (in target 'Mock' from project 'Mock')
-CreateBuildDirectory [...]/Products (in target 'Mock' from project 'Mock')
-Ditto [...]/Mock-Swift.h (in target 'Mock' from project 'Mock')
-Ditto [...]/Mock.swiftdoc (in target 'Mock' from project 'Mock')
-Ditto [...]/Mock.swiftmodule (in target 'Mock' from project 'Mock')
-Ld [...]/Mock normal arm64 (in target 'Mock' from project 'Mock')
-MergeSwiftModule [...]/MergeSwiftModule normal arm64 (in target 'Mock' from project 'Mock')
-MkDir [...]/Headers (in target 'Mock' from project 'Mock')
-MkDir [...]/Mock.framework (in target 'Mock' from project 'Mock')
-ProcessInfoPlistFile [...]/Mock_Info.plist (in target 'Mock' from project 'Mock')
-Touch [...]/Mock.framework (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock.LinkFileList (in target 'Mock' from project 'Mock')
-WriteAuxiliaryFile [...]/Mock.SwiftFileList (in target 'Mock' from project 'Mock')
+CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/Products
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ld [...]/Mock normal arm64
+MergeSwiftModule [...]/MergeSwiftModule normal arm64
+MkDir [...]/Headers
+MkDir [...]/Mock.framework
+ProcessInfoPlistFile [...]/Mock_Info.plist
+Touch [...]/Mock.framework
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
 note: Constructing build description
 note: Planning build
 note: Using new build system
