@@ -1,58 +1,45 @@
     SDKROOT = macosx.
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-./macosx/libswiftCore.dylib -r -o /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
 Build settings from command line:
-CompileSwift [...]/Mock.swift (in target: Mock)
-CompileSwift [...]/MockTests.swift (in target: MockTests)
-CompileSwift [...]/XCTestManifests.swift (in target: MockTests)
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target: Mock)
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target: MockTests)
-CopySwiftLibs [...]/MockTests.xctest (in target: MockTests)
-Copying [...]/libswiftAppKit.dylib
+CodeSign [...]/A (in target 'Mock' from project 'Mock')
+CodeSign [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
+Codesigning /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
+CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
+CompileSwift [...]/MockTests.swift (in target 'MockTests' from project 'Mock')
+CompileSwift [...]/XCTestManifests.swift (in target 'MockTests' from project 'Mock')
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler (in target 'MockTests' from project 'Mock')
+CopySwiftLibs [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
 Copying [...]/libswiftCore.dylib
-Copying [...]/libswiftCoreData.dylib
-Copying [...]/libswiftCoreFoundation.dylib
-Copying [...]/libswiftCoreGraphics.dylib
-Copying [...]/libswiftCoreImage.dylib
-Copying [...]/libswiftDarwin.dylib
-Copying [...]/libswiftDispatch.dylib
-Copying [...]/libswiftFoundation.dylib
-Copying [...]/libswiftIOKit.dylib
-Copying [...]/libswiftMetal.dylib
-Copying [...]/libswiftObjectiveC.dylib
-Copying [...]/libswiftQuartzCore.dylib
-Copying [...]/libswiftRemoteMirror.dylib
-Copying [...]/libswiftXCTest.dylib
-Copying [...]/libswiftXPC.dylib
-Copying [...]/libswiftos.dylib
-Ditto [...]/Mock-Swift.h (in target: Mock)
-Ditto [...]/Mock.swiftdoc (in target: Mock)
-Ditto [...]/Mock.swiftmodule (in target: Mock)
-Ditto [...]/MockTests-Swift.h (in target: MockTests)
-Ditto [...]/MockTests.swiftdoc (in target: MockTests)
-Ditto [...]/MockTests.swiftmodule (in target: MockTests)
-Generating coverage data...
-Ignoring --strip-bitcode because --sign was not passed
-Ld [...]/Mock normal x_ (in target: Mock)
-Ld [...]/MockTests normal x_ (in target: MockTests)
-MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target: Mock)
-MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target: MockTests)
-MkDir [...]/A (in target: Mock)
-MkDir [...]/Contents (in target: MockTests)
-MkDir [...]/Headers (in target: Mock)
-MkDir [...]/MacOS (in target: MockTests)
-MkDir [...]/Mock.framework (in target: Mock)
-MkDir [...]/MockTests.xctest (in target: MockTests)
-MkDir [...]/Resources (in target: Mock)
-MkDir [...]/Versions (in target: Mock)
-ProcessInfoPlistFile [...]/MockTests_Info.plist (in target: MockTests)
-ProcessInfoPlistFile [...]/Mock_Info.plist (in target: Mock)
-Requested Swift ABI version based on scanned binaries: unstable()
-SymLink [...]/Current A (in target: Mock)
-SymLink [...]/Headers (in target: Mock)
-SymLink [...]/Mock (in target: Mock)
-SymLink [...]/Modules (in target: Mock)
-SymLink [...]/Resources (in target: Mock)
+Ditto [...]/Mock-Swift.h (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock.swiftdoc (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock.swiftmodule (in target 'Mock' from project 'Mock')
+Ditto [...]/MockTests-Swift.h (in target 'MockTests' from project 'Mock')
+Ditto [...]/MockTests.swiftdoc (in target 'MockTests' from project 'Mock')
+Ditto [...]/MockTests.swiftmodule (in target 'MockTests' from project 'Mock')
+Ld [...]/Mock normal x_ (in target 'Mock' from project 'Mock')
+Ld [...]/MockTests normal x_ (in target 'MockTests' from project 'Mock')
+MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target 'Mock' from project 'Mock')
+MergeSwiftModule [...]/MergeSwiftModule normal x_ (in target 'MockTests' from project 'Mock')
+MkDir [...]/A (in target 'Mock' from project 'Mock')
+MkDir [...]/Contents (in target 'MockTests' from project 'Mock')
+MkDir [...]/Headers (in target 'Mock' from project 'Mock')
+MkDir [...]/MacOS (in target 'MockTests' from project 'Mock')
+MkDir [...]/Mock.framework (in target 'Mock' from project 'Mock')
+MkDir [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
+MkDir [...]/Resources (in target 'Mock' from project 'Mock')
+MkDir [...]/Versions (in target 'Mock' from project 'Mock')
+Probing signature of /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
+ProcessInfoPlistFile [...]/MockTests_Info.plist (in target 'MockTests' from project 'Mock')
+ProcessInfoPlistFile [...]/Mock_Info.plist (in target 'Mock' from project 'Mock')
+Signing Identity:     "-"
+SymLink [...]/Current A (in target 'Mock' from project 'Mock')
+SymLink [...]/Headers (in target 'Mock' from project 'Mock')
+SymLink [...]/Mock (in target 'Mock' from project 'Mock')
+SymLink [...]/Modules (in target 'Mock' from project 'Mock')
+SymLink [...]/Resources (in target 'Mock' from project 'Mock')
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -61,13 +48,16 @@ Test Suite 'MockTests' passed at -- ::..
 Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
+Test session results, code coverage, and logs:
 Testing started on 'My Mac'
-Touch [...]/Mock.framework (in target: Mock)
-Touch [...]/MockTests.xctest (in target: MockTests)
-WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target: Mock)
-WriteAuxiliaryFile [...]/Mock.LinkFileList (in target: Mock)
-WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json (in target: MockTests)
-WriteAuxiliaryFile [...]/MockTests.LinkFileList (in target: MockTests)
+Touch [...]/Mock.framework (in target 'Mock' from project 'Mock')
+Touch [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock.LinkFileList (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock.SwiftFileList (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json (in target 'MockTests' from project 'Mock')
+WriteAuxiliaryFile [...]/MockTests.LinkFileList (in target 'MockTests' from project 'Mock')
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList (in target 'MockTests' from project 'Mock')
 note: Constructing build description
 note: Planning build
 note: Using new build system
