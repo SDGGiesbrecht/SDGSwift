@@ -113,6 +113,7 @@ public enum Xcode {
     ]
     private static let abbreviableCommands: [String] = [
         "CodeSign",
+        "Codesigning",
         "CompileC",
         "CompileSwift",
         "CompileSwiftSources",
@@ -138,6 +139,7 @@ public enum Xcode {
         "device_map.plist",
         "IDETestOperationsObserverDebug",
         "/Logs/",
+        "Probing signature of",
         "Writing diagnostic log for test session to:",
         ".xcresult"
     ]

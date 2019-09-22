@@ -3,7 +3,7 @@ $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
 CodeSign [...]/A
 CodeSign [...]/MockTests.xctest
-Codesigning /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
+Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
@@ -27,7 +27,6 @@ MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
 MkDir [...]/Resources
 MkDir [...]/Versions
-Probing signature of /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Signing Identity:     "-"
