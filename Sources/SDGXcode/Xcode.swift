@@ -130,13 +130,14 @@ public enum Xcode {
     ]
 
     private static let otherIgnored: [String] = [
-        "Writing diagnostic log for test session to:",
         "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
         "Beginning test session",
-        ".xcresult",
-        "/Logs/",
+        "Build settings from command line:",
         "device_map.plist",
-        "IDETestOperationsObserverDebug"
+        "IDETestOperationsObserverDebug",
+        "/Logs/",
+        "Writing diagnostic log for test session to:",
+        ".xcresult"
     ]
 
     /// Abbreviates Xcode output to make it more readable.

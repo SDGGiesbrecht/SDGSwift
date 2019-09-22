@@ -1,6 +1,5 @@
 $ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
 ** BUILD SUCCEEDED **
-Build settings from command line:
 CodeSign [...]/Mock.framework (in target 'Mock' from project 'Mock')
 CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')

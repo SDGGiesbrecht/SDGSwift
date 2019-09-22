@@ -2,7 +2,6 @@
 $ xcodebuild test -sdk macosx -scheme Mock-Package
 ** TEST SUCCEEDED **
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-./macosx/libswiftCore.dylib -r -o /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib
-Build settings from command line:
 CodeSign [...]/A (in target 'Mock' from project 'Mock')
 CodeSign [...]/MockTests.xctest (in target 'MockTests' from project 'Mock')
 Codesigning /Users/Jeremy/Library/Developer/Xcode/DerivedData/Mock-ezaadjtwwtbijufkupmibqyxnejr/Build/Products/Debug/MockTests.xctest/Contents/Frameworks/libswiftCore.dylib

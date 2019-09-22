@@ -1,6 +1,5 @@
 $ xcodebuild build -sdk watchos -scheme Mock-Package
 ** BUILD SUCCEEDED **
-Build settings from command line:
 CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
 CompileSwiftSources normal arm64_32 com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
 CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
