@@ -18,6 +18,11 @@ extension SyntaxCollection {
 
     /// Returns whether the collection is empty.
     public var isEmpty: Bool {
-        return first(where: { _ in true }) == nil
+        return first == nil
+    }
+
+    /// Returns the first element of the collection.
+    public var first: Element? {
+        return first(where: { _ in true })
     }
 }
