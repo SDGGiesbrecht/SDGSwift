@@ -1,23 +1,24 @@
 $ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
 ** BUILD SUCCEEDED **
 Build settings from command line:
-CodeSign [...]/Mock.framework (in target: Mock)
-CompileSwift [...]/Mock.swift (in target: Mock)
-CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler (in target: Mock)
-CreateBuildDirectory [...]/Intermediates.noindex (in target: Mock)
-CreateBuildDirectory [...]/Products (in target: Mock)
-Ditto [...]/Mock-Swift.h (in target: Mock)
-Ditto [...]/Mock.swiftdoc (in target: Mock)
-Ditto [...]/Mock.swiftmodule (in target: Mock)
-Ld [...]/Mock normal x86_64 (in target: Mock)
-MergeSwiftModule [...]/MergeSwiftModule normal x86_64 (in target: Mock)
-MkDir [...]/Headers (in target: Mock)
-MkDir [...]/Mock.framework (in target: Mock)
-ProcessInfoPlistFile [...]/Mock_Info.plist (in target: Mock)
+CodeSign [...]/Mock.framework (in target 'Mock' from project 'Mock')
+CompileSwift [...]/Mock.swift (in target 'Mock' from project 'Mock')
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Mock' from project 'Mock')
+CreateBuildDirectory [...]/Intermediates.noindex (in target 'Mock' from project 'Mock')
+CreateBuildDirectory [...]/Products (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock-Swift.h (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock.swiftdoc (in target 'Mock' from project 'Mock')
+Ditto [...]/Mock.swiftmodule (in target 'Mock' from project 'Mock')
+Ld [...]/Mock normal x86_64 (in target 'Mock' from project 'Mock')
+MergeSwiftModule [...]/MergeSwiftModule normal x86_64 (in target 'Mock' from project 'Mock')
+MkDir [...]/Headers (in target 'Mock' from project 'Mock')
+MkDir [...]/Mock.framework (in target 'Mock' from project 'Mock')
+ProcessInfoPlistFile [...]/Mock_Info.plist (in target 'Mock' from project 'Mock')
 Signing Identity:     "-"
-Touch [...]/Mock.framework (in target: Mock)
-WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target: Mock)
-WriteAuxiliaryFile [...]/Mock.LinkFileList (in target: Mock)
+Touch [...]/Mock.framework (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock.LinkFileList (in target 'Mock' from project 'Mock')
+WriteAuxiliaryFile [...]/Mock.SwiftFileList (in target 'Mock' from project 'Mock')
 note: Constructing build description
 note: Planning build
 note: Using new build system
