@@ -24,7 +24,7 @@ public enum SwiftCompiler {
 
     // MARK: - Locating
 
-    internal static let compatibleVersionRange = Version(5, 0, 0) /* Travis CI */ ... Version(5, 0, 1) /* Current */
+    internal static let compatibleVersionRange = Version(5, 1, 0) /* Travis CI */ ... Version(5, 1, 0) /* Current */
     public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
     internal static let searchCommands: [[String]] = [
