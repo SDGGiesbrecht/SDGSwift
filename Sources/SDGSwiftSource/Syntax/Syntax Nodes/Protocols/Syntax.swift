@@ -216,7 +216,12 @@ extension Syntax {
                 let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             }
-            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
+            var result = children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
+            if self is StringLiteralExprSyntax {
+                result.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
+                result.append(contentsOf: "</span>")
+            }
+            return result
         }
     }
 
