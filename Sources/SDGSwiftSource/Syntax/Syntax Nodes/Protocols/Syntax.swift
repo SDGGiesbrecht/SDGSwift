@@ -217,9 +217,7 @@ extension Syntax {
                 identifiers ∪= Set(parameters)
             }
             var result = children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
-            if let stringLiteral = self as? StringLiteralExprSyntax,
-                stringLiteral.segments.count == 1 {
-                #warning("Interpolation blocked only for specification compatibility.")
+            if self is StringLiteralExprSyntax {
                 result.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
                 result.append(contentsOf: "</span>")
             }
