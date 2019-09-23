@@ -160,13 +160,15 @@ class APITests : TestCase {
 
         let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
         let moreSyntax = try SyntaxParser.parse(moreSource)
-        var foundQuotationMark = false
+        // #workaround(These are now handled natively, is this test still meaningful?)
+        // var foundQuotationMark = false
         var foundComment = false
         try FunctionalSyntaxScanner(
             checkExtendedSyntax: { syntax, context in
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .quotationMark {
-                    foundQuotationMark = true
+                    // #workaround(These are now handled natively, is this test still meaningful?)
+                    // foundQuotationMark = true
                     XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
                 } else if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .commentText {
@@ -175,7 +177,8 @@ class APITests : TestCase {
                 }
                 return true
         }).scan(moreSyntax)
-        XCTAssertTrue(foundQuotationMark)
+        // #workaround(These are now handled natively, is this test still meaningful?)
+        // XCTAssertTrue(foundQuotationMark)
         XCTAssertTrue(foundComment)
 
         let evenMoreSource = "/// ```swift\n///\n/// // Comment.\n///\n/// ```\nlet y = 0"
