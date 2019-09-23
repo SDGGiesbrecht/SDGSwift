@@ -48,11 +48,11 @@
       },
       {
         "package": "SwiftSyntax",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-syntax",
+        "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
-          "branch": "swift‐5.1",
-          "revision": "655d5cb3caeecd1c71ee6c2cdfc84099901d8560",
-          "version": null
+          "branch": null,
+          "revision": "3e3eb191fcdbecc6031522660c4ed6ce25282c25",
+          "version": "0.50100.0"
         }
       }
     ]
