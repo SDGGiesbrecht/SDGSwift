@@ -41,9 +41,9 @@
         "package": "SwiftPM",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
-          "branch": "swift‐5.1",
-          "revision": "45069b0fa61746c9088def331c0705516a87e6d6",
-          "version": null
+          "branch": null,
+          "revision": "52ad37e6cad1f7561c80a687473f70ccf435118d",
+          "version": "0.50100.0"
         }
       },
       {
