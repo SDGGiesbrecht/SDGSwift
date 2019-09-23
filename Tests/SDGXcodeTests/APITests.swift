@@ -126,7 +126,7 @@ class APITests : TestCase {
                     }
                 }
                 #if os(Linux)
-                _ = try? mock.test(on: sdk, reportProgress: processLog)
+                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
                 #else
                 _ = try mock.test(on: sdk, reportProgress: processLog).get()
                 #endif
@@ -147,7 +147,7 @@ class APITests : TestCase {
 
     func testXcodeCoverage() throws {
         #if os(Linux)
-        _ = try? Xcode.runCustomCoverageSubcommand(["help"])
+        _ = try? Xcode.runCustomCoverageSubcommand(["help"]).get()
         #else
         _ = try Xcode.runCustomCoverageSubcommand(["help"]).get()
         #endif
@@ -173,7 +173,7 @@ class APITests : TestCase {
             _ = try mock.test(on: .macOS).get()
             #endif
             for localization in InterfaceLocalization.allCases {
-                try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                     let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
                     #if !os(Linux)
                     guard let coverageReport = possibleReport else {
@@ -184,12 +184,16 @@ class APITests : TestCase {
                         XCTFail("File missing from coverage report.")
                         return
                     }
-                    var specification = try String(from: sourceURL)
-                    for range in file.regions.reversed() {
-                        specification.insert("!", at: range.region.upperBound)
-                        specification.insert("¡", at: range.region.lowerBound)
+                    do {
+                        var specification = try String(from: sourceURL)
+                        for range in file.regions.reversed() {
+                            specification.insert("!", at: range.region.upperBound)
+                            specification.insert("¡", at: range.region.lowerBound)
+                        }
+                        compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
+                    } catch {
+                        XCTFail("Failed to load source.")
                     }
-                    compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
                     #endif
                 }
             }
