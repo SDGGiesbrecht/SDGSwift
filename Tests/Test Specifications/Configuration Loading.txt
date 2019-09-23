@@ -27,16 +27,8 @@ Resolving [...]
 [4/16] Compiling SDGControlFlow TextualPlaygroundDisplay.swift
 [5/16] Compiling SDGControlFlow TransparentWrapper.swift
 [6/16] Compiling SDGControlFlow Weak.swift
-[7/16] Compiling SDGControlFlow APILocalization.swift
-[8/16] Compiling SDGControlFlow Assert.swift
-[9/16] Compiling SDGSwiftConfiguration Export.swift
-[10/16] Compiling SDGControlFlow NonmutatingVariants.swift
-[11/16] Compiling SDGControlFlow Shared.swift
-[12/16] Compiling SDGControlFlow SharedValueObserver.swift
 [13/17] Merging module SDGControlFlow
 [17/18] Merging module SDGSwiftConfiguration
-[18/20] Compiling SampleConfiguration SampleConfiguration.swift
-[19/20] Compiling SampleConfiguration SampleContext.swift
 [20/21] Merging module SampleConfiguration
 [21/22] Compiling configure main.swift
 [22/23] Merging module configure
@@ -72,8 +64,6 @@ Resolving [...]
 Cloning [...]
 Resolving [...]
 [1/4] Compiling SDGSwiftConfiguration Configuration.swift
-[2/4] Compiling SDGSwiftConfiguration Context.swift
-[3/4] Compiling SDGSwiftConfiguration Export.swift
 [4/5] Merging module SDGSwiftConfiguration
 [5/7] Compiling SampleConfiguration SampleContext.swift
 [6/7] Compiling SampleConfiguration SampleConfiguration.swift
