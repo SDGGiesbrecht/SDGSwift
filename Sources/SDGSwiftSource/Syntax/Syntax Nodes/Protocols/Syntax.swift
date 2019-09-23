@@ -75,7 +75,7 @@ extension Syntax {
     /// - Parameters:
     ///     - context: The node’s context.
     public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
-        return index(in: context, for: endPosition)
+        return index(in: context, for: endPositionBeforeTrailingTrivia)
     }
 
     /// Returns the upper bound of the trailing trivia.
@@ -83,7 +83,7 @@ extension Syntax {
     /// - Parameters:
     ///     - context: The node’s context.
     public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
-        return index(in: context, for: endPositionAfterTrailingTrivia)
+        return index(in: context, for: endPosition)
     }
 
     /// Returns the range of the node excluding trivia.
@@ -216,7 +216,12 @@ extension Syntax {
                 let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
                 identifiers ∪= Set(parameters)
             }
-            return children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
+            var result = children.map({ $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks) }).joined()
+            if self is StringLiteralExprSyntax {
+                result.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
+                result.append(contentsOf: "</span>")
+            }
+            return result
         }
     }
 
@@ -332,6 +337,26 @@ extension Syntax {
 
     internal static func arrangePrecedenceAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
         return (lhs.precedenceAttributeGroup(), lhs.source()) < (rhs.precedenceAttributeGroup(), lhs.source())
+    }
+
+    internal func attributeIndicatesAbsence() -> Bool {
+        switch self {
+        case let attribute as AttributeSyntax:
+            return attribute.indicatesAbsence()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return false
+        }
+    }
+
+    internal func normalizedAttributeForAPIDeclaration() -> AttributeSyntax? {
+        switch self {
+        case let attribute as AttributeSyntax:
+            return attribute.normalizedForAPIDeclaration()
+        default: // @exempt(from: tests)
+            warnUnidentified()
+            return self as? AttributeSyntax
+        }
     }
 
     internal func normalizedAttributeArgument() -> Syntax {

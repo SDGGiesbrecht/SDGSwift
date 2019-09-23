@@ -31,7 +31,7 @@ public enum Xcode {
 
     // MARK: - Locating
 
-    internal static let compatibleVersionRange = Version(10, 2, 0) /* Travis CI */ ... Version(10, 3, 0) /* Current */
+    internal static let compatibleVersionRange = Version(11, 0, 0) /* Travis CI */ ... Version(11, 0, 0) /* Current */
 
     internal static let searchCommands: [[String]] = [
         ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
@@ -90,6 +90,7 @@ public enum Xcode {
 
     private static let ignorableCommands: [String] = [
         "/bin/sh",
+        "bitcode_strip",
         "builtin\u{2D}copy",
         "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
@@ -112,8 +113,10 @@ public enum Xcode {
     ]
     private static let abbreviableCommands: [String] = [
         "CodeSign",
+        "Codesigning",
         "CompileC",
         "CompileSwift",
+        "CompileSwiftSources",
         "Copying",
         "CopySwiftLibs",
         "CreateBuildDirectory",
@@ -130,13 +133,15 @@ public enum Xcode {
     ]
 
     private static let otherIgnored: [String] = [
-        "Writing diagnostic log for test session to:",
         "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
         "Beginning test session",
-        ".xcresult",
-        "/Logs/",
+        "Build settings from command line:",
         "device_map.plist",
-        "IDETestOperationsObserverDebug"
+        "IDETestOperationsObserverDebug",
+        "/Logs/",
+        "Probing signature of",
+        "Writing diagnostic log for test session to:",
+        ".xcresult"
     ]
 
     /// Abbreviates Xcode output to make it more readable.
@@ -178,14 +183,24 @@ public enum Xcode {
                 return nil
             }
             for abbreviableCommand in Xcode.abbreviableCommands where abbreviableCommand == command {
-                let file = String(commandLine.components(separatedBy: "/").last!.contents)
-                let abbreviatedPath: String
-                if path == command {
-                    abbreviatedPath = command
+                let components = commandLine.components(separatedBy: "/")
+                var result: String
+                if components.count == 1 {
+                    result = commandLine
                 } else {
-                    abbreviatedPath = "[...]/" + command
+                    let file = String(components.last!.contents)
+                    let abbreviatedPath: String
+                    if path == command {
+                        abbreviatedPath = command
+                    } else {
+                        abbreviatedPath = "[...]/" + command
+                    }
+                    result = indentation + abbreviatedPath + " [...]/" + file
                 }
-                return indentation + abbreviatedPath + " [...]/" + file
+                if let last = result.lastMatch(for: " (") {
+                    result.truncate(at: last.range.lowerBound)
+                }
+                return result
             }
         }
 
@@ -271,7 +286,7 @@ public enum Xcode {
 
         switch sdk {
         case .iOS(simulator: true): // @exempt(from: tests) Tested separately.
-            command += ["\u{2D}destination", "name=iPhone X"]
+            command += ["\u{2D}destination", "name=iPhone 11"]
         case .tvOS(simulator: true): // @exempt(from: tests) Tested separately.
             command += ["\u{2D}destination", "name=Apple TV 4K"]
         default:
@@ -333,13 +348,12 @@ public enum Xcode {
             // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
             return .success(nil)
         }
-        let archive = resultDirectory.appendingPathComponent("1_Test/action.xccovarchive")
 
         let fileURLs: [URL]
         switch runCustomCoverageSubcommand([
             "view",
             "\u{2D}\u{2D}file\u{2D}list",
-            archive.path
+            "\u{2D}\u{2D}archive", resultDirectory.path
             ]) {
         case .failure(let error):
             return .failure(.xcodeError(error))
@@ -380,12 +394,15 @@ public enum Xcode {
                 switch runCustomCoverageSubcommand([
                     "view",
                     "\u{2D}\u{2D}file", fileURL.path,
-                    archive.path
+                    "\u{2D}\u{2D}archive", resultDirectory.path
                     ]) {
                 case .failure(let error):
                     return .failure(.xcodeError(error))
                 case .success(let output):
                     report = output
+                }
+                if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
+                    report.removeSubrange(..<match.range.upperBound)
                 }
 
                 let source: String

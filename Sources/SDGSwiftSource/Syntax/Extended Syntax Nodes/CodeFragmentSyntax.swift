@@ -50,12 +50,12 @@ public class CodeFragmentSyntax : ExtendedSyntax {
     /// The syntax of the source code contained in this token.
     public func syntax() throws -> [SyntaxFragment]? {
         if isSwift == true {
-            let parsed = try SyntaxTreeParser.parse(context)
+            let parsed = try SyntaxParser.parse(context)
             return syntax(of: parsed)
         } else if isSwift == false {
             return nil
         } else {
-            if let parsed = try? SyntaxTreeParser.parse(context) {
+            if let parsed = try? SyntaxParser.parse(context) {
                 return syntax(of: parsed)
             } else { // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
                 return nil // @exempt(from: tests)

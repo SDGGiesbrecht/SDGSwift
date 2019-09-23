@@ -17,11 +17,11 @@ import SwiftSyntax
 extension AttributeListSyntax {
 
     internal func indicatesAbsence() -> Bool {
-        return contains(where: { $0.indicatesAbsence() })
+        return contains(where: { $0.attributeIndicatesAbsence() })
     }
 
     internal func normalizedForAPIDeclaration() -> AttributeListSyntax? {
-        let normalized = compactMap({ $0.normalizedForAPIDeclaration() }).sorted(by: AttributeSyntax.arrange)
+        let normalized = compactMap({ $0.normalizedAttributeForAPIDeclaration() }).sorted(by: AttributeSyntax.arrange)
         return normalized.isEmpty ? nil : SyntaxFactory.makeAttributeList(normalized)
     }
 }

@@ -17,9 +17,11 @@ import SwiftSyntax
 extension TupleTypeSyntax {
 
     internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
-        if let index = indexPath.first,
-            elements.indices.contains(index) {
-            return elements[index].type.normalized(extractingFromIndexPath: Array(indexPath.dropFirst()))
+        if let index = indexPath.first {
+            let elementsArray = Array(elements)
+            if elementsArray.indices.contains(index) {
+                return elementsArray[index].type.normalized(extractingFromIndexPath: Array(indexPath.dropFirst()))
+            }
         }
 
         if elements.isEmpty {

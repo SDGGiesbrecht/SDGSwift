@@ -50,7 +50,7 @@ class APITests : TestCase {
             let product = "SampleConfiguration"
             let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
             let minimumMacOSVersion = Version(10, 13)
-            let version = Version(0, 6, 1)
+            let version = Version(0, 12, 7)
             let type = SampleConfiguration.self // Import it first if necessary.
 
             // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -114,9 +114,13 @@ class APITests : TestCase {
 
             // These may occur out of order.
             remove(logEntry: "Compile Swift Module")
-            remove(logEntry: "[1/5] Compiling Swift Module")
-            remove(logEntry: "[2/5] Compiling Swift Module")
-            remove(logEntry: "[3/5] Compiling Swift Module")
+            log.scalars.replaceMatches(for: CompositePattern([
+                LiteralPattern("[".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                LiteralPattern("] Compiling ".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                LiteralPattern("\n".scalars),
+            ]), with: "[[...]] Compiling [...]\n".scalars)
             remove(logEntry: "Linking")
             remove(logEntry: "warning: invalid duplicate target dependency declaration")
 

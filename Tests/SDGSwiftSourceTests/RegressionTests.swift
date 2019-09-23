@@ -35,8 +35,8 @@ class RegressionTests : TestCase {
             "/// > Line 3",
             "public func function() {}"
         ].joined(separator: "\n")
-        let parsed = try SyntaxTreeParser.parse(source)
-        XCTAssertEqual(try SyntaxTreeParser.parse(source).source(), source)
+        let parsed = try SyntaxParser.parse(source)
+        XCTAssertEqual(try SyntaxParser.parse(source).source(), source)
         let documentation = parsed.api().first?.documentation
         XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
     }

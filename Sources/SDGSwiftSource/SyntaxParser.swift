@@ -1,5 +1,5 @@
 /*
- SyntaxTreeParser.swift
+ SyntaxParser.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -18,7 +18,7 @@ import SDGPersistence
 
 import SwiftSyntax
 
-extension SyntaxTreeParser {
+extension SyntaxParser {
 
     /// Parses the Swift file at the provided URL, retrying in the event of an error.
     ///
