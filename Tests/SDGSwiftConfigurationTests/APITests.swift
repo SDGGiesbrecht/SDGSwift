@@ -114,18 +114,13 @@ class APITests : TestCase {
 
             // These may occur out of order.
             remove(logEntry: "Compile Swift Module")
-            for x in 1 ... 3 {
-                remove(logEntry: "[\(x)/5] Compiling Swift Module")
-            }
-            for x in 7 ... 12 {
-                remove(logEntry: "[\(x)/16] Compiling")
-            }
-            for x in 2 ... 3 {
-                remove(logEntry: "[\(x)/4] Compiling")
-            }
-            for x in 18 ... 19 {
-                remove(logEntry: "[\(x)/20] Compiling")
-            }
+            log.scalars.replaceMatches(for: CompositePattern([
+                LiteralPattern("[".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                LiteralPattern("] Compiling ".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
+                LiteralPattern("\n".scalars),
+            ]), with: "[[...]] Compiling [...]\n".scalars)
             remove(logEntry: "Linking")
             remove(logEntry: "warning: invalid duplicate target dependency declaration")
 

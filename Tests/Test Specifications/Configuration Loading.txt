@@ -21,16 +21,24 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-[1/16] Compiling SDGControlFlow Caching.swift
-[2/16] Compiling SDGControlFlow Decodable.swift
-[3/16] Compiling SDGControlFlow Encodable.swift
-[4/16] Compiling SDGControlFlow TextualPlaygroundDisplay.swift
-[5/16] Compiling SDGControlFlow TransparentWrapper.swift
-[6/16] Compiling SDGControlFlow Weak.swift
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
 [13/17] Merging module SDGControlFlow
 [17/18] Merging module SDGSwiftConfiguration
+[[...]] Compiling [...]
+[[...]] Compiling [...]
 [20/21] Merging module SampleConfiguration
-[21/22] Compiling configure main.swift
+[[...]] Compiling [...]
 [22/23] Merging module configure
 [23/23] 
 Cached
@@ -63,12 +71,14 @@ Cloning [...]
 Resolving [...]
 Cloning [...]
 Resolving [...]
-[1/4] Compiling SDGSwiftConfiguration Configuration.swift
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
 [4/5] Merging module SDGSwiftConfiguration
-[5/7] Compiling SampleConfiguration SampleContext.swift
-[6/7] Compiling SampleConfiguration SampleConfiguration.swift
+[[...]] Compiling [...]
+[[...]] Compiling [...]
 [7/8] Merging module SampleConfiguration
-[8/9] Compiling configure main.swift
+[[...]] Compiling [...]
 [9/10] Merging module configure
 [10/10] 
 Mock
