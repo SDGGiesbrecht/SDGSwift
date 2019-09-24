@@ -164,7 +164,7 @@ extension Configuration {
             reportProgress(String(reportForLoading(file: configurationFile).resolved()))
 
             let extensionRemoved = configurationFile.deletingPathExtension()
-            let fileNameOnly = extensionRemoved.lastPathComponent
+            let fileNameOnly = configurationFile.lastPathComponent
             let parentDirectory = extensionRemoved.deletingLastPathComponent()
             let parentDirectoryNameOnly = parentDirectory.lastPathComponent
 
