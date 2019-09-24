@@ -57,4 +57,12 @@ class RegressionTests : TestCase {
             }
         }
     }
+
+    func testIgnoredFilesCheckIsStable() throws {
+        // Untracked.
+
+        let ignored = try thisRepository.ignoredFiles().get()
+        let expected = thisRepository.location.appendingPathComponent(".build").path
+        XCTAssert(ignored.contains(where: { $0.path == expected }))
+    }
 }
