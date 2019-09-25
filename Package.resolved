@@ -32,9 +32,9 @@
         "package": "llbuild",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild",
         "state": {
-          "branch": "swift‐5.1",
+          "branch": null,
           "revision": "f73b84bc1525998e5e267f9d830c1411487ac65e",
-          "version": null
+          "version": "0.50100.0"
         }
       },
       {

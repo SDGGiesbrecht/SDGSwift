@@ -42,7 +42,7 @@ extension Configuration {
     ///  Exernal packages can be imported with this syntax:
     ///  import [module] // [url], [version], [product]
     ///  */
-    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.15.0, SDGControlFlow
+    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 2.5.0, SDGControlFlow
     ///
     /// // Initialize the configuration with its defaults.
     /// let configuration = SampleConfiguration()
@@ -63,7 +63,7 @@ extension Configuration {
     /// let product = "SampleConfiguration"
     /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
     /// let minimumMacOSVersion = Version(10, 13)
-    /// let version = Version(0, 6, 1)
+    /// let version = Version(0, 12, 7)
     /// let type = SampleConfiguration.self // Import it first if necessary.
     ///
     /// // Assuming the above file is called “SampleConfigurationFile.swift”...
