@@ -158,17 +158,15 @@ class APITests : TestCase {
         XCTAssertTrue(foundNextTrivia)
         XCTAssertTrue(foundDocumentationComment)
 
-        let moreSource = "let string = \u{22}string\u{22}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
+        let moreSource = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
         let moreSyntax = try SyntaxParser.parse(moreSource)
-        // #workaround(These are now handled natively, is this test still meaningful?)
-        // var foundQuotationMark = false
+        var foundQuotationMark = false
         var foundComment = false
         try FunctionalSyntaxScanner(
             checkExtendedSyntax: { syntax, context in
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .quotationMark {
-                    // #workaround(These are now handled natively, is this test still meaningful?)
-                    // foundQuotationMark = true
+                    foundQuotationMark = true
                     XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
                 } else if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .commentText {
@@ -177,8 +175,7 @@ class APITests : TestCase {
                 }
                 return true
         }).scan(moreSyntax)
-        // #workaround(These are now handled natively, is this test still meaningful?)
-        // XCTAssertTrue(foundQuotationMark)
+        XCTAssertTrue(foundQuotationMark)
         XCTAssertTrue(foundComment)
 
         let evenMoreSource = "/// ```swift\n///\n/// // Comment.\n///\n/// ```\nlet y = 0"
@@ -255,26 +252,6 @@ class APITests : TestCase {
 
     func testCSS() {
         XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-    }
-
-    func testExtendedSyntax() throws {
-        let source = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}"
-        let syntax = try SyntaxParser.parse(source)
-        var foundStringLiteral = false
-        try FunctionalSyntaxScanner(
-            checkExtendedSyntax: { syntax, context in
-                if let literal = syntax as? StringLiteralSyntax {
-                    let expectedText = "\u{22}new\u{22}"
-                    if literal.text == expectedText {
-                        foundStringLiteral = true
-                        let range = syntax.lowerBound(in: context)
-                            ..< syntax.upperBound(in: context)
-                        XCTAssertEqual(String(source[range]), expectedText)
-                    }
-                }
-                return true
-        }).scan(syntax)
-        XCTAssert(foundStringLiteral)
     }
 
     func testExtension() {
@@ -511,30 +488,26 @@ class APITests : TestCase {
         XCTAssertEqual(incomplete.identifier.nextToken()?.tokenKind, .rightParen)
         XCTAssertEqual(incomplete.signature.input.rightParen.previousToken()?.tokenKind, .identifier("identifier"))
 
-        let stringSource = "let string = \u{22}string\u{22}"
+        let stringSource = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}"
         let stringSyntax = try SyntaxParser.parse(stringSource)
-        // #workaround(These are now handled natively, is this test still meaningful?)
-        // var foundQuotationMark = false
-        // var foundLiteral = false
-        // var foundString = false
+        var foundQuotationMark = false
+        var foundLiteral = false
+        var foundString = false
         try FunctionalSyntaxScanner(
             checkExtendedSyntax: { syntax, _ in
                 if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .quotationMark {
-                    // #workaround(These are now handled natively, is this test still meaningful?)
-                    // foundQuotationMark = true
-                    XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}string\u{22}" }))
+                    foundQuotationMark = true
+                    XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}new\u{22}" }))
                     for _ in token.ancestors() {}
                 } else if let literal = syntax as? StringLiteralSyntax {
-                    // #workaround(These are now handled natively, is this test still meaningful?)
-                    // foundLiteral = true
+                    foundLiteral = true
                     XCTAssertNil(literal.ancestors().makeIterator().next())
                     XCTAssertEqual(literal.firstToken()?.text, "\u{22}")
                     XCTAssertEqual(literal.lastToken()?.text, "\u{22}")
                 } else if let token = syntax as? ExtendedTokenSyntax,
                     token.kind == .string {
-                    // #workaround(These are now handled natively, is this test still meaningful?)
-                    // foundString = true
+                    foundString = true
                     XCTAssertEqual(token.nextToken()?.text, "\u{22}")
                     XCTAssertEqual(token.previousToken()?.text, "\u{22}")
                     XCTAssertNil(token.nextToken()?.nextToken()?.text)
@@ -542,10 +515,9 @@ class APITests : TestCase {
                 }
                 return true
         }).scan(stringSyntax)
-        // #workaround(These are now handled natively, is this test still meaningful?)
-        // XCTAssert(foundQuotationMark)
-        // XCTAssert(foundLiteral)
-        // XCTAssert(foundString)
+        XCTAssert(foundQuotationMark)
+        XCTAssert(foundLiteral)
+        XCTAssert(foundString)
     }
 
     func testTriviaPiece() {
