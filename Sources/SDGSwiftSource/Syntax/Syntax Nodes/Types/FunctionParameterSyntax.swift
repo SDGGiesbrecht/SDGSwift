@@ -72,14 +72,6 @@ extension FunctionParameterSyntax {
 
     internal func normalizedForDeclaration(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
 
-        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
-        let ellipsisToken: TokenSyntax?
-        if ellipsis?.tokenKind == .comma {
-            ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
-        } else {
-            ellipsisToken = ellipsis?.generallyNormalized()
-        }
-
         var firstName = self.firstName?.generallyNormalized()
         var secondName = self.secondName?.generallyNormalized(leadingTrivia: .spaces(1))
         if ¬labelBehaviour.hasLabelByDefault,
@@ -94,7 +86,7 @@ extension FunctionParameterSyntax {
             secondName: secondName,
             colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
             type: type?.normalized(),
-            ellipsis: ellipsisToken,
+            ellipsis: ellipsis?.generallyNormalized(),
             defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
             trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
@@ -134,43 +126,25 @@ extension FunctionParameterSyntax {
     // MARK: - Associated Values
 
     internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
-        let ellipsisToken: TokenSyntax?
-        if ellipsis?.tokenKind == .comma {
-            ellipsisToken = ellipsis?.generallyNormalized(trailingTrivia: .spaces(1))
-        } else {
-            ellipsisToken = ellipsis?.generallyNormalized()
-        }
-
         return SyntaxFactory.makeFunctionParameter(
             attributes: attributes?.normalizedForAPIDeclaration(),
             firstName: firstName?.generallyNormalized(trailingTrivia: .spaces(1)),
             secondName: secondName?.generallyNormalized(),
             colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
             type: type?.normalized(),
-            ellipsis: ellipsisToken,
+            ellipsis: ellipsis?.generallyNormalized(),
             defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
             trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
     }
 
     internal func forAssociatedValueName() -> FunctionParameterSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax puts the trailing comma here.)
-        let ellipsisToken: TokenSyntax?
-        if ellipsis?.tokenKind == .comma {
-            ellipsisToken = ellipsis
-        } else {
-            ellipsisToken = nil
-        }
-
         return SyntaxFactory.makeFunctionParameter(
             attributes: nil,
             firstName: SyntaxFactory.makeToken(.wildcardKeyword),
             secondName: nil,
             colon: nil,
             type: nil,
-            ellipsis: ellipsisToken,
+            ellipsis: ellipsis,
             defaultArgument: nil,
             trailingComma: trailingComma)
     }

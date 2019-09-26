@@ -18,19 +18,10 @@ extension MemberTypeIdentifierSyntax {
 
     // MARK: - Normalization
 
-    // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-    private var safeGenericArgumentClause: GenericArgumentClauseSyntax? {
-        var genericArgumentClause = self.genericArgumentClause
-        if genericArgumentClause?.source() == "" {
-            genericArgumentClause = nil
-        }
-        return genericArgumentClause
-    }
-
     internal func normalized() -> TypeSyntax {
 
         let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-        let newGenericArgumentClause = safeGenericArgumentClause?.normalized()
+        let newGenericArgumentClause = genericArgumentClause?.normalized()
 
         if let simple = baseType as? SimpleTypeIdentifierSyntax,
             simple.name.tokenKind == .capitalSelfKeyword {
@@ -59,7 +50,7 @@ extension MemberTypeIdentifierSyntax {
         guard let member = baseType as? MemberTypeIdentifierSyntax else {
             return SyntaxFactory.makeSimpleTypeIdentifier(
                 name: name,
-                genericArgumentClause: safeGenericArgumentClause)
+                genericArgumentClause: genericArgumentClause)
         }
 
         return withBaseType(member.strippingRootType())
