@@ -257,6 +257,26 @@ class APITests : TestCase {
         XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     }
 
+    func testExtendedSyntax() throws {
+        let source = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}"
+        let syntax = try SyntaxParser.parse(source)
+        var foundStringLiteral = false
+        try FunctionalSyntaxScanner(
+            checkExtendedSyntax: { syntax, context in
+                if let literal = syntax as? StringLiteralSyntax {
+                    let expectedText = "\u{22}new\u{22}"
+                    if literal.text == expectedText {
+                        foundStringLiteral = true
+                        let range = syntax.lowerBound(in: context)
+                            ..< syntax.upperBound(in: context)
+                        XCTAssertEqual(String(source[range]), expectedText)
+                    }
+                }
+                return true
+        }).scan(syntax)
+        XCTAssert(foundStringLiteral)
+    }
+
     func testExtension() {
         XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
         XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
