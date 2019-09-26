@@ -448,6 +448,33 @@ class APITests : TestCase {
         }
     }
 
+    func testTokenSyntax() {
+        let missing = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
+        let declaration = SyntaxFactory.makeInitializerDecl(
+            attributes: nil,
+            modifiers: SyntaxFactory.makeModifierList([
+                SyntaxFactory.makeDeclModifier(
+                    name: SyntaxFactory.makePublicKeyword(),
+                    detailLeftParen: nil,
+                    detail: nil,
+                    detailRightParen: nil)
+            ]),
+            initKeyword: SyntaxFactory.makeInitKeyword(),
+            optionalMark: missing,
+            genericParameterClause: nil,
+            parameters: SyntaxFactory.makeParameterClause(
+                leftParen: SyntaxFactory.makeLeftParenToken(),
+                parameterList: SyntaxFactory.makeFunctionParameterList([]),
+                rightParen: SyntaxFactory.makeRightParenToken()),
+            throwsOrRethrowsKeyword: nil,
+            genericWhereClause: nil,
+            body: SyntaxFactory.makeCodeBlock(
+                leftBrace: SyntaxFactory.makeLeftBraceToken(),
+                statements: SyntaxFactory.makeCodeBlockItemList([]),
+                rightBrace: SyntaxFactory.makeRightBraceToken()))
+        XCTAssertEqual(declaration.api().first!.declaration!.source(), "init()")
+    }
+
     func testTree() throws {
         let source = "/\u{2F} ...\nlet x = 0 \n"
         let syntax = try SyntaxParser.parse(source)
