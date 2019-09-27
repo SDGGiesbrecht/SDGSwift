@@ -18,6 +18,7 @@ extension APITests {
         ("testLocations", testLocations),
         ("testPackageDocumentation", testPackageDocumentation),
         ("testParsing", testParsing),
+        ("testTokenSyntax", testTokenSyntax),
         ("testTree", testTree),
         ("testTriviaPiece", testTriviaPiece),
     ]

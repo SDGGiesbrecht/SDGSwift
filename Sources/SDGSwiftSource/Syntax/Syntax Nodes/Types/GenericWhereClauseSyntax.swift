@@ -19,12 +19,6 @@ import SwiftSyntax
 extension GenericWhereClauseSyntax : Mergeable {
 
     internal func normalized() -> GenericWhereClauseSyntax? {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        if source().isEmpty {
-            return nil
-        }
-
         return SyntaxFactory.makeGenericWhereClause(
             whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
             requirementList: requirementList.normalized())

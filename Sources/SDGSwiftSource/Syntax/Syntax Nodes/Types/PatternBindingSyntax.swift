@@ -28,13 +28,6 @@ extension PatternBindingSyntax {
     }
 
     internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax) -> PatternBindingSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        var typeAnnotation = self.typeAnnotation
-        if typeAnnotation?.source() == "" {
-            typeAnnotation = nil
-        }
-
         return SyntaxFactory.makePatternBinding(
             pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
             typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),

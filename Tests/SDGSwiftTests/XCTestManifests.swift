@@ -26,6 +26,7 @@ extension RegressionTests {
     static let __allTests__RegressionTests = [
         ("testDependencyWarnings", testDependencyWarnings),
         ("testDynamicLinking", testDynamicLinking),
+        ("testIgnoredFilesCheckIsStable", testIgnoredFilesCheckIsStable),
     ]
 }
 

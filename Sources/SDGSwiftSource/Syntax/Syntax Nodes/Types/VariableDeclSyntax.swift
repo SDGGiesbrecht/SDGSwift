@@ -26,12 +26,7 @@ extension VariableDeclSyntax : AccessControlled, Accessor, APIDeclaration, APISy
     }
 
     var accessors: Syntax? {
-        let result = bindings.first?.accessor
-        if let unknown = result as? UnknownSyntax,
-            unknown.source().isEmpty {
-            return nil
-        }
-        return result
+        return bindings.first?.accessor
     }
 
     // MARK: - APIDeclaration

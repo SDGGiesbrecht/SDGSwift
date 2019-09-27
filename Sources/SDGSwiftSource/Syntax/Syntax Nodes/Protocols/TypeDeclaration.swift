@@ -29,12 +29,6 @@ extension TypeDeclaration {
     internal func identifierList() -> Set<String> {
         var result: Set<String> = [identifier.text]
         if let genericParameters = genericParameterClause {
-
-            // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-            if ¬genericParameters.source().contains("<") {
-                return result
-            }
-
             result ∪= genericParameters.identifierList()
         }
         return result
