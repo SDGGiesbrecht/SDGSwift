@@ -68,7 +68,7 @@ extension Optional where Wrapped == OpaquePointer {
         }
 
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADING, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
+        case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
             column += 1
         default:
             break
