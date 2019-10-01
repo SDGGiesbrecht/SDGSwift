@@ -103,13 +103,6 @@ public class HeadingSyntax : MarkdownSyntax {
     /// The indent after the number sign delimiter.
     public let indent: ExtendedTokenSyntax?
 
-    /// The newline before the underline delimiter.
-    public var newline: ExtendedTokenSyntax? {
-        let newline = children.first(
-            where: { ($0 as? ExtendedTokenSyntax)?.kind == .newlines }) as? ExtendedTokenSyntax
-        return newline === trailingNewlines ? nil : newline
-    }
-
     /// The underline delimiter.
     public let underline: ExtendedTokenSyntax?
 
