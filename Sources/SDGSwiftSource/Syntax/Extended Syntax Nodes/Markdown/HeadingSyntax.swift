@@ -32,20 +32,20 @@ public class HeadingSyntax : MarkdownSyntax {
         let level = Int(cmark_node_get_heading_level(node))
         self.level = level
 
-        let contentStart = node.lowerBound(in: documentation)
+        let nodeStart = node.lowerBound(in: documentation)
 
         var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
+        if let newline = documentation.scalars[documentation.scalars.startIndex ..< nodeStart].lastMatch(for: CharacterSet.newlinePattern) {
             lineStart = newline.range.upperBound
         }
 
-        if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
+        if let delimiter = documentation.scalars[lineStart ..< nodeStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
-            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< contentStart]), kind: .whitespace)
+            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< nodeStart]), kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
 
@@ -57,7 +57,7 @@ public class HeadingSyntax : MarkdownSyntax {
             indent = nil
 
             let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
-            if let newline = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
+            if let newline = documentation.scalars[nodeStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
                 let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
                 followingChildren.append(newlineToken)
                 self.newline = newlineToken
