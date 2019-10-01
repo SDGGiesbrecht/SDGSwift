@@ -36,13 +36,23 @@ public class HeadingSyntax : MarkdownSyntax {
         let nodeEnd = node.upperBound(in: documentation)
 
         let delimiterPattern = String(repeating: "#", count: level)
-        if let delimiter = documentation.scalars[nodeStart ..< nodeEnd].lastMatch(for: delimiterPattern.scalars) {
+        if documentation.scalars[nodeStart ..< nodeEnd].hasPrefix(delimiterPattern.scalars) {
+            let delimiterEnd = documentation.scalars.index(
+                nodeStart,
+                offsetBy: delimiterPattern.scalars.count)
 
-            let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
+            let delimiterSyntax = ExtendedTokenSyntax(text: delimiterPattern, kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
-            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< nodeStart]), kind: .whitespace)
+            var indentEnd = delimiterEnd
+            while indentEnd ≠ nodeEnd,
+                documentation.scalars[indentEnd].properties.isWhitespace {
+                    indentEnd = documentation.scalars.index(after: indentEnd)
+            }
+            let indent = ExtendedTokenSyntax(
+                text: String(documentation.scalars[delimiterEnd ..< indentEnd]),
+                kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
 
