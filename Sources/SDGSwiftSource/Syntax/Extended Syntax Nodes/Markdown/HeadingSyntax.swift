@@ -56,7 +56,6 @@ public class HeadingSyntax : MarkdownSyntax {
             self.indent = indent
             precedingChildren.append(indent)
 
-            newline = nil
             underline = nil
             trailingNewlines = nil
         } else {
@@ -64,9 +63,6 @@ public class HeadingSyntax : MarkdownSyntax {
             indent = nil
 
             if let newline = documentation.scalars[nodeStart ..< nodeEnd].firstMatch(for: CharacterSet.newlinePattern) {
-                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
-                followingChildren.append(newlineToken)
-                self.newline = newlineToken
 
                 var delimiterEnd = documentation.scalars.endIndex
                 if let nextNewline = documentation.scalars[newline.range.upperBound ..< documentation.scalars.endIndex].firstMatch(for: CharacterSet.newlinePattern) {
@@ -90,8 +86,7 @@ public class HeadingSyntax : MarkdownSyntax {
                 }
 
             } else {
-                self.newline = nil // @exempt(from: tests) Unreachable with valid syntax.
-                underline = nil
+                underline = nil // @exempt(from: tests) Unreachable with valid syntax.
                 trailingNewlines = nil
             }
         }
@@ -109,7 +104,11 @@ public class HeadingSyntax : MarkdownSyntax {
     public let indent: ExtendedTokenSyntax?
 
     /// The newline before the underline delimiter.
-    public let newline: ExtendedTokenSyntax?
+    public var newline: ExtendedTokenSyntax? {
+        let newline = children.first(
+            where: { ($0 as? ExtendedTokenSyntax)?.kind == .newlines }) as? ExtendedTokenSyntax
+        return newline === trailingNewlines ? nil : newline
+    }
 
     /// The underline delimiter.
     public let underline: ExtendedTokenSyntax?
