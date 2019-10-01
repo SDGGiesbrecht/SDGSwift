@@ -33,13 +33,10 @@ public class HeadingSyntax : MarkdownSyntax {
         self.level = level
 
         let nodeStart = node.lowerBound(in: documentation)
+        let nodeEnd = node.upperBound(in: documentation)
 
-        var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars[documentation.scalars.startIndex ..< nodeStart].lastMatch(for: CharacterSet.newlinePattern) {
-            lineStart = newline.range.upperBound
-        }
-
-        if let delimiter = documentation.scalars[lineStart ..< nodeStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
+        let delimiterPattern = String(repeating: "#", count: level)
+        if let delimiter = documentation.scalars[nodeStart ..< nodeEnd].lastMatch(for: delimiterPattern.scalars) {
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
