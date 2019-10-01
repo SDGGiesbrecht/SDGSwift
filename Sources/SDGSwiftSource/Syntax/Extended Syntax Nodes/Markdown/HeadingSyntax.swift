@@ -29,7 +29,7 @@ public class HeadingSyntax : MarkdownSyntax {
         var precedingChildren: [ExtendedSyntax] = []
         var followingChildren: [ExtendedSyntax] = []
 
-        let level = Int(cmark_node_get_header_level(node))
+        let level = Int(cmark_node_get_heading_level(node))
         self.level = level
 
         let contentStart = node.lowerBound(in: documentation)

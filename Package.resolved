@@ -23,9 +23,9 @@
         "package": "CommonMark",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
         "state": {
-          "branch": null,
-          "revision": "861f0db6f553305ad7c40c5df5ab7f9af9e88dd4",
-          "version": "0.0.50000"
+          "branch": "swift‐5.1",
+          "revision": "e672f7226962eb17803c7cce153d9dc0f935a88e",
+          "version": null
         }
       },
       {
