@@ -87,8 +87,8 @@ let package = Package(
             url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
             from: Version(2, 0, 0)),
         .package(
-            url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-            .exact(Version(0, 50100, 0))),
+            url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+            .exact(Version(0, 5, 0))),
         .package(
             url: "https://github.com/apple/swift\u{2D}syntax",
             .exact(Version(0, 50100, 0))),
