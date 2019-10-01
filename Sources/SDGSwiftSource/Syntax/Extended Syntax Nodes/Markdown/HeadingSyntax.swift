@@ -63,8 +63,7 @@ public class HeadingSyntax : MarkdownSyntax {
             numberSignDelimiter = nil
             indent = nil
 
-            let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
-            if let newline = documentation.scalars[nodeStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
+            if let newline = documentation.scalars[nodeStart ..< nodeEnd].firstMatch(for: CharacterSet.newlinePattern) {
                 let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
                 followingChildren.append(newlineToken)
                 self.newline = newlineToken
@@ -77,7 +76,7 @@ public class HeadingSyntax : MarkdownSyntax {
                 followingChildren.append(underline)
                 self.underline = underline
 
-                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< contentEnd])
+                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< nodeEnd])
                 if ¬trailingNewlinesString.isEmpty {
                     let trailingNewlines = ExtendedTokenSyntax(text: trailingNewlinesString, kind: .newlines)
                     self.trailingNewlines = trailingNewlines
