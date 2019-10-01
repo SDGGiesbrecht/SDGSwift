@@ -76,7 +76,11 @@ public class HeadingSyntax : MarkdownSyntax {
                 followingChildren.append(underline)
                 self.underline = underline
 
-                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< nodeEnd])
+                var newlineEnd = nodeEnd
+                if newlineEnd > delimiterEnd {
+                    newlineEnd = documentation.scalars.index(before: newlineEnd)
+                }
+                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< newlineEnd])
                 if ¬trailingNewlinesString.isEmpty {
                     let trailingNewlines = ExtendedTokenSyntax(text: trailingNewlinesString, kind: .newlines)
                     self.trailingNewlines = trailingNewlines
