@@ -27,19 +27,28 @@ public class QuotationSyntax : MarkdownSyntax {
         var precedingChildren: [ExtendedSyntax] = []
 
         let nodeStart = node.lowerBound(in: documentation)
+        let nodeEnd = node.upperBound(in: documentation)
 
-        var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars[documentation.scalars.startIndex ..< nodeStart].lastMatch(for: CharacterSet.newlinePattern) {
-            lineStart = newline.range.upperBound
-        }
+        let delimiterPattern = ">"
+        if documentation.scalars[nodeStart ..< nodeEnd].hasPrefix(delimiterPattern.scalars) {
+            let delimiterEnd = documentation.scalars.index(
+                nodeStart,
+                offsetBy: delimiterPattern.scalars.count)
 
-        if let delimiter = documentation.scalars[lineStart ..< nodeStart].lastMatch(for: ">".scalars) {
-
-            let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .quotationDelimiter)
+            let delimiterSyntax = ExtendedTokenSyntax(
+                text: delimiterPattern,
+                kind: .quotationDelimiter)
             self.delimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
-            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< nodeStart]), kind: .whitespace)
+            var indentStart = delimiterEnd
+            while indentStart ≠ nodeEnd,
+                documentation.scalars[indentStart].properties.isWhitespace {
+                    indentStart = documentation.scalars.index(after: indentStart)
+            }
+            let indent = ExtendedTokenSyntax(
+                text: String(documentation.scalars[delimiterEnd ..< indentStart]),
+                kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
         } else {
