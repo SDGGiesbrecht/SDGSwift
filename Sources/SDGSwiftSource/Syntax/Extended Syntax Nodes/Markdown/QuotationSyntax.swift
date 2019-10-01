@@ -26,20 +26,20 @@ public class QuotationSyntax : MarkdownSyntax {
     internal init(node: cmark_node, in documentation: String) {
         var precedingChildren: [ExtendedSyntax] = []
 
-        let contentStart = node.lowerBound(in: documentation)
+        let nodeStart = node.lowerBound(in: documentation)
 
         var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
+        if let newline = documentation.scalars[documentation.scalars.startIndex ..< nodeStart].lastMatch(for: CharacterSet.newlinePattern) {
             lineStart = newline.range.upperBound
         }
 
-        if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: ">".scalars) {
+        if let delimiter = documentation.scalars[lineStart ..< nodeStart].lastMatch(for: ">".scalars) {
 
             let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .quotationDelimiter)
             self.delimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
-            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< contentStart]), kind: .whitespace)
+            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< nodeStart]), kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
         } else {
