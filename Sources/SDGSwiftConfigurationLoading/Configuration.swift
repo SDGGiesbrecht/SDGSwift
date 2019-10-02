@@ -25,7 +25,7 @@ import SDGSwiftLocalizations
 
 extension Configuration {
 
-    private static let minimumMacOSVersion: Version = Version(10, 13)
+    private static let minimumMacOSVersion: Version = Version(10, 10)
 
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 

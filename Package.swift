@@ -43,7 +43,7 @@ let package = Package(
     name: "SDGSwift",
     platforms: [
         // These must also be updated in Sources/SDGSwiftConfigurationLoading/Configuration.swift.
-        .macOS(.v10_13)
+        .macOS(.v10_10)
     ],
     products: [
         // @documentation(SDGSwift)
@@ -85,7 +85,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-            from: Version(2, 0, 0)),
+            from: Version(2, 6, 0)),
         .package(
             url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
             .exact(Version(0, 5, 0))),
@@ -95,7 +95,7 @@ let package = Package(
         .package(
             url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
             .exact(Version(0, 0, 50100))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(3, 0, 0))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(3, 1, 0))
     ],
     targets: [
 
