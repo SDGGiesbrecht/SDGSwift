@@ -29,38 +29,40 @@ public class HeadingSyntax : MarkdownSyntax {
         var precedingChildren: [ExtendedSyntax] = []
         var followingChildren: [ExtendedSyntax] = []
 
-        let level = Int(cmark_node_get_header_level(node))
+        let level = Int(cmark_node_get_heading_level(node))
         self.level = level
 
-        let contentStart = node.lowerBound(in: documentation)
+        let nodeStart = node.lowerBound(in: documentation)
+        let nodeEnd = node.upperBound(in: documentation)
 
-        var lineStart = documentation.scalars.startIndex
-        if let newline = documentation.scalars[documentation.scalars.startIndex ..< contentStart].lastMatch(for: CharacterSet.newlinePattern) {
-            lineStart = newline.range.upperBound
-        }
+        let delimiterPattern = String(repeating: "#", count: level)
+        if documentation.scalars[nodeStart ..< nodeEnd].hasPrefix(delimiterPattern.scalars) {
+            let delimiterEnd = documentation.scalars.index(
+                nodeStart,
+                offsetBy: delimiterPattern.scalars.count)
 
-        if let delimiter = documentation.scalars[lineStart ..< contentStart].lastMatch(for: String(repeating: "#", count: level).scalars) {
-
-            let delimiterSyntax = ExtendedTokenSyntax(text: String(delimiter.contents), kind: .headingDelimiter)
+            let delimiterSyntax = ExtendedTokenSyntax(text: delimiterPattern, kind: .headingDelimiter)
             numberSignDelimiter = delimiterSyntax
             precedingChildren.append(delimiterSyntax)
 
-            let indent = ExtendedTokenSyntax(text: String(documentation.scalars[delimiter.range.upperBound ..< contentStart]), kind: .whitespace)
+            var indentEnd = delimiterEnd
+            while indentEnd ≠ nodeEnd,
+                documentation.scalars[indentEnd].properties.isWhitespace {
+                    indentEnd = documentation.scalars.index(after: indentEnd)
+            }
+            let indent = ExtendedTokenSyntax(
+                text: String(documentation.scalars[delimiterEnd ..< indentEnd]),
+                kind: .whitespace)
             self.indent = indent
             precedingChildren.append(indent)
 
-            newline = nil
             underline = nil
             trailingNewlines = nil
         } else {
             numberSignDelimiter = nil
             indent = nil
 
-            let contentEnd = documentation.scalars.index(before: node.upperBound(in: documentation))
-            if let newline = documentation.scalars[contentStart ..< contentEnd].firstMatch(for: CharacterSet.newlinePattern) {
-                let newlineToken = ExtendedTokenSyntax(text: String(newline.contents), kind: .newlines)
-                followingChildren.append(newlineToken)
-                self.newline = newlineToken
+            if let newline = documentation.scalars[nodeStart ..< nodeEnd].firstMatch(for: CharacterSet.newlinePattern) {
 
                 var delimiterEnd = documentation.scalars.endIndex
                 if let nextNewline = documentation.scalars[newline.range.upperBound ..< documentation.scalars.endIndex].firstMatch(for: CharacterSet.newlinePattern) {
@@ -70,7 +72,11 @@ public class HeadingSyntax : MarkdownSyntax {
                 followingChildren.append(underline)
                 self.underline = underline
 
-                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< contentEnd])
+                var newlineEnd = nodeEnd
+                if newlineEnd > delimiterEnd {
+                    newlineEnd = documentation.scalars.index(before: newlineEnd)
+                }
+                let trailingNewlinesString = String(documentation.scalars[delimiterEnd ..< newlineEnd])
                 if ¬trailingNewlinesString.isEmpty {
                     let trailingNewlines = ExtendedTokenSyntax(text: trailingNewlinesString, kind: .newlines)
                     self.trailingNewlines = trailingNewlines
@@ -80,8 +86,7 @@ public class HeadingSyntax : MarkdownSyntax {
                 }
 
             } else {
-                self.newline = nil // @exempt(from: tests) Unreachable with valid syntax.
-                underline = nil
+                underline = nil // @exempt(from: tests) Unreachable with valid syntax.
                 trailingNewlines = nil
             }
         }
@@ -97,9 +102,6 @@ public class HeadingSyntax : MarkdownSyntax {
 
     /// The indent after the number sign delimiter.
     public let indent: ExtendedTokenSyntax?
-
-    /// The newline before the underline delimiter.
-    public let newline: ExtendedTokenSyntax?
 
     /// The underline delimiter.
     public let underline: ExtendedTokenSyntax?

@@ -68,7 +68,7 @@ extension Optional where Wrapped == OpaquePointer {
         }
 
         switch cmark_node_get_type(self) {
-        case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADER, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
+        case CMARK_NODE_DOCUMENT, CMARK_NODE_BLOCK_QUOTE, CMARK_NODE_LIST, CMARK_NODE_ITEM, CMARK_NODE_CODE_BLOCK, CMARK_NODE_HEADING, CMARK_NODE_PARAGRAPH, CMARK_NODE_TEXT:
             column += 1
         default:
             break
@@ -110,9 +110,9 @@ extension Optional where Wrapped == OpaquePointer {
             return [CodeBlockSyntax(node: self, in: documentation)]
         case CMARK_NODE_PARAGRAPH:
             return [ParagraphSyntax(node: self, in: documentation)]
-        case CMARK_NODE_HEADER:
+        case CMARK_NODE_HEADING:
             return [HeadingSyntax(node: self, in: documentation)]
-        case CMARK_NODE_HRULE:
+        case CMARK_NODE_THEMATIC_BREAK:
             return [ExtendedTokenSyntax(text: String(documentation.scalars[lowerBound(in: documentation) ..< upperBound(in: documentation)]), kind: .asterism)]
         case CMARK_NODE_SOFTBREAK:
             return [ExtendedTokenSyntax(text: "\n", kind: .newlines)]
