@@ -95,7 +95,7 @@ let package = Package(
         .package(
             url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
             .exact(Version(0, 0, 50100))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(3, 0, 0))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(3, 1, 0))
     ],
     targets: [
 
