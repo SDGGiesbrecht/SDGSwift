@@ -47,11 +47,9 @@ class RegressionTests : TestCase {
         let source = [
         "/// ...",
         "///",
-        "/// - Parameter parameter: ...",
         "/// - Returns: ...",
         "/// ...",
-        "open class func function(label parameter: Type) -> Return {",
-        "}"
+        "open class func function(label parameter: Type) -> Return {}"
         ].joined(separator: "\n")
         let parsed = try SyntaxParser.parse(source)
         _ = parsed.api()
