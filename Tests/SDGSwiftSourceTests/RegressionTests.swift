@@ -46,7 +46,6 @@ class RegressionTests : TestCase {
 
         let source = [
         "/// ...",
-        "/// ...",
         "///",
         "/// - Parameter parameter: ...",
         "/// - Returns: ...",
