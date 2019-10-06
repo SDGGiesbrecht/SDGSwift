@@ -22,6 +22,20 @@ import SDGXCTestUtilities
 
 class RegressionTests : TestCase {
 
+    func testContinuedCallout() throws {
+        // Untracked.
+
+        let source = [
+        "/// ...",
+        "///",
+        "/// - Note: ...",
+        "/// ...",
+        "public func function() {}"
+        ].joined(separator: "\n")
+        let parsed = try SyntaxParser.parse(source)
+        _ = parsed.api()
+    }
+
     func testMarkdownQuotation() throws {
         // Untracked.
 
@@ -39,19 +53,5 @@ class RegressionTests : TestCase {
         XCTAssertEqual(try SyntaxParser.parse(source).source(), source)
         let documentation = parsed.api().first?.documentation
         XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
-    }
-
-    func testUnknown() throws {
-        // Untracked.
-
-        let source = [
-        "/// ...",
-        "///",
-        "/// - Note: ...",
-        "/// ...",
-        "public func function() {}"
-        ].joined(separator: "\n")
-        let parsed = try SyntaxParser.parse(source)
-        _ = parsed.api()
     }
 }
