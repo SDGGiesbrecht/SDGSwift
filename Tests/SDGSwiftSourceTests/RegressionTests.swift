@@ -47,7 +47,7 @@ class RegressionTests : TestCase {
         let source = [
         "/// ...",
         "///",
-        "/// - Returns: ...",
+        "/// - Note: ...",
         "/// ...",
         "public func function() {}"
         ].joined(separator: "\n")
