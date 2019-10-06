@@ -40,4 +40,20 @@ class RegressionTests : TestCase {
         let documentation = parsed.api().first?.documentation
         XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
     }
+
+    func testUnknown() throws {
+
+        let source = [
+        "/// Return a dictionary of header fields that can be used to add the",
+        "/// specified cookies to the request.",
+        "///",
+        "/// - Parameter cookies: The cookies to turn into request headers.",
+        "/// - Returns: A dictionary where the keys are header field names, and the values",
+        "/// are the corresponding header field values.",
+        "open class func requestHeaderFields(with cookies: [HTTPCookie]) -> [String : String] {",
+        "}"
+        ].joined(separator: "\n")
+        let parsed = try SyntaxParser.parse(source)
+        //_ = parsed.api()
+    }
 }
