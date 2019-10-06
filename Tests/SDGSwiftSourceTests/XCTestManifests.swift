@@ -42,6 +42,7 @@ extension RegressionTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__RegressionTests = [
+        ("testContinuedCallout", testContinuedCallout),
         ("testMarkdownQuotation", testMarkdownQuotation),
     ]
 }
