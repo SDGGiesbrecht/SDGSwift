@@ -54,6 +54,6 @@ class RegressionTests : TestCase {
         "}"
         ].joined(separator: "\n")
         let parsed = try SyntaxParser.parse(source)
-        //_ = parsed.api()
+        _ = parsed.api()
     }
 }
