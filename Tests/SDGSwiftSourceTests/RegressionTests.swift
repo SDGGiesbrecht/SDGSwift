@@ -22,6 +22,20 @@ import SDGXCTestUtilities
 
 class RegressionTests : TestCase {
 
+    func testContinuedCallout() throws {
+        // Untracked.
+
+        let source = [
+        "/// ...",
+        "///",
+        "/// \u{2D} Note: ...",
+        "/// ...",
+        "public func function() {}"
+        ].joined(separator: "\n")
+        let parsed = try SyntaxParser.parse(source)
+        _ = parsed.api()
+    }
+
     func testMarkdownQuotation() throws {
         // Untracked.
 

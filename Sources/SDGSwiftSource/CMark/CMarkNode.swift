@@ -82,7 +82,10 @@ extension Optional where Wrapped == OpaquePointer {
 
         let lineIndex = lines.index(lines.startIndex, offsetBy: line − 1)
         let lineStartByteIndex = lineIndex.samePosition(in: scalars).samePosition(in: utf8)!
-        let index = utf8.index(lineStartByteIndex, offsetBy: column − 1)
+        let index = utf8.index(
+            lineStartByteIndex,
+            offsetBy: column − 1,
+            limitedBy: utf8.endIndex) ?? utf8.endIndex
         return index.samePosition(in: scalars)
     }
 
