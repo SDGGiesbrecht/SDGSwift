@@ -82,11 +82,16 @@ extension Optional where Wrapped == OpaquePointer {
 
         let lineIndex = lines.index(lines.startIndex, offsetBy: line − 1)
         let lineStartByteIndex = lineIndex.samePosition(in: scalars).samePosition(in: utf8)!
-        let index = utf8.index(
+        var index = utf8.index(
             lineStartByteIndex,
             offsetBy: column − 1,
             limitedBy: utf8.endIndex) ?? utf8.endIndex
-        return index.samePosition(in: scalars)
+        var result: String.ScalarView.Index? = index.samePosition(in: scalars)
+        while result == nil { // @exempt(from: tests) Only occurs when CommonMark exhibits bugs.
+            index = utf8.index(before: index)
+            result = index.samePosition(in: scalars)
+        }
+        return result!
     }
 
     internal var literal: String? {
