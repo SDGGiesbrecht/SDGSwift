@@ -1,0 +1,7 @@
+/̲/̲/̲ Description.
+̲/̲/̲/̲
+̲/̲/̲/̲ Discussion with Unicode in code voice: `̲©`̲.
+̲p̲u̲b̲l̲i̲c̲ v̲a̲r̲ variable:̲ String {̲
+̲    r̲e̲t̲u̲r̲n̲ "̲"̲
+̲}̲
+̲
