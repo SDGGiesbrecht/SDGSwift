@@ -1,0 +1,1 @@
+variable • var variable: String { get }

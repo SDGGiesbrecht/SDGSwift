@@ -1,0 +1,6 @@
+/// ̲D̲e̲s̲c̲r̲i̲p̲t̲i̲o̲n̲.̲
+///
+/// ̲D̲i̲s̲c̲u̲s̲s̲i̲o̲n̲ ̲w̲i̲t̲h̲ ̲U̲n̲i̲c̲o̲d̲e̲ ̲i̲n̲ ̲c̲o̲d̲e̲ ̲v̲o̲i̲c̲e̲:̲ ̲`©`.̲
+public ̲var ̲v̲a̲r̲i̲a̲b̲l̲e̲: ̲String ̲{
+ ̲ ̲ ̲ ̲return ̲""
+}
