@@ -11,6 +11,8 @@ public protocol AdditiveArithmetic : Equatable {
 }
 public protocol BidirectionalCollection : Collection, Sequence {
     var last: Element? { get }
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) func difference<C>(from other: C) -> CollectionDifference<Element> where C : BidirectionalCollection, Element : Equatable, C.Element == Element
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) func difference<C>(from other: C, by areEquivalent: (C.Element, Element) -> Bool) -> CollectionDifference<Element> where C : BidirectionalCollection, C.Element == Element
     func formIndex(before i: inout Index)
     func index(before i: Index) -> Index
     func last(where predicate: (Element) throws -> Bool) rethrows -> Element?
@@ -22,7 +24,6 @@ public protocol BinaryFloatingPoint : AdditiveArithmetic, Comparable, Equatable,
     static var exponentBitCount: Int { get }
     static var significandBitCount: Int { get }
     static func random<T>(in range: ClosedRange<Self>, using generator: inout T) -> Self where RawSignificand : FixedWidthInteger, T : RandomNumberGenerator
-    static func random<T>(in range: Range<Self>, using generator: inout T) -> Self where RawSignificand : FixedWidthInteger, T : RandomNumberGenerator
     init(sign: FloatingPointSign, exponentBitPattern: RawExponent, significandBitPattern: RawSignificand)
     var binade: Self { get }
     var exponentBitPattern: RawExponent { get }
@@ -34,7 +35,6 @@ public protocol BinaryInteger : AdditiveArithmetic, Comparable, CustomStringConv
     static var isSigned: Bool { get }
     init()
     init<T>(_ source: T) where T : BinaryFloatingPoint
-    init<T>(_ source: T) where T : BinaryInteger
     init<T>(clamping source: T) where T : BinaryInteger
     init<T>(truncatingIfNeeded source: T) where T : BinaryInteger
     var bitWidth: Int { get }
@@ -53,8 +53,7 @@ public protocol BinaryInteger : AdditiveArithmetic, Comparable, CustomStringConv
     func ^(lhs: Self, rhs: Self) -> Self
     func ^=(lhs: inout Self, rhs: Self)
     func isMultiple(of other: Self) -> Bool
-    func quotientAndRemainder(dividingBy rhs: Self) -> (quotient : Self, remainder : Self)
-    func quotientAndRemainder(dividingBy rhs: Self) -> (quotient : Self, remainder : Self)
+    func quotientAndRemainder(dividingBy rhs: Self) -> (quotient: Self, remainder: Self)
     func signum() -> Self
     func |(lhs: Self, rhs: Self) -> Self
     func |=(lhs: inout Self, rhs: Self)
@@ -79,11 +78,8 @@ public protocol Collection : Sequence {
     var count: Int { get }
     var endIndex: Index { get }
     var first: Element? { get }
-    var indices: Indices { get }
-    var isEmpty: Bool { get }
     var isEmpty: Bool { get }
     var startIndex: Index { get }
-    subscript(bounds: Range<Index>) -> SubSequence { get }
     subscript(position: Index) -> Element { get }
     subscript(x: UnboundedRange) -> SubSequence { get }
     subscript<R>(r: R) -> SubSequence where R : RangeExpression, Index == R.Bound { get }
@@ -109,10 +105,7 @@ public protocol Comparable : Equatable {
     func ..<(minimum: Self, maximum: Self) -> Range<Self>
     func <(lhs: Self, rhs: Self) -> Bool
     func <=(lhs: Self, rhs: Self) -> Bool
-    func <=(lhs: Self, rhs: Self) -> Bool
     func >(lhs: Self, rhs: Self) -> Bool
-    func >(lhs: Self, rhs: Self) -> Bool
-    func >=(lhs: Self, rhs: Self) -> Bool
     func >=(lhs: Self, rhs: Self) -> Bool
 }
 public protocol CustomDebugStringConvertible {
@@ -185,7 +178,6 @@ public protocol ExpressibleByNilLiteral {
 }
 public protocol ExpressibleByStringInterpolation : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral {
     associatedtype StringInterpolation where StringInterpolation.StringLiteralType == StringLiteralType
-    init(stringInterpolation: StringInterpolation)
 }
 public protocol ExpressibleByStringLiteral : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByUnicodeScalarLiteral {
     associatedtype StringLiteralType
@@ -200,9 +192,7 @@ public protocol FixedWidthInteger : AdditiveArithmetic, BinaryInteger, Comparabl
     static var max: Self { get }
     static var min: Self { get }
     static func random(in range: ClosedRange<Self>) -> Self
-    static func random(in range: Range<Self>) -> Self
     static func random<T>(in range: ClosedRange<Self>, using generator: inout T) -> Self where T : RandomNumberGenerator
-    static func random<T>(in range: Range<Self>, using generator: inout T) -> Self where T : RandomNumberGenerator
     init?<S>(_ text: S, radix: Int = x) where S : StringProtocol
     init(bigEndian value: Self)
     init(littleEndian value: Self)
@@ -221,13 +211,13 @@ public protocol FixedWidthInteger : AdditiveArithmetic, BinaryInteger, Comparabl
     func &<<=(lhs: inout Self, rhs: Self)
     func &>>(lhs: Self, rhs: Self) -> Self
     func &>>=(lhs: inout Self, rhs: Self)
-    func addingReportingOverflow(_ rhs: Self) -> (partialValue : Self, overflow : Bool)
-    func dividedReportingOverflow(by rhs: Self) -> (partialValue : Self, overflow : Bool)
-    func dividingFullWidth(_ dividend: (high : Self, low : Magnitude)) -> (quotient : Self, remainder : Self)
-    func multipliedFullWidth(by other: Self) -> (high : Self, low : Magnitude)
-    func multipliedReportingOverflow(by rhs: Self) -> (partialValue : Self, overflow : Bool)
-    func remainderReportingOverflow(dividingBy rhs: Self) -> (partialValue : Self, overflow : Bool)
-    func subtractingReportingOverflow(_ rhs: Self) -> (partialValue : Self, overflow : Bool)
+    func addingReportingOverflow(_ rhs: Self) -> (partialValue: Self, overflow: Bool)
+    func dividedReportingOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool)
+    func dividingFullWidth(_ dividend: (high: Self, low: Magnitude)) -> (quotient: Self, remainder: Self)
+    func multipliedFullWidth(by other: Self) -> (high: Self, low: Magnitude)
+    func multipliedReportingOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool)
+    func remainderReportingOverflow(dividingBy rhs: Self) -> (partialValue: Self, overflow: Bool)
+    func subtractingReportingOverflow(_ rhs: Self) -> (partialValue: Self, overflow: Bool)
 }
 public protocol FloatingPoint : AdditiveArithmetic, Comparable, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
     associatedtype Exponent
@@ -285,6 +275,10 @@ public protocol Hashable : Equatable {
     var hashValue: Int { get }
     func hash(into hasher: inout Hasher)
 }
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) public protocol Identifiable {
+    associatedtype ID
+    var id: ID { get }
+}
 public protocol IteratorProtocol {
     associatedtype Element
     mutating func next() -> Element?
@@ -329,7 +323,6 @@ public protocol MutableCollection : Collection, Sequence {
     mutating func partition(by belongsInSecondPartition: (Element) throws -> Bool) rethrows -> Index
     mutating func shuffle<T>(using generator: inout T) where Self : RandomAccessCollection, T : RandomNumberGenerator
     mutating func swapAt(_ i: Index, _ j: Index)
-    mutating func swapAt(_ i: Index, _ j: Index)
     mutating func withContiguousMutableStorageIfAvailable<R>(_ body: (inout UnsafeMutableBufferPointer<Element>) throws -> R) rethrows -> R?
 }
 public protocol Numeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral {
@@ -345,7 +338,6 @@ public protocol RandomAccessCollection : BidirectionalCollection, Collection, Se
 }
 public protocol RandomNumberGenerator {
     mutating func next() -> UInt64
-    mutating func next<T>() -> T where T : FixedWidthInteger & UnsignedInteger
     mutating func next<T>(upperBound: T) -> T where T : FixedWidthInteger & UnsignedInteger
 }
 public protocol RangeExpression {
@@ -357,27 +349,19 @@ public protocol RangeExpression {
 public protocol RangeReplaceableCollection : Collection, Sequence {
     init()
     init<S>(_ elements: S) where S : Sequence, Element == S.Element
-    init<S>(_ elements: S) where S : Sequence, Element == S.Element
-    init(repeating repeatedValue: Element, count: Int)
     init(repeating repeatedValue: Element, count: Int)
     func +<Other>(lhs: Other, rhs: Self) -> Self where Other : Sequence, Element == Other.Element
-    func +<Other>(lhs: Self, rhs: Other) -> Self where Other : RangeReplaceableCollection, Element == Other.Element
-    func +<Other>(lhs: Self, rhs: Other) -> Self where Other : Sequence, Element == Other.Element
     func +=<Other>(lhs: inout Self, rhs: Other) where Other : Sequence, Element == Other.Element
     mutating func append(_ newElement: __owned Element)
     mutating func append<S>(contentsOf newElements: __owned S) where S : Sequence, Element == S.Element
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) func applying(_ difference: CollectionDifference<Element>) -> Self?
     mutating func insert(_ newElement: __owned Element, at i: Index)
     mutating func insert<C>(contentsOf newElements: __owned C, at i: Index) where C : Collection, C.Element == Element
     @discardableResult mutating func remove(at i: Index) -> Element
-    @discardableResult mutating func remove(at position: Index) -> Element
     mutating func removeAll(keepingCapacity keepCapacity: Bool = x)
     mutating func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows
-    mutating func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows
-    mutating func removeSubrange(_ bounds: Range<Index>)
     mutating func removeSubrange(_ bounds: Range<Index>)
     mutating func replaceSubrange<C, R>(_ subrange: R, with newElements: __owned C) where C : Collection, R : RangeExpression, C.Element == Element, Index == R.Bound
-    mutating func replaceSubrange<C>(_ subrange: Range<Index>, with newElements: __owned C) where C : Collection, C.Element == Element
-    mutating func reserveCapacity(_ n: Int)
     mutating func reserveCapacity(_ n: Int)
 }
 public protocol RawRepresentable {
@@ -387,6 +371,16 @@ public protocol RawRepresentable {
 }
 public protocol SIMD : Codable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, SIMDStorage {
     associatedtype MaskStorage where MaskStorage.Scalar : FixedWidthInteger & SignedInteger
+    static func random<T>(in range: ClosedRange<Scalar>, using generator: inout T) -> Self where Scalar : BinaryFloatingPoint, Scalar.RawSignificand : FixedWidthInteger, T : RandomNumberGenerator
+    init<S>(_ scalars: S) where S : Sequence, S.Element == Scalar
+    init(from decoder: Decoder) throws
+    init(repeating value: Scalar)
+    var indices: Range<Int> { get }
+    func .!=(lhs: Scalar, rhs: Self) -> SIMDMask<MaskStorage>
+    func .==(lhs: Scalar, rhs: Self) -> SIMDMask<MaskStorage>
+    func encode(to encoder: Encoder) throws
+    mutating func replace(with other: Scalar, where mask: SIMDMask<MaskStorage>)
+    func replacing(with other: Scalar, where mask: SIMDMask<MaskStorage>) -> Self
 }
 public protocol SIMDScalar {
     associatedtype SIMD16Storage where SIMD16Storage.Scalar == Self
@@ -399,6 +393,7 @@ public protocol SIMDScalar {
 }
 public protocol SIMDStorage {
     associatedtype Scalar
+    static var scalarCount: Int { get }
     init()
     var scalarCount: Int { get }
     subscript(index: Int) -> Scalar { get set }
@@ -421,7 +416,6 @@ public protocol Sequence {
     func first(where predicate: (Element) throws -> Bool) rethrows -> Element?
     func flatMap<SegmentOfResult>(_ transform: (Element) throws -> SegmentOfResult) rethrows -> [SegmentOfResult.Element] where SegmentOfResult : Sequence
     func forEach(_ body: (Element) throws -> Void) rethrows
-    func joined<Separator>(separator: Separator) -> JoinedSequence<Self> where Element : Sequence, Separator : Sequence, Element.Element == Separator.Element
     func lexicographicallyPrecedes<OtherSequence>(_ other: OtherSequence) -> Bool where Element : Comparable, OtherSequence : Sequence, Element == OtherSequence.Element
     func lexicographicallyPrecedes<OtherSequence>(_ other: OtherSequence, by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> Bool where OtherSequence : Sequence, Element == OtherSequence.Element
     func makeIterator() -> Iterator
@@ -451,17 +445,15 @@ public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
     mutating func formIntersection(_ other: Self)
     mutating func formSymmetricDifference(_ other: __owned Self)
     mutating func formUnion(_ other: __owned Self)
-    @discardableResult mutating func insert(_ newMember: __owned Element) -> (inserted : Bool, memberAfterInsert : Element)
+    @discardableResult mutating func insert(_ newMember: __owned Element) -> (inserted: Bool, memberAfterInsert: Element)
     func intersection(_ other: Self) -> Self
     func isDisjoint(with other: Self) -> Bool
     func isStrictSubset(of other: Self) -> Bool
     func isStrictSuperset(of other: Self) -> Bool
     func isSubset(of other: Self) -> Bool
     func isSuperset(of other: Self) -> Bool
-    func isSuperset(of other: Self) -> Bool
     @discardableResult mutating func remove(_ member: Element) -> Element?
     mutating func subtract(_ other: Self)
-    func subtracting(_ other: Self) -> Self
     func subtracting(_ other: Self) -> Self
     func symmetricDifference(_ other: __owned Self) -> Self
     func union(_ other: __owned Self) -> Self
@@ -470,7 +462,6 @@ public protocol SetAlgebra : Equatable, ExpressibleByArrayLiteral {
 public protocol SignedInteger : AdditiveArithmetic, BinaryInteger, Comparable, CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, Hashable, Numeric, SignedNumeric, Strideable {
 }
 public protocol SignedNumeric : AdditiveArithmetic, Equatable, ExpressibleByIntegerLiteral, Numeric {
-    prefix func -(operand: Self) -> Self
     prefix func -(operand: Self) -> Self
     mutating func negate()
 }
@@ -504,8 +495,8 @@ public protocol StringProtocol : BidirectionalCollection, Collection, Comparable
     var unicodeScalars: UnicodeScalarView { get }
     var utf16: UTF16View { get }
     var utf8: UTF8View { get }
-    func hasPrefix<Prefix>(_ prefix: Prefix) -> Bool where Prefix : StringProtocol
-    func hasSuffix<Suffix>(_ suffix: Suffix) -> Bool where Suffix : StringProtocol
+    func hasPrefix(_ prefix: String) -> Bool
+    func hasSuffix(_ prefix: String) -> Bool
     func lowercased() -> String
     func uppercased() -> String
     func withCString<Result>(_ body: (UnsafePointer<CChar>) throws -> Result) rethrows -> Result
@@ -549,24 +540,20 @@ public protocol UnsignedInteger : AdditiveArithmetic, BinaryInteger, Comparable,
 }
 extension AnyBidirectionalCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
-    public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
-    public init?(_ other: AnyCollection<Element>) {}
 }
 extension AnyCollection {
     public init(_ other: AnyBidirectionalCollection<Element>) {}
-    public init<C>(_ base: C) where C : BidirectionalCollection, C.Element == Element {}
 }
 extension AnyIterator {
 }
 extension AnyRandomAccessCollection {
     public init(_ other: AnyRandomAccessCollection<Element>) {}
-    public init<C>(_ base: C) where C : RandomAccessCollection, C.Element == Element {}
-    public init?(_ other: AnyBidirectionalCollection<Element>) {}
 }
 extension AnySequence {
     public init<S>(_ base: S) where S : Sequence, Element == S.Element {}
 }
 extension Array {
+    public init(unsafeUninitializedCapacity: Int, initializingWith initializer: (_ buffer: inout UnsafeMutableBufferPointer<Element>, _ initializedCount: inout Int) throws -> Void) rethrows {}
     public var capacity: Int { get }
     public subscript(index: Int) -> Element { get set } {}
     public func withUnsafeBufferPointer<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R {}
@@ -590,11 +577,19 @@ extension ClosedRange {
 }
 extension ClosedRange.Index {
 }
+extension CollectionDifference {
+    public func index(before index: Index) -> Index {}
+}
+extension CollectionDifference.Change {
+}
+extension CollectionDifference.Index {
+}
 extension CollectionOfOne {
 }
 extension CollectionOfOne.Iterator {
 }
 extension ContiguousArray {
+    public init(unsafeUninitializedCapacity: Int, initializingWith initializer: (_ buffer: inout UnsafeMutableBufferPointer<Element>, _ initializedCount: inout Int) throws -> Void) rethrows {}
     public var capacity: Int { get }
     public subscript(index: Int) -> Element { get set } {}
     public func withUnsafeBufferPointer<R>(_ body: (UnsafeBufferPointer<Element>) throws -> R) rethrows -> R {}
@@ -615,9 +610,7 @@ extension Dictionary {
     public func index(forKey key: Key) -> Index? {}
     public func mapValues<T>(_ transform: (Value) throws -> T) rethrows -> [Key: T] {}
     public mutating func merge(_ other: __owned [Key: Value], uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows {}
-    public mutating func merge<S>(_ other: __owned S, uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows where S : Sequence, (Key, Value) == S.Element {}
     public func merging(_ other: __owned [Key: Value], uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows -> [Key: Value] {}
-    public func merging<S>(_ other: __owned S, uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows -> [Key: Value] where S : Sequence, (Key, Value) == S.Element {}
     @discardableResult public mutating func remove(at index: Index) -> Element {}
     public mutating func removeAll(keepingCapacity keepCapacity: Bool = x) {}
     @discardableResult public mutating func removeValue(forKey key: Key) -> Value? {}
@@ -735,7 +728,7 @@ extension PrefixSequence.Iterator {
 }
 extension Range {
     public func clamped(to limits: Range) -> Range {}
-    public func overlaps(_ other: Range<Bound>) -> Bool {}
+    public func overlaps(_ other: ClosedRange<Bound>) -> Bool {}
 }
 extension Repeated {
 }
@@ -748,18 +741,59 @@ extension ReversedCollection.Index {
 extension ReversedCollection.Iterator {
 }
 extension SIMD16 {
+    public init<Other>(_ other: SIMD16<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init<Other>(_ other: SIMD16<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD16<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD16<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD2 {
+    public init<Other>(_ other: SIMD2<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init<Other>(_ other: SIMD2<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD2<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD2<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD3 {
+    public init<Other>(_ other: SIMD3<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init(_ xy: SIMD2<Scalar>, _ z: Scalar) {}
+    public init<Other>(_ other: SIMD3<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD3<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD3<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD32 {
+    public init<Other>(_ other: SIMD32<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init<Other>(_ other: SIMD32<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD32<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD32<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD4 {
+    public init<Other>(_ other: SIMD4<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init(_ xyz: SIMD3<Scalar>, _ w: Scalar) {}
+    public init<Other>(_ other: SIMD4<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD4<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD4<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD64 {
+    public init<Other>(_ other: SIMD64<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init<Other>(_ other: SIMD64<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD64<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD64<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
 }
 extension SIMD8 {
+    public init<Other>(_ other: SIMD8<Other>) where Other : BinaryFloatingPoint, Scalar : BinaryFloatingPoint {}
+    public init<Other>(_ other: SIMD8<Other>, rounding rule: FloatingPointRoundingRule = x) where Other : BinaryFloatingPoint, Scalar : FixedWidthInteger {}
+    public init<Other>(clamping other: SIMD8<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+    public init<Other>(truncatingIfNeeded other: SIMD8<Other>) where Other : FixedWidthInteger, Scalar : FixedWidthInteger {}
+}
+extension SIMDMask {
+    public static func random() -> SIMDMask {}
+    public static func random<T>(using generator: inout T) -> SIMDMask where T : RandomNumberGenerator {}
+    public prefix func .!(rhs: SIMDMask) -> SIMDMask {}
+    public func .&(lhs: Bool, rhs: SIMDMask) -> SIMDMask {}
+    public func .&=(lhs: inout SIMDMask, rhs: Bool) {}
+    public func .^(lhs: Bool, rhs: SIMDMask) -> SIMDMask {}
+    public func .^=(lhs: inout SIMDMask, rhs: Bool) {}
+    public func .|(lhs: Bool, rhs: SIMDMask) -> SIMDMask {}
+    public func .|=(lhs: inout SIMDMask, rhs: Bool) {}
 }
 extension Set {
     public var capacity: Int { get }
@@ -783,18 +817,17 @@ extension StrideTo {
 }
 extension StrideToIterator {
 }
-extension String.UTF16View {
-    public subscript(i: Index) -> UTF16.CodeUnit { get } {}
+extension String.Index {
+    public init<S>(utf16Offset offset: Int, in s: S) where S : StringProtocol {}
+    public func utf16Offset<S>(in s: S) -> Int where S : StringProtocol {}
 }
-extension String.UTF16View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF16View) {}
-    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
+extension String.UTF16View {
 }
 extension String.UTF8View {
+    public subscript(i: Index) -> UTF8.CodeUnit { get } {}
 }
-extension String.UnicodeScalarIndex {
-    public init?(_ sourcePosition: String.Index, within unicodeScalars: String.UnicodeScalarView) {}
-    public func samePosition(in characters: String) -> String.Index? {}
+extension String.UTF8View.Index {
+    public init?(_ idx: String.Index, within target: String.UTF8View) {}
 }
 extension String.UnicodeScalarView {
 }
@@ -811,11 +844,124 @@ extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
 }
+extension Unicode.ASCII {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func isASCII(_ x: CodeUnit) -> Bool {}
+    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
+}
+extension Unicode.ASCII.Parser {
+    public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
+}
 extension Unicode.Scalar {
+    public var isASCII: Bool { get }
+    public var utf16: UTF16View { get }
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) public var utf8: UTF8View { get }
+    public var value: UInt32 { get }
+    public func escaped(asASCII forceASCII: Bool) -> String {}
+}
+extension Unicode.Scalar.Properties {
+    public var age: Unicode.Version? { get }
+    public var canonicalCombiningClass: Unicode.CanonicalCombiningClass { get }
+    public var changesWhenCaseFolded: Bool { get }
+    public var changesWhenCaseMapped: Bool { get }
+    public var changesWhenLowercased: Bool { get }
+    public var changesWhenNFKCCaseFolded: Bool { get }
+    public var changesWhenTitlecased: Bool { get }
+    public var changesWhenUppercased: Bool { get }
+    public var generalCategory: Unicode.GeneralCategory { get }
+    public var isASCIIHexDigit: Bool { get }
+    public var isAlphabetic: Bool { get }
+    public var isBidiControl: Bool { get }
+    public var isBidiMirrored: Bool { get }
+    public var isCaseIgnorable: Bool { get }
+    public var isCased: Bool { get }
+    public var isDash: Bool { get }
+    public var isDefaultIgnorableCodePoint: Bool { get }
+    public var isDeprecated: Bool { get }
+    public var isDiacritic: Bool { get }
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmoji: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifier: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifierBase: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiPresentation: Bool { get }
+#endif
+    public var isExtender: Bool { get }
+    public var isFullCompositionExclusion: Bool { get }
+    public var isGraphemeBase: Bool { get }
+    public var isGraphemeExtend: Bool { get }
+    public var isHexDigit: Bool { get }
+    public var isIDContinue: Bool { get }
+    public var isIDSBinaryOperator: Bool { get }
+    public var isIDSTrinaryOperator: Bool { get }
+    public var isIDStart: Bool { get }
+    public var isIdeographic: Bool { get }
+    public var isJoinControl: Bool { get }
+    public var isLogicalOrderException: Bool { get }
+    public var isLowercase: Bool { get }
+    public var isMath: Bool { get }
+    public var isNoncharacterCodePoint: Bool { get }
+    public var isPatternSyntax: Bool { get }
+    public var isPatternWhitespace: Bool { get }
+    public var isQuotationMark: Bool { get }
+    public var isRadical: Bool { get }
+    public var isSentenceTerminal: Bool { get }
+    public var isSoftDotted: Bool { get }
+    public var isTerminalPunctuation: Bool { get }
+    public var isUnifiedIdeograph: Bool { get }
+    public var isUppercase: Bool { get }
+    public var isVariationSelector: Bool { get }
+    public var isWhitespace: Bool { get }
+    public var isXIDContinue: Bool { get }
+    public var isXIDStart: Bool { get }
+    public var lowercaseMapping: String { get }
+    public var name: String? { get }
+    public var nameAlias: String? { get }
+    public var numericType: Unicode.NumericType? { get }
+    public var numericValue: Double? { get }
+    public var titlecaseMapping: String { get }
+    public var uppercaseMapping: String { get }
 }
 extension Unicode.Scalar.UTF16View {
 }
+extension Unicode.Scalar.UTF8View {
+}
+extension Unicode.UTF16 {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func isASCII(_ x: CodeUnit) -> Bool {}
+    public static func isLeadSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func isSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func isTrailSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func leadSurrogate(_ x: Unicode.Scalar) -> UTF16.CodeUnit {}
+    public static func trailSurrogate(_ x: Unicode.Scalar) -> UTF16.CodeUnit {}
+    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
+    public static func transcodedLength<Input, Encoding>(of input: Input, decodedAs sourceEncoding: Encoding.Type, repairingIllFormedSequences: Bool) -> (count: Int, isASCII: Bool)? where Encoding : Unicode.Encoding, Input : IteratorProtocol, Encoding.CodeUnit == Input.Element {}
+    public static func width(_ x: Unicode.Scalar) -> Int {}
+}
 extension Unicode.UTF16.ForwardParser {
+}
+extension Unicode.UTF32 {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func isASCII(_ x: CodeUnit) -> Bool {}
+}
+extension Unicode.UTF8 {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func isASCII(_ x: CodeUnit) -> Bool {}
+    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : _UnicodeEncoding {}
+    public static func width(_ x: Unicode.Scalar) -> Int {}
 }
 extension Unicode.UTF8.ForwardParser {
 }
