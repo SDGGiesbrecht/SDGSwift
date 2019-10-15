@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 import SDGText
 import SDGPersistence
 import SDGExternalProcess
@@ -75,7 +76,14 @@ do {
             sources = sources.sorted()
             for source in sources {
                 try autoreleasepool {
-                    let normalized = try StrictString(from: source)
+                    var normalized = try StrictString(from: source)
+                    normalized.replaceMatches(
+                        for: CompositePattern<Unicode.Scalar>([
+                            LiteralPattern("///".scalars),
+                            RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" })),
+                            LiteralPattern("\n".scalars)
+                        ]),
+                        with: "\n".scalars)
                     try normalized.save(to: source)
                 }
             }

@@ -66,9 +66,7 @@ public protocol DispatchSourceSignal : DispatchSourceProtocol {
 }
 public protocol DispatchSourceTimer : DispatchSourceProtocol {
     @available(swift, introduced: 4) func schedule(deadline: DispatchTime, repeating interval: DispatchTimeInterval = x, leeway: DispatchTimeInterval = x)
-    @available(swift, introduced: 4) func schedule(deadline: DispatchTime, repeating interval: Double, leeway: DispatchTimeInterval = x)
     @available(swift, introduced: 4) func schedule(wallDeadline: DispatchWallTime, repeating interval: DispatchTimeInterval = x, leeway: DispatchTimeInterval = x)
-    @available(swift, introduced: 4) func schedule(wallDeadline: DispatchWallTime, repeating interval: Double, leeway: DispatchTimeInterval = x)
     func scheduleOneshot(deadline: DispatchTime, leeway: DispatchTimeInterval)
     func scheduleOneshot(wallDeadline: DispatchWallTime, leeway: DispatchTimeInterval)
     func scheduleRepeating(deadline: DispatchTime, interval: DispatchTimeInterval, leeway: DispatchTimeInterval)
