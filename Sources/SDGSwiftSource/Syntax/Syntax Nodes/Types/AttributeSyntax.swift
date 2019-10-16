@@ -84,6 +84,9 @@ extension AttributeSyntax {
         case "requires_stored_property_inits", "warn_unqualified_access": // @exempt(from: tests)
             // Source checks
             return nil
+        case "frozen": // @exempt(from: tests)
+        // Not relevant outside library evolution mode.
+            return nil
 
         default: // @exempt(from: tests)
             attribute.warnUnidentified()
