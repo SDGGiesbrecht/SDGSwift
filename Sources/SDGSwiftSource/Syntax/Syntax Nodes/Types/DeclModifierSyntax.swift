@@ -56,7 +56,7 @@ extension DeclModifierSyntax {
                 return normalize()
             case "indirect", "lazy":
                 return nil
-            case "weak":
+            case "weak", "unowned":
                 return normalize()
             case "infix", "prefix", "postfix":
                 // Operator position.
@@ -93,7 +93,7 @@ extension DeclModifierSyntax {
                 return .requirement
             case "convenience": // @exempt(from: tests) Cannot appear with any other groups for sorting.
                 return .designation
-            case "weak":
+            case "weak", "unowned":
                 return .memoryManagement
             case "mutating", "nonmutating":
                 return .mutation
@@ -124,7 +124,7 @@ extension DeclModifierSyntax {
                 return nil
             case "convenience":
                 return nil
-            case "weak":
+            case "weak", "unowned":
                 return nil
             case "mutating", "nonmutating":
                 return nil
