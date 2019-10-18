@@ -60,7 +60,10 @@ class RegressionTests : TestCase {
         // Untracked.
 
         let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
-        let highlighted = declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: ["SomePackage"], symbolLinks: ["SomePackage" : "some/page"])
+        let highlighted = declaration.syntaxHighlightedHTML(
+            inline: false,
+            internalIdentifiers: ["SomePackage"],
+            symbolLinks: ["SomePackage": "some/page"])
         let html = HTMLPage(
             content: highlighted,
             cssPath: "../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css")
