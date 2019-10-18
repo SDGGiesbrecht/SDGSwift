@@ -18,6 +18,7 @@ import SDGSwiftSource
 
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
 class RegressionTests : TestCase {
@@ -53,5 +54,17 @@ class RegressionTests : TestCase {
         XCTAssertEqual(try SyntaxParser.parse(source).source(), source)
         let documentation = parsed.api().first?.documentation
         XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
+    }
+
+    func testPackageDeclaration() {
+        // Untracked.
+
+        let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
+        let highlighted = declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: ["SomePackage"], symbolLinks: ["SomePackage" : "some/page"])
+        let html = HTMLPage(
+            content: highlighted,
+            cssPath: "../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css")
+        let location = testSpecificationDirectory().appendingPathComponent("Source/Package Declaration.html")
+        compare(html, against: location, overwriteSpecificationInsteadOfFailing: false)
     }
 }

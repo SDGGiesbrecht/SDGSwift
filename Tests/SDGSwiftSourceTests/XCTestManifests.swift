@@ -44,6 +44,7 @@ extension RegressionTests {
     static let __allTests__RegressionTests = [
         ("testContinuedCallout", testContinuedCallout),
         ("testMarkdownQuotation", testMarkdownQuotation),
+        ("testPackageDeclaration", testPackageDeclaration),
     ]
 }
 
