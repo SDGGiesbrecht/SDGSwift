@@ -1609,7 +1609,7 @@ open class Operation : AnyObject, CustomDebugStringConvertible, CustomStringConv
     open var maxConcurrentOperationCount: Int { get set }
     open var name: String? { get set }
     open var qualityOfService: QualityOfService { get set }
-    open var underlyingQueue: DispatchQueue? { get set }
+    open unowned var underlyingQueue: DispatchQueue? { get set }
     open func addBarrierBlock(_ barrier: @escaping () -> Void) {}
     open func addOperation(_ block: @escaping () -> Void) {}
     open func addOperations(_ ops: [Operation], waitUntilFinished wait: Bool) {}
