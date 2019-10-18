@@ -46,4 +46,13 @@ extension TokenKind {
             return .unknown(text.decomposedStringWithCanonicalMapping)
         }
     }
+
+    internal var shouldBeCrossLinked: Bool {
+        switch self {
+        case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword, .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword, .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword, .__dso_handle__Keyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick, .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote, .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword, .poundSelectorKeyword, .poundFileKeyword, .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword, .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword, .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword, .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier, .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
+            return false
+        case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator:
+            return true
+        }
+    }
 }
