@@ -85,7 +85,7 @@ class APITests : TestCase {
 
     func testCodeFragmentSyntax() throws {
         let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
-        let syntax = try SyntaxParser.parse(source)
+        let syntax = try SyntaxParser.parse(source: source)
         let highlighted = syntax.syntaxHighlightedHTML(inline: true, internalIdentifiers: ["selector(style:notation:)"], symbolLinks: ["selector(style:notation:)": "domain.tld"])
         XCTAssert(highlighted.contains("internal identifier"))
         XCTAssert(highlighted.contains("domain.tld"))
@@ -159,7 +159,7 @@ class APITests : TestCase {
         XCTAssertTrue(foundDocumentationComment)
 
         let moreSource = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}\n/// ```swift\n/// /*\n/// Comment.\n/// */\n/// ```\nlet y = 0"
-        let moreSyntax = try SyntaxParser.parse(moreSource)
+        let moreSyntax = try SyntaxParser.parse(source: moreSource)
         var foundQuotationMark = false
         var foundComment = false
         try FunctionalSyntaxScanner(
@@ -179,7 +179,7 @@ class APITests : TestCase {
         XCTAssertTrue(foundComment)
 
         let evenMoreSource = "/// ```swift\n///\n/// // Comment.\n///\n/// ```\nlet y = 0"
-        let evenMoreSyntax = try SyntaxParser.parse(evenMoreSource)
+        let evenMoreSyntax = try SyntaxParser.parse(source: evenMoreSource)
         var foundTriviaFragment = false
         var foundCommentSyntax = false
         try FunctionalSyntaxScanner(
@@ -206,7 +206,7 @@ class APITests : TestCase {
         XCTAssertTrue(foundCommentSyntax)
 
         let yetMoreSource = "/// ```swift\n/// let x = 0\n/// ```\nlet y = 0"
-        let yetMoreSyntax = try SyntaxParser.parse(yetMoreSource)
+        let yetMoreSyntax = try SyntaxParser.parse(source: yetMoreSource)
         var foundX = false
         var foundY = false
         try FunctionalSyntaxScanner(
@@ -268,7 +268,7 @@ class APITests : TestCase {
             "    print(\u{22}Hello, world!\u{22})",
             "}"
         ].joined(separator: "\n")
-        let syntax = try SyntaxParser.parse(source)
+        let syntax = try SyntaxParser.parse(source: source)
 
         var scanned: Set<String> = []
         var foundCodeDelimiter = false
@@ -307,7 +307,7 @@ class APITests : TestCase {
     }
 
     func testLineDeveloperCommentSyntax() throws {
-        let syntax = try SyntaxParser.parse("/\u{2F} Comment.")
+        let syntax = try SyntaxParser.parse(source: "/\u{2F} Comment.")
         try SyntaxScanner().scan(syntax)
         XCTAssertNil(syntax.ancestors().makeIterator().next())
 
@@ -323,7 +323,7 @@ class APITests : TestCase {
     }
 
     func testLineDocumentationCommentSyntax() throws {
-        let syntax = try SyntaxParser.parse("//\u{2F} Documentation.")
+        let syntax = try SyntaxParser.parse(source: "//\u{2F} Documentation.")
         class DocumentationScanner : SyntaxScanner {
             override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
                 if let comment = node as? LineDocumentationSyntax {
@@ -337,7 +337,7 @@ class APITests : TestCase {
 
     func testLocations() throws {
         let source = "/\u{2F} ...\nlet x = 0 \n"
-        let syntax = try SyntaxParser.parse(source)
+        let syntax = try SyntaxParser.parse(source: source)
         var statementsFound = false
         let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
             if syntax is CodeBlockItemListSyntax {
@@ -477,7 +477,7 @@ class APITests : TestCase {
 
     func testTree() throws {
         let source = "/\u{2F} ...\nlet x = 0 \n"
-        let syntax = try SyntaxParser.parse(source)
+        let syntax = try SyntaxParser.parse(source: source)
         XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
         XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).previousToken())
         XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).nextToken())
@@ -516,7 +516,7 @@ class APITests : TestCase {
         XCTAssertEqual(incomplete.signature.input.rightParen.previousToken()?.tokenKind, .identifier("identifier"))
 
         let stringSource = "@available(*, unavailable, renamed: \u{22}new\u{22}) func function() {}"
-        let stringSyntax = try SyntaxParser.parse(stringSource)
+        let stringSyntax = try SyntaxParser.parse(source: stringSource)
         var foundQuotationMark = false
         var foundLiteral = false
         var foundString = false

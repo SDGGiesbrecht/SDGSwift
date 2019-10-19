@@ -32,21 +32,4 @@ extension SyntaxParser {
         }
         return try parse(url) // @exempt(from: tests)
     }
-
-    /// Parses the provided Swift source.
-    ///
-    /// - Parameters:
-    ///     - source: A string with Swift source.
-    public static func parse(_ source: String) throws -> SourceFileSyntax {
-        // #workaround(SwiftSyntax 0.50000.0, Provided upstream in 5.1.)
-        return try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
-            let temporary = temporaryDirectory.appendingPathComponent(UUID().uuidString + ".swift")
-            try? FileManager.default.removeItem(at: temporary)
-
-            try source.save(to: temporary)
-            defer { try? FileManager.default.removeItem(at: temporary) }
-
-            return try parseAndRetry(temporary)
-        }
-    }
 }
