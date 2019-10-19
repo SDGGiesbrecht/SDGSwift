@@ -61,7 +61,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     }
     internal convenience init(source: String) throws {
         self.init(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr())
-        let syntax = try SyntaxParser.parse(source)
+        let syntax = try SyntaxParser.parse(source: source)
         apply(parsedElements: syntax.api())
     }
     private func apply(parsedElements: [APIElement]) {
