@@ -19,13 +19,6 @@ import SwiftSyntax
 extension SimpleTypeIdentifierSyntax {
 
     internal func normalized() -> TypeSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        var genericArgumentClause = self.genericArgumentClause
-        if ¬source().contains("<") {
-            genericArgumentClause = nil
-        }
-
         let newGenericArgumentClause = genericArgumentClause?.normalized()
 
         let result = SyntaxFactory.makeSimpleTypeIdentifier(

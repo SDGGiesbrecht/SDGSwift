@@ -27,13 +27,6 @@ extension EnumCaseElementSyntax : Hidable {
     }
 
     internal func forName() -> EnumCaseElementSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        var associatedValue = self.associatedValue
-        if ¬source().contains("(") {
-            associatedValue = nil
-        }
-
         return SyntaxFactory.makeEnumCaseElement(
             identifier: identifier,
             associatedValue: associatedValue?.forAssociatedValueName(),

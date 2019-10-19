@@ -19,13 +19,6 @@ import SwiftSyntax
 extension TupleTypeElementSyntax {
 
     internal func normalized() -> TupleTypeElementSyntax {
-
-        // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index use by SwiftSyntax.)
-        var initializer = self.initializer
-        if ¬source().contains("=") {
-            initializer = nil
-        }
-
         return SyntaxFactory.makeTupleTypeElement(
             inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
             name: name?.generallyNormalized(),
