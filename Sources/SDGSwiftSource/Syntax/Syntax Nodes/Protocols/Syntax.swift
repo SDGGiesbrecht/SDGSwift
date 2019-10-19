@@ -189,7 +189,8 @@ extension Syntax {
                     source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
                     source.append(contentsOf: "</span>")
                 }
-                if let url = symbolLinks[token.text] {
+                if token.tokenKind.shouldBeCrossLinked,
+                    let url = symbolLinks[token.text] {
                     source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
                     source.append(contentsOf: "</a>")
                 }
