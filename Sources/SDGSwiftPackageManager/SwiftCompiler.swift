@@ -38,7 +38,6 @@ extension SwiftCompiler {
     }
 
     private static func hostDestination() -> Swift.Result<Destination, PackageLoadingError> {
-        #warning("Is this necessary anymore?")
         switch location() {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
@@ -53,7 +52,6 @@ extension SwiftCompiler {
         }
     }
     internal static func hostToolchain() -> Swift.Result<UserToolchain, PackageLoadingError> {
-        #warning("Is this necessary anymore?")
         switch hostDestination() {
         case .failure(let error):
             return .failure(error)
@@ -69,12 +67,20 @@ extension SwiftCompiler {
     }
 
     private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, PackageLoadingError> {
-        #warning("Is this necessary anymore?")
-        return hostToolchain().map { $0.manifestResources }
+        switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+            do {
+                let resources = try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+                return .success(resources)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+        }
     }
 
     internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
-        #warning("Is this necessary anymore?")
         return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
 
