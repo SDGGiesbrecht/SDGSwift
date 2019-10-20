@@ -78,11 +78,9 @@ do {
                 try autoreleasepool {
                     var normalized = try StrictString(from: source)
                     normalized.replaceMatches(
-                        for: CompositePattern<Unicode.Scalar>([
-                            LiteralPattern("///".scalars),
-                            RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" })),
-                            LiteralPattern("\n".scalars)
-                        ]),
+                        for: "///".scalars
+                            + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
+                            + "\n".scalars,
                         with: "\n".scalars)
                     try normalized.save(to: source)
                 }

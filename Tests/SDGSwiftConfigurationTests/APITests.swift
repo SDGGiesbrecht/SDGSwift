@@ -94,18 +94,18 @@ class APITests : TestCase {
             XCTAssertEqual(loadedMock.option, "Mock")
 
             func abbreviate(logEntry: String) {
-                log.scalars.replaceMatches(for: CompositePattern([
-                    LiteralPattern((logEntry + " ").scalars),
-                    RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
-                    LiteralPattern("\n".scalars)
-                    ]), with: (logEntry + " [...]\n").scalars)
+                let pattern = (logEntry + " ").scalars
+                    + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+                    + "\n".scalars
+                log.scalars.replaceMatches(
+                    for: pattern,
+                    with: (logEntry + " [...]\n").scalars)
             }
             func remove(logEntry: String) {
-                log.scalars.replaceMatches(for: CompositePattern([
-                    LiteralPattern((logEntry + " ").scalars),
-                    RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
-                    LiteralPattern("\n".scalars)
-                    ]), with: "".scalars)
+                let pattern = (logEntry + " ").scalars
+                    + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+                    + "\n".scalars
+                log.scalars.replaceMatches(for: pattern, with: "".scalars)
             }
             abbreviate(logEntry: "Fetching")
             abbreviate(logEntry: "Completed resolution in")
@@ -114,13 +114,13 @@ class APITests : TestCase {
 
             // These may occur out of order.
             remove(logEntry: "Compile Swift Module")
-            log.scalars.replaceMatches(for: CompositePattern([
-                LiteralPattern("[".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
-                LiteralPattern("] Compiling ".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" })),
-                LiteralPattern("\n".scalars),
-            ]), with: "[[...]] Compiling [...]\n".scalars)
+            let patternStart = "[".scalars
+                + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+            let pattern = patternStart
+                + "] Compiling ".scalars
+                + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+                + "\n".scalars
+            log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
             remove(logEntry: "Linking")
             remove(logEntry: "warning: invalid duplicate target dependency declaration")
 
