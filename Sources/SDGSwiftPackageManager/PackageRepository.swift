@@ -112,30 +112,26 @@ extension PackageRepository {
     }
 
     /// Returns the package structure.
-    public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.HostDestinationError> {
-        #warning("Refactor.")
-        switch manifest() {
+    public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
         case .failure(let error):
-            return .failure(error)
-        case .success(let manifest):
-            let builder = PackageBuilder(
-                manifest: manifest,
-                path: AbsolutePath(location.path),
-                diagnostics: DiagnosticsEngine(),
-                isRootPackage: true)
-            let package: PackageModel.Package
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
             do {
-                package = try builder.construct()
+                let manifest = try PackageBuilder.loadPackage(
+                    packagePath: AbsolutePath(location.path),
+                    swiftCompiler: AbsolutePath(compiler.path),
+                    diagnostics: DiagnosticsEngine())
+                    #warning("Investigate diagnostics.")
+                return .success(manifest)
             } catch {
                 return .failure(.packageManagerError(error))
             }
-            return .success(package)
         }
     }
 
     /// Returns the package workspace.
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.HostDestinationError> {
-        #warning("Refactor.")
         return SwiftCompiler.manifestLoader().map { loader in
             return Workspace.create(
                 forRootPackage: AbsolutePath(location.path),
@@ -144,7 +140,6 @@ extension PackageRepository {
     }
 
     internal func hostBuildParameters() -> Swift.Result<BuildParameters, SwiftCompiler.HostDestinationError> {
-        #warning("Is this necessary anymore?")
         switch packageWorkspace() {
         case .failure(let error):
             return .failure(error)
