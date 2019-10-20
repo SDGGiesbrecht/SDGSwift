@@ -79,8 +79,8 @@ extension PackageRepository {
     // MARK: - Properties
 
     /// Returns the package manifest.
-    public func manifest() -> Swift.Result<Manifest, SwiftCompiler.HostDestinationError> {
-        /*switch SwiftCompiler.swiftCLocation() {
+    public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
         case .success(let compiler):
@@ -92,22 +92,6 @@ extension PackageRepository {
             } catch {
                 return .failure(.packageManagerError(error))
             }
-        }*/
-        #warning("Refactor.")
-        switch SwiftCompiler.manifestLoader() {
-        case .failure(let error):
-            return .failure(error)
-        case .success(let loader):
-            let manifest: Manifest
-            do {
-                manifest = try loader.load(
-                    package: AbsolutePath(location.path),
-                    baseURL: location.path,
-                    manifestVersion: ToolsVersion.currentToolsVersion.manifestVersion)
-            } catch {
-                return .failure(.packageManagerError(error))
-            }
-            return .success(manifest)
         }
     }
 
@@ -131,7 +115,7 @@ extension PackageRepository {
     }
 
     /// Returns the package workspace.
-    public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.HostDestinationError> {
+    public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
         return SwiftCompiler.manifestLoader().map { loader in
             return Workspace.create(
                 forRootPackage: AbsolutePath(location.path),
@@ -139,7 +123,7 @@ extension PackageRepository {
         }
     }
 
-    internal func hostBuildParameters() -> Swift.Result<BuildParameters, SwiftCompiler.HostDestinationError> {
+    internal func hostBuildParameters() -> Swift.Result<BuildParameters, SwiftCompiler.PackageLoadingError> {
         switch packageWorkspace() {
         case .failure(let error):
             return .failure(error)
@@ -191,7 +175,7 @@ extension PackageRepository {
         return Git.ignoredFiles(in: self)
     }
 
-    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[Foundation.URL], SwiftCompiler.HostDestinationError> {
+    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[Foundation.URL], SwiftCompiler.PackageLoadingError> {
         return packageWorkspace().map { workspace in
             return [
                 workspace.dataPath.asURL,

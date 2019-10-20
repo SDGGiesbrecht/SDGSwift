@@ -25,8 +25,8 @@ extension SwiftCompiler {
 
         // MARK: - Cases
 
-        /// The host destination could not be determined.
-        case hostDestinationError(HostDestinationError)
+        /// The package manager encountered an error.
+        case packageManagerError(PackageLoadingError)
 
         /// Foundation encountered an error.
         case foundationError(Swift.Error)
@@ -40,7 +40,7 @@ extension SwiftCompiler {
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {
-            case .hostDestinationError(let error):
+            case .packageManagerError(let error):
                 return error.presentableDescription()
             case .foundationError(let error):
                 return StrictString(error.localizedDescription)
