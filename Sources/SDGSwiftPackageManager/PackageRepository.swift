@@ -17,6 +17,7 @@ import Foundation
 import SDGText
 import SDGLocalization
 
+#warning("How many of these are actually needed?")
 import Basic
 import PackageModel
 import PackageLoading
@@ -79,6 +80,20 @@ extension PackageRepository {
 
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.HostDestinationError> {
+        /*switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+            do {
+                let manifest = try ManifestLoader.loadManifest(
+                    packagePath: AbsolutePath(location.path),
+                    swiftCompiler: AbsolutePath(compiler.path))
+                return .success(manifest)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
+        }*/
+        #warning("Refactor.")
         switch SwiftCompiler.manifestLoader() {
         case .failure(let error):
             return .failure(error)
@@ -98,6 +113,7 @@ extension PackageRepository {
 
     /// Returns the package structure.
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.HostDestinationError> {
+        #warning("Refactor.")
         switch manifest() {
         case .failure(let error):
             return .failure(error)
@@ -119,6 +135,7 @@ extension PackageRepository {
 
     /// Returns the package workspace.
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.HostDestinationError> {
+        #warning("Refactor.")
         return SwiftCompiler.manifestLoader().map { loader in
             return Workspace.create(
                 forRootPackage: AbsolutePath(location.path),
@@ -127,6 +144,7 @@ extension PackageRepository {
     }
 
     internal func hostBuildParameters() -> Swift.Result<BuildParameters, SwiftCompiler.HostDestinationError> {
+        #warning("Is this necessary anymore?")
         switch packageWorkspace() {
         case .failure(let error):
             return .failure(error)
@@ -145,11 +163,21 @@ extension PackageRepository {
     }
 
     /// Returns the package graph.
-    public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.HostDestinationError> {
-        return packageWorkspace().map { workspace in
-            return workspace.loadPackageGraph(
-                root: AbsolutePath(location.path),
-                diagnostics: DiagnosticsEngine())
+    public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+            do {
+                let graph = try Workspace.loadGraph(
+                    packagePath: AbsolutePath(location.path),
+                    swiftCompiler: AbsolutePath(compiler.path),
+                    diagnostics: DiagnosticsEngine())
+                #warning("Investigate diagnostics.")
+                return .success(graph)
+            } catch {
+                return .failure(.packageManagerError(error))
+            }
         }
     }
 

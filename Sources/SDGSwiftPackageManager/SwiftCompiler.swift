@@ -23,6 +23,7 @@ import SDGLocalization
 import SDGSwiftLocalizations
 import SDGSwift
 
+#warning("How many of these are actually needed?")
 import PackageLoading
 import Workspace
 
@@ -30,7 +31,14 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
+    internal static func swiftCLocation() -> Swift.Result<Foundation.URL, LocationError> {
+        return location().map { swift in
+            return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
+        }
+    }
+
     private static func hostDestination() -> Swift.Result<Destination, HostDestinationError> {
+        #warning("Is this necessary anymore?")
         switch location() {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
@@ -45,6 +53,7 @@ extension SwiftCompiler {
         }
     }
     internal static func hostToolchain() -> Swift.Result<UserToolchain, HostDestinationError> {
+        #warning("Is this necessary anymore?")
         switch hostDestination() {
         case .failure(let error):
             return .failure(error)
@@ -60,10 +69,12 @@ extension SwiftCompiler {
     }
 
     private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, HostDestinationError> {
+        #warning("Is this necessary anymore?")
         return hostToolchain().map { $0.manifestResources }
     }
 
     internal static func manifestLoader() -> Swift.Result<ManifestLoader, HostDestinationError> {
+        #warning("Is this necessary anymore?")
         return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
 

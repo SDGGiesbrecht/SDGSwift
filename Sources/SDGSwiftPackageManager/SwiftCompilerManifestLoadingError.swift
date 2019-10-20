@@ -1,5 +1,5 @@
 /*
- SwiftCompilerHostDestinationError.swift
+ SwiftCompilerManifestLoadingError.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -19,9 +19,8 @@ import SDGSwift
 
 extension SwiftCompiler {
 
-    /// An error encountered while determining the host destination.
-    public enum HostDestinationError : PresentableError {
-        #warning("Is this necessary anymore?")
+    /// An error encountered while loading a Swift package.
+    public enum PackageLoadingError : PresentableError {
 
         // MARK: - Cases
 
@@ -40,6 +39,7 @@ extension SwiftCompiler {
             case .swiftLocationError(let error):
                 return error.presentableDescription()
             case .packageManagerError(let error):
+                #warning("Investigate diagnostics.")
                 return StrictString(error.localizedDescription)
             }
         }
