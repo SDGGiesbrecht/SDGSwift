@@ -17,6 +17,8 @@ import SDGLocalization
 
 import SDGSwift
 
+import Workspace
+
 extension SwiftCompiler {
 
     /// An error encountered while loading a Swift package.
@@ -28,7 +30,7 @@ extension SwiftCompiler {
         case swiftLocationError(LocationError)
 
         /// The package manager encountered an error.
-        case packageManagerError(Swift.Error)
+        case packageManagerError(Swift.Error, [Diagnostic])
 
         // MARK: - PresentableError
 
@@ -38,9 +40,10 @@ extension SwiftCompiler {
             switch self {
             case .swiftLocationError(let error):
                 return error.presentableDescription()
-            case .packageManagerError(let error):
+            case .packageManagerError(let error, let diagnostics):
                 #warning("Investigate diagnostics.")
-                return StrictString(error.localizedDescription)
+                let lines = [error.localizedDescription] + diagnostics.map({ $0.localizedDescription })
+                return StrictString(lines.joined(separator: "\n"))
             }
         }
     }

@@ -90,7 +90,7 @@ extension PackageRepository {
                     swiftCompiler: AbsolutePath(compiler.path))
                 return .success(manifest)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
         }
     }
@@ -101,15 +101,15 @@ extension PackageRepository {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
         case .success(let compiler):
+            let diagnostics = DiagnosticsEngine()
             do {
                 let manifest = try PackageBuilder.loadPackage(
                     packagePath: AbsolutePath(location.path),
                     swiftCompiler: AbsolutePath(compiler.path),
-                    diagnostics: DiagnosticsEngine())
-                    #warning("Investigate diagnostics.")
+                    diagnostics: diagnostics)
                 return .success(manifest)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, diagnostics.diagnostics))
             }
         }
     }
@@ -147,15 +147,15 @@ extension PackageRepository {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
         case .success(let compiler):
+        let diagnostics = DiagnosticsEngine()
             do {
                 let graph = try Workspace.loadGraph(
                     packagePath: AbsolutePath(location.path),
                     swiftCompiler: AbsolutePath(compiler.path),
-                    diagnostics: DiagnosticsEngine())
-                #warning("Investigate diagnostics.")
+                    diagnostics: diagnostics)
                 return .success(graph)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, diagnostics.diagnostics))
             }
         }
     }

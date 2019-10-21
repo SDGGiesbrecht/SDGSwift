@@ -46,7 +46,7 @@ extension SwiftCompiler {
             do {
                 destination = try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
             return .success(destination)
         }
@@ -60,7 +60,7 @@ extension SwiftCompiler {
             do {
                 toolchain = try UserToolchain(destination: destination)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
             return .success(toolchain)
         }
@@ -75,7 +75,7 @@ extension SwiftCompiler {
                 let resources = try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
                 return .success(resources)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
         }
     }
