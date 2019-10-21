@@ -35,6 +35,25 @@ extension SwiftCompiler {
         }
     }
 
+    internal static func withDiagnostics<T>(
+        _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T) -> Swift.Result<T, PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+        let diagnostics = DiagnosticsEngine()
+            do {
+                let result = try closure(compiler, diagnostics)
+                if diagnostics.hasErrors {
+                    return .failure(.packageManagerError(nil, diagnostics.diagnostics))
+                }
+                return .success(result)
+            } catch {
+                return .failure(.packageManagerError(error, diagnostics.diagnostics))
+            }
+        }
+    }
+
     private static func hostDestination() -> Swift.Result<Destination, PackageLoadingError> {
         switch location() {
         case .failure(let error):

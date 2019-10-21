@@ -139,20 +139,11 @@ extension PackageRepository {
 
     /// Returns the package graph.
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
-        switch SwiftCompiler.swiftCLocation() {
-        case .failure(let error):
-            return .failure(.swiftLocationError(error))
-        case .success(let compiler):
-        let diagnostics = DiagnosticsEngine()
-            do {
-                let graph = try Workspace.loadGraph(
-                    packagePath: AbsolutePath(location.path),
-                    swiftCompiler: AbsolutePath(compiler.path),
-                    diagnostics: diagnostics)
-                return .success(graph)
-            } catch {
-                return .failure(.packageManagerError(error, diagnostics.diagnostics))
-            }
+        return SwiftCompiler.withDiagnostics { compiler, diagnostics in
+            return try Workspace.loadGraph(
+                packagePath: AbsolutePath(location.path),
+                swiftCompiler: AbsolutePath(compiler.path),
+                diagnostics: diagnostics)
         }
     }
 

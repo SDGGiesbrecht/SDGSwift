@@ -71,7 +71,7 @@ class APITests : TestCase {
             testCustomStringConvertibleConformance(
                 of: error,
                 localizations: InterfaceLocalization.self,
-                uniqueTestName: "Package Manager",
+                uniqueTestName: "Diagnostics",
                 overwriteSpecificationInsteadOfFailing: false)
         }
     }

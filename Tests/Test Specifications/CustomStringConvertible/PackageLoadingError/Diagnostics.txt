@@ -1,0 +1,12 @@
+🇬🇧EN
+Source files for target Invalid should be located under 'Sources/Invalid', or a custom sources path can be set with the 'path' property in Package.swift
+
+🇺🇸EN
+Source files for target Invalid should be located under 'Sources/Invalid', or a custom sources path can be set with the 'path' property in Package.swift
+
+🇨🇦EN
+Source files for target Invalid should be located under 'Sources/Invalid', or a custom sources path can be set with the 'path' property in Package.swift
+
+🇩🇪DE
+Source files for target Invalid should be located under 'Sources/Invalid', or a custom sources path can be set with the 'path' property in Package.swift
+
