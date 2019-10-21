@@ -23,8 +23,6 @@ import SDGLocalization
 import SDGSwiftLocalizations
 import SDGSwift
 
-#warning("How many of these are actually needed?")
-import PackageLoading
 import Workspace
 
 extension SwiftCompiler {

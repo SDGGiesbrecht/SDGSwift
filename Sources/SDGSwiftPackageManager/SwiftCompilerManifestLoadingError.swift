@@ -41,7 +41,6 @@ extension SwiftCompiler {
             case .swiftLocationError(let error):
                 return error.presentableDescription()
             case .packageManagerError(let error, let diagnostics):
-                #warning("Investigate diagnostics.")
                 let lines = [error.localizedDescription] + diagnostics.map({ $0.localizedDescription })
                 return StrictString(lines.joined(separator: "\n"))
             }
