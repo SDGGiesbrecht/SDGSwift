@@ -17,11 +17,7 @@ import Foundation
 import SDGText
 import SDGLocalization
 
-#warning("How many of these are actually needed?")
-import Basic
 import PackageModel
-import PackageLoading
-import PackageGraph
 import Build
 import Workspace
 
