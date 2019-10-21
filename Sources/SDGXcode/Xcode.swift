@@ -326,7 +326,7 @@ public enum Xcode {
         let ignoredDirectories: [URL]
         switch package._directoriesIgnoredForTestCoverage() {
         case .failure(let error):
-            return .failure(.hostDestinationError(error))
+            return .failure(.packageManagerError(error))
         case .success(let directories):
             ignoredDirectories = directories
         }

@@ -27,8 +27,8 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// The host destination could not be determined.
-        case hostDestinationError(SwiftCompiler.HostDestinationError)
+        /// The package manager encountered an error.
+        case packageManagerError(SwiftCompiler.PackageLoadingError)
 
         /// The build directory could not be located.
         case buildDirectoryError(BuildDirectoryError)
@@ -48,7 +48,7 @@ extension Xcode {
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {
-            case .hostDestinationError(let error):
+            case .packageManagerError(let error):
                 return error.presentableDescription()
             case .buildDirectoryError(let error):
                 return error.presentableDescription()

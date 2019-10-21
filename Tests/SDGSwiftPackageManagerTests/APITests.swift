@@ -21,6 +21,8 @@ import SDGLocalization
 import SDGSwift
 import SDGSwiftPackageManager
 
+import Workspace
+
 import SDGSwiftLocalizations
 
 import XCTest
@@ -50,7 +52,28 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: SwiftCompiler.HostDestinationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(
+            of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Package Manager",
+            overwriteSpecificationInsteadOfFailing: false)
+
+        let invalidPackage = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Mock Projects")
+            .appendingPathComponent("Invalid")
+        switch PackageRepository(at: invalidPackage).packageGraph() {
+        case .success(let graph):
+            print(graph.allTargets.map({ $0.name }))
+            XCTFail("Should not have succeeded.")
+        case .failure(let error):
+            testCustomStringConvertibleConformance(
+                of: error,
+                localizations: InterfaceLocalization.self,
+                uniqueTestName: "Diagnostics",
+                overwriteSpecificationInsteadOfFailing: false)
+        }
     }
 
     func testIgnoredFileDetection() {

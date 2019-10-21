@@ -23,14 +23,38 @@ import SDGLocalization
 import SDGSwiftLocalizations
 import SDGSwift
 
-import PackageLoading
 import Workspace
 
 extension SwiftCompiler {
 
     // MARK: - Properties
 
-    private static func hostDestination() -> Swift.Result<Destination, HostDestinationError> {
+    internal static func swiftCLocation() -> Swift.Result<Foundation.URL, LocationError> {
+        return location().map { swift in
+            return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
+        }
+    }
+
+    internal static func withDiagnostics<T>(
+        _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T) -> Swift.Result<T, PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+            return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+        let diagnostics = DiagnosticsEngine()
+            do {
+                let result = try closure(compiler, diagnostics)
+                if diagnostics.hasErrors {
+                    return .failure(.packageManagerError(nil, diagnostics.diagnostics))
+                }
+                return .success(result)
+            } catch {
+                return .failure(.packageManagerError(error, diagnostics.diagnostics))
+            }
+        }
+    }
+
+    private static func hostDestination() -> Swift.Result<Destination, PackageLoadingError> {
         switch location() {
         case .failure(let error):
             return .failure(.swiftLocationError(error))
@@ -39,12 +63,12 @@ extension SwiftCompiler {
             do {
                 destination = try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
             return .success(destination)
         }
     }
-    internal static func hostToolchain() -> Swift.Result<UserToolchain, HostDestinationError> {
+    internal static func hostToolchain() -> Swift.Result<UserToolchain, PackageLoadingError> {
         switch hostDestination() {
         case .failure(let error):
             return .failure(error)
@@ -53,31 +77,34 @@ extension SwiftCompiler {
             do {
                 toolchain = try UserToolchain(destination: destination)
             } catch {
-                return .failure(.packageManagerError(error))
+                return .failure(.packageManagerError(error, []))
             }
             return .success(toolchain)
         }
     }
 
-    private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, HostDestinationError> {
-        return hostToolchain().map { $0.manifestResources }
+    private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, PackageLoadingError> {
+        return withDiagnostics { compiler, _ in
+            return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+        }
     }
 
-    internal static func manifestLoader() -> Swift.Result<ManifestLoader, HostDestinationError> {
+    internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
         return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
 
     // MARK: - Test Coverage
 
-    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.HostDestinationError> {
+    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
         return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<String, SwiftCompiler.HostDestinationError> {
+    private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<String, SwiftCompiler.PackageLoadingError> {
         return package.manifest().map { $0.name }
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.HostDestinationError> {
+    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
+        // #workaround(swift --version 5.1, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
         switch codeCoverageDirectory(for: package) {
         case .failure(let error):
             return .failure(error)
@@ -108,7 +135,7 @@ extension SwiftCompiler {
         let coverageDataFile: Foundation.URL
         switch codeCoverageDataFile(for: package) {
         case .failure(let error):
-            return .failure(.hostDestinationError(error))
+            return .failure(.packageManagerError(error))
         case .success(let file):
             coverageDataFile = file
         }
@@ -131,7 +158,7 @@ extension SwiftCompiler {
         let ignoredDirectories: [Foundation.URL]
         switch package._directoriesIgnoredForTestCoverage() {
         case .failure(let error):
-            return .failure(.hostDestinationError(error))
+            return .failure(.packageManagerError(error))
         case .success(let directories):
             ignoredDirectories = directories
         }
