@@ -84,16 +84,8 @@ extension SwiftCompiler {
     }
 
     private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, PackageLoadingError> {
-        switch SwiftCompiler.swiftCLocation() {
-        case .failure(let error):
-            return .failure(.swiftLocationError(error))
-        case .success(let compiler):
-            do {
-                let resources = try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
-                return .success(resources)
-            } catch {
-                return .failure(.packageManagerError(error, []))
-            }
+        return withDiagnostics { compiler, _ in
+            return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
         }
     }
 

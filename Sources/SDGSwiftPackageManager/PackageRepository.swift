@@ -76,37 +76,20 @@ extension PackageRepository {
 
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
-        switch SwiftCompiler.swiftCLocation() {
-        case .failure(let error):
-            return .failure(.swiftLocationError(error))
-        case .success(let compiler):
-            do {
-                let manifest = try ManifestLoader.loadManifest(
-                    packagePath: AbsolutePath(location.path),
-                    swiftCompiler: AbsolutePath(compiler.path))
-                return .success(manifest)
-            } catch {
-                return .failure(.packageManagerError(error, []))
-            }
+        return SwiftCompiler.withDiagnostics { compiler, _ in
+            return try ManifestLoader.loadManifest(
+            packagePath: AbsolutePath(location.path),
+            swiftCompiler: AbsolutePath(compiler.path))
         }
     }
 
     /// Returns the package structure.
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
-        switch SwiftCompiler.swiftCLocation() {
-        case .failure(let error):
-            return .failure(.swiftLocationError(error))
-        case .success(let compiler):
-            let diagnostics = DiagnosticsEngine()
-            do {
-                let manifest = try PackageBuilder.loadPackage(
-                    packagePath: AbsolutePath(location.path),
-                    swiftCompiler: AbsolutePath(compiler.path),
-                    diagnostics: diagnostics)
-                return .success(manifest)
-            } catch {
-                return .failure(.packageManagerError(error, diagnostics.diagnostics))
-            }
+        return SwiftCompiler.withDiagnostics { compiler, diagnostics in
+            return try PackageBuilder.loadPackage(
+                packagePath: AbsolutePath(location.path),
+                swiftCompiler: AbsolutePath(compiler.path),
+                diagnostics: diagnostics)
         }
     }
 
