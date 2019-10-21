@@ -57,6 +57,23 @@ class APITests : TestCase {
             localizations: InterfaceLocalization.self,
             uniqueTestName: "Package Manager",
             overwriteSpecificationInsteadOfFailing: false)
+
+        let invalidPackage = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Mock Projects")
+            .appendingPathComponent("Invalid")
+        switch PackageRepository(at: invalidPackage).packageGraph() {
+        case .success(let graph):
+            print(graph.allTargets.map({ $0.name }))
+            XCTFail("Should not have succeeded.")
+        case .failure(let error):
+            testCustomStringConvertibleConformance(
+                of: error,
+                localizations: InterfaceLocalization.self,
+                uniqueTestName: "Package Manager",
+                overwriteSpecificationInsteadOfFailing: false)
+        }
     }
 
     func testIgnoredFileDetection() {
