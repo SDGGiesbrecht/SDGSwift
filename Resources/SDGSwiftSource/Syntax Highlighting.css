@@ -91,7 +91,7 @@
     line-height: 1.26667;
 }
 
-.swift .text {
+.swift .text, .swift .source‐heading {
     font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     letter-spacing: 0;
 }
