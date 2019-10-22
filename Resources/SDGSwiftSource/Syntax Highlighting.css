@@ -99,6 +99,9 @@
 .swift .comment‐keyword {
     font-weight: bold;
 }
+.swift .source‐heading {
+    font-weight: bold;
+}
 
 .swift .url:link, .swift .url:visited {
     text-decoration: none;
