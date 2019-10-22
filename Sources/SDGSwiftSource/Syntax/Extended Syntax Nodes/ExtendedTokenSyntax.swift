@@ -85,7 +85,7 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
     public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
         switch kind {
-        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .parameter, .colon:
+        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .parameter, .colon:
             return ""
         case .documentationText:
             return HTML.escapeTextForCharacterData(text)
@@ -119,6 +119,9 @@ public class ExtendedTokenSyntax : ExtendedSyntax {
 
         case .mark, .language, .callout:
             return "comment‐keyword"
+
+        case .sourceHeadingText:
+            return "source‐heading"
 
         case .parameter:
             return "internal identifier"
