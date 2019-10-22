@@ -52,7 +52,7 @@
 }
 
 .swift .number {
-    color: #0E0EFF;
+    color: #1C00CF;
 }
 
 .swift .string {
@@ -71,6 +71,9 @@
 }
 .swift .comment‐punctuation {
     color: #003A00;
+}
+.swift .source‐heading {
+    color: #4A5560;
 }
 .swift .url {
     color: #0E0EFF;
