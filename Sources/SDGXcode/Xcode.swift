@@ -577,8 +577,20 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     ///     - sdk: The SDK.
-    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() } // @exempt(from: tests) Unreachable on Linux.
+    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> URL {
+        // Standard location, but predictable.
+        var url = URL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent("Library")
+            .appendingPathComponent("Developer")
+            .appendingPathComponent("Xcode")
+            .appendingPathComponent("DerivedData")
+            .appendingPathComponent(package.location.lastPathComponent)
+        if (try? package.xcodeProject()) == nil {
+            url = url.appendingPathComponent("Package")
+        } else {
+            url = url.appendingPathComponent("Xcode")
+        }
+        return url
     }
 
     /// Runs a custom subcommand of xcodebuild.
