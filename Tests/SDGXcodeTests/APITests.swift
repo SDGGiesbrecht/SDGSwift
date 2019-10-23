@@ -35,8 +35,8 @@ import SDGSwiftTestUtilities
 class APITests : TestCase {
 
     func testDependencyWarnings() throws {
-        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            for withGeneratedProject in [false, true] {
+        for withGeneratedProject in [false, true] {
+            try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
                 if withGeneratedProject {
                     _ = try package.generateXcodeProject().get()
                 }
