@@ -512,11 +512,8 @@ public enum Xcode {
             return .failure(.foundationError(error))
         }
 
-        var environment = ProcessInfo.processInfo.environment
-        environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
-
         let information: String
-        switch runCustomSubcommand(["\u{2D}list"], in: package.location, with: environment) {
+        switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
         case .failure(let error):
             return .failure(.xcodeError(error))
         case .success(let output): // @exempt(from: tests) Unreachable on Linux.
@@ -589,6 +586,9 @@ public enum Xcode {
         with environment: [String: String]? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.Error> {
+
+        var environment = environment ?? ProcessInfo.processInfo.environment
+        environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
 
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
 
