@@ -1,0 +1,19 @@
+    SDKROOT = macosx.
+  Mock: /tmp/Mock
+$ xcodebuild test -sdk macosx -scheme Mock
+** TEST SUCCEEDED **
+Resolve Package Graph
+Resolved source packages:
+Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
+Test Case '-[MockTests.MockTests testExample]' started.
+Test Suite 'All tests' passed at -- ::..
+Test Suite 'All tests' started at -- ::.
+Test Suite 'MockTests' passed at -- ::..
+Test Suite 'MockTests' started at -- ::.
+Test Suite 'MockTests.xctest' passed at -- ::..
+Test Suite 'MockTests.xctest' started at -- ::.
+Test session results, code coverage, and logs:
+Testing started on 'My Mac'
+note: Constructing build description
+note: Planning build
+note: Using new build system

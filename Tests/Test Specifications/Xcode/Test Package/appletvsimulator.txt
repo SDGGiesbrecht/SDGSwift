@@ -1,0 +1,39 @@
+		SimDevice: Apple TV K (C-DF-CFF-A-FCDCDC, tvOS ., Shutdown)
+  Mock: /tmp/Mock
+$ xcodebuild test -destination name=Apple TV K -scheme Mock
+** TEST SUCCEEDED **
+CodeSign [...]/MockTests.xctest
+Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
+Method:   -primaryInstrumentsServerWithError:
+Object:   <DVTiPhoneSimulator: xbde>
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+ProcessInfoPlistFile [...]/empty.plist
+Resolve Package Graph
+Resolved source packages:
+Signing Identity:     "-"
+Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
+Test Case '-[MockTests.MockTests testExample]' started.
+Test Suite 'All tests' passed at -- ::..
+Test Suite 'All tests' started at -- ::.
+Test Suite 'MockTests' passed at -- ::..
+Test Suite 'MockTests' started at -- ::.
+Test Suite 'MockTests.xctest' passed at -- ::..
+Test Suite 'MockTests.xctest' started at -- ::.
+Test session results, code coverage, and logs:
+Testing started on 'Apple TV K'
+Thread:   <NSThread: xcfd>{number = , name = main}
+note: Constructing build description
+note: Planning build
+note: Using new build system
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
+xcodebuild: [] Promise xadd: Device C-DF-CFF-A-FCDCDC reached desired state.
+xcodebuild: [] Promise xadd: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
+xcodebuild: [] Promise xbcb: Device C-DF-CFF-A-FCDCDC reached desired state.
+xcodebuild: [] Promise xbcb: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
+xcodebuild: [] Promise xbdba: Device C-DF-CFF-A-FCDCDC reached desired state.
+xcodebuild: [] Promise xbdba: Device C-DF-CFF-A-FCDCDC transitioned from state booting to state booted.  Desired state: booted
+xcodebuild: [] Promise xbdba: Device C-DF-CFF-A-FCDCDC transitioned from state shutdown to state booting.  Desired state: booted
+xcodebuild: [] Promise xbdba: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: shutdown
+xcodebuild: [] Promise xbdca: Device C-DF-CFF-A-FCDCDC reached desired state.
+xcodebuild: [] Promise xbdca: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
+} (. (J))

@@ -1,15 +1,41 @@
 		SimDevice: iPhone  (ACF-DD-EE-BE-FABAA, iOS ., Shutdown)
-  Mock: /tmp/Mock
-$ xcodebuild test -destination name=iPhone  -scheme Mock
+        "FMCVDTZ."
+    "application-identifier" = "FMCVDTZ.";
+    "keychain-access-groups" =     (
+    );
+$ xcodebuild test -destination name=iPhone  -scheme Mock-Package
 ** TEST SUCCEEDED **
+CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
+Codesigning [...]/libswiftCore.dylib
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftCore.dylib
 Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests-Swift.h
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Entitlements:
+Ld [...]/Mock normal x_
+Ld [...]/MockTests normal x_
+MergeSwiftModule normal x_
 Method:   -primaryInstrumentsServerWithError:
-Object:   <DVTiPhoneSimulator: xdb>
+MkDir [...]/Headers
+MkDir [...]/Mock.framework
+MkDir [...]/MockTests.xctest
+Object:   <DVTiPhoneSimulator: xadb>
 Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-ProcessInfoPlistFile [...]/empty.plist
-Resolve Package Graph
-Resolved source packages:
+ProcessInfoPlistFile [...]/MockTests_Info.plist
+ProcessInfoPlistFile [...]/Mock_Info.plist
+ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
+RegisterExecutionPolicyException [...]/Mock.framework
+RegisterExecutionPolicyException [...]/MockTests.xctest
 Signing Identity:     "-"
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
@@ -21,19 +47,33 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started on 'iPhone '
-Thread:   <NSThread: xda>{number = , name = main}
+Thread:   <NSThread: xde>{number = , name = main}
+Touch [...]/Mock.framework
+Touch [...]/MockTests.xctest
+WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted"
 note: Constructing build description
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'Mock' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system
 xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
-xcodebuild: [] Promise xbdbc: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xbdbc: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
-xcodebuild: [] Promise xc: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xc: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
-xcodebuild: [] Promise xcf: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xcf: Device ACF-DD-EE-BE-FABAA transitioned from state booting to state booted.  Desired state: booted
-xcodebuild: [] Promise xcf: Device ACF-DD-EE-BE-FABAA transitioned from state shutdown to state booting.  Desired state: booted
-xcodebuild: [] Promise xcf: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: shutdown
-xcodebuild: [] Promise xdaed: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xdaed: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
+xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA reached desired state.
+xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA transitioned from state booting to state booted.  Desired state: booted
+xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA transitioned from state shutdown to state booting.  Desired state: booted
+xcodebuild: [] Promise xac: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: shutdown
+xcodebuild: [] Promise xbdc: Device ACF-DD-EE-BE-FABAA reached desired state.
+xcodebuild: [] Promise xbdc: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
+xcodebuild: [] Promise xbdd: Device ACF-DD-EE-BE-FABAA reached desired state.
+xcodebuild: [] Promise xbdd: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
+xcodebuild: [] Promise xdacaa: Device ACF-DD-EE-BE-FABAA reached desired state.
+xcodebuild: [] Promise xdacaa: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
+{
+}
 } (. (A))
