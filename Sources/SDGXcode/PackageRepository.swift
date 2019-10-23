@@ -91,10 +91,7 @@ extension PackageRepository {
     }
 
     /// The derived data directory for the package.
-    ///
-    /// - Parameters:
-    ///     - sdk: The SDK.
-    public func derivedData() -> URL {
+    public var derivedData: URL {
         #warning("Is this still necessary? (Its semantics are questionable.)")
         return Xcode.derivedData(for: self)
     }

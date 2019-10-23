@@ -88,9 +88,8 @@ class APITests : TestCase {
                 for sdk in sdks {
                     print("Testing build for \(sdk.commandLineName)...")
 
-                    if let derived = try? mock.derivedData(for: sdk).get() {
-                        try? FileManager.default.removeItem(at: derived)
-                    }
+                    let derived = mock.derivedData
+                    try? FileManager.default.removeItem(at: derived)
 
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     let processLog: (String) -> Void = { outputLine in
@@ -135,9 +134,8 @@ class APITests : TestCase {
                 for sdk in testSDKs {
                     print("Testing testing on \(sdk.commandLineName)...")
 
-                    if let derived = try? mock.derivedData(for: sdk).get() {
-                        try? FileManager.default.removeItem(at: derived)
-                    }
+                    let derived = mock.derivedData
+                    try? FileManager.default.removeItem(at: derived)
 
                     var log = Set<String>() // Xcode’s order is not deterministic.
                     let processLog: (String) -> Void = { outputLine in

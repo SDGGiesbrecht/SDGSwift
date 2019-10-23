@@ -569,7 +569,6 @@ public enum Xcode {
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///     - sdk: The SDK.
     public static func derivedData(for package: PackageRepository) -> URL {
         #warning("Should this be private, now that it does not query Xcode?")
         // Standard location, but predictable.
