@@ -35,13 +35,16 @@ import SDGSwiftTestUtilities
 class APITests : TestCase {
 
     func testDependencyWarnings() throws {
-        #warning("Test both ways.")
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            _ = try package.generateXcodeProject().get()
-            #if !os(Linux)
-            let build = try package.build(for: .macOS).get()
-            XCTAssertFalse(Xcode.warningsOccurred(during: build))
-            #endif
+            for withGeneratedProject in [false, true] {
+                if withGeneratedProject {
+                    _ = try package.generateXcodeProject().get()
+                }
+                #if !os(Linux)
+                let build = try package.build(for: .macOS).get()
+                XCTAssertFalse(Xcode.warningsOccurred(during: build))
+                #endif
+            }
         }
     }
 
