@@ -15,7 +15,7 @@
 extension Xcode {
 
     /// An Xcode SDK.
-    public enum SDK {
+    public enum SDK : Equatable {
 
         /// macOS.
         case macOS

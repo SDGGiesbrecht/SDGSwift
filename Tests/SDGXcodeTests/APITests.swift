@@ -70,7 +70,7 @@ class APITests : TestCase {
                 XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
                 #endif
 
-                let sdks: [Xcode.SDK] = [
+                var sdks: [Xcode.SDK] = [
                     .macOS,
                     .iOS(simulator: false),
                     .iOS(simulator: true),
@@ -78,6 +78,10 @@ class APITests : TestCase {
                     .tvOS(simulator: false),
                     .tvOS(simulator: true)
                 ]
+                if ¬withGeneratedProject {
+                    // #workaround(xcodebuild -version 11.1, WatchOS cannot handle test targets.)
+                    sdks.removeAll(where: { $0 == .watchOS })
+                }
                 for sdk in sdks {
                     print("Testing build for \(sdk.commandLineName)...")
 
