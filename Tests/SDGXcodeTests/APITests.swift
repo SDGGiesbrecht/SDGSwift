@@ -35,6 +35,7 @@ import SDGSwiftTestUtilities
 class APITests : TestCase {
 
     func testDependencyWarnings() throws {
+        #warning("Test both ways.")
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             _ = try package.generateXcodeProject().get()
             #if !os(Linux)
@@ -56,89 +57,98 @@ class APITests : TestCase {
         #endif
 
         try withDefaultMockRepository { mock in
-            _ = try mock.generateXcodeProject().get()
-            XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-            let mockScheme = try? mock.scheme().get()
-            #if !os(Linux)
-            XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
-            #endif
-
-            let sdks: [Xcode.SDK] = [
-                .macOS,
-                .iOS(simulator: false),
-                .iOS(simulator: true),
-                .watchOS,
-                .tvOS(simulator: false),
-                .tvOS(simulator: true)
-            ]
-            for sdk in sdks {
-                print("Testing build for \(sdk.commandLineName)...")
-
-                if let derived = try? mock.derivedData(for: sdk).get() {
-                    try? FileManager.default.removeItem(at: derived)
+            for withGeneratedProject in [false, true] {
+                if withGeneratedProject {
+                    _ = try mock.generateXcodeProject().get()
                 }
 
-                var log = Set<String>() // Xcode’s order is not deterministic.
-                let processLog: (String) -> Void = { outputLine in
-                    if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                        XCTAssert(abbreviated.count < 100
-                            ∨ abbreviated.contains("warning:")
-                            ∨ abbreviated.contains("error:"),
-                                  "Output is too long: " + abbreviated)
-                        log.insert(abbreviated)
-                    }
-                }
-                #if os(Linux)
-                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
-                #else
-                _ = try mock.build(for: sdk, reportProgress: processLog).get()
-                #endif
-
-                var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
-                filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
-                filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
+                let mockScheme = try? mock.scheme().get()
                 #if !os(Linux)
-                compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
                 #endif
-            }
 
-            let testSDKs: [Xcode.SDK] = [
-                .macOS
-                // .iOS(simulator: true), // Unavailable in CI.
-                // .tvOS(simulator: true), // Unavailable in CI.
-            ]
-            for sdk in testSDKs {
-                print("Testing testing on \(sdk.commandLineName)...")
+                let sdks: [Xcode.SDK] = [
+                    .macOS,
+                    .iOS(simulator: false),
+                    .iOS(simulator: true),
+                    .watchOS,
+                    .tvOS(simulator: false),
+                    .tvOS(simulator: true)
+                ]
+                for sdk in sdks {
+                    print("Testing build for \(sdk.commandLineName)...")
 
-                if let derived = try? mock.derivedData(for: sdk).get() {
-                    try? FileManager.default.removeItem(at: derived)
-                }
-
-                var log = Set<String>() // Xcode’s order is not deterministic.
-                let processLog: (String) -> Void = { outputLine in
-                    if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                        XCTAssert(abbreviated.count < 100
-                            ∨ abbreviated.contains("warning:")
-                            ∨ abbreviated.contains("error:")
-                            ∨ abbreviated.contains("Failed"),
-                                  "Output is too long: " + abbreviated)
-                        log.insert(abbreviated)
+                    if let derived = try? mock.derivedData(for: sdk).get() {
+                        try? FileManager.default.removeItem(at: derived)
                     }
-                }
-                #if os(Linux)
-                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
-                #else
-                _ = try mock.test(on: sdk, reportProgress: processLog).get()
-                #endif
 
-                var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
-                filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
-                filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
-                filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
-                filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
-                #if !os(Linux)
-                compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
-                #endif
+                    var log = Set<String>() // Xcode’s order is not deterministic.
+                    let processLog: (String) -> Void = { outputLine in
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                            XCTAssert(abbreviated.count < 100
+                                ∨ abbreviated.contains("warning:")
+                                ∨ abbreviated.contains("error:"),
+                                      "Output is too long: " + abbreviated)
+                            log.insert(abbreviated)
+                        }
+                    }
+                    #if os(Linux)
+                    _ = try? mock.build(for: sdk, reportProgress: processLog).get()
+                    #else
+                    _ = try mock.build(for: sdk, reportProgress: processLog).get()
+                    #endif
+
+                    var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                    #if !os(Linux)
+                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Build").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                    #endif
+                }
+
+                var testSDKs: [Xcode.SDK] = [
+                    .macOS
+                ]
+                if ProcessInfo.processInfo.environment["TRAVIS"] == nil { // Unavailable in CI.
+                    testSDKs.append(contentsOf: [
+                        .iOS(simulator: true),
+                        .tvOS(simulator: true)
+                    ])
+                }
+                for sdk in testSDKs {
+                    print("Testing testing on \(sdk.commandLineName)...")
+
+                    if let derived = try? mock.derivedData(for: sdk).get() {
+                        try? FileManager.default.removeItem(at: derived)
+                    }
+
+                    var log = Set<String>() // Xcode’s order is not deterministic.
+                    let processLog: (String) -> Void = { outputLine in
+                        if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                            XCTAssert(abbreviated.count < 100
+                                ∨ abbreviated.contains("warning:")
+                                ∨ abbreviated.contains("error:")
+                                ∨ abbreviated.contains("Failed"),
+                                      "Output is too long: " + abbreviated)
+                            log.insert(abbreviated)
+                        }
+                    }
+                    #if os(Linux)
+                    _ = try? mock.test(on: sdk, reportProgress: processLog).get()
+                    #else
+                    _ = try mock.test(on: sdk, reportProgress: processLog).get()
+                    #endif
+
+                    var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
+                    filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
+                    filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                    #if !os(Linux)
+                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                    #endif
+                }
             }
         }
 
@@ -146,6 +156,7 @@ class APITests : TestCase {
     }
 
     func testXcodeCoverage() throws {
+        #warning("Test both ways.")
         #if os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(["help"]).get()
         #else
