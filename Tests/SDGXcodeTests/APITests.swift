@@ -194,48 +194,52 @@ class APITests : TestCase {
         #endif
 
         try withDefaultMockRepository { mock in
-            let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
-            let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
-            let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
-            let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
-            try? FileManager.default.removeItem(at: sourceDestination)
-            try FileManager.default.copy(
-                sourceURL,
-                to: sourceDestination)
-            try? FileManager.default.removeItem(at: testDestination)
-            try FileManager.default.copy(
-                coverageFiles.appendingPathComponent("Tests.swift"),
-                to: testDestination)
+            for withGeneratedProject in [false, true] {
+                let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
+                let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
+                let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
+                let testDestination = mock.location.appendingPathComponent("Tests/MockTests/MockTests.swift")
+                try? FileManager.default.removeItem(at: sourceDestination)
+                try FileManager.default.copy(
+                    sourceURL,
+                    to: sourceDestination)
+                try? FileManager.default.removeItem(at: testDestination)
+                try FileManager.default.copy(
+                    coverageFiles.appendingPathComponent("Tests.swift"),
+                    to: testDestination)
 
-            _ = try mock.generateXcodeProject().get()
-            #if os(Linux)
-            _ = try? mock.test(on: .macOS).get()
-            #else
-            _ = try mock.test(on: .macOS).get()
-            #endif
-            for localization in InterfaceLocalization.allCases {
-                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                    let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
-                    #if !os(Linux)
-                    guard let coverageReport = possibleReport else {
-                        XCTFail("No test coverage report found.")
-                        return
-                    }
-                    guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
-                        XCTFail("File missing from coverage report.")
-                        return
-                    }
-                    do {
-                        var specification = try String(from: sourceURL)
-                        for range in file.regions.reversed() {
-                            specification.insert("!", at: range.region.upperBound)
-                            specification.insert("¡", at: range.region.lowerBound)
+                if withGeneratedProject {
+                    _ = try mock.generateXcodeProject().get()
+                }
+                #if os(Linux)
+                _ = try? mock.test(on: .macOS).get()
+                #else
+                _ = try mock.test(on: .macOS).get()
+                #endif
+                for localization in InterfaceLocalization.allCases {
+                    LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                        let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
+                        #if !os(Linux)
+                        guard let coverageReport = possibleReport else {
+                            XCTFail("No test coverage report found.")
+                            return
                         }
-                        compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
-                    } catch {
-                        XCTFail("Failed to load source.")
+                        guard let file = coverageReport.files.first(where: { $0.file.lastPathComponent == "Mock.swift" }) else {
+                            XCTFail("File missing from coverage report.")
+                            return
+                        }
+                        do {
+                            var specification = try String(from: sourceURL)
+                            for range in file.regions.reversed() {
+                                specification.insert("!", at: range.region.upperBound)
+                                specification.insert("¡", at: range.region.lowerBound)
+                            }
+                            compare(specification, against: testSpecificationDirectory().appendingPathComponent("Coverage (Xcode).txt"), overwriteSpecificationInsteadOfFailing: false)
+                        } catch {
+                            XCTFail("Failed to load source.")
+                        }
+                        #endif
                     }
-                    #endif
                 }
             }
         }
