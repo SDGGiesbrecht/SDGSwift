@@ -1,0 +1,13 @@
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk macosx -scheme Mock
+** BUILD SUCCEEDED **
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+MergeSwiftModule normal x86_64
+Resolve Package Graph
+Resolved source packages:
+note: Planning build
+note: Using build description from disk
+note: Using new build system

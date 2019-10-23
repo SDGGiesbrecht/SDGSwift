@@ -1,0 +1,15 @@
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk iphoneos -scheme Mock
+** BUILD SUCCEEDED **
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
+MergeSwiftModule normal arm64
+MergeSwiftModule normal armv7
+Resolve Package Graph
+Resolved source packages:
+note: Planning build
+note: Using build description from disk
+note: Using new build system
