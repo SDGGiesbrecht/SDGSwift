@@ -266,8 +266,8 @@ public enum Xcode {
         return false
     }
 
-    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") } // @exempt(from: tests) Unreachable on Linux.
+    private static func coverageDirectory(for package: PackageRepository) -> URL {
+        return derivedData(for: package).appendingPathComponent("Logs/Test") // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Tests the package.
@@ -283,11 +283,8 @@ public enum Xcode {
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
-        if let coverage = try? coverageDirectory(for: package, on: sdk).get() {
-            // @exempt(from: tests) Unreachable on Linux.
-            // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
-            try? FileManager.default.removeItem(at: coverage)
-        }
+        let coverage = self.coverageDirectory(for: package)
+        try? FileManager.default.removeItem(at: coverage)
 
         var command = ["test"]
 
@@ -340,13 +337,7 @@ public enum Xcode {
             ignoredDirectories = directories
         }
 
-        let coverageDirectory: URL
-        switch self.coverageDirectory(for: package, on: sdk) {
-        case .failure(let error):
-            return .failure(.buildDirectoryError(error))
-        case .success(let directory): // @exempt(from: tests) Unreachable on Linux.
-            coverageDirectory = directory
-        }
+        let coverageDirectory = self.coverageDirectory(for: package)
         let coverageDirectoryContents: [URL]
         do {
             coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
@@ -577,7 +568,8 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     ///     - sdk: The SDK.
-    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> URL {
+    public static func derivedData(for package: PackageRepository) -> URL {
+        #warning("Should this be private, now that it does not query Xcode?")
         // Standard location, but predictable.
         var url = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("Library")

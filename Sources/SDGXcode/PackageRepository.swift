@@ -94,7 +94,8 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - sdk: The SDK.
-    public func derivedData(for sdk: Xcode.SDK) -> Result<URL, Xcode.BuildDirectoryError> {
-        return Xcode.derivedData(for: self, on: sdk)
+    public func derivedData() -> URL {
+        #warning("Is this still necessary? (Its semantics are questionable.)")
+        return Xcode.derivedData(for: self)
     }
 }

@@ -21,6 +21,7 @@ extension Xcode {
 
     /// An error encountered while searching for Xcode’s build directory.
     public enum BuildDirectoryError : PresentableError {
+        #warning("Is this still necessary?")
 
         // MARK: - Cases
 

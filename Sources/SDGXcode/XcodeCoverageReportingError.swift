@@ -30,6 +30,7 @@ extension Xcode {
         /// The package manager encountered an error.
         case packageManagerError(SwiftCompiler.PackageLoadingError)
 
+        #warning("Is this still needed?")
         /// The build directory could not be located.
         case buildDirectoryError(BuildDirectoryError)
 
