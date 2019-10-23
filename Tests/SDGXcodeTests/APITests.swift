@@ -186,7 +186,6 @@ class APITests : TestCase {
     }
 
     func testXcodeCoverage() throws {
-        #warning("Test both ways.")
         #if os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(["help"]).get()
         #else
