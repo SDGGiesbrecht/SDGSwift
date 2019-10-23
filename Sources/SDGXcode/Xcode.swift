@@ -266,8 +266,8 @@ public enum Xcode {
         return false
     }
 
-    private static func coverageDirectory(for package: PackageRepository) -> URL {
-        return derivedData(for: package).appendingPathComponent("Logs/Test") // @exempt(from: tests) Unreachable on Linux.
+    private static func coverageDirectory(in derivedData: URL) -> URL {
+        return derivedData.appendingPathComponent("Logs/Test") // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Tests the package.
@@ -283,7 +283,9 @@ public enum Xcode {
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
-        let coverage = self.coverageDirectory(for: package)
+        #warning("Make overridable.")
+        let derivedData = stableDerivedData(for: package)
+        let coverage = coverageDirectory(in: derivedData)
         try? FileManager.default.removeItem(at: coverage)
 
         var command = ["test"]
@@ -305,7 +307,7 @@ public enum Xcode {
         }
 
         command += ["\u{2D}enableCodeCoverage", "YES"]
-        command += ["\u{2D}derivedDataPath", derivedData(for: package).path]
+        command += ["\u{2D}derivedDataPath", derivedData.path]
 
         return runCustomSubcommand(
             command,
@@ -338,7 +340,9 @@ public enum Xcode {
             ignoredDirectories = directories
         }
 
-        let coverageDirectory = self.coverageDirectory(for: package)
+        #warning("Make overridable.")
+        let derivedData = stableDerivedData(for: package)
+        let coverageDirectory = self.coverageDirectory(in: derivedData)
         let coverageDirectoryContents: [URL]
         do {
             coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
@@ -565,13 +569,13 @@ public enum Xcode {
         }
     }
 
-    /// The derived data directory for the package.
+    /// A stable directory that can be used for this package’s derived data.
+    ///
+    /// Xcode’s default directory is hard to predict in order to get results from it afterward. This directory is in the same parent directory as Xcode’s default, but it is deterministic.
     ///
     /// - Parameters:
     ///     - package: The package.
-    public static func derivedData(for package: PackageRepository) -> URL {
-        #warning("Should this be private, now that it does not query Xcode?")
-        // Standard location, but predictable.
+    public static func stableDerivedData(for package: PackageRepository) -> URL {
         var url = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("Library")
             .appendingPathComponent("Developer")

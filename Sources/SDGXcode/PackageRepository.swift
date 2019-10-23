@@ -90,9 +90,10 @@ extension PackageRepository {
         return Xcode.codeCoverageReport(for: self, on: sdk, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
     }
 
-    /// The derived data directory for the package.
-    public var derivedData: URL {
-        #warning("Is this still necessary? (Its semantics are questionable.)")
-        return Xcode.derivedData(for: self)
+    /// A stable directory that can be used for this package’s derived data.
+    ///
+    /// Xcode’s default directory is hard to predict in order to get results from it afterward. This directory is in the same parent directory as Xcode’s default, but it is deterministic.
+    public var stableDerivedData: URL {
+        return Xcode.stableDerivedData(for: self)
     }
 }
