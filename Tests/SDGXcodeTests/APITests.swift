@@ -163,6 +163,9 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("<DVTiPhoneSimulator:") }) // Inconsistent identifiers.
+                    filtered = filtered.filter({ ¬$0.hasPrefix(" Promise ") }) // Inconsistent identifiers.
+                    filtered = filtered.filter({ ¬$0.hasPrefix("<NSThread:") }) // Inconsistent identifiers.
                     #if !os(Linux)
                     compare(
                         filtered.sorted().joined(separator: "\n"),
