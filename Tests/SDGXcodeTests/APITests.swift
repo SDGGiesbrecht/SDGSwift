@@ -146,7 +146,8 @@ class APITests : TestCase {
                                 ∨ abbreviated.contains("note:")
                                 ∨ abbreviated.contains("failed")
                                 ∨ abbreviated.contains("bug")
-                                ∨ abbreviated.contains("Promise"),
+                                ∨ abbreviated.contains("Promise")
+                                ∨ abbreviated.contains("Warning"),
                                       "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
@@ -163,7 +164,13 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
                     #if !os(Linux)
-                    compare(filtered.sorted().joined(separator: "\n"), against: testSpecificationDirectory().appendingPathComponent("Xcode").appendingPathComponent("Test").appendingPathComponent(sdk.commandLineName + ".txt"), overwriteSpecificationInsteadOfFailing: false)
+                    compare(
+                        filtered.sorted().joined(separator: "\n"),
+                        against: testSpecificationDirectory()
+                            .appendingPathComponent("Xcode")
+                            .appendingPathComponent("Test" + (withGeneratedProject ? "" : " Package"))
+                            .appendingPathComponent(sdk.commandLineName + ".txt"),
+                        overwriteSpecificationInsteadOfFailing: false)
                     #endif
                 }
             }
