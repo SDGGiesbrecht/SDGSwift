@@ -305,6 +305,7 @@ public enum Xcode {
         }
 
         command += ["\u{2D}enableCodeCoverage", "YES"]
+        command += ["\u{2D}derivedDataPath", derivedData(for: package).path]
 
         return runCustomSubcommand(
             command,
@@ -551,6 +552,7 @@ public enum Xcode {
     }
 
     private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
+        #warning("Is this necessary?")
         switch buildSettings(for: package, on: sdk) {
         case .failure(let error):
             return .failure(.schemeError(error))
