@@ -27,6 +27,7 @@ extension Xcode {
         /// Foundation encountered an error.
         case foundationError(Swift.Error)
 
+        #warning("Is this still necessary?")
         /// The package has no Xcode project.
         case noXcodeProject
 

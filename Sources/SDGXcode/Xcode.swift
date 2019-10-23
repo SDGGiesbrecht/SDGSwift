@@ -511,10 +511,6 @@ public enum Xcode {
         } catch {
             return .failure(.foundationError(error))
         }
-        if xcodeProject == nil {
-            // @exempt(from: tests)
-            return .failure(.noXcodeProject)
-        }
 
         let information: String
         switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
