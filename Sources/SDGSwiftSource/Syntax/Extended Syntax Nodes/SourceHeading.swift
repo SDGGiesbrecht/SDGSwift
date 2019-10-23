@@ -19,7 +19,7 @@ public class SourceHeadingSyntax : ExtendedSyntax {
         let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
         self.mark = markSyntax
 
-        let headingSyntax = ExtendedTokenSyntax(text: heading, kind: .commentText)
+        let headingSyntax = ExtendedTokenSyntax(text: heading, kind: .sourceHeadingText)
         self.heading = headingSyntax
 
         super.init(children: [markSyntax, headingSyntax])

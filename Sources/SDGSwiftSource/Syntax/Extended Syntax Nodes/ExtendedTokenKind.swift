@@ -52,6 +52,9 @@ public enum ExtendedTokenKind {
     /// A source heading delimiter.
     case mark
 
+    /// The text of a source heading.
+    case sourceHeadingText
+
     /// A pair of slashes delimiting a line comment.
     case lineDocumentationDelimiter
 
@@ -115,7 +118,7 @@ public enum ExtendedTokenKind {
     /// The amount of freedom avialable to the token’s text.
     public var textFreedom: TextFreedom {
         switch self {
-        case .string, .whitespace, .commentText, .documentationText:
+        case .string, .whitespace, .commentText, .sourceHeadingText, .documentationText:
             return .arbitrary
         case .quotationMark, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .callout, .parameter, .colon, .lineSeparator:
             return .invariable
