@@ -144,7 +144,9 @@ class APITests : TestCase {
                                 ∨ abbreviated.contains("error:")
                                 ∨ abbreviated.contains("Failed")
                                 ∨ abbreviated.contains("note:")
-                                ∨ abbreviated.contains("failed"),
+                                ∨ abbreviated.contains("failed")
+                                ∨ abbreviated.contains("bug")
+                                ∨ abbreviated.contains("Promise"),
                                       "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
