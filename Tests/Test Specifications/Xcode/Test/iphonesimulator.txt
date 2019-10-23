@@ -29,7 +29,6 @@ Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-Object:   <DVTiPhoneSimulator: xadb>
 Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
@@ -47,7 +46,6 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started on 'iPhone '
-Thread:   <NSThread: xde>{number = , name = main}
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
@@ -64,16 +62,6 @@ note: Execution policy exception registration failed and was skipped: Error Doma
 note: Planning build
 note: Using new build system
 xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
-xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA transitioned from state booting to state booted.  Desired state: booted
-xcodebuild: [] Promise xac: Device ACF-DD-EE-BE-FABAA transitioned from state shutdown to state booting.  Desired state: booted
-xcodebuild: [] Promise xac: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: shutdown
-xcodebuild: [] Promise xbdc: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xbdc: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
-xcodebuild: [] Promise xbdd: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xbdd: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
-xcodebuild: [] Promise xdacaa: Device ACF-DD-EE-BE-FABAA reached desired state.
-xcodebuild: [] Promise xdacaa: Waiting for device ACF-DD-EE-BE-FABAA to enter state booted; initial state: booted
 {
 }
 } (. (A))

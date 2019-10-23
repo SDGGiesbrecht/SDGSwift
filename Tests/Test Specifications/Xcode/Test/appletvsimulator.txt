@@ -29,7 +29,6 @@ Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-Object:   <DVTiPhoneSimulator: xbec>
 Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
@@ -47,7 +46,6 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started on 'Apple TV K'
-Thread:   <NSThread: xe>{number = , name = main}
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
@@ -64,16 +62,6 @@ note: Execution policy exception registration failed and was skipped: Error Doma
 note: Planning build
 note: Using new build system
 xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
-xcodebuild: [] Promise xaee: Device C-DF-CFF-A-FCDCDC reached desired state.
-xcodebuild: [] Promise xaee: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
-xcodebuild: [] Promise xafa: Device C-DF-CFF-A-FCDCDC reached desired state.
-xcodebuild: [] Promise xafa: Device C-DF-CFF-A-FCDCDC transitioned from state booting to state booted.  Desired state: booted
-xcodebuild: [] Promise xafa: Device C-DF-CFF-A-FCDCDC transitioned from state shutdown to state booting.  Desired state: booted
-xcodebuild: [] Promise xafa: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: shutdown
-xcodebuild: [] Promise xbfe: Device C-DF-CFF-A-FCDCDC reached desired state.
-xcodebuild: [] Promise xbfe: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
-xcodebuild: [] Promise xcfbe: Device C-DF-CFF-A-FCDCDC reached desired state.
-xcodebuild: [] Promise xcfbe: Waiting for device C-DF-CFF-A-FCDCDC to enter state booted; initial state: booted
 {
 }
 } (. (J))
