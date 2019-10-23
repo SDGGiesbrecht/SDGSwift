@@ -307,6 +307,8 @@ public enum Xcode {
             command += ["\u{2D}scheme", scheme]
         }
 
+        command += ["\u{2D}enableCodeCoverage", "YES"]
+
         return runCustomSubcommand(
             command,
             in: package.location,
