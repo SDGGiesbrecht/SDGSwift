@@ -94,7 +94,8 @@ class APITests : TestCase {
                         if let abbreviated = Xcode.abbreviate(output: outputLine) {
                             XCTAssert(abbreviated.count < 100
                                 ∨ abbreviated.contains("warning:")
-                                ∨ abbreviated.contains("error:"),
+                                ∨ abbreviated.contains("error:")
+                                ∨ abbreviated.contains("note:"),
                                       "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
