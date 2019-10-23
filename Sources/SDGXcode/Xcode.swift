@@ -529,14 +529,15 @@ public enum Xcode {
         }
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
-        for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
-            // @exempt(from: tests) Unreachable on Linux.
-            var section = line.line
-            section = section.drop(while: { $0 ∈ CharacterSet.whitespaces })
-            return .success(String(String.ScalarView(section)))
+        let searchZone = information.lines[zoneStart...]
+        guard let line = searchZone.first(where: { $0.line.hasSuffix("\u{2D}Package".scalars) })
+            ?? searchZone.first(where: { $0.line.contains(where: { $0 ∉ CharacterSet.whitespaces }) }) else {
+                // @exempt(from: tests)
+                return .failure(.noPackageScheme)
         }
-        // @exempt(from: tests)
-        return .failure(.noPackageScheme)
+        // @exempt(from: tests) Unreachable on Linux.
+        let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces })
+        return .success(String(String.ScalarView(cleaned)))
     }
 
     private static func buildSettings(for package: PackageRepository, on sdk: SDK) -> Result<String, SchemeError> {
