@@ -1,0 +1,36 @@
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk appletvos -scheme Mock
+** BUILD SUCCEEDED **
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftCore.dylib
+CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/Products
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal arm64
+Ld [...]/MockTests normal arm64
+MergeSwiftModule normal arm64
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty.plistResolve Package Graph
+Resolved source packages:
+Touch [...]/MockTests.xctest
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty.plist
+XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
+note: Constructing build description
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'MockTests' from project 'Mock')
+note: Planning build
+note: Using new build system
