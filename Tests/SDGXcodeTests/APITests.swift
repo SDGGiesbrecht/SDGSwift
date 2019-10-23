@@ -142,7 +142,9 @@ class APITests : TestCase {
                             XCTAssert(abbreviated.count < 100
                                 ∨ abbreviated.contains("warning:")
                                 ∨ abbreviated.contains("error:")
-                                ∨ abbreviated.contains("Failed"),
+                                ∨ abbreviated.contains("Failed")
+                                ∨ abbreviated.contains("note:")
+                                ∨ abbreviated.contains("failed"),
                                       "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
