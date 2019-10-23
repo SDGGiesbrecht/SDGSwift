@@ -5,9 +5,11 @@ CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+GenerateDSYMFile [...]/MockTests
 MergeSwiftModule normal arm64
+ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
+note: Constructing build description
 note: Planning build
-note: Using build description from disk
 note: Using new build system

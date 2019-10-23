@@ -109,7 +109,6 @@ class APITests : TestCase {
                     var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
-                    filtered = filtered.filter({ ¬$0.hasSuffix("replacing existing signature") }) // Inconsistently appears.
                     #if !os(Linux)
                     compare(
                         filtered.sorted().joined(separator: "\n"),

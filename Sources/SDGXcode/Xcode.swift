@@ -146,6 +146,7 @@ public enum Xcode {
         "IDETestOperationsObserverDebug",
         "/Logs/",
         "Probing signature of",
+        "replacing existing signature",
         "Writing diagnostic log for test session to:",
         ".xcresult"
     ]
