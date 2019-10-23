@@ -103,6 +103,7 @@ public enum Xcode {
         "codesign",
         "directory",
         "ditto",
+        "dsymutil",
         "export",
         "lipo",
         "ln",
