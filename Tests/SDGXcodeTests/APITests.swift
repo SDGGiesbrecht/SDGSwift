@@ -62,7 +62,9 @@ class APITests : TestCase {
                     _ = try mock.generateXcodeProject().get()
                 }
 
-                XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
+                if withGeneratedProject {
+                    XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
+                }
                 let mockScheme = try? mock.scheme().get()
                 #if !os(Linux)
                 XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
