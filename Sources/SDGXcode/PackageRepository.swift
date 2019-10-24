@@ -59,7 +59,7 @@ extension PackageRepository {
         derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.SchemeError> {
-        return Xcode.build(self, for: sdk, reportProgress: reportProgress)
+        return Xcode.build(self, for: sdk, derivedData: derivedData, reportProgress: reportProgress)
     }
 
     /// Tests the package.
