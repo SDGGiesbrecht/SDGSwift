@@ -275,18 +275,20 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
         _ package: PackageRepository,
         on sdk: SDK,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
-        #warning("Make overridable.")
-        let derivedData = stableDerivedData(for: package)
-        let coverage = coverageDirectory(in: derivedData)
-        try? FileManager.default.removeItem(at: coverage)
+        if let derivedData = derivedData {
+            let coverage = coverageDirectory(in: derivedData)
+            try? FileManager.default.removeItem(at: coverage)
+        }
 
         var command = ["test"]
 
@@ -307,7 +309,9 @@ public enum Xcode {
         }
 
         command += ["\u{2D}enableCodeCoverage", "YES"]
-        command += ["\u{2D}derivedDataPath", derivedData.path]
+        if let derivedData = derivedData {
+            command += ["\u{2D}derivedDataPath", derivedData.path]
+        }
 
         return runCustomSubcommand(
             command,

@@ -154,9 +154,9 @@ class APITests : TestCase {
                         }
                     }
                     #if os(Linux)
-                    _ = try? mock.test(on: sdk, reportProgress: processLog).get()
+                    _ = try? mock.test(on: sdk, derivedData: derived, reportProgress: processLog).get()
                     #else
-                    _ = try mock.test(on: sdk, reportProgress: processLog).get()
+                    _ = try mock.test(on: sdk, derivedData: derived, reportProgress: processLog).get()
                     #endif
 
                     var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
@@ -192,6 +192,8 @@ class APITests : TestCase {
 
         try withDefaultMockRepository { mock in
             for withGeneratedProject in [false, true] {
+                let derivedData = mock.stableDerivedData
+
                 let coverageFiles = thisRepository.location.appendingPathComponent("Tests/Test Specifications/Test Coverage")
                 let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
                 let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
@@ -209,9 +211,9 @@ class APITests : TestCase {
                     _ = try mock.generateXcodeProject().get()
                 }
                 #if os(Linux)
-                _ = try? mock.test(on: .macOS).get()
+                _ = try? mock.test(on: .macOS, derivedData: derivedData).get()
                 #else
-                _ = try mock.test(on: .macOS).get()
+                _ = try mock.test(on: .macOS, derivedData: derivedData).get()
                 #endif
                 for localization in InterfaceLocalization.allCases {
                     LocalizationSetting(orderOfPrecedence: [localization.code]).do {

@@ -64,13 +64,15 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - sdk: The SDK to run tests on.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func test(
         on sdk: Xcode.SDK,
+        derivedData: URL,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.SchemeError> {
-        return Xcode.test(self, on: sdk, reportProgress: reportProgress)
+        return Xcode.test(self, on: sdk, derivedData: derivedData, reportProgress: reportProgress)
     }
 
     /// Returns the code coverage report for the package.
