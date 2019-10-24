@@ -82,7 +82,7 @@ class APITests : TestCase {
                     .tvOS(simulator: true)
                 ]
                 if ¬withGeneratedProject {
-                    // #workaround(xcodebuild -version 11.1, WatchOS cannot handle test targets.)
+                    // #workaround(xcodebuild -version 11.1, WatchOS cannot handle test targets.) @exempt(from: unicode)
                     sdks.removeAll(where: { $0 == .watchOS })
                 }
                 for sdk in sdks {
@@ -110,10 +110,13 @@ class APITests : TestCase {
                     #endif
 
                     var filtered: [String] = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
-                    filtered = filtered.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
+                    filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") }) // Inconsistent path.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
+                    filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted.") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Execution policy exception registration failed") }) // Inconsistently appears.
                     #if !os(Linux)
                     compare(
                         filtered.sorted().joined(separator: "\n"),
@@ -164,7 +167,7 @@ class APITests : TestCase {
                     #endif
 
                     var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
-                    filtered = filtered.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
+                    filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") }) // Inconsistent path.
                     filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
                     filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
@@ -173,6 +176,9 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.contains(" Promise ") }) // Inconsistent identifiers.
                     filtered = filtered.filter({ ¬$0.contains("<NSThread:") }) // Inconsistent identifiers.
                     filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
+                    filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted.") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Execution policy exception registration failed") }) // Inconsistently appears.
                     #if !os(Linux)
                     compare(
                         filtered.sorted().joined(separator: "\n"),
@@ -266,5 +272,10 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.Error.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(
+            of: Xcode.SchemeError.xcodeError(.executionError(.foundationError(StandInError()))),
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Foundation",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 }

@@ -15,7 +15,6 @@ MergeSwiftModule normal armv7k
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
-RegisterExecutionPolicyException [...]/Mock.framework
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/Mock.framework
 User defaults from command line:
@@ -24,6 +23,5 @@ WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
 XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
 note: Constructing build description
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
 note: Planning build
 note: Using new build system

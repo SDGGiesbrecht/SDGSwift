@@ -315,7 +315,7 @@ public enum Xcode {
         }
 
         command += ["\u{2D}enableCodeCoverage", "YES"]
-        if let derivedData = derivedData {
+        if let derivedData = derivedData { // @exempt(from: tests)
             command += ["\u{2D}derivedDataPath", derivedData.path]
         }
 
@@ -536,13 +536,15 @@ public enum Xcode {
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
         let searchZone = information.lines[zoneStart...]
-        guard let line = searchZone.first(where: { $0.line.hasSuffix("\u{2D}Package".scalars) })
-            ?? searchZone.first(where: { $0.line.contains(where: { $0 ∉ CharacterSet.whitespaces }) }) else {
-                // @exempt(from: tests)
-                return .failure(.noPackageScheme)
+        guard let line = searchZone.first(
+            where: { $0.line.hasSuffix("\u{2D}Package".scalars) }) // @exempt(from: tests)
+            ?? searchZone.first(
+                where: { $0.line.contains( // @exempt(from: tests)
+                    where: { $0 ∉ CharacterSet.whitespaces }) }) else { // @exempt(from: tests)
+                        return .failure(.noPackageScheme)
         }
-        // @exempt(from: tests) Unreachable on Linux.
-        let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces })
+        // @exempt(from: tests)
+        let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces }) // @exempt(from: tests)
         return .success(String(String.ScalarView(cleaned)))
     }
 

@@ -33,8 +33,6 @@ Please file a bug at https://feedbackassistant.apple.com with this warning messa
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
 ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
-RegisterExecutionPolicyException [...]/Mock.framework
-RegisterExecutionPolicyException [...]/MockTests.xctest
 Signing Identity:     "-"
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
@@ -58,8 +56,6 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted"
 note: Constructing build description
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'Mock' from project 'Mock')
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system
 xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:

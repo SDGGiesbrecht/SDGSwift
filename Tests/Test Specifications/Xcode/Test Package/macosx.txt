@@ -20,8 +20,6 @@ MkDir [...]/Contents
 MkDir [...]/MacOS
 MkDir [...]/MockTests.xctest
 ProcessInfoPlistFile [...]/empty.plist
-RegisterExecutionPolicyException [...]/Mock.o
-RegisterExecutionPolicyException [...]/MockTests.xctest
 Resolve Package Graph
 Resolved source packages:
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
@@ -45,7 +43,5 @@ WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
 XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted"
 note: Constructing build description
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'Mock' from project 'Mock')
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system
