@@ -109,8 +109,8 @@ class APITests : TestCase {
                     _ = try mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
                     #endif
 
-                    var filtered: [String] = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
-                    filtered = log.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
+                    var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.
+                    filtered = filtered.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
@@ -164,7 +164,7 @@ class APITests : TestCase {
                     #endif
 
                     var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
-                    filtered = log.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
+                    filtered = filtered.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
                     filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
                     filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
