@@ -234,11 +234,15 @@ public enum Xcode {
         case .failure(let error):
             return .failure(error)
         case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
-            return runCustomSubcommand([
+            var command = [
                 "build",
                 "\u{2D}sdk", sdk.commandLineName,
                 "\u{2D}scheme", scheme
-                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+            ]
+            if let derivedData = derivedData {
+                command += ["\u{2D}derivedDataPath", derivedData.path]
+            }
+            return runCustomSubcommand(command, in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
         }
     }
 
