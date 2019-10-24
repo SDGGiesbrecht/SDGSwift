@@ -217,7 +217,10 @@ class APITests : TestCase {
                 #endif
                 for localization in InterfaceLocalization.allCases {
                     LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                        let possibleReport = try? mock.codeCoverageReport(on: .macOS, ignoreCoveredRegions: true).get()
+                        let possibleReport = try? mock.codeCoverageReport(
+                            on: .macOS,
+                            derivedData: derivedData,
+                            ignoreCoveredRegions: true).get()
                         #if !os(Linux)
                         guard let coverageReport = possibleReport else {
                             XCTFail("No test coverage report found.")

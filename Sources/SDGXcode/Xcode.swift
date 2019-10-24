@@ -324,6 +324,7 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
+    ///     - derivedData: A specific place Xcode should use for derived data.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
@@ -332,6 +333,7 @@ public enum Xcode {
     public static func codeCoverageReport(
         for package: PackageRepository,
         on sdk: SDK,
+        derivedData: URL,
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<TestCoverageReport?, CoverageReportingError> {
@@ -344,8 +346,6 @@ public enum Xcode {
             ignoredDirectories = directories
         }
 
-        #warning("Make overridable.")
-        let derivedData = stableDerivedData(for: package)
         let coverageDirectory = self.coverageDirectory(in: derivedData)
         let coverageDirectoryContents: [URL]
         do {
