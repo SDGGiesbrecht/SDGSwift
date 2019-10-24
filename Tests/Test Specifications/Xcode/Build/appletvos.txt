@@ -17,7 +17,6 @@ User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
-XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
 note: Constructing build description
 note: Planning build
 note: Using new build system

@@ -115,7 +115,7 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") }) // Depends on external code signing settings.
                     filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
                     filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") }) // Inconsistently appears.
-                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted.") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted") }) // Inconsistently appears.
                     filtered = filtered.filter({ ¬$0.contains("Execution policy exception registration failed") }) // Inconsistently appears.
                     #if !os(Linux)
                     compare(
@@ -177,7 +177,7 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.contains("<NSThread:") }) // Inconsistent identifiers.
                     filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
                     filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") }) // Inconsistently appears.
-                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted.") }) // Inconsistently appears.
+                    filtered = filtered.filter({ ¬$0.contains("Operation not permitted") }) // Inconsistently appears.
                     filtered = filtered.filter({ ¬$0.contains("Execution policy exception registration failed") }) // Inconsistently appears.
                     #if !os(Linux)
                     compare(

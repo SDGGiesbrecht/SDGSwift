@@ -538,7 +538,7 @@ public enum Xcode {
         let searchZone = information.lines[zoneStart...]
         guard let line = searchZone.first(
             where: { $0.line.hasSuffix("\u{2D}Package".scalars) }) // @exempt(from: tests)
-            ?? searchZone.first(
+            ?? searchZone.first( // @exempt(from: tests)
                 where: { $0.line.contains( // @exempt(from: tests)
                     where: { $0 ∉ CharacterSet.whitespaces }) }) else { // @exempt(from: tests)
                         return .failure(.noPackageScheme)
