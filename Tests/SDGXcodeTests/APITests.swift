@@ -88,7 +88,7 @@ class APITests : TestCase {
                 for sdk in sdks {
                     print("Testing build for \(sdk.commandLineName)...")
 
-                    let derived = mock.derivedData
+                    let derived = mock.stableDerivedData
                     try? FileManager.default.removeItem(at: derived)
 
                     var log = Set<String>() // Xcode’s order is not deterministic.
@@ -134,7 +134,7 @@ class APITests : TestCase {
                 for sdk in testSDKs {
                     print("Testing testing on \(sdk.commandLineName)...")
 
-                    let derived = mock.derivedData
+                    let derived = mock.stableDerivedData
                     try? FileManager.default.removeItem(at: derived)
 
                     var log = Set<String>() // Xcode’s order is not deterministic.
