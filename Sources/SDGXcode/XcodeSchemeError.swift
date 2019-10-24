@@ -24,9 +24,6 @@ extension Xcode {
 
         // MARK: - Cases
 
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
-
         /// Xcode encountered an error.
         case xcodeError(Xcode.Error)
 
@@ -39,8 +36,6 @@ extension Xcode {
         /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
             case .xcodeError(let error):
                 return error.presentableDescription()
             case .noPackageScheme:

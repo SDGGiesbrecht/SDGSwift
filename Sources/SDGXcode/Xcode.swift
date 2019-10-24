@@ -520,12 +520,6 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
-        let xcodeProject: URL?
-        do {
-            xcodeProject = try package.xcodeProject()
-        } catch {
-            return .failure(.foundationError(error))
-        }
 
         let information: String
         switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
