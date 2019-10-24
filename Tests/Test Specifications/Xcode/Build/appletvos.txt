@@ -1,4 +1,3 @@
-    SDKROOT = appletvos13.0
 $ xcodebuild build -sdk appletvos -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift

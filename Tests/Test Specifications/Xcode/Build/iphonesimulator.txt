@@ -1,4 +1,3 @@
-    SDKROOT = iphonesimulator13.1
 $ xcodebuild build -sdk iphonesimulator -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CodeSign [...]/Mock.framework

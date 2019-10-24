@@ -1,4 +1,3 @@
-    SDKROOT = iphoneos13.1
 $ xcodebuild build -sdk iphoneos -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift

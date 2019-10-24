@@ -1,4 +1,3 @@
-    SDKROOT = macosx10.15
 $ xcodebuild build -sdk macosx -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CodeSign [...]/A

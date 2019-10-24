@@ -1,4 +1,3 @@
-    SDKROOT = appletvsimulator13.0
   Mock: /tmp/Mock
 $ xcodebuild build -sdk appletvsimulator -scheme Mock -derivedDataPath
 ** BUILD SUCCEEDED **

@@ -1,12 +1,9 @@
-		SimDevice: iPhone 11 (A2980C7F-D98D-4E9E-B7E7-8F9A9BA060A9, iOS 13.1, Shutdown)
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.003 (0.006) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.003 (0.009) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.003 (0.012) seconds
-        "FMCV4D3TZ4."
-    "application-identifier" = "FMCV4D3TZ4.";
+		SimDevice: iPhone  (ACF-DD-EE-BE-FABAA, iOS ., Shutdown)
+        "FMCVDTZ."
+    "application-identifier" = "FMCVDTZ.";
     "keychain-access-groups" =     (
     );
-$ xcodebuild test -destination name=iPhone 11 -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
+$ xcodebuild test -destination name=iPhone  -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
 CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
@@ -14,7 +11,7 @@ Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
-CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
 Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
@@ -25,9 +22,9 @@ Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Entitlements:
-Ld [...]/Mock normal x86_64
-Ld [...]/MockTests normal x86_64
-MergeSwiftModule normal x86_64
+Ld [...]/Mock normal x_
+Ld [...]/MockTests normal x_
+MergeSwiftModule normal x_
 Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
@@ -39,16 +36,16 @@ ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
 RegisterExecutionPolicyException [...]/Mock.framework
 RegisterExecutionPolicyException [...]/MockTests.xctest
 Signing Identity:     "-"
-Test Case '-[MockTests.MockTests testExample]' passed (0.003 seconds).
+Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
-Test Suite 'All tests' passed at 2019-10-23 22:17:31.967.
-Test Suite 'All tests' started at 2019-10-23 22:17:31.956
-Test Suite 'MockTests' passed at 2019-10-23 22:17:31.965.
-Test Suite 'MockTests' started at 2019-10-23 22:17:31.960
-Test Suite 'MockTests.xctest' passed at 2019-10-23 22:17:31.967.
-Test Suite 'MockTests.xctest' started at 2019-10-23 22:17:31.958
+Test Suite 'All tests' passed at -- ::..
+Test Suite 'All tests' started at -- ::.
+Test Suite 'MockTests' passed at -- ::..
+Test Suite 'MockTests' started at -- ::.
+Test Suite 'MockTests.xctest' passed at -- ::..
+Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
-Testing started on 'iPhone 11'
+Testing started on 'iPhone '
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 User defaults from command line:
@@ -59,13 +56,13 @@ WriteAuxiliaryFile [...]/Mock.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
+XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted"
 note: Constructing build description
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'MockTests' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'Mock' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-14802/IDEiOSSupportCore/DVTiPhoneSimulator.m:1890
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
 {
 }
-} (13.1 (17A844))
+} (. (A))

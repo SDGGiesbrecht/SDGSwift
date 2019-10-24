@@ -1,4 +1,3 @@
-    SDKROOT = watchos6.0
 $ xcodebuild build -sdk watchos -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
@@ -24,7 +23,6 @@ WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
 XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
-ld: warning: directory not found for option '-F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks'
 note: Constructing build description
 note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
 note: Planning build
