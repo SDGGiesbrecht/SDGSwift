@@ -546,33 +546,6 @@ public enum Xcode {
         return .success(String(String.ScalarView(cleaned)))
     }
 
-    private static func buildSettings(for package: PackageRepository, on sdk: SDK) -> Result<String, SchemeError> {
-        switch scheme(for: package) {
-        case .failure(let error):
-            return .failure(error)
-        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
-            return runCustomSubcommand([
-                "\u{2D}showBuildSettings",
-                "\u{2D}scheme", scheme,
-                "\u{2D}sdk", sdk.commandLineName
-                ], in: package.location).mapError { .xcodeError($0) } // @exempt(from: tests)
-        }
-    }
-
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        #warning("Is this necessary?")
-        switch buildSettings(for: package, on: sdk) {
-        case .failure(let error):
-            return .failure(.schemeError(error))
-        case .success(let settings): // @exempt(from: tests) Unreachable on Linux.
-            guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
-                // @exempt(from: tests) Unreachable without corrupt project.
-                return .failure(.noBuildDirectory)
-            }
-            return .success(URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent())
-        }
-    }
-
     /// A stable directory that can be used for this package’s derived data.
     ///
     /// Xcode’s default directory is hard to predict in order to get results from it afterward. This directory is in the same parent directory as Xcode’s default, but it is deterministic.
