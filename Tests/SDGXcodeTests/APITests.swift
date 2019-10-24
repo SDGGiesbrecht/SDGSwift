@@ -259,10 +259,8 @@ class APITests : TestCase {
                 return "[...]"
             }
         }
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.xcodeError(.locationError(.unavailable)))), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.noXcodeProject)), localizations: InterfaceLocalization.self, uniqueTestName: "No Xcode Project", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.schemeError(.noPackageScheme)), localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.buildDirectoryError(.noBuildDirectory), localizations: InterfaceLocalization.self, uniqueTestName: "No Build Directory", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.SchemeError.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.packageManagerError(.packageManagerError(StandInError(), [])), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
