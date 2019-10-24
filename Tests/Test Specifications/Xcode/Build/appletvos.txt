@@ -1,4 +1,5 @@
-$ xcodebuild build -sdk appletvos -scheme Mock-Package
+    SDKROOT = appletvos13.0
+$ xcodebuild build -sdk appletvos -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
@@ -14,6 +15,7 @@ MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 RegisterExecutionPolicyException [...]/Mock.framework
 Touch [...]/Mock.framework
+User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList

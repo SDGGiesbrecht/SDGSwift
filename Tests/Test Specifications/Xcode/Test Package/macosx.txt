@@ -1,19 +1,54 @@
-    SDKROOT = macosx.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.139 (0.140) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.139 (0.141) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.139 (0.143) seconds
+    SDKROOT = macosx10.15
   Mock: /tmp/Mock
-$ xcodebuild test -sdk macosx -scheme Mock
+$ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftCore.dylib
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal x86_64
+Ld [...]/MockTests normal x86_64
+MergeSwiftModule normal x86_64
+MkDir [...]/Contents
+MkDir [...]/MacOS
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty.plist
+RegisterExecutionPolicyException [...]/Mock.o
+RegisterExecutionPolicyException [...]/MockTests.xctest
 Resolve Package Graph
 Resolved source packages:
-Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
+Test Case '-[MockTests.MockTests testExample]' passed (0.139 seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
-Test Suite 'All tests' passed at -- ::..
-Test Suite 'All tests' started at -- ::.
-Test Suite 'MockTests' passed at -- ::..
-Test Suite 'MockTests' started at -- ::.
-Test Suite 'MockTests.xctest' passed at -- ::..
-Test Suite 'MockTests.xctest' started at -- ::.
+Test Suite 'All tests' passed at 2019-10-23 22:14:40.041.
+Test Suite 'All tests' started at 2019-10-23 22:14:39.897
+Test Suite 'MockTests' passed at 2019-10-23 22:14:40.039.
+Test Suite 'MockTests' started at 2019-10-23 22:14:39.899
+Test Suite 'MockTests.xctest' passed at 2019-10-23 22:14:40.040.
+Test Suite 'MockTests.xctest' started at 2019-10-23 22:14:39.899
 Test session results, code coverage, and logs:
 Testing started on 'My Mac'
+Touch [...]/MockTests.xctest
+User defaults from command line:
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty.plist
+XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
 note: Constructing build description
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system

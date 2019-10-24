@@ -1,4 +1,5 @@
-$ xcodebuild build -sdk macosx -scheme Mock-Package
+    SDKROOT = macosx10.15
+$ xcodebuild build -sdk macosx -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CodeSign [...]/A
 CompileSwift [...]/Mock.swift
@@ -24,6 +25,7 @@ SymLink [...]/Mock
 SymLink [...]/Modules
 SymLink [...]/Resources
 Touch [...]/Mock.framework
+User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList

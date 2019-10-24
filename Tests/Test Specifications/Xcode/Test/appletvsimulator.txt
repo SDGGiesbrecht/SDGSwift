@@ -1,9 +1,12 @@
-		SimDevice: Apple TV K (C-DF-CFF-A-FCDCDC, tvOS ., Shutdown)
-        "FMCVDTZ."
-    "application-identifier" = "FMCVDTZ.";
+		SimDevice: Apple TV 4K (9C835838-6D6F-4CFF-A179-FCDC143D401C, tvOS 13.0, Shutdown)
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.004) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.005) seconds
+        "FMCV4D3TZ4."
+    "application-identifier" = "FMCV4D3TZ4.";
     "keychain-access-groups" =     (
     );
-$ xcodebuild test -destination name=Apple TV K -scheme Mock-Package
+$ xcodebuild test -destination name=Apple TV 4K -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
 CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
@@ -11,7 +14,7 @@ Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
 Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
@@ -22,9 +25,9 @@ Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Entitlements:
-Ld [...]/Mock normal x_
-Ld [...]/MockTests normal x_
-MergeSwiftModule normal x_
+Ld [...]/Mock normal x86_64
+Ld [...]/MockTests normal x86_64
+MergeSwiftModule normal x86_64
 Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
@@ -36,18 +39,19 @@ ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
 RegisterExecutionPolicyException [...]/Mock.framework
 RegisterExecutionPolicyException [...]/MockTests.xctest
 Signing Identity:     "-"
-Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
+Test Case '-[MockTests.MockTests testExample]' passed (0.002 seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
-Test Suite 'All tests' passed at -- ::..
-Test Suite 'All tests' started at -- ::.
-Test Suite 'MockTests' passed at -- ::..
-Test Suite 'MockTests' started at -- ::.
-Test Suite 'MockTests.xctest' passed at -- ::..
-Test Suite 'MockTests.xctest' started at -- ::.
+Test Suite 'All tests' passed at 2019-10-23 22:18:02.344.
+Test Suite 'All tests' started at 2019-10-23 22:18:02.338
+Test Suite 'MockTests' passed at 2019-10-23 22:18:02.343.
+Test Suite 'MockTests' started at 2019-10-23 22:18:02.340
+Test Suite 'MockTests.xctest' passed at 2019-10-23 22:18:02.343.
+Test Suite 'MockTests.xctest' started at 2019-10-23 22:18:02.339
 Test session results, code coverage, and logs:
-Testing started on 'Apple TV K'
+Testing started on 'Apple TV 4K'
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
+User defaults from command line:
 WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
@@ -55,13 +59,13 @@ WriteAuxiliaryFile [...]/Mock.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted"
+XCBBuildService: XPC Error: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"
 note: Constructing build description
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'Mock' from project 'Mock')
-note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code= "Operation not permitted" (in target 'MockTests' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'Mock' from project 'Mock')
+note: Execution policy exception registration failed and was skipped: Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted" (in target 'MockTests' from project 'Mock')
 note: Planning build
 note: Using new build system
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-14802/IDEiOSSupportCore/DVTiPhoneSimulator.m:1890
 {
 }
-} (. (J))
+} (13.0 (17J585))

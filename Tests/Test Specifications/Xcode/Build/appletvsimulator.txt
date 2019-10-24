@@ -1,4 +1,5 @@
-$ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
+    SDKROOT = appletvsimulator13.0
+$ xcodebuild build -sdk appletvsimulator -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CodeSign [...]/Mock.framework
 CompileSwift [...]/Mock.swift
@@ -16,6 +17,7 @@ ProcessInfoPlistFile [...]/Mock_Info.plist
 RegisterExecutionPolicyException [...]/Mock.framework
 Signing Identity:     "-"
 Touch [...]/Mock.framework
+User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
