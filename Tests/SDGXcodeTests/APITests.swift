@@ -148,7 +148,8 @@ class APITests : TestCase {
                                 ∨ abbreviated.contains("failed")
                                 ∨ abbreviated.contains("bug")
                                 ∨ abbreviated.contains("Promise")
-                                ∨ abbreviated.contains("Warning"),
+                                ∨ abbreviated.contains("Warning")
+                                ∨ abbreviated.hasPrefix("$ "),
                                       "Output is too long: " + abbreviated)
                             log.insert(abbreviated)
                         }
@@ -160,6 +161,7 @@ class APITests : TestCase {
                     #endif
 
                     var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }) // Remove dates & times
+                    filtered = log.map({ $0.truncated(after: "-derivedDataPath") }) // Inconsistent path.
                     filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") }) // Inconsistent number of occurrences. (???)
                     filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") }) // Inconsistent which target some directories are first created for.
                     filtered = filtered.filter({ ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist") }) // Depends on external code signing settings.
@@ -167,6 +169,7 @@ class APITests : TestCase {
                     filtered = filtered.filter({ ¬$0.contains("<DVTiPhoneSimulator:") }) // Inconsistent identifiers.
                     filtered = filtered.filter({ ¬$0.contains(" Promise ") }) // Inconsistent identifiers.
                     filtered = filtered.filter({ ¬$0.contains("<NSThread:") }) // Inconsistent identifiers.
+                    filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") }) // Inconsistent user.
                     #if !os(Linux)
                     compare(
                         filtered.sorted().joined(separator: "\n"),
