@@ -103,9 +103,9 @@ class APITests : TestCase {
                         }
                     }
                     #if os(Linux)
-                    _ = try? mock.build(for: sdk, reportProgress: processLog).get()
+                    _ = try? mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
                     #else
-                    _ = try mock.build(for: sdk, reportProgress: processLog).get()
+                    _ = try mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
                     #endif
 
                     var filtered = log.filter({ ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F") ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: " }) // Variable Xcode location and version.

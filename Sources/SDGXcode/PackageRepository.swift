@@ -51,10 +51,12 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - sdk: The SDK to build for.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func build(
         for sdk: Xcode.SDK,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.SchemeError> {
         return Xcode.build(self, for: sdk, reportProgress: reportProgress)
@@ -69,7 +71,7 @@ extension PackageRepository {
     ///     - progressReport: A line of output.
     @discardableResult public func test(
         on sdk: Xcode.SDK,
-        derivedData: URL,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.SchemeError> {
         return Xcode.test(self, on: sdk, derivedData: derivedData, reportProgress: reportProgress)

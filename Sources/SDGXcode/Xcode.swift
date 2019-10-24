@@ -220,11 +220,13 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to build.
     ///     - sdk: The SDK to build for.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func build(
         _ package: PackageRepository,
         for sdk: SDK,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
