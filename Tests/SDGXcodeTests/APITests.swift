@@ -42,7 +42,7 @@ class APITests : TestCase {
                 }
                 #if !os(Linux)
                 let build = try package.build(for: .macOS).get()
-                XCTAssertFalse(Xcode.warningsOccurred(during: build))
+                XCTAssertFalse(Xcode.warningsOccurred(during: build), "Warning triggered in:\n\(build)")
                 #endif
             }
         }
