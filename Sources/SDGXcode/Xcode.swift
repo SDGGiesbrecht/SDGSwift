@@ -256,7 +256,7 @@ public enum Xcode {
                 // @exempt(from: tests) Meaningless on Linux.
                 continue
             }
-            if line.contains("/SourcePackages/".scalars) { // Xcode‐managed SwiftPM dependency.
+            if line.contains("/SourcePackages/".scalars) { // Xcode‐managed SwiftPM dependency. @exempt(from: tests) Meaningless on Linux.
                 continue
             }
             if line.contains(" directory not found for option \u{27}\u{2D}F/Applications/Xcode".scalars) {
