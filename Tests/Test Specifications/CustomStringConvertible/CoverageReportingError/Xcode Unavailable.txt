@@ -1,20 +1,20 @@
 🇬🇧EN
-No compatible version of Xcode could be located. (11.0.0 ≤ x ≤ 11.1.0)
+No compatible version of Xcode could be located. (11.1.0 ≤ x ≤ 11.1.0)
 It must be installed and locatable with one of the following commands:
 $ xcrun --find xcodebuild
 
 🇺🇸EN
-No compatible version of Xcode could be located. (11.0.0 ≤ x ≤ 11.1.0)
+No compatible version of Xcode could be located. (11.1.0 ≤ x ≤ 11.1.0)
 It must be installed and locatable with one of the following commands:
 $ xcrun --find xcodebuild
 
 🇨🇦EN
-No compatible version of Xcode could be located. (11.0.0 ≤ x ≤ 11.1.0)
+No compatible version of Xcode could be located. (11.1.0 ≤ x ≤ 11.1.0)
 It must be installed and locatable with one of the following commands:
 $ xcrun --find xcodebuild
 
 🇩🇪DE
-Keine passende Version von Xcode wurde gefunden. (11.0.0 ≤ x ≤ 11.1.0)
+Keine passende Version von Xcode wurde gefunden. (11.1.0 ≤ x ≤ 11.1.0)
 Es muss installiert und unter einem der folgenden Befehle vorhanden sein:
 $ xcrun --find xcodebuild
 
