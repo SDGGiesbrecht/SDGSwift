@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGPersistence
+import SDGVersioning
 
 import SDGSwift
 

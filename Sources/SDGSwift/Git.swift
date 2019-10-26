@@ -17,6 +17,7 @@ import Foundation
 import SDGControlFlow
 import SDGCollections
 import SDGExternalProcess
+import SDGVersioning
 
 /// Git.
 public enum Git {

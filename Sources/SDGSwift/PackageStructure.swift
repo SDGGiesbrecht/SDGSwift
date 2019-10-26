@@ -18,8 +18,8 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 import SDGText
-
 import SDGExternalProcess
+import SDGVersioning
 
 /// A remote Swift package.
 public struct Package : TransparentWrapper {

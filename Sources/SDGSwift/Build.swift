@@ -15,6 +15,8 @@
 import SDGControlFlow
 import SDGText
 import SDGLocalization
+import SDGVersioning
+
 import SDGSwiftLocalizations
 
 /// A package build.

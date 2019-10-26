@@ -18,6 +18,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGCollections
 import SDGExternalProcess
+import SDGVersioning
 
 /// The Swift compiler.
 public enum SwiftCompiler {
