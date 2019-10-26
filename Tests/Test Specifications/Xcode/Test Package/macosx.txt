@@ -1,40 +1,27 @@
     SDKROOT = macosx.
-$ xcodebuild test -sdk macosx -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
+  Mock: /tmp/Mock
+$ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
-CodeSign [...]/A
-CodeSign [...]/MockTests.xctest
-Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
-Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
-Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
-Ld [...]/Mock normal x_
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal x_
 Ld [...]/MockTests normal x_
 MergeSwiftModule normal x_
-MkDir [...]/A
 MkDir [...]/Contents
-MkDir [...]/Headers
 MkDir [...]/MacOS
-MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-MkDir [...]/Resources
-MkDir [...]/Versions
-ProcessInfoPlistFile [...]/MockTests_Info.plist
-ProcessInfoPlistFile [...]/Mock_Info.plist
-Signing Identity:     "-"
-SymLink [...]/Current A
-SymLink [...]/Headers
-SymLink [...]/Mock
-SymLink [...]/Modules
-SymLink [...]/Resources
+ProcessInfoPlistFile [...]/empty.plist
+Resolve Package Graph
+Resolved source packages:
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -45,15 +32,15 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started on 'My Mac'
-Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
-WriteAuxiliaryFile [...]/Mock.LinkFileList
-WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty.plist
 note: Constructing build description
 note: Planning build
 note: Using new build system

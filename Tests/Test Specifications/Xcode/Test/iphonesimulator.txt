@@ -1,7 +1,11 @@
-    SDKROOT = macosx.
-$ xcodebuild test -sdk macosx -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
+		SimDevice: iPhone  (ACF-DD-EE-BE-FABAA, iOS ., Shutdown)
+        "FMCVDTZ."
+    "application-identifier" = "FMCVDTZ.";
+    "keychain-access-groups" =     (
+    );
+$ xcodebuild test -destination name=iPhone  -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
-CodeSign [...]/A
+CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
 Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
@@ -10,31 +14,26 @@ CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
+Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
+Entitlements:
 Ld [...]/Mock normal x_
 Ld [...]/MockTests normal x_
 MergeSwiftModule normal x_
-MkDir [...]/A
-MkDir [...]/Contents
+Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
-MkDir [...]/MacOS
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-MkDir [...]/Resources
-MkDir [...]/Versions
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
+ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
 Signing Identity:     "-"
-SymLink [...]/Current A
-SymLink [...]/Headers
-SymLink [...]/Mock
-SymLink [...]/Modules
-SymLink [...]/Resources
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -44,10 +43,11 @@ Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
-Testing started on 'My Mac'
+Testing started on 'iPhone '
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 User defaults from command line:
+WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
@@ -57,3 +57,7 @@ WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 note: Constructing build description
 note: Planning build
 note: Using new build system
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
+{
+}
+} (. (A))

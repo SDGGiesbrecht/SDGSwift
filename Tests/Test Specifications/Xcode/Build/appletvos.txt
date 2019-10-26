@@ -1,4 +1,4 @@
-$ xcodebuild build -sdk appletvos -scheme Mock-Package
+$ xcodebuild build -sdk appletvos -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
@@ -13,6 +13,7 @@ MkDir [...]/Headers
 MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Touch [...]/Mock.framework
+User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList

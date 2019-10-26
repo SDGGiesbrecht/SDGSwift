@@ -1,0 +1,42 @@
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk iphoneos -scheme Mock -derivedDataPath
+** BUILD SUCCEEDED **
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftCore.dylib
+CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/Products
+CreateUniversalBinary [...]/Mock.o normal armv7\ arm64
+CreateUniversalBinary [...]/MockTests normal armv7\ arm64
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+GenerateDSYMFile [...]/MockTests
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal arm64
+Ld [...]/Mock.o normal armv7
+Ld [...]/MockTests normal arm64
+Ld [...]/MockTests normal armv7
+MergeSwiftModule normal arm64
+MergeSwiftModule normal armv7
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty.plist
+Resolve Package Graph
+Resolved source packages:
+Touch [...]/MockTests.xctest
+User defaults from command line:
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty.plist
+note: Constructing build description
+note: Planning build
+note: Using new build system

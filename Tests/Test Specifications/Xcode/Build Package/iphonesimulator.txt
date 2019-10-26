@@ -1,0 +1,37 @@
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk iphonesimulator -scheme Mock -derivedDataPath
+** BUILD SUCCEEDED **
+CodeSign [...]/MockTests.xctest
+Codesigning [...]/libswiftCore.dylib
+CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
+CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
+Copying [...]/libswiftCore.dylib
+CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/Products
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ld [...]/Mock.o normal x86_64
+Ld [...]/MockTests normal x86_64
+MergeSwiftModule normal x86_64
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty.plist
+Resolve Package Graph
+Resolved source packages:
+Signing Identity:     "-"
+Touch [...]/MockTests.xctest
+User defaults from command line:
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty.plist
+note: Constructing build description
+note: Planning build
+note: Using new build system

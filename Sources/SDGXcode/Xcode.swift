@@ -94,6 +94,8 @@ public enum Xcode {
         "builtin\u{2D}copy",
         "builtin\u{2D}create\u{2D}build\u{2D}directory",
         "builtin\u{2D}infoPlistUtility",
+        "builtin\u{2D}productPackagingUtility",
+        "builtin\u{2D}RegisterExecutionPolicyException",
         "builtin\u{2D}swiftHeaderTool",
         "builtin\u{2d}swiftStdLibTool",
         "cd",
@@ -102,6 +104,7 @@ public enum Xcode {
         "codesign",
         "directory",
         "ditto",
+        "dsymutil",
         "export",
         "lipo",
         "ln",
@@ -121,11 +124,14 @@ public enum Xcode {
         "CopySwiftLibs",
         "CreateBuildDirectory",
         "CreateUniversalBinary",
+        "GenerateDSYMFile",
         "Ditto",
         "Ld",
         "MergeSwiftModule",
         "MkDir",
         "ProcessInfoPlistFile",
+        "ProcessProductPackaging",
+        "RegisterExecutionPolicyException",
         "SwiftMergeGeneratedHeaders",
         "SymLink",
         "Touch",
@@ -140,6 +146,7 @@ public enum Xcode {
         "IDETestOperationsObserverDebug",
         "/Logs/",
         "Probing signature of",
+        "replacing existing signature",
         "Writing diagnostic log for test session to:",
         ".xcresult"
     ]
@@ -213,11 +220,13 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to build.
     ///     - sdk: The SDK to build for.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func build(
         _ package: PackageRepository,
         for sdk: SDK,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
@@ -225,11 +234,15 @@ public enum Xcode {
         case .failure(let error):
             return .failure(error)
         case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
-            return runCustomSubcommand([
+            var command = [
                 "build",
                 "\u{2D}sdk", sdk.commandLineName,
                 "\u{2D}scheme", scheme
-                ], in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+            ]
+            if let derivedData = derivedData {
+                command += ["\u{2D}derivedDataPath", derivedData.path]
+            }
+            return runCustomSubcommand(command, in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
         }
     }
 
@@ -241,6 +254,9 @@ public enum Xcode {
         for line in log.lines.lazy.map({ $0.line }) where line.contains(" warning:".scalars) {
             if SwiftCompiler._warningBelongsToDependency(line) {
                 // @exempt(from: tests) Meaningless on Linux.
+                continue
+            }
+            if line.contains("/SourcePackages/".scalars) { // Xcode‐managed SwiftPM dependency. @exempt(from: tests) Meaningless on Linux.
                 continue
             }
             if line.contains(" directory not found for option \u{27}\u{2D}F/Applications/Xcode".scalars) {
@@ -259,8 +275,8 @@ public enum Xcode {
         return false
     }
 
-    private static func coverageDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return derivedData(for: package, on: sdk).map { $0.appendingPathComponent("Logs/Test") } // @exempt(from: tests) Unreachable on Linux.
+    private static func coverageDirectory(in derivedData: URL) -> URL {
+        return derivedData.appendingPathComponent("Logs/Test") // @exempt(from: tests) Unreachable on Linux.
     }
 
     /// Tests the package.
@@ -268,17 +284,18 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
+    ///     - derivedData: Optional. A specific place Xcode should use for derived data.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
         _ package: PackageRepository,
         on sdk: SDK,
+        derivedData: URL? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, SchemeError> {
 
-        if let coverage = try? coverageDirectory(for: package, on: sdk).get() {
-            // @exempt(from: tests) Unreachable on Linux.
-            // Remove any outdated coverage data. (Cannot tell which is which if there is more than one.)
+        if let derivedData = derivedData {
+            let coverage = coverageDirectory(in: derivedData)
             try? FileManager.default.removeItem(at: coverage)
         }
 
@@ -300,6 +317,11 @@ public enum Xcode {
             command += ["\u{2D}scheme", scheme]
         }
 
+        command += ["\u{2D}enableCodeCoverage", "YES"]
+        if let derivedData = derivedData { // @exempt(from: tests)
+            command += ["\u{2D}derivedDataPath", derivedData.path]
+        }
+
         return runCustomSubcommand(
             command,
             in: package.location,
@@ -311,6 +333,7 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - sdk: The SDK to run tests on.
+    ///     - derivedData: A specific place Xcode should use for derived data.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
@@ -319,6 +342,7 @@ public enum Xcode {
     public static func codeCoverageReport(
         for package: PackageRepository,
         on sdk: SDK,
+        derivedData: URL,
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<TestCoverageReport?, CoverageReportingError> {
@@ -331,13 +355,7 @@ public enum Xcode {
             ignoredDirectories = directories
         }
 
-        let coverageDirectory: URL
-        switch self.coverageDirectory(for: package, on: sdk) {
-        case .failure(let error):
-            return .failure(.buildDirectoryError(error))
-        case .success(let directory): // @exempt(from: tests) Unreachable on Linux.
-            coverageDirectory = directory
-        }
+        let coverageDirectory = self.coverageDirectory(in: derivedData)
         let coverageDirectoryContents: [URL]
         do {
             coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
@@ -505,16 +523,6 @@ public enum Xcode {
     /// - Parameters:
     ///     - package: The package.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
-        let xcodeProject: URL?
-        do {
-            xcodeProject = try package.xcodeProject()
-        } catch {
-            return .failure(.foundationError(error))
-        }
-        if xcodeProject == nil {
-            // @exempt(from: tests)
-            return .failure(.noXcodeProject)
-        }
 
         let information: String
         switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
@@ -530,49 +538,38 @@ public enum Xcode {
         }
         let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
-        for line in information.lines[zoneStart...] where line.line.hasSuffix("\u{2D}Package".scalars) {
-            // @exempt(from: tests) Unreachable on Linux.
-            var section = line.line
-            section = section.drop(while: { $0 ∈ CharacterSet.whitespaces })
-            return .success(String(String.ScalarView(section)))
+        let searchZone = information.lines[zoneStart...]
+        guard let line = searchZone.first(
+            where: { $0.line.hasSuffix("\u{2D}Package".scalars) }) // @exempt(from: tests)
+            ?? searchZone.first( // @exempt(from: tests)
+                where: { $0.line.contains( // @exempt(from: tests)
+                    where: { $0 ∉ CharacterSet.whitespaces }) }) else { // @exempt(from: tests)
+                        return .failure(.noPackageScheme)
         }
         // @exempt(from: tests)
-        return .failure(.noPackageScheme)
+        let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces }) // @exempt(from: tests)
+        return .success(String(String.ScalarView(cleaned)))
     }
 
-    private static func buildSettings(for package: PackageRepository, on sdk: SDK) -> Result<String, SchemeError> {
-        switch scheme(for: package) {
-        case .failure(let error):
-            return .failure(error)
-        case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
-            return runCustomSubcommand([
-                "\u{2D}showBuildSettings",
-                "\u{2D}scheme", scheme,
-                "\u{2D}sdk", sdk.commandLineName
-                ], in: package.location).mapError { .xcodeError($0) } // @exempt(from: tests)
-        }
-    }
-
-    private static func buildDirectory(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        switch buildSettings(for: package, on: sdk) {
-        case .failure(let error):
-            return .failure(.schemeError(error))
-        case .success(let settings): // @exempt(from: tests) Unreachable on Linux.
-            guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // @exempt(from: tests)
-                // @exempt(from: tests) Unreachable without corrupt project.
-                return .failure(.noBuildDirectory)
-            }
-            return .success(URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent())
-        }
-    }
-
-    /// The derived data directory for the package.
+    /// A stable directory that can be used for this package’s derived data.
+    ///
+    /// Xcode’s default directory is hard to predict in order to get results from it afterward. This directory is in the same parent directory as Xcode’s default, but it is deterministic.
     ///
     /// - Parameters:
     ///     - package: The package.
-    ///     - sdk: The SDK.
-    public static func derivedData(for package: PackageRepository, on sdk: SDK) -> Result<URL, BuildDirectoryError> {
-        return buildDirectory(for: package, on: sdk).map { $0.deletingLastPathComponent() } // @exempt(from: tests) Unreachable on Linux.
+    public static func stableDerivedData(for package: PackageRepository) -> URL {
+        var url = URL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent("Library")
+            .appendingPathComponent("Developer")
+            .appendingPathComponent("Xcode")
+            .appendingPathComponent("DerivedData")
+            .appendingPathComponent(package.location.lastPathComponent)
+        if (try? package.xcodeProject()) == nil {
+            url = url.appendingPathComponent("Package")
+        } else {
+            url = url.appendingPathComponent("Xcode")
+        }
+        return url
     }
 
     /// Runs a custom subcommand of xcodebuild.
@@ -589,6 +586,9 @@ public enum Xcode {
         with environment: [String: String]? = nil,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
         ) -> Result<String, Xcode.Error> {
+
+        var environment = environment ?? ProcessInfo.processInfo.environment
+        environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
 
         reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
 

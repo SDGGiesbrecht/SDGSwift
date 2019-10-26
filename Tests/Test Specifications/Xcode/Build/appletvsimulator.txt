@@ -1,4 +1,4 @@
-$ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
+$ xcodebuild build -sdk appletvsimulator -scheme Mock-Package -derivedDataPath
 ** BUILD SUCCEEDED **
 CodeSign [...]/Mock.framework
 CompileSwift [...]/Mock.swift
@@ -15,6 +15,7 @@ MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Signing Identity:     "-"
 Touch [...]/Mock.framework
+User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
