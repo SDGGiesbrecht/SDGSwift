@@ -137,9 +137,8 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_IMAGE:
             return [ImageSyntax(node: self, in: documentation)]
         default /* CMARK_NODE_TEXT */:
-            return [ExtendedTokenSyntax(
-                text: String(documentation[lowerBound(in: documentation) ..< upperBound(in: documentation)]),
-                kind: .documentationText)]
+            let text = String(documentation[lowerBound(in: documentation) ..< upperBound(in: documentation)])
+            return [ExtendedTokenSyntax(text: text, kind: .documentationText)]
         }
     }
 }
