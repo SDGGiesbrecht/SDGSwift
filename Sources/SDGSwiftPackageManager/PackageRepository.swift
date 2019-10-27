@@ -16,6 +16,7 @@ import Foundation
 
 import SDGText
 import SDGLocalization
+import SDGVersioning
 
 import PackageModel
 import Build
@@ -182,7 +183,7 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
-    public func tag(version releaseVersion: SDGSwift.Version) -> Swift.Result<Void, SDGSwift.Git.Error> {
+    public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<Void, SDGSwift.Git.Error> {
         return Git.tag(version: releaseVersion, in: self)
     }
 }

@@ -16,6 +16,7 @@ import Foundation
 
 import SDGLogic
 import SDGText
+import SDGVersioning
 
 import SDGSwift
 

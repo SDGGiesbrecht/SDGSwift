@@ -16,6 +16,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 import SDGLocalization
+import SDGVersioning
 
 import SDGSwift
 import SDGSwiftConfiguration

@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGVersioning
+
 import SDGSwift
 
 import SDGXCTestUtilities
