@@ -94,8 +94,12 @@ extension Optional where Wrapped == OpaquePointer {
         return result!
     }
 
-    internal func literal(in documentation: String) -> String {
-        return String(documentation[lowerBound(in: documentation) ..< upperBound(in: documentation)])
+    internal var literal: String? {
+        if let cString = cmark_node_get_literal(self) {
+            return String(cString: cString, encoding: .utf8)
+        } else { // @exempt(from: tests) Should never occur.
+            return nil // @exempt(from: tests)
+        }
     }
 
     internal func syntax(in documentation: String) -> [ExtendedSyntax] {
@@ -133,7 +137,9 @@ extension Optional where Wrapped == OpaquePointer {
         case CMARK_NODE_IMAGE:
             return [ImageSyntax(node: self, in: documentation)]
         default /* CMARK_NODE_TEXT */:
-            return [ExtendedTokenSyntax(text: self.literal(in: documentation), kind: .documentationText)]
+            return [ExtendedTokenSyntax(
+                text: String(documentation[lowerBound(in: documentation) ..< upperBound(in: documentation)]),
+                kind: .documentationText)]
         }
     }
 }
