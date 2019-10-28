@@ -37,6 +37,19 @@ class RegressionTests : TestCase {
         _ = parsed.api()
     }
 
+    func testMarkdownEntity() throws {
+        // Untracked.
+
+        let source = [
+            "/// ...&#x2D;...",
+            "public func function() {}"
+            ].joined(separator: "\n")
+        let parsed = try SyntaxParser.parse(source: source)
+        XCTAssertEqual(parsed.source(), source)
+        let documentation = parsed.api().first?.documentation
+        XCTAssertEqual(documentation?.last?.documentationComment.text, "...&#x2D;...")
+    }
+
     func testMarkdownQuotation() throws {
         // Untracked.
 
