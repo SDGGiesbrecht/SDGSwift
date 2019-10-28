@@ -31,8 +31,6 @@ extension Package {
 
         // MARK: - PresentableError
 
-        // #workaround(workspace version 0.23.1, Avoids parser crash.)
-        /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             switch self {
             case .gitError(let error):
