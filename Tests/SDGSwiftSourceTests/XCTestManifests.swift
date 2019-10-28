@@ -43,6 +43,7 @@ extension RegressionTests {
     // to regenerate.
     static let __allTests__RegressionTests = [
         ("testContinuedCallout", testContinuedCallout),
+        ("testMarkdownEntity", testMarkdownEntity),
         ("testMarkdownQuotation", testMarkdownQuotation),
         ("testPackageDeclaration", testPackageDeclaration),
     ]
