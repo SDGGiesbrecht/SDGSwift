@@ -12,19 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Dependency
+
+import Hidden
+
 public struct Inherited : DependencyProtocol, Comparable {
     public func required() {}
-    public static func ==(lhs: Self, rhs: Self) -> Bool {}
-    public static func <(lhs: Self, rhs: Self) -> Bool {}
+    public static func ==(lhs: Self, rhs: Self) -> Bool { false }
+    public static func <(lhs: Self, rhs: Self) -> Bool { false }
+    public func requirement() {}
 }
 
 public class Superclass : Decodable, Encodable {
-    public init(from decoder: Decoder) throws {}
+    internal init() {}
+    public required init(from decoder: Decoder) throws {}
     public func encode(to encoder: Encoder) throws {}
 }
 public class Subclass : Superclass {
-    public init(from decoder: Decoder) throws {}
-    public func encode(to encoder: Encoder) throws {}
+    public required init(from decoder: Decoder) throws {
+        super.init()
+    }
+    public override func encode(to encoder: Encoder) throws {}
 }
 
 public class AnotherSublass : UnknownSuperclass {
@@ -33,4 +41,6 @@ public class AnotherSublass : UnknownSuperclass {
 
 public struct InheritingAssociatedType : RawRepresentable {
     public typealias RawValue = Int
+    public init?(rawValue: Int) {}
+    public var rawValue: Int = 0
 }

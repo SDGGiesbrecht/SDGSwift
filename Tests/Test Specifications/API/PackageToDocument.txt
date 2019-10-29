@@ -32,6 +32,11 @@ PackageToDocument • Package(name: "PackageToDocument")
   Superclass • class Superclass
    Decodable
    Encodable
+  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation
+   ExpressibleByExtendedGraphemeClusterLiteral
+   ExpressibleByStringInterpolation
+   ExpressibleByStringLiteral
+   ExpressibleByUnicodeScalarLiteral
   (Bool)
    extensionProperty • var extensionProperty: Bool { get }
    propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }

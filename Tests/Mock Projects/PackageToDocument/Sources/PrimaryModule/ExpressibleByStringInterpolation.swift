@@ -1,5 +1,5 @@
 /*
- Dependency.swift
+ ExpressibleByStringInterpolation.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,14 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol SubDependencyProtocol {}
-extension SubDependencyProtocol {
-    public func inherited() {}
-}
-
-public protocol DependencyProtocol : SubDependencyProtocol {
-    func requirement()
-}
-extension DependencyProtocol {
-    public func provision() {}
+public struct TypeExpressibleByStringInterpolation : ExpressibleByStringInterpolation {
+    public init(stringLiteral: String) {}
+    public init(stringInterpolation: DefaultStringInterpolation) {}
 }

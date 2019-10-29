@@ -35,7 +35,7 @@ let package = Package(
         .target(name: "executable"),
 
         /// Module documentation.
-        .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2"]),
+        .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2", "Hidden"]),
 
         .target(name: "Hidden")
     ]
