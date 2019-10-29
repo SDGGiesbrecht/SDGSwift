@@ -40,7 +40,10 @@ class APITests : TestCase {
             XCTAssertNotNil(parsed.documentation)
             let summary = parsed.summary().joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
-            SDGPersistenceTestUtilities.compare(summary, against: specification, overwriteSpecificationInsteadOfFailing: false)
+            SDGPersistenceTestUtilities.compare(
+                summary,
+                against: specification,
+                overwriteSpecificationInsteadOfFailing: false)
 
             if packageName == "PackageToDocument" {
                 XCTAssert("Structure" ∈ parsed.identifierList())
