@@ -77,11 +77,15 @@ do {
             for source in sources {
                 try autoreleasepool {
                     var normalized = try StrictString(from: source)
-                    normalized.replaceMatches(
-                        for: "///".scalars
-                            + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
-                            + "\n".scalars,
-                        with: "\n".scalars)
+                    if source.lastPathComponent == "Array.swift"
+                        ∨ source.lastPathComponent == "String.swift" {
+                        // #workaround(CommonMark 0.0.50100, Indexing bug leads to infinite loop?)
+                        normalized.replaceMatches(
+                            for: "///".scalars
+                                + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
+                                + "\n".scalars,
+                            with: "\n".scalars)
+                    }
                     try normalized.save(to: source)
                 }
             }

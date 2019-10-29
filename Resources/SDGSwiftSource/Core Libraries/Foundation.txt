@@ -368,6 +368,7 @@ open class NSAffineTransform : AnyObject, CustomDebugStringConvertible, CustomSt
     open func scale(by scale: CGFloat) {}
     open func scaleX(by scaleX: CGFloat, yBy scaleY: CGFloat) {}
     open func transform(_ aPoint: NSPoint) -> NSPoint {}
+    open func transform(_ aSize: NSSize) -> NSSize {}
     open func translateX(by deltaX: CGFloat, yBy deltaY: CGFloat) {}
 }
 open class NSArray : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
@@ -575,8 +576,14 @@ open class NSCoder : AnyObject, CustomDebugStringConvertible, CustomStringConver
     public func decodeSize() -> NSSize {}
     public func decodeSize(forKey key: String) -> NSSize {}
     open func decodeValue(ofObjCType type: UnsafePointer<Int8>, at data: UnsafeMutableRawPointer) {}
-    public func encode(_ point: NSPoint) {}
-    public func encode(_ point: NSPoint, forKey key: String) {}
+    open func encode(_ data: Data) {}
+    open func encode(_ object: Any?) {}
+    open func encode(_ boolv: Bool, forKey key: String) {}
+    open func encode(_ intv: Int, forKey key: String) {}
+    open func encode(_ intv: Int32, forKey key: String) {}
+    open func encode(_ intv: Int64, forKey key: String) {}
+    open func encode(_ objv: Any?, forKey key: String) {}
+    open func encode(_ realv: Double, forKey key: String) {}
     open func encodeArray(ofObjCType type: UnsafePointer<Int8>, count: Int, at array: UnsafeRawPointer) {}
     open func encodeBycopyObject(_ anObject: Any?) {}
     open func encodeByrefObject(_ anObject: Any?) {}
@@ -622,6 +629,7 @@ open class NSCountedSet : AnyObject, CustomDebugStringConvertible, CustomReflect
 }
 open class NSData : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, DataProtocol, Equatable, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, RandomAccessCollection, _CFBridgeable, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable, _SwiftBridgeable {
     public init?(base64Encoded base64Data: Data, options: Base64DecodingOptions = x) {}
+    public init?(base64Encoded base64String: String, options: Base64DecodingOptions = x) {}
     public init(bytes: UnsafeRawPointer?, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int) {}
     public init(bytesNoCopy bytes: UnsafeMutableRawPointer, length: Int, deallocator: ((UnsafeMutableRawPointer, Int) -> Void)? = x) {}
@@ -1087,6 +1095,7 @@ open class NSObject : AnyObject, CustomDebugStringConvertible, CustomStringConve
     public func isMember(of aClass: AnyClass) -> Bool {}
     open func mutableCopy() -> Any {}
     open func replacementObject(for aCoder: NSCoder) -> Any? {}
+    open func replacementObject(for archiver: NSKeyedArchiver) -> Any? {}
 }
 open class NSOrderedSet : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByArrayLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence {
     public convenience init(array: [Any]) {}
@@ -2243,12 +2252,12 @@ public protocol DataProtocol : RandomAccessCollection {
     associatedtype Regions where Regions.Element : ContiguousBytes & DataProtocol, Regions.Element.SubSequence : ContiguousBytes
     var regions: Regions { get }
     @discardableResult func copyBytes(to ptr: UnsafeMutableRawBufferPointer) -> Int
-    @discardableResult func copyBytes(to ptr: UnsafeMutableRawBufferPointer, count: Int) -> Int
-    @discardableResult func copyBytes<DestinationType, R>(to ptr: UnsafeMutableBufferPointer<DestinationType>, from range: R) -> Int where R : RangeExpression, Index == R.Bound
+    @discardableResult func copyBytes(to: UnsafeMutableRawBufferPointer, count: Int) -> Int
+    @discardableResult func copyBytes<DestinationType, R>(to: UnsafeMutableBufferPointer<DestinationType>, from: R) -> Int where R : RangeExpression, Index == R.Bound
     func firstRange<D>(of data: D) -> Range<Index>? where D : DataProtocol
-    func firstRange<D, R>(of data: D, in range: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
+    func firstRange<D, R>(of: D, in: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
     func lastRange<D>(of data: D) -> Range<Index>? where D : DataProtocol
-    func lastRange<D, R>(of data: D, in range: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
+    func lastRange<D, R>(of: D, in: R) -> Range<Index>? where D : DataProtocol, R : RangeExpression, Index == R.Bound
 }
 public protocol FileManagerDelegate : AnyObject, NSObjectProtocol {
     func fileManager(_ fileManager: FileManager, shouldCopyItemAt srcURL: URL, to dstURL: URL) -> Bool
@@ -2514,9 +2523,11 @@ extension Measurement {
     public var debugDescription: String { get }
     public var description: String { get }
     public func *(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
+    public func *(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func +(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func -(lhs: Measurement<UnitType>, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
     public func /(lhs: Double, rhs: Measurement<UnitType>) -> Measurement<UnitType> {}
+    public func /(lhs: Measurement<UnitType>, rhs: Double) -> Measurement<UnitType> {}
     public func <<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
     public func ==<LeftHandSideType, RightHandSideType>(lhs: Measurement<LeftHandSideType>, rhs: Measurement<RightHandSideType>) -> Bool {}
     public func encode(to encoder: Encoder) throws {}
@@ -2567,6 +2578,7 @@ extension StringProtocol {
     public func caseInsensitiveCompare<T>(_ aString: T) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
     public func commonPrefix<T>(with aString: T, options: String.CompareOptions = x) -> String where T : StringProtocol, Index == String.Index {}
     public func compare<T>(_ aString: T, options mask: String.CompareOptions = x, range: Range<Index>? = x, locale: Locale? = x) -> ComparisonResult where T : StringProtocol, Index == String.Index {}
+    public func components<T>(separatedBy separator: T) -> [String] where T : StringProtocol, Index == String.Index {}
     public func contains<T>(_ other: T) -> Bool where T : StringProtocol, Index == String.Index {}
 #if !DEPLOYMENT_RUNTIME_SWIFT
     public func enumerateLinguisticTags<T, R>(in range: R, scheme tagScheme: T, options opts: NSLinguisticTagger.Options = x, orthography: NSOrthography? = x, invoking body: (String, Range<Index>, Range<Index>, inout Bool) -> Void) where R : RangeExpression, T : StringProtocol, Index == R.Bound, Index == String.Index {}
