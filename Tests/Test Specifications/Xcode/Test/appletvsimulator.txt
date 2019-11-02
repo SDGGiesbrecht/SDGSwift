@@ -1,4 +1,4 @@
-		SimDevice: Apple TV K (C-DF-CFF-A-FCDCDC, tvOS ., Shutdown)
+		SimDevice: Apple TV K (DD-DE-D-AF-AECEAE, tvOS ., Shutdown)
         "FMCVDTZ."
     "application-identifier" = "FMCVDTZ.";
     "keychain-access-groups" =     (
@@ -14,7 +14,6 @@ CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
-Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
@@ -25,11 +24,9 @@ Entitlements:
 Ld [...]/Mock normal x_
 Ld [...]/MockTests normal x_
 MergeSwiftModule normal x_
-Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
 ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
@@ -57,7 +54,6 @@ WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 note: Constructing build description
 note: Planning build
 note: Using new build system
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
 {
 }
-} (. (J))
+} (. (K))

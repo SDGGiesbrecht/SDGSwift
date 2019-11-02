@@ -1,4 +1,4 @@
-		SimDevice: Apple TV K (C-DF-CFF-A-FCDCDC, tvOS ., Shutdown)
+		SimDevice: Apple TV K (DD-DE-D-AF-AECEAE, tvOS ., Shutdown)
   Mock: /tmp/Mock
 $ xcodebuild test -destination name=Apple TV K -scheme Mock -enableCodeCoverage YES -derivedDataPath
 ** TEST SUCCEEDED **
@@ -10,7 +10,6 @@ CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Copying [...]/libswiftCore.dylib
-Details:  [DVTiPhoneSimulator -primaryInstrumentsServer was called from the main thread
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/MockTests.swiftdoc
@@ -18,9 +17,7 @@ Ditto [...]/MockTests.swiftmodule
 Ld [...]/Mock.o normal x_
 Ld [...]/MockTests normal x_
 MergeSwiftModule normal x_
-Method:   -primaryInstrumentsServerWithError:
 MkDir [...]/MockTests.xctest
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
@@ -47,5 +44,4 @@ WriteAuxiliaryFile [...]/empty.plist
 note: Constructing build description
 note: Planning build
 note: Using new build system
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/DVTiOSFrameworks/DVTiOSFrameworks-/IDEiOSSupportCore/DVTiPhoneSimulator.m:
-} (. (J))
+} (. (K))
