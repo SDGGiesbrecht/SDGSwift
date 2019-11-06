@@ -104,7 +104,7 @@ extension SwiftCompiler {
     }
 
     private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
-        // #workaround(swift --version 5.1, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
+        // #workaround(swift --version 5.1.2, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
         switch codeCoverageDirectory(for: package) {
         case .failure(let error):
             return .failure(error)
