@@ -38,6 +38,8 @@ class APITests : TestCase {
             let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
             let parsed = try PackageAPI(package: package.packageGraph().get(), reportProgress: { print($0) })
             XCTAssertNotNil(parsed.documentation.last)
+            XCTAssertNotNil(parsed.libraries.first?.documentation.last)
+            XCTAssertNotNil(parsed.modules.first?.documentation.last)
             let summary = parsed.summary().joined(separator: "\n")
             let specification = testSpecificationDirectory().appendingPathComponent("API/\(parsed.name).txt")
             SDGPersistenceTestUtilities.compare(

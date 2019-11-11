@@ -52,7 +52,7 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
   internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
     let search = ".library(".scalars
       + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-      + "\u{22}\(product.name)\u{22}".scalars
+      + "name: \u{22}\(product.name)\u{22}".scalars
     let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent
     self.init(
       documentation: manifestDeclaration?.documentation ?? [], // @exempt(from: tests)
