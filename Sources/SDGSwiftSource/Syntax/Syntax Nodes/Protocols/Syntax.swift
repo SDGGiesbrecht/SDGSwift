@@ -274,8 +274,9 @@ extension Syntax {
         return result.reversed()
     }
 
-    internal func smallestSubnode(containing searchTerm: String) -> Syntax? {
-        guard source().contains(searchTerm) else {
+    internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
+      where P : SDGCollections.Pattern, P.Element == Unicode.Scalar {
+        guard source().scalars.contains(searchTerm) else {
             return nil
         }
         for child in children {
