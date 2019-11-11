@@ -32,7 +32,7 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
   ///     - manifest: The syntax of the package manifest.
   public convenience init(module: PackageModel.Target, manifest: Syntax?) throws {
     let search = ".target(".scalars
-      + ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines })
+      + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
       + "name: \u{22}\(module.name)\u{22}".scalars
     let manifestDeclaration = manifest?.smallestSubnode(containing: search)?.parent
     try self.init(
