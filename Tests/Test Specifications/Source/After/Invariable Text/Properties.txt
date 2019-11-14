@@ -20,3 +20,9 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
 ̲    @̲NSCopying p̲u̲b̲l̲i̲c̲ v̲a̲r̲ copyingProperty:̲ NSString
 ̲}̲
 ̲
+̲@̲p̲r̲o̲p̲e̲r̲t̲y̲W̲r̲a̲p̲p̲e̲r̲ p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Wrapper {̲}̲
+̲
+̲p̲u̲b̲l̲i̲c̲ s̲t̲r̲u̲c̲t̲ Structure {̲
+̲  @̲Wrapper p̲u̲b̲l̲i̲c̲ v̲a̲r̲ wrapped:̲ Int
+̲}̲
+̲
