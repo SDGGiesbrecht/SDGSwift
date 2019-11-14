@@ -19,3 +19,9 @@ public class ObjectiveCClass : NSObject {
     @available(*, introduced: 4.2.1) @IBOutlet public weak static var delegate: NSObject?
     @NSCopying public var copyingProperty: NSString
 }
+
+@propertyWrapper public struct Wrapper {}
+
+public struct Structure {
+  @Wrapper public var wrapped: Int
+}
