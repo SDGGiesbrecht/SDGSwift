@@ -56,6 +56,9 @@ extension AttributeSyntax {
         case "escaping", "autoclosure", "discardableResult":
             // Call site
             return normalized()
+        case "propertyWrapper":
+            // Usable as a property wrapper
+            return normalized()
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
             return normalized()
@@ -88,11 +91,9 @@ extension AttributeSyntax {
         // Not relevant outside library evolution mode.
             return nil
 
-        default: // @exempt(from: tests)
-            attribute.warnUnidentified()
-            return nil
+        default: // Property wrapper.
+          return normalized()
         }
-
     }
 
     private func normalized() -> AttributeSyntax {
@@ -116,7 +117,7 @@ extension AttributeSyntax {
     }
 
     private enum Group : OrderedEnumeration {
-        case unknown
+        case custom
         case availability
         case interfaceBuilder
         case objectiveC
@@ -139,9 +140,8 @@ extension AttributeSyntax {
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
-        default: // @exempt(from: tests)
-            attributeName.text.warnUnidentified()
-            return .unknown
+        default:
+            return .custom
         }
     }
 
