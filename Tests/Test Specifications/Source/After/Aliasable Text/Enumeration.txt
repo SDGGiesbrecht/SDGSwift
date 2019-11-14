@@ -37,7 +37,7 @@ public enum EnumerationWithAssociatedValues {
 }
 
 public enum EnumerationWithAvailablitiyRestrictions {
-    @a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲, r̲e̲n̲a̲m̲e̲d̲: "new") case old
+    @available(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲, r̲e̲n̲a̲m̲e̲d̲: "new") case old
     case new
 }
 
