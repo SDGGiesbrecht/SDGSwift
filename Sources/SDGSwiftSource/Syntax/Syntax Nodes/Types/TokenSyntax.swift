@@ -36,12 +36,6 @@ extension TokenSyntax {
     // @documentation(SDGSwiftSource.TokenSyntax.textFreedom)
     /// The amount of freedom avialable to the token’s text.
     public var textFreedom: TextFreedom {
-      if text == "propertyWrapper" {
-        for ancestor in ancestors() {
-          print(type(of: ancestor))
-          print(ancestor.source())
-        }
-      }
         switch tokenKind {
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .prefixOperator, .postfixOperator:
             if let parent = self.parent {
