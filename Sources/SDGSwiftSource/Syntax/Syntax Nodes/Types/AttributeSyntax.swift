@@ -20,21 +20,6 @@ import SwiftSyntax
 
 extension AttributeSyntax {
 
-
-    internal static let builtInAttributes: Set<String> = [
-      "available",
-      "escaping", "autoclosure", "discardableResult",
-      "propertyWrapper",
-      "objc", "nonobjc", "objcMembers",
-      "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable",
-      "inlinable", "usableFromInline", "inline", "dynamicMemberLookup", "convention",
-      "NSCopying", "NSManaged",
-      "testable",
-      "NSApplicationMain", "UIApplicationMain",
-      "requires_stored_property_inits", "warn_unqualified_access",
-      "frozen"
-    ]
-
     private static let absenceIndicators = Set(["unavailable", "deprecated", "obsoleted"])
     internal func indicatesAbsence() -> Bool {
         switch attributeName.text {

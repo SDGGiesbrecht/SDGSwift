@@ -62,10 +62,7 @@ extension TokenSyntax {
 
                 if let attribute = parent as? AttributeSyntax,
                   attribute.attributeName == self {
-                  if text ∈ AttributeSyntax.builtInAttributes {
-                    // @available, @objc, etc.
                     return .invariable
-                  } // else property wrapper; fall through and be handled as a type
                 }
                 if let declarationModifier = parent as? DeclModifierSyntax,
                     declarationModifier.name == self {
@@ -190,10 +187,8 @@ extension TokenSyntax {
             }
             if let attribute = parent as? AttributeSyntax,
               attribute.attributeName == self {
-              if text ∈ AttributeSyntax.builtInAttributes {
                 // @available, @objc, etc.
                 return "keyword"
-              } // else property wrapper; fall through and be handled as a type
             }
             if let declarationModifier = parent as? DeclModifierSyntax,
                 declarationModifier.name == self {
