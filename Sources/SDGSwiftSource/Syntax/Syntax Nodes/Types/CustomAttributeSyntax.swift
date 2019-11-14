@@ -22,6 +22,6 @@ extension CustomAttributeSyntax {
       attributeName: attributeName.normalized(),
       leftParen: nil,
       argumentList: nil,
-      rightParen: nil)
+      rightParen: nil).withTrailingTrivia(.spaces(1))
   }
 }
