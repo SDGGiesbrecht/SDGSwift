@@ -345,16 +345,20 @@ extension Syntax {
         switch self {
         case let attribute as AttributeSyntax:
             return attribute.indicatesAbsence()
+        case is CustomAttributeSyntax:
+            return false
         default: // @exempt(from: tests)
             warnUnidentified()
             return false
         }
     }
 
-    internal func normalizedAttributeForAPIDeclaration() -> AttributeSyntax? {
+    internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
         switch self {
         case let attribute as AttributeSyntax:
             return attribute.normalizedForAPIDeclaration()
+        case let attribute as CustomAttributeSyntax:
+          return attribute.normalizedForAPIDeclaration()
         default: // @exempt(from: tests)
             warnUnidentified()
             return self as? AttributeSyntax

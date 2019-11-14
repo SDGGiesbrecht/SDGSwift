@@ -106,8 +106,9 @@ extension AttributeSyntax {
         // Not relevant outside library evolution mode.
             return nil
 
-        default: // Property wrapper.
-          return normalized()
+        default: // @exempt(from: tests)
+            attribute.warnUnidentified()
+            return nil
         }
     }
 
@@ -132,7 +133,7 @@ extension AttributeSyntax {
     }
 
     private enum Group : OrderedEnumeration {
-        case custom
+        case unknown
         case availability
         case interfaceBuilder
         case objectiveC
@@ -155,8 +156,9 @@ extension AttributeSyntax {
         case "IBOutlet", "IBDesignable", "IBInspectable", "GKInspectable":
             // Objective‐C implementation details
             return .interfaceBuilder
-        default:
-            return .custom
+        default: // @exempt(from: tests)
+            attributeName.text.warnUnidentified()
+            return .unknown
         }
     }
 
