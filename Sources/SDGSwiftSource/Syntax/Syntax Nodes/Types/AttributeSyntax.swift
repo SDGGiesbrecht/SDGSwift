@@ -56,6 +56,9 @@ extension AttributeSyntax {
         case "escaping", "autoclosure", "discardableResult":
             // Call site
             return normalized()
+        case "propertyWrapper":
+            // Usable as a property wrapper
+            return normalized()
         case "objc", "nonobjc", "objcMembers":
             // Objective‐C interface
             return normalized()
@@ -92,7 +95,6 @@ extension AttributeSyntax {
             attribute.warnUnidentified()
             return nil
         }
-
     }
 
     private func normalized() -> AttributeSyntax {

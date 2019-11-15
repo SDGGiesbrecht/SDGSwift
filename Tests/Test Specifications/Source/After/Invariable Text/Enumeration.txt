@@ -37,7 +37,7 @@
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ e̲n̲u̲m̲ EnumerationWithAvailablitiyRestrictions {̲
-̲    @̲available(̲*,̲ unavailable,̲ renamed:̲ "̲new"̲)̲ c̲a̲s̲e̲ old
+̲    @̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ unavailable,̲ renamed:̲ "̲new"̲)̲ c̲a̲s̲e̲ old
 ̲    c̲a̲s̲e̲ new
 ̲}̲
 ̲

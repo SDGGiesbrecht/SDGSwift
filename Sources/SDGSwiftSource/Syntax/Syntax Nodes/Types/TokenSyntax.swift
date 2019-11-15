@@ -60,6 +60,10 @@ extension TokenSyntax {
                     return .arbitrary
                 }
 
+                if let attribute = parent as? AttributeSyntax,
+                  attribute.attributeName == self {
+                    return .invariable
+                }
                 if let declarationModifier = parent as? DeclModifierSyntax,
                     declarationModifier.name == self {
                     // “open”, “mutating”, etc.
@@ -178,7 +182,17 @@ extension TokenSyntax {
             return "punctuation"
 
         case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
-            if name == "get" ∨ name == "set" ∨ name == "mutating" ∨ name == "open" {
+            if name == "get" ∨ name == "set" {
+                return "keyword"
+            }
+            if let attribute = parent as? AttributeSyntax,
+              attribute.attributeName == self {
+                // @available, @objc, etc.
+                return "keyword"
+            }
+            if let declarationModifier = parent as? DeclModifierSyntax,
+                declarationModifier.name == self {
+                // “open”, “mutating”, etc.
                 return "keyword"
             }
 

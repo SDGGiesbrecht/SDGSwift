@@ -2,6 +2,9 @@ ObjectiveCClass • class ObjectiveCClass
  delegate • @available(*, introduced: 4.2.1) @IBOutlet weak static var delegate: NSObject? { get set }
  copyingProperty • @objc var copyingProperty: NSString { get set }
  NSObject
+Structure • struct Structure
+ wrapped • @Wrapper var wrapped: Int { get set }
+Wrapper • @propertyWrapper struct Wrapper
 (Int)
  staticProperty • static var staticProperty: Int { get }
  constantWithInferredType • var constantWithInferredType { get }

@@ -15,15 +15,15 @@
 <span class="punctuation">}</span>
 
 <span class="keyword">extension</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="external identifier">prefix</span> <span class="keyword">func</span> <span class="external identifier">−</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">prefix</span> <span class="keyword">func</span> <span class="external identifier">−</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">operand</span>
     <span class="punctuation">}</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="external identifier">postfix</span> <span class="keyword">func</span> <span class="external identifier">!</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">postfix</span> <span class="keyword">func</span> <span class="external identifier">!</span> <span class="punctuation">(</span><span class="internal identifier">operand</span><span class="punctuation">:</span> <span class="external identifier">Int</span><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Int</span> <span class="punctuation">{</span>
         <span class="keyword">return</span> <span class="internal identifier">operand</span>
     <span class="punctuation">}</span>
 <span class="punctuation">}</span>
 
-<span class="external identifier">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠</span><span class="punctuation">:</span> <span class="external identifier">ComparisonPrecedence</span>
+<span class="keyword">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠</span><span class="punctuation">:</span> <span class="external identifier">ComparisonPrecedence</span>
 
 <span class="keyword">precedencegroup</span> <span class="external identifier">LotsOfAttributes</span> <span class="punctuation">{</span>
     <span class="external identifier">associativity</span><span class="punctuation">:</span> <span class="external identifier">right</span>
@@ -34,8 +34,8 @@
 
 <span class="keyword">precedencegroup</span> <span class="external identifier">NoAttributes</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 
-<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="external identifier">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠≠</span>
-<span class="keyword">@</span><span class="external identifier">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="keyword">precedencegroup</span> <span class="external identifier">UnavailablePrecedence</span> <span class="punctuation">{</span><span class="punctuation">}</span>
+<span class="keyword">@</span><span class="keyword">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="keyword">infix</span> <span class="keyword">operator</span> <span class="external identifier">≠≠</span>
+<span class="keyword">@</span><span class="keyword">available</span><span class="punctuation">(</span><span class="external identifier">*</span><span class="punctuation">,</span> <span class="external identifier">unavailable</span><span class="punctuation">)</span> <span class="keyword">precedencegroup</span> <span class="external identifier">UnavailablePrecedence</span> <span class="punctuation">{</span><span class="punctuation">}</span>
 </code>
 
  </body>

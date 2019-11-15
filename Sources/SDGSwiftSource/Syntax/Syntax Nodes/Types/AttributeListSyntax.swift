@@ -16,12 +16,22 @@ import SwiftSyntax
 
 extension AttributeListSyntax {
 
-    internal func indicatesAbsence() -> Bool {
-        return contains(where: { $0.attributeIndicatesAbsence() })
-    }
+  internal func indicatesAbsence() -> Bool {
+    return contains(where: { $0.attributeIndicatesAbsence() })
+  }
 
-    internal func normalizedForAPIDeclaration() -> AttributeListSyntax? {
-        let normalized = compactMap({ $0.normalizedAttributeForAPIDeclaration() }).sorted(by: AttributeSyntax.arrange)
-        return normalized.isEmpty ? nil : SyntaxFactory.makeAttributeList(normalized)
+  internal func normalizedForAPIDeclaration() -> AttributeListSyntax? {
+    let unsorted = lazy.compactMap({ $0.normalizedAttributeForAPIDeclaration() })
+    var builtIn: [AttributeSyntax] = []
+    var custom: [Syntax] = []
+    for entry in unsorted {
+      if let attribute = entry as? AttributeSyntax { // Built‐in
+        builtIn.append(attribute)
+      } else { // Custom
+        custom.append(entry)
+      }
     }
+    let sorted = builtIn.sorted(by: AttributeSyntax.arrange) + custom
+    return sorted.isEmpty ? nil : SyntaxFactory.makeAttributeList(sorted)
+  }
 }

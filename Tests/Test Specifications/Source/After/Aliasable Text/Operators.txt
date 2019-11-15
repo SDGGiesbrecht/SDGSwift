@@ -26,5 +26,5 @@ precedencegroup LotsOfAttributes {
 
 precedencegroup NoAttributes {}
 
-@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) infix operator ≠≠
-@a̲v̲a̲i̲l̲a̲b̲l̲e̲(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) precedencegroup UnavailablePrecedence {}
+@available(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) infix operator ≠≠
+@available(*̲, u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲) precedencegroup UnavailablePrecedence {}
