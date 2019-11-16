@@ -644,7 +644,4 @@ public enum Xcode : VersionedExternalProcess {
   public static let searchCommands: [[String]] = [
     ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
   ]
-
-  #warning("Remove this.")
-  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
 }

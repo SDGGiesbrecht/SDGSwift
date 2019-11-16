@@ -33,7 +33,21 @@ public protocol VersionedExternalProcess {
   ///
   /// These commands are in order from most standard to least standard install method and they will be recommended in this order in error messages. However, since more unorthodox installs are likely to masquerade for more standard ones in incomplete ways, the commands will be used in reverse order when actually searching for the process.
   static var searchCommands: [[String]] { get }
+}
 
-  #warning("Centralize this.")
-  static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? { get set }
+private var locationCache: [ObjectIdentifier: Result<ExternalProcess, Error>] = [:]
+
+extension VersionedExternalProcess {
+
+  #warning("Make private.")
+  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? {
+    get {
+      let result = locationCache[ObjectIdentifier(self)]
+      return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
+    }
+    set {
+      let converted = newValue?.mapError { $0 as Error }
+      locationCache[ObjectIdentifier(self)] = converted
+    }
+  }
 }

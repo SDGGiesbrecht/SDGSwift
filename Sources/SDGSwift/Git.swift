@@ -162,7 +162,4 @@ public enum Git : VersionedExternalProcess {
   public static let searchCommands: [[String]] = [
     ["which", "git"]
   ]
-
-  #warning("Remove this.")
-  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Git>>?
 }

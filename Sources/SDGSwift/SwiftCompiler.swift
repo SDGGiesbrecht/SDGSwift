@@ -216,7 +216,4 @@ public enum SwiftCompiler : VersionedExternalProcess {
     ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
     ["swiftenv", "which", "swift"] // Swift Version Manager
   ]
-
-  #warning("Remove this.")
-  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>>?
 }
