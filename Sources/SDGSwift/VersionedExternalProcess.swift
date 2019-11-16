@@ -13,10 +13,14 @@
  */
 
 import SDGCollections
+import SDGExternalProcess
 import SDGVersioning
 
 /// An externally installed process, with varying capabilities dependening on the version(s) available.
 public protocol VersionedExternalProcess {
+
+  #warning("Centralize this.")
+  associatedtype LocationError : Error
 
   #warning("Split this up.")
   associatedtype VersionRange : RangeFamily
@@ -26,4 +30,7 @@ public protocol VersionedExternalProcess {
   ///
   /// These commands are in order from most standard to least standard install method and they will be recommended in this order in error messages. However, since more unorthodox installs are likely to masquerade for more standard ones in incomplete ways, the commands will be used in reverse order when actually searching for the process.
   static var searchCommands: [[String]] { get }
+
+  #warning("Centralize this.")
+  static var located: Result<ExternalProcess, LocationError>? { get set }
 }

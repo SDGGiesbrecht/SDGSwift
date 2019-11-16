@@ -24,7 +24,6 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - Locating
 
-  private static var located: Result<ExternalProcess, LocationError>?
   private static func tool() -> Result<ExternalProcess, LocationError> {
     return cached(in: &located) {
 
@@ -153,9 +152,13 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  #warning("Remove this.")
   public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
 
   public static let searchCommands: [[String]] = [
     ["which", "git"]
   ]
+
+  #warning("Remove this.")
+  public static var located: Result<ExternalProcess, LocationError>?
 }

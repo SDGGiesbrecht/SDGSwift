@@ -37,7 +37,6 @@ public enum Xcode : VersionedExternalProcess {
     return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
   }
 
-  private static var located: Result<ExternalProcess, LocationError>?
   private static func tool() -> Result<ExternalProcess, LocationError> {
     return cached(in: &located) {
 
@@ -636,9 +635,13 @@ public enum Xcode : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  #warning("Remove this.")
   public static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
 
   public static let searchCommands: [[String]] = [
     ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
   ]
+
+  #warning("Remove this.")
+  public static var located: Result<ExternalProcess, LocationError>?
 }

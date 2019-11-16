@@ -34,7 +34,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
     return URL(fileURLWithPath: output)
   }
 
-  private static var located: Result<ExternalProcess, SwiftCompiler.LocationError>?
   private static func tool() -> Result<ExternalProcess, SwiftCompiler.LocationError> {
     return cached(in: &located) {
 
@@ -205,6 +204,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  #warning("Remove this.")
   public static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
 
   public static let searchCommands: [[String]] = [
@@ -212,4 +212,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
     ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
     ["swiftenv", "which", "swift"] // Swift Version Manager
   ]
+
+  #warning("Remove this.")
+  public static var located: Result<ExternalProcess, SwiftCompiler.LocationError>?
 }
