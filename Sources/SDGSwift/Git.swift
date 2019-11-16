@@ -34,7 +34,7 @@ public enum Git : VersionedExternalProcess {
   ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
+  @discardableResult public static func clone(_ package: Package, to location: URL, at build: Build = .development, shallow: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
 
     var command = [
       "clone",
@@ -61,7 +61,7 @@ public enum Git : VersionedExternalProcess {
   ///
   /// - Parameters:
   ///     - package: The package.
-  public static func versions(of package: Package) -> Result<Set<Version>, Git.Error> {
+  public static func versions(of package: Package) -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
     return runCustomSubcommand([
       "ls\u{2D}remote",
       "\u{2D}\u{2D}tags",
@@ -86,7 +86,7 @@ public enum Git : VersionedExternalProcess {
   ///
   /// - Parameters:
   ///     - package: The package.
-  public static func latestCommitIdentifier(in package: Package) -> Result<String, Git.Error> {
+  public static func latestCommitIdentifier(in package: Package) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
     return runCustomSubcommand([
       "ls\u{2D}remote",
       package.url.absoluteString,
@@ -106,7 +106,7 @@ public enum Git : VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Git.Error> {
+  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
     reportProgress("$ git " + arguments.joined(separator: " "))
     switch tool() {
     case .failure(let error):

@@ -137,12 +137,12 @@ extension PackageRepository {
     ///     - exclusionPatterns: Patterns describing paths or files to ignore.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-    public func uncommittedChanges(excluding exclusionPatterns: [String] = []) -> Swift.Result<String, SDGSwift.Git.Error> {
+  public func uncommittedChanges(excluding exclusionPatterns: [String] = []) -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
         return Git.uncommittedChanges(in: self, excluding: exclusionPatterns)
     }
 
     /// Returns the list of files ignored by source control.
-    public func ignoredFiles() -> Swift.Result<[Foundation.URL], SDGSwift.Git.Error> {
+  public func ignoredFiles() -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>> {
         return Git.ignoredFiles(in: self)
     }
 
@@ -175,7 +175,7 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - description: A description for the commit.
-    public func commitChanges(description: StrictString) -> Swift.Result<Void, SDGSwift.Git.Error> {
+  public func commitChanges(description: StrictString) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
         return Git.commitChanges(in: self, description: description)
     }
 
@@ -183,7 +183,7 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
-    public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<Void, SDGSwift.Git.Error> {
+  public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
         return Git.tag(version: releaseVersion, in: self)
     }
 }

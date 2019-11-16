@@ -26,7 +26,7 @@ extension Git {
     ///
     /// - Parameters:
     ///     - repository: The uninitialized repository.
-    public static func initialize(_ repository: PackageRepository) -> Result<Void, Git.Error> {
+    public static func initialize(_ repository: PackageRepository) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
         return runCustomSubcommand(["init"], in: repository.location).map { _ in () }
     }
 
@@ -37,7 +37,7 @@ extension Git {
     ///     - description: A description for the commit.
     public static func commitChanges(
         in repository: PackageRepository,
-        description: StrictString) -> Result<Void, Git.Error> {
+        description: StrictString) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
         return runCustomSubcommand([
             "add",
             "."
@@ -56,7 +56,7 @@ extension Git {
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
     ///     - repository: The repository to tag.
-    public static func tag(version releaseVersion: Version, in repository: PackageRepository) -> Result<Void, Git.Error> {
+    public static func tag(version releaseVersion: Version, in repository: PackageRepository) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
         return runCustomSubcommand([
             "tag",
             releaseVersion.string()
@@ -72,7 +72,7 @@ extension Git {
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
     public static func uncommittedChanges(
         in repository: PackageRepository,
-        excluding exclusionPatterns: [String] = []) -> Result<String, Git.Error> {
+        excluding exclusionPatterns: [String] = []) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
 
         switch runCustomSubcommand([
             "add",
@@ -96,7 +96,7 @@ extension Git {
     ///
     /// - Parameters:
     ///     - repository: The repository.
-    public static func ignoredFiles(in repository: PackageRepository) -> Result<[URL], Git.Error> {
+    public static func ignoredFiles(in repository: PackageRepository) -> Result<[URL], VersionedExternalProcessExecutionError<Git>> {
 
         return runCustomSubcommand([
             "status",

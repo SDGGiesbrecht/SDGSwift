@@ -44,7 +44,7 @@ public struct PackageRepository : TransparentWrapper {
         at build: Build = .development,
         shallow: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<PackageRepository, Git.Error> {
+        ) -> Result<PackageRepository, VersionedExternalProcessExecutionError<Git>> {
 
         let repository = PackageRepository(at: location)
         switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
@@ -64,7 +64,7 @@ public struct PackageRepository : TransparentWrapper {
     ///
     /// - Parameters:
     ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
-    public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, SwiftCompiler.Error> {
+    public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
     }
 
@@ -77,7 +77,7 @@ public struct PackageRepository : TransparentWrapper {
     ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
     }
 
@@ -86,7 +86,7 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.test(self, reportProgress: reportProgress)
     }
 
@@ -95,7 +95,7 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
 
@@ -104,7 +104,7 @@ public struct PackageRepository : TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
     }
 

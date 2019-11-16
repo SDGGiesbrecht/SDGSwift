@@ -22,7 +22,7 @@ extension SwiftCompiler {
     ///     - package: The package.
     ///     - reportProgress: A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of compiler output.
-    @discardableResult public static func generateXcodeProject(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, Error> {
+    @discardableResult public static func generateXcodeProject(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return runCustomSubcommand([
             "package", "generate\u{2D}xcodeproj",
             "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"

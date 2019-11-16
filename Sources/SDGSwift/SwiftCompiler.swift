@@ -45,7 +45,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
     releaseConfiguration: Bool = false,
     staticallyLinkStandardLibrary: Bool = false,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, SwiftCompiler.Error> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     var arguments = ["build"]
     if releaseConfiguration {
       arguments += ["\u{2D}\u{2D}configuration", "release"]
@@ -88,7 +88,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
     for package: PackageRepository,
     releaseConfiguration: Bool = false,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<URL, SwiftCompiler.Error> {
+  ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     var arguments = [
       "build",
       "\u{2D}\u{2D}show\u{2D}bin\u{2D}path"
@@ -108,7 +108,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   ///     - package: The package to test.
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+  @discardableResult public static func test(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
 
     var environment = ProcessInfo.processInfo.environment
     environment["XCTestConfigurationFilePath"] = nil // Causes issues when run from within Xcode.
@@ -126,7 +126,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   ///     - package: The package to resolve.
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+  @discardableResult public static func resolve(_ package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     return runCustomSubcommand(["package", "resolve"], in: package.location, reportProgress: reportProgress)
   }
 
@@ -136,7 +136,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   ///     - package: The package for which to regenerate the test list.
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+  @discardableResult public static func regenerateTestLists(for package: PackageRepository, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     return runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
   }
 
@@ -148,7 +148,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     reportProgress("$ swift " + arguments.joined(separator: " "))
     switch tool() {
     case .failure(let error):

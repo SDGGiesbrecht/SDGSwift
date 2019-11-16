@@ -21,10 +21,10 @@ extension Package {
     public enum BuildError : PresentableError {
 
         /// Git encountered an error.
-        case gitError(Git.Error)
+        case gitError(VersionedExternalProcessExecutionError<Git>)
 
         /// Swift encountered an error.
-        case swiftError(SwiftCompiler.Error)
+        case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
         /// Foundation encountered an error.
         case foundationError(Swift.Error)

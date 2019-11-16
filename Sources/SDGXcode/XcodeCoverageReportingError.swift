@@ -34,7 +34,7 @@ extension Xcode {
         case foundationError(Swift.Error)
 
         /// Xcode encountered an error.
-        case xcodeError(Xcode.Error)
+        case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
 
         /// The test coverage report could not be parsed.
         case corruptTestCoverageReport

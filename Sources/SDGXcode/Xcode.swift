@@ -545,7 +545,7 @@ public enum Xcode : VersionedExternalProcess {
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, Xcode.Error> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
 
     var environment = environment ?? ProcessInfo.processInfo.environment
     environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
@@ -578,7 +578,7 @@ public enum Xcode : VersionedExternalProcess {
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, Xcode.Error> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
 
     reportProgress("$ xccov " + arguments.joined(separator: " "))
 
