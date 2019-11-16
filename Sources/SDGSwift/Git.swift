@@ -20,16 +20,12 @@ import SDGExternalProcess
 import SDGVersioning
 
 /// Git.
-public enum Git {
+public enum Git : VersionedExternalProcess {
 
   // MARK: - Locating
 
   /// The range of compatible Git versions.
   public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
-
-  internal static let searchCommands: [[String]] = [
-    ["which", "git"]
-  ]
 
   private static var located: Result<ExternalProcess, LocationError>?
   private static func tool() -> Result<ExternalProcess, LocationError> {
@@ -157,4 +153,10 @@ public enum Git {
       }
     }
   }
+
+  // MARK: - VersionedExternalProcess
+
+  public static let searchCommands: [[String]] = [
+    ["which", "git"]
+  ]
 }
