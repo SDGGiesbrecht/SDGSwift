@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGControlFlow
 import SDGCollections
 import SDGText
@@ -64,7 +66,12 @@ extension VersionedExternalProcess {
   public static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>> {
     return cached(in: &located) {
 
-      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap({ SwiftCompiler._search(command: $0) })
+      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap{ (command) -> URL? in
+        guard let output = try? Shell.default.run(command: command).get() else {
+          return nil
+        }
+        return URL(fileURLWithPath: output)
+      }
 
       func validate(_ process: ExternalProcess) -> Bool {
         // Make sure version is compatible.

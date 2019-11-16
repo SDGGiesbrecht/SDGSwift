@@ -28,14 +28,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
-  #warning("Move this?")
-  public static func _search(command: [String]) -> URL? {
-    guard let output = try? Shell.default.run(command: command).get() else {
-      return nil
-    }
-    return URL(fileURLWithPath: output)
-  }
-
   // MARK: - Usage
 
   /// Returns the location of the Swift compiler.
