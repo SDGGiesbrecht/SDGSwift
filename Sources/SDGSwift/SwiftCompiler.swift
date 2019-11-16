@@ -17,6 +17,7 @@ import Foundation
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGText
 import SDGExternalProcess
 import SDGVersioning
 
@@ -34,7 +35,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
     return URL(fileURLWithPath: output)
   }
 
-  private static func tool() -> Result<ExternalProcess, SwiftCompiler.LocationError> {
+  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>> {
     return cached(in: &located) {
 
       let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
@@ -65,7 +66,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   // MARK: - Usage
 
   /// Returns the location of the Swift compiler.
-  public static func location() -> Result<URL, SwiftCompiler.LocationError> {
+  public static func location() -> Result<URL, VersionedExternalProcessLocationError<SwiftCompiler>> {
     return tool().map { $0.executable }
   }
 
@@ -204,6 +205,9 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  public static let englishName: StrictString = "Swift"
+  public static var deutscherNameInDativ: StrictString = "Swift"
+
   #warning("Remove this.")
   public static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
 
@@ -214,5 +218,5 @@ public enum SwiftCompiler : VersionedExternalProcess {
   ]
 
   #warning("Remove this.")
-  public static var located: Result<ExternalProcess, SwiftCompiler.LocationError>?
+  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>>?
 }

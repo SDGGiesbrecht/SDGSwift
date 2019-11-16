@@ -27,7 +27,7 @@ extension SwiftCompiler {
         // MARK: - Cases
 
         /// Swift could not be located.
-        case swiftLocationError(LocationError)
+        case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
         /// The package manager encountered an error.
         case packageManagerError(Swift.Error?, [Diagnostic])

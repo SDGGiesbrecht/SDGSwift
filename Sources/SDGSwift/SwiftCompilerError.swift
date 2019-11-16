@@ -26,7 +26,7 @@ extension SwiftCompiler {
     public enum Error : PresentableError {
 
         /// Swift could not be located.
-        case locationError(LocationError)
+        case locationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
         /// Swift encountered an error during its execution.
         case executionError(ExternalProcess.Error)

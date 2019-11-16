@@ -13,17 +13,20 @@
  */
 
 import SDGCollections
+import SDGText
 import SDGExternalProcess
 import SDGVersioning
 
 /// An externally installed process, with varying capabilities dependening on the version(s) available.
 public protocol VersionedExternalProcess {
 
-  #warning("Centralize this.")
-  associatedtype LocationError : Error
+  /// The English name of the process.
+  static var englishName: StrictString { get }
+  /// Der deutsche Name des Prozesses im Dativ.
+  static var deutscherNameInDativ: StrictString { get }
 
   #warning("Split this up.")
-  associatedtype VersionRange : RangeFamily
+  associatedtype VersionRange : RangeFamily where VersionRange.Bound == Version
   static var compatibleVersionRange: VersionRange { get }
 
   /// The shell commands used to locate the process.
@@ -32,5 +35,5 @@ public protocol VersionedExternalProcess {
   static var searchCommands: [[String]] { get }
 
   #warning("Centralize this.")
-  static var located: Result<ExternalProcess, LocationError>? { get set }
+  static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? { get set }
 }

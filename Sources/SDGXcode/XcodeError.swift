@@ -18,6 +18,8 @@ import SDGText
 import SDGLocalization
 import SDGExternalProcess
 
+import SDGSwift
+
 import SDGSwiftLocalizations
 
 extension Xcode {
@@ -26,7 +28,7 @@ extension Xcode {
     public enum Error : PresentableError {
 
         /// Xcode could not be located.
-        case locationError(LocationError)
+        case locationError(VersionedExternalProcessLocationError<Xcode>)
 
         /// Xcode encountered an error during its execution.
         case executionError(ExternalProcess.Error)

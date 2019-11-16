@@ -29,7 +29,7 @@ extension SwiftCompiler {
 
     // MARK: - Properties
 
-    internal static func swiftCLocation() -> Swift.Result<Foundation.URL, LocationError> {
+    internal static func swiftCLocation() -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>> {
         return location().map { swift in
             return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
         }

@@ -25,7 +25,7 @@ extension Git {
     public enum Error : PresentableError {
 
         /// Git could not be located.
-        case locationError(LocationError)
+        case locationError(VersionedExternalProcessLocationError<Git>)
 
         /// Git encountered an error during its execution.
         case executionError(ExternalProcess.Error)

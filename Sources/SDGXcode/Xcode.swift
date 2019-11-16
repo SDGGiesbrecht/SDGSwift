@@ -37,7 +37,7 @@ public enum Xcode : VersionedExternalProcess {
     return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
   }
 
-  private static func tool() -> Result<ExternalProcess, LocationError> {
+  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
     return cached(in: &located) {
 
       let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
@@ -66,8 +66,8 @@ public enum Xcode : VersionedExternalProcess {
     }
   }
 
-  private static var locatedCoverage: Result<ExternalProcess, LocationError>?
-  private static func coverageTool() -> Result<ExternalProcess, LocationError> {
+  private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
+  private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
     return cached(in: &locatedCoverage) {
       return tool().map { tool in // @exempt(from: tests) Unreachable on Linux.
         return ExternalProcess(at: coverageToolLocation(for: tool.executable))
@@ -78,7 +78,7 @@ public enum Xcode : VersionedExternalProcess {
   // MARK: - Usage
 
   /// Returns the location of Xcode.
-  public static func location() -> Result<URL, LocationError> {
+  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Xcode>> {
     return tool().map { $0.executable } // @exempt(from: tests) Unreachable on Linux.
   }
 
@@ -635,6 +635,9 @@ public enum Xcode : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  public static let englishName: StrictString = "Xcode"
+  public static var deutscherNameInDativ: StrictString = "Xcode"
+
   #warning("Remove this.")
   public static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
 
@@ -643,5 +646,5 @@ public enum Xcode : VersionedExternalProcess {
   ]
 
   #warning("Remove this.")
-  public static var located: Result<ExternalProcess, LocationError>?
+  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
 }

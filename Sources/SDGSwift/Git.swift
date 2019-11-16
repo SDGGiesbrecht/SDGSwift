@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGCollections
+import SDGText
 import SDGExternalProcess
 import SDGVersioning
 
@@ -24,7 +25,7 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - Locating
 
-  private static func tool() -> Result<ExternalProcess, LocationError> {
+  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Git>> {
     return cached(in: &located) {
 
       let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
@@ -50,7 +51,7 @@ public enum Git : VersionedExternalProcess {
   // MARK: - Usage
 
   /// Returns the location of the Swift compiler.
-  public static func location() -> Result<URL, LocationError> {
+  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Git>> {
     return tool().map { $0.executable }
   }
 
@@ -152,6 +153,9 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
+  public static let englishName: StrictString = "Git"
+  public static var deutscherNameInDativ: StrictString = "Git"
+
   #warning("Remove this.")
   public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
 
@@ -160,5 +164,5 @@ public enum Git : VersionedExternalProcess {
   ]
 
   #warning("Remove this.")
-  public static var located: Result<ExternalProcess, LocationError>?
+  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Git>>?
 }
