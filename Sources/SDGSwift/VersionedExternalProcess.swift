@@ -61,8 +61,7 @@ extension VersionedExternalProcess {
     }
   }
 
-  #warning("Make private.")
-  public static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>> {
+  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>> {
     return cached(in: &located) {
 
       let searchLocations = searchCommands.lazy.reversed().lazy.compactMap{ (command) -> URL? in

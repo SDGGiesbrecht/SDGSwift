@@ -40,8 +40,8 @@ public enum Xcode : VersionedExternalProcess {
   private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
   private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
     return cached(in: &locatedCoverage) {
-      return tool().map { tool in // @exempt(from: tests) Unreachable on Linux.
-        return ExternalProcess(at: coverageToolLocation(for: tool.executable))
+      return location().map { location in // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(at: coverageToolLocation(for: location))
       }
     }
   }
