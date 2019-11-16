@@ -95,4 +95,36 @@ extension VersionedExternalProcess {
   public static func location() -> Result<URL, VersionedExternalProcessLocationError<Self>> {
     return tool().map { $0.executable }
   }
+
+  /// Runs a custom subcommand.
+  ///
+  /// - Parameters:
+  ///     - arguments: The arguments (leave the process name off the beginning).
+  ///     - workingDirectory: Optional. A different working directory.
+  ///     - environment: Optional. A different set of environment variables.
+  ///     - reportProgress: Optional. A closure to execute for each line of output.
+  ///     - progressReport: A line of output.
+  @discardableResult public static func runCustomSubcommand(
+    _ arguments: [String],
+    in workingDirectory: URL? = nil,
+    with environment: [String: String]? = nil,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<Self>> {
+
+    var environment = environment ?? ProcessInfo.processInfo.environment
+    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
+
+    reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
+    switch tool() {
+    case .failure(let error):
+      return .failure(.locationError(error))
+    case .success(let git):
+      switch git.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+      case .failure(let error):
+        return .failure(.executionError(error))
+      case .success(let output):
+        return .success(output)
+      }
+    }
+  }
 }

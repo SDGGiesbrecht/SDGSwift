@@ -1,0 +1,20 @@
+🇬🇧EN
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
+It must be installed and locatable with one of the following commands:
+$ which git
+
+🇺🇸EN
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
+It must be installed and locatable with one of the following commands:
+$ which git
+
+🇨🇦EN
+No compatible version of Git could be located. (1.9.0 ≤ x < 3.0.0)
+It must be installed and locatable with one of the following commands:
+$ which git
+
+🇩🇪DE
+Keine passende Version von Git wurde gefunden. (1.9.0 ≤ x < 3.0.0)
+Es muss installiert und unter einem der folgenden Befehle vorhanden sein:
+$ which git
+

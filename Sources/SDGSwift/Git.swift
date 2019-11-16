@@ -96,31 +96,6 @@ public enum Git : VersionedExternalProcess {
     }
   }
 
-  /// Runs a custom subcommand.
-  ///
-  /// - Warning: Make sure the custom command is compatible with the entire range specified by `compatibleVersionRange`.
-  ///
-  /// - Parameters:
-  ///     - arguments: The arguments (leave “git” off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
-    reportProgress("$ git " + arguments.joined(separator: " "))
-    switch tool() {
-    case .failure(let error):
-      return .failure(.locationError(error))
-    case .success(let git):
-      switch git.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
-      case .failure(let error):
-        return .failure(.executionError(error))
-      case .success(let output):
-        return .success(output)
-      }
-    }
-  }
-
   // MARK: - VersionedExternalProcess
 
   public static let englishName: StrictString = "Git"

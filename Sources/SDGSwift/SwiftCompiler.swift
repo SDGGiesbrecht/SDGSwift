@@ -140,29 +140,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
     return runCustomSubcommand(["test", "\u{2D}\u{2D}generate\u{2D}linuxmain"], in: package.location, reportProgress: reportProgress)
   }
 
-  /// Runs a custom subcommand.
-  ///
-  /// - Parameters:
-  ///     - arguments: The arguments (leave “swift” off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(_ arguments: [String], in workingDirectory: URL? = nil, with environment: [String: String]? = nil, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-    reportProgress("$ swift " + arguments.joined(separator: " "))
-    switch tool() {
-    case .failure(let error):
-      return .failure(.locationError(error))
-    case .success(let swift):
-      switch swift.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
-      case .failure(let error):
-        return .failure(.executionError(error))
-      case .success(let output):
-        return .success(output)
-      }
-    }
-  }
-
   // MARK: - VersionedExternalProcess
 
   public static let englishName: StrictString = "Swift"

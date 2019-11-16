@@ -44,7 +44,7 @@ class APITests : TestCase {
     }
 
     func testGitError() {
-        testCustomStringConvertibleConformance(of: Git.Error.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: VersionedExternalProcessExecutionError<Git>.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         switch Git.runCustomSubcommand(["fail"]) {
         case .success:
             XCTFail()
@@ -105,8 +105,8 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: Package.ExecutionError.buildError(.gitError(.locationError(.unavailable))), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Package.ExecutionError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Package.ExecutionError.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: SwiftCompiler.Error.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Execution", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: VersionedExternalProcessExecutionError<SwiftCompiler>.locationError(.unavailable), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: VersionedExternalProcessExecutionError<SwiftCompiler>.executionError(.processError(code: 1, output: "[...]")), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Execution", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testVersion() {

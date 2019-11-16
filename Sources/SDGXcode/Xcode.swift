@@ -532,39 +532,6 @@ public enum Xcode : VersionedExternalProcess {
     return url
   }
 
-  /// Runs a custom subcommand of xcodebuild.
-  ///
-  /// - Parameters:
-  ///     - arguments: The arguments (leave “xcodebuild” off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(
-    _ arguments: [String],
-    in workingDirectory: URL? = nil,
-    with environment: [String: String]? = nil,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
-
-    var environment = environment ?? ProcessInfo.processInfo.environment
-    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
-
-    reportProgress("$ xcodebuild " + arguments.joined(separator: " "))
-
-    switch tool() {
-    case .failure(let error):
-      return .failure(.locationError(error))
-    case .success(let xcode): // @exempt(from: tests) Unreachable on Linux.
-      switch xcode.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
-      case .failure(let error):
-        return .failure(.executionError(error))
-      case .success(let output):
-        return .success(output)
-      }
-    }
-  }
-
   /// Runs a custom subcommand of xccov.
   ///
   /// - Parameters:

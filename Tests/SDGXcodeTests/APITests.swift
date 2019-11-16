@@ -271,7 +271,7 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.packageManagerError(.packageManagerError(StandInError(), [])), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: VersionedExternalProcessExecutionError<Xcode>.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(
             of: Xcode.SchemeError.xcodeError(.executionError(.foundationError(StandInError()))),
             localizations: InterfaceLocalization.self,
