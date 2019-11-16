@@ -25,7 +25,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   // MARK: - Locating
 
-  internal static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
   public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
   public static func _search(command: [String]) -> URL? {
@@ -205,6 +204,8 @@ public enum SwiftCompiler : VersionedExternalProcess {
   }
 
   // MARK: - VersionedExternalProcess
+
+  public static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
 
   public static let searchCommands: [[String]] = [
     ["which", "swift"], // Swift

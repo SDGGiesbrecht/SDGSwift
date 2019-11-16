@@ -32,8 +32,6 @@ public enum Xcode : VersionedExternalProcess {
 
   // MARK: - Locating
 
-  internal static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
-
   private static func coverageToolLocation(for xcode: URL) -> URL {
     // @exempt(from: tests) Unreachable on Linux.
     return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
@@ -637,6 +635,8 @@ public enum Xcode : VersionedExternalProcess {
   }
 
   // MARK: - VersionedExternalProcess
+
+  public static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
 
   public static let searchCommands: [[String]] = [
     ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode

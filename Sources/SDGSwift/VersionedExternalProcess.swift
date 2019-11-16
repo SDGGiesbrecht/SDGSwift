@@ -12,8 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+import SDGVersioning
+
 /// An externally installed process, with varying capabilities dependening on the version(s) available.
 public protocol VersionedExternalProcess {
+
+  #warning("Split this up.")
+  associatedtype VersionRange : RangeFamily
+  static var compatibleVersionRange: VersionRange { get }
 
   /// The shell commands used to locate the process.
   ///
