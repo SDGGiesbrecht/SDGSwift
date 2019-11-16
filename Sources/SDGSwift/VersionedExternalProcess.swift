@@ -88,4 +88,11 @@ extension VersionedExternalProcess {
       }
     }
   }
+
+  // MARK: - Usage
+
+  /// Returns the location of the process.
+  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Self>> {
+    return tool().map { $0.executable }
+  }
 }

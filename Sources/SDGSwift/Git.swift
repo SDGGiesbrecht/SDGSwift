@@ -25,11 +25,6 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - Usage
 
-  /// Returns the location of the Swift compiler.
-  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Git>> {
-    return tool().map { $0.executable }
-  }
-
   /// Creates a local repository by cloning the remote package.
   ///
   /// - Parameters:

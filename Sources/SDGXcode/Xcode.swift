@@ -48,11 +48,6 @@ public enum Xcode : VersionedExternalProcess {
 
   // MARK: - Usage
 
-  /// Returns the location of Xcode.
-  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Xcode>> {
-    return tool().map { $0.executable } // @exempt(from: tests) Unreachable on Linux.
-  }
-
   private static let ignorableCommands: [String] = [
     "/bin/sh",
     "bitcode_strip",

@@ -30,11 +30,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   // MARK: - Usage
 
-  /// Returns the location of the Swift compiler.
-  public static func location() -> Result<URL, VersionedExternalProcessLocationError<SwiftCompiler>> {
-    return tool().map { $0.executable }
-  }
-
   public static func _ignoreProgress(_ output: String) {}
 
   /// Builds the package.
