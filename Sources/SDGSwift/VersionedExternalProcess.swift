@@ -44,48 +44,53 @@ public protocol VersionedExternalProcess {
   static var versionQuery: [String] { get }
 }
 
-private var locationCache: [ObjectIdentifier: Result<ExternalProcess, Error>] = [:]
+private var locationCache: [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] = [:]
 
 extension VersionedExternalProcess {
 
   // MARK: - Locating
 
-  private static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? {
+  private static subscript<Constraints>(
+    versionConstraints: Constraints) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>?
+    where Constraints : RangeFamily, Constraints.Bound == Version {
     get {
-      let result = locationCache[ObjectIdentifier(self)]
+      let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[versionConstraints.lowerBound]?[versionConstraints.upperBound]
       return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
     }
     set {
       let converted = newValue?.mapError { $0 as Error }
-      locationCache[ObjectIdentifier(self)] = converted
+      locationCache[ObjectIdentifier(self), default: [:]][ObjectIdentifier(Constraints.self), default: [:]][versionConstraints.lowerBound, default: [:]][versionConstraints.upperBound] = converted
     }
   }
 
-  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>> {
-    return cached(in: &located) {
+  private static func tool<Constraints>(
+    versionConstraints: Constraints) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
+    where Constraints : RangeFamily, Constraints.Bound == Version {
 
-      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap{ (command) -> URL? in
-        guard let output = try? Shell.default.run(command: command).get() else {
-          return nil
+      return cached(in: &self[versionConstraints]) {
+
+        let searchLocations = searchCommands.lazy.reversed().lazy.compactMap{ (command) -> URL? in
+          guard let output = try? Shell.default.run(command: command).get() else {
+            return nil
+          }
+          return URL(fileURLWithPath: output)
         }
-        return URL(fileURLWithPath: output)
-      }
 
-      func validate(_ process: ExternalProcess) -> Bool {
-        // Make sure version is compatible.
-        guard let output = try? process.run(versionQuery).get(),
-          let version = Version(firstIn: output) else {
-            return false
+        func validate(_ process: ExternalProcess) -> Bool {
+          // Make sure version is compatible.
+          guard let output = try? process.run(versionQuery).get(),
+            let version = Version(firstIn: output) else {
+              return false
+          }
+          return compatibleVersionRange.contains(version)
         }
-        return compatibleVersionRange.contains(version)
-      }
 
-      if let found = ExternalProcess(searching: searchLocations, commandName: commandName, validate: validate) {
-        return .success(found)
-      } else {
-        return .failure(.unavailable)
+        if let found = ExternalProcess(searching: searchLocations, commandName: commandName, validate: validate) {
+          return .success(found)
+        } else {
+          return .failure(.unavailable)
+        }
       }
-    }
   }
 
   // MARK: - Usage
