@@ -23,31 +23,6 @@ import SDGVersioning
 /// Git.
 public enum Git : VersionedExternalProcess {
 
-  // MARK: - Locating
-
-  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Git>> {
-    return cached(in: &located) {
-
-      let searchLocations = Git.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
-
-      func validate(_ swift: ExternalProcess) -> Bool {
-        // Make sure version is compatible.
-        guard let output = try? swift.run(["\u{2D}\u{2D}version"]).get(),
-          let version = Version(firstIn: output) else {
-            return false // @exempt(from: tests) Git is necessarily available when tests are run.
-        }
-        return version ∈ compatibleVersionRange
-      }
-
-      if let found = ExternalProcess(searching: searchLocations, commandName: "git", validate: validate) {
-        return .success(found)
-      } else { // @exempt(from: tests)
-        // @exempt(from: tests) Git is necessarily available when tests are run.
-        return .failure(.unavailable)
-      }
-    }
-  }
-
   // MARK: - Usage
 
   /// Returns the location of the Swift compiler.
@@ -156,10 +131,14 @@ public enum Git : VersionedExternalProcess {
   public static let englishName: StrictString = "Git"
   public static var deutscherNameInDativ: StrictString = "Git"
 
+  public static var commandName: String = "git"
+
   #warning("Remove this.")
   public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
 
   public static let searchCommands: [[String]] = [
     ["which", "git"]
   ]
+
+  public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
 }

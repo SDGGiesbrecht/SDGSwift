@@ -28,39 +28,12 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
 
+  #warning("Move this?")
   public static func _search(command: [String]) -> URL? {
     guard let output = try? Shell.default.run(command: command).get() else {
       return nil
     }
     return URL(fileURLWithPath: output)
-  }
-
-  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>> {
-    return cached(in: &located) {
-
-      let searchLocations = SwiftCompiler.searchCommands.lazy.reversed()
-        .lazy.compactMap({ _search(command: $0) })
-
-      func validate(_ swift: ExternalProcess) -> Bool {
-
-        // Make sure version matches.
-        if let output = try? swift.run(["\u{2D}\u{2D}version"]).get(),
-          let version = Version(firstIn: output),
-          version ∈ compatibleVersionRange {
-          return true
-        } else { // @exempt(from: tests)
-          // @exempt(from: tests) Would require Xcode to be absent.
-          return false
-        }
-      }
-
-      if let found = ExternalProcess(searching: searchLocations, commandName: "swift", validate: validate) {
-        return .success(found)
-      } else { // @exempt(from: tests) Swift is necessarily available when tests are run.
-        // @exempt(from: tests)
-        return .failure(.unavailable)
-      }
-    }
   }
 
   // MARK: - Usage
@@ -208,6 +181,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
   public static let englishName: StrictString = "Swift"
   public static var deutscherNameInDativ: StrictString = "Swift"
 
+  public static let commandName: String = "swift"
   #warning("Remove this.")
   public static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
 
@@ -216,4 +190,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
     ["xcrun", "\u{2D}\u{2D}find", "swift"], // Xcode
     ["swiftenv", "which", "swift"] // Swift Version Manager
   ]
+
+  public static var versionQuery: [String] = ["\u{2D}\u{2D}version"]
 }

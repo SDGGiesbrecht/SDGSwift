@@ -56,4 +56,4 @@ note: Planning build
 note: Using new build system
 {
 }
-} (. (B))
+} (.. (B))

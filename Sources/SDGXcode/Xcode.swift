@@ -37,35 +37,6 @@ public enum Xcode : VersionedExternalProcess {
     return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
   }
 
-  private static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
-    return cached(in: &located) {
-
-      let searchLocations = Xcode.searchCommands.lazy.compactMap({ SwiftCompiler._search(command: $0) })
-
-      func validate(_ xcode: ExternalProcess) -> Bool {
-        // @exempt(from: tests) Unreachable on Linux.
-
-        // Make sure version matches.
-        if let output = try? xcode.run(["\u{2D}version"]).get(),
-          let version = Version(firstIn: output),
-          version ∈ compatibleVersionRange {
-          return true
-        } else { // @exempt(from: tests)
-          // @exempt(from: tests) Would require Xcode to be absent.
-          return false
-        }
-      }
-
-      if let found = ExternalProcess(searching: searchLocations, commandName: "xcodebuild", validate: validate) {
-        // @exempt(from: tests) Unreachable on Linux.
-        return .success(found)
-      } else { // @exempt(from: tests)
-        // @exempt(from: tests) Xcode is necessarily available when tests are run.
-        return .failure(.unavailable)
-      }
-    }
-  }
-
   private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
   private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
     return cached(in: &locatedCoverage) {
@@ -638,10 +609,14 @@ public enum Xcode : VersionedExternalProcess {
   public static let englishName: StrictString = "Xcode"
   public static var deutscherNameInDativ: StrictString = "Xcode"
 
+  public static var commandName: String = "xcodebuild"
+
   #warning("Remove this.")
   public static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
 
   public static let searchCommands: [[String]] = [
     ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
   ]
+
+  public static var versionQuery: [String] = ["\u{2D}version"]
 }
