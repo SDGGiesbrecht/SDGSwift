@@ -48,8 +48,9 @@ private var locationCache: [ObjectIdentifier: Result<ExternalProcess, Error>] = 
 
 extension VersionedExternalProcess {
 
-  #warning("Make private.")
-  public static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? {
+  // MARK: - Locating
+
+  private static var located: Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>? {
     get {
       let result = locationCache[ObjectIdentifier(self)]
       return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
@@ -59,8 +60,6 @@ extension VersionedExternalProcess {
       locationCache[ObjectIdentifier(self)] = converted
     }
   }
-
-  // MARK: - Locating
 
   #warning("Make private.")
   public static func tool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>> {
