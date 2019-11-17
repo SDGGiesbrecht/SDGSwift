@@ -74,11 +74,10 @@ public struct PackageRepository : TransparentWrapper {
     ///
     /// - Parameters:
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
-    ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
-    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
+    @discardableResult public func build(releaseConfiguration: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+        return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, reportProgress: reportProgress)
     }
 
     /// Tests the package.
@@ -97,15 +96,6 @@ public struct PackageRepository : TransparentWrapper {
     ///     - progressReport: A line of output.
     @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.resolve(self, reportProgress: reportProgress)
-    }
-
-    /// Regenerates the package’s test lists.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
     }
 
     // MARK: - TransparentWrapper
