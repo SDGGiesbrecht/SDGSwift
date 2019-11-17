@@ -35,7 +35,7 @@ public struct PackageRepository : TransparentWrapper {
     ///     - package: The package to clone.
     ///     - location: The location to create the clone.
     ///     - build: Optional. A specific version to check out.
-    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
+    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     public static func clone(

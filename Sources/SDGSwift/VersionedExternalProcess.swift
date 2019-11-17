@@ -96,8 +96,10 @@ extension VersionedExternalProcess {
   // MARK: - Usage
 
   /// Returns the location of the process.
-  public static func location() -> Result<URL, VersionedExternalProcessLocationError<Self>> {
-    return tool().map { $0.executable }
+  public static func location<Constraints>(
+    versionConstraints: Constraints) -> Result<URL, VersionedExternalProcessLocationError<Self>>
+    where Constraints : RangeFamily, Constraints.Bound == Version {
+      return tool(versionConstraints: versionConstraints).map { $0.executable }
   }
 
   /// Runs a custom subcommand.
@@ -108,18 +110,20 @@ extension VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomSubcommand(
+  @discardableResult public static func runCustomSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
+    versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Self>> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
+    where Constraints : RangeFamily, Constraints.Bound == Version {
 
     var environment = environment ?? ProcessInfo.processInfo.environment
     environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
 
     reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
-    switch tool() {
+    switch tool(versionConstraints: versionConstraints) {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let git):
@@ -130,5 +134,17 @@ extension VersionedExternalProcess {
         return .success(output)
       }
     }
+  }
+
+  /// Returns the resolved available version that satisfies the provided constraints.
+  ///
+  /// - Parameters:
+  ///   - constraints: The version constraints.
+  public static func version<Constraints>(forConstraints constraints: Constraints) -> Version?
+    where Constraints : RangeFamily, Constraints.Bound == Version {
+      let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
+      return output.flatMap { output in
+        return Version(firstIn: output)
+      }
   }
 }
