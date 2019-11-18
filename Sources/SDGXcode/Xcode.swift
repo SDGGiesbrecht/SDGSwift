@@ -40,12 +40,9 @@ public enum Xcode : VersionedExternalProcess {
   }
 
   private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
-  private static func coverageTool<Constraints>(
-    versionConstraints: Constraints
-  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
-    where Constraints : RangeFamily, Constraints.Bound == Version {
+  private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
       return cached(in: &locatedCoverage) {
-        return location(versionConstraints: versionConstraints).map { location in // @exempt(from: tests) Unreachable on Linux.
+        return location(versionConstraints: Version(9, 3, 0) ... Version(11, 2, 1)).map { location in // @exempt(from: tests) Unreachable on Linux.
           return ExternalProcess(at: coverageToolLocation(for: location))
         }
       }
@@ -557,18 +554,16 @@ public enum Xcode : VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
+  @discardableResult public static func runCustomCoverageSubcommand(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
-    versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
-  where Constraints : RangeFamily, Constraints.Bound == Version {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
 
     reportProgress("$ xccov " + arguments.joined(separator: " "))
 
-    switch coverageTool(versionConstraints: versionConstraints) {
+    switch coverageTool() {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let coverage): // @exempt(from: tests) Unreachable on Linux.
