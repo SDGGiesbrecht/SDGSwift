@@ -30,6 +30,8 @@ import SDGSwiftPackageManager
 /// Xcode.
 public enum Xcode : VersionedExternalProcess {
 
+  private static let currentMajor = Version(11)
+
   // MARK: - Locating
 
   private static func coverageToolLocation(for xcode: URL) -> URL {
@@ -38,12 +40,15 @@ public enum Xcode : VersionedExternalProcess {
   }
 
   private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
-  private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
-    return cached(in: &locatedCoverage) {
-      return location().map { location in // @exempt(from: tests) Unreachable on Linux.
-        return ExternalProcess(at: coverageToolLocation(for: location))
+  private static func coverageTool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
+    where Constraints : RangeFamily, Constraints.Bound == Version {
+      return cached(in: &locatedCoverage) {
+        return location(versionConstraints: versionConstraints).map { location in // @exempt(from: tests) Unreachable on Linux.
+          return ExternalProcess(at: coverageToolLocation(for: location))
+        }
       }
-    }
   }
 
   // MARK: - Usage
@@ -194,6 +199,7 @@ public enum Xcode : VersionedExternalProcess {
     case .failure(let error):
       return .failure(error)
     case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+      let earliestVersion = Version(8, 0, 0)
       var command = [
         "build",
         "\u{2D}sdk", sdk.commandLineName,
@@ -202,7 +208,11 @@ public enum Xcode : VersionedExternalProcess {
       if let derivedData = derivedData {
         command += ["\u{2D}derivedDataPath", derivedData.path]
       }
-      return runCustomSubcommand(command, in: package.location, reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+      return runCustomSubcommand(
+        command,
+        in: package.location,
+        versionConstraints: earliestVersion ..< currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
     }
   }
 
@@ -259,12 +269,15 @@ public enum Xcode : VersionedExternalProcess {
       try? FileManager.default.removeItem(at: coverage)
     }
 
+    var earliestVersion = Version(8, 0, 0)
     var command = ["test"]
 
     switch sdk {
     case .iOS(simulator: true): // @exempt(from: tests) Tested separately.
+      earliestVersion.increase(to: Version(11, 0, 0))
       command += ["\u{2D}destination", "name=iPhone 11"]
     case .tvOS(simulator: true): // @exempt(from: tests) Tested separately.
+      earliestVersion.increase(to: Version(9, 0, 0))
       command += ["\u{2D}destination", "name=Apple TV 4K"]
     default:
       command += ["\u{2D}sdk", sdk.commandLineName]
@@ -285,6 +298,7 @@ public enum Xcode : VersionedExternalProcess {
     return runCustomSubcommand(
       command,
       in: package.location,
+      versionConstraints: earliestVersion ..< currentMajor.compatibleVersions.upperBound,
       reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
   }
 
@@ -485,7 +499,10 @@ public enum Xcode : VersionedExternalProcess {
   public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
 
     let information: String
-    switch runCustomSubcommand(["\u{2D}list"], in: package.location) {
+    switch runCustomSubcommand(
+      ["\u{2D}list"],
+      in: package.location,
+      versionConstraints: Version(8, 0, 0) ..< currentMajor.compatibleVersions.upperBound) {
     case .failure(let error):
       return .failure(.xcodeError(error))
     case .success(let output): // @exempt(from: tests) Unreachable on Linux.
@@ -540,16 +557,18 @@ public enum Xcode : VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomCoverageSubcommand(
+  @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
+    versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
+  where Constraints : RangeFamily, Constraints.Bound == Version {
 
     reportProgress("$ xccov " + arguments.joined(separator: " "))
 
-    switch coverageTool() {
+    switch coverageTool(versionConstraints: versionConstraints) {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let coverage): // @exempt(from: tests) Unreachable on Linux.

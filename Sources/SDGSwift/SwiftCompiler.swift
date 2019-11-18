@@ -27,7 +27,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
 
   // MARK: - Static Properties
 
-  private static let _currentMajor = Version(5)
+  public static let _currentMajor = Version(5)
   private static var currentMajor: Version {
     return _currentMajor
   }
