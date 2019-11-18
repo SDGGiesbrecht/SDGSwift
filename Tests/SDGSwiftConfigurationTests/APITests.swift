@@ -138,6 +138,6 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: Configuration.Error.corruptConfiguration, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Configuration.Error.emptyConfiguration, localizations: InterfaceLocalization.self, uniqueTestName: "Empty", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Configuration.Error.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Configuration.Error.swiftError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Configuration.Error.swiftError(.locationError(.unavailable(versionConstraints: "..."))), localizations: InterfaceLocalization.self, uniqueTestName: "Swift Unavailable", overwriteSpecificationInsteadOfFailing: false)
     }
 }

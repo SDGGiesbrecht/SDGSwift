@@ -131,6 +131,13 @@ extension PackageRepository {
     }
   }
 
+  /// Checks for uncommitted changes or additions.
+  ///
+  /// - Returns: The report provided by Git. (An empty string if there are no changes.)
+  public func uncommittedChanges() -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+      return Git.uncommittedChanges(in: self)
+  }
+
   /// Returns the list of files ignored by source control.
   public func ignoredFiles() -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>> {
     return Git.ignoredFiles(in: self)
