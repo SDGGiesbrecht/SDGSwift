@@ -109,6 +109,39 @@ public enum SwiftCompiler : VersionedExternalProcess {
       reportProgress: reportProgress).map { URL(fileURLWithPath: $0) }
   }
 
+  /// Runs a target in place.
+  ///
+  /// - Parameters:
+  ///     - target: The target to run.
+  ///     - package: The package containing the target to run.
+  ///     - arguments: The arguments to supply to the target.
+  ///     - environment: Optional. A different set of environment variables.
+  ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public static func run(
+    _ target: String,
+    from package: PackageRepository,
+    arguments: [String] = [],
+    environment: [String: String]? = nil,
+    releaseConfiguration: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    let earliest = Version(4, 0, 0)
+    var subcommandArguments = ["run"]
+    if releaseConfiguration {
+      subcommandArguments += ["\u{2D}\u{2D}configuration", "release"]
+    }
+    subcommandArguments.append(target)
+    subcommandArguments.append(contentsOf: arguments)
+    return runCustomSubcommand(
+      arguments,
+      in: package.location,
+      with: environment,
+      versionConstraints: earliest ..< currentMajor.compatibleVersions.upperBound,
+      reportProgress: reportProgress)
+  }
+
   /// Tests the package.
   ///
   /// - Parameters:

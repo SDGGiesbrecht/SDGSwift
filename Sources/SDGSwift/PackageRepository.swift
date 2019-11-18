@@ -19,88 +19,113 @@ import SDGControlFlow
 /// A local repository containing a Swift package.
 public struct PackageRepository : TransparentWrapper {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates an instance describing an existing package repository.
-    ///
-    /// - Parameters:
-    ///     - location: The local directory where the package repository already resides.
-    public init(at location: URL) {
-        self.location = location
+  /// Creates an instance describing an existing package repository.
+  ///
+  /// - Parameters:
+  ///     - location: The local directory where the package repository already resides.
+  public init(at location: URL) {
+    self.location = location
+  }
+
+  /// Creates a local repository by cloning a remote package.
+  ///
+  /// - Parameters:
+  ///     - package: The package to clone.
+  ///     - location: The location to create the clone.
+  ///     - build: Optional. A specific version to check out.
+  ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  public static func clone(
+    _ package: Package,
+    to location: URL,
+    at build: Build = .development,
+    shallow: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<PackageRepository, VersionedExternalProcessExecutionError<Git>> {
+
+    let repository = PackageRepository(at: location)
+    switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
+    case .failure(let error):
+      return .failure(error)
+    case .success:
+      return .success(repository)
     }
+  }
 
-    /// Creates a local repository by cloning a remote package.
-    ///
-    /// - Parameters:
-    ///     - package: The package to clone.
-    ///     - location: The location to create the clone.
-    ///     - build: Optional. A specific version to check out.
-    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    public static func clone(
-        _ package: Package,
-        to location: URL,
-        at build: Build = .development,
-        shallow: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<PackageRepository, VersionedExternalProcessExecutionError<Git>> {
+  // MARK: - Properties
 
-        let repository = PackageRepository(at: location)
-        switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
-        case .failure(let error):
-            return .failure(error)
-        case .success:
-            return .success(repository)
-        }
-    }
+  /// The location of the repository.
+  public let location: URL
 
-    // MARK: - Properties
+  /// The directory to which products are built.
+  ///
+  /// - Parameters:
+  ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
+  public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
+  }
 
-    /// The location of the repository.
-    public let location: URL
+  // MARK: - Workflow
 
-    /// The directory to which products are built.
-    ///
-    /// - Parameters:
-    ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
-    public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
-    }
+  /// Builds the package.
+  ///
+  /// - Parameters:
+  ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func build(releaseConfiguration: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, reportProgress: reportProgress)
+  }
 
-    // MARK: - Workflow
+  /// Runs a target in place.
+  ///
+  /// - Parameters:
+  ///     - target: The target to run.
+  ///     - arguments: The arguments to supply to the target.
+  ///     - environment: Optional. A different set of environment variables.
+  ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func run(
+    _ target: String,
+    arguments: [String] = [],
+    environment: [String: String]? = nil,
+    releaseConfiguration: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    SwiftCompiler.run(
+      target,
+      from: self,
+      arguments: arguments,
+      environment: environment,
+      releaseConfiguration: releaseConfiguration,
+      reportProgress: reportProgress)
+  }
 
-    /// Builds the package.
-    ///
-    /// - Parameters:
-    ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func build(releaseConfiguration: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, reportProgress: reportProgress)
-    }
+  /// Tests the package.
+  ///
+  /// - Parameters:
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    return SwiftCompiler.test(self, reportProgress: reportProgress)
+  }
 
-    /// Tests the package.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.test(self, reportProgress: reportProgress)
-    }
+  /// Resolves the package, fetching its dependencies.
+  ///
+  /// - Parameters:
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    return SwiftCompiler.resolve(self, reportProgress: reportProgress)
+  }
 
-    /// Resolves the package, fetching its dependencies.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-        return SwiftCompiler.resolve(self, reportProgress: reportProgress)
-    }
+  // MARK: - TransparentWrapper
 
-    // MARK: - TransparentWrapper
-
-    public var wrappedInstance: Any {
-        return location.path
-    }
+  public var wrappedInstance: Any {
+    return location.path
+  }
 }
