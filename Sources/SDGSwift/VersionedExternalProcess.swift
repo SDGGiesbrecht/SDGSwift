@@ -17,6 +17,7 @@ import Foundation
 import SDGControlFlow
 import SDGCollections
 import SDGText
+import SDGLocalization
 import SDGExternalProcess
 import SDGVersioning
 
@@ -27,10 +28,6 @@ public protocol VersionedExternalProcess {
   static var englishName: StrictString { get }
   /// Der deutsche Name des Prozesses im Dativ.
   static var deutscherNameInDativ: StrictString { get }
-
-  #warning("Split this up.")
-  associatedtype VersionRange : RangeFamily where VersionRange.Bound == Version
-  static var compatibleVersionRange: VersionRange { get }
 
   /// The name of the command for use with `which`.
   static var commandName: String { get }
@@ -82,13 +79,14 @@ extension VersionedExternalProcess {
             let version = Version(firstIn: output) else {
               return false
           }
-          return compatibleVersionRange.contains(version)
+          return versionConstraints.contains(version)
         }
 
         if let found = ExternalProcess(searching: searchLocations, commandName: commandName, validate: validate) {
           return .success(found)
         } else {
-          return .failure(.unavailable)
+          return .failure(.unavailable(
+            versionConstraints: versionConstraints.inInequalityNotation({ StrictString($0.string()) })))
         }
       }
   }

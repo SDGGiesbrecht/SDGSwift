@@ -32,10 +32,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
     return _currentMajor
   }
 
-  // MARK: - Locating
-
-  public static let _standardLibraryVersion = compatibleVersionRange.lowerBound
-
   // MARK: - Usage
 
   public static func _ignoreProgress(_ output: String) {}
@@ -203,8 +199,6 @@ public enum SwiftCompiler : VersionedExternalProcess {
   public static var deutscherNameInDativ: StrictString = "Swift"
 
   public static let commandName: String = "swift"
-  #warning("Remove this.")
-  public static let compatibleVersionRange = Version(5, 1, 1) /* Travis CI */ ... Version(5, 1, 2) /* Current */
 
   public static let searchCommands: [[String]] = [
     ["which", "swift"], // Swift

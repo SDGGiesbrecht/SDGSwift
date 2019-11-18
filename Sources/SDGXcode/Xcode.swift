@@ -587,9 +587,6 @@ public enum Xcode : VersionedExternalProcess {
 
   public static var commandName: String = "xcodebuild"
 
-  #warning("Remove this.")
-  public static let compatibleVersionRange = Version(11, 2, 0) /* Travis CI */ ... Version(11, 2, 1) /* Current */
-
   public static let searchCommands: [[String]] = [
     ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
   ]

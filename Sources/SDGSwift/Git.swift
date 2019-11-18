@@ -128,9 +128,6 @@ public enum Git : VersionedExternalProcess {
 
   public static var commandName: String = "git"
 
-  #warning("Remove this.")
-  public static let compatibleVersionRange: Range<Version> = Version(1, 9, 0) ..< Version(2).compatibleVersions.upperBound
-
   public static let searchCommands: [[String]] = [
     ["which", "git"]
   ]
