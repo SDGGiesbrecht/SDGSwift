@@ -39,7 +39,6 @@ class APITests : TestCase {
         try withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
             XCTAssertNotEqual(try mock.uncommittedChanges().get(), "", "Change unnoticed.")
-            XCTAssertEqual(try mock.uncommittedChanges().get(), "", "No change should have been detected.")
         }
     }
 

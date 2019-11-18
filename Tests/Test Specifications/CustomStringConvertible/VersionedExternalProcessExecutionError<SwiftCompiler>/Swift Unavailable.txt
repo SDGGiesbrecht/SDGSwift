@@ -1,26 +1,26 @@
 🇬🇧EN
-No compatible version of Swift could be located. (5.1.1 ≤ x ≤ 5.1.2)
+No compatible version of Swift could be located. (...)
 It must be installed and locatable with one of the following commands:
 $ which swift
 $ xcrun --find swift
 $ swiftenv which swift
 
 🇺🇸EN
-No compatible version of Swift could be located. (5.1.1 ≤ x ≤ 5.1.2)
+No compatible version of Swift could be located. (...)
 It must be installed and locatable with one of the following commands:
 $ which swift
 $ xcrun --find swift
 $ swiftenv which swift
 
 🇨🇦EN
-No compatible version of Swift could be located. (5.1.1 ≤ x ≤ 5.1.2)
+No compatible version of Swift could be located. (...)
 It must be installed and locatable with one of the following commands:
 $ which swift
 $ xcrun --find swift
 $ swiftenv which swift
 
 🇩🇪DE
-Keine passende Version von Swift wurde gefunden. (5.1.1 ≤ x ≤ 5.1.2)
+Keine passende Version von Swift wurde gefunden. (...)
 Es muss installiert und unter einem der folgenden Befehle vorhanden sein:
 $ which swift
 $ xcrun --find swift
