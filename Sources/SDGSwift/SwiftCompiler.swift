@@ -134,7 +134,7 @@ public enum SwiftCompiler : VersionedExternalProcess {
     subcommandArguments.append(target)
     subcommandArguments.append(contentsOf: arguments)
     return runCustomSubcommand(
-      arguments,
+      subcommandArguments,
       in: package.location,
       with: environment,
       versionConstraints: earliest ..< currentMajor.compatibleVersions.upperBound,
