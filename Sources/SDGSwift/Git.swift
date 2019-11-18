@@ -26,7 +26,10 @@ public enum Git : VersionedExternalProcess {
 
   // MARK: - Static Properties
 
-  private static let currentMajor = Version(2)
+  public static let _currentMajor = Version(2)
+  private static var currentMajor: Version {
+    return _currentMajor
+  }
 
   // MARK: - Usage
 
