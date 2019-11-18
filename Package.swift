@@ -86,6 +86,7 @@ let package = Package(
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
             from: Version(3, 0, 0)),
+        // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
         .package(
             url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
             .exact(Version(0, 5, 0))),
