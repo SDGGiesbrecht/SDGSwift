@@ -346,7 +346,7 @@ public enum Xcode: VersionedExternalProcess {
       return .failure(.foundationError(error))
     }
     // @exempt(from: tests) Unreachable on Linux.
-    
+
     guard
       let resultDirectory = coverageDirectoryContents.first(where: {
         $0.pathExtension == "xcresult"

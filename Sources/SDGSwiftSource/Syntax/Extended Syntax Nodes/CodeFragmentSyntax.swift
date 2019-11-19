@@ -125,16 +125,16 @@ public class CodeFragmentSyntax: ExtendedSyntax {
       } else {
         switch trivia {
         case .spaces,  // @exempt(from: tests)
-             .tabs,
-             .verticalTabs,
-             .formfeeds,
-             .newlines,
-             .carriageReturns,
-             .carriageReturnLineFeeds,
-             .backticks,
-             .lineComment,
-             .docLineComment,
-             .garbageText:
+          .tabs,
+          .verticalTabs,
+          .formfeeds,
+          .newlines,
+          .carriageReturns,
+          .carriageReturnLineFeeds,
+          .backticks,
+          .lineComment,
+          .docLineComment,
+          .garbageText:
           // Unreachable. Never multiline; never split between multiple fragments.
           return [.trivia(trivia, siblings, index)]
         case .blockComment, .docBlockComment:

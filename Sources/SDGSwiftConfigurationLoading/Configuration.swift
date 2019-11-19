@@ -43,7 +43,7 @@ extension Configuration {
   ///  Exernal packages can be imported with this syntax:
   ///  import [module] // [url], [version], [product]
   ///  */
-  /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 2.5.0, SDGControlFlow
+  /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 2.5.0, SDGControlFlow
   ///
   /// // Initialize the configuration with its defaults.
   /// let configuration = SampleConfiguration()
@@ -65,10 +65,12 @@ extension Configuration {
   /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
   /// let minimumMacOSVersion = Version(10, 13)
   /// let version = Version(0, 12, 7)
-  /// let type = SampleConfiguration.self // Import it first if necessary.
+  /// let type = SampleConfiguration.self  // Import it first if necessary.
   ///
   /// // Assuming the above file is called “SampleConfigurationFile.swift”...
-  /// let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile" })
+  /// let name = UserFacing<StrictString, APILocalization>(
+  ///   { _ in return "SampleConfigurationFile" }
+  /// )
   ///
   /// // Change this to actually point at a directory containing the above file.
   /// let configuredDirectory: URL = wherever
@@ -79,7 +81,17 @@ extension Configuration {
   /// // A log to collect progress reports while loading. (Optional.)
   /// var log = String()
   ///
-  /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
+  /// let loadedConfiguration = try SampleConfiguration.load(
+  ///   configuration: type,
+  ///   named: name,
+  ///   from: configuredDirectory,
+  ///   linkingAgainst: product,
+  ///   in: package,
+  ///   at: version,
+  ///   minimumMacOSVersion: minimumMacOSVersion,
+  ///   context: context,
+  ///   reportProgress: { print($0, to: &log) }
+  /// ).get()
   /// XCTAssertEqual(loadedConfiguration.option, "Configured")
   /// ```
   ///
