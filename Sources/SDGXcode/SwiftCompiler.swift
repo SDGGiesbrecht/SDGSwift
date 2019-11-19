@@ -20,7 +20,7 @@ extension SwiftCompiler {
   private static var currentMajor: Version {
     return _currentMajor
   }
-  
+
   /// Generates or refreshes the package’s Xcode project.
   ///
   /// - Parameters:

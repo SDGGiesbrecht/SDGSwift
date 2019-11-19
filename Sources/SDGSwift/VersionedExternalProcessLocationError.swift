@@ -21,14 +21,14 @@ import SDGSwiftLocalizations
 /// An error encountered while locating a versioned external process.
 public enum VersionedExternalProcessLocationError<Process> : PresentableError
 where Process : VersionedExternalProcess {
-  
+
   // MARK: - Cases
-  
+
   /// No compatible version of the process could be located.
   case unavailable(versionConstraints: StrictString)
-  
+
   // MARK: - PresentableError
-  
+
   public func presentableDescription() -> StrictString {
     switch self {
     case .unavailable(let versionConstraints):
