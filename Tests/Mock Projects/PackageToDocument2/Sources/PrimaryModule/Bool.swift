@@ -14,7 +14,7 @@
 
 extension Bool {
 
-    public var extensionProperty: Bool {
-        return false
-    }
+  public var extensionProperty: Bool {
+    return false
+  }
 }

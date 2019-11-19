@@ -16,10 +16,11 @@ import SwiftSyntax
 
 extension GenericArgumentClauseSyntax {
 
-    internal func normalized() -> GenericArgumentClauseSyntax {
-        return SyntaxFactory.makeGenericArgumentClause(
-            leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
-            arguments: arguments.normalized(),
-            rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> GenericArgumentClauseSyntax {
+    return SyntaxFactory.makeGenericArgumentClause(
+      leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
+      arguments: arguments.normalized(),
+      rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

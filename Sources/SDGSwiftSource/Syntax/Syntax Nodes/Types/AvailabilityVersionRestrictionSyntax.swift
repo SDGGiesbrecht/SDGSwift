@@ -16,9 +16,10 @@ import SwiftSyntax
 
 extension AvailabilityVersionRestrictionSyntax {
 
-    internal func normalized() -> AvailabilityVersionRestrictionSyntax {
-        return SyntaxFactory.makeAvailabilityVersionRestriction(
-            platform: platform.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            version: version.normalized())
-    }
+  internal func normalized() -> AvailabilityVersionRestrictionSyntax {
+    return SyntaxFactory.makeAvailabilityVersionRestriction(
+      platform: platform.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      version: version.normalized()
+    )
+  }
 }

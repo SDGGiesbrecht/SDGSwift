@@ -13,22 +13,22 @@
  */
 
 /// A block documentation comment.
-public class BlockDocumentationSyntax : BlockCommentSyntax {
+public class BlockDocumentationSyntax: BlockCommentSyntax {
 
-    // MARK: - Class Properties
+  // MARK: - Class Properties
 
-    internal override class var openingDelimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
-    }
+  internal override class var openingDelimiter: ExtendedTokenSyntax {
+    return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
+  }
 
-    internal override class func parse(contents: String) -> DocumentationSyntax {
-        return DocumentationSyntax.parse(source: contents)
-    }
+  internal override class func parse(contents: String) -> DocumentationSyntax {
+    return DocumentationSyntax.parse(source: contents)
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The documentation content.
-    public var documentation: DocumentationSyntax {
-        return internalSyntax as! DocumentationSyntax
-    }
+  /// The documentation content.
+  public var documentation: DocumentationSyntax {
+    return internalSyntax as! DocumentationSyntax
+  }
 }

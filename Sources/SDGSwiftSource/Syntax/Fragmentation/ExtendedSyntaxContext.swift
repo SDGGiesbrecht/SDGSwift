@@ -17,22 +17,22 @@ import SwiftSyntax
 /// The context of an extended syntax node.
 public indirect enum ExtendedSyntaxContext {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    case _trivia(TriviaPiece, context: TriviaPieceContext)
-    case _token(TokenSyntax, context: SyntaxContext)
-    case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
+  case _trivia(TriviaPiece, context: TriviaPieceContext)
+  case _token(TokenSyntax, context: SyntaxContext)
+  case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    internal var source: String {
-        switch self {
-        case ._trivia(_, context: let context):
-            return context.source
-        case ._token(_, context: let context):
-            return context.fragmentContext
-        case ._fragment(_, context: let context, offset: _):
-            return context.source
-        }
+  internal var source: String {
+    switch self {
+    case ._trivia(_, context: let context):
+      return context.source
+    case ._token(_, context: let context):
+      return context.fragmentContext
+    case ._fragment(_, context: let context, offset: _):
+      return context.source
     }
+  }
 }

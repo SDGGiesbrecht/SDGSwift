@@ -18,17 +18,22 @@ import SwiftSyntax
 
 extension GenericParameterListSyntax {
 
-    internal func normalizedForAPIDeclaration() -> (GenericParameterListSyntax, GenericRequirementListSyntax?) {
-        var parameters: [GenericParameterSyntax] = []
-        var requirements: [ConformanceRequirementSyntax] = []
-        for parameter in self {
-            let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
-            parameters.append(parameter)
-            if let requirement = conformance {
-                requirements.append(requirement)
-            }
-        }
-        return (SyntaxFactory.makeGenericParameterList(parameters),
-                requirements.isEmpty ? nil : SyntaxFactory.makeGenericRequirementList(requirements).normalized())
+  internal func normalizedForAPIDeclaration() -> (
+    GenericParameterListSyntax, GenericRequirementListSyntax?
+  ) {
+    var parameters: [GenericParameterSyntax] = []
+    var requirements: [ConformanceRequirementSyntax] = []
+    for parameter in self {
+      let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
+      parameters.append(parameter)
+      if let requirement = conformance {
+        requirements.append(requirement)
+      }
     }
+    return (
+      SyntaxFactory.makeGenericParameterList(parameters),
+      requirements.isEmpty
+        ? nil : SyntaxFactory.makeGenericRequirementList(requirements).normalized()
+    )
+  }
 }

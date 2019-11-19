@@ -18,12 +18,14 @@ import SwiftSyntax
 
 extension ExtensionAPI {
 
-    convenience init(type: String) {
-        self.init(
-            type: SyntaxFactory.makeSimpleTypeIdentifier(
-                name: SyntaxFactory.makeToken(.identifier(type)),
-                genericArgumentClause: nil),
-            constraints: nil,
-            children: [])
-    }
+  convenience init(type: String) {
+    self.init(
+      type: SyntaxFactory.makeSimpleTypeIdentifier(
+        name: SyntaxFactory.makeToken(.identifier(type)),
+        genericArgumentClause: nil
+      ),
+      constraints: nil,
+      children: []
+    )
+  }
 }

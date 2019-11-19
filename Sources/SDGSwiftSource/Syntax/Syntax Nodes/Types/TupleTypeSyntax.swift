@@ -16,23 +16,27 @@ import SwiftSyntax
 
 extension TupleTypeSyntax {
 
-    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
-        if let index = indexPath.first {
-            let elementsArray = Array(elements)
-            if elementsArray.indices.contains(index) {
-                return elementsArray[index].type.normalized(extractingFromIndexPath: Array(indexPath.dropFirst()))
-            }
-        }
-
-        if elements.isEmpty {
-            return SyntaxFactory.makeSimpleTypeIdentifier(
-                name: SyntaxFactory.makeToken(.identifier("Void")),
-                genericArgumentClause: nil)
-        } else {
-            return SyntaxFactory.makeTupleType(
-                leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-                elements: elements.normalized(),
-                rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
-        }
+  internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
+    if let index = indexPath.first {
+      let elementsArray = Array(elements)
+      if elementsArray.indices.contains(index) {
+        return elementsArray[index].type.normalized(
+          extractingFromIndexPath: Array(indexPath.dropFirst())
+        )
+      }
     }
+
+    if elements.isEmpty {
+      return SyntaxFactory.makeSimpleTypeIdentifier(
+        name: SyntaxFactory.makeToken(.identifier("Void")),
+        genericArgumentClause: nil
+      )
+    } else {
+      return SyntaxFactory.makeTupleType(
+        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+        elements: elements.normalized(),
+        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    }
+  }
 }

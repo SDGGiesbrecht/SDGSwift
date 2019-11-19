@@ -17,17 +17,17 @@ import SwiftSyntax
 /// The context of a trivia group.
 public struct TriviaContext {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(token: TokenSyntax, tokenContext: SyntaxContext, leading: Bool) {
-        self.token = token
-        self.tokenContext = tokenContext
-        self.leading = leading
-    }
+  internal init(token: TokenSyntax, tokenContext: SyntaxContext, leading: Bool) {
+    self.token = token
+    self.tokenContext = tokenContext
+    self.leading = leading
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    internal let token: TokenSyntax
-    internal let tokenContext: SyntaxContext
-    internal let leading: Bool
+  internal let token: TokenSyntax
+  internal let tokenContext: SyntaxContext
+  internal let leading: Bool
 }

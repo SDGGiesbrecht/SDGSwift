@@ -17,33 +17,38 @@ import SDGCollections
 
 import SwiftSyntax
 
-internal protocol TypeDeclaration : AccessControlled, Attributed, APISyntax, Generic, Inheritor {
-    var identifier: TokenSyntax { get }
+internal protocol TypeDeclaration: AccessControlled, Attributed, APISyntax, Generic, Inheritor {
+  var identifier: TokenSyntax { get }
 
-    func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
-    func name() -> Self
+  func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
+  func name() -> Self
 }
 
 extension TypeDeclaration {
 
-    internal func identifierList() -> Set<String> {
-        var result: Set<String> = [identifier.text]
-        if let genericParameters = genericParameterClause {
-            result ∪= genericParameters.identifierList()
-        }
-        return result
+  internal func identifierList() -> Set<String> {
+    var result: Set<String> = [identifier.text]
+    if let genericParameters = genericParameterClause {
+      result ∪= genericParameters.identifierList()
     }
+    return result
+  }
 
-    // MARK: - APISyntax
+  // MARK: - APISyntax
 
-    internal var shouldLookForChildren: Bool {
-        return true
-    }
+  internal var shouldLookForChildren: Bool {
+    return true
+  }
 
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-        return [.type(TypeAPI(
-            documentation: documentation,
-            declaration: self,
-            children: children))]
-    }
+  internal func createAPI(children: [APIElement]) -> [APIElement] {
+    return [
+      .type(
+        TypeAPI(
+          documentation: documentation,
+          declaration: self,
+          children: children
+        )
+      )
+    ]
+  }
 }

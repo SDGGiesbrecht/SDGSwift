@@ -17,17 +17,17 @@ import SDGControlFlow
 /// A weak reference to the protocol a conformance refers to or to a superclass.
 public enum ConformanceReference {
 
-    /// A protocol conformed to.
-    case `protocol`(Weak<ProtocolAPI>)
-    /// A superclass.
-    case superclass(Weak<TypeAPI>)
+  /// A protocol conformed to.
+  case `protocol`(Weak<ProtocolAPI>)
+  /// A superclass.
+  case superclass(Weak<TypeAPI>)
 
-    internal var elementProtocol: APIElementProtocol? {
-        switch self {
-        case .protocol(let `protocol`):
-            return `protocol`.pointee
-        case .superclass(let superclass):
-            return superclass.pointee
-        }
+  internal var elementProtocol: APIElementProtocol? {
+    switch self {
+    case .protocol(let `protocol`):
+      return `protocol`.pointee
+    case .superclass(let superclass):
+      return superclass.pointee
     }
+  }
 }

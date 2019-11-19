@@ -15,25 +15,25 @@
 import SDGSwiftConfiguration
 
 /// A sample configuration context.
-public struct SampleContext : Context {
+public struct SampleContext: Context {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    /// The context received from the configuration loader.
-    public static var context: SampleContext? = SampleContext.accept()
+  /// The context received from the configuration loader.
+  public static var context: SampleContext? = SampleContext.accept()
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates the context.
-    ///
-    /// - Parameters:
-    ///     - information: Context information to be supplied.
-    public init(information: String) {
-        self.information = information
-    }
+  /// Creates the context.
+  ///
+  /// - Parameters:
+  ///     - information: Context information to be supplied.
+  public init(information: String) {
+    self.information = information
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// Sample context information.
-    public var information: String
+  /// Sample context information.
+  public var information: String
 }

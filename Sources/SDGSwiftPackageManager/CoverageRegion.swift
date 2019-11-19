@@ -20,89 +20,101 @@ import SDGCollections
 /// A region with the same contiguous coverage status.
 public struct CoverageRegion {
 
-    // MARK: - Static Methods
+  // MARK: - Static Methods
 
-    private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ ["{", "}", "(", ")"]
+  private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ [
+    "{", "}", "(", ")"
+  ]
 
-    public static func _normalize(regions: inout [CoverageRegion], source: String, ignoreCoveredRegions: Bool) {
+  public static func _normalize(
+    regions: inout [CoverageRegion],
+    source: String,
+    ignoreCoveredRegions: Bool
+  ) {
 
-        // Combine to one coherent list.
-        regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
-            if ignoreCoveredRegions ∧ next.count ≠ 0 {
-                return // Drop
-            }
+    // Combine to one coherent list.
+    regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
+      if ignoreCoveredRegions ∧ next.count ≠ 0 {
+        return  // Drop
+      }
 
-            guard var last = regions.last else {
-                // First one; just append.
-                regions.append(next)
-                return
-            }
-            if last.region.upperBound > next.region.lowerBound { // @exempt(from: tests)
-                // @exempt(from: tests) False coverage result in Xocde 9.3.
+      guard var last = regions.last else {
+        // First one; just append.
+        regions.append(next)
+        return
+      }
+      if last.region.upperBound > next.region.lowerBound {  // @exempt(from: tests)
+        // @exempt(from: tests) False coverage result in Xocde 9.3.
 
-                // Fix overlap.
-                regions.removeLast()
-                let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.lowerBound, count: last.count)
-                regions.append(replacement)
-            }
+        // Fix overlap.
+        regions.removeLast()
+        let replacement = CoverageRegion(
+          region: last.region.lowerBound..<next.region.lowerBound,
+          count: last.count
+        )
+        regions.append(replacement)
+      }
 
-            last = regions.last!
-            if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count { // @exempt(from: tests) Unreachable on Linux?
-                // Join contiguous regions.
-                regions.removeLast()
-                let replacement = CoverageRegion(region: last.region.lowerBound ..< next.region.upperBound, count: last.count)
-                regions.append(replacement)
-            } else {
-                // Unrelated to anything else, so just append.
-                regions.append(next)
-            }
-        }
-
-        // Remove false positives
-        regions = regions.filter { region in
-
-            if ¬source.scalars[region.region].contains(where: { $0 ∉ charactersIrrelevantToCoverage }) {
-                // Region has no effect.
-                return false
-            }
-
-            // Otherwise keep.
-            return true
-        }
-
-        // Trim irrelevant characters.
-        regions = regions.map { region in
-            var start = region.region.lowerBound
-            while source.scalars[start] ∈ charactersIrrelevantToCoverage {
-                start = source.scalars.index(after: start)
-            }
-            var end = region.region.upperBound
-            var before = source.index(before: end)
-            while source.scalars[before]  ∈ charactersIrrelevantToCoverage {
-                end = before
-                before = source.index(before: end)
-            }
-            return CoverageRegion(region: start ..< end, count: region.count)
-        }
+      last = regions.last!
+      if last.region.upperBound == next.region.lowerBound ∧ last.count == next.count {  // @exempt(from: tests) Unreachable on Linux?
+        // Join contiguous regions.
+        regions.removeLast()
+        let replacement = CoverageRegion(
+          region: last.region.lowerBound..<next.region.upperBound,
+          count: last.count
+        )
+        regions.append(replacement)
+      } else {
+        // Unrelated to anything else, so just append.
+        regions.append(next)
+      }
     }
 
-    // MARK: - Initialization
+    // Remove false positives
+    regions = regions.filter { region in
 
-    /// Creates a coverage region.
-    ///
-    /// - Parameters:
-    ///     - region: The region of the source code.
-    ///     - count: The execution count.
-    public init(region: Range<String.ScalarView.Index>, count: Int) {
-        self.region = region
-        self.count = count
+      if ¬source.scalars[region.region].contains(where: { $0 ∉ charactersIrrelevantToCoverage }) {
+        // Region has no effect.
+        return false
+      }
+
+      // Otherwise keep.
+      return true
     }
 
-    // MARK: - Properties
+    // Trim irrelevant characters.
+    regions = regions.map { region in
+      var start = region.region.lowerBound
+      while source.scalars[start] ∈ charactersIrrelevantToCoverage {
+        start = source.scalars.index(after: start)
+      }
+      var end = region.region.upperBound
+      var before = source.index(before: end)
+      while source.scalars[before] ∈ charactersIrrelevantToCoverage {
+        end = before
+        before = source.index(before: end)
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+  }
 
-    /// The region.
-    public let region: Range<String.ScalarView.Index>
+  // MARK: - Initialization
 
-    /// The execution count.
-    public let count: Int
+  /// Creates a coverage region.
+  ///
+  /// - Parameters:
+  ///     - region: The region of the source code.
+  ///     - count: The execution count.
+  public init(region: Range<String.ScalarView.Index>, count: Int) {
+    self.region = region
+    self.count = count
+  }
+
+  // MARK: - Properties
+
+  /// The region.
+  public let region: Range<String.ScalarView.Index>
+
+  /// The execution count.
+  public let count: Int
 }

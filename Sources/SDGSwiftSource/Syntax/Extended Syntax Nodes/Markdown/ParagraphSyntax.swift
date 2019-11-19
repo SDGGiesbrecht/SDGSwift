@@ -13,23 +13,23 @@
  */
 
 /// A paragraph in documentation.
-public class ParagraphSyntax : MarkdownSyntax {
+public class ParagraphSyntax: MarkdownSyntax {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    internal var isCitation = false
+  internal var isCitation = false
 
-    // MARK: - ExtendedSyntax
+  // MARK: - ExtendedSyntax
 
-    internal override var renderedHtmlElement: String? {
-        return "p"
+  internal override var renderedHtmlElement: String? {
+    return "p"
+  }
+
+  internal override var renderedHTMLAttributes: [String: String] {
+    var result = super.renderedHTMLAttributes
+    if isCitation {
+      result["class"] = "citation"
     }
-
-    internal override var renderedHTMLAttributes: [String: String] {
-        var result = super.renderedHTMLAttributes
-        if isCitation {
-            result["class"] = "citation"
-        }
-        return result
-    }
+    return result
+  }
 }

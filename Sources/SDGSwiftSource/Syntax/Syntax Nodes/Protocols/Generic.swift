@@ -16,21 +16,22 @@ import SwiftSyntax
 
 import SDGLogic
 
-internal protocol Generic : Constrained {
-    var genericParameterClause: GenericParameterClauseSyntax? { get }
+internal protocol Generic: Constrained {
+  var genericParameterClause: GenericParameterClauseSyntax? { get }
 }
 
 extension Generic {
 
-    internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
+  internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
 
-        var newGenericParemeterClause: GenericParameterClauseSyntax?
-        var newGenericWhereClause: GenericWhereClauseSyntax?
-        if let originalGenericParameterClause = genericParameterClause {
-            (newGenericParemeterClause, newGenericWhereClause) = originalGenericParameterClause.normalizedForAPIDeclaration()
-        }
-
-        newGenericWhereClause.merge(with: genericWhereClause?.normalized())
-        return (newGenericParemeterClause, newGenericWhereClause)
+    var newGenericParemeterClause: GenericParameterClauseSyntax?
+    var newGenericWhereClause: GenericWhereClauseSyntax?
+    if let originalGenericParameterClause = genericParameterClause {
+      (newGenericParemeterClause, newGenericWhereClause) =
+        originalGenericParameterClause.normalizedForAPIDeclaration()
     }
+
+    newGenericWhereClause.merge(with: genericWhereClause?.normalized())
+    return (newGenericParemeterClause, newGenericWhereClause)
+  }
 }

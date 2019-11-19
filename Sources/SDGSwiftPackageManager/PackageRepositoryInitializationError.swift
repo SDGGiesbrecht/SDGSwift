@@ -19,24 +19,24 @@ import SDGSwift
 
 extension PackageRepository {
 
-    /// An error encountered while initializing a package repository.
-    public enum InitializationError : PresentableError {
+  /// An error encountered while initializing a package repository.
+  public enum InitializationError: PresentableError {
 
-        /// The package manager encountered an error.
-        case packageManagerError(Swift.Error)
+    /// The package manager encountered an error.
+    case packageManagerError(Swift.Error)
 
-        /// Git encountered an error.
-        case gitError(Git.Error)
+    /// Git encountered an error.
+    case gitError(Git.Error)
 
-        // MARK: - PresentableError
+    // MARK: - PresentableError
 
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .packageManagerError(let error):
-                return StrictString(error.localizedDescription)
-            case .gitError(let error):
-                return error.presentableDescription()
-            }
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .packageManagerError(let error):
+        return StrictString(error.localizedDescription)
+      case .gitError(let error):
+        return error.presentableDescription()
+      }
     }
+  }
 }

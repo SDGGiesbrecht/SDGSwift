@@ -16,10 +16,13 @@ import SwiftSyntax
 
 extension PrecedenceGroupRelationSyntax {
 
-    internal func normalizedForAPIDeclaration() -> PrecedenceGroupRelationSyntax {
-        return SyntaxFactory.makePrecedenceGroupRelation(
-            higherThanOrLowerThan: higherThanOrLowerThan.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            otherNames: otherNames.normalizedForAPIDeclaration())
-    }
+  internal func normalizedForAPIDeclaration() -> PrecedenceGroupRelationSyntax {
+    return SyntaxFactory.makePrecedenceGroupRelation(
+      higherThanOrLowerThan: higherThanOrLowerThan.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1)
+      ),
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      otherNames: otherNames.normalizedForAPIDeclaration()
+    )
+  }
 }

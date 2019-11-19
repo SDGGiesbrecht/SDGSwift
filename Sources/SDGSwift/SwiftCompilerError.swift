@@ -22,24 +22,24 @@ import SDGSwiftLocalizations
 
 extension SwiftCompiler {
 
-    /// An error encountered while using Swift.
-    public enum Error : PresentableError {
+  /// An error encountered while using Swift.
+  public enum Error: PresentableError {
 
-        /// Swift could not be located.
-        case locationError(LocationError)
+    /// Swift could not be located.
+    case locationError(LocationError)
 
-        /// Swift encountered an error during its execution.
-        case executionError(ExternalProcess.Error)
+    /// Swift encountered an error during its execution.
+    case executionError(ExternalProcess.Error)
 
-        // MARK: - PresentableError
+    // MARK: - PresentableError
 
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .locationError(let error):
-                return error.presentableDescription()
-            case .executionError(let error):
-                return error.presentableDescription()
-            }
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .locationError(let error):
+        return error.presentableDescription()
+      case .executionError(let error):
+        return error.presentableDescription()
+      }
     }
+  }
 }

@@ -16,43 +16,47 @@ import SwiftSyntax
 
 extension MemberTypeIdentifierSyntax {
 
-    // MARK: - Normalization
+  // MARK: - Normalization
 
-    internal func normalized() -> TypeSyntax {
+  internal func normalized() -> TypeSyntax {
 
-        let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-        let newGenericArgumentClause = genericArgumentClause?.normalized()
+    let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
+    let newGenericArgumentClause = genericArgumentClause?.normalized()
 
-        if let simple = baseType as? SimpleTypeIdentifierSyntax,
-            simple.name.tokenKind == .capitalSelfKeyword {
-            return SyntaxFactory.makeSimpleTypeIdentifier(
-                name: newName,
-                genericArgumentClause: newGenericArgumentClause)
-        } else {
-            return SyntaxFactory.makeMemberTypeIdentifier(
-                baseType: baseType.normalized(),
-                period: period.generallyNormalizedAndMissingInsteadOfNil(),
-                name: newName,
-                genericArgumentClause: newGenericArgumentClause)
-        }
+    if let simple = baseType as? SimpleTypeIdentifierSyntax,
+      simple.name.tokenKind == .capitalSelfKeyword
+    {
+      return SyntaxFactory.makeSimpleTypeIdentifier(
+        name: newName,
+        genericArgumentClause: newGenericArgumentClause
+      )
+    } else {
+      return SyntaxFactory.makeMemberTypeIdentifier(
+        baseType: baseType.normalized(),
+        period: period.generallyNormalizedAndMissingInsteadOfNil(),
+        name: newName,
+        genericArgumentClause: newGenericArgumentClause
+      )
+    }
+  }
+
+  // MARK: - Merging
+
+  internal func rootType() -> TypeSyntax {
+    guard let member = baseType as? MemberTypeIdentifierSyntax else {
+      return baseType
+    }
+    return member.rootType()
+  }
+
+  internal func strippingRootType() -> TypeSyntax {
+    guard let member = baseType as? MemberTypeIdentifierSyntax else {
+      return SyntaxFactory.makeSimpleTypeIdentifier(
+        name: name,
+        genericArgumentClause: genericArgumentClause
+      )
     }
 
-    // MARK: - Merging
-
-    internal func rootType() -> TypeSyntax {
-        guard let member = baseType as? MemberTypeIdentifierSyntax else {
-            return baseType
-        }
-        return member.rootType()
-    }
-
-    internal func strippingRootType() -> TypeSyntax {
-        guard let member = baseType as? MemberTypeIdentifierSyntax else {
-            return SyntaxFactory.makeSimpleTypeIdentifier(
-                name: name,
-                genericArgumentClause: genericArgumentClause)
-        }
-
-        return withBaseType(member.strippingRootType())
-    }
+    return withBaseType(member.strippingRootType())
+  }
 }

@@ -19,33 +19,33 @@ import SDGSwiftLocalizations
 
 extension Xcode {
 
-    /// An error encountered while loading the Xcode scheme.
-    public enum SchemeError : PresentableError {
+  /// An error encountered while loading the Xcode scheme.
+  public enum SchemeError: PresentableError {
 
-        // MARK: - Cases
+    // MARK: - Cases
 
-        /// Xcode encountered an error.
-        case xcodeError(Xcode.Error)
+    /// Xcode encountered an error.
+    case xcodeError(Xcode.Error)
 
-        /// The Xcode project has no package scheme.
-        case noPackageScheme
+    /// The Xcode project has no package scheme.
+    case noPackageScheme
 
-        // MARK: - PresentableError
+    // MARK: - PresentableError
 
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .xcodeError(let error):
-                return error.presentableDescription()
-            case .noPackageScheme:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The Xcode project has no package scheme."
-                    case .deutschDeutschland:
-                        return "Das Xcode‐Projekt hat kein Paketenschema."
-                    }
-                }).resolved()
-            }
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .xcodeError(let error):
+        return error.presentableDescription()
+      case .noPackageScheme:
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "The Xcode project has no package scheme."
+          case .deutschDeutschland:
+            return "Das Xcode‐Projekt hat kein Paketenschema."
+          }
+        }).resolved()
+      }
     }
+  }
 }

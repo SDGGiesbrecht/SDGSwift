@@ -13,39 +13,39 @@
  */
 
 func covered() -> Bool {
-    return true
+  return true
 }
 
 func notCovered() -> Bool {
-    return true
+  return true
 }
 
 var `switch` = false
 func branching() -> Bool {
-    if `switch` {
-        return true
-    } else {
-        return true
-    }
+  if `switch` {
+    return true
+  } else {
+    return true
+  }
 }
 
 var 😀 = false
 func withSupplementalPlaneCharacters() -> Bool {
-    if 😀 {
-        return true
-    }
-    return false
+  if 😀 {
+    return true
+  }
+  return false
 }
 
 func acceptClosure(_ closure: () -> Void) {
-    closure()
+  closure()
 }
 func useClosure() {
-    acceptClosure({
-        if `switch` {
-            return
-        } else {
-            return
-        }
-    })
+  acceptClosure({
+    if `switch` {
+      return
+    } else {
+      return
+    }
+  })
 }

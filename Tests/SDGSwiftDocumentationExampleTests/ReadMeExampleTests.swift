@@ -20,17 +20,19 @@ import SDGSwift
 
 import SDGXCTestUtilities
 
-class ReadMeExampleTests : TestCase {
+class ReadMeExampleTests: TestCase {
 
-    func testReadMe() throws {
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+  func testReadMe() throws {
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
-            func print(_ string: String) {} // Prevent test clutter.
+      func print(_ string: String) {}  // Prevent test clutter.
 
-            // @example(readMe🇨🇦EN)
-            let package = Package(url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!)
-            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
-            // @endExample
-        }
+      // @example(readMe🇨🇦EN)
+      let package = Package(
+        url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
+      )
+      try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+      // @endExample
     }
+  }
 }

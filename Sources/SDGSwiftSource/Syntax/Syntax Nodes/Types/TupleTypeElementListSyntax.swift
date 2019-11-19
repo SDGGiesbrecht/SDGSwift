@@ -18,7 +18,7 @@ import SwiftSyntax
 
 extension TupleTypeElementListSyntax {
 
-    internal func normalized() -> TupleTypeElementListSyntax {
-        return SyntaxFactory.makeTupleTypeElementList(map({ $0.normalized() }))
-    }
+  internal func normalized() -> TupleTypeElementListSyntax {
+    return SyntaxFactory.makeTupleTypeElementList(map({ $0.normalized() }))
+  }
 }

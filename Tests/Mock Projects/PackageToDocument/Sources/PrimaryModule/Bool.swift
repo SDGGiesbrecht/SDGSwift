@@ -14,14 +14,14 @@
 
 extension Bool {
 
-    public var extensionProperty: Bool {
-        return false
-    }
+  public var extensionProperty: Bool {
+    return false
+  }
 }
 
-extension Bool { // Separated
+extension Bool {  // Separated
 
-    public var propertyInASeparateExtension: Bool {
-        return false
-    }
+  public var propertyInASeparateExtension: Bool {
+    return false
+  }
 }

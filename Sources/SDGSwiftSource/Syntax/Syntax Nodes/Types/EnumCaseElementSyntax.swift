@@ -16,27 +16,29 @@ import SDGLogic
 
 import SwiftSyntax
 
-extension EnumCaseElementSyntax : Hidable {
+extension EnumCaseElementSyntax: Hidable {
 
-    internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
-        return SyntaxFactory.makeEnumCaseElement(
-            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            associatedValue: associatedValue?.normalizedForAssociatedValue(),
-            rawValue: nil,
-            trailingComma: nil)
-    }
+  internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
+    return SyntaxFactory.makeEnumCaseElement(
+      identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+      associatedValue: associatedValue?.normalizedForAssociatedValue(),
+      rawValue: nil,
+      trailingComma: nil
+    )
+  }
 
-    internal func forName() -> EnumCaseElementSyntax {
-        return SyntaxFactory.makeEnumCaseElement(
-            identifier: identifier,
-            associatedValue: associatedValue?.forAssociatedValueName(),
-            rawValue: nil,
-            trailingComma: nil)
-    }
+  internal func forName() -> EnumCaseElementSyntax {
+    return SyntaxFactory.makeEnumCaseElement(
+      identifier: identifier,
+      associatedValue: associatedValue?.forAssociatedValueName(),
+      rawValue: nil,
+      trailingComma: nil
+    )
+  }
 
-    // MARK: - Hidable
+  // MARK: - Hidable
 
-    internal var hidabilityIdentifier: TokenSyntax? {
-        return identifier
-    }
+  internal var hidabilityIdentifier: TokenSyntax? {
+    return identifier
+  }
 }

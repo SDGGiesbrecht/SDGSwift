@@ -15,29 +15,33 @@
 import SwiftSyntax
 
 /// An operator.
-public final class OperatorAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class OperatorAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+  _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
+  _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: OperatorDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: OperatorDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: OperatorDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: OperatorDeclSyntax
 
-    // MARK: - UniquelyDeclaredAPIElement
+  // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: OperatorDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: OperatorDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: OperatorDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: OperatorDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 }

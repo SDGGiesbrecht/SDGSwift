@@ -16,10 +16,11 @@ import SwiftSyntax
 
 extension AttributedTypeSyntax {
 
-    internal func normalized() -> AttributedTypeSyntax {
-        return SyntaxFactory.makeAttributedType(
-            specifier: specifier?.generallyNormalized(trailingTrivia: .spaces(1)),
-            attributes: attributes?.normalizedForAPIDeclaration(),
-            baseType: baseType.normalized())
-    }
+  internal func normalized() -> AttributedTypeSyntax {
+    return SyntaxFactory.makeAttributedType(
+      specifier: specifier?.generallyNormalized(trailingTrivia: .spaces(1)),
+      attributes: attributes?.normalizedForAPIDeclaration(),
+      baseType: baseType.normalized()
+    )
+  }
 }

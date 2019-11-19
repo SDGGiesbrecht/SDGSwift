@@ -15,14 +15,14 @@
 import SwiftSyntax
 
 /// An API element which has a unique declaration.
-public protocol DeclaredAPIElement : APIElementProtocol {
-    /// The unique declaration.
-    var genericDeclaration: Syntax { get }
+public protocol DeclaredAPIElement: APIElementProtocol {
+  /// The unique declaration.
+  var genericDeclaration: Syntax { get }
 }
 
 extension DeclaredAPIElement {
 
-    public var possibleDeclaration: Syntax? {
-        return genericDeclaration
-    }
+  public var possibleDeclaration: Syntax? {
+    return genericDeclaration
+  }
 }

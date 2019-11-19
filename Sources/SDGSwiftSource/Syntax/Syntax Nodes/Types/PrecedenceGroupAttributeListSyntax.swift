@@ -18,17 +18,19 @@ import SwiftSyntax
 
 extension PrecedenceGroupAttributeListSyntax {
 
-    internal enum PrecedenceAttributeGroup : OrderedEnumeration {
-        case before
-        case after
-        case associativity
-        case assignment
-        case unknown
-    }
+  internal enum PrecedenceAttributeGroup: OrderedEnumeration {
+    case before
+    case after
+    case associativity
+    case assignment
+    case unknown
+  }
 
-    internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
-        let normalized = map({ $0.normalizedPrecedenceAttribute() })
-        let sorted = normalized.sorted(by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceAttributes)
-        return SyntaxFactory.makePrecedenceGroupAttributeList(sorted)
-    }
+  internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
+    let normalized = map({ $0.normalizedPrecedenceAttribute() })
+    let sorted = normalized.sorted(
+      by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceAttributes
+    )
+    return SyntaxFactory.makePrecedenceGroupAttributeList(sorted)
+  }
 }

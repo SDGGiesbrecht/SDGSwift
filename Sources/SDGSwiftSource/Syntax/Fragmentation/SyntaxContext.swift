@@ -17,22 +17,26 @@ import SDGLogic
 /// The context of a syntax node.
 public class SyntaxContext {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(fragmentContext: String, fragmentOffset: Int, parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?) {
-        self.fragmentContext = fragmentContext
-        self.fragmentOffset = fragmentOffset
-        self.parentContext = parentContext
-    }
+  internal init(
+    fragmentContext: String,
+    fragmentOffset: Int,
+    parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
+  ) {
+    self.fragmentContext = fragmentContext
+    self.fragmentOffset = fragmentOffset
+    self.parentContext = parentContext
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    internal let fragmentContext: String
-    internal let fragmentOffset: Int
-    internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
+  internal let fragmentContext: String
+  internal let fragmentOffset: Int
+  internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
 
-    /// Returns whether or not the context is fragmented.
-    public func isFragmented() -> Bool {
-        return parentContext ≠ nil
-    }
+  /// Returns whether or not the context is fragmented.
+  public func isFragmented() -> Bool {
+    return parentContext ≠ nil
+  }
 }

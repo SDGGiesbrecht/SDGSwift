@@ -14,12 +14,12 @@
 
 public protocol SubDependencyProtocol {}
 extension SubDependencyProtocol {
-    public func inherited() {}
+  public func inherited() {}
 }
 
-public protocol DependencyProtocol : SubDependencyProtocol {
-    func requirement()
+public protocol DependencyProtocol: SubDependencyProtocol {
+  func requirement()
 }
 extension DependencyProtocol {
-    public func provision() {}
+  public func provision() {}
 }

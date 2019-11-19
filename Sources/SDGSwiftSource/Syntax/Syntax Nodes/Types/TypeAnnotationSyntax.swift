@@ -16,9 +16,12 @@ import SwiftSyntax
 
 extension TypeAnnotationSyntax {
 
-    internal func normalizedForVariableBindingForAPIDeclaration(extractingFromIndexPath indexPath: [Int] = []) -> TypeAnnotationSyntax {
-        return SyntaxFactory.makeTypeAnnotation(
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            type: type.normalized(extractingFromIndexPath: indexPath))
-    }
+  internal func normalizedForVariableBindingForAPIDeclaration(
+    extractingFromIndexPath indexPath: [Int] = []
+  ) -> TypeAnnotationSyntax {
+    return SyntaxFactory.makeTypeAnnotation(
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      type: type.normalized(extractingFromIndexPath: indexPath)
+    )
+  }
 }

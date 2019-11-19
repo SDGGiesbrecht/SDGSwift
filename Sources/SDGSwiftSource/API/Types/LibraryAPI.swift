@@ -29,12 +29,15 @@ import SDGSwiftPackageManager
 import SDGSwiftLocalizations
 
 /// A library product of a package.
-public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
+public final class LibraryAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+  _UniquelyDeclaredManifestAPIElement
+{
 
   // MARK: - Static Methods
 
   internal static func reportForParsing(
-    module: StrictString) -> UserFacing<StrictString, InterfaceLocalization> {
+    module: StrictString
+  ) -> UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom:
@@ -49,17 +52,24 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
 
   // MARK: - Initialization
 
-  internal convenience init(product: Product, manifest: Syntax, reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress) throws {
+  internal convenience init(
+    product: Product,
+    manifest: Syntax,
+    reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress
+  ) throws {
     let search = ".library(".scalars
       + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
       + "name: \u{22}\(product.name)\u{22}".scalars
     let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent
     self.init(
-      documentation: manifestDeclaration?.documentation ?? [], // @exempt(from: tests)
-      declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name))
+      documentation: manifestDeclaration?.documentation ?? [],  // @exempt(from: tests)
+      declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
+    )
 
     for module in product.targets where ¬module.name.hasPrefix("_") {
-      reportProgress(String(LibraryAPI.reportForParsing(module: StrictString(module.name)).resolved()))
+      reportProgress(
+        String(LibraryAPI.reportForParsing(module: StrictString(module.name)).resolved())
+      )
       children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
     }
   }
@@ -69,7 +79,8 @@ public final class LibraryAPI : _APIElementBase, _NonOverloadableAPIElement, Sor
     alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
     constraints: GenericWhereClauseSyntax?,
     name: TokenSyntax,
-    children: [APIElement]) {
+    children: [APIElement]
+  ) {
 
     self.declaration = declaration
     self.name = name

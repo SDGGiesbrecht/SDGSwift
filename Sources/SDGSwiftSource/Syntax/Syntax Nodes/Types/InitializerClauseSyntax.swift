@@ -16,11 +16,16 @@ import SwiftSyntax
 
 extension InitializerClauseSyntax {
 
-    internal func normalizeForDefaultArgument() -> InitializerClauseSyntax {
-        return SyntaxFactory.makeInitializerClause(
-            equal: equal.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            value: SyntaxFactory.makeIdentifierExpr(
-                identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
-                declNameArguments: nil))
-    }
+  internal func normalizeForDefaultArgument() -> InitializerClauseSyntax {
+    return SyntaxFactory.makeInitializerClause(
+      equal: equal.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1),
+        trailingTrivia: .spaces(1)
+      ),
+      value: SyntaxFactory.makeIdentifierExpr(
+        identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
+        declNameArguments: nil
+      )
+    )
+  }
 }

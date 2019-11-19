@@ -16,9 +16,14 @@ import SwiftSyntax
 
 extension OperatorPrecedenceAndTypesSyntax {
 
-    internal func normalizedForAPIDeclaration() -> OperatorPrecedenceAndTypesSyntax {
-        return SyntaxFactory.makeOperatorPrecedenceAndTypes(
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            precedenceGroupAndDesignatedTypes: precedenceGroupAndDesignatedTypes.normalizedPrecedenceGroupAndDesignatedTypes())
-    }
+  internal func normalizedForAPIDeclaration() -> OperatorPrecedenceAndTypesSyntax {
+    return SyntaxFactory.makeOperatorPrecedenceAndTypes(
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1),
+        trailingTrivia: .spaces(1)
+      ),
+      precedenceGroupAndDesignatedTypes:
+        precedenceGroupAndDesignatedTypes.normalizedPrecedenceGroupAndDesignatedTypes()
+    )
+  }
 }

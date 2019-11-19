@@ -14,32 +14,33 @@
 
 import SwiftSyntax
 
-internal protocol _UniquelyDeclaredAPIElement : DeclaredAPIElement {
-    associatedtype Declaration : Syntax
-    associatedtype Name : Syntax
+internal protocol _UniquelyDeclaredAPIElement: DeclaredAPIElement {
+  associatedtype Declaration: Syntax
+  associatedtype Name: Syntax
 
-    init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: Declaration,
-        constraints: GenericWhereClauseSyntax?,
-        name: Name,
-        children: [APIElement])
+  init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: Declaration,
+    constraints: GenericWhereClauseSyntax?,
+    name: Name,
+    children: [APIElement]
+  )
 
-    // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    var declaration: Declaration { get }
-    // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    var name: Name { get }
+  // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  var declaration: Declaration { get }
+  // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  var name: Name { get }
 }
 
 extension _UniquelyDeclaredAPIElement {
 
-    public var genericDeclaration: Syntax {
-        return declaration
-    }
+  public var genericDeclaration: Syntax {
+    return declaration
+  }
 
-    public var genericName: Syntax {
-        return name
-    }
+  public var genericName: Syntax {
+    return name
+  }
 }

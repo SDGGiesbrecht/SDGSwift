@@ -17,100 +17,121 @@ import Foundation
 import SDGControlFlow
 
 /// A local repository containing a Swift package.
-public struct PackageRepository : TransparentWrapper {
+public struct PackageRepository: TransparentWrapper {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates an instance describing an existing package repository.
-    ///
-    /// - Parameters:
-    ///     - location: The local directory where the package repository already resides.
-    public init(at location: URL) {
-        self.location = location
+  /// Creates an instance describing an existing package repository.
+  ///
+  /// - Parameters:
+  ///     - location: The local directory where the package repository already resides.
+  public init(at location: URL) {
+    self.location = location
+  }
+
+  /// Creates a local repository by cloning a remote package.
+  ///
+  /// - Parameters:
+  ///     - package: The package to clone.
+  ///     - location: The location to create the clone.
+  ///     - build: Optional. A specific version to check out.
+  ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  public static func clone(
+    _ package: Package,
+    to location: URL,
+    at build: Build = .development,
+    shallow: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<PackageRepository, Git.Error> {
+
+    let repository = PackageRepository(at: location)
+    switch Git.clone(
+      package,
+      to: location,
+      at: build,
+      shallow: shallow,
+      reportProgress: reportProgress
+    ) {
+    case .failure(let error):
+      return .failure(error)
+    case .success:
+      return .success(repository)
     }
+  }
 
-    /// Creates a local repository by cloning a remote package.
-    ///
-    /// - Parameters:
-    ///     - package: The package to clone.
-    ///     - location: The location to create the clone.
-    ///     - build: Optional. A specific version to check out.
-    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`.
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    public static func clone(
-        _ package: Package,
-        to location: URL,
-        at build: Build = .development,
-        shallow: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-        ) -> Result<PackageRepository, Git.Error> {
+  // MARK: - Properties
 
-        let repository = PackageRepository(at: location)
-        switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
-        case .failure(let error):
-            return .failure(error)
-        case .success:
-            return .success(repository)
-        }
-    }
+  /// The location of the repository.
+  public let location: URL
 
-    // MARK: - Properties
+  /// The directory to which products are built.
+  ///
+  /// - Parameters:
+  ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
+  public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, SwiftCompiler.Error> {
+    return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
+  }
 
-    /// The location of the repository.
-    public let location: URL
+  // MARK: - Workflow
 
-    /// The directory to which products are built.
-    ///
-    /// - Parameters:
-    ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
-    public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, SwiftCompiler.Error> {
-        return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
-    }
+  /// Builds the package.
+  ///
+  /// - Parameters:
+  ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+  ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func build(
+    releaseConfiguration: Bool = false,
+    staticallyLinkStandardLibrary: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, SwiftCompiler.Error> {
+    return SwiftCompiler.build(
+      self,
+      releaseConfiguration: releaseConfiguration,
+      staticallyLinkStandardLibrary: staticallyLinkStandardLibrary,
+      reportProgress: reportProgress
+    )
+  }
 
-    // MARK: - Workflow
+  /// Tests the package.
+  ///
+  /// - Parameters:
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func test(
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, SwiftCompiler.Error> {
+    return SwiftCompiler.test(self, reportProgress: reportProgress)
+  }
 
-    /// Builds the package.
-    ///
-    /// - Parameters:
-    ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
-    ///     - staticallyLinkStandardLibrary: Optional. Whether or not to statically link the standard library. Defaults to `false`.
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func build(releaseConfiguration: Bool = false, staticallyLinkStandardLibrary: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
-        return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, staticallyLinkStandardLibrary: staticallyLinkStandardLibrary, reportProgress: reportProgress)
-    }
+  /// Resolves the package, fetching its dependencies.
+  ///
+  /// - Parameters:
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func resolve(
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, SwiftCompiler.Error> {
+    return SwiftCompiler.resolve(self, reportProgress: reportProgress)
+  }
 
-    /// Tests the package.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
-        return SwiftCompiler.test(self, reportProgress: reportProgress)
-    }
+  /// Regenerates the package’s test lists.
+  ///
+  /// - Parameters:
+  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  ///     - progressReport: A line of output.
+  @discardableResult public func regenerateTestLists(
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, SwiftCompiler.Error> {
+    return SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
+  }
 
-    /// Resolves the package, fetching its dependencies.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
-        return SwiftCompiler.resolve(self, reportProgress: reportProgress)
-    }
+  // MARK: - TransparentWrapper
 
-    /// Regenerates the package’s test lists.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func regenerateTestLists(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
-        return SwiftCompiler.regenerateTestLists(for: self, reportProgress: reportProgress)
-    }
-
-    // MARK: - TransparentWrapper
-
-    public var wrappedInstance: Any {
-        return location.path
-    }
+  public var wrappedInstance: Any {
+    return location.path
+  }
 }

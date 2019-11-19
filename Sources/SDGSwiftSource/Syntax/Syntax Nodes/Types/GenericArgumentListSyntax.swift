@@ -18,7 +18,7 @@ import SwiftSyntax
 
 extension GenericArgumentListSyntax {
 
-    internal func normalized() -> GenericArgumentListSyntax {
-        return SyntaxFactory.makeGenericArgumentList(map({ $0.normalized() }))
-    }
+  internal func normalized() -> GenericArgumentListSyntax {
+    return SyntaxFactory.makeGenericArgumentList(map({ $0.normalized() }))
+  }
 }

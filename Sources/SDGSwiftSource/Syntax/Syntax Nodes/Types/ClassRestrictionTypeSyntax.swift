@@ -16,9 +16,10 @@ import SwiftSyntax
 
 extension ClassRestrictionTypeSyntax {
 
-    internal func normalized() -> SimpleTypeIdentifierSyntax {
-        return SyntaxFactory.makeSimpleTypeIdentifier(
-            name: SyntaxFactory.makeToken(.identifier("AnyObject")),
-            genericArgumentClause: nil)
-    }
+  internal func normalized() -> SimpleTypeIdentifierSyntax {
+    return SyntaxFactory.makeSimpleTypeIdentifier(
+      name: SyntaxFactory.makeToken(.identifier("AnyObject")),
+      genericArgumentClause: nil
+    )
+  }
 }

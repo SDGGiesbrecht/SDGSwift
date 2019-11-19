@@ -20,31 +20,33 @@ import SDGVersioning
 import SDGSwiftLocalizations
 
 /// A package build.
-public enum Build : Equatable, TextualPlaygroundDisplay {
+public enum Build: Equatable, TextualPlaygroundDisplay {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    /// A versioned release.
-    case version(Version)
+  /// A versioned release.
+  case version(Version)
 
-    /// The current state of development.
-    case development
+  /// The current state of development.
+  case development
 
-    // MARK: - CustomStringConvertible
+  // MARK: - CustomStringConvertible
 
-    public var description: String {
-        switch self {
-        case .version(let version):
-            return version.string()
-        case .development:
-            return String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "development state"
-                case .deutschDeutschland:
-                    return "Entwicklungsstand"
-                }
-            }).resolved())
-        }
+  public var description: String {
+    switch self {
+    case .version(let version):
+      return version.string()
+    case .development:
+      return String(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "development state"
+          case .deutschDeutschland:
+            return "Entwicklungsstand"
+          }
+        }).resolved()
+      )
     }
+  }
 }

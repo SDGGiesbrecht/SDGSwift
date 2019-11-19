@@ -14,26 +14,26 @@
 
 import Foundation
 
-internal class ParsedDocumentationCache : NSCache<NSString, DocumentationSyntax> {
+internal class ParsedDocumentationCache: NSCache<NSString, DocumentationSyntax> {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal override init() {
-        super.init()
-        totalCostLimit = 10_000
+  internal override init() {
+    super.init()
+    totalCostLimit = 10_000
+  }
+
+  // MARK: - Subscripts
+
+  internal subscript(key: String) -> DocumentationSyntax? {
+    get {
+      return object(forKey: NSString(string: key))
     }
-
-    // MARK: - Subscripts
-
-    internal subscript(key: String) -> DocumentationSyntax? {
-        get {
-            return object(forKey: NSString(string: key))
-        }
-        set {
-            let bridged = NSString(string: key)
-            if let new = newValue {
-                setObject(new, forKey: bridged, cost: bridged.length)
-            } else { removeObject(forKey: bridged) } // @exempt(from: tests) Unused.
-        }
+    set {
+      let bridged = NSString(string: key)
+      if let new = newValue {
+        setObject(new, forKey: bridged, cost: bridged.length)
+      } else { removeObject(forKey: bridged) }  // @exempt(from: tests) Unused.
     }
+  }
 }

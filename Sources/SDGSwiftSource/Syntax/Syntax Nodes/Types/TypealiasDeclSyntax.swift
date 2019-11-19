@@ -14,41 +14,49 @@
 
 import SwiftSyntax
 
-extension TypealiasDeclSyntax : Constrained, Generic, Hidable, TypeDeclaration {
+extension TypealiasDeclSyntax: Constrained, Generic, Hidable, TypeDeclaration {
 
-    // MARK: - Hidable
+  // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax? {
-        return identifier
-    }
+  var hidabilityIdentifier: TokenSyntax? {
+    return identifier
+  }
 
-    // MARK: - TypeDeclaration
+  // MARK: - TypeDeclaration
 
-    var inheritanceClause: TypeInheritanceClauseSyntax? {
-        return nil
-    }
+  var inheritanceClause: TypeInheritanceClauseSyntax? {
+    return nil
+  }
 
-    internal func normalizedAPIDeclaration() -> (declaration: TypealiasDeclSyntax, constraints: GenericWhereClauseSyntax?) {
-        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeTypealiasDecl(
-            attributes: attributes?.normalizedForAPIDeclaration(),
-            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-            typealiasKeyword: typealiasKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            genericParameterClause: newGenericParemeterClause,
-            initializer: nil,
-            genericWhereClause: nil),
-                newGenericWhereClause)
-    }
+  internal func normalizedAPIDeclaration() -> (
+    declaration: TypealiasDeclSyntax, constraints: GenericWhereClauseSyntax?
+  ) {
+    let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+    return (
+      SyntaxFactory.makeTypealiasDecl(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+        typealiasKeyword: typealiasKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          trailingTrivia: .spaces(1)
+        ),
+        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+        genericParameterClause: newGenericParemeterClause,
+        initializer: nil,
+        genericWhereClause: nil
+      ),
+      newGenericWhereClause
+    )
+  }
 
-    internal func name() -> TypealiasDeclSyntax {
-        return SyntaxFactory.makeTypealiasDecl(
-            attributes: nil,
-            modifiers: nil,
-            typealiasKeyword: SyntaxFactory.makeToken(.typealiasKeyword, presence: .missing),
-            identifier: identifier,
-            genericParameterClause: genericParameterClause,
-            initializer: nil,
-            genericWhereClause: nil)
-    }
+  internal func name() -> TypealiasDeclSyntax {
+    return SyntaxFactory.makeTypealiasDecl(
+      attributes: nil,
+      modifiers: nil,
+      typealiasKeyword: SyntaxFactory.makeToken(.typealiasKeyword, presence: .missing),
+      identifier: identifier,
+      genericParameterClause: genericParameterClause,
+      initializer: nil,
+      genericWhereClause: nil
+    )
+  }
 }

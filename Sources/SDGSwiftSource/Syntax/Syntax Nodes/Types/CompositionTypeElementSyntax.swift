@@ -16,9 +16,15 @@ import SwiftSyntax
 
 extension CompositionTypeElementSyntax {
 
-    internal func normalized(withAmpersand: Bool) -> CompositionTypeElementSyntax {
-        return SyntaxFactory.makeCompositionTypeElement(
-            type: type.normalized(),
-            ampersand: withAmpersand ? SyntaxFactory.makeToken(.prefixAmpersand, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)) : nil)
-    }
+  internal func normalized(withAmpersand: Bool) -> CompositionTypeElementSyntax {
+    return SyntaxFactory.makeCompositionTypeElement(
+      type: type.normalized(),
+      ampersand: withAmpersand
+        ? SyntaxFactory.makeToken(
+          .prefixAmpersand,
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ) : nil
+    )
+  }
 }

@@ -19,75 +19,95 @@ import SwiftSyntax
 
 extension IfConfigDeclSyntax {
 
-    internal var conditionalAPI: [APIElement] {
-        var combined: [APIElement: Syntax?] = [:]
-        var previousGroups: [(condition: Syntax, elements: Set<APIElement>)] = []
+  internal var conditionalAPI: [APIElement] {
+    var combined: [APIElement: Syntax?] = [:]
+    var previousGroups: [(condition: Syntax, elements: Set<APIElement>)] = []
 
-        for syntaxGroup in clauses {
-            let currentCondition = SyntaxFactory.makeUnknownSyntax(tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? [])
+    for syntaxGroup in clauses {
+      let currentCondition = SyntaxFactory.makeUnknownSyntax(
+        tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? []
+      )
 
-            var apiGroup: (condition: Syntax, elements: Set<APIElement>) = (currentCondition, [])
-            defer { previousGroups.append(apiGroup) }
+      var apiGroup: (condition: Syntax, elements: Set<APIElement>) = (currentCondition, [])
+      defer { previousGroups.append(apiGroup) }
 
-            for apiElement in syntaxGroup.elements.apiChildren() {
-                apiGroup.elements.insert(apiElement)
+      for apiElement in syntaxGroup.elements.apiChildren() {
+        apiGroup.elements.insert(apiElement)
 
-                if syntaxGroup.poundKeyword.tokenKind == .poundElseKeyword,
-                    ¬previousGroups.contains(where: { apiElement ∉ $0.elements }) {
-                    combined[apiElement] = Optional<Syntax>.none
-                } else {
-                    var composedConditionTokens: [TokenSyntax] = [SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))]
-                    var needsParentheses: Bool = false
-                    for previousGroup in previousGroups {
-                        needsParentheses = true
-                        if previousGroup.elements.contains(apiElement) {
-                            composedConditionTokens.append(contentsOf: [
-                                SyntaxFactory.makeToken(.leftParen)
-                                ] + previousGroup.condition.tokens() + [
-                                    SyntaxFactory.makeToken(.rightParen),
-                                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{7C}|"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-                                ])
-                        } else {
-                            composedConditionTokens.append(contentsOf: [
-                                SyntaxFactory.makeToken(.prefixOperator("!")),
-                                SyntaxFactory.makeToken(.leftParen)
-                                ] + previousGroup.condition.tokens() + [
-                                    SyntaxFactory.makeToken(.rightParen),
-                                    SyntaxFactory.makeToken(.spacedBinaryOperator("\u{26}&"), leadingTrivia: .spaces(1), trailingTrivia: .spaces(1))
-                                ])
-                        }
-                    }
-
-                    if currentCondition.tokens().isEmpty,
-                        ¬composedConditionTokens.isEmpty {
-                        composedConditionTokens.removeLast()
-                    } else {
-                        if needsParentheses {
-                            composedConditionTokens.append(contentsOf: [
-                                SyntaxFactory.makeToken(.leftParen)
-                                ] + currentCondition.tokens() + [
-                                    SyntaxFactory.makeToken(.rightParen)
-                                ])
-                        } else {
-                            composedConditionTokens.append(contentsOf: currentCondition.tokens())
-                        }
-                    }
-
-                    var composedConditions: Syntax?
-                    if ¬composedConditionTokens.isEmpty {
-                        composedConditions = SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
-                    }
-                    combined[apiElement] = composedConditions
-                }
+        if syntaxGroup.poundKeyword.tokenKind == .poundElseKeyword,
+          ¬previousGroups.contains(where: { apiElement ∉ $0.elements })
+        {
+          combined[apiElement] = Optional<Syntax>.none
+        } else {
+          var composedConditionTokens: [TokenSyntax] = [
+            SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1))
+          ]
+          var needsParentheses: Bool = false
+          for previousGroup in previousGroups {
+            needsParentheses = true
+            if previousGroup.elements.contains(apiElement) {
+              composedConditionTokens.append(
+                contentsOf: [
+                  SyntaxFactory.makeToken(.leftParen)
+                ] + previousGroup.condition.tokens() + [
+                  SyntaxFactory.makeToken(.rightParen),
+                  SyntaxFactory.makeToken(
+                    .spacedBinaryOperator("\u{7C}|"),
+                    leadingTrivia: .spaces(1),
+                    trailingTrivia: .spaces(1)
+                  )
+                ]
+              )
+            } else {
+              composedConditionTokens.append(
+                contentsOf: [
+                  SyntaxFactory.makeToken(.prefixOperator("!")),
+                  SyntaxFactory.makeToken(.leftParen)
+                ] + previousGroup.condition.tokens() + [
+                  SyntaxFactory.makeToken(.rightParen),
+                  SyntaxFactory.makeToken(
+                    .spacedBinaryOperator("\u{26}&"),
+                    leadingTrivia: .spaces(1),
+                    trailingTrivia: .spaces(1)
+                  )
+                ]
+              )
             }
-        }
+          }
 
-        var result: [APIElement] = []
-        for element in combined.keys.sorted() {
-            let condition: Syntax? = combined[element]!
-            element.elementBase.compilationConditions.prependCompilationConditions(condition)
-            result.append(element)
+          if currentCondition.tokens().isEmpty,
+            ¬composedConditionTokens.isEmpty
+          {
+            composedConditionTokens.removeLast()
+          } else {
+            if needsParentheses {
+              composedConditionTokens.append(
+                contentsOf: [
+                  SyntaxFactory.makeToken(.leftParen)
+                ] + currentCondition.tokens() + [
+                  SyntaxFactory.makeToken(.rightParen)
+                ]
+              )
+            } else {
+              composedConditionTokens.append(contentsOf: currentCondition.tokens())
+            }
+          }
+
+          var composedConditions: Syntax?
+          if ¬composedConditionTokens.isEmpty {
+            composedConditions = SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
+          }
+          combined[apiElement] = composedConditions
         }
-        return result
+      }
     }
+
+    var result: [APIElement] = []
+    for element in combined.keys.sorted() {
+      let condition: Syntax? = combined[element]!
+      element.elementBase.compilationConditions.prependCompilationConditions(condition)
+      result.append(element)
+    }
+    return result
+  }
 }
