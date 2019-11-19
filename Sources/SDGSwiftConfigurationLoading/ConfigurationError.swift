@@ -31,7 +31,7 @@ extension Configuration {
         case foundationError(Swift.Error)
 
         /// Swift encountered an error.
-        case swiftError(SwiftCompiler.Error)
+        case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
         /// The configuration is empty.
         case emptyConfiguration

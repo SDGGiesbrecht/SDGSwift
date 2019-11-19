@@ -15,6 +15,8 @@
 import SDGText
 import SDGLocalization
 
+import SDGSwift
+
 import SDGSwiftLocalizations
 
 extension Xcode {
@@ -25,7 +27,7 @@ extension Xcode {
         // MARK: - Cases
 
         /// Xcode encountered an error.
-        case xcodeError(Xcode.Error)
+        case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
 
         /// The Xcode project has no package scheme.
         case noPackageScheme

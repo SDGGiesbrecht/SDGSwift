@@ -86,6 +86,7 @@ let package = Package(
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
             from: Version(3, 0, 0)),
+        // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
         .package(
             url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
             .exact(Version(0, 5, 0))),
@@ -109,6 +110,7 @@ let package = Package(
             "SDGSwiftLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
@@ -269,6 +271,7 @@ let package = Package(
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
+            .product(name: "SDGVersioning", package: "SDGCornerstone"),
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")

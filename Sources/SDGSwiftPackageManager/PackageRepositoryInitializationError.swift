@@ -26,7 +26,7 @@ extension PackageRepository {
         case packageManagerError(Swift.Error)
 
         /// Git encountered an error.
-        case gitError(Git.Error)
+        case gitError(VersionedExternalProcessExecutionError<Git>)
 
         // MARK: - PresentableError
 

@@ -40,12 +40,12 @@ public struct Package : TransparentWrapper {
     public let url: URL
 
     /// Retrieves the list of available versions.
-    public func versions() -> Result<Set<Version>, Git.Error> {
+    public func versions() -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
         return Git.versions(of: self)
     }
 
     /// Retrieves the latest commit identifier in the master branch of the package.
-    public func latestCommitIdentifier() -> Result<String, Git.Error> {
+    public func latestCommitIdentifier() -> Result<String, VersionedExternalProcessExecutionError<Git>> {
         return Git.latestCommitIdentifier(in: self)
     }
 
@@ -147,7 +147,7 @@ public struct Package : TransparentWrapper {
         return cache.appendingPathComponent("Development")
     }
 
-    private func cacheDirectory(in cache: URL, for version: Build) -> Result<URL, Git.Error> {
+    private func cacheDirectory(in cache: URL, for version: Build) -> Result<URL, VersionedExternalProcessExecutionError<Git>> {
         switch version {
         case .version(let specific):
             return .success(cache.appendingPathComponent(specific.string()))

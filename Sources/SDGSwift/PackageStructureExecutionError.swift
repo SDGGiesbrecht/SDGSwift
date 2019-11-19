@@ -24,7 +24,7 @@ extension Package {
     public enum ExecutionError : PresentableError {
 
         /// Git encountered an error.
-        case gitError(Git.Error)
+        case gitError(VersionedExternalProcessExecutionError<Git>)
 
         /// Failed to build the tool.
         case buildError(BuildError)

@@ -43,7 +43,7 @@ extension PackageRepository {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
-    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, SwiftCompiler.Error> {
+    @discardableResult public func generateXcodeProject(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
 

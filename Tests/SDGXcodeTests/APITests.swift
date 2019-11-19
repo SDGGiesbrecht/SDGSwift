@@ -18,6 +18,7 @@ import SDGText
 import SDGPersistence
 import SDGLocalization
 import SDGExternalProcess
+import SDGVersioning
 
 import SDGSwift
 import SDGXcode
@@ -50,11 +51,11 @@ class APITests : TestCase {
 
     func testXcode() throws {
         #if os(Linux)
-        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"]).get()
+        _ = try? Xcode.runCustomSubcommand(["\u{2D}version"], versionConstraints: Version(Int.min) ... Version(Int.max)).get()
         #else
-        _ = try Xcode.runCustomSubcommand(["\u{2D}version"]).get()
+      _ = try Xcode.runCustomSubcommand(["\u{2D}version"], versionConstraints: Version(Int.min) ... Version(Int.max)).get()
         #endif
-        let xcodeLocation = try? Xcode.location().get()
+        let xcodeLocation = try? Xcode.location(versionConstraints: Version(Int.min) ... Version(Int.max)).get()
         #if !os(Linux)
         XCTAssertNotNil(xcodeLocation)
         #endif
@@ -265,13 +266,13 @@ class APITests : TestCase {
                 return "[...]"
             }
         }
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+      testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable(versionConstraints: "..."))), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.SchemeError.noPackageScheme, localizations: InterfaceLocalization.self, uniqueTestName: "No Package Scheme", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.corruptTestCoverageReport, localizations: InterfaceLocalization.self, uniqueTestName: "Corrupt Test Coverage", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.packageManagerError(.packageManagerError(StandInError(), [])), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: Xcode.Error.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: Xcode.CoverageReportingError.xcodeError(.locationError(.unavailable(versionConstraints: "..."))), localizations: InterfaceLocalization.self, uniqueTestName: "Xcode Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: VersionedExternalProcessExecutionError<Xcode>.executionError(.foundationError(StandInError())), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(
             of: Xcode.SchemeError.xcodeError(.executionError(.foundationError(StandInError()))),
             localizations: InterfaceLocalization.self,

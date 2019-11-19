@@ -1,0 +1,12 @@
+🇬🇧EN
+git: 'fail' is not a git command. See 'git --help'.
+
+🇺🇸EN
+git: 'fail' is not a git command. See 'git --help'.
+
+🇨🇦EN
+git: 'fail' is not a git command. See 'git --help'.
+
+🇩🇪DE
+git: 'fail' is not a git command. See 'git --help'.
+

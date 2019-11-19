@@ -39,7 +39,6 @@ class APITests : TestCase {
         try withDefaultMockRepository { mock in
             try "...".save(to: mock.location.appendingPathComponent("File.md"))
             XCTAssertNotEqual(try mock.uncommittedChanges().get(), "", "Change unnoticed.")
-            XCTAssertEqual(try mock.uncommittedChanges(excluding: ["*.md"]).get(), "", "No change should have been detected.")
         }
     }
 
@@ -49,7 +48,7 @@ class APITests : TestCase {
                 return "[...]"
             }
         }
-        testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.gitError(.locationError(.unavailable)), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.gitError(.locationError(.unavailable(versionConstraints: "..."))), localizations: InterfaceLocalization.self, uniqueTestName: "Git Unavailable", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: PackageRepository.InitializationError.packageManagerError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Package Manager", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()), localizations: InterfaceLocalization.self, uniqueTestName: "Foundation", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(
