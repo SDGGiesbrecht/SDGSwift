@@ -83,6 +83,11 @@ class APITests : TestCase {
       _ = try mock.test().get()
     }
     XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+
+    try withMock(named: "Tool") { mock in
+      _ = try mock.build(releaseConfiguration: true).get()
+      XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+    }
   }
 
   func testSwiftCompilerError() {
@@ -118,5 +123,18 @@ class APITests : TestCase {
     XCTAssertNil(Version(String("A")))
     XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
     XCTAssertEqual(Version(1, 0, 0), "1.0.0")
+  }
+
+  func testVersionedExternalProcess() {
+    do {
+      // Fresh
+      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+      XCTFail("Failed to throw.")
+    } catch {}
+    do {
+      // Cached
+      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+      XCTFail("Failed to throw.")
+    } catch {}
   }
 }

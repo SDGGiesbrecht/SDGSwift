@@ -77,7 +77,8 @@ extension VersionedExternalProcess {
           // Make sure version is compatible.
           guard let output = try? process.run(versionQuery).get(),
             let version = Version(firstIn: output) else {
-              return false
+              return false // @exempt(from: test)
+              // Would require corrupt tools to be present during tests.
           }
           return versionConstraints.contains(version)
         }
