@@ -78,7 +78,6 @@ extension Git {
   ///
   /// - Parameters:
   ///     - repository: The repository.
-  ///     - exclusionPatterns: Patterns describing paths or files to ignore.
   ///
   /// - Returns: The report provided by Git. (An empty string if there are no changes.)
   public static func uncommittedChanges(

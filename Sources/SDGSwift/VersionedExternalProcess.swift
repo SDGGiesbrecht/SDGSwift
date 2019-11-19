@@ -95,6 +95,9 @@ extension VersionedExternalProcess {
   // MARK: - Usage
 
   /// Returns the location of the process.
+  ///
+  /// - Parameters:
+  ///   - versionConstraints: The acceptable range of versions.
   public static func location<Constraints>(
     versionConstraints: Constraints) -> Result<URL, VersionedExternalProcessLocationError<Self>>
     where Constraints : RangeFamily, Constraints.Bound == Version {
@@ -104,11 +107,12 @@ extension VersionedExternalProcess {
   /// Runs a custom subcommand.
   ///
   /// - Parameters:
-  ///     - arguments: The arguments (leave the process name off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
+  ///   - arguments: The arguments (leave the process name off the beginning).
+  ///   - workingDirectory: Optional. A different working directory.
+  ///   - environment: Optional. A different set of environment variables.
+  ///   - versionConstraints: The acceptable range of versions.
+  ///   - reportProgress: Optional. A closure to execute for each line of output.
+  ///   - progressReport: A line of output.
   @discardableResult public static func runCustomSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
