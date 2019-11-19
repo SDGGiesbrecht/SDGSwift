@@ -15,18 +15,18 @@
 /// An abstract superclass for a type representing an overall configuration.
 ///
 /// The concrete subclass is comparable to the `Package` type in a package manifest.
-open class Configuration : Decodable, Encodable {
+open class Configuration: Decodable, Encodable {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    internal static var registered: Configuration?
+  internal static var registered: Configuration?
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates a configuration and registers it for export.
-    ///
-    /// The result of this initializer represents the default configuration, and will also be used if no configuration file exists.
-    public required init() {
-        Configuration.registered = self
-    }
+  /// Creates a configuration and registers it for export.
+  ///
+  /// The result of this initializer represents the default configuration, and will also be used if no configuration file exists.
+  public required init() {
+    Configuration.registered = self
+  }
 }

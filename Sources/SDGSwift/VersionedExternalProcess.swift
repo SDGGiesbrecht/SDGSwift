@@ -41,55 +41,71 @@ public protocol VersionedExternalProcess {
   static var versionQuery: [String] { get }
 }
 
-private var locationCache: [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] = [:]
+private var locationCache:
+  [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] = [:]
 
 extension VersionedExternalProcess {
 
   // MARK: - Locating
 
   private static subscript<Constraints>(
-    versionConstraints: Constraints) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>?
-    where Constraints : RangeFamily, Constraints.Bound == Version {
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>?
+  where Constraints: RangeFamily, Constraints.Bound == Version {
     get {
-      let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[versionConstraints.lowerBound]?[versionConstraints.upperBound]
+      let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[
+        versionConstraints.lowerBound]?[versionConstraints.upperBound]
       return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
     }
     set {
       let converted = newValue?.mapError { $0 as Error }
-      locationCache[ObjectIdentifier(self), default: [:]][ObjectIdentifier(Constraints.self), default: [:]][versionConstraints.lowerBound, default: [:]][versionConstraints.upperBound] = converted
+      locationCache[ObjectIdentifier(self), default: [:]][
+        ObjectIdentifier(Constraints.self), default: [:]][
+          versionConstraints.lowerBound, default: [:]][versionConstraints.upperBound] = converted
     }
   }
 
   private static func tool<Constraints>(
-    versionConstraints: Constraints) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
-    where Constraints : RangeFamily, Constraints.Bound == Version {
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
 
-      return cached(in: &self[versionConstraints]) {
+    return cached(in: &self[versionConstraints]) {
 
-        let searchLocations = searchCommands.lazy.reversed().lazy.compactMap{ (command) -> URL? in
-          guard let output = try? Shell.default.run(command: command).get() else {
-            return nil
-          }
-          return URL(fileURLWithPath: output)
+      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
+        guard let output = try? Shell.default.run(command: command).get() else {
+          return nil
         }
-
-        func validate(_ process: ExternalProcess) -> Bool {
-          // Make sure version is compatible.
-          guard let output = try? process.run(versionQuery).get(),
-            let version = Version(firstIn: output) else {
-              return false // @exempt(from: test)
-              // Would require corrupt tools to be present during tests.
-          }
-          return versionConstraints.contains(version)
-        }
-
-        if let found = ExternalProcess(searching: searchLocations, commandName: commandName, validate: validate) {
-          return .success(found)
-        } else {
-          return .failure(.unavailable(
-            versionConstraints: versionConstraints.inInequalityNotation({ StrictString($0.string()) })))
-        }
+        return URL(fileURLWithPath: output)
       }
+
+      func validate(_ process: ExternalProcess) -> Bool {
+        // Make sure version is compatible.
+        guard let output = try? process.run(versionQuery).get(),
+          let version = Version(firstIn: output)
+        else {
+          return false  // @exempt(from: test)
+          // Would require corrupt tools to be present during tests.
+        }
+        return versionConstraints.contains(version)
+      }
+
+      if let found = ExternalProcess(
+        searching: searchLocations,
+        commandName: commandName,
+        validate: validate
+      ) {
+        return .success(found)
+      } else {
+        return .failure(
+          .unavailable(
+            versionConstraints: versionConstraints.inInequalityNotation({
+              StrictString($0.string())
+            })
+          )
+        )
+      }
+    }
   }
 
   // MARK: - Usage
@@ -99,9 +115,10 @@ extension VersionedExternalProcess {
   /// - Parameters:
   ///   - versionConstraints: The acceptable range of versions.
   public static func location<Constraints>(
-    versionConstraints: Constraints) -> Result<URL, VersionedExternalProcessLocationError<Self>>
-    where Constraints : RangeFamily, Constraints.Bound == Version {
-      return tool(versionConstraints: versionConstraints).map { $0.executable }
+    versionConstraints: Constraints
+  ) -> Result<URL, VersionedExternalProcessLocationError<Self>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return tool(versionConstraints: versionConstraints).map { $0.executable }
   }
 
   /// Runs a custom subcommand.
@@ -120,17 +137,22 @@ extension VersionedExternalProcess {
     versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
-    where Constraints : RangeFamily, Constraints.Bound == Version {
+  where Constraints: RangeFamily, Constraints.Bound == Version {
 
     var environment = environment ?? ProcessInfo.processInfo.environment
-    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil // Causes issues when run from within Xcode.
+    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil  // Causes issues when run from within Xcode.
 
     reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
     switch tool(versionConstraints: versionConstraints) {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let git):
-      switch git.run(arguments, in: workingDirectory, with: environment, reportProgress: reportProgress) {
+      switch git.run(
+        arguments,
+        in: workingDirectory,
+        with: environment,
+        reportProgress: reportProgress
+      ) {
       case .failure(let error):
         return .failure(.executionError(error))
       case .success(let output):
@@ -144,10 +166,10 @@ extension VersionedExternalProcess {
   /// - Parameters:
   ///   - constraints: The version constraints.
   public static func version<Constraints>(forConstraints constraints: Constraints) -> Version?
-    where Constraints : RangeFamily, Constraints.Bound == Version {
-      let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
-      return output.flatMap { output in
-        return Version(firstIn: output)
-      }
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
+    return output.flatMap { output in
+      return Version(firstIn: output)
+    }
   }
 }

@@ -16,39 +16,49 @@ import SDGLogic
 
 import SwiftSyntax
 
-extension StructDeclSyntax : AccessControlled, Attributed, Constrained, Generic, Hidable, TypeDeclaration {
+extension StructDeclSyntax: AccessControlled, Attributed, Constrained, Generic, Hidable,
+  TypeDeclaration
+{
 
-    // MARK: - Hidable
+  // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax? {
-        return identifier
-    }
+  var hidabilityIdentifier: TokenSyntax? {
+    return identifier
+  }
 
-    // MARK: - TypeDeclaration
+  // MARK: - TypeDeclaration
 
-    internal func normalizedAPIDeclaration() -> (declaration: StructDeclSyntax, constraints: GenericWhereClauseSyntax?) {
-        let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-        return (SyntaxFactory.makeStructDecl(
-            attributes: attributes?.normalizedForAPIDeclaration(),
-            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-            structKeyword: structKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            genericParameterClause: newGenericParemeterClause,
-            inheritanceClause: nil,
-            genericWhereClause: nil,
-            members: SyntaxFactory.makeBlankMemberDeclBlock()),
-                newGenericWhereClause)
-    }
+  internal func normalizedAPIDeclaration() -> (
+    declaration: StructDeclSyntax, constraints: GenericWhereClauseSyntax?
+  ) {
+    let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+    return (
+      SyntaxFactory.makeStructDecl(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+        structKeyword: structKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          trailingTrivia: .spaces(1)
+        ),
+        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+        genericParameterClause: newGenericParemeterClause,
+        inheritanceClause: nil,
+        genericWhereClause: nil,
+        members: SyntaxFactory.makeBlankMemberDeclBlock()
+      ),
+      newGenericWhereClause
+    )
+  }
 
-    internal func name() -> StructDeclSyntax {
-        return SyntaxFactory.makeStructDecl(
-            attributes: nil,
-            modifiers: nil,
-            structKeyword: SyntaxFactory.makeToken(.structKeyword, presence: .missing),
-            identifier: identifier,
-            genericParameterClause: genericParameterClause,
-            inheritanceClause: nil,
-            genericWhereClause: nil,
-            members: SyntaxFactory.makeBlankMemberDeclBlock())
-    }
+  internal func name() -> StructDeclSyntax {
+    return SyntaxFactory.makeStructDecl(
+      attributes: nil,
+      modifiers: nil,
+      structKeyword: SyntaxFactory.makeToken(.structKeyword, presence: .missing),
+      identifier: identifier,
+      genericParameterClause: genericParameterClause,
+      inheritanceClause: nil,
+      genericWhereClause: nil,
+      members: SyntaxFactory.makeBlankMemberDeclBlock()
+    )
+  }
 }

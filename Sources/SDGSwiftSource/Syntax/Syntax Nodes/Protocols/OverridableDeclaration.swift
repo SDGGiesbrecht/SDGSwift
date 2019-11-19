@@ -15,16 +15,17 @@
 import SwiftSyntax
 
 internal protocol OverridableDeclaration {
-    var modifiers: ModifierListSyntax? { get }
+  var modifiers: ModifierListSyntax? { get }
 }
 
 extension OverridableDeclaration {
 
-    func isOverride() -> Bool {
-        if let modifiers = self.modifiers,
-            modifiers.contains(where: { $0.name.text == "override" }) {
-            return true
-        }
-        return false
+  func isOverride() -> Bool {
+    if let modifiers = self.modifiers,
+      modifiers.contains(where: { $0.name.text == "override" })
+    {
+      return true
     }
+    return false
+  }
 }

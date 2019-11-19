@@ -15,18 +15,18 @@
 /// A test coverage report.
 public struct TestCoverageReport {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates a test coverage report.
-    ///
-    /// - Parameters:
-    ///     - files: The files in the package.
-    public init(files: [FileTestCoverage]) {
-        self.files = files
-    }
+  /// Creates a test coverage report.
+  ///
+  /// - Parameters:
+  ///     - files: The files in the package.
+  public init(files: [FileTestCoverage]) {
+    self.files = files
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The files in the package.
-    public let files: [FileTestCoverage]
+  /// The files in the package.
+  public let files: [FileTestCoverage]
 }

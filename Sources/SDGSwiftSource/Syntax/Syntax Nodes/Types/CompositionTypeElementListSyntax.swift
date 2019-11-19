@@ -16,11 +16,13 @@ import SwiftSyntax
 
 extension CompositionTypeElementListSyntax {
 
-    internal func normalized() -> CompositionTypeElementListSyntax {
-        var result = map({ $0.normalized(withAmpersand: true) }).sorted(by: { $0.source() < $1.source() })
-        if let last = result.indices.last {
-            result[last] = result[last].normalized(withAmpersand: false)
-        }
-        return SyntaxFactory.makeCompositionTypeElementList(result)
+  internal func normalized() -> CompositionTypeElementListSyntax {
+    var result = map({ $0.normalized(withAmpersand: true) }).sorted(by: {
+      $0.source() < $1.source()
+    })
+    if let last = result.indices.last {
+      result[last] = result[last].normalized(withAmpersand: false)
     }
+    return SyntaxFactory.makeCompositionTypeElementList(result)
+  }
 }

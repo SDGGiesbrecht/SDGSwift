@@ -18,31 +18,34 @@ import SDGCollections
 import SwiftSyntax
 
 /// An initializer.
-public final class InitializerAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class InitializerAPI: _APIElementBase, SortableAPIElement,
+  UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: InitializerDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: InitializerDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: InitializerDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: InitializerDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    internal typealias Declaration = InitializerDeclSyntax
+  internal typealias Declaration = InitializerDeclSyntax
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: InitializerDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: InitializerDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: InitializerDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: InitializerDeclSyntax
 }

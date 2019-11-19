@@ -15,51 +15,57 @@
 import SDGLocalization
 
 /// A string literal.
-public class StringLiteralSyntax : ExtendedSyntax {
+public class StringLiteralSyntax: ExtendedSyntax {
 
-    // MARK: - Class Properties
+  // MARK: - Class Properties
 
-    private static var quotationMark: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "\u{22}", kind: .quotationMark)
-    }
+  private static var quotationMark: ExtendedTokenSyntax {
+    return ExtendedTokenSyntax(text: "\u{22}", kind: .quotationMark)
+  }
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(source: String) {
-        let openingQuotationMark = StringLiteralSyntax.quotationMark
-        let closingQuotationMark = StringLiteralSyntax.quotationMark
+  internal init(source: String) {
+    let openingQuotationMark = StringLiteralSyntax.quotationMark
+    let closingQuotationMark = StringLiteralSyntax.quotationMark
 
-        var string = source
-        string.removeFirst(openingQuotationMark.text.count)
-        self.openingQuotationMark = openingQuotationMark
-        let opening: [ExtendedTokenSyntax] = [openingQuotationMark]
+    var string = source
+    string.removeFirst(openingQuotationMark.text.count)
+    self.openingQuotationMark = openingQuotationMark
+    let opening: [ExtendedTokenSyntax] = [openingQuotationMark]
 
-        string.removeLast(closingQuotationMark.text.count)
-        self.closingQuotationMark = closingQuotationMark
-        let closing: [ExtendedTokenSyntax] = [closingQuotationMark]
+    string.removeLast(closingQuotationMark.text.count)
+    self.closingQuotationMark = closingQuotationMark
+    let closing: [ExtendedTokenSyntax] = [closingQuotationMark]
 
-        let content = ExtendedTokenSyntax(text: string, kind: .string)
-        self.string = content
-        super.init(children: opening + [content] + closing)
-    }
+    let content = ExtendedTokenSyntax(text: string, kind: .string)
+    self.string = content
+    super.init(children: opening + [content] + closing)
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The opening quotation mark.
-    public let openingQuotationMark: ExtendedTokenSyntax
+  /// The opening quotation mark.
+  public let openingQuotationMark: ExtendedTokenSyntax
 
-    /// The content.
-    public let string: ExtendedTokenSyntax
+  /// The content.
+  public let string: ExtendedTokenSyntax
 
-    /// The closing quotation mark.
-    public let closingQuotationMark: ExtendedTokenSyntax
+  /// The closing quotation mark.
+  public let closingQuotationMark: ExtendedTokenSyntax
 
-    // MARK: - ExtendedSyntax
+  // MARK: - ExtendedSyntax
 
-    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        var source = super.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
-        source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
-        source.append(contentsOf: "</span>")
-        return source
-    }
+  internal override func nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String]
+  ) -> String {
+    var source = super.nestedSyntaxHighlightedHTML(
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks
+    )
+    source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
+    source.append(contentsOf: "</span>")
+    return source
+  }
 }

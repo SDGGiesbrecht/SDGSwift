@@ -17,29 +17,32 @@ import SDGLogic
 import SwiftSyntax
 
 /// An enumeration case.
-public final class CaseAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+  _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: EnumCaseDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: EnumCaseDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: EnumCaseDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: EnumCaseDeclSyntax
 
-    // MARK: - UniquelyDeclaredAPIElement
+  // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: EnumCaseDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: EnumCaseDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 }

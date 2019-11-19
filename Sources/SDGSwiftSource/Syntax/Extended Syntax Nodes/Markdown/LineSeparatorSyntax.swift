@@ -13,12 +13,12 @@
  */
 
 /// An explicit line separator in documentation.
-public class LineSeparatorSyntax : MarkdownSyntax {
+public class LineSeparatorSyntax: MarkdownSyntax {
 
-    internal init() {
-        super.init(children: [
-            ExtendedTokenSyntax(text: "  ", kind: .lineSeparator),
-            ExtendedTokenSyntax(text: "\n", kind: .newlines)
-            ])
-    }
+  internal init() {
+    super.init(children: [
+      ExtendedTokenSyntax(text: "  ", kind: .lineSeparator),
+      ExtendedTokenSyntax(text: "\n", kind: .newlines)
+    ])
+  }
 }

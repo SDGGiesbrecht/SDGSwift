@@ -15,9 +15,9 @@
 /// Parameter documentation.
 public struct ParameterDocumentation {
 
-    /// The paramater name.
-    public let name: ExtendedTokenSyntax
+  /// The paramater name.
+  public let name: ExtendedTokenSyntax
 
-    /// The description.
-    public let description: [ExtendedSyntax]
+  /// The description.
+  public let description: [ExtendedSyntax]
 }

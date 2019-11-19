@@ -16,10 +16,11 @@ import SwiftSyntax
 
 extension ArrayTypeSyntax {
 
-    internal func normalized() -> ArrayTypeSyntax {
-        return SyntaxFactory.makeArrayType(
-            leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
-            elementType: elementType.normalized(),
-            rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> ArrayTypeSyntax {
+    return SyntaxFactory.makeArrayType(
+      leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
+      elementType: elementType.normalized(),
+      rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

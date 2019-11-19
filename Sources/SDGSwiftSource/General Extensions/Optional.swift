@@ -14,37 +14,37 @@
 
 import SwiftSyntax
 
-extension Optional : Mergeable where Wrapped : Mergeable {
+extension Optional: Mergeable where Wrapped: Mergeable {
 
-    internal mutating func merge(with other: Wrapped?) {
-        switch self {
-        case .some(var instance):
-            switch other {
-            case .some(let otherInstance):
-                instance.merge(with: otherInstance)
-                self = .some(instance)
-            case .none:
-                break
-            }
-        case .none:
-            self = other
-        }
+  internal mutating func merge(with other: Wrapped?) {
+    switch self {
+    case .some(var instance):
+      switch other {
+      case .some(let otherInstance):
+        instance.merge(with: otherInstance)
+        self = .some(instance)
+      case .none:
+        break
+      }
+    case .none:
+      self = other
     }
+  }
 }
 
 extension Optional where Wrapped == Syntax {
 
-    internal mutating func prependCompilationConditions(_ addition: Syntax?) {
-        switch self {
-        case .some(let instance):
-            switch addition {
-            case .some(let additionInstance):
-                self = .some(instance.prependingCompilationConditions(additionInstance))
-            case .none:
-                break
-            }
-        case .none:
-            self = addition
-        }
+  internal mutating func prependCompilationConditions(_ addition: Syntax?) {
+    switch self {
+    case .some(let instance):
+      switch addition {
+      case .some(let additionInstance):
+        self = .some(instance.prependingCompilationConditions(additionInstance))
+      case .none:
+        break
+      }
+    case .none:
+      self = addition
     }
+  }
 }

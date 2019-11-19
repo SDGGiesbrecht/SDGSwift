@@ -16,13 +16,13 @@ import SwiftSyntax
 
 extension SyntaxCollection {
 
-    /// Returns whether the collection is empty.
-    public var isEmpty: Bool {
-        return first == nil
-    }
+  /// Returns whether the collection is empty.
+  public var isEmpty: Bool {
+    return first == nil
+  }
 
-    /// Returns the first element of the collection.
-    public var first: Element? {
-        return first(where: { _ in true })
-    }
+  /// Returns the first element of the collection.
+  public var first: Element? {
+    return first(where: { _ in true })
+  }
 }

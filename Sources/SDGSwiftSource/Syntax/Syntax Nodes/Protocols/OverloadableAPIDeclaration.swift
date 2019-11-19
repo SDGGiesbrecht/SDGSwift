@@ -12,6 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol OverloadableAPIDeclaration : APIDeclaration {
-    func overloadPattern() -> Self
+internal protocol OverloadableAPIDeclaration: APIDeclaration {
+  func overloadPattern() -> Self
 }

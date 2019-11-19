@@ -16,19 +16,23 @@ import SDGLogic
 
 import SwiftSyntax
 
-extension GenericWhereClauseSyntax : Mergeable {
+extension GenericWhereClauseSyntax: Mergeable {
 
-    internal func normalized() -> GenericWhereClauseSyntax? {
-        return SyntaxFactory.makeGenericWhereClause(
-            whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            requirementList: requirementList.normalized())
-    }
+  internal func normalized() -> GenericWhereClauseSyntax? {
+    return SyntaxFactory.makeGenericWhereClause(
+      whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1),
+        trailingTrivia: .spaces(1)
+      ),
+      requirementList: requirementList.normalized()
+    )
+  }
 
-    // MARK: - Mergeable
+  // MARK: - Mergeable
 
-    internal mutating func merge(with other: GenericWhereClauseSyntax) {
-        var requirementList = self.requirementList
-        requirementList.merge(with: other.requirementList)
-        self = withRequirementList(requirementList)
-    }
+  internal mutating func merge(with other: GenericWhereClauseSyntax) {
+    var requirementList = self.requirementList
+    requirementList.merge(with: other.requirementList)
+    self = withRequirementList(requirementList)
+  }
 }

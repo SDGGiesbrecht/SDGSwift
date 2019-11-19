@@ -16,63 +16,69 @@ import SDGLogic
 
 import SwiftSyntax
 
-extension PrecedenceGroupDeclSyntax : APIDeclaration, APISyntax, Attributed, Hidable {
+extension PrecedenceGroupDeclSyntax: APIDeclaration, APISyntax, Attributed, Hidable {
 
-    // MARK: - APIDeclaration
+  // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
+  internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
 
-        let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
+    let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
 
-        let rightBraceTrivia: Trivia
-        if normalizedAttributes.isEmpty {
-            rightBraceTrivia = []
-        } else {
-            rightBraceTrivia = .spaces(1)
-        }
-
-        return SyntaxFactory.makePrecedenceGroupDecl(
-            attributes: attributes?.normalizedForAPIDeclaration(),
-            modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-            precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-            leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
-            groupAttributes: normalizedAttributes,
-            rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: rightBraceTrivia))
+    let rightBraceTrivia: Trivia
+    if normalizedAttributes.isEmpty {
+      rightBraceTrivia = []
+    } else {
+      rightBraceTrivia = .spaces(1)
     }
 
-    internal func name() -> PrecedenceGroupDeclSyntax {
-        return SyntaxFactory.makePrecedenceGroupDecl(
-            attributes: nil,
-            modifiers: nil,
-            precedencegroupKeyword: SyntaxFactory.makeToken(.precedencegroupKeyword, presence: .missing),
-            identifier: identifier,
-            leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
-            groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
-            rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing))
-    }
+    return SyntaxFactory.makePrecedenceGroupDecl(
+      attributes: attributes?.normalizedForAPIDeclaration(),
+      modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+      precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(
+        trailingTrivia: .spaces(1)
+      ),
+      identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+      leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
+      groupAttributes: normalizedAttributes,
+      rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: rightBraceTrivia
+      )
+    )
+  }
 
-    internal func identifierList() -> Set<String> {
-        return [identifier.text]
-    }
+  internal func name() -> PrecedenceGroupDeclSyntax {
+    return SyntaxFactory.makePrecedenceGroupDecl(
+      attributes: nil,
+      modifiers: nil,
+      precedencegroupKeyword: SyntaxFactory.makeToken(.precedencegroupKeyword, presence: .missing),
+      identifier: identifier,
+      leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
+      groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
+      rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing)
+    )
+  }
 
-    // MARK: - APISyntax
+  internal func identifierList() -> Set<String> {
+    return [identifier.text]
+  }
 
-    func isPublic() -> Bool {
-        return true
-    }
+  // MARK: - APISyntax
 
-    internal var shouldLookForChildren: Bool {
-        return false
-    }
+  func isPublic() -> Bool {
+    return true
+  }
 
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-        return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
-    }
+  internal var shouldLookForChildren: Bool {
+    return false
+  }
 
-    // MARK: - Hidable
+  internal func createAPI(children: [APIElement]) -> [APIElement] {
+    return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
+  }
 
-    internal var hidabilityIdentifier: TokenSyntax? {
-        return identifier
-    }
+  // MARK: - Hidable
+
+  internal var hidabilityIdentifier: TokenSyntax? {
+    return identifier
+  }
 }

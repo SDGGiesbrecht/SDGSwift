@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol _NonOverloadableAPIElement : APIElementProtocol {}
+internal protocol _NonOverloadableAPIElement: APIElementProtocol {}
 
 extension _NonOverloadableAPIElement {
 
-    public var overloads: [APIElement] {
-        return []
-    }
+  public var overloads: [APIElement] {
+    return []
+  }
 }

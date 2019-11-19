@@ -30,16 +30,19 @@ extension SwiftCompiler {
 
   // MARK: - Properties
 
-  private static let compatibleVersions = SDGVersioning.Version(5, 1, 0) ... Version(5, 1, 2)
+  private static let compatibleVersions = SDGVersioning.Version(5, 1, 0)...Version(5, 1, 2)
 
-  internal static func swiftCLocation() -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>> {
+  internal static func swiftCLocation() -> Swift.Result<
+    Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>
+  > {
     return location(versionConstraints: compatibleVersions).map { swift in
       return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
     }
   }
 
   internal static func withDiagnostics<T>(
-    _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T) -> Swift.Result<T, PackageLoadingError> {
+    _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
+  ) -> Swift.Result<T, PackageLoadingError> {
     switch SwiftCompiler.swiftCLocation() {
     case .failure(let error):
       return .failure(.swiftLocationError(error))
@@ -64,7 +67,9 @@ extension SwiftCompiler {
     case .success(let location):
       let destination: Destination
       do {
-        destination = try Destination.hostDestination(AbsolutePath(location.deletingLastPathComponent().path))
+        destination = try Destination.hostDestination(
+          AbsolutePath(location.deletingLastPathComponent().path)
+        )
       } catch {
         return .failure(.packageManagerError(error, []))
       }
@@ -86,7 +91,9 @@ extension SwiftCompiler {
     }
   }
 
-  private static func manifestResourceProvider() -> Swift.Result<ManifestResourceProvider, PackageLoadingError> {
+  private static func manifestResourceProvider() -> Swift.Result<
+    ManifestResourceProvider, PackageLoadingError
+  > {
     return withDiagnostics { compiler, _ in
       return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
     }
@@ -98,15 +105,21 @@ extension SwiftCompiler {
 
   // MARK: - Test Coverage
 
-  private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
+  private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<
+    Foundation.URL, SwiftCompiler.PackageLoadingError
+  > {
     return package.hostBuildParameters().map { $0.codeCovPath.asURL }
   }
 
-  private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<String, SwiftCompiler.PackageLoadingError> {
+  private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<
+    String, SwiftCompiler.PackageLoadingError
+  > {
     return package.manifest().map { $0.name }
   }
 
-  private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
+  private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<
+    Foundation.URL, SwiftCompiler.PackageLoadingError
+  > {
     // #workaround(swift --version 5.1.2, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
     switch codeCoverageDirectory(for: package) {
     case .failure(let error):
@@ -133,7 +146,8 @@ extension SwiftCompiler {
   public static func codeCoverageReport(
     for package: PackageRepository,
     ignoreCoveredRegions: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
     let coverageDataFile: Foundation.URL
     switch codeCoverageDataFile(for: package) {
@@ -154,8 +168,9 @@ extension SwiftCompiler {
       return .failure(.foundationError(error))
     }
     guard let coverageDataDictionary = json as? [String: Any],
-      let data = coverageDataDictionary["data"] as? [Any] else {
-        return .failure(.corruptTestCoverageReport) // @exempt(from: tests) Unreachable without mismatched Swift version.
+      let data = coverageDataDictionary["data"] as? [Any]
+    else {
+      return .failure(.corruptTestCoverageReport)  // @exempt(from: tests) Unreachable without mismatched Swift version.
     }
 
     let ignoredDirectories: [Foundation.URL]
@@ -168,27 +183,34 @@ extension SwiftCompiler {
     var fileReports: [FileTestCoverage] = []
     for entry in data {
       if let dictionary = entry as? [String: Any],
-        let files = dictionary["files"] as? [Any] {
+        let files = dictionary["files"] as? [Any]
+      {
         for file in files {
           if let fileDictionary = file as? [String: Any],
-            let fileName = fileDictionary["filename"] as? String {
+            let fileName = fileDictionary["filename"] as? String
+          {
             let url = URL(fileURLWithPath: fileName)
 
             if ¬ignoredDirectories.contains(where: { url.is(in: $0) }),
               url.pathExtension == "swift",
-              url.lastPathComponent ≠ "LinuxMain.swift" {
+              url.lastPathComponent ≠ "LinuxMain.swift"
+            {
 
-              reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                let relativePath = url.path(relativeTo: package.location)
-                switch localization {
-                case .englishUnitedKingdom:
-                  return "Parsing report for ‘\(relativePath)’..."
-                case .englishUnitedStates, .englishCanada:
-                  return "Parsing report for “\(relativePath)”..."
-                case .deutschDeutschland:
-                  return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
-                }
-              }).resolved()))
+              reportProgress(
+                String(
+                  UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    let relativePath = url.path(relativeTo: package.location)
+                    switch localization {
+                    case .englishUnitedKingdom:
+                      return "Parsing report for ‘\(relativePath)’..."
+                    case .englishUnitedStates, .englishCanada:
+                      return "Parsing report for “\(relativePath)”..."
+                    case .deutschDeutschland:
+                      return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
+                    }
+                  }).resolved()
+                )
+              )
 
               let source: String
               do {
@@ -206,7 +228,8 @@ extension SwiftCompiler {
                       let column = segmentData[1] as? Int,
                       let count = segmentData[2] as? Int,
                       let isExectuable = segmentData[3] as? Int,
-                      isExectuable == 1 {
+                      isExectuable == 1
+                    {
 
                       let start = source._toIndex(line: line, column: column)
                       let end: String.ScalarView.Index
@@ -215,13 +238,14 @@ extension SwiftCompiler {
                         let nextSegmentData = segments[nextIndex] as? [Any],
                         nextSegmentData.count ≥ 5,
                         let nextLine = nextSegmentData[0] as? Int,
-                        let nextColumn = nextSegmentData[1] as? Int {
+                        let nextColumn = nextSegmentData[1] as? Int
+                      {
                         end = source._toIndex(line: nextLine, column: nextColumn)
                       } else {
-                        end = source.scalars.endIndex // @exempt(from: tests) Can a test region even be at the very end of a file?
+                        end = source.scalars.endIndex  // @exempt(from: tests) Can a test region even be at the very end of a file?
                       }
 
-                      regions.append(CoverageRegion(region: start ..< end, count: count))
+                      regions.append(CoverageRegion(region: start..<end, count: count))
                     }
                   }
                 }
@@ -230,7 +254,8 @@ extension SwiftCompiler {
               CoverageRegion._normalize(
                 regions: &regions,
                 source: source,
-                ignoreCoveredRegions: ignoreCoveredRegions)
+                ignoreCoveredRegions: ignoreCoveredRegions
+              )
               fileReports.append(FileTestCoverage(file: url, regions: regions))
             }
           }

@@ -16,9 +16,10 @@ import SwiftSyntax
 
 extension OptionalTypeSyntax {
 
-    internal func normalized() -> OptionalTypeSyntax {
-        return SyntaxFactory.makeOptionalType(
-            wrappedType: wrappedType.normalized(),
-            questionMark: questionMark.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> OptionalTypeSyntax {
+    return SyntaxFactory.makeOptionalType(
+      wrappedType: wrappedType.normalized(),
+      questionMark: questionMark.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

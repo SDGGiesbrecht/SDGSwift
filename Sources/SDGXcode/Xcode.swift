@@ -28,7 +28,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 
 /// Xcode.
-public enum Xcode : VersionedExternalProcess {
+public enum Xcode: VersionedExternalProcess {
 
   private static let currentMajor = Version(11)
 
@@ -39,13 +39,16 @@ public enum Xcode : VersionedExternalProcess {
     return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
   }
 
-  private static var locatedCoverage: Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
-  private static func coverageTool() -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>> {
-      return cached(in: &locatedCoverage) {
-        return location(versionConstraints: Version(9, 3, 0) ... Version(11, 2, 1)).map { location in // @exempt(from: tests) Unreachable on Linux.
-          return ExternalProcess(at: coverageToolLocation(for: location))
-        }
+  private static var locatedCoverage:
+    Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
+  private static func coverageTool() -> Result<
+    ExternalProcess, VersionedExternalProcessLocationError<Xcode>
+  > {
+    return cached(in: &locatedCoverage) {
+      return location(versionConstraints: Version(9, 3, 0)...Version(11, 2, 1)).map { location in  // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(at: coverageToolLocation(for: location))
       }
+    }
   }
 
   // MARK: - Usage
@@ -134,9 +137,12 @@ public enum Xcode : VersionedExternalProcess {
     let logComponents: [String] = output.components(separatedBy: " ")
     if logComponents.count ≥ 4,
       logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-      logComponents[1].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"] }), // @exempt(from: tests) False coverage result.
-      let process = logComponents[2].prefix(upTo: "[")?.contents {
-      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ") // @exempt(from: tests) False coverage result.
+      logComponents[1].scalars.allSatisfy({
+        $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
+      }),  // @exempt(from: tests) False coverage result.
+      let process = logComponents[2].prefix(upTo: "[")?.contents
+    {
+      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")  // @exempt(from: tests) False coverage result.
     }
 
     // Command style entry.
@@ -195,7 +201,7 @@ public enum Xcode : VersionedExternalProcess {
     switch scheme(for: package) {
     case .failure(let error):
       return .failure(error)
-    case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+    case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
       let earliestVersion = Version(8, 0, 0)
       var command = [
         "build",
@@ -208,8 +214,9 @@ public enum Xcode : VersionedExternalProcess {
       return runCustomSubcommand(
         command,
         in: package.location,
-        versionConstraints: earliestVersion ..< currentMajor.compatibleVersions.upperBound,
-        reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+        versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress
+      ).mapError { .xcodeError($0) }  // @exempt(from: tests)
     }
   }
 
@@ -223,7 +230,7 @@ public enum Xcode : VersionedExternalProcess {
         // @exempt(from: tests) Meaningless on Linux.
         continue
       }
-      if line.contains("/SourcePackages/".scalars) { // Xcode‐managed SwiftPM dependency. @exempt(from: tests) Meaningless on Linux.
+      if line.contains("/SourcePackages/".scalars) {  // Xcode‐managed SwiftPM dependency. @exempt(from: tests) Meaningless on Linux.
         continue
       }
       if line.contains(" directory not found for option \u{27}\u{2D}F/Applications/Xcode".scalars) {
@@ -243,7 +250,7 @@ public enum Xcode : VersionedExternalProcess {
   }
 
   private static func coverageDirectory(in derivedData: URL) -> URL {
-    return derivedData.appendingPathComponent("Logs/Test") // @exempt(from: tests) Unreachable on Linux.
+    return derivedData.appendingPathComponent("Logs/Test")  // @exempt(from: tests) Unreachable on Linux.
   }
 
   /// Tests the package.
@@ -270,10 +277,10 @@ public enum Xcode : VersionedExternalProcess {
     var command = ["test"]
 
     switch sdk {
-    case .iOS(simulator: true): // @exempt(from: tests) Tested separately.
+    case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
       earliestVersion.increase(to: Version(11, 0, 0))
       command += ["\u{2D}destination", "name=iPhone 11"]
-    case .tvOS(simulator: true): // @exempt(from: tests) Tested separately.
+    case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
       earliestVersion.increase(to: Version(9, 0, 0))
       command += ["\u{2D}destination", "name=Apple TV 4K"]
     default:
@@ -283,20 +290,21 @@ public enum Xcode : VersionedExternalProcess {
     switch scheme(for: package) {
     case .failure(let error):
       return .failure(error)
-    case .success(let scheme): // @exempt(from: tests) Unreachable on Linux.
+    case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
       command += ["\u{2D}scheme", scheme]
     }
 
     command += ["\u{2D}enableCodeCoverage", "YES"]
-    if let derivedData = derivedData { // @exempt(from: tests)
+    if let derivedData = derivedData {  // @exempt(from: tests)
       command += ["\u{2D}derivedDataPath", derivedData.path]
     }
 
     return runCustomSubcommand(
       command,
       in: package.location,
-      versionConstraints: earliestVersion ..< currentMajor.compatibleVersions.upperBound,
-      reportProgress: reportProgress).mapError { .xcodeError($0) } // @exempt(from: tests)
+      versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
+      reportProgress: reportProgress
+    ).mapError { .xcodeError($0) }  // @exempt(from: tests)
   }
 
   /// Returns the code coverage report for the package.
@@ -329,11 +337,19 @@ public enum Xcode : VersionedExternalProcess {
     let coverageDirectory = self.coverageDirectory(in: derivedData)
     let coverageDirectoryContents: [URL]
     do {
-      coverageDirectoryContents = try FileManager.default.contentsOfDirectory(at: coverageDirectory, includingPropertiesForKeys: nil, options: [])
+      coverageDirectoryContents = try FileManager.default.contentsOfDirectory(
+        at: coverageDirectory,
+        includingPropertiesForKeys: nil,
+        options: []
+      )
     } catch {
       return .failure(.foundationError(error))
     }
-    guard let resultDirectory = coverageDirectoryContents.first(where: { $0.pathExtension == "xcresult" }) else { // @exempt(from: tests)
+    guard
+      let resultDirectory = coverageDirectoryContents.first(where: {
+        $0.pathExtension == "xcresult"
+      })
+    else {  // @exempt(from: tests)
       // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
       return .success(nil)
     }
@@ -346,8 +362,8 @@ public enum Xcode : VersionedExternalProcess {
     ]) {
     case .failure(let error):
       return .failure(.xcodeError(error))
-    case .success(let output): // @exempt(from: tests) Unreachable on Linux.
-      fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in // @exempt(from: tests) Unreachable on Linux.
+    case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
+      fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in  // @exempt(from: tests) Unreachable on Linux.
         if file.pathExtension ≠ "swift" {
           // @exempt(from: tests)
           // The report is unlikely to be readable.
@@ -362,22 +378,26 @@ public enum Xcode : VersionedExternalProcess {
       }).sorted()
     }
 
-    var files: [FileTestCoverage] = [] // @exempt(from: tests) Unreachable on Linux.
+    var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
     for fileURL in fileURLs {
       // @exempt(from: tests) Unreachable on Linux.
       let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
-        reportProgress(String(UserFacing<StrictString, InterfaceLocalization>({ localization in
-          let relativePath = fileURL.path(relativeTo: package.location)
-          switch localization {
-          case .englishUnitedKingdom:
-            return "Parsing report for ‘\(relativePath)’..."
-          case .englishUnitedStates, .englishCanada:
-            return "Parsing report for “\(relativePath)”..."
-          case .deutschDeutschland:
-            return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
-          }
-        }).resolved()))
+        reportProgress(
+          String(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              let relativePath = fileURL.path(relativeTo: package.location)
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Parsing report for ‘\(relativePath)’..."
+              case .englishUnitedStates, .englishCanada:
+                return "Parsing report for “\(relativePath)”..."
+              case .deutschDeutschland:
+                return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
+              }
+            }).resolved()
+          )
+        )
 
         var report: String
         switch runCustomCoverageSubcommand([
@@ -406,7 +426,9 @@ public enum Xcode : VersionedExternalProcess {
           if let integer = Int(digitsOnly) {
             return integer
           }
-          if ¬digitsOnly.scalars.contains(where: { $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) }) { // @exempt(from: tests)
+          if ¬digitsOnly.scalars.contains(where: {
+            $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+          }) {  // @exempt(from: tests)
             // It is an integer; it is just to large.
             return Int.max
           }
@@ -439,11 +461,17 @@ public enum Xcode : VersionedExternalProcess {
           guard let lineString = components.first,
             let lineNumber = toIntegerIgnoringWhitespace(lineString),
             let columnString = components.last,
-            let count = toIntegerIgnoringWhitespace(columnString) else {
-              // @exempt(from: tests)
-              return .failure(.corruptTestCoverageReport)
+            let count = toIntegerIgnoringWhitespace(columnString)
+          else {
+            // @exempt(from: tests)
+            return .failure(.corruptTestCoverageReport)
           }
-          regions.append(CoverageRegion(region: source._toIndex(line: lineNumber) ..< source._toIndex(line: lineNumber + 1), count: count))
+          regions.append(
+            CoverageRegion(
+              region: source._toIndex(line: lineNumber)..<source._toIndex(line: lineNumber + 1),
+              count: count
+            )
+          )
 
           if hasSubranges {
             guard let subrange = report.prefix(through: "]\n")?.range else {
@@ -460,11 +488,20 @@ public enum Xcode : VersionedExternalProcess {
               guard components.count == 3,
                 let start = toIntegerIgnoringWhitespace(components[0]),
                 let length = toIntegerIgnoringWhitespace(components[1]),
-                let count = toIntegerIgnoringWhitespace(components[2]) else {
-                  // @exempt(from: tests)
-                  return .failure(.corruptTestCoverageReport)
+                let count = toIntegerIgnoringWhitespace(components[2])
+              else {
+                // @exempt(from: tests)
+                return .failure(.corruptTestCoverageReport)
               }
-              regions.append(CoverageRegion(region: source._toIndex(line: lineNumber, column: start) ..< source._toIndex(line: lineNumber, column: start + length), count: count))
+              regions.append(
+                CoverageRegion(
+                  region: source._toIndex(
+                    line: lineNumber,
+                    column: start
+                  )..<source._toIndex(line: lineNumber, column: start + length),
+                  count: count
+                )
+              )
             }
           }
         }
@@ -472,7 +509,8 @@ public enum Xcode : VersionedExternalProcess {
         CoverageRegion._normalize(
           regions: &regions,
           source: source,
-          ignoreCoveredRegions: ignoreCoveredRegions)
+          ignoreCoveredRegions: ignoreCoveredRegions
+        )
 
         files.append(FileTestCoverage(file: fileURL, regions: regions))
 
@@ -499,10 +537,11 @@ public enum Xcode : VersionedExternalProcess {
     switch runCustomSubcommand(
       ["\u{2D}list"],
       in: package.location,
-      versionConstraints: Version(8, 0, 0) ..< currentMajor.compatibleVersions.upperBound) {
+      versionConstraints: Version(8, 0, 0)..<currentMajor.compatibleVersions.upperBound
+    ) {
     case .failure(let error):
       return .failure(.xcodeError(error))
-    case .success(let output): // @exempt(from: tests) Unreachable on Linux.
+    case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
       information = output
     }
 
@@ -513,15 +552,19 @@ public enum Xcode : VersionedExternalProcess {
     let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
     let searchZone = information.lines[zoneStart...]
-    guard let line = searchZone.first(
-      where: { $0.line.hasSuffix("\u{2D}Package".scalars) }) // @exempt(from: tests)
-      ?? searchZone.first( // @exempt(from: tests)
-        where: { $0.line.contains( // @exempt(from: tests)
-          where: { $0 ∉ CharacterSet.whitespaces }) }) else { // @exempt(from: tests)
-            return .failure(.noPackageScheme)
+    guard
+      let line = searchZone.first(
+        where: { $0.line.hasSuffix("\u{2D}Package".scalars) })  // @exempt(from: tests)
+        ?? searchZone.first(  // @exempt(from: tests)
+          where: {
+            $0.line.contains(  // @exempt(from: tests)
+              where: { $0 ∉ CharacterSet.whitespaces })
+          })
+    else {  // @exempt(from: tests)
+      return .failure(.noPackageScheme)
     }
     // @exempt(from: tests)
-    let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces }) // @exempt(from: tests)
+    let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces })  // @exempt(from: tests)
     return .success(String(String.ScalarView(cleaned)))
   }
 
@@ -566,12 +609,13 @@ public enum Xcode : VersionedExternalProcess {
     switch coverageTool() {
     case .failure(let error):
       return .failure(.locationError(error))
-    case .success(let coverage): // @exempt(from: tests) Unreachable on Linux.
+    case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
       switch coverage.run(
         arguments,
         in: workingDirectory,
         with: environment,
-        reportProgress: reportProgress) {
+        reportProgress: reportProgress
+      ) {
       case .failure(let error):
         return .failure(.executionError(error))
       case .success(let output):
@@ -588,7 +632,7 @@ public enum Xcode : VersionedExternalProcess {
   public static var commandName: String = "xcodebuild"
 
   public static let searchCommands: [[String]] = [
-    ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"] // Xcode
+    ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"]  // Xcode
   ]
 
   public static var versionQuery: [String] = ["\u{2D}version"]

@@ -18,31 +18,34 @@ import SDGCollections
 import SwiftSyntax
 
 /// A function or method.
-public final class FunctionAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class FunctionAPI: _APIElementBase, SortableAPIElement,
+  UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: FunctionDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: FunctionDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    internal typealias Declaration = FunctionDeclSyntax
+  internal typealias Declaration = FunctionDeclSyntax
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: FunctionDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: FunctionDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: FunctionDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: FunctionDeclSyntax
 }

@@ -16,9 +16,10 @@ import SwiftSyntax
 
 extension GenericArgumentSyntax {
 
-    internal func normalized() -> GenericArgumentSyntax {
-        return SyntaxFactory.makeGenericArgument(
-            argumentType: argumentType.normalized(),
-            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
-    }
+  internal func normalized() -> GenericArgumentSyntax {
+    return SyntaxFactory.makeGenericArgument(
+      argumentType: argumentType.normalized(),
+      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+    )
+  }
 }

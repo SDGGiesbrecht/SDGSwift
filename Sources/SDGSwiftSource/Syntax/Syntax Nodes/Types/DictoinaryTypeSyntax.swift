@@ -16,12 +16,13 @@ import SwiftSyntax
 
 extension DictionaryTypeSyntax {
 
-    internal func normalized() -> DictionaryTypeSyntax {
-        return SyntaxFactory.makeDictionaryType(
-            leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
-            keyType: keyType.normalized(),
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            valueType: valueType.normalized(),
-            rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> DictionaryTypeSyntax {
+    return SyntaxFactory.makeDictionaryType(
+      leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
+      keyType: keyType.normalized(),
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      valueType: valueType.normalized(),
+      rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

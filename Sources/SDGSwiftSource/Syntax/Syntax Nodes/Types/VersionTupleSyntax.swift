@@ -16,10 +16,11 @@ import SwiftSyntax
 
 extension VersionTupleSyntax {
 
-    internal func normalized() -> VersionTupleSyntax {
-        return SyntaxFactory.makeVersionTuple(
-            majorMinor: majorMinor.normalizedVersion(),
-            patchPeriod: patchPeriod?.generallyNormalized(),
-            patchVersion: patchVersion?.generallyNormalized())
-    }
+  internal func normalized() -> VersionTupleSyntax {
+    return SyntaxFactory.makeVersionTuple(
+      majorMinor: majorMinor.normalizedVersion(),
+      patchPeriod: patchPeriod?.generallyNormalized(),
+      patchVersion: patchVersion?.generallyNormalized()
+    )
+  }
 }

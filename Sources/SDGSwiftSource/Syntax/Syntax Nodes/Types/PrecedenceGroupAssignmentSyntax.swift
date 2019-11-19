@@ -16,10 +16,13 @@ import SwiftSyntax
 
 extension PrecedenceGroupAssignmentSyntax {
 
-    internal func normalizedForAPIDeclaration() -> PrecedenceGroupAssignmentSyntax {
-        return SyntaxFactory.makePrecedenceGroupAssignment(
-            assignmentKeyword: assignmentKeyword.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            flag: flag.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalizedForAPIDeclaration() -> PrecedenceGroupAssignmentSyntax {
+    return SyntaxFactory.makePrecedenceGroupAssignment(
+      assignmentKeyword: assignmentKeyword.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1)
+      ),
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      flag: flag.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

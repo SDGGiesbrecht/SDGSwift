@@ -35,7 +35,11 @@ extension PackageRepository {
   ///     - location: The location at which to initialize the new package.
   ///     - name: A name for the package.
   ///     - type: The type of package.
-  public static func initializePackage(at location: Foundation.URL, named name: StrictString, type: InitPackage.PackageType) -> Swift.Result<PackageRepository, InitializationError> {
+  public static func initializePackage(
+    at location: Foundation.URL,
+    named name: StrictString,
+    type: InitPackage.PackageType
+  ) -> Swift.Result<PackageRepository, InitializationError> {
 
     let repository = PackageRepository(at: location)
 
@@ -43,7 +47,8 @@ extension PackageRepository {
       let initializer = try InitPackage(
         name: String(name),
         destinationPath: AbsolutePath(location.path),
-        packageType: type)
+        packageType: type
+      )
       try initializer.writePackageStructure()
     } catch {
       return .failure(.packageManagerError(error))
@@ -65,7 +70,8 @@ extension PackageRepository {
         case .deutschDeutschland:
           return "Stellte vorein."
         }
-      }).resolved()) {
+      }).resolved()
+    ) {
     case .failure(let error):
       return .failure(.gitError(error))
     case .success:
@@ -80,7 +86,8 @@ extension PackageRepository {
     return SwiftCompiler.withDiagnostics { compiler, _ in
       return try ManifestLoader.loadManifest(
         packagePath: AbsolutePath(location.path),
-        swiftCompiler: AbsolutePath(compiler.path))
+        swiftCompiler: AbsolutePath(compiler.path)
+      )
     }
   }
 
@@ -90,7 +97,8 @@ extension PackageRepository {
       return try PackageBuilder.loadPackage(
         packagePath: AbsolutePath(location.path),
         swiftCompiler: AbsolutePath(compiler.path),
-        diagnostics: diagnostics)
+        diagnostics: diagnostics
+      )
     }
   }
 
@@ -99,11 +107,14 @@ extension PackageRepository {
     return SwiftCompiler.manifestLoader().map { loader in
       return Workspace.create(
         forRootPackage: AbsolutePath(location.path),
-        manifestLoader: loader)
+        manifestLoader: loader
+      )
     }
   }
 
-  internal func hostBuildParameters() -> Swift.Result<BuildParameters, SwiftCompiler.PackageLoadingError> {
+  internal func hostBuildParameters() -> Swift.Result<
+    BuildParameters, SwiftCompiler.PackageLoadingError
+  > {
     switch packageWorkspace() {
     case .failure(let error):
       return .failure(error)
@@ -112,11 +123,14 @@ extension PackageRepository {
       case .failure(let error):
         return .failure(error)
       case .success(let toolchain):
-        return .success(BuildParameters(
-          dataPath: workspace.dataPath,
-          configuration: .debug,
-          toolchain: toolchain,
-          flags: BuildFlags()))
+        return .success(
+          BuildParameters(
+            dataPath: workspace.dataPath,
+            configuration: .debug,
+            toolchain: toolchain,
+            flags: BuildFlags()
+          )
+        )
       }
     }
   }
@@ -127,23 +141,30 @@ extension PackageRepository {
       return try Workspace.loadGraph(
         packagePath: AbsolutePath(location.path),
         swiftCompiler: AbsolutePath(compiler.path),
-        diagnostics: diagnostics)
+        diagnostics: diagnostics
+      )
     }
   }
 
   /// Checks for uncommitted changes or additions.
   ///
   /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-  public func uncommittedChanges() -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
-      return Git.uncommittedChanges(in: self)
+  public func uncommittedChanges() -> Swift.Result<
+    String, VersionedExternalProcessExecutionError<SDGSwift.Git>
+  > {
+    return Git.uncommittedChanges(in: self)
   }
 
   /// Returns the list of files ignored by source control.
-  public func ignoredFiles() -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+  public func ignoredFiles() -> Swift.Result<
+    [Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>
+  > {
     return Git.ignoredFiles(in: self)
   }
 
-  public func _directoriesIgnoredForTestCoverage() -> Swift.Result<[Foundation.URL], SwiftCompiler.PackageLoadingError> {
+  public func _directoriesIgnoredForTestCoverage() -> Swift.Result<
+    [Foundation.URL], SwiftCompiler.PackageLoadingError
+  > {
     return packageWorkspace().map { workspace in
       return [
         workspace.dataPath.asURL,
@@ -162,8 +183,13 @@ extension PackageRepository {
   /// - Returns: The report, or `nil` if there is no code coverage information.
   public func codeCoverageReport(
     ignoreCoveredRegions: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
-    return SwiftCompiler.codeCoverageReport(for: self, ignoreCoveredRegions: ignoreCoveredRegions, reportProgress: reportProgress)
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
+    return SwiftCompiler.codeCoverageReport(
+      for: self,
+      ignoreCoveredRegions: ignoreCoveredRegions,
+      reportProgress: reportProgress
+    )
   }
 
   // MARK: - Workflow
@@ -172,7 +198,9 @@ extension PackageRepository {
   ///
   /// - Parameters:
   ///     - description: A description for the commit.
-  public func commitChanges(description: StrictString) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+  public func commitChanges(description: StrictString) -> Swift.Result<
+    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+  > {
     return Git.commitChanges(in: self, description: description)
   }
 
@@ -180,7 +208,9 @@ extension PackageRepository {
   ///
   /// - Parameters:
   ///     - releaseVersion: The semantic version.
-  public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+  public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<
+    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+  > {
     return Git.tag(version: releaseVersion, in: self)
   }
 }

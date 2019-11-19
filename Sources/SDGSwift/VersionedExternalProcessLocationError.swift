@@ -19,8 +19,8 @@ import SDGVersioning
 import SDGSwiftLocalizations
 
 /// An error encountered while locating a versioned external process.
-public enum VersionedExternalProcessLocationError<Process> : PresentableError
-where Process : VersionedExternalProcess {
+public enum VersionedExternalProcessLocationError<Process>: PresentableError
+where Process: VersionedExternalProcess {
 
   // MARK: - Cases
 

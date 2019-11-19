@@ -21,60 +21,62 @@ import SwiftSyntax
 /// A type.
 ///
 /// A type may be a structure, class, enumeration, type alias or associated type.
-public final class TypeAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _OverloadableAPIElement, SortableAPIElement {
+public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+  _OverloadableAPIElement, SortableAPIElement
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init<T>(documentation: [SymbolDocumentation], declaration: T, children: [APIElement])
-        where T : TypeDeclaration {
+  internal init<T>(documentation: [SymbolDocumentation], declaration: T, children: [APIElement])
+  where T: TypeDeclaration {
 
-        let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
-        self.declaration = normalizedDeclaration
-        genericName = normalizedDeclaration.name()
-        super.init(documentation: documentation, children: children)
-        self.constraints = normalizedConstraints
+    let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+    self.declaration = normalizedDeclaration
+    genericName = normalizedDeclaration.name()
+    super.init(documentation: documentation, children: children)
+    self.constraints = normalizedConstraints
+  }
+
+  // MARK: - Properties
+
+  private let declaration: TypeDeclaration
+
+  internal func isSubclassable() -> Bool {
+    return declaration is ClassDeclSyntax
+  }
+
+  // MARK: - APIElementBase
+
+  internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
+    if `extension`.isExtension(of: self) {
+      super.merge(extension: `extension`)
+      return true
     }
-
-    // MARK: - Properties
-
-    private let declaration: TypeDeclaration
-
-    internal func isSubclassable() -> Bool {
-        return declaration is ClassDeclSyntax
+    if let nested = `extension`.nested(in: self) {
+      for subtype in types where subtype.mergeIfExtended(by: nested) {
+        return true
+      }
     }
+    return false
+  }
 
-    // MARK: - APIElementBase
+  // MARK: - APIElementProtocol
 
-    internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
-        if `extension`.isExtension(of: self) {
-            super.merge(extension: `extension`)
-            return true
-        }
-        if let nested = `extension`.nested(in: self) {
-            for subtype in types where subtype.mergeIfExtended(by: nested) {
-                return true
-            }
-        }
-        return false
-    }
+  public func _shallowIdentifierList() -> Set<String> {
+    return declaration.identifierList()
+  }
 
-    // MARK: - APIElementProtocol
+  // MARK: - DeclaredAPIElement
 
-    public func _shallowIdentifierList() -> Set<String> {
-        return declaration.identifierList()
-    }
+  public var genericDeclaration: Syntax {
+    return declaration
+  }
 
-    // MARK: - DeclaredAPIElement
+  public let genericName: Syntax
 
-    public var genericDeclaration: Syntax {
-        return declaration
-    }
+  // MARK: - OverloadableAPIElement
 
-    public let genericName: Syntax
-
-    // MARK: - OverloadableAPIElement
-
-    internal func genericOverloadPattern() -> Syntax {
-        return genericName
-    }
+  internal func genericOverloadPattern() -> Syntax {
+    return genericName
+  }
 }

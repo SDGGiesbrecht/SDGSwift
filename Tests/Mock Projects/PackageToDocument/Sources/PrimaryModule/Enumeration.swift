@@ -13,6 +13,6 @@
  */
 
 public enum Enumeration {
-    case _hidden
-    case visible
+  case _hidden
+  case visible
 }

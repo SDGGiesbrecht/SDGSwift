@@ -19,52 +19,53 @@ import SwiftSyntax
 
 extension TypeSyntax {
 
-    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
-        switch self {
-        case let simple as SimpleTypeIdentifierSyntax:
-            return simple.normalized()
-        case let metatype as MetatypeTypeSyntax:
-            return metatype.normalized()
-        case let member as MemberTypeIdentifierSyntax:
-            return member.normalized()
-        case let optional as OptionalTypeSyntax:
-            return optional.normalized()
-        case let implicitlyUnwrapped as ImplicitlyUnwrappedOptionalTypeSyntax:
-            return implicitlyUnwrapped.normalized()
-        case let tuple as TupleTypeSyntax:
-            return tuple.normalized(extractingFromIndexPath: indexPath)
-        case let composition as CompositionTypeSyntax:
-            return composition.normalized()
-        case let array as ArrayTypeSyntax:
-            return array.normalized()
-        case let dictionary as DictionaryTypeSyntax:
-            return dictionary.normalized()
-        case let function as FunctionTypeSyntax:
-            return function.normalized()
-        case let attributed as AttributedTypeSyntax:
-            return attributed.normalized()
-        case let restriction as ClassRestrictionTypeSyntax:
-            return restriction.normalized()
-        default: // @exempt(from: tests)
-            warnUnidentified()
-            return SyntaxFactory.makeSimpleTypeIdentifier(
-                name: SyntaxFactory.makeToken(.wildcardKeyword),
-                genericArgumentClause: nil)
-        }
+  internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
+    switch self {
+    case let simple as SimpleTypeIdentifierSyntax:
+      return simple.normalized()
+    case let metatype as MetatypeTypeSyntax:
+      return metatype.normalized()
+    case let member as MemberTypeIdentifierSyntax:
+      return member.normalized()
+    case let optional as OptionalTypeSyntax:
+      return optional.normalized()
+    case let implicitlyUnwrapped as ImplicitlyUnwrappedOptionalTypeSyntax:
+      return implicitlyUnwrapped.normalized()
+    case let tuple as TupleTypeSyntax:
+      return tuple.normalized(extractingFromIndexPath: indexPath)
+    case let composition as CompositionTypeSyntax:
+      return composition.normalized()
+    case let array as ArrayTypeSyntax:
+      return array.normalized()
+    case let dictionary as DictionaryTypeSyntax:
+      return dictionary.normalized()
+    case let function as FunctionTypeSyntax:
+      return function.normalized()
+    case let attributed as AttributedTypeSyntax:
+      return attributed.normalized()
+    case let restriction as ClassRestrictionTypeSyntax:
+      return restriction.normalized()
+    default:  // @exempt(from: tests)
+      warnUnidentified()
+      return SyntaxFactory.makeSimpleTypeIdentifier(
+        name: SyntaxFactory.makeToken(.wildcardKeyword),
+        genericArgumentClause: nil
+      )
     }
+  }
 
-    // MARK: - Hidable
+  // MARK: - Hidable
 
-    internal var hidabilityIdentifier: TokenSyntax? {
-        // Only used by extensions. Non‐extendable types are ignored.
-        switch self {
-        case let simple as SimpleTypeIdentifierSyntax:
-            return simple.name
-        case let member as MemberTypeIdentifierSyntax:
-            return member.baseType.hidabilityIdentifier
-        default: // @exempt(from: tests)
-            warnUnidentified()
-            return nil
-        }
+  internal var hidabilityIdentifier: TokenSyntax? {
+    // Only used by extensions. Non‐extendable types are ignored.
+    switch self {
+    case let simple as SimpleTypeIdentifierSyntax:
+      return simple.name
+    case let member as MemberTypeIdentifierSyntax:
+      return member.baseType.hidabilityIdentifier
+    default:  // @exempt(from: tests)
+      warnUnidentified()
+      return nil
     }
+  }
 }

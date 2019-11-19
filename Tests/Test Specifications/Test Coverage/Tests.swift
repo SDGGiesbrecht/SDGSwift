@@ -15,22 +15,22 @@
 import XCTest
 @testable import Mock
 
-final class MockTests : XCTestCase {
+final class MockTests: XCTestCase {
 
-    func testCoverage() {
-        _ = covered()
+  func testCoverage() {
+    _ = covered()
 
-        `switch` = false
-        _ = branching()
-        useClosure()
-        `switch` = true
-        _ = branching()
-        useClosure()
+    `switch` = false
+    _ = branching()
+    useClosure()
+    `switch` = true
+    _ = branching()
+    useClosure()
 
-        _ = withSupplementalPlaneCharacters()
-    }
+    _ = withSupplementalPlaneCharacters()
+  }
 
-    static var allTests = [
-        ("testCoverage", testCoverage),
-    ]
+  static var allTests = [
+    ("testCoverage", testCoverage),
+  ]
 }

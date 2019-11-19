@@ -13,15 +13,15 @@
  */
 
 /// A block developer comment.
-public class BlockDeveloperCommentSyntax : BlockCommentSyntax {
+public class BlockDeveloperCommentSyntax: BlockCommentSyntax {
 
-    // MARK: - Class Properties
+  // MARK: - Class Properties
 
-    internal override class var openingDelimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
-    }
+  internal override class var openingDelimiter: ExtendedTokenSyntax {
+    return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
+  }
 
-    internal override class func parse(contents: String) -> ExtendedSyntax {
-        return CommentContentSyntax(source: contents)
-    }
+  internal override class func parse(contents: String) -> ExtendedSyntax {
+    return CommentContentSyntax(source: contents)
+  }
 }

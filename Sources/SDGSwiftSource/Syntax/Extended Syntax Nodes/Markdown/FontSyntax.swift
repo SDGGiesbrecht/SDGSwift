@@ -15,36 +15,41 @@
 /// A section of documentation text with font modifications.
 ///
 /// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.
-public class FontSyntax : MarkdownSyntax {
+public class FontSyntax: MarkdownSyntax {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String, delimiter: String) {
+  internal init(node: cmark_node, in documentation: String, delimiter: String) {
 
-        let openingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
-        self.openingDelimiter = openingDelimiter
+    let openingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
+    self.openingDelimiter = openingDelimiter
 
-        let closingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
-        self.closingDelimiter = closingDelimiter
+    let closingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
+    self.closingDelimiter = closingDelimiter
 
-        super.init(node: node, in: documentation, precedingChildren: [openingDelimiter], followingChildren: [closingDelimiter])
+    super.init(
+      node: node,
+      in: documentation,
+      precedingChildren: [openingDelimiter],
+      followingChildren: [closingDelimiter]
+    )
+  }
+
+  // MARK: - Properties
+
+  /// The opening delimiter.
+  public let openingDelimiter: ExtendedTokenSyntax
+
+  /// The closing delimiter.
+  public let closingDelimiter: ExtendedTokenSyntax
+
+  // MARK: - ExtendedSyntax
+
+  internal override var renderedHtmlElement: String? {
+    if openingDelimiter.text.count == 2 {
+      return "strong"
+    } else {
+      return "em"
     }
-
-    // MARK: - Properties
-
-    /// The opening delimiter.
-    public let openingDelimiter: ExtendedTokenSyntax
-
-    /// The closing delimiter.
-    public let closingDelimiter: ExtendedTokenSyntax
-
-    // MARK: - ExtendedSyntax
-
-    internal override var renderedHtmlElement: String? {
-        if openingDelimiter.text.count == 2 {
-            return "strong"
-        } else {
-            return "em"
-        }
-    }
+  }
 }

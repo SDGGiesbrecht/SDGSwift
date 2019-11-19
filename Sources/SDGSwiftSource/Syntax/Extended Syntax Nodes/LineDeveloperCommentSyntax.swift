@@ -15,22 +15,24 @@
 import SwiftSyntax
 
 /// A line developer comment.
-public class LineDeveloperCommentSyntax : LineCommentSyntax {
+public class LineDeveloperCommentSyntax: LineCommentSyntax {
 
-    // MARK: - Class Properties
+  // MARK: - Class Properties
 
-    internal override class var delimiter: ExtendedTokenSyntax {
-        return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
-    }
+  internal override class var delimiter: ExtendedTokenSyntax {
+    return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
+  }
 
-    internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index) -> ExtendedSyntax {
-        return CommentContentSyntax(source: contents)
-    }
+  internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index)
+    -> ExtendedSyntax
+  {
+    return CommentContentSyntax(source: contents)
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The content of the comment.
-    public var content: CommentContentSyntax {
-        return _content as! CommentContentSyntax
-    }
+  /// The content of the comment.
+  public var content: CommentContentSyntax {
+    return _content as! CommentContentSyntax
+  }
 }

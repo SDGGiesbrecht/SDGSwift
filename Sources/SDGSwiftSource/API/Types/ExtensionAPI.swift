@@ -17,74 +17,81 @@ import SDGControlFlow
 import SwiftSyntax
 
 /// An extension.
-public final class ExtensionAPI : _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement, _UndeclaredAPIElementProtocol {
+public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement,
+  _UndeclaredAPIElementProtocol
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-        super.init(type: type)
-        self.constraints = constraints
-        self.children = children
+  internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
+    super.init(type: type)
+    self.constraints = constraints
+    self.children = children
+  }
+
+  // MARK: - Combining
+
+  /// Returns whether or not the extension extends the specified type.
+  ///
+  /// - Parameters:
+  ///     - type: The type to check.
+  public func isExtension(of type: TypeAPI) -> Bool {
+    return self.type.source() == type.genericName.source()
+  }
+  internal func nested(in type: TypeAPI) -> ExtensionAPI? {
+    guard let memberType = self.type as? MemberTypeIdentifierSyntax,
+      memberType.rootType().source() == type.genericName.source()
+    else {
+      return nil
+    }
+    return ExtensionAPI(
+      type: memberType.strippingRootType(),
+      constraints: constraints,
+      children: children
+    )
+  }
+  /// Returns whether or not the extension extends the specified protocol.
+  ///
+  /// - Parameters:
+  ///     - protocol: The protocol to check.
+  public func isExtension(of protocol: ProtocolAPI) -> Bool {
+    return self.type.source() == `protocol`.name.source()
+  }
+  /// Returns whether or not the extension extends the same type as the other specified extension.
+  ///
+  /// - Parameters:
+  ///     - other: The other extension.
+  public func extendsSameType(as other: ExtensionAPI) -> Bool {
+    return type.source() == other.type.source()
+  }
+
+  internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
+    var sorted: [String: [ExtensionAPI]] = [:]
+
+    for `extension` in extensions {
+      sorted[`extension`.type.source(), default: []].append(`extension`)
     }
 
-    // MARK: - Combining
-
-    /// Returns whether or not the extension extends the specified type.
-    ///
-    /// - Parameters:
-    ///     - type: The type to check.
-    public func isExtension(of type: TypeAPI) -> Bool {
-        return self.type.source() == type.genericName.source()
-    }
-    internal func nested(in type: TypeAPI) -> ExtensionAPI? {
-        guard let memberType = self.type as? MemberTypeIdentifierSyntax,
-            memberType.rootType().source() == type.genericName.source() else {
-            return nil
+    var result: [ExtensionAPI] = []
+    for (_, group) in sorted {
+      var merged: ExtensionAPI?
+      for `extension` in group {
+        if let existing = merged {
+          existing.merge(extension: `extension`)
+          merged = existing
+        } else {
+          merged = `extension`
         }
-        return ExtensionAPI(type: memberType.strippingRootType(), constraints: constraints, children: children)
-    }
-    /// Returns whether or not the extension extends the specified protocol.
-    ///
-    /// - Parameters:
-    ///     - protocol: The protocol to check.
-    public func isExtension(of protocol: ProtocolAPI) -> Bool {
-        return self.type.source() == `protocol`.name.source()
-    }
-    /// Returns whether or not the extension extends the same type as the other specified extension.
-    ///
-    /// - Parameters:
-    ///     - other: The other extension.
-    public func extendsSameType(as other: ExtensionAPI) -> Bool {
-        return type.source() == other.type.source()
+      }
+      result.append(merged!)
     }
 
-    internal static func combine(extensions: [ExtensionAPI]) -> [ExtensionAPI] {
-        var sorted: [String: [ExtensionAPI]] = [:]
+    return result
+  }
 
-        for `extension` in extensions {
-            sorted[`extension`.type.source(), default: []].append(`extension`)
-        }
+  // MARK: - APIElementProtocol
 
-        var result: [ExtensionAPI] = []
-        for (_, group) in sorted {
-            var merged: ExtensionAPI?
-            for `extension` in group {
-                if let existing = merged {
-                    existing.merge(extension: `extension`)
-                    merged = existing
-                } else {
-                    merged = `extension`
-                }
-            }
-            result.append(merged!)
-        }
-
-        return result
-    }
-
-    // MARK: - APIElementProtocol
-
-    public var _summaryName: String {
-        return "(" + genericName.source() + ")"
-    }
+  public var _summaryName: String {
+    return "(" + genericName.source() + ")"
+  }
 }

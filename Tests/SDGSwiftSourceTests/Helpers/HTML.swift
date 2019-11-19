@@ -13,18 +13,18 @@
  */
 
 func HTMLPage(content: String, cssPath: String) -> String {
-    return [
-        "<\u{21}DOCTYPE html>",
-        "<html>",
-        " <head>",
-        "  <meta charset=\u{22}utf\u{2D}8\u{22}>",
-        "   <link rel=\u{22}stylesheet\u{22} href=\u{22}\(cssPath)\u{22}>",
-        " </head>",
-        " <body>",
-        "",
-        content,
-        "",
-        " </body>",
-        "</html>"
-    ].joined(separator: "\n")
+  return [
+    "<\u{21}DOCTYPE html>",
+    "<html>",
+    " <head>",
+    "  <meta charset=\u{22}utf\u{2D}8\u{22}>",
+    "   <link rel=\u{22}stylesheet\u{22} href=\u{22}\(cssPath)\u{22}>",
+    " </head>",
+    " <body>",
+    "",
+    content,
+    "",
+    " </body>",
+    "</html>"
+  ].joined(separator: "\n")
 }

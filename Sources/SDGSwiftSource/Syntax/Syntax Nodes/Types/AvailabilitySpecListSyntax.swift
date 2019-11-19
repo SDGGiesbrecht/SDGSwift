@@ -16,7 +16,7 @@ import SwiftSyntax
 
 extension AvailabilitySpecListSyntax {
 
-    internal func normalized() -> AvailabilitySpecListSyntax {
-        return SyntaxFactory.makeAvailabilitySpecList(map({ $0.normalized() }))
-    }
+  internal func normalized() -> AvailabilitySpecListSyntax {
+    return SyntaxFactory.makeAvailabilitySpecList(map({ $0.normalized() }))
+  }
 }

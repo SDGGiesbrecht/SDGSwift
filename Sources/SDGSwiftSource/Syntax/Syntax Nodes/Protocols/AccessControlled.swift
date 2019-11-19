@@ -16,18 +16,19 @@ import SDGLogic
 
 import SwiftSyntax
 
-internal protocol AccessControlled : Syntax {
-    var modifiers: ModifierListSyntax? { get }
+internal protocol AccessControlled: Syntax {
+  var modifiers: ModifierListSyntax? { get }
 }
 
 extension AccessControlled {
 
-    internal func isPublic() -> Bool {
-        if let modifiers = self.modifiers,
-            modifiers.contains(where: { $0.name.tokenKind == .publicKeyword ∨ $0.name.text == "open" }) {
-            return true
-        } else {
-            return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
-        }
+  internal func isPublic() -> Bool {
+    if let modifiers = self.modifiers,
+      modifiers.contains(where: { $0.name.tokenKind == .publicKeyword ∨ $0.name.text == "open" })
+    {
+      return true
+    } else {
+      return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
     }
+  }
 }

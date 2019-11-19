@@ -16,7 +16,7 @@ import SDGSwiftSource
 
 extension APIElement {
 
-    func flattenedTree() -> [APIElement] {
-        return [self] + children.map({ $0.flattenedTree() }).joined()
-    }
+  func flattenedTree() -> [APIElement] {
+    return [self] + children.map({ $0.flattenedTree() }).joined()
+  }
 }

@@ -13,5 +13,5 @@
  */
 
 public func libraryA() -> String {
-    return "Hello, world!"
+  return "Hello, world!"
 }

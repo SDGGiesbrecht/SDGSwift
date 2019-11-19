@@ -17,7 +17,7 @@ import Foundation
 import SDGControlFlow
 
 /// A local repository containing a Swift package.
-public struct PackageRepository : TransparentWrapper {
+public struct PackageRepository: TransparentWrapper {
 
   // MARK: - Initialization
 
@@ -47,7 +47,13 @@ public struct PackageRepository : TransparentWrapper {
   ) -> Result<PackageRepository, VersionedExternalProcessExecutionError<Git>> {
 
     let repository = PackageRepository(at: location)
-    switch Git.clone(package, to: location, at: build, shallow: shallow, reportProgress: reportProgress) {
+    switch Git.clone(
+      package,
+      to: location,
+      at: build,
+      shallow: shallow,
+      reportProgress: reportProgress
+    ) {
     case .failure(let error):
       return .failure(error)
     case .success:
@@ -64,7 +70,9 @@ public struct PackageRepository : TransparentWrapper {
   ///
   /// - Parameters:
   ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
-  public func productsDirectory(releaseConfiguration: Bool) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+  public func productsDirectory(releaseConfiguration: Bool) -> Result<
+    URL, VersionedExternalProcessExecutionError<SwiftCompiler>
+  > {
     return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
   }
 
@@ -76,8 +84,15 @@ public struct PackageRepository : TransparentWrapper {
   ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public func build(releaseConfiguration: Bool = false, reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-    return SwiftCompiler.build(self, releaseConfiguration: releaseConfiguration, reportProgress: reportProgress)
+  @discardableResult public func build(
+    releaseConfiguration: Bool = false,
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    return SwiftCompiler.build(
+      self,
+      releaseConfiguration: releaseConfiguration,
+      reportProgress: reportProgress
+    )
   }
 
   /// Runs a target in place.
@@ -102,7 +117,8 @@ public struct PackageRepository : TransparentWrapper {
       arguments: arguments,
       environment: environment,
       releaseConfiguration: releaseConfiguration,
-      reportProgress: reportProgress)
+      reportProgress: reportProgress
+    )
   }
 
   /// Tests the package.
@@ -110,7 +126,9 @@ public struct PackageRepository : TransparentWrapper {
   /// - Parameters:
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public func test(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+  @discardableResult public func test(
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     return SwiftCompiler.test(self, reportProgress: reportProgress)
   }
 
@@ -119,7 +137,9 @@ public struct PackageRepository : TransparentWrapper {
   /// - Parameters:
   ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   ///     - progressReport: A line of output.
-  @discardableResult public func resolve(reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+  @discardableResult public func resolve(
+    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     return SwiftCompiler.resolve(self, reportProgress: reportProgress)
   }
 

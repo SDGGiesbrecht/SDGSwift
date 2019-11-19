@@ -17,40 +17,52 @@ import SwiftSyntax
 /// A fragment of a larger syntax tree.
 public enum SyntaxFragment {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    /// A syntax element.
-    case syntax(Syntax)
+  /// A syntax element.
+  case syntax(Syntax)
 
-    /// An extended syntax element.
-    case extendedSyntax(ExtendedSyntax)
+  /// An extended syntax element.
+  case extendedSyntax(ExtendedSyntax)
 
-    /// Isolated trivia.
-    case trivia(TriviaPiece, Trivia, Trivia.Index)
+  /// Isolated trivia.
+  case trivia(TriviaPiece, Trivia, Trivia.Index)
 
-    // MARK: - Source
+  // MARK: - Source
 
-    internal func source() -> String {
-        switch self {
-        case .syntax(let syntax):
-            return syntax.source()
-        case .extendedSyntax(let syntax):
-            return syntax.text
-        case .trivia(let trivia, _, _):
-            return trivia.text
-        }
+  internal func source() -> String {
+    switch self {
+    case .syntax(let syntax):
+      return syntax.source()
+    case .extendedSyntax(let syntax):
+      return syntax.text
+    case .trivia(let trivia, _, _):
+      return trivia.text
     }
+  }
 
-    // MARK: - Syntax Colouring
+  // MARK: - Syntax Colouring
 
-    internal func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        switch self {
-        case .syntax(let syntaxNode):
-            return syntaxNode.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
-        case .extendedSyntax(let syntaxNode):
-            return syntaxNode.nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
-        case .trivia(let piece, let group, let index):
-            return piece.syntax(siblings: group, index: index).nestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
-        }
+  internal func nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String]
+  ) -> String {
+    switch self {
+    case .syntax(let syntaxNode):
+      return syntaxNode.nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks
+      )
+    case .extendedSyntax(let syntaxNode):
+      return syntaxNode.nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks
+      )
+    case .trivia(let piece, let group, let index):
+      return piece.syntax(siblings: group, index: index).nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks
+      )
     }
+  }
 }

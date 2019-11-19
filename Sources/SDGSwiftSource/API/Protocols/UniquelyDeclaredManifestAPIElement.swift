@@ -14,17 +14,24 @@
 
 import SwiftSyntax
 
-internal protocol _UniquelyDeclaredManifestAPIElement : _UniquelyDeclaredAPIElement where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
+internal protocol _UniquelyDeclaredManifestAPIElement: _UniquelyDeclaredAPIElement
+where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
 
 extension _UniquelyDeclaredManifestAPIElement {
 
-    internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
-        self.init(documentation: documentation, alreadyNormalizedDeclaration: declaration, constraints: nil, name: declaration.manifestEntryName(), children: [])
-    }
+  internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
+    self.init(
+      documentation: documentation,
+      alreadyNormalizedDeclaration: declaration,
+      constraints: nil,
+      name: declaration.manifestEntryName(),
+      children: []
+    )
+  }
 
-    // MARK: - APIElementProtocol
+  // MARK: - APIElementProtocol
 
-    public func _shallowIdentifierList() -> Set<String> {
-        return []
-    }
+  public func _shallowIdentifierList() -> Set<String> {
+    return []
+  }
 }
