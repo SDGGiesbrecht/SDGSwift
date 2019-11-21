@@ -57,8 +57,8 @@ public struct CoverageRegion {
 
       last = regions.last!
       if last.region.upperBound == next.region.lowerBound
-        ∧ last.count == next.count
-      {  // @exempt(from: tests) Unreachable on Linux?
+        ∧ last.count == next.count  // @exempt(from: tests) Unreachable on Linux?
+      {
         // Join contiguous regions.
         regions.removeLast()
         let replacement = CoverageRegion(
