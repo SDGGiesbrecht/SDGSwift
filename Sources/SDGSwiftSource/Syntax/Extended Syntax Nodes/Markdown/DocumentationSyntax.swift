@@ -80,8 +80,8 @@ public class DocumentationSyntax: MarkdownSyntax {
       return separateParameterEntries.map { entry in
         return ParameterDocumentation(
           name: entry.parameterName
-            // @exempt(from: tests) Never nil in valid source.
-            ?? ExtendedTokenSyntax(text: "", kind: .parameter),
+            ??  // @exempt(from: tests) Never nil in valid source.
+            ExtendedTokenSyntax(text: "", kind: .parameter),
           description: entry.contents
         )
       }

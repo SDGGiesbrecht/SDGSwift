@@ -138,8 +138,9 @@ public enum Xcode: VersionedExternalProcess {
     if logComponents.count ≥ 4,
       logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
       logComponents[1].scalars.allSatisfy({
+        // @exempt(from: tests) False coverage result.
         $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
-      }),  // @exempt(from: tests) False coverage result.
+      }),
       let process = logComponents[2].prefix(upTo: "[")?.contents
     {
       return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")  // @exempt(from: tests) False coverage result.
@@ -428,9 +429,9 @@ public enum Xcode: VersionedExternalProcess {
           if let integer = Int(digitsOnly) {
             return integer
           }
-          if ¬digitsOnly.scalars.contains(where: {
+          if ¬digitsOnly.scalars.contains(where: {  // @exempt(from: tests)
             $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-          }) {  // @exempt(from: tests)
+          }) {
             // It is an integer; it is just to large.
             return Int.max
           }
