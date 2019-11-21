@@ -31,7 +31,8 @@ public class ExtendedSyntax: TextOutputStreamable {
   private var _offset: Int?
   private var positionOffset: Int {
     get {
-      return _offset!  // The unwrap can only fail if the top‐level node forgot to call determinePositions().
+      return _offset!
+      // The unwrap can only fail if the top‐level node forgot to call determinePositions().
     }
     set {
       _offset = newValue
@@ -41,7 +42,8 @@ public class ExtendedSyntax: TextOutputStreamable {
     if let token = self as? ExtendedTokenSyntax {
       return positionOffset + token.text.scalars.count
     } else {
-      return children.last?.endPositionOffset ?? positionOffset  // @exempt(from: tests) Shouldn’t be childless.
+      return children.last?.endPositionOffset ?? positionOffset
+      // @exempt(from: tests) Shouldn’t be childless.
     }
   }
   internal func determinePositions() {
@@ -93,7 +95,7 @@ public class ExtendedSyntax: TextOutputStreamable {
     case ._token(let token, context: let tokenContext):
       let sourceStart = token.lowerSyntaxBound(in: tokenContext)
       return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
-    case ._fragment(let code, context: let codeContext, offset: let offset):
+    case ._fragment(let code, context: let codeContext, let offset):
       let fragmentLocation = code.lowerBound(in: codeContext)
       return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
     }
@@ -111,7 +113,7 @@ public class ExtendedSyntax: TextOutputStreamable {
     case ._token(let token, context: let tokenContext):
       let sourceStart = token.lowerSyntaxBound(in: tokenContext)
       return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
-    case ._fragment(let code, context: let codeContext, offset: let offset):
+    case ._fragment(let code, context: let codeContext, let offset):
       let fragmentLocation = code.lowerBound(in: codeContext)
       return codeContext.source.scalars.index(
         fragmentLocation,
@@ -152,7 +154,8 @@ public class ExtendedSyntax: TextOutputStreamable {
         sequence(first: parentRelationship, next: { $0.parent.parentRelationship })
       )
     } else {  // @exempt(from: tests)
-      return AnySequence([])  // @exempt(from: tests) Unreachable. No extended token is a top‐level node.
+      // @exempt(from: tests) Unreachable. No extended token is a top‐level node.
+      return AnySequence([])
     }
   }
 

@@ -46,14 +46,14 @@ extension TriviaPiece {
   ///     - context: The trivia piece’s context.
   public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
     switch context {
-    case ._trivia(let trivia, index: let index, parent: let parent):
+    case ._trivia(let trivia, let index, let parent):
       var location = trivia.lowerBound(in: parent)
       let source = parent.tokenContext.fragmentContext
       for predecessor in trivia.indices where predecessor < index {
         location = source.scalars.index(location, offsetBy: trivia[predecessor].text.scalars.count)
       }
       return location
-    case ._fragment(let code, context: let codeContext, offset: let offset):
+    case ._fragment(let code, context: let codeContext, let offset):
       let fragmentLocation = code.lowerBound(in: codeContext)
       return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
     }
@@ -63,7 +63,7 @@ extension TriviaPiece {
     -> String.ScalarView.Index
   {
     switch context {
-    case ._trivia(_, index: _, parent: let parent):
+    case ._trivia(_, index: _, let parent):
       let source = parent.tokenContext.fragmentContext
       return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
     case ._fragment(_, context: let codeContext, offset: _):
@@ -93,7 +93,7 @@ extension TriviaPiece {
     parent: Trivia, index: Trivia.Index
   )? {
     switch context {
-    case ._trivia(let trivia, index: let index, parent: _):
+    case ._trivia(let trivia, let index, parent: _):
       return (parent: trivia, index: index)
     case ._fragment:
       return nil

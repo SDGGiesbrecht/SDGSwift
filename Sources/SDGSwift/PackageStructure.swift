@@ -66,96 +66,102 @@ public struct Package: TransparentWrapper {
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<Void, BuildError> {
 
-    return FileManager.default.withTemporaryDirectory(appropriateFor: destination) {
-      temporaryDirectory in
-      let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-
-      reportProgress("")
-
-      switch PackageRepository.clone(
-        self,
-        to: temporaryCloneLocation,
-        at: build,
-        shallow: true,
-        reportProgress: reportProgress
-      ) {
-
-      case .failure(let error):
-        return .failure(.gitError(error))
-      case .success(let temporaryRepository):
+    return FileManager.default
+      .withTemporaryDirectory(appropriateFor: destination) { temporaryDirectory in
+        let temporaryCloneLocation = temporaryDirectory.appendingPathComponent(
+          url.lastPathComponent
+        )
 
         reportProgress("")
 
-        switch temporaryRepository.build(releaseConfiguration: true, reportProgress: reportProgress)
-        {
+        switch PackageRepository.clone(
+          self,
+          to: temporaryCloneLocation,
+          at: build,
+          shallow: true,
+          reportProgress: reportProgress
+        ) {
+
         case .failure(let error):
-          return .failure(.swiftError(error))
-        case .success:
-          let products: URL
-          switch temporaryRepository.productsDirectory(releaseConfiguration: true) {
+          return .failure(.gitError(error))
+        case .success(let temporaryRepository):
+
+          reportProgress("")
+
+          switch temporaryRepository.build(
+            releaseConfiguration: true,
+            reportProgress: reportProgress
+          )
+          {
           case .failure(let error):
             return .failure(.swiftError(error))
-          case .success(let directory):
-            products = directory
-          }
+          case .success:
+            let products: URL
+            switch temporaryRepository.productsDirectory(releaseConfiguration: true) {
+            case .failure(let error):
+              return .failure(.swiftError(error))
+            case .success(let directory):
+              products = directory
+            }
 
-          let enumeratedProducts: [URL]
-          do {
-            enumeratedProducts = try FileManager.default.contentsOfDirectory(
-              at: products,
-              includingPropertiesForKeys: nil,
-              options: []
-            )
-          } catch {
-            return .failure(.foundationError(error))
-          }
+            let enumeratedProducts: [URL]
+            do {
+              enumeratedProducts = try FileManager.default.contentsOfDirectory(
+                at: products,
+                includingPropertiesForKeys: nil,
+                options: []
+              )
+            } catch {
+              return .failure(.foundationError(error))
+            }
 
-          #if os(macOS)
-            // #workaround(Swift 5.1.2, Swift links with absolute paths on macOS.)
-            for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib" {
-              for component in enumeratedProducts {
-                _ = try? Shell.default.run(command: [
-                  "install_name_tool",
-                  "\u{2D}change", Shell.quote(dynamicLibrary.path),
-                  Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent),
-                  Shell.quote(component.path)
-                ]).get()
+            #if os(macOS)
+              // #workaround(Swift 5.1.2, Swift links with absolute paths on macOS.)
+              for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib"
+              {
+                for component in enumeratedProducts {
+                  _ = try? Shell.default.run(command: [
+                    "install_name_tool",
+                    "\u{2D}change", Shell.quote(dynamicLibrary.path),
+                    Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent),
+                    Shell.quote(component.path)
+                  ]).get()
+                }
+              }
+            #endif
+
+            let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            for component in enumeratedProducts {
+              let filename = component.lastPathComponent
+
+              if filename ≠ "ModuleCache",
+                ¬filename.hasSuffix(".product"),
+                ¬filename.hasSuffix(".build"),
+                ¬filename.hasSuffix(".swiftdoc"),
+                ¬filename.hasSuffix(".swiftmodule")
+              {
+
+                do {
+                  try FileManager.default.move(
+                    component,
+                    to: intermediateDirectory.appendingPathComponent(filename)
+                  )
+                } catch {
+                  return .failure(.foundationError(error))
+                }
               }
             }
-          #endif
 
-          let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
-          for component in enumeratedProducts {
-            let filename = component.lastPathComponent
-
-            if filename ≠ "ModuleCache",
-              ¬filename.hasSuffix(".product"),
-              ¬filename.hasSuffix(".build"),
-              ¬filename.hasSuffix(".swiftdoc"),
-              ¬filename.hasSuffix(".swiftmodule")
-            {
-
-              do {
-                try FileManager.default.move(
-                  component,
-                  to: intermediateDirectory.appendingPathComponent(filename)
-                )
-              } catch {
-                return .failure(.foundationError(error))
-              }
+            do {
+              try FileManager.default.move(intermediateDirectory, to: destination)
+            } catch {
+              return .failure(.foundationError(error))
             }
-          }
 
-          do {
-            try FileManager.default.move(intermediateDirectory, to: destination)
-          } catch {
-            return .failure(.foundationError(error))
+            return .success(())
           }
-
-          return .success(())
         }
       }
-    }
   }
 
   private func developmentCache(for cache: URL) -> URL {
@@ -232,7 +238,8 @@ public struct Package: TransparentWrapper {
           #if os(Linux)
             // The move from the temporary directory to the cache may lose permissions.
             if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-              _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get()  // @exempt(from: tests)
+              // @exempt(from: tests)
+              _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get()
             }
           #endif
 

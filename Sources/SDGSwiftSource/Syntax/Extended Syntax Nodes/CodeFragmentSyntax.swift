@@ -57,8 +57,9 @@ public class CodeFragmentSyntax: ExtendedSyntax {
     } else {
       if let parsed = try? SyntaxParser.parse(source: context) {
         return syntax(of: parsed)
-      } else {  // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
-        return nil  // @exempt(from: tests)
+      } else {  // @exempt(from: tests)
+        // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
+        return nil
       }
     }
   }

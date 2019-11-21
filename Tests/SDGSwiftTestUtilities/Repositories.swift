@@ -63,7 +63,8 @@ private func withMock(
   if let specific = name {
     mock = try setUpMock(named: specific).location
   } else {
-    mock = URL(fileURLWithPath: "/tmp/Mock")  // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    mock = URL(fileURLWithPath: "/tmp/Mock")
     mocks.append(mock)
   }
 

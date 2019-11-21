@@ -98,7 +98,8 @@ extension DeclModifierSyntax {
         return .memoryManagement
       case "mutating", "nonmutating":
         return .mutation
-      case "infix", "prefix", "postfix":  // @exempt(from: tests) Cannot appear with any other groups for sorting.
+      case "infix", "prefix", "postfix":  // @exempt(from: tests)
+        // Cannot appear with any other groups for sorting.
         return .operatorPosition
       default:  // @exempt(from: tests)
         name.text.warnUnidentified()

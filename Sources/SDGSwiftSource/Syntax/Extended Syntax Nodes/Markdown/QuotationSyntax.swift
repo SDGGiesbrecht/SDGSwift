@@ -77,10 +77,19 @@ public class QuotationSyntax: MarkdownSyntax {
             if children[predecessor] is ParagraphSyntax {
               children.insert(
                 contentsOf: [
-                  ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter),  // @exempt(from: tests)
+                  ExtendedTokenSyntax(
+                    text: delimiter?.text ?? ">",  // @exempt(from: tests)
+                    kind: .quotationDelimiter
+                  ),
                   ExtendedTokenSyntax(text: "\n", kind: .newlines),
-                  ExtendedTokenSyntax(text: delimiter?.text ?? ">", kind: .quotationDelimiter),  // @exempt(from: tests)
-                  ExtendedTokenSyntax(text: indent?.text ?? " ", kind: .whitespace)  // @exempt(from: tests)
+                  ExtendedTokenSyntax(
+                    text: delimiter?.text ?? ">",  // @exempt(from: tests)
+                    kind: .quotationDelimiter
+                  ),
+                  ExtendedTokenSyntax(
+                    text: indent?.text ?? " ",  // @exempt(from: tests)
+                    kind: .whitespace
+                  )
                 ],
                 at: index
               )

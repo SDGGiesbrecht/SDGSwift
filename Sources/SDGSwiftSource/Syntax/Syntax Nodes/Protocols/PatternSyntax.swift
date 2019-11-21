@@ -41,14 +41,14 @@ extension PatternSyntax {
       for element in tuple.elements {
         defer { index += 1 }
         let nested = element.pattern.flattenedForAPI()
-        let indexed = nested.map {
-          (entry: (identifier: IdentifierPatternSyntax, indexPath: [Int])) -> (
-            identifier: IdentifierPatternSyntax, indexPath: [Int]
-          ) in
+
+        typealias Indexed = (identifier: IdentifierPatternSyntax, indexPath: [Int])
+        let indexed = nested.map { (entry: Indexed) -> Indexed in
           var mutable = entry
           mutable.indexPath.prepend(index)
           return mutable
         }
+
         list.append(contentsOf: indexed)
       }
     default:  // @exempt(from: tests)

@@ -75,7 +75,8 @@ extension FunctionCallExprSyntax {
     guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax,
       let segment = literal.segments.first as? StringSegmentSyntax
     else {
-      return SyntaxFactory.makeUnknown("")  // @exempt(from: tests) Only reachable with a degenerate declaration.
+      // @exempt(from: tests) Only reachable with a degenerate declaration.
+      return SyntaxFactory.makeUnknown("")
     }
     return segment.content
   }

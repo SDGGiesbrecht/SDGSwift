@@ -64,7 +64,8 @@ extension EnumCaseDeclSyntax: APIDeclaration, APISyntax, Attributed {
       list.append(
         .case(
           CaseAPI(
-            documentation: list.isEmpty ? documentation : [],  // The documentation only applies to the first.
+            // The documentation only applies to the first.
+            documentation: list.isEmpty ? documentation : [],
             declaration: SyntaxFactory.makeEnumCaseDecl(
               attributes: attributes,
               modifiers: modifiers,

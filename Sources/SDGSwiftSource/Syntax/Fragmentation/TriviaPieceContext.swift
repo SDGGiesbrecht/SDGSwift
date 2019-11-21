@@ -26,9 +26,9 @@ public indirect enum TriviaPieceContext {
 
   internal var source: String {
     switch self {
-    case ._trivia(_, index: _, parent: let parent):
+    case ._trivia(_, index: _, let parent):
       return parent.tokenContext.fragmentContext
-    case ._fragment(_, context: let context, offset: _):
+    case ._fragment(_, let context, offset: _):
       return context.source
     }
   }

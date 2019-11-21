@@ -78,7 +78,8 @@ extension VariableDeclSyntax: AccessControlled, Accessor, APIDeclaration, APISyn
       list.append(
         .variable(
           VariableAPI(
-            documentation: list.isEmpty ? documentation : [],  // The documentation only applies to the first.
+            // The documentation only applies to the first.
+            documentation: list.isEmpty ? documentation : [],
             declaration: SyntaxFactory.makeVariableDecl(
               attributes: attributes,
               modifiers: modifiers,

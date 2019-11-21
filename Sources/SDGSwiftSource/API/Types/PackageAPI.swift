@@ -179,7 +179,8 @@ public final class PackageAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
 
   // MARK: - Properties
 
-  private var dependencies: [ModuleAPI] = []  // Storage because conformances only have weak references.
+  // Storage because conformances only have weak references.
+  private var dependencies: [ModuleAPI] = []
 
   // MARK: - APIElementProtocol
 

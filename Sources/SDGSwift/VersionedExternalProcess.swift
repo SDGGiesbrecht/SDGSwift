@@ -140,7 +140,8 @@ extension VersionedExternalProcess {
   where Constraints: RangeFamily, Constraints.Bound == Version {
 
     var environment = environment ?? ProcessInfo.processInfo.environment
-    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil  // Causes issues when run from within Xcode.
+    // Causes issues when run from within Xcode.
+    environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil
 
     reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
     switch tool(versionConstraints: versionConstraints) {

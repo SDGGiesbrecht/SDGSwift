@@ -119,21 +119,26 @@ class APITests: TestCase {
             _ = try mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
           #endif
 
+          // Variable Xcode location and version:
           var filtered: [String] = log.filter({
             ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F")
               ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: "
-          })  // Variable Xcode location and version.
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })  // Inconsistent path.
+          })
+          // Inconsistent path:
+          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })
+          // Depend on external code signing settings:
           filtered = filtered.filter({
             ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
-          })  // Depends on external code signing settings.
-          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })  // Depends on external code signing settings.
-          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })  // Inconsistent user.
-          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })  // Inconsistently appears.
-          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })  // Inconsistently appears.
+          })
+          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
+          // Inconsistent user:
+          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
+          // Inconsistently appear:
+          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
+          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
           filtered = filtered.filter({
             ¬$0.contains("Execution policy exception registration failed")
-          })  // Inconsistently appears.
+          })
           #if !os(Linux)
             compare(
               filtered.sorted().joined(separator: "\n"),
@@ -186,24 +191,33 @@ class APITests: TestCase {
             _ = try mock.test(on: sdk, derivedData: derived, reportProgress: processLog).get()
           #endif
 
-          var filtered = log.map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) }
-          )  // Remove dates & times
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })  // Inconsistent path.
-          filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") })  // Inconsistent number of occurrences. (???)
-          filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") })  // Inconsistent which target some directories are first created for.
+          // Remove dates & times:
+          var filtered =
+            log
+              .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
+          // Inconsistent path:
+          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })
+          // Inconsistent number of occurrences: (???)
+          filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") })
+          // Inconsistent which target some directories are first created for:
+          filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") })
+          // Depend on external code signing settings:
           filtered = filtered.filter({
             ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
-          })  // Depends on external code signing settings.
-          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })  // Depends on external code signing settings.
-          filtered = filtered.filter({ ¬$0.contains("<DVTiPhoneSimulator:") })  // Inconsistent identifiers.
-          filtered = filtered.filter({ ¬$0.contains(" Promise ") })  // Inconsistent identifiers.
-          filtered = filtered.filter({ ¬$0.contains("<NSThread:") })  // Inconsistent identifiers.
-          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })  // Inconsistent user.
-          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })  // Inconsistently appears.
-          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })  // Inconsistently appears.
+          })
+          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
+          // Inconsistent identifiers:
+          filtered = filtered.filter({ ¬$0.contains("<DVTiPhoneSimulator:") })
+          filtered = filtered.filter({ ¬$0.contains(" Promise ") })
+          filtered = filtered.filter({ ¬$0.contains("<NSThread:") })
+          // Inconsistent user:
+          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
+          // Inconsistently appear:
+          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
+          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
           filtered = filtered.filter({
             ¬$0.contains("Execution policy exception registration failed")
-          })  // Inconsistently appears.
+          })
           #if !os(Linux)
             compare(
               filtered.sorted().joined(separator: "\n"),

@@ -45,9 +45,10 @@ public enum Xcode: VersionedExternalProcess {
     ExternalProcess, VersionedExternalProcessLocationError<Xcode>
   > {
     return cached(in: &locatedCoverage) {
-      return location(versionConstraints: Version(9, 3, 0)...Version(11, 2, 1)).map { location in  // @exempt(from: tests) Unreachable on Linux.
-        return ExternalProcess(at: coverageToolLocation(for: location))
-      }
+      return location(versionConstraints: Version(9, 3, 0)...Version(11, 2, 1))
+        .map { location in  // @exempt(from: tests) Unreachable on Linux.
+          return ExternalProcess(at: coverageToolLocation(for: location))
+        }
     }
   }
 
@@ -143,7 +144,8 @@ public enum Xcode: VersionedExternalProcess {
       }),
       let process = logComponents[2].prefix(upTo: "[")?.contents
     {
-      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")  // @exempt(from: tests) False coverage result.
+      // @exempt(from: tests) False coverage result.
+      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
     }
 
     // Command style entry.
@@ -231,7 +233,8 @@ public enum Xcode: VersionedExternalProcess {
         // @exempt(from: tests) Meaningless on Linux.
         continue
       }
-      if line.contains("/SourcePackages/".scalars) {  // Xcode‐managed SwiftPM dependency. @exempt(from: tests) Meaningless on Linux.
+      if line.contains("/SourcePackages/".scalars) {  // @exempt(from: tests)
+        // Xcode‐managed SwiftPM dependency. Meaningless on Linux.
         continue
       }
       if line.contains(" directory not found for option \u{27}\u{2D}F/Applications/Xcode".scalars) {
@@ -251,7 +254,8 @@ public enum Xcode: VersionedExternalProcess {
   }
 
   private static func coverageDirectory(in derivedData: URL) -> URL {
-    return derivedData.appendingPathComponent("Logs/Test")  // @exempt(from: tests) Unreachable on Linux.
+    // @exempt(from: tests) Unreachable on Linux.
+    return derivedData.appendingPathComponent("Logs/Test")
   }
 
   /// Tests the package.
@@ -366,19 +370,20 @@ public enum Xcode: VersionedExternalProcess {
     case .failure(let error):
       return .failure(.xcodeError(error))
     case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
-      fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) }).filter({ file in  // @exempt(from: tests) Unreachable on Linux.
-        if file.pathExtension ≠ "swift" {
-          // @exempt(from: tests)
-          // The report is unlikely to be readable.
-          return false
-        }
-        if ignoredDirectories.contains(where: { file.is(in: $0) }) {
-          // @exempt(from: tests)
-          // Belongs to a dependency.
-          return false
-        }
-        return true
-      }).sorted()
+      fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
+        .filter({ file in  // @exempt(from: tests) Unreachable on Linux.
+          if file.pathExtension ≠ "swift" {
+            // @exempt(from: tests)
+            // The report is unlikely to be readable.
+            return false
+          }
+          if ignoredDirectories.contains(where: { file.is(in: $0) }) {
+            // @exempt(from: tests)
+            // Belongs to a dependency.
+            return false
+          }
+          return true
+        }).sorted()
     }
 
     var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.

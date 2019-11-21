@@ -476,7 +476,10 @@ extension Syntax {
 
   // MARK: - Debugging
 
-  internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) {  // @exempt(from: tests)
+  internal func warnUnidentified(
+    file: StaticString = #file,
+    function: StaticString = #function
+  ) {  // @exempt(from: tests)
     #if UNIDENTIFIED_SYNTAX_WARNINGS
       switch self {
       case is UnknownSyntax,

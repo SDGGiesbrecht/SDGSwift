@@ -27,11 +27,11 @@ public indirect enum ExtendedSyntaxContext {
 
   internal var source: String {
     switch self {
-    case ._trivia(_, context: let context):
+    case ._trivia(_, let context):
       return context.source
-    case ._token(_, context: let context):
+    case ._token(_, let context):
       return context.fragmentContext
-    case ._fragment(_, context: let context, offset: _):
+    case ._fragment(_, let context, offset: _):
       return context.source
     }
   }

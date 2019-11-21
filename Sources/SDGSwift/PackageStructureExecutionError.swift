@@ -48,7 +48,7 @@ extension Package {
         return error.presentableDescription()
       case .foundationError(let error):
         return StrictString(error.localizedDescription)
-      case .noSuchExecutable(requested: let requested):
+      case .noSuchExecutable(let requested):
         let list = StrictString(requested.sorted().joined(separator: "\n".scalars))
 
         return UserFacing<StrictString, InterfaceLocalization>({ localization in

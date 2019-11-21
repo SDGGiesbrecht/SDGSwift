@@ -170,7 +170,8 @@ extension SwiftCompiler {
     guard let coverageDataDictionary = json as? [String: Any],
       let data = coverageDataDictionary["data"] as? [Any]
     else {
-      return .failure(.corruptTestCoverageReport)  // @exempt(from: tests) Unreachable without mismatched Swift version.
+      // @exempt(from: tests) Unreachable without mismatched Swift version.
+      return .failure(.corruptTestCoverageReport)
     }
 
     let ignoredDirectories: [Foundation.URL]
@@ -242,7 +243,8 @@ extension SwiftCompiler {
                       {
                         end = source._toIndex(line: nextLine, column: nextColumn)
                       } else {
-                        end = source.scalars.endIndex  // @exempt(from: tests) Can a test region even be at the very end of a file?
+                        // @exempt(from: tests) Can a test region even be at the very end of a file?
+                        end = source.scalars.endIndex
                       }
 
                       regions.append(CoverageRegion(region: start..<end, count: count))

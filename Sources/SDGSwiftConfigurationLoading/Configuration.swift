@@ -295,7 +295,8 @@ extension Configuration {
         json = output
       }
       if json.first ≠ "[" {
-        json.drop(upTo: "\n[")  // @exempt(from: tests) Only reachable when new Swift releases flag new errors in old configurations.
+        json.drop(upTo: "\n[")  // @exempt(from: tests)
+        // Only reachable when new Swift releases flag new errors in old configurations.
       }
 
       jsonData = json.file

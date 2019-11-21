@@ -34,7 +34,7 @@ extension Xcode {
       switch self {
       case .macOS:
         return "macosx"
-      case .iOS(simulator: let simulator):
+      case .iOS(let simulator):
         if simulator {
           return "iphonesimulator"
         } else {
@@ -42,7 +42,7 @@ extension Xcode {
         }
       case .watchOS:
         return "watchos"
-      case .tvOS(simulator: let simulator):
+      case .tvOS(let simulator):
         if simulator {
           return "appletvsimulator"
         } else {
