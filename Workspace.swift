@@ -102,5 +102,5 @@ configuration.documentation.api.ignoredDependencies = [
   "SwiftSyntax"
 ]
 
-// #workaround(workspace version 0.26.0, SwiftFormat is extremely slow.)
+// #workaround(workspace version 0.27.0, SwiftFormat is extremely slow.)
 configuration.repository.ignoredPaths.insert("Sources/SDGSwiftSource/Resources.swift")
