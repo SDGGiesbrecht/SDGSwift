@@ -19,131 +19,149 @@ import enum SDGHTML.HTML
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public class ExtendedTokenSyntax : ExtendedSyntax {
+public class ExtendedTokenSyntax: ExtendedSyntax {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(text: String, kind: ExtendedTokenKind) {
-        self._text = text
-        self.kind = kind
-        super.init(children: [])
+  internal init(text: String, kind: ExtendedTokenKind) {
+    self._text = text
+    self.kind = kind
+    super.init(children: [])
+  }
+
+  // MARK: - Properties
+
+  private let _text: String
+
+  /// The kind of the token.
+  public let kind: ExtendedTokenKind
+
+  // MARK: - Syntax Tree
+
+  // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
+  /// Returns the next token.
+  public func previousToken() -> ExtendedTokenSyntax? {
+    func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
+      var result: ExtendedSyntax?
+      for sibling in relationship.parent.children
+      where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
+        result = sibling
+      }
+      return result
     }
 
-    // MARK: - Properties
+    let sharedAncestor = ancestorRelationships().first(where: { relationship in
+      if previousSibling(of: relationship) ≠ nil {
+        return true
+      }
+      return false
+    })
 
-    private let _text: String
+    return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
+  }
 
-    /// The kind of the token.
-    public let kind: ExtendedTokenKind
-
-    // MARK: - Syntax Tree
-
-    // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
-    /// Returns the next token.
-    public func previousToken() -> ExtendedTokenSyntax? {
-        func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
-            var result: ExtendedSyntax?
-            for sibling in relationship.parent.children
-                where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
-                    result = sibling
-            }
-            return result
-        }
-
-        let sharedAncestor = ancestorRelationships().first(where: { relationship in
-            if previousSibling(of: relationship) ≠ nil {
-                return true
-            }
-            return false
-        })
-
-        return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
+  // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
+  /// Returns the next token.
+  public func nextToken() -> ExtendedTokenSyntax? {
+    func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
+      for sibling in relationship.parent.children
+      where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
+        return sibling
+      }
+      return nil
     }
 
-    // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
-    /// Returns the next token.
-    public func nextToken() -> ExtendedTokenSyntax? {
-        func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
-            for sibling in relationship.parent.children
-                where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
-                    return sibling
-            }
-            return nil
-        }
+    let sharedAncestor = ancestorRelationships().first(where: { relationship in
+      if nextSibling(of: relationship) ≠ nil {
+        return true
+      }
+      return false
+    })
 
-        let sharedAncestor = ancestorRelationships().first(where: { relationship in
-            if nextSibling(of: relationship) ≠ nil {
-                return true
-            }
-            return false
-        })
+    return sharedAncestor.flatMap({ nextSibling(of: $0) })?.firstToken()
+  }
 
-        return sharedAncestor.flatMap({ nextSibling(of: $0) })?.firstToken()
+  // MARK: - ExtendedSyntax
+
+  public override func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String]
+  ) -> String {
+    switch kind {
+    case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter,
+      .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL,
+      .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
+      .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source,
+      .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL,
+      .imageDelimiter, .quotationDelimiter, .parameter, .colon:
+      return ""
+    case .documentationText:
+      return HTML.escapeTextForCharacterData(text)
+    case .callout:
+      return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>"
+        + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization)))
+        + "</p>"
+    case .lineSeparator:
+      return "<br>"
     }
+  }
 
-    // MARK: - ExtendedSyntax
+  internal func syntaxHighlightingClass() -> String? {
+    switch kind {
 
-    public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        switch kind {
-        case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .parameter, .colon:
-            return ""
-        case .documentationText:
-            return HTML.escapeTextForCharacterData(text)
-        case .callout:
-            return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>" + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization))) + "</p>"
-        case .lineSeparator:
-            return "<br>"
-        }
+    case .quotationMark:
+      return "string‐punctuation"
+
+    case .string, .commentText, .documentationText:
+      return "text"
+
+    case .whitespace:
+      return nil  // Ignored.
+
+    case .newlines, .commentURL, .source, .linkURL, .lineSeparator:
+      return nil  // Handled elsewhere.
+
+    case .escape:
+      return "punctuation"
+
+    case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter,
+      .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
+      .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism,
+      .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
+      return "comment‐punctuation"
+
+    case .mark, .language, .callout:
+      return "comment‐keyword"
+
+    case .sourceHeadingText:
+      return "source‐heading"
+
+    case .parameter:
+      return "internal identifier"
     }
+  }
 
-    internal func syntaxHighlightingClass() -> String? {
-        switch kind {
-
-        case .quotationMark:
-            return "string‐punctuation"
-
-        case .string, .commentText, .documentationText:
-            return "text"
-
-        case .whitespace:
-            return nil // Ignored.
-
-        case .newlines, .commentURL, .source, .linkURL, .lineSeparator:
-            return nil // Handled elsewhere.
-
-        case .escape:
-            return "punctuation"
-
-        case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .imageDelimiter, .quotationDelimiter, .colon:
-            return "comment‐punctuation"
-
-        case .mark, .language, .callout:
-            return "comment‐keyword"
-
-        case .sourceHeadingText:
-            return "source‐heading"
-
-        case .parameter:
-            return "internal identifier"
-        }
+  internal override func nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String]
+  ) -> String {
+    if kind == .commentURL ∨ kind == .linkURL {
+      return
+        "<a href=\u{22}\(HTML.escapeTextForAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
+    } else {
+      var source = HTML.escapeTextForCharacterData(_text)
+      if let `class` = syntaxHighlightingClass() {
+        source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+        source.append(contentsOf: "</span>")
+      }
+      return source
     }
+  }
 
-    internal override func nestedSyntaxHighlightedHTML(internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        if kind == .commentURL ∨ kind == .linkURL {
-            return "<a href=\u{22}\(HTML.escapeTextForAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
-        } else {
-            var source = HTML.escapeTextForCharacterData(_text)
-            if let `class` = syntaxHighlightingClass() {
-                source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
-                source.append(contentsOf: "</span>")
-            }
-            return source
-        }
-    }
+  // MARK: - TextOutputStreamable
 
-    // MARK: - TextOutputStreamable
-
-    public override func write<Target>(to target: inout Target) where Target : TextOutputStream {
-        _text.write(to: &target)
-    }
+  public override func write<Target>(to target: inout Target) where Target: TextOutputStream {
+    _text.write(to: &target)
+  }
 }

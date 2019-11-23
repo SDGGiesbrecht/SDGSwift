@@ -20,8 +20,8 @@ import SDGExternalProcess
 import SDGSwiftLocalizations
 
 /// An error encountered while using Git.
-public enum VersionedExternalProcessExecutionError<Process> : PresentableError
-where Process : VersionedExternalProcess {
+public enum VersionedExternalProcessExecutionError<Process>: PresentableError
+where Process: VersionedExternalProcess {
 
   /// Git could not be located.
   case locationError(VersionedExternalProcessLocationError<Process>)

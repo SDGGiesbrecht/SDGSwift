@@ -21,66 +21,73 @@ import XCTest
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-class RegressionTests : TestCase {
+class RegressionTests: TestCase {
 
-    func testContinuedCallout() throws {
-        // Untracked.
+  func testContinuedCallout() throws {
+    // Untracked.
 
-        let source = [
-        "/// ...",
-        "///",
-        "/// \u{2D} Note: ...",
-        "/// ...",
-        "public func function() {}"
-        ].joined(separator: "\n")
-        let parsed = try SyntaxParser.parse(source: source)
-        _ = parsed.api()
-    }
+    let source = [
+      "/// ...",
+      "///",
+      "/// \u{2D} Note: ...",
+      "/// ...",
+      "public func function() {}"
+    ].joined(separator: "\n")
+    let parsed = try SyntaxParser.parse(source: source)
+    _ = parsed.api()
+  }
 
-    func testMarkdownEntity() throws {
-        // Untracked.
+  func testMarkdownEntity() throws {
+    // Untracked.
 
-        let source = [
-            "/// ...&#x2D;...",
-            "public func function() {}"
-            ].joined(separator: "\n")
-        let parsed = try SyntaxParser.parse(source: source)
-        XCTAssertEqual(parsed.source(), source)
-        let documentation = parsed.api().first?.documentation
-        XCTAssertEqual(documentation?.last?.documentationComment.text, "...&#x2D;...")
-    }
+    let source = [
+      "/// ...&#x2D;...",
+      "public func function() {}"
+    ].joined(separator: "\n")
+    let parsed = try SyntaxParser.parse(source: source)
+    XCTAssertEqual(parsed.source(), source)
+    let documentation = parsed.api().first?.documentation
+    XCTAssertEqual(documentation?.last?.documentationComment.text, "...&#x2D;...")
+  }
 
-    func testMarkdownQuotation() throws {
-        // Untracked.
+  func testMarkdownQuotation() throws {
+    // Untracked.
 
-        let source = [
-            "/// ...",
-            "///",
-            "/// > Line 1",
-            "/// >",
-            "/// > Line 2",
-            "/// >",
-            "/// > Line 3",
-            "public func function() {}"
-        ].joined(separator: "\n")
-        let parsed = try SyntaxParser.parse(source: source)
-        XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)
-        let documentation = parsed.api().first?.documentation
-        XCTAssertEqual(documentation?.last?.documentationComment.text, "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3")
-    }
+    let source = [
+      "/// ...",
+      "///",
+      "/// > Line 1",
+      "/// >",
+      "/// > Line 2",
+      "/// >",
+      "/// > Line 3",
+      "public func function() {}"
+    ].joined(separator: "\n")
+    let parsed = try SyntaxParser.parse(source: source)
+    XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)
+    let documentation = parsed.api().first?.documentation
+    XCTAssertEqual(
+      documentation?.last?.documentationComment.text,
+      "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3"
+    )
+  }
 
-    func testPackageDeclaration() {
-        // Untracked.
+  func testPackageDeclaration() {
+    // Untracked.
 
-        let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
-        let highlighted = declaration.syntaxHighlightedHTML(
-            inline: false,
-            internalIdentifiers: ["SomePackage"],
-            symbolLinks: ["SomePackage": "some/page"])
-        let html = HTMLPage(
-            content: highlighted,
-            cssPath: "../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css")
-        let location = testSpecificationDirectory().appendingPathComponent("Source/Package Declaration.html")
-        compare(html, against: location, overwriteSpecificationInsteadOfFailing: false)
-    }
+    let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
+    let highlighted = declaration.syntaxHighlightedHTML(
+      inline: false,
+      internalIdentifiers: ["SomePackage"],
+      symbolLinks: ["SomePackage": "some/page"]
+    )
+    let html = HTMLPage(
+      content: highlighted,
+      cssPath: "../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
+    )
+    let location = testSpecificationDirectory().appendingPathComponent(
+      "Source/Package Declaration.html"
+    )
+    compare(html, against: location, overwriteSpecificationInsteadOfFailing: false)
+  }
 }

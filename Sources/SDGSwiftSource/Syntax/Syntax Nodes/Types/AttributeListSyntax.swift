@@ -25,9 +25,9 @@ extension AttributeListSyntax {
     var builtIn: [AttributeSyntax] = []
     var custom: [Syntax] = []
     for entry in unsorted {
-      if let attribute = entry as? AttributeSyntax { // Built‐in
+      if let attribute = entry as? AttributeSyntax {  // Built‐in
         builtIn.append(attribute)
-      } else { // Custom
+      } else {  // Custom
         custom.append(entry)
       }
     }

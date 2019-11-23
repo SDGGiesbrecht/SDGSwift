@@ -18,32 +18,35 @@ import SwiftSyntax
 
 import SDGSwiftSource
 
-internal protocol AccessControlled : Syntax {
-    var modifiers: ModifierListSyntax? { get }
-    func withModifiers(_ modifiers: ModifierListSyntax?) -> Self
+internal protocol AccessControlled: Syntax {
+  var modifiers: ModifierListSyntax? { get }
+  func withModifiers(_ modifiers: ModifierListSyntax?) -> Self
 }
 
 extension AccessControlled {
-    func madePublic(_ inProtocol: Bool = false) -> Self {
-        if inProtocol {
-            return self
-        }
-
-        var modifiers = self.modifiers?.map({ $0 }) ?? []
-        if ¬modifiers.contains(where: { $0.name.text == "open" }) {
-            modifiers.prepend(SyntaxFactory.makeDeclModifier(
-                name: SyntaxFactory.makeToken(.publicKeyword, trailingTrivia: .spaces(1)),
-                detailLeftParen: nil,
-                detail: nil,
-                detailRightParen: nil))
-        }
-        return withModifiers(SyntaxFactory.makeModifierList(modifiers))
+  func madePublic(_ inProtocol: Bool = false) -> Self {
+    if inProtocol {
+      return self
     }
+
+    var modifiers = self.modifiers?.map({ $0 }) ?? []
+    if ¬modifiers.contains(where: { $0.name.text == "open" }) {
+      modifiers.prepend(
+        SyntaxFactory.makeDeclModifier(
+          name: SyntaxFactory.makeToken(.publicKeyword, trailingTrivia: .spaces(1)),
+          detailLeftParen: nil,
+          detail: nil,
+          detailRightParen: nil
+        )
+      )
+    }
+    return withModifiers(SyntaxFactory.makeModifierList(modifiers))
+  }
 }
 
-extension ProtocolDeclSyntax : AccessControlled {}
+extension ProtocolDeclSyntax: AccessControlled {}
 
-extension InitializerDeclSyntax : AccessControlled {}
-extension VariableDeclSyntax : AccessControlled {}
-extension SubscriptDeclSyntax : AccessControlled {}
-extension FunctionDeclSyntax : AccessControlled {}
+extension InitializerDeclSyntax: AccessControlled {}
+extension VariableDeclSyntax: AccessControlled {}
+extension SubscriptDeclSyntax: AccessControlled {}
+extension FunctionDeclSyntax: AccessControlled {}

@@ -14,12 +14,12 @@
 
 import SwiftSyntax
 
-internal protocol Attributed : Syntax {
-    var attributes: AttributeListSyntax? { get }
+internal protocol Attributed: Syntax {
+  var attributes: AttributeListSyntax? { get }
 }
 
 extension Attributed {
-    internal func isUnavailable() -> Bool {
-        return attributes?.indicatesAbsence() == true
-    }
+  internal func isUnavailable() -> Bool {
+    return attributes?.indicatesAbsence() == true
+  }
 }

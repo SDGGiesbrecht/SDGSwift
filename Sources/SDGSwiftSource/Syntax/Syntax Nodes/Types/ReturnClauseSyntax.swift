@@ -16,17 +16,21 @@ import SwiftSyntax
 
 extension ReturnClauseSyntax {
 
-    internal func normalizedForFunctionDeclaration() -> ReturnClauseSyntax? {
-        let result = normalizedForSubscriptDeclaration()
-        if result.returnType.source() == "Void" {
-            return nil
-        }
-        return result
+  internal func normalizedForFunctionDeclaration() -> ReturnClauseSyntax? {
+    let result = normalizedForSubscriptDeclaration()
+    if result.returnType.source() == "Void" {
+      return nil
     }
+    return result
+  }
 
-    internal func normalizedForSubscriptDeclaration() -> ReturnClauseSyntax {
-        return SyntaxFactory.makeReturnClause(
-            arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-            returnType: returnType.normalized())
-    }
+  internal func normalizedForSubscriptDeclaration() -> ReturnClauseSyntax {
+    return SyntaxFactory.makeReturnClause(
+      arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(
+        leadingTrivia: .spaces(1),
+        trailingTrivia: .spaces(1)
+      ),
+      returnType: returnType.normalized()
+    )
+  }
 }

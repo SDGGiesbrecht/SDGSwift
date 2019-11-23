@@ -14,7 +14,7 @@
 
 extension Sequence {
 
-    internal var first: Element? {
-        return first(where: { _ in true })
-    }
+  internal var first: Element? {
+    return first(where: { _ in true })
+  }
 }

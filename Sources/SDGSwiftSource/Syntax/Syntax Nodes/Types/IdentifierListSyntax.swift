@@ -16,7 +16,7 @@ import SwiftSyntax
 
 extension IdentifierListSyntax {
 
-    internal func normalizedPrecedenceGroupAndDesignatedTypes() -> IdentifierListSyntax {
-        return SyntaxFactory.makeIdentifierList(compactMap({ $0.generallyNormalized() }))
-    }
+  internal func normalizedPrecedenceGroupAndDesignatedTypes() -> IdentifierListSyntax {
+    return SyntaxFactory.makeIdentifierList(compactMap({ $0.generallyNormalized() }))
+  }
 }

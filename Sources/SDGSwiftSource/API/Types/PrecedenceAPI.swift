@@ -15,29 +15,33 @@
 import SwiftSyntax
 
 /// An operator precedence group.
-public final class PrecedenceAPI : _APIElementBase, APIElementProtocol, DeclaredAPIElement, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+  _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
+  _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: PrecedenceGroupDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: PrecedenceGroupDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: PrecedenceGroupDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: PrecedenceGroupDeclSyntax
 
-    // MARK: - UniquelyDeclaredAPIElement
+  // MARK: - UniquelyDeclaredAPIElement
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: PrecedenceGroupDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: PrecedenceGroupDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 }

@@ -14,13 +14,15 @@
 
 import SwiftSyntax
 
-internal protocol UniquelyDeclaredOverloadableAPIElement : _OverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement where Declaration : OverloadableAPIDeclaration {}
+internal protocol UniquelyDeclaredOverloadableAPIElement: _OverloadableAPIElement,
+  _UniquelyDeclaredSyntaxAPIElement
+where Declaration: OverloadableAPIDeclaration {}
 
 extension UniquelyDeclaredOverloadableAPIElement {
 
-    // MARK: - OverloadableAPIElement
+  // MARK: - OverloadableAPIElement
 
-    internal func genericOverloadPattern() -> Syntax {
-        return declaration.overloadPattern()
-    }
+  internal func genericOverloadPattern() -> Syntax {
+    return declaration.overloadPattern()
+  }
 }

@@ -16,11 +16,11 @@ import SwiftSyntax
 
 extension TypeInheritanceClauseSyntax {
 
-    internal var conformances: [ConformanceAPI] {
-        var result: [ConformanceAPI] = []
-        for inheritance in inheritedTypeCollection {
-            result.append(ConformanceAPI(type: inheritance.typeName))
-        }
-        return result
+  internal var conformances: [ConformanceAPI] {
+    var result: [ConformanceAPI] = []
+    for inheritance in inheritedTypeCollection {
+      result.append(ConformanceAPI(type: inheritance.typeName))
     }
+    return result
+  }
 }

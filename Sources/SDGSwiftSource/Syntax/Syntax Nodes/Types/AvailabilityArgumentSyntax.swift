@@ -18,9 +18,10 @@ import SwiftSyntax
 
 extension AvailabilityArgumentSyntax {
 
-    internal func normalized() -> AvailabilityArgumentSyntax {
-        return SyntaxFactory.makeAvailabilityArgument(
-            entry: entry.normalizedAvailabilityArgument(),
-            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
-    }
+  internal func normalized() -> AvailabilityArgumentSyntax {
+    return SyntaxFactory.makeAvailabilityArgument(
+      entry: entry.normalizedAvailabilityArgument(),
+      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+    )
+  }
 }

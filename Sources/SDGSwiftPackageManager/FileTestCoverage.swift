@@ -17,23 +17,23 @@ import Foundation
 /// A test coverage report for a single file.
 public struct FileTestCoverage {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates a test coverage report for a single file.
-    ///
-    /// - Parameters:
-    ///     - file: The URL of the corresponding file.
-    ///     - regions: The regions of the file.
-    public init(file: URL, regions: [CoverageRegion]) {
-        self.file = file
-        self.regions = regions
-    }
+  /// Creates a test coverage report for a single file.
+  ///
+  /// - Parameters:
+  ///     - file: The URL of the corresponding file.
+  ///     - regions: The regions of the file.
+  public init(file: URL, regions: [CoverageRegion]) {
+    self.file = file
+    self.regions = regions
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The URL of the corresponding file.
-    public let file: URL
+  /// The URL of the corresponding file.
+  public let file: URL
 
-    /// The regions of the file.
-    public let regions: [CoverageRegion]
+  /// The regions of the file.
+  public let regions: [CoverageRegion]
 }

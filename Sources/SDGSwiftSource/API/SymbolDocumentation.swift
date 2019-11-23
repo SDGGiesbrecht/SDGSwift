@@ -15,17 +15,17 @@
 /// Symbol documentation.
 public struct SymbolDocumentation {
 
-    internal init(_ documentation: DocumentationSyntax) {
-        self.documentationComment = documentation
-    }
+  internal init(_ documentation: DocumentationSyntax) {
+    self.documentationComment = documentation
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// Any developer line comments preceding the documentation.
-    ///
-    /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
-    public internal(set) var developerComments: [LineDeveloperCommentSyntax] = []
+  /// Any developer line comments preceding the documentation.
+  ///
+  /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
+  public internal(set) var developerComments: [LineDeveloperCommentSyntax] = []
 
-    /// The documentation itself.
-    public let documentationComment: DocumentationSyntax
+  /// The documentation itself.
+  public let documentationComment: DocumentationSyntax
 }

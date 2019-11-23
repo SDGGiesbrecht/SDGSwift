@@ -13,7 +13,7 @@
  */
 
 public protocol Protocol {
-    associatedtype _HiddenAssociatedType
+  associatedtype _HiddenAssociatedType
 }
 
 public protocol _HiddenProtocol {}

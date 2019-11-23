@@ -30,10 +30,13 @@ extension Git {
   ///
   /// - Parameters:
   ///     - repository: The uninitialized repository.
-  public static func initialize(_ repository: PackageRepository) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
+  public static func initialize(_ repository: PackageRepository) -> Result<
+    Void, VersionedExternalProcessExecutionError<Git>
+  > {
 
-    let versions = Version(1, 5, 0) ..< currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions).map { _ in () }
+    let versions = Version(1, 5, 0)..<currentMajor.compatibleVersions.upperBound
+    return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions).map
+    { _ in () }
   }
 
   /// Commits existing changes.
@@ -43,21 +46,27 @@ extension Git {
   ///     - description: A description for the commit.
   public static func commitChanges(
     in repository: PackageRepository,
-    description: StrictString) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
-    let versions = Version(1, 5, 3) ..< currentMajor.compatibleVersions.upperBound
+    description: StrictString
+  ) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
+    let versions = Version(1, 5, 3)..<currentMajor.compatibleVersions.upperBound
     return runCustomSubcommand(
       [
         "add",
         "."
       ],
       in: repository.location,
-      versionConstraints: versions).map { _ in
+      versionConstraints: versions
+    ).map { _ in
 
-        return runCustomSubcommand([
+      return runCustomSubcommand(
+        [
           "commit",
           "\u{2D}\u{2D}message",
           String(description)
-        ], in: repository.location, versionConstraints: versions)
+        ],
+        in: repository.location,
+        versionConstraints: versions
+      )
     }
   }
 
@@ -66,12 +75,18 @@ extension Git {
   /// - Parameters:
   ///     - releaseVersion: The semantic version.
   ///     - repository: The repository to tag.
-  public static func tag(version releaseVersion: Version, in repository: PackageRepository) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
-    let versions = Version(1, 0, 0) ..< currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand([
-      "tag",
-      releaseVersion.string()
-    ], in: repository.location, versionConstraints: versions).map { _ in () }
+  public static func tag(version releaseVersion: Version, in repository: PackageRepository)
+    -> Result<Void, VersionedExternalProcessExecutionError<Git>>
+  {
+    let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
+    return runCustomSubcommand(
+      [
+        "tag",
+        releaseVersion.string()
+      ],
+      in: repository.location,
+      versionConstraints: versions
+    ).map { _ in () }
   }
 
   /// Checks for uncommitted changes or additions in the repository.
@@ -81,14 +96,19 @@ extension Git {
   ///
   /// - Returns: The report provided by Git. (An empty string if there are no changes.)
   public static func uncommittedChanges(
-    in repository: PackageRepository) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
+    in repository: PackageRepository
+  ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
 
-    let versions = Version(1, 6, 1) ..< currentMajor.compatibleVersions.upperBound
-    switch runCustomSubcommand([
-      "add",
-      ".",
-      "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
-    ], in: repository.location, versionConstraints: versions) {
+    let versions = Version(1, 6, 1)..<currentMajor.compatibleVersions.upperBound
+    switch runCustomSubcommand(
+      [
+        "add",
+        ".",
+        "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
+      ],
+      in: repository.location,
+      versionConstraints: versions
+    ) {
     case .failure(let error):
       return .failure(error)
     case .success:
@@ -102,19 +122,25 @@ extension Git {
   ///
   /// - Parameters:
   ///     - repository: The repository.
-  public static func ignoredFiles(in repository: PackageRepository) -> Result<[URL], VersionedExternalProcessExecutionError<Git>> {
-    let versions = Version(1, 7, 7) ..< currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand([
-      "status",
-      "\u{2D}\u{2D}ignored",
-      "\u{2D}\u{2D}porcelain"
-    ], in: repository.location, versionConstraints: versions).map { ignoredSummary in
+  public static func ignoredFiles(in repository: PackageRepository) -> Result<
+    [URL], VersionedExternalProcessExecutionError<Git>
+  > {
+    let versions = Version(1, 7, 7)..<currentMajor.compatibleVersions.upperBound
+    return runCustomSubcommand(
+      [
+        "status",
+        "\u{2D}\u{2D}ignored",
+        "\u{2D}\u{2D}porcelain"
+      ],
+      in: repository.location,
+      versionConstraints: versions
+    ).map { ignoredSummary in
       let indicator = Array("!! ".scalars)
       var result: [URL] = []
       for line in ignoredSummary.lines.lazy.map({ $0.line })
-        where line.hasPrefix(indicator) {
-          let relativePath = String(line.dropFirst(indicator.count))
-          result.append(repository.location.appendingPathComponent(relativePath))
+      where line.hasPrefix(indicator) {
+        let relativePath = String(line.dropFirst(indicator.count))
+        result.append(repository.location.appendingPathComponent(relativePath))
       }
       return result
     }

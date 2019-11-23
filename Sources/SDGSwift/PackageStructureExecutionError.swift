@@ -20,48 +20,50 @@ import SDGSwiftLocalizations
 
 extension Package {
 
-    /// An error encountered while executing a tool from a Swift package.
-    public enum ExecutionError : PresentableError {
+  /// An error encountered while executing a tool from a Swift package.
+  public enum ExecutionError: PresentableError {
 
-        /// Git encountered an error.
-        case gitError(VersionedExternalProcessExecutionError<Git>)
+    /// Git encountered an error.
+    case gitError(VersionedExternalProcessExecutionError<Git>)
 
-        /// Failed to build the tool.
-        case buildError(BuildError)
+    /// Failed to build the tool.
+    case buildError(BuildError)
 
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
 
-        /// The package did not produce an executable with any of the requested names.
-        case noSuchExecutable(requested: Set<StrictString>)
+    /// The package did not produce an executable with any of the requested names.
+    case noSuchExecutable(requested: Set<StrictString>)
 
-        /// The tool encountered an error during its execution.
-        case executionError(ExternalProcess.Error)
+    /// The tool encountered an error during its execution.
+    case executionError(ExternalProcess.Error)
 
-        // MARK: - PresentableError
+    // MARK: - PresentableError
 
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .gitError(let error):
-                return error.presentableDescription()
-            case .buildError(let error):
-                return error.presentableDescription()
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
-            case .noSuchExecutable(requested: let requested):
-                let list = StrictString(requested.sorted().joined(separator: "\n".scalars))
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .gitError(let error):
+        return error.presentableDescription()
+      case .buildError(let error):
+        return error.presentableDescription()
+      case .foundationError(let error):
+        return StrictString(error.localizedDescription)
+      case .noSuchExecutable(let requested):
+        let list = StrictString(requested.sorted().joined(separator: "\n".scalars))
 
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The package did not produce an executable with any of the requested names:\n\(list)"
-                    case .deutschDeutschland:
-                        return "Das Paket hat keine ausführbare Datei erzeugt, die mit einem der angeforderten Namen übereinstimmt:\n\(list)"
-                    }
-                }).resolved()
-            case .executionError(let error):
-                return error.presentableDescription()
-            }
-        }
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return
+              "The package did not produce an executable with any of the requested names:\n\(list)"
+          case .deutschDeutschland:
+            return
+              "Das Paket hat keine ausführbare Datei erzeugt, die mit einem der angeforderten Namen übereinstimmt:\n\(list)"
+          }
+        }).resolved()
+      case .executionError(let error):
+        return error.presentableDescription()
+      }
     }
+  }
 }

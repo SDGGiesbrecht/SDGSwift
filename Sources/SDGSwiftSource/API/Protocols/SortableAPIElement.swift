@@ -13,23 +13,23 @@
  */
 
 /// An API element type whose instances can be sorted.
-public protocol SortableAPIElement : APIElementProtocol, Comparable {}
+public protocol SortableAPIElement: APIElementProtocol, Comparable {}
 
 extension SortableAPIElement {
 
-    // MARK: - Comparable
+  // MARK: - Comparable
 
-    internal func comparisonIdentity() -> (String, String, String) {
-        return (genericName.source(), possibleDeclaration?.source() ?? "", constraints?.source() ?? "")
-    }
+  internal func comparisonIdentity() -> (String, String, String) {
+    return (genericName.source(), possibleDeclaration?.source() ?? "", constraints?.source() ?? "")
+  }
 
-    public static func < (precedingValue: Self, followingValue: Self) -> Bool {
-        return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
-    }
+  public static func < (precedingValue: Self, followingValue: Self) -> Bool {
+    return precedingValue.comparisonIdentity() < followingValue.comparisonIdentity()
+  }
 
-    // MARK: - Equatable
+  // MARK: - Equatable
 
-    public static func == (precedingValue: Self, followingValue: Self) -> Bool {
-        return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
-    }
+  public static func == (precedingValue: Self, followingValue: Self) -> Bool {
+    return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
+  }
 }

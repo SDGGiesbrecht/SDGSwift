@@ -16,15 +16,15 @@ import SDGLogic
 
 import SwiftSyntax
 
-internal class TriviaNormalizer : SyntaxRewriter {
-    override func visit(_ token: TokenSyntax) -> Syntax {
-        var token = token
-        if ¬token.leadingTrivia.isEmpty {
-            token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
-        }
-        if ¬token.trailingTrivia.isEmpty {
-            token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
-        }
-        return token
+internal class TriviaNormalizer: SyntaxRewriter {
+  override func visit(_ token: TokenSyntax) -> Syntax {
+    var token = token
+    if ¬token.leadingTrivia.isEmpty {
+      token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))
     }
+    if ¬token.trailingTrivia.isEmpty {
+      token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
+    }
+    return token
+  }
 }

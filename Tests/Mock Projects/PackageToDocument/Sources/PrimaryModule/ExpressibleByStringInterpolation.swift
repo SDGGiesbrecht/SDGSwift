@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct TypeExpressibleByStringInterpolation : ExpressibleByStringInterpolation {
-    public init(stringLiteral: String) {}
-    public init(stringInterpolation: DefaultStringInterpolation) {}
+public struct TypeExpressibleByStringInterpolation: ExpressibleByStringInterpolation {
+  public init(stringLiteral: String) {}
+  public init(stringInterpolation: DefaultStringInterpolation) {}
 }

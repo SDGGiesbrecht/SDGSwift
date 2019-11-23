@@ -14,6 +14,6 @@
 
 import SwiftSyntax
 
-internal protocol Inheritor : Syntax {
-    var inheritanceClause: TypeInheritanceClauseSyntax? { get }
+internal protocol Inheritor: Syntax {
+  var inheritanceClause: TypeInheritanceClauseSyntax? { get }
 }

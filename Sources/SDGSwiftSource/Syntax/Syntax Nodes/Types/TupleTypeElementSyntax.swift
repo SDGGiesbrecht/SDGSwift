@@ -18,15 +18,16 @@ import SwiftSyntax
 
 extension TupleTypeElementSyntax {
 
-    internal func normalized() -> TupleTypeElementSyntax {
-        return SyntaxFactory.makeTupleTypeElement(
-            inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
-            name: name?.generallyNormalized(),
-            secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
-            colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
-            type: type.normalized(),
-            ellipsis: ellipsis?.generallyNormalized(),
-            initializer: initializer?.normalizeForDefaultArgument(),
-            trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1)))
-    }
+  internal func normalized() -> TupleTypeElementSyntax {
+    return SyntaxFactory.makeTupleTypeElement(
+      inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
+      name: name?.generallyNormalized(),
+      secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
+      colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+      type: type.normalized(),
+      ellipsis: ellipsis?.generallyNormalized(),
+      initializer: initializer?.normalizeForDefaultArgument(),
+      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+    )
+  }
 }

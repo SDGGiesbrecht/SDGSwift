@@ -18,31 +18,34 @@ import SDGCollections
 import SwiftSyntax
 
 /// A subscript.
-public final class SubscriptAPI : _APIElementBase, SortableAPIElement, UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class SubscriptAPI: _APIElementBase, SortableAPIElement,
+  UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: SubscriptDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: SubscriptDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: SubscriptDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: SubscriptDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation)
-        self.constraints = constraints
-    }
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation)
+    self.constraints = constraints
+  }
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    internal typealias Declaration = SubscriptDeclSyntax
+  internal typealias Declaration = SubscriptDeclSyntax
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: SubscriptDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: SubscriptDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: SubscriptDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: SubscriptDeclSyntax
 }

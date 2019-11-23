@@ -12,24 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct CollectionType : Collection {
+public struct CollectionType: Collection {
 
-    public typealias Index = Int
-    public typealias Indices = DefaultIndices<Self>
+  public typealias Index = Int
+  public typealias Indices = DefaultIndices<Self>
 
-    public var startIndex: Int {
-        return 0
-    }
+  public var startIndex: Int {
+    return 0
+  }
 
-    public var endIndex: Int {
-        return 10
-    }
+  public var endIndex: Int {
+    return 10
+  }
 
-    public func index(after i: Int) -> Int {
-        return i + 1
-    }
+  public func index(after i: Int) -> Int {
+    return i + 1
+  }
 
-    public subscript(position: Int) -> Int {
-        return position
-    }
+  public subscript(position: Int) -> Int {
+    return position
+  }
 }

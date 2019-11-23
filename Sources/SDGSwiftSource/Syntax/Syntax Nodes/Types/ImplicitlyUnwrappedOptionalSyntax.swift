@@ -16,9 +16,10 @@ import SwiftSyntax
 
 extension ImplicitlyUnwrappedOptionalTypeSyntax {
 
-    internal func normalized() -> ImplicitlyUnwrappedOptionalTypeSyntax {
-        return SyntaxFactory.makeImplicitlyUnwrappedOptionalType(
-            wrappedType: wrappedType.normalized(),
-            exclamationMark: exclamationMark.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> ImplicitlyUnwrappedOptionalTypeSyntax {
+    return SyntaxFactory.makeImplicitlyUnwrappedOptionalType(
+      wrappedType: wrappedType.normalized(),
+      exclamationMark: exclamationMark.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

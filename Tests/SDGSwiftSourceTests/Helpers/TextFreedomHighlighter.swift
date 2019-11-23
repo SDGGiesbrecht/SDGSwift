@@ -18,14 +18,14 @@ import SwiftSyntax
 
 import SDGSwiftSource
 
-class TextFreedomHighlighter : Highlighter {
+class TextFreedomHighlighter: Highlighter {
 
-    static var targetTestFreedom: TextFreedom = .arbitrary
+  static var targetTestFreedom: TextFreedom = .arbitrary
 
-    override func shouldHighlight(_ token: TokenSyntax) -> Bool {
-        return token.textFreedom == type(of: self).targetTestFreedom
-    }
-    override func shouldHighlight(_ trivia: ExtendedTokenSyntax) -> Bool {
-        return trivia.kind.textFreedom == type(of: self).targetTestFreedom
-    }
+  override func shouldHighlight(_ token: TokenSyntax) -> Bool {
+    return token.textFreedom == type(of: self).targetTestFreedom
+  }
+  override func shouldHighlight(_ trivia: ExtendedTokenSyntax) -> Bool {
+    return trivia.kind.textFreedom == type(of: self).targetTestFreedom
+  }
 }

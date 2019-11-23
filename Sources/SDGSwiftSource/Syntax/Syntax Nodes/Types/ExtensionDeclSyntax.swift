@@ -16,31 +16,36 @@ import SDGLogic
 
 import SwiftSyntax
 
-extension ExtensionDeclSyntax : Attributed, APISyntax, Constrained, Hidable, Inheritor {
+extension ExtensionDeclSyntax: Attributed, APISyntax, Constrained, Hidable, Inheritor {
 
-    // MARK: - APISyntax
+  // MARK: - APISyntax
 
-    internal func isPublic() -> Bool {
-        return true
+  internal func isPublic() -> Bool {
+    return true
+  }
+
+  internal var shouldLookForChildren: Bool {
+    return true
+  }
+
+  internal func createAPI(children: [APIElement]) -> [APIElement] {
+    guard ¬children.isEmpty else {
+      return []
     }
+    return [
+      .extension(
+        ExtensionAPI(
+          type: extendedType,
+          constraints: genericWhereClause,
+          children: children
+        )
+      )
+    ]
+  }
 
-    internal var shouldLookForChildren: Bool {
-        return true
-    }
+  // MARK: - Hidable
 
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-        guard ¬children.isEmpty else {
-            return []
-        }
-        return [.extension(ExtensionAPI(
-            type: extendedType,
-            constraints: genericWhereClause,
-            children: children))]
-    }
-
-    // MARK: - Hidable
-
-    internal var hidabilityIdentifier: TokenSyntax? {
-        return extendedType.hidabilityIdentifier
-    }
+  internal var hidabilityIdentifier: TokenSyntax? {
+    return extendedType.hidabilityIdentifier
+  }
 }

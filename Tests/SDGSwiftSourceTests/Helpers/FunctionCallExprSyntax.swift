@@ -17,8 +17,8 @@ import SwiftSyntax
 @testable import SDGSwiftSource
 
 extension FunctionCallExprSyntax {
-    static func packageDeclaration(named name: String) -> FunctionCallExprSyntax {
-        /// Provides access to the internal function.
-        return FunctionCallExprSyntax.normalizedPackageDeclaration(name: name)
-    }
+  static func packageDeclaration(named name: String) -> FunctionCallExprSyntax {
+    /// Provides access to the internal function.
+    return FunctionCallExprSyntax.normalizedPackageDeclaration(name: name)
+  }
 }

@@ -22,43 +22,43 @@ import SDGSwiftPackageManager
 
 extension Xcode {
 
-    /// An error encountered while checking test coverage.
-    public enum CoverageReportingError : PresentableError {
+  /// An error encountered while checking test coverage.
+  public enum CoverageReportingError: PresentableError {
 
-        // MARK: - Cases
+    // MARK: - Cases
 
-        /// The package manager encountered an error.
-        case packageManagerError(SwiftCompiler.PackageLoadingError)
+    /// The package manager encountered an error.
+    case packageManagerError(SwiftCompiler.PackageLoadingError)
 
-        /// Foundation encountered an error.
-        case foundationError(Swift.Error)
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
 
-        /// Xcode encountered an error.
-        case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
+    /// Xcode encountered an error.
+    case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
 
-        /// The test coverage report could not be parsed.
-        case corruptTestCoverageReport
+    /// The test coverage report could not be parsed.
+    case corruptTestCoverageReport
 
-        // MARK: - PresentableError
+    // MARK: - PresentableError
 
-        public func presentableDescription() -> StrictString {
-            switch self {
-            case .packageManagerError(let error):
-                return error.presentableDescription()
-            case .foundationError(let error):
-                return StrictString(error.localizedDescription)
-            case .xcodeError(let error):
-                return error.presentableDescription()
-            case .corruptTestCoverageReport:
-                return UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "The test coverage report could not be parsed."
-                    case .deutschDeutschland:
-                        return "Die Testabdeckungsergebnisse konnten nicht zerteilt werden."
-                    }
-                }).resolved()
-            }
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .packageManagerError(let error):
+        return error.presentableDescription()
+      case .foundationError(let error):
+        return StrictString(error.localizedDescription)
+      case .xcodeError(let error):
+        return error.presentableDescription()
+      case .corruptTestCoverageReport:
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "The test coverage report could not be parsed."
+          case .deutschDeutschland:
+            return "Die Testabdeckungsergebnisse konnten nicht zerteilt werden."
+          }
+        }).resolved()
+      }
     }
+  }
 }

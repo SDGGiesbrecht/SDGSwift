@@ -15,38 +15,50 @@
 import CCommonMark
 
 /// Inline code use in documentation.
-public class InlineCodeSyntax : MarkdownSyntax {
+public class InlineCodeSyntax: MarkdownSyntax {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String) {
-        let openingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
-        self.openingDelimiter = openingDelimiter
+  internal init(node: cmark_node, in documentation: String) {
+    let openingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
+    self.openingDelimiter = openingDelimiter
 
-        let sourceText = node.literal ?? "" // @exempt(from: tests) Empty literal should never happen.
-        let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText, isSwift: nil)
-        self.source = source
+    let sourceText = node.literal ?? ""  // @exempt(from: tests) Empty literal should never happen.
+    let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText, isSwift: nil)
+    self.source = source
 
-        let closingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
-        self.closingDelimiter = closingDelimiter
+    let closingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
+    self.closingDelimiter = closingDelimiter
 
-        super.init(node: node, in: documentation, precedingChildren: [openingDelimiter, source, closingDelimiter])
-    }
+    super.init(
+      node: node,
+      in: documentation,
+      precedingChildren: [openingDelimiter, source, closingDelimiter]
+    )
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The opening delimiter.
-    public let openingDelimiter: ExtendedTokenSyntax
+  /// The opening delimiter.
+  public let openingDelimiter: ExtendedTokenSyntax
 
-    /// The contents of the inline code.
-    public let source: CodeFragmentSyntax
+  /// The contents of the inline code.
+  public let source: CodeFragmentSyntax
 
-    /// The closing delimiter.
-    public let closingDelimiter: ExtendedTokenSyntax
+  /// The closing delimiter.
+  public let closingDelimiter: ExtendedTokenSyntax
 
-    // MARK: - ExtendedSyntax
+  // MARK: - ExtendedSyntax
 
-    public override func renderedHTML(localization: String, internalIdentifiers: Set<String>, symbolLinks: [String: String]) -> String {
-        return source.syntaxHighlightedHTML(inline: true, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
-    }
+  public override func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String]
+  ) -> String {
+    return source.syntaxHighlightedHTML(
+      inline: true,
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks
+    )
+  }
 }

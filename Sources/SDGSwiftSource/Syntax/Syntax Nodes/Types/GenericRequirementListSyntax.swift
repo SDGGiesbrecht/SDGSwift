@@ -18,40 +18,42 @@ import SDGMathematics
 
 import SwiftSyntax
 
-extension GenericRequirementListSyntax : Mergeable {
+extension GenericRequirementListSyntax: Mergeable {
 
-    internal func normalized() -> GenericRequirementListSyntax {
-        var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(by: GenericRequirementListSyntax.arrangeGenericRequirements)
-        if ¬requirements.isEmpty {
-            let last = requirements.removeLast()
-            requirements.append(last.normalizedGenericRequirement(comma: false))
-        }
-        return SyntaxFactory.makeGenericRequirementList(requirements)
+  internal func normalized() -> GenericRequirementListSyntax {
+    var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(
+      by: GenericRequirementListSyntax.arrangeGenericRequirements
+    )
+    if ¬requirements.isEmpty {
+      let last = requirements.removeLast()
+      requirements.append(last.normalizedGenericRequirement(comma: false))
     }
+    return SyntaxFactory.makeGenericRequirementList(requirements)
+  }
 
-    private enum Group : OrderedEnumeration {
-        case conformance
-        case sameType
-        case unknown
+  private enum Group: OrderedEnumeration {
+    case conformance
+    case sameType
+    case unknown
+  }
+  private static func group(for requirement: Syntax) -> Group {
+    switch requirement {
+    case is ConformanceRequirementSyntax:
+      return .conformance
+    case is SameTypeRequirementSyntax:
+      return .sameType
+    default:  // @exempt(from: tests)
+      requirement.warnUnidentified()
+      return .unknown
     }
-    private static func group(for requirement: Syntax) -> Group {
-        switch requirement {
-        case is ConformanceRequirementSyntax:
-            return .conformance
-        case is SameTypeRequirementSyntax:
-            return .sameType
-        default: // @exempt(from: tests)
-            requirement.warnUnidentified()
-            return .unknown
-        }
-    }
-    private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
-        return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
-    }
+  }
+  private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
+    return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
+  }
 
-    // MARK: - Mergeable
+  // MARK: - Mergeable
 
-    internal mutating func merge(with other: GenericRequirementListSyntax) {
-        self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
-    }
+  internal mutating func merge(with other: GenericRequirementListSyntax) {
+    self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
+  }
 }

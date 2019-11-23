@@ -13,21 +13,21 @@
  */
 
 /// A heading in source code.
-public class SourceHeadingSyntax : ExtendedSyntax {
+public class SourceHeadingSyntax: ExtendedSyntax {
 
-    internal init(mark: String, heading: String) {
-        let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
-        self.mark = markSyntax
+  internal init(mark: String, heading: String) {
+    let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
+    self.mark = markSyntax
 
-        let headingSyntax = ExtendedTokenSyntax(text: heading, kind: .sourceHeadingText)
-        self.heading = headingSyntax
+    let headingSyntax = ExtendedTokenSyntax(text: heading, kind: .sourceHeadingText)
+    self.heading = headingSyntax
 
-        super.init(children: [markSyntax, headingSyntax])
-    }
+    super.init(children: [markSyntax, headingSyntax])
+  }
 
-    /// The delimiter.
-    let mark: ExtendedTokenSyntax
+  /// The delimiter.
+  let mark: ExtendedTokenSyntax
 
-    /// The heading.
-    let heading: ExtendedTokenSyntax
+  /// The heading.
+  let heading: ExtendedTokenSyntax
 }

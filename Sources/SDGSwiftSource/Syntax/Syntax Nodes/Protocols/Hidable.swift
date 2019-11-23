@@ -17,13 +17,13 @@ import SDGLogic
 import SwiftSyntax
 
 internal protocol Hidable {
-    var hidabilityIdentifier: TokenSyntax? { get }
+  var hidabilityIdentifier: TokenSyntax? { get }
 }
 
 extension Hidable {
 
-    internal var isHidden: Bool {
-        let text = hidabilityIdentifier?.text
-        return text?.hasPrefix("_") == true ∧ text ≠ "_"
-    }
+  internal var isHidden: Bool {
+    let text = hidabilityIdentifier?.text
+    return text?.hasPrefix("_") == true ∧ text ≠ "_"
+  }
 }

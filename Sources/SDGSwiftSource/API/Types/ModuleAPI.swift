@@ -23,7 +23,9 @@ import PackageModel
 import SDGSwiftPackageManager
 
 /// A Swift module.
-public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredManifestAPIElement {
+public final class ModuleAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+  _UniquelyDeclaredManifestAPIElement
+{
 
   /// Creates a module API instance by parsing the specified target’s sources.
   ///
@@ -38,7 +40,8 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     try self.init(
       documentation: manifestDeclaration?.documentation ?? [],
       declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name),
-      sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) }))
+      sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) })
+    )
   }
 
   /// Creates a module API instance by parsing the specified source files.
@@ -50,7 +53,8 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
   public convenience init(
     documentation: [SymbolDocumentation],
     declaration: FunctionCallExprSyntax,
-    sources: [URL]) throws {
+    sources: [URL]
+  ) throws {
 
     self.init(documentation: documentation, declaration: declaration)
     var api: [APIElement] = []
@@ -76,7 +80,8 @@ public final class ModuleAPI : _APIElementBase, _NonOverloadableAPIElement, Sort
     alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
     constraints: GenericWhereClauseSyntax?,
     name: TokenSyntax,
-    children: [APIElement]) {
+    children: [APIElement]
+  ) {
 
     self.declaration = declaration
     self.name = name

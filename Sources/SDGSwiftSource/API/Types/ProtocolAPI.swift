@@ -17,33 +17,36 @@ import SDGCollections
 import SwiftSyntax
 
 /// A protocol.
-public final class ProtocolAPI : _APIElementBase, APIElementProtocol, _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement {
+public final class ProtocolAPI: _APIElementBase, APIElementProtocol, _NonOverloadableAPIElement,
+  SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+{
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(
-        documentation: [SymbolDocumentation],
-        alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax,
-        constraints: GenericWhereClauseSyntax?,
-        name: ProtocolDeclSyntax,
-        children: [APIElement]) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax,
+    constraints: GenericWhereClauseSyntax?,
+    name: ProtocolDeclSyntax,
+    children: [APIElement]
+  ) {
 
-        self.declaration = declaration
-        self.name = name
-        super.init(documentation: documentation, children: children)
-        self.constraints = constraints
+    self.declaration = declaration
+    self.name = name
+    super.init(documentation: documentation, children: children)
+    self.constraints = constraints
 
-        for child in children {
-            child.elementBase.isProtocolRequirement = true
-        }
+    for child in children {
+      child.elementBase.isProtocolRequirement = true
     }
+  }
 
-    // MARK: - DeclaredAPIElement
+  // MARK: - DeclaredAPIElement
 
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-    /// The element’s declaration.
-    public internal(set) var declaration: ProtocolDeclSyntax
-    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-    /// The element’s name.
-    public let name: ProtocolDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+  /// The element’s declaration.
+  public internal(set) var declaration: ProtocolDeclSyntax
+  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+  /// The element’s name.
+  public let name: ProtocolDeclSyntax
 }

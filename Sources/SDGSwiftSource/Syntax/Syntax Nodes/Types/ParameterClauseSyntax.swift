@@ -16,50 +16,64 @@ import SwiftSyntax
 
 extension ParameterClauseSyntax {
 
-    internal func normalizedForDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> ParameterClauseSyntax {
-        return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-            parameterList: parameterList.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalizedForDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
+    -> ParameterClauseSyntax
+  {
+    return SyntaxFactory.makeParameterClause(
+      leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+      parameterList: parameterList.normalizedForDeclaration(labelBehaviour: labelBehaviour),
+      rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 
-    internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> ParameterClauseSyntax {
-        return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-            parameterList: parameterList.forOverloadPattern(labelBehaviour: labelBehaviour),
-            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
+    -> ParameterClauseSyntax
+  {
+    return SyntaxFactory.makeParameterClause(
+      leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+      parameterList: parameterList.forOverloadPattern(labelBehaviour: labelBehaviour),
+      rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 
-    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> ParameterClauseSyntax {
-        switch labelBehaviour {
-        case .function, .operator:
-            return SyntaxFactory.makeParameterClause(
-                leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-                parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
-                rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
-        case .subscript:
-            return SyntaxFactory.makeParameterClause(
-                leftParen: SyntaxFactory.makeToken(.leftSquareBracket),
-                parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
-                rightParen: SyntaxFactory.makeToken(.rightSquareBracket))
-        }
+  internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
+    -> ParameterClauseSyntax
+  {
+    switch labelBehaviour {
+    case .function, .operator:
+      return SyntaxFactory.makeParameterClause(
+        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+        parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
+        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    case .subscript:
+      return SyntaxFactory.makeParameterClause(
+        leftParen: SyntaxFactory.makeToken(.leftSquareBracket),
+        parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
+        rightParen: SyntaxFactory.makeToken(.rightSquareBracket)
+      )
     }
+  }
 
-    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<String> {
-        return parameterList.identifierList(labelBehaviour: labelBehaviour)
-    }
+  internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<
+    String
+  > {
+    return parameterList.identifierList(labelBehaviour: labelBehaviour)
+  }
 
-    internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
-        return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-            parameterList: parameterList.normalizedForAssociatedValue(),
-            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
+    return SyntaxFactory.makeParameterClause(
+      leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+      parameterList: parameterList.normalizedForAssociatedValue(),
+      rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 
-    internal func forAssociatedValueName() -> ParameterClauseSyntax {
-        return SyntaxFactory.makeParameterClause(
-            leftParen: leftParen,
-            parameterList: parameterList.forAssociatedValueName(),
-            rightParen: rightParen)
-    }
+  internal func forAssociatedValueName() -> ParameterClauseSyntax {
+    return SyntaxFactory.makeParameterClause(
+      leftParen: leftParen,
+      parameterList: parameterList.forAssociatedValueName(),
+      rightParen: rightParen
+    )
+  }
 }

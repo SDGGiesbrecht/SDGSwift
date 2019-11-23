@@ -14,11 +14,15 @@
 
 import Foundation
 
-public func _exportConfiguration(file: StaticString = #file, line: UInt = #line) { // @exempt(from: tests) Testing occurs beyond the reach of coverage tracking.
-    do {
-        let json = try JSONEncoder().encode([Configuration.registered])
-        print(String(data: json, encoding: .utf8)!)
-    } catch {
-        fatalError(error.localizedDescription, file: file, line: line)
-    }
+public func _exportConfiguration(
+  file: StaticString = #file,
+  line: UInt = #line
+) {  // @exempt(from: tests)
+  // Testing occurs beyond the reach of coverage tracking.
+  do {
+    let json = try JSONEncoder().encode([Configuration.registered])
+    print(String(data: json, encoding: .utf8)!)
+  } catch {
+    fatalError(error.localizedDescription, file: file, line: line)
+  }
 }

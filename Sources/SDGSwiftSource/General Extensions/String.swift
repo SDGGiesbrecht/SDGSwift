@@ -18,12 +18,15 @@ import SDGLogic
 
 extension String {
 
-    internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
-        #if UNIDENTIFIED_SYNTAX_WARNINGS
-        if first ≠ "_" {
-            let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
-            print("Unidentified token: \(self) (\(fileName).\(function))")
-        }
-        #endif
-    }
+  internal func warnUnidentified(
+    file: StaticString = #file,
+    function: StaticString = #function
+  ) {  // @exempt(from: tests)
+    #if UNIDENTIFIED_SYNTAX_WARNINGS
+      if first ≠ "_" {
+        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
+        print("Unidentified token: \(self) (\(fileName).\(function))")
+      }
+    #endif
+  }
 }

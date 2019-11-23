@@ -14,26 +14,29 @@
 
 import SwiftSyntax
 
-extension IdentifierPatternSyntax : Hidable {
+extension IdentifierPatternSyntax: Hidable {
 
-    internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
-        return SyntaxFactory.makeIdentifierPattern(
-            identifier: identifier.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
+    return SyntaxFactory.makeIdentifierPattern(
+      identifier: identifier.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 
-    internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
-        return SyntaxFactory.makeIdentifierPattern(
-            identifier: identifier)
-    }
+  internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
+    return SyntaxFactory.makeIdentifierPattern(
+      identifier: identifier
+    )
+  }
 
-    internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
-        return SyntaxFactory.makeIdentifierPattern(
-            identifier: identifier)
-    }
+  internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
+    return SyntaxFactory.makeIdentifierPattern(
+      identifier: identifier
+    )
+  }
 
-    // MARK: - Hidable
+  // MARK: - Hidable
 
-    internal var hidabilityIdentifier: TokenSyntax? {
-        return identifier
-    }
+  internal var hidabilityIdentifier: TokenSyntax? {
+    return identifier
+  }
 }

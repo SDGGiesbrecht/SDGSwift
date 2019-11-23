@@ -16,10 +16,11 @@ import SwiftSyntax
 
 extension MetatypeTypeSyntax {
 
-    internal func normalized() -> MetatypeTypeSyntax {
-        return SyntaxFactory.makeMetatypeType(
-            baseType: baseType.normalized(),
-            period: period.generallyNormalizedAndMissingInsteadOfNil(),
-            typeOrProtocol: typeOrProtocol.generallyNormalizedAndMissingInsteadOfNil())
-    }
+  internal func normalized() -> MetatypeTypeSyntax {
+    return SyntaxFactory.makeMetatypeType(
+      baseType: baseType.normalized(),
+      period: period.generallyNormalizedAndMissingInsteadOfNil(),
+      typeOrProtocol: typeOrProtocol.generallyNormalizedAndMissingInsteadOfNil()
+    )
+  }
 }

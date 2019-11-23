@@ -13,5 +13,5 @@
  */
 
 internal protocol Mergeable {
-    mutating func merge(with other: Self)
+  mutating func merge(with other: Self)
 }

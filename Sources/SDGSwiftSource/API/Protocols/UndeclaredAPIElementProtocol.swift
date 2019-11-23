@@ -14,23 +14,23 @@
 
 import SwiftSyntax
 
-internal protocol _UndeclaredAPIElementProtocol : _NonOverloadableAPIElement, SortableAPIElement {
-    var type: TypeSyntax { get }
+internal protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
+  var type: TypeSyntax { get }
 }
 
 extension _UndeclaredAPIElementProtocol {
 
-    public var possibleDeclaration: Syntax? {
-        return nil
-    }
+  public var possibleDeclaration: Syntax? {
+    return nil
+  }
 
-    public var genericName: Syntax {
-        return type
-    }
+  public var genericName: Syntax {
+    return type
+  }
 
-    // MARK: - APIElementProtocol
+  // MARK: - APIElementProtocol
 
-    public func _shallowIdentifierList() -> Set<String> {
-        return []
-    }
+  public func _shallowIdentifierList() -> Set<String> {
+    return []
+  }
 }

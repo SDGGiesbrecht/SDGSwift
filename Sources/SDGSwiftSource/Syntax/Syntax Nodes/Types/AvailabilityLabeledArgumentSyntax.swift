@@ -18,10 +18,11 @@ import SwiftSyntax
 
 extension AvailabilityLabeledArgumentSyntax {
 
-    internal func normalized() -> AvailabilityLabeledArgumentSyntax {
-        return SyntaxFactory.makeAvailabilityLabeledArgument(
-            label: label.generallyNormalizedAndMissingInsteadOfNil(),
-            colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-            value: value.normalizedAvailability())
-    }
+  internal func normalized() -> AvailabilityLabeledArgumentSyntax {
+    return SyntaxFactory.makeAvailabilityLabeledArgument(
+      label: label.generallyNormalizedAndMissingInsteadOfNil(),
+      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+      value: value.normalizedAvailability()
+    )
+  }
 }

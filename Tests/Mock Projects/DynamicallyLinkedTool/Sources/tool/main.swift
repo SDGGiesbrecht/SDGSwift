@@ -17,8 +17,8 @@ import Foundation
 import LibraryB
 
 if CommandLine.arguments.contains("fail") {
-    print("Failed.")
-    exit(1)
+  print("Failed.")
+  exit(1)
 }
 
 print(libraryB())

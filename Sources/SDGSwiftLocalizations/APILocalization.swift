@@ -14,13 +14,13 @@
 
 import SDGLocalization
 
-public enum APILocalization : String, CaseIterable, InputLocalization {
+public enum APILocalization: String, CaseIterable, InputLocalization {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    case englishCanada = "en\u{2D}CA"
+  case englishCanada = "en\u{2D}CA"
 
-    // MARK: - Localization
+  // MARK: - Localization
 
-    public static let fallbackLocalization: APILocalization = .englishCanada
+  public static let fallbackLocalization: APILocalization = .englishCanada
 }

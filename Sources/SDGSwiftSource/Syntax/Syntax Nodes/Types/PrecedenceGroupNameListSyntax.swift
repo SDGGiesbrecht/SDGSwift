@@ -18,13 +18,13 @@ import SwiftSyntax
 
 extension PrecedenceGroupNameListSyntax {
 
-    internal func normalizedForAPIDeclaration() -> PrecedenceGroupNameListSyntax {
-        let normalized = map({ $0.normalizedForAPIDeclaration(comma: true) })
-        var sorted = normalized.sorted(by: PrecedenceGroupNameElementSyntax.arrange)
-        if ¬sorted.isEmpty {
-            let last = sorted.removeLast()
-            sorted.append(last.normalizedForAPIDeclaration(comma: false))
-        }
-        return SyntaxFactory.makePrecedenceGroupNameList(sorted)
+  internal func normalizedForAPIDeclaration() -> PrecedenceGroupNameListSyntax {
+    let normalized = map({ $0.normalizedForAPIDeclaration(comma: true) })
+    var sorted = normalized.sorted(by: PrecedenceGroupNameElementSyntax.arrange)
+    if ¬sorted.isEmpty {
+      let last = sorted.removeLast()
+      sorted.append(last.normalizedForAPIDeclaration(comma: false))
     }
+    return SyntaxFactory.makePrecedenceGroupNameList(sorted)
+  }
 }

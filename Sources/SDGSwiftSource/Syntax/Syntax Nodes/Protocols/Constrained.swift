@@ -15,12 +15,12 @@
 import SwiftSyntax
 
 /// A declaration syntax node which includes constraints.
-public protocol Constrained : Syntax {
-    /// The constraint clause.
-    var genericWhereClause: GenericWhereClauseSyntax? { get }
-    /// Creates a new node by replacing the constraint clause.
-    ///
-    /// - Parameters:
-    ///     - clause: The new generic “where” clause.
-    func withGenericWhereClause(_ clause: GenericWhereClauseSyntax?) -> Self
+public protocol Constrained: Syntax {
+  /// The constraint clause.
+  var genericWhereClause: GenericWhereClauseSyntax? { get }
+  /// Creates a new node by replacing the constraint clause.
+  ///
+  /// - Parameters:
+  ///     - clause: The new generic “where” clause.
+  func withGenericWhereClause(_ clause: GenericWhereClauseSyntax?) -> Self
 }

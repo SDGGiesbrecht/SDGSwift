@@ -43,7 +43,7 @@ extension Configuration {
   ///  Exernal packages can be imported with this syntax:
   ///  import [module] // [url], [version], [product]
   ///  */
-  /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 2.5.0, SDGControlFlow
+  /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 2.5.0, SDGControlFlow
   ///
   /// // Initialize the configuration with its defaults.
   /// let configuration = SampleConfiguration()
@@ -65,10 +65,12 @@ extension Configuration {
   /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
   /// let minimumMacOSVersion = Version(10, 13)
   /// let version = Version(0, 12, 7)
-  /// let type = SampleConfiguration.self // Import it first if necessary.
+  /// let type = SampleConfiguration.self  // Import it first if necessary.
   ///
   /// // Assuming the above file is called “SampleConfigurationFile.swift”...
-  /// let name = UserFacing<StrictString, APILocalization>({ _ in return "SampleConfigurationFile" })
+  /// let name = UserFacing<StrictString, APILocalization>(
+  ///   { _ in return "SampleConfigurationFile" }
+  /// )
   ///
   /// // Change this to actually point at a directory containing the above file.
   /// let configuredDirectory: URL = wherever
@@ -79,7 +81,17 @@ extension Configuration {
   /// // A log to collect progress reports while loading. (Optional.)
   /// var log = String()
   ///
-  /// let loadedConfiguration = try SampleConfiguration.load(configuration: type, named: name, from: configuredDirectory, linkingAgainst: product, in: package, at: version, minimumMacOSVersion: minimumMacOSVersion, context: context, reportProgress: { print($0, to: &log) }).get()
+  /// let loadedConfiguration = try SampleConfiguration.load(
+  ///   configuration: type,
+  ///   named: name,
+  ///   from: configuredDirectory,
+  ///   linkingAgainst: product,
+  ///   in: package,
+  ///   at: version,
+  ///   minimumMacOSVersion: minimumMacOSVersion,
+  ///   context: context,
+  ///   reportProgress: { print($0, to: &log) }
+  /// ).get()
   /// XCTAssertEqual(loadedConfiguration.option, "Configured")
   /// ```
   ///
@@ -104,12 +116,22 @@ extension Configuration {
     at releaseVersion: Version,
     minimumMacOSVersion: Version,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization {
+  ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization {
 
     let nullContext: NullContext? = nil
-    return load(configuration: configuration, named: fileName, from: directory, linkingAgainst: product, in: package, at: releaseVersion, minimumMacOSVersion: minimumMacOSVersion, context: nullContext, reportProgress: reportProgress)
+    return load(
+      configuration: configuration,
+      named: fileName,
+      from: directory,
+      linkingAgainst: product,
+      in: package,
+      at: releaseVersion,
+      minimumMacOSVersion: minimumMacOSVersion,
+      context: nullContext,
+      reportProgress: reportProgress
+    )
   }
-  private struct NullContext : Context {}
+  private struct NullContext: Context {}
 
   /// Loads the configuration, providing it with additional context information.
   ///
@@ -136,7 +158,7 @@ extension Configuration {
     minimumMacOSVersion: Version,
     context: E?,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<C, Configuration.Error> where C : Configuration, L : InputLocalization, E : Context {
+  ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
 
     var jsonData: Data
     if let mock = Configuration.mockQueue.first {
@@ -169,9 +191,15 @@ extension Configuration {
       let parentDirectory = extensionRemoved.deletingLastPathComponent()
       let parentDirectoryNameOnly = parentDirectory.lastPathComponent
 
-      let configurationRepository = PackageRepository(at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(fileNameOnly))
+      let configurationRepository = PackageRepository(
+        at: cache.appendingPathComponent(parentDirectoryNameOnly).appendingPathComponent(
+          fileNameOnly
+        )
+      )
 
-      let mainLocation = configurationRepository.location.appendingPathComponent("Sources/configure/main.swift")
+      let mainLocation = configurationRepository.location.appendingPathComponent(
+        "Sources/configure/main.swift"
+      )
       var configurationContents: String
       do {
         configurationContents = try String(from: configurationFile)
@@ -180,7 +208,8 @@ extension Configuration {
       }
       configurationContents.append("\nimport SDGSwiftConfiguration\n_exportConfiguration()\n")
       if let existingMain = try? String(from: mainLocation),
-        existingMain == configurationContents {
+        existingMain == configurationContents
+      {
         // Already there.
       } else {
         do {
@@ -196,14 +225,16 @@ extension Configuration {
           let components = String(comment.contents).components(separatedBy: ", ") as [String]
           if components.count == 3 {
             if let url = URL(string: components[0]),
-              let version = Version(components[1]) {
+              let version = Version(components[1])
+            {
               dependencies.append((url, version, components[2]))
             }
           }
         }
       }
       let packages = dependencies.map({
-        return "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
+        return
+          "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
       }).joined(separator: "\n")
       let products = dependencies.map({
         return "            \u{22}\($0.product)\u{22},"
@@ -213,7 +244,9 @@ extension Configuration {
       var macOS = resolvedMacOS.string(droppingEmptyPatch: true)
       macOS.replaceMatches(for: ".", with: "_")
 
-      let manifestLocation = configurationRepository.location.appendingPathComponent("Package.swift")
+      let manifestLocation = configurationRepository.location.appendingPathComponent(
+        "Package.swift"
+      )
       var manifest = String(data: Resources.package, encoding: .utf8)!
       manifest.replaceMatches(for: "[*macOS*]", with: macOS)
       manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
@@ -222,7 +255,8 @@ extension Configuration {
       manifest.replaceMatches(for: "[*product*]", with: product)
       manifest.replaceMatches(for: "[*products*]", with: products)
       if let existingManifest = try? String(from: manifestLocation),
-        existingManifest == manifest {
+        existingManifest == manifest
+      {
         // Already there.
       } else {
         do {
@@ -261,7 +295,8 @@ extension Configuration {
         json = output
       }
       if json.first ≠ "[" {
-        json.drop(upTo: "\n[") // @exempt(from: tests) Only reachable when new Swift releases flag new errors in old configurations.
+        json.drop(upTo: "\n[")  // @exempt(from: tests)
+        // Only reachable when new Swift releases flag new errors in old configurations.
       }
 
       jsonData = json.file
@@ -274,7 +309,7 @@ extension Configuration {
       return .failure(.foundationError(error))
     }
     guard let registry = decoded.first else {
-      return .failure(.corruptConfiguration) // @exempt(from: tests)
+      return .failure(.corruptConfiguration)  // @exempt(from: tests)
     }
     guard let registered = registry else {
       return .failure(.emptyConfiguration)
@@ -282,7 +317,9 @@ extension Configuration {
     return .success(registered)
   }
 
-  internal static func reportForNoConfigurationFound() -> UserFacing<StrictString, InterfaceLocalization> {
+  internal static func reportForNoConfigurationFound() -> UserFacing<
+    StrictString, InterfaceLocalization
+  > {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -293,7 +330,9 @@ extension Configuration {
     })
   }
 
-  internal static func reportForLoading(file: URL) -> UserFacing<StrictString, InterfaceLocalization> {
+  internal static func reportForLoading(file: URL) -> UserFacing<
+    StrictString, InterfaceLocalization
+  > {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       let file = StrictString(file.lastPathComponent)
       switch localization {

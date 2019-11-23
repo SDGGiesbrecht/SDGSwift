@@ -15,6 +15,6 @@
 public func hidden() {}
 
 open class UnknownSuperclass {
-    init() {}
-    open func methodOverride() {}
+  init() {}
+  open func methodOverride() {}
 }

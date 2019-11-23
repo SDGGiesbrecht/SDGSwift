@@ -14,41 +14,41 @@
 
 extension Xcode {
 
-    /// An Xcode SDK.
-    public enum SDK : Equatable {
+  /// An Xcode SDK.
+  public enum SDK: Equatable {
 
-        /// macOS.
-        case macOS
+    /// macOS.
+    case macOS
 
-        /// iOS.
-        case iOS(simulator: Bool)
+    /// iOS.
+    case iOS(simulator: Bool)
 
-        /// watchOS.
-        case watchOS
+    /// watchOS.
+    case watchOS
 
-        /// tvOS.
-        case tvOS(simulator: Bool)
+    /// tvOS.
+    case tvOS(simulator: Bool)
 
-        /// The name used by the command line interface.
-        public var commandLineName: String {
-            switch self {
-            case .macOS:
-                return "macosx"
-            case .iOS(simulator: let simulator):
-                if simulator {
-                    return "iphonesimulator"
-                } else {
-                    return "iphoneos"
-                }
-            case .watchOS:
-                return "watchos"
-            case .tvOS(simulator: let simulator):
-                if simulator {
-                    return "appletvsimulator"
-                } else {
-                    return "appletvos"
-                }
-            }
+    /// The name used by the command line interface.
+    public var commandLineName: String {
+      switch self {
+      case .macOS:
+        return "macosx"
+      case .iOS(let simulator):
+        if simulator {
+          return "iphonesimulator"
+        } else {
+          return "iphoneos"
         }
+      case .watchOS:
+        return "watchos"
+      case .tvOS(let simulator):
+        if simulator {
+          return "appletvsimulator"
+        } else {
+          return "appletvos"
+        }
+      }
     }
+  }
 }

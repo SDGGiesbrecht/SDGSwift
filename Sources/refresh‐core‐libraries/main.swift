@@ -31,7 +31,7 @@ import SDGSwiftSource
 do {
   ProcessInfo.applicationIdentifier = "ca.solideogloria.SDGSwift.refresh‐core‐libraries"
 
-  let currentVersion = SwiftCompiler.version(forConstraints: Version(Int.min) ... Version(Int.max))!
+  let currentVersion = SwiftCompiler.version(forConstraints: Version(Int.min)...Version(Int.max))!
   let branchName = "swift\u{2D}\(currentVersion.string(droppingEmptyPatch: true))\u{2D}RELEASE"
   let modules: [String: (url: String, path: String)] = [
     "Swift": ("swift", "stdlib/public/core"),
@@ -40,65 +40,87 @@ do {
     "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public")
   ]
 
-  let resources = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/SDGSwiftSource/Core Libraries")
+  let resources = URL(fileURLWithPath: #file).deletingLastPathComponent()
+    .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(
+      "Resources/SDGSwiftSource/Core Libraries"
+    )
 
   moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
     let gitHubRepository = URL(string: "https://github.com/apple/" + module.url)!
-    try FileManager.default.withTemporaryDirectory(appropriateFor: URL(fileURLWithPath: #file)) { temporaryDirectory in
-      let cloneURL = temporaryDirectory.appendingPathComponent(module.url)
-      _ = try Shell.default.run(command: [
-        "git", "clone",
-        gitHubRepository.absoluteString,
-        cloneURL.path,
-        "\u{2D}\u{2D}branch", branchName,
-        "\u{2D}\u{2D}depth", "1"
-      ], reportProgress: { print($0) }).get()
+    try FileManager.default
+      .withTemporaryDirectory(
+        appropriateFor: URL(fileURLWithPath: #file)
+      ) { temporaryDirectory in
+        let cloneURL = temporaryDirectory.appendingPathComponent(module.url)
+        _ = try Shell.default.run(
+          command: [
+            "git", "clone",
+            gitHubRepository.absoluteString,
+            cloneURL.path,
+            "\u{2D}\u{2D}branch", branchName,
+            "\u{2D}\u{2D}depth", "1"
+          ],
+          reportProgress: { print($0) }
+        ).get()
 
-      var interface: [String] = []
+        var interface: [String] = []
 
-      var sources = try FileManager.default.deepFileEnumeration(in: cloneURL.appendingPathComponent(module.path))
-      if name == "Swift" {
-        for source in sources.filter({ $0.pathExtension == "gyb" }) {
+        var sources = try FileManager.default.deepFileEnumeration(
+          in: cloneURL.appendingPathComponent(module.path)
+        )
+        if name == "Swift" {
+          for source in sources.filter({ $0.pathExtension == "gyb" }) {
+            try autoreleasepool {
+              var normalized = try StrictString(from: source)
+              normalized.replaceMatches(for: "CMAKE_SIZEOF_VOID_P", with: "64")
+              try normalized.save(to: source)
+
+              _ = try Shell.default.run(
+                command: [
+                  "utils/gyb",
+                  source.path,
+                  "\u{2D}o", source.deletingPathExtension().path
+                ],
+                in: cloneURL
+              ).get()
+            }
+          }
+          sources = try FileManager.default.deepFileEnumeration(
+            in: cloneURL.appendingPathComponent(module.path)
+          )
+        }
+
+        sources = sources.filter { $0.pathExtension == "swift" }
+        sources = sources.sorted()
+        for source in sources {
           try autoreleasepool {
             var normalized = try StrictString(from: source)
-            normalized.replaceMatches(for: "CMAKE_SIZEOF_VOID_P", with: "64")
+            if source.lastPathComponent == "Array.swift"
+              ∨ source.lastPathComponent == "String.swift"
+            {
+              // #workaround(CommonMark 0.0.50100, Indexing bug leads to infinite loop?)
+              normalized.replaceMatches(
+                for: "///".scalars
+                  + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
+                  + "\n".scalars,
+                with: "\n".scalars
+              )
+            }
             try normalized.save(to: source)
-
-            _ = try Shell.default.run(command: [
-              "utils/gyb",
-              source.path,
-              "\u{2D}o", source.deletingPathExtension().path
-            ], in: cloneURL).get()
           }
         }
-        sources = try FileManager.default.deepFileEnumeration(in: cloneURL.appendingPathComponent(module.path))
+
+        let api = try ModuleAPI(
+          documentation: [],
+          declaration: SyntaxFactory.makeBlankFunctionCallExpr(),
+          sources: sources
+        )
+        APIElement.module(api).appendInheritables(to: &interface)
+        interface = interface.map({ $0.replacingMatches(for: "= default", with: "= x") })
+
+        let resource = resources.appendingPathComponent(name).appendingPathExtension("txt")
+        try interface.joined(separator: "\n").save(to: resource)
       }
-
-      sources = sources.filter { $0.pathExtension == "swift" }
-      sources = sources.sorted()
-      for source in sources {
-        try autoreleasepool {
-          var normalized = try StrictString(from: source)
-          if source.lastPathComponent == "Array.swift"
-            ∨ source.lastPathComponent == "String.swift" {
-            // #workaround(CommonMark 0.0.50100, Indexing bug leads to infinite loop?)
-            normalized.replaceMatches(
-              for: "///".scalars
-                + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
-                + "\n".scalars,
-              with: "\n".scalars)
-          }
-          try normalized.save(to: source)
-        }
-      }
-
-      let api = try ModuleAPI(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr(), sources: sources)
-      APIElement.module(api).appendInheritables(to: &interface)
-      interface = interface.map({ $0.replacingMatches(for: "= default", with: "= x") })
-
-      let resource = resources.appendingPathComponent(name).appendingPathExtension("txt")
-      try interface.joined(separator: "\n").save(to: resource)
-    }
   }
 } catch {
   fatalError("\(error)")

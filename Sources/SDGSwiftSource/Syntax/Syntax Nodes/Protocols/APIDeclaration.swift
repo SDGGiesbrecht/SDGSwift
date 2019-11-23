@@ -14,9 +14,9 @@
 
 import SwiftSyntax
 
-internal protocol APIDeclaration : Syntax {
-    associatedtype Name : Syntax
-    func normalizedAPIDeclaration() -> Self
-    func name() -> Name
-    func identifierList() -> Set<String>
+internal protocol APIDeclaration: Syntax {
+  associatedtype Name: Syntax
+  func normalizedAPIDeclaration() -> Self
+  func name() -> Name
+  func identifierList() -> Set<String>
 }

@@ -16,7 +16,7 @@ import SwiftSyntax
 
 extension CompositionTypeSyntax {
 
-    internal func normalized() -> CompositionTypeSyntax {
-        return SyntaxFactory.makeCompositionType(elements: elements.normalized())
-    }
+  internal func normalized() -> CompositionTypeSyntax {
+    return SyntaxFactory.makeCompositionType(elements: elements.normalized())
+  }
 }
