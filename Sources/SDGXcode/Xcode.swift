@@ -34,22 +34,16 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  private static func coverageToolLocation(for xcode: URL) -> URL {
-    // @exempt(from: tests) Unreachable on Linux.
-    return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
-  }
-
-  private static var locatedCoverage:
-    Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
-  private static func coverageTool() -> Result<
-    ExternalProcess, VersionedExternalProcessLocationError<Xcode>
-  > {
-    return cached(in: &locatedCoverage) {
-      return location(versionConstraints: Version(9, 3, 0)...Version(11, 2, 1))
-        .map { location in  // @exempt(from: tests) Unreachable on Linux.
-          return ExternalProcess(at: coverageToolLocation(for: location))
-        }
-    }
+  private static func coverageTool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return location(versionConstraints: versionConstraints)
+      .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(
+          at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
+        )
+      }
   }
 
   // MARK: - Usage
@@ -361,12 +355,16 @@ public enum Xcode: VersionedExternalProcess {
       return .success(nil)
     }
 
+    let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
     let fileURLs: [URL]
-    switch runCustomCoverageSubcommand([
-      "view",
-      "\u{2D}\u{2D}file\u{2D}list",
-      "\u{2D}\u{2D}archive", resultDirectory.path
-    ]) {
+    switch runCustomCoverageSubcommand(
+      [
+        "view",
+        "\u{2D}\u{2D}file\u{2D}list",
+        "\u{2D}\u{2D}archive", resultDirectory.path
+      ],
+      versionConstraints: compatibleVersions
+    ) {
     case .failure(let error):
       return .failure(.xcodeError(error))
     case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
@@ -408,11 +406,14 @@ public enum Xcode: VersionedExternalProcess {
         )
 
         var report: String
-        switch runCustomCoverageSubcommand([
-          "view",
-          "\u{2D}\u{2D}file", fileURL.path,
-          "\u{2D}\u{2D}archive", resultDirectory.path
-        ]) {
+        switch runCustomCoverageSubcommand(
+          [
+            "view",
+            "\u{2D}\u{2D}file", fileURL.path,
+            "\u{2D}\u{2D}archive", resultDirectory.path
+          ],
+          versionConstraints: compatibleVersions
+        ) {
         case .failure(let error):
           return .failure(.xcodeError(error))
         case .success(let output):
@@ -605,16 +606,18 @@ public enum Xcode: VersionedExternalProcess {
   ///     - environment: Optional. A different set of environment variables.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomCoverageSubcommand(
+  @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
+    versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
 
     reportProgress("$ xccov " + arguments.joined(separator: " "))
 
-    switch coverageTool() {
+    switch coverageTool(versionConstraints: versionConstraints) {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
