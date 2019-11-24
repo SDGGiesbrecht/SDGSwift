@@ -253,9 +253,8 @@ public enum Xcode: VersionedExternalProcess {
     return derivedData.appendingPathComponent("Logs/Test")
   }
 
-  private static func resultBundle(for project: PackageRepository) -> URL {
-    #warning("Could this be refactored to use a temporary directory?")
-    return project.location.appendingPathComponent(".swiftpm/SDGSwift/.build/Result.xcresult")
+  private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
+    return project.location.appendingPathComponent(".swiftpm/SDGSwift/Xcode Results/\(sdk.commandLineName).xcresult")
   }
 
   /// Tests the package.

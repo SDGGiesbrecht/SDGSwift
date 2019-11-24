@@ -50,5 +50,26 @@ extension Xcode {
         }
       }
     }
+
+    internal var cacheDirectoryName: String {
+      switch self {
+      case .macOS:
+        return "macOS"
+      case .iOS(let simulator):
+        var result = "iOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
+      case .watchOS:
+        return "watchOS"
+      case .tvOS(let simulator):
+      var result = "tvOS"
+      if simulator {
+        result += " Simulator"
+      }
+      return result
+      }
+    }
   }
 }
