@@ -119,6 +119,9 @@ public enum Xcode: VersionedExternalProcess {
   ///     - output: The Xcode output to abbreviate.
   public static func abbreviate(output: String) -> String? {
     // @exempt(from: tests) Meaningless on Linux.
+    if output.hasPrefix("$ ") {
+      return output
+    }
     if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
       return nil
     }
