@@ -310,7 +310,7 @@ public enum Xcode: VersionedExternalProcess {
       resolved ≥ resultBundlesAvailable
     {
       earliestVersion.increase(to: resultBundlesAvailable)
-      let resultURL = resultBundle(for: package)
+      let resultURL = resultBundle(for: package, on: sdk)
       command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
       try? FileManager.default.removeItem(at: resultURL)
     }
@@ -350,7 +350,7 @@ public enum Xcode: VersionedExternalProcess {
       ignoredDirectories = directories
     }
 
-    let resultBundle = self.resultBundle(for: package)
+    let resultBundle = self.resultBundle(for: package, on: sdk)
 
     let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
     let fileURLs: [URL]
