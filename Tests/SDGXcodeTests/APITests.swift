@@ -237,9 +237,9 @@ class APITests: TestCase {
 
   func testXcodeCoverage() throws {
     #if os(Linux)
-      _ = try? Xcode.runCustomCoverageSubcommand(["help"]).get()
+      _ = try? Xcode.runCustomCoverageSubcommand(["help"], versionConstraints: Version(0)..<Version(100)).get()
     #else
-      _ = try Xcode.runCustomCoverageSubcommand(["help"]).get()
+    _ = try Xcode.runCustomCoverageSubcommand(["help"], versionConstraints: Version(0)..<Version(100)).get()
     #endif
 
     try withDefaultMockRepository { mock in
