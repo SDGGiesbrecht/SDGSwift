@@ -247,9 +247,15 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
+  #warning("Remove.")
   private static func coverageDirectory(in derivedData: URL) -> URL {
     // @exempt(from: tests) Unreachable on Linux.
     return derivedData.appendingPathComponent("Logs/Test")
+  }
+
+  private static func resultBundle(for project: PackageRepository) -> URL {
+    #warning("Could this be refactored to use a temporary directory?")
+    return project.location.appendingPathComponent(".swiftpm/SDGSwift/.build/Result.xcresult")
   }
 
   /// Tests the package.
@@ -295,7 +301,19 @@ public enum Xcode: VersionedExternalProcess {
 
     command += ["\u{2D}enableCodeCoverage", "YES"]
     if let derivedData = derivedData {  // @exempt(from: tests)
+      #warning("Remove this.")
       command += ["\u{2D}derivedDataPath", derivedData.path]
+    }
+    let resultBundlesAvailable = Version(11, 0, 0)
+    if let resolved = version(
+      forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+    ),
+      resolved ≥ resultBundlesAvailable
+    {
+      earliestVersion.increase(to: resultBundlesAvailable)
+      let resultURL = resultBundle(for: package)
+      command.append(contentsOf: ["\u{2D}\u{2D}resultBundlePath", resultURL.path])
+      try? FileManager.default.removeItem(at: resultURL)
     }
 
     return runCustomSubcommand(
