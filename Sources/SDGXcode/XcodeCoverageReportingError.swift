@@ -30,6 +30,7 @@ extension Xcode {
     /// The package manager encountered an error.
     case packageManagerError(SwiftCompiler.PackageLoadingError)
 
+    #warning("Is this still an error?")
     /// Foundation encountered an error.
     case foundationError(Swift.Error)
 

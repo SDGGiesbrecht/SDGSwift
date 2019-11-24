@@ -351,27 +351,7 @@ public enum Xcode: VersionedExternalProcess {
       ignoredDirectories = directories
     }
 
-    let coverageDirectory = self.coverageDirectory(in: derivedData)
-    let coverageDirectoryContents: [URL]
-    do {
-      coverageDirectoryContents = try FileManager.default.contentsOfDirectory(
-        at: coverageDirectory,
-        includingPropertiesForKeys: nil,
-        options: []
-      )
-    } catch {
-      return .failure(.foundationError(error))
-    }
-    // @exempt(from: tests) Unreachable on Linux.
-
-    guard
-      let resultDirectory = coverageDirectoryContents.first(where: {
-        $0.pathExtension == "xcresult"
-      })
-    else {  // @exempt(from: tests)
-      // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
-      return .success(nil)
-    }
+    let resultBundle = self.resultBundle(for: package)
 
     let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
     let fileURLs: [URL]
@@ -379,7 +359,7 @@ public enum Xcode: VersionedExternalProcess {
       [
         "view",
         "\u{2D}\u{2D}file\u{2D}list",
-        "\u{2D}\u{2D}archive", resultDirectory.path
+        "\u{2D}\u{2D}archive", resultBundle.path
       ],
       versionConstraints: compatibleVersions
     ) {
@@ -428,7 +408,7 @@ public enum Xcode: VersionedExternalProcess {
           [
             "view",
             "\u{2D}\u{2D}file", fileURL.path,
-            "\u{2D}\u{2D}archive", resultDirectory.path
+            "\u{2D}\u{2D}archive", resultBundle.path
           ],
           versionConstraints: compatibleVersions
         ) {
