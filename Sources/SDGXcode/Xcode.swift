@@ -312,7 +312,7 @@ public enum Xcode: VersionedExternalProcess {
     {
       earliestVersion.increase(to: resultBundlesAvailable)
       let resultURL = resultBundle(for: package)
-      command.append(contentsOf: ["\u{2D}\u{2D}resultBundlePath", resultURL.path])
+      command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
       try? FileManager.default.removeItem(at: resultURL)
     }
 
