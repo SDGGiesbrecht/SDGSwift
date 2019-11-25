@@ -64,11 +64,11 @@ extension Xcode {
       case .watchOS:
         return "watchOS"
       case .tvOS(let simulator):
-      var result = "tvOS"
-      if simulator {
-        result += " Simulator"
-      }
-      return result
+        var result = "tvOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
       }
     }
   }
