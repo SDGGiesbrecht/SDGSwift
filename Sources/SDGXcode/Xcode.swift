@@ -201,7 +201,7 @@ public enum Xcode: VersionedExternalProcess {
       return .failure(error)
     case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
       let earliestVersion = Version(8, 0, 0)
-      var command = [
+      let command = [
         "build",
         "\u{2D}sdk", sdk.commandLineName,
         "\u{2D}scheme", scheme
