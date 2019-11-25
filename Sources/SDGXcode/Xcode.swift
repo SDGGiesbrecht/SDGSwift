@@ -293,6 +293,7 @@ public enum Xcode: VersionedExternalProcess {
     ),
       resolved ≥ resultBundlesAvailable
     {
+      // @exempt(from: tests)
       earliestVersion.increase(to: resultBundlesAvailable)
       let resultURL = resultBundle(for: package, on: sdk)
       command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
