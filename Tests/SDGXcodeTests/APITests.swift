@@ -297,6 +297,7 @@ class APITests: TestCase {
         for localization in InterfaceLocalization.allCases {
           LocalizationSetting(orderOfPrecedence: [localization.code]).do {
             let possibleReport = try? mock.codeCoverageReport(
+              on: .macOS,
               ignoreCoveredRegions: true
             ).get()
             #if !os(Linux)
