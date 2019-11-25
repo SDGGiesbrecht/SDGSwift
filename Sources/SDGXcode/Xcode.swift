@@ -559,11 +559,12 @@ public enum Xcode: VersionedExternalProcess {
   /// Runs a custom subcommand of xccov.
   ///
   /// - Parameters:
-  ///     - arguments: The arguments (leave “xccov” off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
+  ///   - arguments: The arguments (leave “xccov” off the beginning).
+  ///   - workingDirectory: Optional. A different working directory.
+  ///   - environment: Optional. A different set of environment variables.
+  ///   - versionConstraints: The acceptable range of versions.
+  ///   - reportProgress: Optional. A closure to execute for each line of output.
+  ///   - progressReport: A line of output.
   @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,

@@ -98,11 +98,13 @@ class APITests: TestCase {
 
           let derived = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-          for subdirectory in try FileManager.default.contentsOfDirectory(
-            at: derived,
-            includingPropertiesForKeys: nil,
-            options: .skipsSubdirectoryDescendants
-          )
+          for subdirectory in (
+            try? FileManager.default.contentsOfDirectory(
+              at: derived,
+              includingPropertiesForKeys: nil,
+              options: .skipsSubdirectoryDescendants
+            )
+          ) ?? []
           where subdirectory.lastPathComponent.contains("Mock") {
             try? FileManager.default.removeItem(at: subdirectory)
           }
@@ -173,11 +175,13 @@ class APITests: TestCase {
 
           let derived = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-          for subdirectory in try FileManager.default.contentsOfDirectory(
-            at: derived,
-            includingPropertiesForKeys: nil,
-            options: .skipsSubdirectoryDescendants
-          )
+          for subdirectory in (
+            try? FileManager.default.contentsOfDirectory(
+              at: derived,
+              includingPropertiesForKeys: nil,
+              options: .skipsSubdirectoryDescendants
+            )
+          ) ?? []
           where subdirectory.lastPathComponent.contains("Mock") {
             try? FileManager.default.removeItem(at: subdirectory)
           }
