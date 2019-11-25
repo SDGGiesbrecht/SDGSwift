@@ -104,7 +104,7 @@ class APITests: TestCase {
             options: .skipsSubdirectoryDescendants
           )
           where subdirectory.lastPathComponent.contains("Mock") {
-            try? FileManager.default.removeItem(at: derived)
+            try? FileManager.default.removeItem(at: subdirectory)
           }
 
           var log = Set<String>()  // Xcode’s order is not deterministic.
@@ -179,7 +179,7 @@ class APITests: TestCase {
             options: .skipsSubdirectoryDescendants
           )
           where subdirectory.lastPathComponent.contains("Mock") {
-            try? FileManager.default.removeItem(at: derived)
+            try? FileManager.default.removeItem(at: subdirectory)
           }
 
           var log = Set<String>()  // Xcode’s order is not deterministic.
