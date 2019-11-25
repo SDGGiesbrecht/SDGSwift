@@ -41,6 +41,7 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
+Writing result bundle at path:
 note: Constructing build description
 note: Planning build
 note: Using new build system
