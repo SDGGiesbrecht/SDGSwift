@@ -247,7 +247,7 @@ public enum Xcode: VersionedExternalProcess {
 
   private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
     return project.location.appendingPathComponent(
-      ".swiftpm/SDGSwift/Xcode Results/\(sdk.commandLineName).xcresult"
+      ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
     )
   }
 
