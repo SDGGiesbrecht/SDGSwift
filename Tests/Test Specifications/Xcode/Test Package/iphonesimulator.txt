@@ -1,6 +1,6 @@
 		SimDevice: iPhone  (AAF-AF-FD-E-BDAA, iOS ., Shutdown)
   Mock: /tmp/Mock
-$ xcodebuild test -destination name=iPhone  -scheme Mock -enableCodeCoverage YES -derivedDataPath
+$ xcodebuild test -destination name=iPhone  -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/MockTests.xctest
 Codesigning [...]/libswiftCore.dylib

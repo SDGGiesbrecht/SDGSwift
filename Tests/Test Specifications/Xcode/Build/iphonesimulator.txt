@@ -1,4 +1,4 @@
-$ xcodebuild build -sdk iphonesimulator -scheme Mock-Package -derivedDataPath
+$ xcodebuild build -sdk iphonesimulator -scheme Mock-Package
 ** BUILD SUCCEEDED **
 CodeSign [...]/Mock.framework
 CompileSwift [...]/Mock.swift
@@ -15,7 +15,6 @@ MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Signing Identity:     "-"
 Touch [...]/Mock.framework
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList

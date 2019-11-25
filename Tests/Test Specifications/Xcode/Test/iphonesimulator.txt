@@ -3,7 +3,7 @@
     "application-identifier" = "FMCVDTZ.";
     "keychain-access-groups" =     (
     );
-$ xcodebuild test -destination name=iPhone  -scheme Mock-Package -enableCodeCoverage YES -derivedDataPath
+$ xcodebuild test -destination name=iPhone  -scheme Mock-Package -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest

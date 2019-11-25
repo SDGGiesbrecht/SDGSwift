@@ -1,5 +1,5 @@
   Mock: /tmp/Mock
-$ xcodebuild build -sdk appletvsimulator -scheme Mock -derivedDataPath
+$ xcodebuild build -sdk appletvsimulator -scheme Mock
 ** BUILD SUCCEEDED **
 CodeSign [...]/MockTests.xctest
 Codesigning [...]/libswiftCore.dylib
@@ -24,7 +24,6 @@ Resolve Package Graph
 Resolved source packages:
 Signing Identity:     "-"
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
 WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
