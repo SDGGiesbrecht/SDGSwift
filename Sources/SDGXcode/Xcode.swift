@@ -250,12 +250,6 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  #warning("Remove.")
-  private static func coverageDirectory(in derivedData: URL) -> URL {
-    // @exempt(from: tests) Unreachable on Linux.
-    return derivedData.appendingPathComponent("Logs/Test")
-  }
-
   private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
     return project.location.appendingPathComponent(".swiftpm/SDGSwift/Xcode Results/\(sdk.commandLineName).xcresult")
   }
@@ -274,11 +268,6 @@ public enum Xcode: VersionedExternalProcess {
     derivedData: URL? = nil,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<String, SchemeError> {
-
-    if let derivedData = derivedData {
-      let coverage = coverageDirectory(in: derivedData)
-      try? FileManager.default.removeItem(at: coverage)
-    }
 
     var earliestVersion = Version(8, 0, 0)
     var command = ["test"]
