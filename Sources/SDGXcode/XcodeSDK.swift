@@ -56,15 +56,15 @@ extension Xcode {
       switch self {
       case .macOS:
         return "macOS"
-      case .iOS(let simulator): // @exempt(from: tests)
+      case .iOS(let simulator):  // @exempt(from: tests)
         var result = "iOS"
         if simulator {
           result += " Simulator"
         }
         return result
-      case .watchOS: // @exempt(from: tests)
+      case .watchOS:  // @exempt(from: tests)
         return "watchOS"
-      case .tvOS(let simulator): // @exempt(from: tests)
+      case .tvOS(let simulator):  // @exempt(from: tests)
         var result = "tvOS"
         if simulator {
           result += " Simulator"
