@@ -1,4 +1,4 @@
-$ xcodebuild build -sdk iphoneos -scheme Mock-Package -derivedDataPath
+$ xcodebuild build -sdk iphoneos -scheme Mock-Package
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
@@ -17,7 +17,6 @@ MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/Mock.framework
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList

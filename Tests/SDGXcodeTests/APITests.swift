@@ -96,8 +96,18 @@ class APITests: TestCase {
         for sdk in sdks {
           print("Testing build for \(sdk.commandLineName)...")
 
-          let derived = mock.stableDerivedData
-          try? FileManager.default.removeItem(at: derived)
+          let derived = URL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent("Library/Developer/Xcode/DerivedData")
+          for subdirectory in (
+            try? FileManager.default.contentsOfDirectory(
+              at: derived,
+              includingPropertiesForKeys: nil,
+              options: .skipsSubdirectoryDescendants
+            )
+          ) ?? []
+          where subdirectory.lastPathComponent.contains("Mock") {
+            try? FileManager.default.removeItem(at: subdirectory)
+          }
 
           var log = Set<String>()  // Xcode’s order is not deterministic.
           let processLog: (String) -> Void = { outputLine in
@@ -114,9 +124,9 @@ class APITests: TestCase {
             }
           }
           #if os(Linux)
-            _ = try? mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
+            _ = try? mock.build(for: sdk, reportProgress: processLog).get()
           #else
-            _ = try mock.build(for: sdk, derivedData: derived, reportProgress: processLog).get()
+            _ = try mock.build(for: sdk, reportProgress: processLog).get()
           #endif
 
           // Variable Xcode location and version:
@@ -125,7 +135,7 @@ class APITests: TestCase {
               ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: "
           })
           // Inconsistent path:
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })
+          filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
           // Depend on external code signing settings:
           filtered = filtered.filter({
             ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
@@ -163,8 +173,18 @@ class APITests: TestCase {
         for sdk in testSDKs {
           print("Testing testing on \(sdk.commandLineName)...")
 
-          let derived = mock.stableDerivedData
-          try? FileManager.default.removeItem(at: derived)
+          let derived = URL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent("Library/Developer/Xcode/DerivedData")
+          for subdirectory in (
+            try? FileManager.default.contentsOfDirectory(
+              at: derived,
+              includingPropertiesForKeys: nil,
+              options: .skipsSubdirectoryDescendants
+            )
+          ) ?? []
+          where subdirectory.lastPathComponent.contains("Mock") {
+            try? FileManager.default.removeItem(at: subdirectory)
+          }
 
           var log = Set<String>()  // Xcode’s order is not deterministic.
           let processLog: (String) -> Void = { outputLine in
@@ -186,9 +206,9 @@ class APITests: TestCase {
             }
           }
           #if os(Linux)
-            _ = try? mock.test(on: sdk, derivedData: derived, reportProgress: processLog).get()
+            _ = try? mock.test(on: sdk, reportProgress: processLog).get()
           #else
-            _ = try mock.test(on: sdk, derivedData: derived, reportProgress: processLog).get()
+            _ = try mock.test(on: sdk, reportProgress: processLog).get()
           #endif
 
           // Remove dates & times:
@@ -196,7 +216,7 @@ class APITests: TestCase {
             log
               .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
           // Inconsistent path:
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}derivedDataPath") })
+          filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
           // Inconsistent number of occurrences: (???)
           filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") })
           // Inconsistent which target some directories are first created for:
@@ -237,14 +257,19 @@ class APITests: TestCase {
 
   func testXcodeCoverage() throws {
     #if os(Linux)
-      _ = try? Xcode.runCustomCoverageSubcommand(["help"]).get()
+      _ = try? Xcode.runCustomCoverageSubcommand(
+        ["help"],
+        versionConstraints: Version(0)..<Version(100)
+      ).get()
     #else
-      _ = try Xcode.runCustomCoverageSubcommand(["help"]).get()
+      _ = try Xcode.runCustomCoverageSubcommand(
+        ["help"],
+        versionConstraints: Version(0)..<Version(100)
+      ).get()
     #endif
 
     try withDefaultMockRepository { mock in
       for withGeneratedProject in [false, true] {
-        let derivedData = mock.stableDerivedData
 
         let coverageFiles = thisRepository.location.appendingPathComponent(
           "Tests/Test Specifications/Test Coverage"
@@ -269,15 +294,14 @@ class APITests: TestCase {
           _ = try mock.generateXcodeProject().get()
         }
         #if os(Linux)
-          _ = try? mock.test(on: .macOS, derivedData: derivedData).get()
+          _ = try? mock.test(on: .macOS).get()
         #else
-          _ = try mock.test(on: .macOS, derivedData: derivedData).get()
+          _ = try mock.test(on: .macOS).get()
         #endif
         for localization in InterfaceLocalization.allCases {
           LocalizationSetting(orderOfPrecedence: [localization.code]).do {
             let possibleReport = try? mock.codeCoverageReport(
               on: .macOS,
-              derivedData: derivedData,
               ignoreCoveredRegions: true
             ).get()
             #if !os(Linux)

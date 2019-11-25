@@ -1,6 +1,6 @@
     SDKROOT = macosx.
   Mock: /tmp/Mock
-$ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -derivedDataPath
+$ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
@@ -41,6 +41,7 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
+Writing result bundle at path:
 note: Constructing build description
 note: Planning build
 note: Using new build system

@@ -1,5 +1,5 @@
   Mock: /tmp/Mock
-$ xcodebuild build -sdk appletvos -scheme Mock -derivedDataPath
+$ xcodebuild build -sdk appletvos -scheme Mock
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
@@ -23,7 +23,6 @@ ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
 WriteAuxiliaryFile [...]/Mock.o.SwiftFileList

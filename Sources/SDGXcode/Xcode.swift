@@ -34,22 +34,16 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  private static func coverageToolLocation(for xcode: URL) -> URL {
-    // @exempt(from: tests) Unreachable on Linux.
-    return xcode.deletingLastPathComponent().appendingPathComponent("xccov")
-  }
-
-  private static var locatedCoverage:
-    Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>?
-  private static func coverageTool() -> Result<
-    ExternalProcess, VersionedExternalProcessLocationError<Xcode>
-  > {
-    return cached(in: &locatedCoverage) {
-      return location(versionConstraints: Version(9, 3, 0)...Version(11, 2, 1))
-        .map { location in  // @exempt(from: tests) Unreachable on Linux.
-          return ExternalProcess(at: coverageToolLocation(for: location))
-        }
-    }
+  private static func coverageTool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return location(versionConstraints: versionConstraints)
+      .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(
+          at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
+        )
+      }
   }
 
   // MARK: - Usage
@@ -125,6 +119,9 @@ public enum Xcode: VersionedExternalProcess {
   ///     - output: The Xcode output to abbreviate.
   public static func abbreviate(output: String) -> String? {
     // @exempt(from: tests) Meaningless on Linux.
+    if output.hasPrefix("$ ") {
+      return output
+    }
     if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
       return nil
     }
@@ -191,13 +188,11 @@ public enum Xcode: VersionedExternalProcess {
   /// - Parameters:
   ///     - package: The package to build.
   ///     - sdk: The SDK to build for.
-  ///     - derivedData: Optional. A specific place Xcode should use for derived data.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
   @discardableResult public static func build(
     _ package: PackageRepository,
     for sdk: SDK,
-    derivedData: URL? = nil,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<String, SchemeError> {
 
@@ -206,14 +201,11 @@ public enum Xcode: VersionedExternalProcess {
       return .failure(error)
     case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
       let earliestVersion = Version(8, 0, 0)
-      var command = [
+      let command = [
         "build",
         "\u{2D}sdk", sdk.commandLineName,
         "\u{2D}scheme", scheme
       ]
-      if let derivedData = derivedData {
-        command += ["\u{2D}derivedDataPath", derivedData.path]
-      }
       return runCustomSubcommand(
         command,
         in: package.location,
@@ -253,9 +245,10 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  private static func coverageDirectory(in derivedData: URL) -> URL {
-    // @exempt(from: tests) Unreachable on Linux.
-    return derivedData.appendingPathComponent("Logs/Test")
+  private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
+    return project.location.appendingPathComponent(
+      ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
+    )
   }
 
   /// Tests the package.
@@ -263,20 +256,13 @@ public enum Xcode: VersionedExternalProcess {
   /// - Parameters:
   ///     - package: The package to test.
   ///     - sdk: The SDK to run tests on.
-  ///     - derivedData: Optional. A specific place Xcode should use for derived data.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
   @discardableResult public static func test(
     _ package: PackageRepository,
     on sdk: SDK,
-    derivedData: URL? = nil,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<String, SchemeError> {
-
-    if let derivedData = derivedData {
-      let coverage = coverageDirectory(in: derivedData)
-      try? FileManager.default.removeItem(at: coverage)
-    }
 
     var earliestVersion = Version(8, 0, 0)
     var command = ["test"]
@@ -300,8 +286,18 @@ public enum Xcode: VersionedExternalProcess {
     }
 
     command += ["\u{2D}enableCodeCoverage", "YES"]
-    if let derivedData = derivedData {  // @exempt(from: tests)
-      command += ["\u{2D}derivedDataPath", derivedData.path]
+
+    let resultBundlesAvailable = Version(11, 0, 0)
+    if let resolved = version(
+      forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+    ),
+      resolved ≥ resultBundlesAvailable
+    {
+      // @exempt(from: tests)
+      earliestVersion.increase(to: resultBundlesAvailable)
+      let resultURL = resultBundle(for: package, on: sdk)
+      command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
+      try? FileManager.default.removeItem(at: resultURL)
     }
 
     return runCustomSubcommand(
@@ -317,7 +313,6 @@ public enum Xcode: VersionedExternalProcess {
   /// - Parameters:
   ///     - package: The package to test.
   ///     - sdk: The SDK to run tests on.
-  ///     - derivedData: A specific place Xcode should use for derived data.
   ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
   ///     - reportProgress: Optional. A closure to execute for each line of output.
   ///     - progressReport: A line of output.
@@ -326,7 +321,6 @@ public enum Xcode: VersionedExternalProcess {
   public static func codeCoverageReport(
     for package: PackageRepository,
     on sdk: SDK,
-    derivedData: URL,
     ignoreCoveredRegions: Bool = false,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
   ) -> Result<TestCoverageReport?, CoverageReportingError> {
@@ -339,34 +333,18 @@ public enum Xcode: VersionedExternalProcess {
       ignoredDirectories = directories
     }
 
-    let coverageDirectory = self.coverageDirectory(in: derivedData)
-    let coverageDirectoryContents: [URL]
-    do {
-      coverageDirectoryContents = try FileManager.default.contentsOfDirectory(
-        at: coverageDirectory,
-        includingPropertiesForKeys: nil,
-        options: []
-      )
-    } catch {
-      return .failure(.foundationError(error))
-    }
-    // @exempt(from: tests) Unreachable on Linux.
+    let resultBundle = self.resultBundle(for: package, on: sdk)
 
-    guard
-      let resultDirectory = coverageDirectoryContents.first(where: {
-        $0.pathExtension == "xcresult"
-      })
-    else {  // @exempt(from: tests)
-      // @exempt(from: tests) Not reliably reachable without causing Xcode’s derived data to grow with each test iteration.
-      return .success(nil)
-    }
-
+    let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
     let fileURLs: [URL]
-    switch runCustomCoverageSubcommand([
-      "view",
-      "\u{2D}\u{2D}file\u{2D}list",
-      "\u{2D}\u{2D}archive", resultDirectory.path
-    ]) {
+    switch runCustomCoverageSubcommand(
+      [
+        "view",
+        "\u{2D}\u{2D}file\u{2D}list",
+        "\u{2D}\u{2D}archive", resultBundle.path
+      ],
+      versionConstraints: compatibleVersions
+    ) {
     case .failure(let error):
       return .failure(.xcodeError(error))
     case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
@@ -408,11 +386,14 @@ public enum Xcode: VersionedExternalProcess {
         )
 
         var report: String
-        switch runCustomCoverageSubcommand([
-          "view",
-          "\u{2D}\u{2D}file", fileURL.path,
-          "\u{2D}\u{2D}archive", resultDirectory.path
-        ]) {
+        switch runCustomCoverageSubcommand(
+          [
+            "view",
+            "\u{2D}\u{2D}file", fileURL.path,
+            "\u{2D}\u{2D}archive", resultBundle.path
+          ],
+          versionConstraints: compatibleVersions
+        ) {
         case .failure(let error):
           return .failure(.xcodeError(error))
         case .success(let output):
@@ -576,45 +557,27 @@ public enum Xcode: VersionedExternalProcess {
     return .success(String(String.ScalarView(cleaned)))
   }
 
-  /// A stable directory that can be used for this package’s derived data.
-  ///
-  /// Xcode’s default directory is hard to predict in order to get results from it afterward. This directory is in the same parent directory as Xcode’s default, but it is deterministic.
-  ///
-  /// - Parameters:
-  ///     - package: The package.
-  public static func stableDerivedData(for package: PackageRepository) -> URL {
-    var url = URL(fileURLWithPath: NSHomeDirectory())
-      .appendingPathComponent("Library")
-      .appendingPathComponent("Developer")
-      .appendingPathComponent("Xcode")
-      .appendingPathComponent("DerivedData")
-      .appendingPathComponent(package.location.lastPathComponent)
-    if (try? package.xcodeProject()) == nil {
-      url = url.appendingPathComponent("Package")
-    } else {
-      url = url.appendingPathComponent("Xcode")
-    }
-    return url
-  }
-
   /// Runs a custom subcommand of xccov.
   ///
   /// - Parameters:
-  ///     - arguments: The arguments (leave “xccov” off the beginning).
-  ///     - workingDirectory: Optional. A different working directory.
-  ///     - environment: Optional. A different set of environment variables.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  @discardableResult public static func runCustomCoverageSubcommand(
+  ///   - arguments: The arguments (leave “xccov” off the beginning).
+  ///   - workingDirectory: Optional. A different working directory.
+  ///   - environment: Optional. A different set of environment variables.
+  ///   - versionConstraints: The acceptable range of versions.
+  ///   - reportProgress: Optional. A closure to execute for each line of output.
+  ///   - progressReport: A line of output.
+  @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
     _ arguments: [String],
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
+    versionConstraints: Constraints,
     reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>> {
+  ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
 
     reportProgress("$ xccov " + arguments.joined(separator: " "))
 
-    switch coverageTool() {
+    switch coverageTool(versionConstraints: versionConstraints) {
     case .failure(let error):
       return .failure(.locationError(error))
     case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.

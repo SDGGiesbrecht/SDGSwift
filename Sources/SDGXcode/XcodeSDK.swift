@@ -50,5 +50,27 @@ extension Xcode {
         }
       }
     }
+
+    internal var cacheDirectoryName: String {
+      // Many of these cannot be reached from continuous integration.
+      switch self {
+      case .macOS:
+        return "macOS"
+      case .iOS(let simulator):  // @exempt(from: tests)
+        var result = "iOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
+      case .watchOS:  // @exempt(from: tests)
+        return "watchOS"
+      case .tvOS(let simulator):  // @exempt(from: tests)
+        var result = "tvOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
+      }
+    }
   }
 }
