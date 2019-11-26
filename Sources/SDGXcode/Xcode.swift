@@ -541,18 +541,26 @@ public enum Xcode: VersionedExternalProcess {
       return .failure(.foundationError(error))
     }
 
-    guard let jsonDictionary = json as? [String: Any],
+    if let jsonDictionary = json as? [String: Any],
       let projectData = jsonDictionary["project"],
       let projectDictionary = projectData as? [String: Any],
       let schemesData = projectDictionary["schemes"],
       let schemeList = schemesData as? [String],
-      let scheme = schemeList.first(where: { $0.hasSuffix("\u{2D}Package") })
-        ?? schemeList.first
-    else {  // @exempt(from: tests)
-      return .failure(.noPackageScheme)
+      let projectScheme = schemeList.first(where: { $0.hasSuffix("\u{2D}Package") }) {
+      // Generated project
+      return .success(projectScheme)
+    }
+    if let jsonDictionary = json as? [String: Any],
+      let workspaceData = jsonDictionary["project"],
+      let workspaceDictionary = workspaceData as? [String: Any],
+      let schemesData = workspaceDictionary["schemes"],
+      let schemeList = schemesData as? [String],
+      let packageScheme = schemeList.first {
+      // Package workspace
+      return .success(packageScheme)
     }
 
-    return .success(scheme)
+    return .failure(.noPackageScheme)
   }
 
   /// Runs a custom subcommand of xccov.
