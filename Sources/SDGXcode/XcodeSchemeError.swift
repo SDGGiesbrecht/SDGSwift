@@ -29,6 +29,9 @@ extension Xcode {
     /// Xcode encountered an error.
     case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
 
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
+
     /// The Xcode project has no package scheme.
     case noPackageScheme
 
@@ -38,6 +41,8 @@ extension Xcode {
       switch self {
       case .xcodeError(let error):
         return error.presentableDescription()
+      case .foundationError(let error):
+        return StrictString(error.localizedDescription)
       case .noPackageScheme:
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

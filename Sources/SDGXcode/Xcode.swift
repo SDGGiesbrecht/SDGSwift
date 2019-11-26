@@ -524,7 +524,7 @@ public enum Xcode: VersionedExternalProcess {
 
     let information: String
     switch runCustomSubcommand(
-      ["\u{2D}list"],
+      ["\u{2D}list", "\u{2D}json"],
       in: package.location,
       versionConstraints: Version(8, 0, 0)..<currentMajor.compatibleVersions.upperBound
     ) {
@@ -534,27 +534,25 @@ public enum Xcode: VersionedExternalProcess {
       information = output
     }
 
-    guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
-      // @exempt(from: tests)
-      return .failure(.noPackageScheme)
+    let json: Any
+    do {
+      json = try JSONSerialization.jsonObject(with: information.file)
+    } catch {  // @exempt(from: tests)
+      return .failure(.foundationError(error))
     }
-    let zoneStart = schemesHeader.lines(in: information.lines).upperBound
 
-    let searchZone = information.lines[zoneStart...]
-    guard
-      let line = searchZone.first(
-        where: { $0.line.hasSuffix("\u{2D}Package".scalars) })  // @exempt(from: tests)
-        ?? searchZone.first(  // @exempt(from: tests)
-          where: {
-            $0.line.contains(  // @exempt(from: tests)
-              where: { $0 ∉ CharacterSet.whitespaces })
-          })
+    guard let jsonDictionary = json as? [String: Any],
+      let projectData = jsonDictionary["project"],
+      let projectDictionary = projectData as? [String: Any],
+      let schemesData = projectDictionary["schemes"],
+      let schemeList = schemesData as? [String],
+      let scheme = schemeList.first(where: { $0.hasSuffix("\u{2D}Package") })
+        ?? schemeList.first
     else {  // @exempt(from: tests)
       return .failure(.noPackageScheme)
     }
-    // @exempt(from: tests)
-    let cleaned = line.line.drop(while: { $0 ∈ CharacterSet.whitespaces })  // @exempt(from: tests)
-    return .success(String(String.ScalarView(cleaned)))
+
+    return .success(scheme)
   }
 
   /// Runs a custom subcommand of xccov.
