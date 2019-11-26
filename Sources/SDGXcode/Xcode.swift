@@ -551,7 +551,7 @@ public enum Xcode: VersionedExternalProcess {
       return .success(projectScheme)
     }
     if let jsonDictionary = json as? [String: Any],
-      let workspaceData = jsonDictionary["project"],
+      let workspaceData = jsonDictionary["workspace"],
       let workspaceDictionary = workspaceData as? [String: Any],
       let schemesData = workspaceDictionary["schemes"],
       let schemeList = schemesData as? [String],
