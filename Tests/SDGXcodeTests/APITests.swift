@@ -402,5 +402,11 @@ class APITests: TestCase {
       uniqueTestName: "Foundation",
       overwriteSpecificationInsteadOfFailing: false
     )
+    testCustomStringConvertibleConformance(
+      of: Xcode.SchemeError.foundationError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Foundation",
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 }
