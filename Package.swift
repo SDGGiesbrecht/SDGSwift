@@ -31,7 +31,7 @@ import PackageDescription
 /// - Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
 /// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 ///
-/// Versioning note: Most products are already “finalized” at a state comparable to a semantic version one (`SDGSwift`, `SDGSwiftSource`, `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`). The package as a whole remains zero‐versioned because `SDGSwiftPackageManager` and `SDGXcode` still rely on hidden implementation details of the package manager and Xcode respectively.
+/// Versioning note: Most products are already “finalized” at a state comparable to a semantic version one (`SDGSwift`, `SDGSwiftSource`, `SDGXcode`, `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`). The package as a whole remains zero‐versioned because `SDGSwiftPackageManager` still relies on hidden implementation details of the package manager.
 ///
 /// ### Example Usage
 ///
