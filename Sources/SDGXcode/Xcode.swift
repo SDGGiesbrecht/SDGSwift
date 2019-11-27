@@ -546,7 +546,8 @@ public enum Xcode: VersionedExternalProcess {
       let projectDictionary = projectData as? [String: Any],
       let schemesData = projectDictionary["schemes"],
       let schemeList = schemesData as? [String],
-      let projectScheme = schemeList
+      let projectScheme =
+        schemeList
         .first(where: { $0.hasSuffix("\u{2D}Package") })  // @exempt(from: tests)
     {
       // Generated project @exempt(from: tests)
