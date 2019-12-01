@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "8e136caf2ccb702a1bde3a5e341598c9757817d3",
-          "version": "3.0.0"
+          "revision": "b25f5fc1942e5e1be4211ac92e33c2c7ff5c1453",
+          "version": "4.0.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
           "branch": null,
-          "revision": "d44683b1e46ff102b171e3724ecb205c306c80c6",
-          "version": "4.0.0"
+          "revision": "092baffb798d53088dd116bdb105e496c64ab7e7",
+          "version": "4.0.1"
         }
       },
       {
