@@ -33,10 +33,25 @@ extension Git {
   public static func initialize(_ repository: PackageRepository) -> Result<
     Void, VersionedExternalProcessExecutionError<Git>
   > {
-
     let versions = Version(1, 5, 0)..<currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions).map
-    { _ in () }
+    return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions)
+      .map { _ in () }
+  }
+
+  /// Checks a branch out.
+  ///
+  /// - Parameters:
+  ///     - branch: The branch to check out.
+  ///     - repository: The repository in which to check the branch out.
+  public static func checkout(_ branch: String, in repository: PackageRepository) -> Result<
+    Void, VersionedExternalProcessExecutionError<Git>
+  > {
+    let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
+    return runCustomSubcommand(
+      ["checkout", branch],
+      in: repository.location,
+      versionConstraints: versions
+    ).map { _ in () }
   }
 
   /// Commits existing changes.
