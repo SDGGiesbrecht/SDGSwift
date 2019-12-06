@@ -194,6 +194,16 @@ extension PackageRepository {
 
   // MARK: - Workflow
 
+  /// Checks out a branch.
+  ///
+  /// - Parameters:
+  ///     - branch: The branch to check out.
+  public func checkout(_ branch: String) -> Swift.Result<
+    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+  > {
+    return Git.checkout(branch, in: self)
+  }
+
   /// Commits existing changes.
   ///
   /// - Parameters:

@@ -100,19 +100,16 @@ class APITests: TestCase {
     )
   }
 
-  func testInitialization() {
+  func testInitialization() throws {
     for localization in InterfaceLocalization.allCases {
-      LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        do {
-          try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-            _ = try PackageRepository.initializePackage(
-              at: location,
-              named: StrictString(location.lastPathComponent),
-              type: .library
-            ).get()
-          }
-        } catch {
-          XCTFail("\(error)")
+      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
+          let package = try PackageRepository.initializePackage(
+            at: location,
+            named: StrictString(location.lastPathComponent),
+            type: .library
+          ).get()
+          _ = try package.checkout("master").get()
         }
       }
     }
