@@ -97,7 +97,10 @@ public class ExtendedTokenSyntax: ExtendedSyntax {
       .imageDelimiter, .quotationDelimiter, .parameter, .colon:
       return ""
     case .documentationText:
-      return HTML.escapeTextForCharacterData(text)
+      var escaped = HTML.escapeTextForCharacterData(text)
+      // Prevent escaping escapes.
+      escaped.replaceMatches(for: "&#x0026;", with: "&")
+      return escaped
     case .callout:
       return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>"
         + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization)))
