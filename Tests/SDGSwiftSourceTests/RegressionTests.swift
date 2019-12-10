@@ -47,7 +47,9 @@ class RegressionTests: TestCase {
     let parsed = try SyntaxParser.parse(source: source)
     XCTAssertEqual(parsed.source(), source)
     let documentation = parsed.api().first?.documentation
-    XCTAssertEqual(documentation?.last?.documentationComment.text, "...&#x2D;...")
+    let comment = documentation?.last?.documentationComment
+    XCTAssertEqual(comment?.text, "...&#x2D;...")
+    XCTAssertEqual(comment?.renderedHTML(localization: "en"), "<p>...&#x2D;...</p>")
   }
 
   func testMarkdownQuotation() throws {
