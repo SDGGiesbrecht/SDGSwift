@@ -17,10 +17,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "Tool",
-    targets: [
-        .target(
-            name: "Tool",
-            dependencies: []),
-    ]
+  name: "Tool",
+  targets: [
+    .target(
+      name: "Tool",
+      dependencies: []
+    ),
+  ]
 )

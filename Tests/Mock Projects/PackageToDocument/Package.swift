@@ -18,25 +18,25 @@ import PackageDescription
 
 /// Package documentation.
 let package = Package(
-    name: "PackageToDocument",
-    products: [
-        /// Library documentation.
-        .library(name: "PrimaryProduct", targets: ["PrimaryModule"]),
+  name: "PackageToDocument",
+  products: [
+    /// Library documentation.
+    .library(name: "PrimaryProduct", targets: ["PrimaryModule"]),
 
-        .executable(name: "executable", targets: ["executable"]),
+    .executable(name: "executable", targets: ["executable"]),
 
-        .library(name: "_Hidden", targets: ["Hidden"])
-    ],
-    dependencies: [
-        .package(path: "../Dependency"),
-        .package(path: "../Dependency2")
-    ],
-    targets: [
-        .target(name: "executable"),
+    .library(name: "_Hidden", targets: ["Hidden"])
+  ],
+  dependencies: [
+    .package(path: "../Dependency"),
+    .package(path: "../Dependency2")
+  ],
+  targets: [
+    .target(name: "executable"),
 
-        /// Module documentation.
-        .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2", "Hidden"]),
+    /// Module documentation.
+    .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2", "Hidden"]),
 
-        .target(name: "Hidden")
-    ]
+    .target(name: "Hidden")
+  ]
 )

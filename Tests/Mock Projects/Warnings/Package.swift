@@ -17,15 +17,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "Warnings",
-    products: [
-        .library(
-            name: "Warnings",
-            targets: ["Warnings"]),
-    ],
-    targets: [
-        .target(
-            name: "Warnings",
-            dependencies: []),
-    ]
+  name: "Warnings",
+  products: [
+    .library(
+      name: "Warnings",
+      targets: ["Warnings"]
+    ),
+  ],
+  targets: [
+    .target(
+      name: "Warnings",
+      dependencies: []
+    ),
+  ]
 )

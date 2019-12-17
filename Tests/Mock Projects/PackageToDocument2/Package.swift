@@ -17,13 +17,14 @@
 import PackageDescription
 
 /// Package documentation.
-let package = Package(name: "PackageToDocument2",
-    products: [
-        /// Library documentation.
-        .library(name: "PrimaryProduct", targets: ["PrimaryModule"])
-    ],
-    targets: [
-        /// Module documentation.
-        .target( name: "PrimaryModule", dependencies: [])
-    ]
+let package = Package(
+  name: "PackageToDocument2",
+  products: [
+    /// Library documentation.
+    .library(name: "PrimaryProduct", targets: ["PrimaryModule"])
+  ],
+  targets: [
+    /// Module documentation.
+    .target(name: "PrimaryModule", dependencies: [])
+  ]
 )

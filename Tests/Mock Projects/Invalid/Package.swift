@@ -16,8 +16,8 @@
 
 import PackageDescription
 let package = Package(
-    name: "Invalid",
-    targets: [
-        .target(name: "Invalid")
-    ]
+  name: "Invalid",
+  targets: [
+    .target(name: "Invalid")
+  ]
 )
