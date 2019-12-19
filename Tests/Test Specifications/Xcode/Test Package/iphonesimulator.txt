@@ -1,15 +1,12 @@
-		SimDevice: iPhone  (AAF-AF-FD-E-BDAA, iOS ., Shutdown)
   Mock: /tmp/Mock
 $ xcodebuild test -destination name=iPhone  -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/MockTests.xctest
-Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/MockTests.swiftdoc
@@ -45,4 +42,3 @@ Writing result bundle at path:
 note: Constructing build description
 note: Planning build
 note: Using new build system
-} (.. (B))

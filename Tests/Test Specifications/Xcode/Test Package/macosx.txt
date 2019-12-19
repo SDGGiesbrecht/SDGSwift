@@ -7,7 +7,6 @@ CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/MockTests.swiftdoc

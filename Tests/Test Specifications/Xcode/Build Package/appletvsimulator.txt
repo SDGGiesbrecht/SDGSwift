@@ -2,13 +2,11 @@
 $ xcodebuild build -sdk appletvsimulator -scheme Mock
 ** BUILD SUCCEEDED **
 CodeSign [...]/MockTests.xctest
-Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock.swiftdoc
