@@ -329,6 +329,7 @@ let package = Package(
         "SDGSwift",
         "SDGSwiftConfiguration",
         "SDGSwiftConfigurationLoading",
+        "SDGSwiftTestUtilities",
         "SampleConfiguration",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
@@ -344,6 +345,7 @@ let package = Package(
       name: "SDGSwiftDocumentationExampleTests",
       dependencies: [
         "SDGSwift",
+        "SDGSwiftTestUtilities",
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
       ]

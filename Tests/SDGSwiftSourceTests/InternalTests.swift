@@ -24,7 +24,9 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class InternalTests: TestCase {
+import SDGSwiftTestUtilities
+
+class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
     XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)

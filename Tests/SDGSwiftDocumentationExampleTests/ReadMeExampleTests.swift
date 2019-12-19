@@ -20,7 +20,9 @@ import SDGSwift
 
 import SDGXCTestUtilities
 
-class ReadMeExampleTests: TestCase {
+import SDGSwiftTestUtilities
+
+class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in

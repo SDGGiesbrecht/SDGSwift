@@ -33,7 +33,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     for withGeneratedProject in [false, true] {

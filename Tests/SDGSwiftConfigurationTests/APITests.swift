@@ -31,7 +31,9 @@ import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class APITests: TestCase {
+import SDGSwiftTestUtilities
+
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {

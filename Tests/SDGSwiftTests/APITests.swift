@@ -29,7 +29,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBuild() {
     testEquatableConformance(
