@@ -249,9 +249,12 @@ let package = Package(
       dependencies: [
         "SDGSwift",
         "SDGSwiftPackageManager",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
       ],
       path: "Tests/SDGSwiftTestUtilities"
     ),
