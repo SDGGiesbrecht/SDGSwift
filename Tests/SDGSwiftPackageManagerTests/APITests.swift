@@ -27,13 +27,13 @@ import SDGSwiftLocalizations
 
 import XCTest
 
-import SDGSwiftTestUtilities
-
 import SDGLocalizationTestUtilities
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-class APITests: TestCase {
+import SDGSwiftTestUtilities
+
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testChangeDetection() throws {
     try withDefaultMockRepository { mock in

@@ -1,19 +1,14 @@
-		SimDevice: Apple TV K (DD-DE-D-AF-AECEAE, tvOS ., Shutdown)
-        "FMCVDTZ."
-    "application-identifier" = "FMCVDTZ.";
     "keychain-access-groups" =     (
     );
 $ xcodebuild test -destination name=Apple TV K -scheme Mock-Package -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
-Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
@@ -57,4 +52,3 @@ note: Planning build
 note: Using new build system
 {
 }
-} (. (K))

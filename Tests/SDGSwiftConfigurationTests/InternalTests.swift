@@ -23,7 +23,9 @@ import SDGSwiftLocalizations
 
 import SDGXCTestUtilities
 
-class InternalTests: TestCase {
+import SDGSwiftTestUtilities
+
+class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testLocalization() {
     for localization in InterfaceLocalization.allCases {

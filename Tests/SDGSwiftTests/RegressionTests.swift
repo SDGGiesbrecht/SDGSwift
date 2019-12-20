@@ -25,7 +25,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class RegressionTests: TestCase {
+class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     // Untracked.

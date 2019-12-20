@@ -17,11 +17,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "Dependency2",
-    products: [
-        .library(name: "Dependency2", targets: ["Dependency2"])
-    ],
-    targets: [
-        .target(name: "Dependency2")
-    ]
+  name: "Dependency2",
+  products: [
+    .library(name: "Dependency2", targets: ["Dependency2"])
+  ],
+  targets: [
+    .target(name: "Dependency2")
+  ]
 )

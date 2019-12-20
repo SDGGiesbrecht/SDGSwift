@@ -7,7 +7,6 @@ CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 CreateUniversalBinary [...]/Mock.o normal armv7\ arm64

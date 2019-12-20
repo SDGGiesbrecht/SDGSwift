@@ -1,7 +1,5 @@
-// swift-tools-version:5.1
-
 /*
- Package.swift
+ ProcessInfo.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,14 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import PackageDescription
+import Foundation
 
-let package = Package(
-  name: "Tool",
-  targets: [
-    .target(
-      name: "Tool",
-      dependencies: []
-    ),
-  ]
-)
+import SDGLogic
+
+extension ProcessInfo {
+
+  internal static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+}

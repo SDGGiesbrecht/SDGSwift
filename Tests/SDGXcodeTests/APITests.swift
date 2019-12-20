@@ -33,7 +33,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     for withGeneratedProject in [false, true] {
@@ -146,9 +146,11 @@ class APITests: TestCase {
           // Inconsistently appear:
           filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
           filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
-          filtered = filtered.filter({
-            ¬$0.contains("Execution policy exception registration failed")
+          filtered = filtered.filter({ line in
+            ¬line.contains("Execution policy exception registration failed")
           })
+          filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
+          filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
           #if !os(Linux)
             compare(
               filtered.sorted().joined(separator: "\n"),
@@ -235,9 +237,16 @@ class APITests: TestCase {
           // Inconsistently appear:
           filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
           filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
-          filtered = filtered.filter({
-            ¬$0.contains("Execution policy exception registration failed")
+          filtered = filtered.filter({ line in
+            ¬line.contains("Execution policy exception registration failed")
           })
+          filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
+          filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
+          // Incosistent identifiers:
+          filtered = filtered.filter({ ¬$0.contains("SimDevice") })
+          filtered = filtered.filter({ ¬$0.contains("} (.") })
+          filtered = filtered.filter({ ¬$0.contains("application\u{2D}identifier") })
+          filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
           #if !os(Linux)
             compare(
               filtered.sorted().joined(separator: "\n"),

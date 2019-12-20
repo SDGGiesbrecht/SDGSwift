@@ -31,7 +31,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
     for packageName in ["PackageToDocument", "PackageToDocument2"] {

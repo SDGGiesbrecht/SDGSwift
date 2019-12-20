@@ -21,7 +21,9 @@ import XCTest
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-class RegressionTests: TestCase {
+import SDGSwiftTestUtilities
+
+class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testContinuedCallout() throws {
     // Untracked.

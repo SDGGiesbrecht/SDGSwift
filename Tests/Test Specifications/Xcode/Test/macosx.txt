@@ -3,13 +3,11 @@ $ xcodebuild test -sdk macosx -scheme Mock-Package -enableCodeCoverage YES -resu
 ** TEST SUCCEEDED **
 CodeSign [...]/A
 CodeSign [...]/MockTests.xctest
-Codesigning [...]/libswiftCore.dylib
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Copying [...]/libswiftCore.dylib
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule

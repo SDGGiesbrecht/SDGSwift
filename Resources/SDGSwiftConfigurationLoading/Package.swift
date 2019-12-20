@@ -17,18 +17,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "configure",
-    platforms: [
-        .macOS(.v[*macOS*])
-    ],
-    dependencies: [
-        .package(url: "[*URL*]", .exact("[*version*]")),
-[*packages*]
-    ],
-    targets: [
-        .target(name: "configure", dependencies: [
-            "[*product*]",
-[*products*]
-            ])
-        ]
+  name: "configure",
+  platforms: [
+    .macOS(.v[*macOS*])
+  ],
+  dependencies: [
+    .package(url: "[*URL*]", .exact("[*version*]")),
+    [*packages*]
+  ],
+  targets: [
+    .target(
+      name: "configure",
+      dependencies: [
+        "[*product*]",
+        [*products*]
+      ]
+    )
+  ]
 )
