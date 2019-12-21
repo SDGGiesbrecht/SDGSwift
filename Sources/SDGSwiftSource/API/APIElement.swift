@@ -236,8 +236,13 @@ public enum APIElement: Comparable, Hashable {
 
   // @documentation(SDGSwiftSource.APIElement.compilationConditions)
   /// The compilation conditions under which the element is available.
-  public var compilationConditions: Syntax? {
-    return elementProtocol.compilationConditions
+  public internal(set) var compilationConditions: Syntax? {
+    get {
+      return elementProtocol.compilationConditions
+    }
+    nonmutating set {
+      elementProtocol.compilationConditions = newValue
+    }
   }
 
   // @documentation(SDGSwiftSource.APIElement.name)

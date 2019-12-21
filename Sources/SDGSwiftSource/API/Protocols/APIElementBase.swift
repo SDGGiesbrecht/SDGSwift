@@ -26,16 +26,15 @@ public class _APIElementBase {
     compilationConditions: Syntax? = nil,
     children: [APIElement] = []
   ) {
-    self._storage = APIElementStorage(documentation: documentation, constraints: constraints)
-    self.compilationConditions = compilationConditions
+    self._storage = APIElementStorage(
+      documentation: documentation,
+      compilationConditions: compilationConditions,
+      constraints: constraints
+    )
     self.children = children
   }
 
   // MARK: - Properties
-
-  // #documentation(SDGSwiftSource.APIElement.compilationConditions)
-  /// The compilation conditions under which the element is available.
-  public internal(set) var compilationConditions: Syntax?
 
   private var _children: [APIElement] = []
   // #documentation(SDGSwiftSource.APIElement.children)
@@ -70,14 +69,14 @@ public class _APIElementBase {
   internal func moveConditionsToChildren() {
     #warning("Remove _storage.")
     for child in children {
-      child.elementBase.compilationConditions.prependCompilationConditions(compilationConditions)
+      child.compilationConditions.prependCompilationConditions(_storage.compilationConditions)
       if child.constraints ≠ nil {
         child.constraints.merge(with: _storage.constraints)
       } else {
         child.constraints = _storage.constraints
       }
     }
-    compilationConditions = nil
+    _storage.compilationConditions = nil
     _storage.constraints = nil
   }
 

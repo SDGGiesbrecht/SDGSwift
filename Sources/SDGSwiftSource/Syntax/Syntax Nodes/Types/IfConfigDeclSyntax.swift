@@ -105,7 +105,7 @@ extension IfConfigDeclSyntax {
     var result: [APIElement] = []
     for element in combined.keys.sorted() {
       let condition: Syntax? = combined[element]!
-      element.elementBase.compilationConditions.prependCompilationConditions(condition)
+      element.compilationConditions.prependCompilationConditions(condition)
       result.append(element)
     }
     return result

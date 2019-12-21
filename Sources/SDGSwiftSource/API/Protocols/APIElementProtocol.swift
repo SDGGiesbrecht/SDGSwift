@@ -92,6 +92,15 @@ extension APIElementProtocol {
     return storage.documentation
   }
 
+  public internal(set) var compilationConditions: Syntax? {
+    get {
+      return storage.compilationConditions
+    }
+    set {
+      storage.compilationConditions = newValue
+    }
+  }
+
   public internal(set) var constraints: GenericWhereClauseSyntax? {
     get {
       return storage.constraints

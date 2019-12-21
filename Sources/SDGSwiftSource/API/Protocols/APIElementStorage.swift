@@ -19,14 +19,21 @@ public struct _APIElementStorage {
 
   // MARK: - Initialization
 
-  internal init(documentation: [SymbolDocumentation], constraints: GenericWhereClauseSyntax?) {
+  internal init(
+    documentation: [SymbolDocumentation],
+    compilationConditions: Syntax?,
+    constraints: GenericWhereClauseSyntax?
+  ) {
     self.documentation = documentation
+    self.compilationConditions = compilationConditions
     self.constraints = constraints
   }
 
   // MARK: - Properties
 
   internal let documentation: [SymbolDocumentation]
+
+  internal var compilationConditions: Syntax?
 
   private var _constraints: GenericWhereClauseSyntax?
   internal var constraints: GenericWhereClauseSyntax? {
