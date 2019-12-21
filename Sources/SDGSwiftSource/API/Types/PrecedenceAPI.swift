@@ -20,6 +20,10 @@ public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredA
   _UniquelyDeclaredSyntaxAPIElement
 {
 
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
+
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
@@ -41,7 +45,8 @@ public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredA
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
+    super.init()
     self.constraints = constraints
   }
 }

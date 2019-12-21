@@ -33,7 +33,8 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
     let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
     self.declaration = normalizedDeclaration
     genericName = normalizedDeclaration.name()
-    super.init(documentation: documentation, children: children)
+    _storage = APIElementStorage(documentation: documentation, children: children)
+    super.init()
     self.constraints = normalizedConstraints
   }
 
@@ -49,7 +50,7 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
 
   internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
     if `extension`.isExtension(of: self) {
-      super.merge(extension: `extension`)
+      merge(extension: `extension`)
       return true
     }
     if let nested = `extension`.nested(in: self) {
@@ -61,6 +62,8 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
   }
 
   // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   public func _shallowIdentifierList() -> Set<String> {
     return declaration.identifierList()

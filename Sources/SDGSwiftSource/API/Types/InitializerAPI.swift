@@ -34,9 +34,14 @@ public final class InitializerAPI: _APIElementBase, SortableAPIElement,
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
+    super.init()
     self.constraints = constraints
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 

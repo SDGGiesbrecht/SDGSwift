@@ -84,11 +84,14 @@ public final class LibraryAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
+    super.init()
     self.constraints = constraints
   }
 
   // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   public func _summarySubentries() -> [String] {
     return modules.map({ $0.name.source() })

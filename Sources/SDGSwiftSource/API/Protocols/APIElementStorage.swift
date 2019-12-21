@@ -21,9 +21,9 @@ public struct _APIElementStorage {
 
   internal init(
     documentation: [SymbolDocumentation],
-    compilationConditions: Syntax?,
-    constraints: GenericWhereClauseSyntax?,
-    children: [APIElement]
+    compilationConditions: Syntax? = nil,
+    constraints: GenericWhereClauseSyntax? = nil,
+    children: [APIElement] = []
   ) {
     self.documentation = documentation
     self.compilationConditions = compilationConditions

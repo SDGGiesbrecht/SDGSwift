@@ -34,9 +34,14 @@ public final class SubscriptAPI: _APIElementBase, SortableAPIElement,
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    self._storage = APIElementStorage(documentation: documentation)
+    super.init()
     self.constraints = constraints
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 

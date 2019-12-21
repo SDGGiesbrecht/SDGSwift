@@ -21,6 +21,10 @@ public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, Sortabl
   _UniquelyDeclaredSyntaxAPIElement
 {
 
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
+
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
@@ -42,7 +46,8 @@ public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, Sortabl
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
+    super.init()
     self.constraints = constraints
   }
 }

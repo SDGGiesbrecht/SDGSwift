@@ -18,22 +18,6 @@ import SwiftSyntax
 
 public class _APIElementBase {
 
-  // MARK: - Initialization
-
-  internal init(
-    documentation: [SymbolDocumentation],
-    constraints: GenericWhereClauseSyntax? = nil,
-    compilationConditions: Syntax? = nil,
-    children: [APIElement] = []
-  ) {
-    self._storage = APIElementStorage(
-      documentation: documentation,
-      compilationConditions: compilationConditions,
-      constraints: constraints,
-      children: children
-    )
-  }
-
   // MARK: - Properties
 
   // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
@@ -49,29 +33,6 @@ public class _APIElementBase {
   ///
   /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
   public var userInformation: Any?
-
-  // MARK: - Merging
-
-  internal func moveConditionsToChildren() {
-    #warning("Remove _storage.")
-    for child in _storage.children {
-      child.compilationConditions.prependCompilationConditions(_storage.compilationConditions)
-      if child.constraints ≠ nil {
-        child.constraints.merge(with: _storage.constraints)
-      } else {
-        child.constraints = _storage.constraints
-      }
-    }
-    _storage.compilationConditions = nil
-    _storage.constraints = nil
-  }
-
-  internal func merge(extension: ExtensionAPI) {
-    #warning("Remove _storage.")
-    `extension`.moveConditionsToChildren()
-    _storage.children.append(contentsOf: `extension`.children)
-    _storage.children = FunctionAPI.groupIntoOverloads(_storage.children)
-  }
 
   // MARK: - Overloads
 
@@ -170,8 +131,4 @@ public class _APIElementBase {
 
     return result
   }
-
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage
 }

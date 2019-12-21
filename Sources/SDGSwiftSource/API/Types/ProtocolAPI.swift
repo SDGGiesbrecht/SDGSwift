@@ -33,13 +33,18 @@ public final class ProtocolAPI: _APIElementBase, APIElementProtocol, _NonOverloa
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation, children: children)
+    _storage = APIElementStorage(documentation: documentation, children: children)
+    super.init()
     self.constraints = constraints
 
     for child in children {
       child.elementBase.isProtocolRequirement = true
     }
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 
