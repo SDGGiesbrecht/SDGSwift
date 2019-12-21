@@ -23,7 +23,7 @@ import PackageModel
 import SDGSwiftPackageManager
 
 /// A Swift module.
-public final class ModuleAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+public final class ModuleAPI: _NonOverloadableAPIElement, SortableAPIElement,
   _UniquelyDeclaredManifestAPIElement
 {
 
@@ -86,7 +86,6 @@ public final class ModuleAPI: _APIElementBase, _NonOverloadableAPIElement, Sorta
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation)
-    super.init()
     self.constraints = constraints
   }
 

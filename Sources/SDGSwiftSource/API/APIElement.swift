@@ -64,7 +64,7 @@ public enum APIElement: Comparable, Hashable {
     other.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
     other.append(contentsOf: protocols.lazy.map({ APIElement.protocol($0) }))
 
-    let result = _APIElementBase.groupIntoOverloads(other)
+    let result = APIElement.groupIntoOverloads(other)
     resolveConformances(elements: result)
     return result
   }
@@ -95,6 +95,102 @@ public enum APIElement: Comparable, Hashable {
         }
       }
     }
+  }
+
+  internal static func groupIntoOverloads<E>(_ elements: [E], convert: (E) -> APIElement) -> [E]
+  where E: _OverloadableAPIElement {
+    var grouped: [String: [E]] = [:]
+
+    for element in elements {
+      grouped[element.genericOverloadPattern().source(), default: []].append(element)
+    }
+
+    var result: [E] = []
+    for (_, group) in grouped {
+      var merged: [E] = []
+      for element in group.sorted() {
+        var shouldAppendNew = true
+        partnerSearch: for index in merged.indices {
+          let existing = merged[index]
+
+          if let existingDocumenation = existing.documentation.last?.documentationComment {
+            if let elementDocumentation = element.documentation.last?.documentationComment {
+              if existingDocumenation.text == elementDocumentation.text {
+                // Same documentation.
+                existing.overloads.append(convert(element))
+                shouldAppendNew = false
+                break partnerSearch
+              } else {
+                // Differing documentation.
+                continue partnerSearch
+              }
+            } else {
+              // Only the existing element has documentation.
+              existing.overloads.append(convert(element))
+              shouldAppendNew = false
+              break partnerSearch
+            }
+          } else if element.documentation.last ≠ nil {
+            // Only the new element has documentation.
+            element.overloads.append(convert(merged.remove(at: index)))
+            break partnerSearch
+          } else {
+            // Neither has documentation.
+            existing.overloads.append(convert(element))
+            shouldAppendNew = false
+            break partnerSearch
+          }
+        }
+        if shouldAppendNew {
+          merged.append(element)
+        }
+      }
+      result.append(contentsOf: merged)
+    }
+
+    return result
+  }
+
+  internal static func groupIntoOverloads(_ elements: [APIElement]) -> [APIElement] {
+    var types: [TypeAPI] = []
+    var initializers: [InitializerAPI] = []
+    var variables: [VariableAPI] = []
+    var subscripts: [SubscriptAPI] = []
+    var functions: [FunctionAPI] = []
+
+    var result: [APIElement] = []
+
+    for element in elements {
+      switch element {
+      case .package, .library, .module, .extension, .protocol, .case, .operator, .precedence,
+        .conformance:
+        result.append(element)
+      case .type(let type):
+        types.append(type)
+      case .initializer(let initializer):
+        initializers.append(initializer)
+      case .variable(let variable):
+        variables.append(variable)
+      case .subscript(let `subscript`):
+        subscripts.append(`subscript`)
+      case .function(let function):
+        functions.append(function)
+      }
+    }
+
+    types = APIElement.groupIntoOverloads(types) { .type($0) }
+    initializers = APIElement.groupIntoOverloads(initializers) { .initializer($0) }
+    variables = APIElement.groupIntoOverloads(variables) { .variable($0) }
+    subscripts = APIElement.groupIntoOverloads(subscripts) { .subscript($0) }
+    functions = APIElement.groupIntoOverloads(functions) { .function($0) }
+
+    result.append(contentsOf: types.lazy.map({ APIElement.type($0) }))
+    result.append(contentsOf: initializers.lazy.map({ APIElement.initializer($0) }))
+    result.append(contentsOf: variables.lazy.map({ APIElement.variable($0) }))
+    result.append(contentsOf: subscripts.lazy.map({ APIElement.subscript($0) }))
+    result.append(contentsOf: functions.lazy.map({ APIElement.function($0) }))
+
+    return result
   }
 
   // MARK: - Cases
@@ -144,39 +240,6 @@ public enum APIElement: Comparable, Hashable {
   case conformance(ConformanceAPI)
 
   // MARK: - Methods
-
-  internal var elementBase: _APIElementBase {
-    switch self {
-    case .package(let package):
-      return package
-    case .library(let library):
-      return library
-    case .module(let module):
-      return module
-    case .type(let type):
-      return type
-    case .extension(let `extension`):
-      return `extension`
-    case .protocol(let `protocol`):
-      return `protocol`
-    case .case(let `case`):
-      return `case`
-    case .initializer(let initializer):
-      return initializer
-    case .variable(let variable):
-      return variable
-    case .subscript(let `subscript`):
-      return `subscript`
-    case .function(let function):
-      return function
-    case .operator(let `operator`):
-      return `operator`
-    case .precedence(let precedence):
-      return precedence
-    case .conformance(let conformance):
-      return conformance
-    }
-  }
 
   internal var elementProtocol: APIElementProtocol {
     switch self {
@@ -357,8 +420,13 @@ public enum APIElement: Comparable, Hashable {
 
   // @documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
   /// Whether or not the element is a protocol requirement.
-  public var isProtocolRequirement: Bool {
-    return elementProtocol.isProtocolRequirement
+  public internal(set) var isProtocolRequirement: Bool {
+    get {
+      return elementProtocol.isProtocolRequirement
+    }
+    nonmutating set {
+      elementProtocol.isProtocolRequirement = newValue
+    }
   }
 
   // @documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
@@ -390,16 +458,16 @@ public enum APIElement: Comparable, Hashable {
     return elementProtocol.identifierList()
   }
 
-  // #documentation(SDGSwiftSource.APIElement.userInformation)
+  // @documentation(SDGSwiftSource.APIElement.userInformation)
   /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
   ///
   /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
   public var userInformation: Any? {
     get {
-      return elementBase.userInformation
+      return elementProtocol.userInformation
     }
     nonmutating set {
-      elementBase.userInformation = newValue
+      elementProtocol.userInformation = newValue
     }
   }
 

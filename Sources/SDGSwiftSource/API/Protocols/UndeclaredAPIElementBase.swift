@@ -14,8 +14,7 @@
 
 import SwiftSyntax
 
-#warning("Remove.")
-public class _UndeclaredAPIElementBase: _APIElementBase {
+public class _UndeclaredAPIElementBase {
 
   // MARK: - Initialization
 

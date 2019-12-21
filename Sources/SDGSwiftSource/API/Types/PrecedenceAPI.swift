@@ -15,7 +15,7 @@
 import SwiftSyntax
 
 /// An operator precedence group.
-public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+public final class PrecedenceAPI: APIElementProtocol, DeclaredAPIElement,
   _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
   _UniquelyDeclaredSyntaxAPIElement
 {
@@ -46,7 +46,6 @@ public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredA
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation)
-    super.init()
     self.constraints = constraints
   }
 }

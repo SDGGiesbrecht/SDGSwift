@@ -15,7 +15,7 @@
 import SwiftSyntax
 
 /// A variable or property.
-public final class VariableAPI: _APIElementBase, SortableAPIElement,
+public final class VariableAPI: SortableAPIElement,
   UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
 {
 
@@ -32,7 +32,6 @@ public final class VariableAPI: _APIElementBase, SortableAPIElement,
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation)
-    super.init()
     self.constraints = constraints
   }
 

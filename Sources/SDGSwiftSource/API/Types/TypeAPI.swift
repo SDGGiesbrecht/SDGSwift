@@ -21,7 +21,7 @@ import SwiftSyntax
 /// A type.
 ///
 /// A type may be a structure, class, enumeration, type alias or associated type.
-public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+public final class TypeAPI: APIElementProtocol, DeclaredAPIElement,
   _OverloadableAPIElement, SortableAPIElement
 {
 
@@ -34,7 +34,6 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
     self.declaration = normalizedDeclaration
     genericName = normalizedDeclaration.name()
     _storage = APIElementStorage(documentation: documentation, children: children)
-    super.init()
     self.constraints = normalizedConstraints
   }
 

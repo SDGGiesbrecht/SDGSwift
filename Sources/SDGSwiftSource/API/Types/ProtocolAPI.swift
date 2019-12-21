@@ -17,7 +17,7 @@ import SDGCollections
 import SwiftSyntax
 
 /// A protocol.
-public final class ProtocolAPI: _APIElementBase, APIElementProtocol, _NonOverloadableAPIElement,
+public final class ProtocolAPI: APIElementProtocol, _NonOverloadableAPIElement,
   SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement
 {
 
@@ -34,11 +34,10 @@ public final class ProtocolAPI: _APIElementBase, APIElementProtocol, _NonOverloa
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation, children: children)
-    super.init()
     self.constraints = constraints
 
     for child in children {
-      child.elementBase.isProtocolRequirement = true
+      child.isProtocolRequirement = true
     }
   }
 

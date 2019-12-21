@@ -56,4 +56,10 @@ public struct _APIElementStorage {
       _children = newValue.sorted()
     }
   }
+
+  internal var isProtocolRequirement: Bool = false
+  internal var hasDefaultImplementation: Bool = false
+  internal var _overloads: [APIElement] = []
+
+  internal var userInformation: Any?
 }

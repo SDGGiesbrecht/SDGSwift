@@ -15,7 +15,7 @@
 import SwiftSyntax
 
 /// An operator.
-public final class OperatorAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+public final class OperatorAPI: APIElementProtocol, DeclaredAPIElement,
   _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
   _UniquelyDeclaredSyntaxAPIElement
 {
@@ -46,7 +46,6 @@ public final class OperatorAPI: _APIElementBase, APIElementProtocol, DeclaredAPI
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation)
-    super.init()
     self.constraints = constraints
   }
 }

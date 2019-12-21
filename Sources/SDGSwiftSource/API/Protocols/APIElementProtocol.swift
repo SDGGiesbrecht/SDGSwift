@@ -23,6 +23,7 @@ public protocol APIElementProtocol: AnyObject {
 
   var _storage: _APIElementStorage { get set }
 
+  #warning("Remove these as requirements?")
   // #documentation(SDGSwiftSource.APIElement.documentation)
   /// The element’s documentation.
   var documentation: [SymbolDocumentation] { get }
@@ -119,6 +120,46 @@ extension APIElementProtocol {
     }
   }
 
+  public internal(set) var isProtocolRequirement: Bool {
+    get {
+      return storage.isProtocolRequirement
+    }
+    set {
+      storage.isProtocolRequirement = newValue
+    }
+  }
+  
+  public internal(set) var hasDefaultImplementation: Bool {
+    get {
+      return storage.hasDefaultImplementation
+    }
+    set {
+      storage.hasDefaultImplementation = newValue
+    }
+  }
+  
+  internal var _overloads: [APIElement] {
+    get {
+      return storage._overloads
+    }
+    set {
+      storage._overloads = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.userInformation)
+  /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
+  ///
+  /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
+  public var userInformation: Any? {
+    get {
+      return storage.userInformation
+    }
+    set {
+      storage.userInformation = newValue
+    }
+  }
+
   // MARK: - Merging
 
   internal func moveConditionsToChildren() {
@@ -137,7 +178,7 @@ extension APIElementProtocol {
   internal func merge(extension: ExtensionAPI) {
     `extension`.moveConditionsToChildren()
     children.append(contentsOf: `extension`.children)
-    children = FunctionAPI.groupIntoOverloads(children)
+    children = APIElement.groupIntoOverloads(children)
   }
 
   // MARK: - Identifiers

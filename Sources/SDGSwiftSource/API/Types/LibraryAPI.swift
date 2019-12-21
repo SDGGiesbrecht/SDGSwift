@@ -29,7 +29,7 @@ import SDGSwiftPackageManager
 import SDGSwiftLocalizations
 
 /// A library product of a package.
-public final class LibraryAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+public final class LibraryAPI: _NonOverloadableAPIElement, SortableAPIElement,
   _UniquelyDeclaredManifestAPIElement
 {
 
@@ -85,7 +85,6 @@ public final class LibraryAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
     self.declaration = declaration
     self.name = name
     _storage = APIElementStorage(documentation: documentation)
-    super.init()
     self.constraints = constraints
   }
 
