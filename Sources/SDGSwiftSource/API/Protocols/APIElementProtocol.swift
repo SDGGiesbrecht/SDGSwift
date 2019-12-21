@@ -80,11 +80,25 @@ extension APIElementProtocol {
   // MARK: - Storage
 
   internal var storage: APIElementStorage {
-    return _storage
+    get {
+      return _storage
+    }
+    set {
+      _storage = newValue
+    }
   }
 
   public var documentation: [SymbolDocumentation] {
     return storage.documentation
+  }
+
+  public internal(set) var constraints: GenericWhereClauseSyntax? {
+    get {
+      return storage.constraints
+    }
+    set {
+      storage.constraints = newValue
+    }
   }
 
   // MARK: - Identifiers

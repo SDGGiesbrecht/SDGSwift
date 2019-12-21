@@ -219,8 +219,13 @@ public enum APIElement: Comparable, Hashable {
 
   // @documentation(SDGSwiftSource.APIElement.constraints)
   /// Any generic constraints the element has.
-  public var constraints: GenericWhereClauseSyntax? {
-    return elementProtocol.constraints
+  public internal(set) var constraints: GenericWhereClauseSyntax? {
+    get {
+      return elementProtocol.constraints
+    }
+    nonmutating set {
+      elementProtocol.constraints = newValue
+    }
   }
 
   // @documentation(SDGSwiftSource.APIElement.documentation)

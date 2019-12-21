@@ -26,25 +26,12 @@ public class _APIElementBase {
     compilationConditions: Syntax? = nil,
     children: [APIElement] = []
   ) {
-    self._storage = APIElementStorage(documentation: documentation)
+    self._storage = APIElementStorage(documentation: documentation, constraints: constraints)
     self.compilationConditions = compilationConditions
-    self.constraints = constraints
     self.children = children
   }
 
   // MARK: - Properties
-
-  private var _constraints: GenericWhereClauseSyntax?
-  // #documentation(SDGSwiftSource.APIElement.constraints)
-  /// Any generic constraints the element has.
-  public internal(set) var constraints: GenericWhereClauseSyntax? {
-    get {
-      return _constraints
-    }
-    set {
-      _constraints = newValue?.normalized()
-    }
-  }
 
   // #documentation(SDGSwiftSource.APIElement.compilationConditions)
   /// The compilation conditions under which the element is available.
@@ -81,16 +68,17 @@ public class _APIElementBase {
   // MARK: - Merging
 
   internal func moveConditionsToChildren() {
+    #warning("Remove _storage.")
     for child in children {
       child.elementBase.compilationConditions.prependCompilationConditions(compilationConditions)
       if child.constraints ≠ nil {
-        child.elementBase.constraints.merge(with: constraints)
+        child.constraints.merge(with: _storage.constraints)
       } else {
-        child.elementBase.constraints = constraints
+        child.constraints = _storage.constraints
       }
     }
     compilationConditions = nil
-    constraints = nil
+    _storage.constraints = nil
   }
 
   internal func merge(extension: ExtensionAPI) {
