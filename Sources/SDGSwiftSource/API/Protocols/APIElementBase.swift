@@ -26,18 +26,13 @@ public class _APIElementBase {
     compilationConditions: Syntax? = nil,
     children: [APIElement] = []
   ) {
-
-    self.documentation = documentation
+    self._storage = APIElementStorage(documentation: documentation)
     self.compilationConditions = compilationConditions
     self.constraints = constraints
     self.children = children
   }
 
   // MARK: - Properties
-
-  // #documentation(SDGSwiftSource.APIElement.documentation)
-  /// The element’s documentation.
-  public let documentation: [SymbolDocumentation]
 
   private var _constraints: GenericWhereClauseSyntax?
   // #documentation(SDGSwiftSource.APIElement.constraints)
@@ -204,5 +199,5 @@ public class _APIElementBase {
 
   // MARK: - APIElementProtocol
 
-  public var _storage: _APIElementStorage = APIElementStorage()
+  public var _storage: _APIElementStorage
 }

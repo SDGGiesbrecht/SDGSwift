@@ -77,6 +77,16 @@ public protocol APIElementProtocol: AnyObject {
 
 extension APIElementProtocol {
 
+  // MARK: - Storage
+
+  internal var storage: APIElementStorage {
+    return _storage
+  }
+
+  public var documentation: [SymbolDocumentation] {
+    return storage.documentation
+  }
+
   // MARK: - Identifiers
 
   public func identifierList() -> Set<String> {

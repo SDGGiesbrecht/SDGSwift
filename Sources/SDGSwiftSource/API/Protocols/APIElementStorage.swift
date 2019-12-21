@@ -15,5 +15,13 @@
 internal typealias APIElementStorage = _APIElementStorage
 public struct _APIElementStorage {
 
+  // MARK: - Initialization
+
+  internal init(documentation: [SymbolDocumentation]) {
+    self.documentation = documentation
+  }
+
   // MARK: - Properties
+
+  internal let documentation: [SymbolDocumentation]
 }
