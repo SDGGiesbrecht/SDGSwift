@@ -18,4 +18,8 @@ public final class ConformanceAPI: _UndeclaredAPIElementBase, SortableAPIElement
 {
   /// A weak reference to the protocol or superclass.
   public internal(set) var reference: ConformanceReference?
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage = APIElementStorage()
 }

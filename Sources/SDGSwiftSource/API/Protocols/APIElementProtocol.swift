@@ -21,6 +21,8 @@ import SwiftSyntax
 /// A type‐erased element of API.
 public protocol APIElementProtocol: AnyObject {
 
+  var _storage: _APIElementStorage { get set }
+
   // #documentation(SDGSwiftSource.APIElement.documentation)
   /// The element’s documentation.
   var documentation: [SymbolDocumentation] { get }

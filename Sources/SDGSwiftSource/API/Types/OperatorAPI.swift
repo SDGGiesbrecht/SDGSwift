@@ -20,6 +20,10 @@ public final class OperatorAPI: _APIElementBase, APIElementProtocol, DeclaredAPI
   _UniquelyDeclaredSyntaxAPIElement
 {
 
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage = APIElementStorage()
+
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)

@@ -91,6 +91,8 @@ public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, 
 
   // MARK: - APIElementProtocol
 
+  public var _storage: _APIElementStorage = APIElementStorage()
+
   public var _summaryName: String {
     return "(" + genericName.source() + ")"
   }
