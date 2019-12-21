@@ -29,26 +29,12 @@ public class _APIElementBase {
     self._storage = APIElementStorage(
       documentation: documentation,
       compilationConditions: compilationConditions,
-      constraints: constraints
+      constraints: constraints,
+      children: children
     )
-    self.children = children
   }
 
   // MARK: - Properties
-
-  private var _children: [APIElement] = []
-  // #documentation(SDGSwiftSource.APIElement.children)
-  /// Any children the element has.
-  ///
-  /// For example, types may have methods and properties as children.
-  public internal(set) var children: [APIElement] {
-    get {
-      return _children
-    }
-    set {
-      _children = newValue.sorted()
-    }
-  }
 
   // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
   /// Whether or not the element is a protocol requirement.
@@ -68,7 +54,7 @@ public class _APIElementBase {
 
   internal func moveConditionsToChildren() {
     #warning("Remove _storage.")
-    for child in children {
+    for child in _storage.children {
       child.compilationConditions.prependCompilationConditions(_storage.compilationConditions)
       if child.constraints ≠ nil {
         child.constraints.merge(with: _storage.constraints)
@@ -81,9 +67,10 @@ public class _APIElementBase {
   }
 
   internal func merge(extension: ExtensionAPI) {
+    #warning("Remove _storage.")
     `extension`.moveConditionsToChildren()
-    children.append(contentsOf: `extension`.children)
-    children = FunctionAPI.groupIntoOverloads(children)
+    _storage.children.append(contentsOf: `extension`.children)
+    _storage.children = FunctionAPI.groupIntoOverloads(_storage.children)
   }
 
   // MARK: - Overloads

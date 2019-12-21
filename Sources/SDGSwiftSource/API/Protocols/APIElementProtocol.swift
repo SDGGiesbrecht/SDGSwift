@@ -110,6 +110,15 @@ extension APIElementProtocol {
     }
   }
 
+  public internal(set) var children: [APIElement] {
+    get {
+      return storage.children
+    }
+    set {
+      storage.children = newValue
+    }
+  }
+
   // MARK: - Identifiers
 
   public func identifierList() -> Set<String> {
@@ -413,7 +422,7 @@ extension APIElementProtocol {
       $0.genericName.source() == conformance.genericName.source()
     }) {
       let conformanceCopy = ConformanceAPI(type: conformance.type)
-      (self as? _APIElementBase)?.children.append(.conformance(conformanceCopy))
+      children.append(.conformance(conformanceCopy))
       if let referee = conformance.reference?.elementProtocol {
         conformanceCopy.reference = conformance.reference
         inherit(from: referee, otherProtocols: otherProtocols, otherClasses: otherClasses)
@@ -423,7 +432,7 @@ extension APIElementProtocol {
     }
     let parents = conformances.compactMap({ $0.reference?.elementProtocol })
 
-    (self as? _APIElementBase)?.children = children.filter { child in
+    children = children.filter { child in
       switch child {
       case .package, .library, .module, .protocol, .extension, .case, .operator, .precedence,
         .conformance:

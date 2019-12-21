@@ -22,11 +22,13 @@ public struct _APIElementStorage {
   internal init(
     documentation: [SymbolDocumentation],
     compilationConditions: Syntax?,
-    constraints: GenericWhereClauseSyntax?
+    constraints: GenericWhereClauseSyntax?,
+    children: [APIElement]
   ) {
     self.documentation = documentation
     self.compilationConditions = compilationConditions
     self.constraints = constraints
+    self.children = children
   }
 
   // MARK: - Properties
@@ -42,6 +44,16 @@ public struct _APIElementStorage {
     }
     set {
       _constraints = newValue?.normalized()
+    }
+  }
+
+  private var _children: [APIElement] = []
+  internal var children: [APIElement] {
+    get {
+      return _children
+    }
+    set {
+      _children = newValue.sorted()
     }
   }
 }
