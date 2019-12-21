@@ -23,22 +23,9 @@ public protocol APIElementProtocol: AnyObject {
 
   var _storage: _APIElementStorage { get set }
 
-  #warning("Remove these as requirements?")
-  // #documentation(SDGSwiftSource.APIElement.documentation)
-  /// The element’s documentation.
-  var documentation: [SymbolDocumentation] { get }
-
   // #documentation(SDGSwiftSource.APIElement.declaration)
   /// The element’s declaration.
   var possibleDeclaration: Syntax? { get }
-
-  // #documentation(SDGSwiftSource.APIElement.constraints)
-  /// Any generic constraints the element has.
-  var constraints: GenericWhereClauseSyntax? { get }
-
-  // #documentation(SDGSwiftSource.APIElement.compilationConditions)
-  /// The compilation conditions under which the element is available.
-  var compilationConditions: Syntax? { get }
 
   // #documentation(SDGSwiftSource.APIElement.name)
   /// The name of the element.
@@ -48,32 +35,9 @@ public protocol APIElementProtocol: AnyObject {
   /// The name of the element.
   var overloads: [APIElement] { get }
 
-  // #documentation(SDGSwiftSource.APIElement.children)
-  /// Any children the element has.
-  ///
-  /// For example, types may have methods and properties as children.
-  var children: [APIElement] { get }
-
   func _shallowIdentifierList() -> Set<String>
-  // #documentation(SDGSwiftSource.APIElement.identifierList)
-  /// A list of all identifiers made available by the element.
-  func identifierList() -> Set<String>
-
   var _summaryName: String { get }
-
-  // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
-  /// Whether or not the element is a protocol requirement.
-  var isProtocolRequirement: Bool { get }
-
-  // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
-  /// Whether or not the element has a default implementation.
-  var hasDefaultImplementation: Bool { get }
-
   func _summarySubentries() -> [String]
-
-  // #documentation(SDGSwiftSource.APIElement.summary)
-  /// A summary of the element’s API.
-  func summary() -> [String]
 }
 
 extension APIElementProtocol {
@@ -89,10 +53,14 @@ extension APIElementProtocol {
     }
   }
 
+  // #documentation(SDGSwiftSource.APIElement.documentation)
+  /// The element’s documentation.
   public var documentation: [SymbolDocumentation] {
     return storage.documentation
   }
 
+  // #documentation(SDGSwiftSource.APIElement.compilationConditions)
+  /// The compilation conditions under which the element is available.
   public internal(set) var compilationConditions: Syntax? {
     get {
       return storage.compilationConditions
@@ -102,6 +70,8 @@ extension APIElementProtocol {
     }
   }
 
+  // #documentation(SDGSwiftSource.APIElement.constraints)
+  /// Any generic constraints the element has.
   public internal(set) var constraints: GenericWhereClauseSyntax? {
     get {
       return storage.constraints
@@ -111,6 +81,10 @@ extension APIElementProtocol {
     }
   }
 
+  // #documentation(SDGSwiftSource.APIElement.children)
+  /// Any children the element has.
+  ///
+  /// For example, types may have methods and properties as children.
   public internal(set) var children: [APIElement] {
     get {
       return storage.children
@@ -120,6 +94,8 @@ extension APIElementProtocol {
     }
   }
 
+  // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+  /// Whether or not the element is a protocol requirement.
   public internal(set) var isProtocolRequirement: Bool {
     get {
       return storage.isProtocolRequirement
@@ -128,7 +104,9 @@ extension APIElementProtocol {
       storage.isProtocolRequirement = newValue
     }
   }
-  
+
+  // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+  /// Whether or not the element has a default implementation.
   public internal(set) var hasDefaultImplementation: Bool {
     get {
       return storage.hasDefaultImplementation
@@ -137,7 +115,7 @@ extension APIElementProtocol {
       storage.hasDefaultImplementation = newValue
     }
   }
-  
+
   internal var _overloads: [APIElement] {
     get {
       return storage._overloads
