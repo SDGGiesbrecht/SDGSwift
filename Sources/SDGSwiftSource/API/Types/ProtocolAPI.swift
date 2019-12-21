@@ -41,10 +41,6 @@ public final class ProtocolAPI: _APIElementBase, APIElementProtocol, _NonOverloa
     }
   }
 
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)

@@ -21,10 +21,6 @@ public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, Sortabl
   _UniquelyDeclaredSyntaxAPIElement
 {
 
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)

@@ -89,10 +89,6 @@ public final class ModuleAPI: _APIElementBase, _NonOverloadableAPIElement, Sorta
     self.constraints = constraints
   }
 
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)

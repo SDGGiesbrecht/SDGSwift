@@ -20,10 +20,6 @@ public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredA
   _UniquelyDeclaredSyntaxAPIElement
 {
 
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   // MARK: - DeclaredAPIElement
 
   // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)

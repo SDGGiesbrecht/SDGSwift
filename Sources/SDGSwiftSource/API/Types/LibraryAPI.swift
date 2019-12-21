@@ -90,8 +90,6 @@ public final class LibraryAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
 
   // MARK: - APIElementProtocol
 
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   public func _summarySubentries() -> [String] {
     return modules.map({ $0.name.source() })
   }

@@ -184,8 +184,6 @@ public final class PackageAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
 
   // MARK: - APIElementProtocol
 
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   public func _summarySubentries() -> [String] {
     var result = Array(libraries.lazy.map({ $0.summary() }).joined())
     result.append(contentsOf: modules.lazy.map({ $0.summary() }).joined())

@@ -38,10 +38,6 @@ public final class SubscriptAPI: _APIElementBase, SortableAPIElement,
     self.constraints = constraints
   }
 
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   // MARK: - DeclaredAPIElement
 
   internal typealias Declaration = SubscriptDeclSyntax

@@ -62,8 +62,6 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
 
   // MARK: - APIElementProtocol
 
-  public var _storage: _APIElementStorage = APIElementStorage()
-
   public func _shallowIdentifierList() -> Set<String> {
     return declaration.identifierList()
   }

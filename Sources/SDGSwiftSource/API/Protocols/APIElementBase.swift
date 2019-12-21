@@ -201,4 +201,8 @@ public class _APIElementBase {
 
     return result
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage = APIElementStorage()
 }
