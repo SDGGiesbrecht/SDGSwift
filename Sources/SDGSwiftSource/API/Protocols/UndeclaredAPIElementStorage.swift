@@ -16,4 +16,5 @@ import SwiftSyntax
 
 internal struct UndeclaredAPIElementStorage {
   internal let type: TypeSyntax
+  internal var storage: APIElementStorage
 }

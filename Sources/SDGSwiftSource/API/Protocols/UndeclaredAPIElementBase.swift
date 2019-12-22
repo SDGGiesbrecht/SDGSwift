@@ -19,13 +19,11 @@ public class _UndeclaredAPIElementBase {
   // MARK: - Initialization
 
   init(type: TypeSyntax) {
-    _storage = APIElementStorage(documentation: [])
-    undeclaredStorage = UndeclaredAPIElementStorage(type: type.normalized())
+    undeclaredStorage = UndeclaredAPIElementStorage(
+      type: type.normalized(),
+      storage: APIElementStorage(documentation: [])
+    )
   }
-
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage
 
   // MARK: - UndeclaredAPIElementProtocol
 
