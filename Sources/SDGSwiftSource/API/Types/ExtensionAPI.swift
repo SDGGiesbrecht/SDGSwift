@@ -17,7 +17,7 @@ import SDGControlFlow
 import SwiftSyntax
 
 /// An extension.
-public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement,
+public final class ExtensionAPI: APIElementProtocol, SortableAPIElement,
   _UndeclaredAPIElementProtocol
 {
 
@@ -25,7 +25,6 @@ public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, 
 
   internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
     undeclaredStorage = UndeclaredAPIElementStorage(type: type)
-    super.init()
     self.constraints = constraints
     self.children = children
   }
