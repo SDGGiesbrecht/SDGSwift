@@ -21,21 +21,11 @@ import SwiftSyntax
 /// A type‐erased element of API.
 public protocol APIElementProtocol: AnyObject {
 
-  // #documentation(SDGSwiftSource.APIElement.documentation)
-  /// The element’s documentation.
-  var documentation: [SymbolDocumentation] { get }
+  var _storage: _APIElementStorage { get set }
 
   // #documentation(SDGSwiftSource.APIElement.declaration)
   /// The element’s declaration.
   var possibleDeclaration: Syntax? { get }
-
-  // #documentation(SDGSwiftSource.APIElement.constraints)
-  /// Any generic constraints the element has.
-  var constraints: GenericWhereClauseSyntax? { get }
-
-  // #documentation(SDGSwiftSource.APIElement.compilationConditions)
-  /// The compilation conditions under which the element is available.
-  var compilationConditions: Syntax? { get }
 
   // #documentation(SDGSwiftSource.APIElement.name)
   /// The name of the element.
@@ -45,38 +35,134 @@ public protocol APIElementProtocol: AnyObject {
   /// The name of the element.
   var overloads: [APIElement] { get }
 
-  // #documentation(SDGSwiftSource.APIElement.children)
-  /// Any children the element has.
-  ///
-  /// For example, types may have methods and properties as children.
-  var children: [APIElement] { get }
-
   func _shallowIdentifierList() -> Set<String>
-  // #documentation(SDGSwiftSource.APIElement.identifierList)
-  /// A list of all identifiers made available by the element.
-  func identifierList() -> Set<String>
-
   var _summaryName: String { get }
-
-  // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
-  /// Whether or not the element is a protocol requirement.
-  var isProtocolRequirement: Bool { get }
-
-  // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
-  /// Whether or not the element has a default implementation.
-  var hasDefaultImplementation: Bool { get }
-
   func _summarySubentries() -> [String]
-
-  // #documentation(SDGSwiftSource.APIElement.summary)
-  /// A summary of the element’s API.
-  func summary() -> [String]
 }
 
 extension APIElementProtocol {
 
+  // MARK: - Storage
+
+  internal var storage: APIElementStorage {
+    get {
+      return _storage
+    }
+    set {
+      _storage = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.documentation)
+  /// The element’s documentation.
+  public var documentation: [SymbolDocumentation] {
+    return storage.documentation
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.compilationConditions)
+  /// The compilation conditions under which the element is available.
+  public internal(set) var compilationConditions: Syntax? {
+    get {
+      return storage.compilationConditions
+    }
+    set {
+      storage.compilationConditions = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.constraints)
+  /// Any generic constraints the element has.
+  public internal(set) var constraints: GenericWhereClauseSyntax? {
+    get {
+      return storage.constraints
+    }
+    set {
+      storage.constraints = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.children)
+  /// Any children the element has.
+  ///
+  /// For example, types may have methods and properties as children.
+  public internal(set) var children: [APIElement] {
+    get {
+      return storage.children
+    }
+    set {
+      storage.children = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
+  /// Whether or not the element is a protocol requirement.
+  public internal(set) var isProtocolRequirement: Bool {
+    get {
+      return storage.isProtocolRequirement
+    }
+    set {
+      storage.isProtocolRequirement = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
+  /// Whether or not the element has a default implementation.
+  public internal(set) var hasDefaultImplementation: Bool {
+    get {
+      return storage.hasDefaultImplementation
+    }
+    set {
+      storage.hasDefaultImplementation = newValue
+    }
+  }
+
+  internal var _overloads: [APIElement] {
+    get {
+      return storage._overloads
+    }
+    set {
+      storage._overloads = newValue
+    }
+  }
+
+  // #documentation(SDGSwiftSource.APIElement.userInformation)
+  /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
+  ///
+  /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
+  public var userInformation: Any? {
+    get {
+      return storage.userInformation
+    }
+    set {
+      storage.userInformation = newValue
+    }
+  }
+
+  // MARK: - Merging
+
+  internal func moveConditionsToChildren() {
+    for child in children {
+      child.compilationConditions.prependCompilationConditions(compilationConditions)
+      if child.constraints ≠ nil {
+        child.constraints.merge(with: constraints)
+      } else {
+        child.constraints = constraints
+      }
+    }
+    compilationConditions = nil
+    constraints = nil
+  }
+
+  internal func merge(extension: ExtensionAPI) {
+    `extension`.moveConditionsToChildren()
+    children.append(contentsOf: `extension`.children)
+    children = APIElement.groupIntoOverloads(children)
+  }
+
   // MARK: - Identifiers
 
+  // #documentation(SDGSwiftSource.APIElement.identifierList)
+  /// A list of all identifiers made available by the element.
   public func identifierList() -> Set<String> {
     return children.reduce(into: _shallowIdentifierList()) { $0 ∪= $1.identifierList() }
   }
@@ -113,6 +199,8 @@ extension APIElementProtocol {
     return result
   }
 
+  // #documentation(SDGSwiftSource.APIElement.summary)
+  /// A summary of the element’s API.
   public func summary() -> [String] {
     var entry = ""
     if isProtocolRequirement ∧ ¬(self is TypeAPI ∨ self is ConformanceAPI) {
@@ -378,7 +466,7 @@ extension APIElementProtocol {
       $0.genericName.source() == conformance.genericName.source()
     }) {
       let conformanceCopy = ConformanceAPI(type: conformance.type)
-      (self as? _APIElementBase)?.children.append(.conformance(conformanceCopy))
+      children.append(.conformance(conformanceCopy))
       if let referee = conformance.reference?.elementProtocol {
         conformanceCopy.reference = conformance.reference
         inherit(from: referee, otherProtocols: otherProtocols, otherClasses: otherClasses)
@@ -388,7 +476,7 @@ extension APIElementProtocol {
     }
     let parents = conformances.compactMap({ $0.reference?.elementProtocol })
 
-    (self as? _APIElementBase)?.children = children.filter { child in
+    children = children.filter { child in
       switch child {
       case .package, .library, .module, .protocol, .extension, .case, .operator, .precedence,
         .conformance:

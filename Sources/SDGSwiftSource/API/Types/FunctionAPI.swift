@@ -18,7 +18,7 @@ import SDGCollections
 import SwiftSyntax
 
 /// A function or method.
-public final class FunctionAPI: _APIElementBase, SortableAPIElement,
+public final class FunctionAPI: SortableAPIElement,
   UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
 {
 
@@ -34,9 +34,13 @@ public final class FunctionAPI: _APIElementBase, SortableAPIElement,
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
     self.constraints = constraints
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 

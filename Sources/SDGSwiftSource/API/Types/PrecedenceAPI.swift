@@ -15,10 +15,14 @@
 import SwiftSyntax
 
 /// An operator precedence group.
-public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+public final class PrecedenceAPI: APIElementProtocol, DeclaredAPIElement,
   _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
   _UniquelyDeclaredSyntaxAPIElement
 {
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 
@@ -41,7 +45,7 @@ public final class PrecedenceAPI: _APIElementBase, APIElementProtocol, DeclaredA
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
     self.constraints = constraints
   }
 }

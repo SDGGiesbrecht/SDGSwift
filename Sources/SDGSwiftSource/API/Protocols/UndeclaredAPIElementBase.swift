@@ -14,16 +14,20 @@
 
 import SwiftSyntax
 
-public class _UndeclaredAPIElementBase: _APIElementBase {
+public class _UndeclaredAPIElementBase {
 
   // MARK: - Initialization
 
   init(type: TypeSyntax) {
     self.type = type.normalized()
-    super.init(documentation: [])
+    _storage = APIElementStorage(documentation: [])
   }
 
   // MARK: - Properties
 
   public let type: TypeSyntax
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 }

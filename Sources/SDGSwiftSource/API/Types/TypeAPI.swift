@@ -21,7 +21,7 @@ import SwiftSyntax
 /// A type.
 ///
 /// A type may be a structure, class, enumeration, type alias or associated type.
-public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElement,
+public final class TypeAPI: APIElementProtocol, DeclaredAPIElement,
   _OverloadableAPIElement, SortableAPIElement
 {
 
@@ -33,7 +33,7 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
     let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
     self.declaration = normalizedDeclaration
     genericName = normalizedDeclaration.name()
-    super.init(documentation: documentation, children: children)
+    _storage = APIElementStorage(documentation: documentation, children: children)
     self.constraints = normalizedConstraints
   }
 
@@ -49,7 +49,7 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
 
   internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
     if `extension`.isExtension(of: self) {
-      super.merge(extension: `extension`)
+      merge(extension: `extension`)
       return true
     }
     if let nested = `extension`.nested(in: self) {
@@ -61,6 +61,8 @@ public final class TypeAPI: _APIElementBase, APIElementProtocol, DeclaredAPIElem
   }
 
   // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   public func _shallowIdentifierList() -> Set<String> {
     return declaration.identifierList()

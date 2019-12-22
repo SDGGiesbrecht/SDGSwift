@@ -39,7 +39,7 @@ extension _UniquelyDeclaredSyntaxAPIElement {
   }
 }
 
-extension _UniquelyDeclaredSyntaxAPIElement where Declaration: Constrained, Self: _APIElementBase {
+extension _UniquelyDeclaredSyntaxAPIElement where Declaration: Constrained {
 
   internal init(
     documentation: [SymbolDocumentation],

@@ -17,9 +17,13 @@ import SDGLogic
 import SwiftSyntax
 
 /// An enumeration case.
-public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+public final class CaseAPI: _NonOverloadableAPIElement, SortableAPIElement,
   _UniquelyDeclaredSyntaxAPIElement
 {
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 
@@ -42,7 +46,7 @@ public final class CaseAPI: _APIElementBase, _NonOverloadableAPIElement, Sortabl
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
     self.constraints = constraints
   }
 }

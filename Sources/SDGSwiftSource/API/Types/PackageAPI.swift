@@ -29,7 +29,7 @@ import SDGSwiftPackageManager
 import SDGSwiftLocalizations
 
 /// A package.
-public final class PackageAPI: _APIElementBase, _NonOverloadableAPIElement, SortableAPIElement,
+public final class PackageAPI: _NonOverloadableAPIElement, SortableAPIElement,
   _UniquelyDeclaredManifestAPIElement
 {
 
@@ -173,7 +173,7 @@ public final class PackageAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
 
     self.declaration = declaration
     self.name = name
-    super.init(documentation: documentation)
+    _storage = APIElementStorage(documentation: documentation)
     self.constraints = constraints
   }
 
@@ -189,6 +189,10 @@ public final class PackageAPI: _APIElementBase, _NonOverloadableAPIElement, Sort
     result.append(contentsOf: modules.lazy.map({ $0.summary() }).joined())
     return result
   }
+
+  // MARK: - APIElementProtocol
+
+  public var _storage: _APIElementStorage
 
   // MARK: - DeclaredAPIElement
 
