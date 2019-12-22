@@ -21,6 +21,7 @@ public class _UndeclaredAPIElementBase {
   init(type: TypeSyntax) {
     self.type = type.normalized()
     _storage = APIElementStorage(documentation: [])
+    undeclaredStorage = UndeclaredAPIElementStorage()
   }
 
   // MARK: - Properties
@@ -30,4 +31,8 @@ public class _UndeclaredAPIElementBase {
   // MARK: - APIElementProtocol
 
   public var _storage: _APIElementStorage
+
+  // MARK: - UndeclaredAPIElementProtocol
+
+  internal var undeclaredStorage: UndeclaredAPIElementStorage
 }

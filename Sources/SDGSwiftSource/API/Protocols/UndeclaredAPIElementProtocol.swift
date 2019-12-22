@@ -15,6 +15,7 @@
 import SwiftSyntax
 
 internal protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
+  var undeclaredStorage: UndeclaredAPIElementStorage { get set }
   var type: TypeSyntax { get }
 }
 
