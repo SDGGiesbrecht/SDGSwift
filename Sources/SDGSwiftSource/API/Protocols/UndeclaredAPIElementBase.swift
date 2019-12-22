@@ -15,17 +15,4 @@
 import SwiftSyntax
 
 public class _UndeclaredAPIElementBase {
-
-  // MARK: - Initialization
-
-  init(type: TypeSyntax) {
-    undeclaredStorage = UndeclaredAPIElementStorage(
-      type: type.normalized(),
-      storage: APIElementStorage(documentation: [])
-    )
-  }
-
-  // MARK: - UndeclaredAPIElementProtocol
-
-  internal var undeclaredStorage: UndeclaredAPIElementStorage
 }
