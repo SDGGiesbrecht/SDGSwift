@@ -19,14 +19,9 @@ public class _UndeclaredAPIElementBase {
   // MARK: - Initialization
 
   init(type: TypeSyntax) {
-    self.type = type.normalized()
     _storage = APIElementStorage(documentation: [])
-    undeclaredStorage = UndeclaredAPIElementStorage()
+    undeclaredStorage = UndeclaredAPIElementStorage(type: type.normalized())
   }
-
-  // MARK: - Properties
-
-  public let type: TypeSyntax
 
   // MARK: - APIElementProtocol
 
