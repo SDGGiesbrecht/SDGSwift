@@ -161,6 +161,8 @@ extension APIElementProtocol {
 
   // MARK: - Identifiers
 
+  // #documentation(SDGSwiftSource.APIElement.identifierList)
+  /// A list of all identifiers made available by the element.
   public func identifierList() -> Set<String> {
     return children.reduce(into: _shallowIdentifierList()) { $0 ∪= $1.identifierList() }
   }
@@ -197,6 +199,8 @@ extension APIElementProtocol {
     return result
   }
 
+  // #documentation(SDGSwiftSource.APIElement.summary)
+  /// A summary of the element’s API.
   public func summary() -> [String] {
     var entry = ""
     if isProtocolRequirement ∧ ¬(self is TypeAPI ∨ self is ConformanceAPI) {
