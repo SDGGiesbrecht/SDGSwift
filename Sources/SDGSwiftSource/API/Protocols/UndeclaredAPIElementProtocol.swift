@@ -15,10 +15,23 @@
 import SwiftSyntax
 
 internal protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
-  var type: TypeSyntax { get }
+  var undeclaredStorage: UndeclaredAPIElementStorage { get set }
 }
 
 extension _UndeclaredAPIElementProtocol {
+
+  public var _storage: _APIElementStorage {
+    get {
+      undeclaredStorage.storage
+    }
+    set {
+      undeclaredStorage.storage = newValue
+    }
+  }
+
+  public var type: TypeSyntax {
+    return undeclaredStorage.type
+  }
 
   public var possibleDeclaration: Syntax? {
     return nil

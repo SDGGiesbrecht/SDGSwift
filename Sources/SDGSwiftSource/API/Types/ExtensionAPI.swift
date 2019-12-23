@@ -17,14 +17,14 @@ import SDGControlFlow
 import SwiftSyntax
 
 /// An extension.
-public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, SortableAPIElement,
+public final class ExtensionAPI: APIElementProtocol, SortableAPIElement,
   _UndeclaredAPIElementProtocol
 {
 
   // MARK: - Initialization
 
   internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-    super.init(type: type)
+    undeclaredStorage = UndeclaredAPIElementStorage(type: type)
     self.constraints = constraints
     self.children = children
   }
@@ -94,4 +94,8 @@ public final class ExtensionAPI: _UndeclaredAPIElementBase, APIElementProtocol, 
   public var _summaryName: String {
     return "(" + genericName.source() + ")"
   }
+
+  // MARK: - UndeclaredAPIElementProtocol
+
+  internal var undeclaredStorage: UndeclaredAPIElementStorage
 }
