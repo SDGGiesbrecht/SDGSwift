@@ -75,27 +75,27 @@ public class FunctionalSyntaxScanner: SyntaxScanner {
 
   // MARK: - SyntaxScanner
 
-  public override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+  public func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
     return checkSyntax(node, context)
   }
 
-  public override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
+  public func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
     return checkExtendedSyntax(node, context)
   }
 
-  public override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
+  public func visit(_ node: Trivia, context: TriviaContext) -> Bool {
     return checkTrivia(node, context)
   }
 
-  public override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+  public func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
     return checkTriviaPiece(node, context)
   }
 
-  public override func shouldExtend(_ node: TokenSyntax) -> Bool {
+  public func shouldExtend(_ node: TokenSyntax) -> Bool {
     return shouldExtendToken(node)
   }
 
-  public override func shouldExtend(_ node: CodeFragmentSyntax) -> Bool {
+  public func shouldExtend(_ node: CodeFragmentSyntax) -> Bool {
     return shouldExtendFragment(node)
   }
 }
