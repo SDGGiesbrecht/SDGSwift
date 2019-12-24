@@ -21,9 +21,11 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
-    try withMock(named: "MultipleSchemes") { package in
-      let scheme = try package.scheme().get()
-      XCTAssertEqual(scheme, "SomePackage\u{2D}Package")
-    }
+    #if !os(Linux)
+      try withMock(named: "MultipleSchemes") { package in
+        let scheme = try package.scheme().get()
+        XCTAssertEqual(scheme, "SomePackage\u{2D}Package")
+      }
+    #endif
   }
 }
