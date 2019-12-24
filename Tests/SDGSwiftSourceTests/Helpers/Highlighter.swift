@@ -63,14 +63,14 @@ class Highlighter: SyntaxScanner {
     return highlighted
   }
 
-  override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+  func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
     if let token = node as? TokenSyntax {
       highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
     }
     return true
   }
 
-  override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
+  func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
     if let token = node as? ExtendedTokenSyntax {
       highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
     }

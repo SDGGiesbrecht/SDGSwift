@@ -15,7 +15,7 @@
 import SwiftSyntax
 
 /// A scanner for read‐only handling of a syntax tree.
-protocol SyntaxScanner {
+public protocol SyntaxScanner {
 
   // @documentation(SDGSwiftSource.SyntaxScanner.visit)
   /// Visits a syntax node.
