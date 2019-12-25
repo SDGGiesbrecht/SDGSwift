@@ -15,7 +15,7 @@
 import SwiftSyntax
 
 /// A syntax scanner that can be used by providing closures instead of subclassing.
-public class FunctionalSyntaxScanner: SyntaxScanner {
+public struct FunctionalSyntaxScanner: SyntaxScanner {
 
   // MARK: - Initialization
 
