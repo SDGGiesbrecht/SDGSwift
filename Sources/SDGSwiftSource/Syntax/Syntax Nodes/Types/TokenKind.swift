@@ -99,4 +99,8 @@ extension TokenKind {
       return true
     }
   }
+
+  internal var cssName: String {
+    return "\(self)".truncated(before: "(")
+  }
 }

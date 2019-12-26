@@ -213,10 +213,16 @@ extension Syntax {
         )
       } else {
         var source = HTML.escapeTextForCharacterData(token.text)
+
+        var classes = [
+          "SwiftSyntax‐\(TokenSyntax.self)", "SwiftSyntax‐TokenKind‐\(token.tokenKind.cssName)"
+        ]
         if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
-          source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
-          source.append(contentsOf: "</span>")
+          classes.prepend(`class`)
         }
+        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+        source.append(contentsOf: "</span>")
+
         if token.tokenKind.shouldBeCrossLinked,
           let url = symbolLinks[token.text]
         {
