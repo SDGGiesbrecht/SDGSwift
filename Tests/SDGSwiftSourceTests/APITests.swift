@@ -291,6 +291,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
+    let highlightedToken = SyntaxFactory.makeToken(.letKeyword).syntaxHighlightedHTML(inline: true)
+    XCTAssert(highlightedToken.contains("SwiftSyntax‐TokenSyntax SwiftSyntax‐TokenKind‐let\u{22}"), highlightedToken)
   }
 
   func testExtension() {
