@@ -211,12 +211,23 @@ extension Syntax {
           internalIdentifiers: internalIdentifiers,
           symbolLinks: symbolLinks
         )
+        result.prepend(
+          contentsOf:
+            "<span class=\u{22}SwiftSyntax‐\(Self.self) SwiftSyntax‐TokenKind‐\(token.tokenKind.cssName)\u{22}>"
+        )
+        result.append(contentsOf: "</span>")
       } else {
         var source = HTML.escapeTextForCharacterData(token.text)
+
+        var classes = [
+          "SwiftSyntax‐\(Self.self)", "SwiftSyntax‐TokenKind‐\(token.tokenKind.cssName)"
+        ]
         if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
-          source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
-          source.append(contentsOf: "</span>")
+          classes.prepend(`class`)
         }
+        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+        source.append(contentsOf: "</span>")
+
         if token.tokenKind.shouldBeCrossLinked,
           let url = symbolLinks[token.text]
         {
@@ -252,10 +263,14 @@ extension Syntax {
       var result = children.map({
         $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
       }).joined()
+      var classes = [
+        "SwiftSyntax‐\(Self.self)",
+      ]
       if self is StringLiteralExprSyntax {
-        result.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
-        result.append(contentsOf: "</span>")
+        classes.prepend("string")
       }
+      result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+      result.append(contentsOf: "</span>")
       return result
     }
   }

@@ -291,6 +291,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
+    let highlighted = SyntaxFactory.makeVariableDecl(
+      attributes: nil,
+      modifiers: nil,
+      letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
+      bindings: SyntaxFactory.makePatternBindingList([]))
+      .syntaxHighlightedHTML(inline: true)
+    XCTAssert(
+      highlighted.contains("SwiftSyntax‐TokenSyntax SwiftSyntax‐TokenKind‐letKeyword"),
+      highlighted
+    )
+    XCTAssert(
+      highlighted.contains("SwiftSyntax‐VariableDeclSyntax"),
+      highlighted
+    )
   }
 
   func testExtension() {
