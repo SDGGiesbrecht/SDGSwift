@@ -15,7 +15,7 @@
 import SDGLogic
 
 /// The context of a syntax node.
-public class SyntaxContext {
+public struct SyntaxContext {
 
   // MARK: - Initialization
 
