@@ -90,7 +90,7 @@ public struct CoverageRegion {
       if source.scalars[start..<end].isMatch(for: " else ".scalars) {
         return nil
       }
-      if source.scalars[start..<end].hasPrefix("else".scalars),
+      if source.scalars[start..<end].hasPrefix(" else".scalars),
         let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range.upperBound {
         start = implementationStart
       }
