@@ -77,7 +77,9 @@ public struct CoverageRegion {
       var start = region.region.lowerBound
       let end = region.region.upperBound
       if source.scalars[start..<end].hasPrefix("func".scalars),
-        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range.upperBound {
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
         start = implementationStart
       }
       return CoverageRegion(region: start..<end, count: region.count)
@@ -91,7 +93,9 @@ public struct CoverageRegion {
         return nil
       }
       if source.scalars[start..<end].hasPrefix(" else".scalars),
-        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range.upperBound {
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
         start = implementationStart
       }
       return CoverageRegion(region: start..<end, count: region.count)
