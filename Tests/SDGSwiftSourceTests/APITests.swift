@@ -295,7 +295,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       attributes: nil,
       modifiers: nil,
       letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
-      bindings: SyntaxFactory.makePatternBindingList([]))
+      bindings: SyntaxFactory.makePatternBindingList([])
+    )
       .syntaxHighlightedHTML(inline: true)
     XCTAssert(
       highlighted.contains("SwiftSyntax‐TokenSyntax SwiftSyntax‐TokenKind‐letKeyword"),

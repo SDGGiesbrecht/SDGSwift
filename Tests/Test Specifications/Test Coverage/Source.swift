@@ -49,3 +49,12 @@ func useClosure() {
     }
   })
 }
+
+var should = true
+func ifElseStatement() -> Bool {
+  if should {
+    return true
+  } else {
+    return false
+  }
+}
