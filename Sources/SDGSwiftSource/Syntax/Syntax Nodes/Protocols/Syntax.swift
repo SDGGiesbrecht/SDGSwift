@@ -213,14 +213,14 @@ extension Syntax {
         )
         result.prepend(
           contentsOf:
-            "<span class=\u{22}SwiftSyntax‐\(Self.self) SwiftSyntax‐TokenKind‐\(token.tokenKind.cssName)\u{22}>"
+            "<span class=\u{22}\(Self.self) \(token.tokenKind.cssName)\u{22}>"
         )
         result.append(contentsOf: "</span>")
       } else {
         var source = HTML.escapeTextForCharacterData(token.text)
 
         var classes = [
-          "SwiftSyntax‐\(Self.self)", "SwiftSyntax‐TokenKind‐\(token.tokenKind.cssName)"
+          "\(Self.self)", token.tokenKind.cssName
         ]
         if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
           classes.prepend(`class`)
@@ -264,7 +264,7 @@ extension Syntax {
         $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
       }).joined()
       var classes = [
-        "SwiftSyntax‐\(Self.self)",
+        "\(Self.self)",
       ]
       if self is StringLiteralExprSyntax {
         classes.prepend("string")
