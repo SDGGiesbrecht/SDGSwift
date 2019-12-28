@@ -299,11 +299,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
       .syntaxHighlightedHTML(inline: true)
     XCTAssert(
-      highlighted.contains("SwiftSyntax‐TokenSyntax SwiftSyntax‐TokenKind‐letKeyword"),
+      highlighted.contains("TokenSyntax letKeyword"),
       highlighted
     )
     XCTAssert(
-      highlighted.contains("SwiftSyntax‐VariableDeclSyntax"),
+      highlighted.contains("VariableDeclSyntax"),
       highlighted
     )
   }
