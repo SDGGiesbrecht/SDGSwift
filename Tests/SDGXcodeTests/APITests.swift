@@ -335,7 +335,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 compare(
                   specification,
                   against: testSpecificationDirectory().appendingPathComponent(
-                    "Coverage (Xcode).txt"
+                    "Coverage.txt"
                   ),
                   overwriteSpecificationInsteadOfFailing: false
                 )

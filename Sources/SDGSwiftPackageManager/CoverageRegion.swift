@@ -72,6 +72,37 @@ public struct CoverageRegion {
       }
     }
 
+    // Trim function signatures.
+    regions = regions.map { region in
+      var start = region.region.lowerBound
+      let end = region.region.upperBound
+      if source.scalars[start..<end].hasPrefix("func".scalars),
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
+        // @exempt(from: tests) Does not occur on Linux.
+        start = implementationStart
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+
+    // Unify “else”.
+    regions = regions.compactMap { region in
+      var start = region.region.lowerBound
+      let end = region.region.upperBound
+      if source.scalars[start..<end].isMatch(for: " else ".scalars) {
+        // @exempt(from: tests) Does not occur on Linux.
+        return nil
+      }
+      if source.scalars[start..<end].hasPrefix(" else".scalars),
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
+        start = implementationStart
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+
     // Remove false positives
     regions = regions.filter { region in
 

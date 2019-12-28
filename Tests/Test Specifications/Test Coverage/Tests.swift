@@ -28,6 +28,8 @@ final class MockTests: XCTestCase {
     useClosure()
 
     _ = withSupplementalPlaneCharacters()
+
+    _ = ifElseStatement()
   }
 
   static var allTests = [
