@@ -90,7 +90,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           .tvOS(simulator: true)
         ]
         if ¬withGeneratedProject {
-          // #workaround(xcodebuild -version 11.2.1, WatchOS cannot handle test targets.) @exempt(from: unicode)
+          // #workaround(xcodebuild -version 11.3.0, WatchOS cannot handle test targets.) @exempt(from: unicode)
           sdks.removeAll(where: { $0 == .watchOS })
         }
         for sdk in sdks {
