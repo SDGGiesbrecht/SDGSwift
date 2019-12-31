@@ -33,14 +33,14 @@ Resolving [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
-[13/17] Merging module SDGControlFlow
-[17/18] Merging module SDGSwiftConfiguration
+[[...]/[...]] Merging module SDGControlFlow
+[[...]/[...]] Merging module SDGSwiftConfiguration
 [[...]] Compiling [...]
 [[...]] Compiling [...]
-[20/21] Merging module SampleConfiguration
+[[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
-[22/23] Merging module configure
-[23/23] 
+[[...]/[...]] Merging module configure
+[[...]/[...]] 
 Cached
 Loading “SampleConfigurationFile.swift”...
 
@@ -74,11 +74,11 @@ Resolving [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
-[4/5] Merging module SDGSwiftConfiguration
+[[...]/[...]] Merging module SDGSwiftConfiguration
 [[...]] Compiling [...]
 [[...]] Compiling [...]
-[7/8] Merging module SampleConfiguration
+[[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
-[9/10] Merging module configure
-[10/10] 
+[[...]/[...]] Merging module configure
+[[...]/[...]] 
 Mock
