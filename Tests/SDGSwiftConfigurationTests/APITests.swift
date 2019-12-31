@@ -184,6 +184,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       remove(logEntry: "Linking")
       remove(logEntry: "warning: invalid duplicate target dependency declaration")
 
+      let fractionPatternStart = "[".scalars
+        + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
+        + "/".scalars
+      let fractionPattern = fractionPatternStart
+        + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
+        + "]".scalars
+      log.scalars.replaceMatches(for: fractionPattern, with: "[[...]/[...]]".scalars)
+      let astPattern = "[[...]/[...]] Wrapping AST for ".scalars
+        + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+        + " for debugging\n".scalars
+      log.scalars.replaceMatches(for: astPattern, with: "".scalars)
+
       compare(
         log,
         against: testSpecificationDirectory().appendingPathComponent("Configuration Loading.txt"),
