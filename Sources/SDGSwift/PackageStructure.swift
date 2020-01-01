@@ -116,7 +116,7 @@ public struct Package: TransparentWrapper {
             }
 
             #if os(macOS)
-              // #workaround(Swift 5.1.2, Swift links with absolute paths on macOS.)
+              // #workaround(Swift 5.1.3, Swift links with absolute paths on macOS.)
               for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib"
               {
                 for component in enumeratedProducts {
