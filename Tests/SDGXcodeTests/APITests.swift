@@ -50,6 +50,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcode() throws {
+    let noProject = PackageRepository(at: thisRepository.location.appendingPathComponent("Sources"))
+    XCTAssertNil(noProject.xcodeProject)
+
     #if os(Linux)
       _ = try? Xcode.runCustomSubcommand(
         ["\u{2D}version"],
