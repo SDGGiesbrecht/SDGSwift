@@ -14,11 +14,21 @@
 
 import SwiftSyntax
 
-internal protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
-  var undeclaredStorage: UndeclaredAPIElementStorage { get set }
+// Must be public so that `type` is accessible.
+public protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
+  var _undeclaredStorage: _UndeclaredAPIElementStorage { get set }
 }
 
 extension _UndeclaredAPIElementProtocol {
+
+  internal var undeclaredStorage: UndeclaredAPIElementStorage {
+    get {
+      return _undeclaredStorage
+    }
+    set {
+      _undeclaredStorage = newValue
+    }
+  }
 
   public var _storage: _APIElementStorage {
     get {
