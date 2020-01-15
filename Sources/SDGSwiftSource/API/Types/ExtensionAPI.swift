@@ -24,7 +24,7 @@ public final class ExtensionAPI: APIElementProtocol, SortableAPIElement,
   // MARK: - Initialization
 
   internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement]) {
-    undeclaredStorage = UndeclaredAPIElementStorage(type: type)
+    _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
     self.constraints = constraints
     self.children = children
   }
@@ -97,5 +97,5 @@ public final class ExtensionAPI: APIElementProtocol, SortableAPIElement,
 
   // MARK: - UndeclaredAPIElementProtocol
 
-  internal var undeclaredStorage: UndeclaredAPIElementStorage
+  public var _undeclaredStorage: _UndeclaredAPIElementStorage
 }

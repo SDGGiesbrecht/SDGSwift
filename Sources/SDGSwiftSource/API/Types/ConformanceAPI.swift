@@ -22,7 +22,7 @@ public final class ConformanceAPI: SortableAPIElement,
   // MARK: - Initialization
 
   internal init(type: TypeSyntax) {
-    undeclaredStorage = UndeclaredAPIElementStorage(type: type)
+    _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
   }
 
   // MARK: - Properties
@@ -32,5 +32,5 @@ public final class ConformanceAPI: SortableAPIElement,
 
   // MARK: - UndeclaredAPIElementProtocol
 
-  internal var undeclaredStorage: UndeclaredAPIElementStorage
+  public var _undeclaredStorage: _UndeclaredAPIElementStorage
 }

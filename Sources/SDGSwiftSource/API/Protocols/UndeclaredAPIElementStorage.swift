@@ -14,7 +14,8 @@
 
 import SwiftSyntax
 
-internal struct UndeclaredAPIElementStorage {
+internal typealias UndeclaredAPIElementStorage = _UndeclaredAPIElementStorage
+public struct _UndeclaredAPIElementStorage {
 
   // MARK: - Initialization
 
