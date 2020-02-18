@@ -352,3 +352,27 @@ let package = Package(
     )
   ]
 )
+
+func adjustForAndroid() {
+  let impossibleProducts: Set<String> = [
+    // SwiftPM #workaround(SwiftPM 0.5.0, Cannot build for Android.)
+    "SwiftPM\u{2D}auto"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      default:
+        return false
+      }
+    })
+  }
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}
