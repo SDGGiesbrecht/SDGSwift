@@ -939,23 +939,6 @@ target_link_libraries("SDGSwiftSourceTests" PRIVATE
   "SDGXCTestUtilities"
 )
 
-add_executable("refresh_core_libraries"
-  "../../../Sources/refresh‐core‐libraries/APIElement.swift"
-  "../../../Sources/refresh‐core‐libraries/AccessControlled.swift"
-  "../../../Sources/refresh‐core‐libraries/Syntax.swift"
-  "../../../Sources/refresh‐core‐libraries/main.swift"
-)
-target_link_libraries("refresh_core_libraries" PRIVATE
-  "SDGSwiftPackageManager"
-  "SDGSwiftSource"
-  "SDGControlFlow"
-  "SDGLogic"
-  "SDGCollections"
-  "SDGText"
-  "SDGPersistence"
-  "SDGExternalProcess"
-)
-
 add_executable(WindowsMain
   WindowsMain.swift
 )

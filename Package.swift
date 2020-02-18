@@ -354,6 +354,9 @@ let package = Package(
 )
 
 func adjustForWindows() {
+  // #workaround(workspace version 0.30.1, CMake cannot handle Unicode.)
+  package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
+
   let impossibleProducts: Set<String> = [
     // #workaround(workspace version 0.30.1, Windows cannot build C.)
     // SwiftPM
