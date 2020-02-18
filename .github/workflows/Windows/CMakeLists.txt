@@ -719,48 +719,6 @@ target_link_libraries("SDGHTML" PRIVATE
   "SDGLocalization"
 )
 
-add_library("_CSwiftSyntax"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/_CSwiftSyntax/src/atomic-counter.c"
-)
-set_target_properties("_CSwiftSyntax" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("_CSwiftSyntax" PRIVATE -enable-testing)
-
-add_library("SwiftSyntax"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/AbsolutePosition.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/AtomicCounter.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Diagnostic.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/DiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/DiagnosticEngine.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/IncrementalParseTransition.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/JSONDiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/PrintingDiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/RawSyntax.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourceLength.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourceLocation.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourcePresence.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Syntax.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxChildren.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxClassifier.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxData.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxParser.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxVerifier.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Utils.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxBuilders.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxClassification.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxCollections.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxFactory.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxKind.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxNodes.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxRewriter.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/TokenKind.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/Trivia.swift"
-)
-set_target_properties("SwiftSyntax" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftSyntax" PRIVATE -enable-testing)
-target_link_libraries("SwiftSyntax" PRIVATE
-  "_CSwiftSyntax"
-)
-
 add_library("SDGSwiftSource"
   "../../../Sources/SDGSwiftSource/API/APIElement.swift"
   "../../../Sources/SDGSwiftSource/API/ConformanceReference.swift"
@@ -949,7 +907,6 @@ target_link_libraries("SDGSwiftSource" PRIVATE
   "SDGText"
   "SDGPersistence"
   "SDGLocalization"
-  "SwiftSyntax"
   "SDGHTML"
 )
 
@@ -980,7 +937,6 @@ target_link_libraries("SDGSwiftSourceTests" PRIVATE
   "SDGPersistenceTestUtilities"
   "SDGLocalizationTestUtilities"
   "SDGXCTestUtilities"
-  "SwiftSyntax"
 )
 
 add_executable("refresh_core_libraries"
@@ -998,7 +954,6 @@ target_link_libraries("refresh_core_libraries" PRIVATE
   "SDGText"
   "SDGPersistence"
   "SDGExternalProcess"
-  "SwiftSyntax"
 )
 
 add_executable(WindowsMain

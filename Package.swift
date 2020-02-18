@@ -358,6 +358,8 @@ func adjustForWindows() {
     // #workaround(workspace version 0.30.1, Windows cannot build C.)
     // SwiftPM
     "SwiftPM\u{2D}auto",
+    // SwiftSyntax,
+    "SwiftSyntax",
     // CommonMark
     "CommonMark"
   ]
