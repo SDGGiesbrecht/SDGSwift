@@ -353,6 +353,33 @@ let package = Package(
   ]
 )
 
+func adjustForWindows() {
+  let impossibleProducts: Set<String> = [
+    // #workaround(workspace version 0.30.1, Windows cannot build C.)
+    // SwiftPM
+    "SwiftPM\u{2D}auto",
+    // CommonMark
+    "CommonMark"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      default:
+        return false
+      }
+    })
+  }
+}
+#if os(Windows)
+  adjustForWindows()
+#endif
+import Foundation
+if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
+  adjustForWindows()
+}
+
 func adjustForAndroid() {
   let impossibleProducts: Set<String> = [
     // SwiftPM #workaround(SwiftPM 0.5.0, Cannot build for Android.)

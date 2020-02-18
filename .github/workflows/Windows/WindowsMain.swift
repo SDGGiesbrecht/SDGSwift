@@ -14,29 +14,12 @@
 
 import XCTest
 
-@testable import SDGSwiftConfigurationTests
 @testable import SDGSwiftDocumentationExampleTests
 @testable import SDGSwiftPackageManagerTests
-@testable import SDGSwiftSourceTests
 @testable import SDGSwiftTests
 @testable import SDGXcodeTests
-
-extension APITests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testConfiguration", testConfiguration),
-      ("testConfigurationError", testConfigurationError),
-    ])
-  ]
-}
-
-extension InternalTests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testLocalization", testLocalization),
-    ])
-  ]
-}
+@testable import SDGSwiftConfigurationTests
+@testable import SDGSwiftSourceTests
 
 extension ReadMeExampleTests {
   static let windowsTests: [XCTestCaseEntry] = [
@@ -56,6 +39,73 @@ extension APITests {
       ("testManifestLoading", testManifestLoading),
       ("testPackageGraphLoading", testPackageGraphLoading),
       ("testTestCoverage", testTestCoverage),
+    ])
+  ]
+}
+
+extension APITests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testBuild", testBuild),
+      ("testGit", testGit),
+      ("testGitError", testGitError),
+      ("testLocalizations", testLocalizations),
+      ("testPackage", testPackage),
+      ("testPackageError", testPackageError),
+      ("testPackageRepository", testPackageRepository),
+      ("testSwiftCompiler", testSwiftCompiler),
+      ("testSwiftCompilerError", testSwiftCompilerError),
+      ("testVersion", testVersion),
+      ("testVersionedExternalProcess", testVersionedExternalProcess),
+    ])
+  ]
+}
+
+extension RegressionTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testDependencyWarnings", testDependencyWarnings),
+      ("testDynamicLinking", testDynamicLinking),
+      ("testIgnoredFilesCheckIsStable", testIgnoredFilesCheckIsStable),
+    ])
+  ]
+}
+
+extension APITests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testDependencyWarnings", testDependencyWarnings),
+      ("testXcode", testXcode),
+      ("testXcodeCoverage", testXcodeCoverage),
+      ("testXcodeError", testXcodeError),
+    ])
+  ]
+}
+
+extension RegressionTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      (
+        "testSchemeDetectionWithMutlipleLibrariesAndTool",
+        testSchemeDetectionWithMutlipleLibrariesAndTool
+      ),
+    ])
+  ]
+}
+
+extension APITests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testConfiguration", testConfiguration),
+      ("testConfigurationError", testConfigurationError),
+    ])
+  ]
+}
+
+extension InternalTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testLocalization", testLocalization),
     ])
   ]
 }
@@ -119,69 +169,19 @@ extension RegressionTests {
   ]
 }
 
-extension APITests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testBuild", testBuild),
-      ("testGit", testGit),
-      ("testGitError", testGitError),
-      ("testLocalizations", testLocalizations),
-      ("testPackage", testPackage),
-      ("testPackageError", testPackageError),
-      ("testPackageRepository", testPackageRepository),
-      ("testSwiftCompiler", testSwiftCompiler),
-      ("testSwiftCompilerError", testSwiftCompilerError),
-      ("testVersion", testVersion),
-      ("testVersionedExternalProcess", testVersionedExternalProcess),
-    ])
-  ]
-}
-
-extension RegressionTests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testDependencyWarnings", testDependencyWarnings),
-      ("testDynamicLinking", testDynamicLinking),
-      ("testIgnoredFilesCheckIsStable", testIgnoredFilesCheckIsStable),
-    ])
-  ]
-}
-
-extension APITests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testDependencyWarnings", testDependencyWarnings),
-      ("testXcode", testXcode),
-      ("testXcodeCoverage", testXcodeCoverage),
-      ("testXcodeError", testXcodeError),
-    ])
-  ]
-}
-
-extension RegressionTests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      (
-        "testSchemeDetectionWithMutlipleLibrariesAndTool",
-        testSchemeDetectionWithMutlipleLibrariesAndTool
-      ),
-    ])
-  ]
-}
-
 var tests = [XCTestCaseEntry]()
-tests += APITests.windowsTests
-tests += InternalTests.windowsTests
 tests += ReadMeExampleTests.windowsTests
 tests += APITests.windowsTests
+tests += APITests.windowsTests
+tests += RegressionTests.windowsTests
+tests += APITests.windowsTests
+tests += RegressionTests.windowsTests
+tests += APITests.windowsTests
+tests += InternalTests.windowsTests
 tests += APITests.windowsTests
 tests += Highlighter.windowsTests
 tests += TextFreedomHighlighter.windowsTests
 tests += InternalTests.windowsTests
-tests += RegressionTests.windowsTests
-tests += APITests.windowsTests
-tests += RegressionTests.windowsTests
-tests += APITests.windowsTests
 tests += RegressionTests.windowsTests
 
 XCTMain(tests)
