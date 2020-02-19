@@ -12,16 +12,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A block developer comment.
-public class BlockDeveloperCommentSyntax: BlockCommentSyntax {
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  /// A block developer comment.
+  public class BlockDeveloperCommentSyntax: BlockCommentSyntax {
 
-  // MARK: - Class Properties
+    // MARK: - Class Properties
 
-  internal override class var openingDelimiter: ExtendedTokenSyntax {
-    return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
+    internal override class var openingDelimiter: ExtendedTokenSyntax {
+      return ExtendedTokenSyntax(text: "/*", kind: .openingBlockCommentDelimiter)
+    }
+
+    internal override class func parse(contents: String) -> ExtendedSyntax {
+      return CommentContentSyntax(source: contents)
+    }
   }
-
-  internal override class func parse(contents: String) -> ExtendedSyntax {
-    return CommentContentSyntax(source: contents)
-  }
-}
+#endif
