@@ -110,6 +110,28 @@ extension InternalTests {
   ]
 }
 
+extension APITests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testAPIParsing", testAPIParsing),
+      ("testCallout", testCallout),
+      ("testCodeFragmentSyntax", testCodeFragmentSyntax),
+      ("testCoreLibraries", testCoreLibraries),
+      ("testCSS", testCSS),
+      ("testExtension", testExtension),
+      ("testFunctionalSyntaxScanner", testFunctionalSyntaxScanner),
+      ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
+      ("testLineDocumentationCommentSyntax", testLineDocumentationCommentSyntax),
+      ("testLocations", testLocations),
+      ("testPackageDocumentation", testPackageDocumentation),
+      ("testParsing", testParsing),
+      ("testTokenSyntax", testTokenSyntax),
+      ("testTree", testTree),
+      ("testTriviaPiece", testTriviaPiece),
+    ])
+  ]
+}
+
 extension InternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
@@ -142,6 +164,7 @@ tests += APITests.windowsTests
 tests += RegressionTests.windowsTests
 tests += APITests.windowsTests
 tests += InternalTests.windowsTests
+tests += APITests.windowsTests
 tests += InternalTests.windowsTests
 tests += RegressionTests.windowsTests
 

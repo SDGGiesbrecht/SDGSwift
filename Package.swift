@@ -388,7 +388,9 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 func adjustForAndroid() {
   let impossibleProducts: Set<String> = [
     // SwiftPM #workaround(SwiftPM 0.5.0, Cannot build for Android.)
-    "SwiftPM\u{2D}auto"
+    "SwiftPM\u{2D}auto",
+    // SwiftSyntax
+    "SwiftSyntax"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
