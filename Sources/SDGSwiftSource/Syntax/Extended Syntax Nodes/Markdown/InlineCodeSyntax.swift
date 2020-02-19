@@ -24,7 +24,7 @@
       let openingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
       self.openingDelimiter = openingDelimiter
 
-      let sourceText = node.literal ?? ""  // @exempt(from: tests) Empty literal should never happen.
+      let sourceText = node.literal ?? ""  // @exempt(from: tests) Literal never empty.
       let source = CodeFragmentSyntax(range: sourceText.bounds, in: sourceText, isSwift: nil)
       self.source = source
 

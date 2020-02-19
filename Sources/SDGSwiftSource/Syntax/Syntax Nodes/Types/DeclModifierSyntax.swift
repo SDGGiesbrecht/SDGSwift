@@ -93,7 +93,7 @@
           return .accessControl
         case "required":  // @exempt(from: tests) Cannot appear with any other groups for sorting.
           return .requirement
-        case "convenience":  // @exempt(from: tests) Cannot appear with any other groups for sorting.
+        case "convenience":  // @exempt(from: tests) Never with any other groups for sorting.
           return .designation
         case "weak", "unowned":
           return .memoryManagement
