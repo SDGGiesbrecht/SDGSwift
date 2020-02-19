@@ -79,25 +79,27 @@ extension PackageRepository {
     return Xcode.test(self, on: sdk, reportProgress: reportProgress)
   }
 
-  /// Returns the code coverage report for the package.
-  ///
-  /// - Parameters:
-  ///     - sdk: The SDK to run tests on.
-  ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  ///
-  /// - Returns: The report, or `nil` if there is no code coverage information.
-  public func codeCoverageReport(
-    on sdk: Xcode.SDK,
-    ignoreCoveredRegions: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
-    return Xcode.codeCoverageReport(
-      for: self,
-      on: sdk,
-      ignoreCoveredRegions: ignoreCoveredRegions,
-      reportProgress: reportProgress
-    )
-  }
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - sdk: The SDK to run tests on.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public func codeCoverageReport(
+      on sdk: Xcode.SDK,
+      ignoreCoveredRegions: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
+      return Xcode.codeCoverageReport(
+        for: self,
+        on: sdk,
+        ignoreCoveredRegions: ignoreCoveredRegions,
+        reportProgress: reportProgress
+      )
+    }
+  #endif
 }
