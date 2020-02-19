@@ -12,41 +12,43 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-import SDGSwiftSource
+  import SDGSwiftSource
 
-internal protocol AccessControlled: Syntax {
-  var modifiers: ModifierListSyntax? { get }
-  func withModifiers(_ modifiers: ModifierListSyntax?) -> Self
-}
-
-extension AccessControlled {
-  func madePublic(_ inProtocol: Bool = false) -> Self {
-    if inProtocol {
-      return self
-    }
-
-    var modifiers = self.modifiers?.map({ $0 }) ?? []
-    if ¬modifiers.contains(where: { $0.name.text == "open" }) {
-      modifiers.prepend(
-        SyntaxFactory.makeDeclModifier(
-          name: SyntaxFactory.makeToken(.publicKeyword, trailingTrivia: .spaces(1)),
-          detailLeftParen: nil,
-          detail: nil,
-          detailRightParen: nil
-        )
-      )
-    }
-    return withModifiers(SyntaxFactory.makeModifierList(modifiers))
+  internal protocol AccessControlled: Syntax {
+    var modifiers: ModifierListSyntax? { get }
+    func withModifiers(_ modifiers: ModifierListSyntax?) -> Self
   }
-}
 
-extension ProtocolDeclSyntax: AccessControlled {}
+  extension AccessControlled {
+    func madePublic(_ inProtocol: Bool = false) -> Self {
+      if inProtocol {
+        return self
+      }
 
-extension InitializerDeclSyntax: AccessControlled {}
-extension VariableDeclSyntax: AccessControlled {}
-extension SubscriptDeclSyntax: AccessControlled {}
-extension FunctionDeclSyntax: AccessControlled {}
+      var modifiers = self.modifiers?.map({ $0 }) ?? []
+      if ¬modifiers.contains(where: { $0.name.text == "open" }) {
+        modifiers.prepend(
+          SyntaxFactory.makeDeclModifier(
+            name: SyntaxFactory.makeToken(.publicKeyword, trailingTrivia: .spaces(1)),
+            detailLeftParen: nil,
+            detail: nil,
+            detailRightParen: nil
+          )
+        )
+      }
+      return withModifiers(SyntaxFactory.makeModifierList(modifiers))
+    }
+  }
+
+  extension ProtocolDeclSyntax: AccessControlled {}
+
+  extension InitializerDeclSyntax: AccessControlled {}
+  extension VariableDeclSyntax: AccessControlled {}
+  extension SubscriptDeclSyntax: AccessControlled {}
+  extension FunctionDeclSyntax: AccessControlled {}
+#endif
