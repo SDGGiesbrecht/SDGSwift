@@ -12,43 +12,45 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-import SDGCollections
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
+  import SDGCollections
 
-import SwiftSyntax
+  import SwiftSyntax
 
-internal protocol TypeDeclaration: AccessControlled, Attributed, APISyntax, Generic, Inheritor {
-  var identifier: TokenSyntax { get }
+  internal protocol TypeDeclaration: AccessControlled, Attributed, APISyntax, Generic, Inheritor {
+    var identifier: TokenSyntax { get }
 
-  func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
-  func name() -> Self
-}
+    func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
+    func name() -> Self
+  }
 
-extension TypeDeclaration {
+  extension TypeDeclaration {
 
-  internal func identifierList() -> Set<String> {
-    var result: Set<String> = [identifier.text]
-    if let genericParameters = genericParameterClause {
-      result ∪= genericParameters.identifierList()
+    internal func identifierList() -> Set<String> {
+      var result: Set<String> = [identifier.text]
+      if let genericParameters = genericParameterClause {
+        result ∪= genericParameters.identifierList()
+      }
+      return result
     }
-    return result
-  }
 
-  // MARK: - APISyntax
+    // MARK: - APISyntax
 
-  internal var shouldLookForChildren: Bool {
-    return true
-  }
+    internal var shouldLookForChildren: Bool {
+      return true
+    }
 
-  internal func createAPI(children: [APIElement]) -> [APIElement] {
-    return [
-      .type(
-        TypeAPI(
-          documentation: documentation,
-          declaration: self,
-          children: children
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+      return [
+        .type(
+          TypeAPI(
+            documentation: documentation,
+            declaration: self,
+            children: children
+          )
         )
-      )
-    ]
+      ]
+    }
   }
-}
+#endif

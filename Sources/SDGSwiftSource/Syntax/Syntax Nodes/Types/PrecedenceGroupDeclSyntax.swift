@@ -12,73 +12,78 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension PrecedenceGroupDeclSyntax: APIDeclaration, APISyntax, Attributed, Hidable {
+  extension PrecedenceGroupDeclSyntax: APIDeclaration, APISyntax, Attributed, Hidable {
 
-  // MARK: - APIDeclaration
+    // MARK: - APIDeclaration
 
-  internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
+    internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
 
-    let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
+      let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
 
-    let rightBraceTrivia: Trivia
-    if normalizedAttributes.isEmpty {
-      rightBraceTrivia = []
-    } else {
-      rightBraceTrivia = .spaces(1)
+      let rightBraceTrivia: Trivia
+      if normalizedAttributes.isEmpty {
+        rightBraceTrivia = []
+      } else {
+        rightBraceTrivia = .spaces(1)
+      }
+
+      return SyntaxFactory.makePrecedenceGroupDecl(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+        precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          trailingTrivia: .spaces(1)
+        ),
+        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+        leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
+        groupAttributes: normalizedAttributes,
+        rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: rightBraceTrivia
+        )
+      )
     }
 
-    return SyntaxFactory.makePrecedenceGroupDecl(
-      attributes: attributes?.normalizedForAPIDeclaration(),
-      modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-      precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(
-        trailingTrivia: .spaces(1)
-      ),
-      identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-      leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
-      groupAttributes: normalizedAttributes,
-      rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: rightBraceTrivia
+    internal func name() -> PrecedenceGroupDeclSyntax {
+      return SyntaxFactory.makePrecedenceGroupDecl(
+        attributes: nil,
+        modifiers: nil,
+        precedencegroupKeyword: SyntaxFactory.makeToken(
+          .precedencegroupKeyword,
+          presence: .missing
+        ),
+        identifier: identifier,
+        leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
+        groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
+        rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing)
       )
-    )
+    }
+
+    internal func identifierList() -> Set<String> {
+      return [identifier.text]
+    }
+
+    // MARK: - APISyntax
+
+    func isPublic() -> Bool {
+      return true
+    }
+
+    internal var shouldLookForChildren: Bool {
+      return false
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+      return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+      return identifier
+    }
   }
-
-  internal func name() -> PrecedenceGroupDeclSyntax {
-    return SyntaxFactory.makePrecedenceGroupDecl(
-      attributes: nil,
-      modifiers: nil,
-      precedencegroupKeyword: SyntaxFactory.makeToken(.precedencegroupKeyword, presence: .missing),
-      identifier: identifier,
-      leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
-      groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
-      rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing)
-    )
-  }
-
-  internal func identifierList() -> Set<String> {
-    return [identifier.text]
-  }
-
-  // MARK: - APISyntax
-
-  func isPublic() -> Bool {
-    return true
-  }
-
-  internal var shouldLookForChildren: Bool {
-    return false
-  }
-
-  internal func createAPI(children: [APIElement]) -> [APIElement] {
-    return [.precedence(PrecedenceAPI(documentation: documentation, declaration: self))]
-  }
-
-  // MARK: - Hidable
-
-  internal var hidabilityIdentifier: TokenSyntax? {
-    return identifier
-  }
-}
+#endif

@@ -12,20 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension InitializerClauseSyntax {
+  extension InitializerClauseSyntax {
 
-  internal func normalizeForDefaultArgument() -> InitializerClauseSyntax {
-    return SyntaxFactory.makeInitializerClause(
-      equal: equal.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      value: SyntaxFactory.makeIdentifierExpr(
-        identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
-        declNameArguments: nil
+    internal func normalizeForDefaultArgument() -> InitializerClauseSyntax {
+      return SyntaxFactory.makeInitializerClause(
+        equal: equal.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        value: SyntaxFactory.makeIdentifierExpr(
+          identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
+          declNameArguments: nil
+        )
       )
-    )
+    }
   }
-}
+#endif

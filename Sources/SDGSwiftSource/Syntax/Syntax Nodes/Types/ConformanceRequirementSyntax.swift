@@ -12,16 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension ConformanceRequirementSyntax {
+  extension ConformanceRequirementSyntax {
 
-  internal func normalized(comma: Bool) -> ConformanceRequirementSyntax {
-    return SyntaxFactory.makeConformanceRequirement(
-      leftTypeIdentifier: leftTypeIdentifier.normalized(),
-      colon: SyntaxFactory.makeToken(.colon, leadingTrivia: .spaces(1), trailingTrivia: .spaces(1)),
-      rightTypeIdentifier: rightTypeIdentifier.normalized(),
-      trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
-    )
+    internal func normalized(comma: Bool) -> ConformanceRequirementSyntax {
+      return SyntaxFactory.makeConformanceRequirement(
+        leftTypeIdentifier: leftTypeIdentifier.normalized(),
+        colon: SyntaxFactory.makeToken(
+          .colon,
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        rightTypeIdentifier: rightTypeIdentifier.normalized(),
+        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
+      )
+    }
   }
-}
+#endif

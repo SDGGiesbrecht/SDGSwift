@@ -12,53 +12,55 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension PatternBindingSyntax {
+  extension PatternBindingSyntax {
 
-  internal func flattenedForAPI() -> [PatternBindingSyntax] {
-    return pattern.flattenedForAPI().map { (pattern, indexPath) in
+    internal func flattenedForAPI() -> [PatternBindingSyntax] {
+      return pattern.flattenedForAPI().map { (pattern, indexPath) in
+        return SyntaxFactory.makePatternBinding(
+          pattern: pattern,
+          typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(
+            extractingFromIndexPath: indexPath
+          ),
+          initializer: nil,
+          accessor: accessor,
+          trailingComma: nil
+        )
+      }
+    }
+
+    internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax)
+      -> PatternBindingSyntax
+    {
       return SyntaxFactory.makePatternBinding(
-        pattern: pattern,
-        typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(
-          extractingFromIndexPath: indexPath
-        ),
+        pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
+        typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
         initializer: nil,
         accessor: accessor,
         trailingComma: nil
       )
     }
-  }
 
-  internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax)
-    -> PatternBindingSyntax
-  {
-    return SyntaxFactory.makePatternBinding(
-      pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
-      typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
-      initializer: nil,
-      accessor: accessor,
-      trailingComma: nil
-    )
-  }
+    internal func forOverloadPattern() -> PatternBindingSyntax {
+      return SyntaxFactory.makePatternBinding(
+        pattern: pattern.variableBindingForOverloadPattern(),
+        typeAnnotation: nil,
+        initializer: nil,
+        accessor: nil,
+        trailingComma: nil
+      )
+    }
 
-  internal func forOverloadPattern() -> PatternBindingSyntax {
-    return SyntaxFactory.makePatternBinding(
-      pattern: pattern.variableBindingForOverloadPattern(),
-      typeAnnotation: nil,
-      initializer: nil,
-      accessor: nil,
-      trailingComma: nil
-    )
+    internal func forVariableName() -> PatternBindingSyntax {
+      return SyntaxFactory.makePatternBinding(
+        pattern: pattern.variableBindingForName(),
+        typeAnnotation: nil,
+        initializer: nil,
+        accessor: nil,
+        trailingComma: nil
+      )
+    }
   }
-
-  internal func forVariableName() -> PatternBindingSyntax {
-    return SyntaxFactory.makePatternBinding(
-      pattern: pattern.variableBindingForName(),
-      typeAnnotation: nil,
-      initializer: nil,
-      accessor: nil,
-      trailingComma: nil
-    )
-  }
-}
+#endif

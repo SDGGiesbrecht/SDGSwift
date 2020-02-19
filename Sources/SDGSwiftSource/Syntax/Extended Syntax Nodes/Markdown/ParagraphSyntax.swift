@@ -12,24 +12,26 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A paragraph in documentation.
-public class ParagraphSyntax: MarkdownSyntax {
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  /// A paragraph in documentation.
+  public class ParagraphSyntax: MarkdownSyntax {
 
-  // MARK: - Properties
+    // MARK: - Properties
 
-  internal var isCitation = false
+    internal var isCitation = false
 
-  // MARK: - ExtendedSyntax
+    // MARK: - ExtendedSyntax
 
-  internal override var renderedHtmlElement: String? {
-    return "p"
-  }
-
-  internal override var renderedHTMLAttributes: [String: String] {
-    var result = super.renderedHTMLAttributes
-    if isCitation {
-      result["class"] = "citation"
+    internal override var renderedHtmlElement: String? {
+      return "p"
     }
-    return result
+
+    internal override var renderedHTMLAttributes: [String: String] {
+      var result = super.renderedHTMLAttributes
+      if isCitation {
+        result["class"] = "citation"
+      }
+      return result
+    }
   }
-}
+#endif

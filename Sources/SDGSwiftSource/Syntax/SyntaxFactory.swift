@@ -12,26 +12,28 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension SyntaxFactory {
+  extension SyntaxFactory {
 
-  /// Creates a token.
-  ///
-  /// - Parameters:
-  ///     - kind: A token kind.
-  ///     - leadingTrivia: Optional. Leading trivia.
-  ///     - trailingTrivia: Optional. Trailing trivia.
-  public static func makeToken(
-    _ kind: TokenKind,
-    leadingTrivia: Trivia = [],
-    trailingTrivia: Trivia = []
-  ) -> TokenSyntax {
-    return SyntaxFactory.makeToken(
-      kind,
-      presence: .present,
-      leadingTrivia: leadingTrivia,
-      trailingTrivia: trailingTrivia
-    )
+    /// Creates a token.
+    ///
+    /// - Parameters:
+    ///     - kind: A token kind.
+    ///     - leadingTrivia: Optional. Leading trivia.
+    ///     - trailingTrivia: Optional. Trailing trivia.
+    public static func makeToken(
+      _ kind: TokenKind,
+      leadingTrivia: Trivia = [],
+      trailingTrivia: Trivia = []
+    ) -> TokenSyntax {
+      return SyntaxFactory.makeToken(
+        kind,
+        presence: .present,
+        leadingTrivia: leadingTrivia,
+        trailingTrivia: trailingTrivia
+      )
+    }
   }
-}
+#endif

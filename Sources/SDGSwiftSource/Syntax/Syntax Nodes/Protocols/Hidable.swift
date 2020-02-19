@@ -12,18 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-internal protocol Hidable {
-  var hidabilityIdentifier: TokenSyntax? { get }
-}
-
-extension Hidable {
-
-  internal var isHidden: Bool {
-    let text = hidabilityIdentifier?.text
-    return text?.hasPrefix("_") == true ∧ text ≠ "_"
+  internal protocol Hidable {
+    var hidabilityIdentifier: TokenSyntax? { get }
   }
-}
+
+  extension Hidable {
+
+    internal var isHidden: Bool {
+      let text = hidabilityIdentifier?.text
+      return text?.hasPrefix("_") == true ∧ text ≠ "_"
+    }
+  }
+#endif

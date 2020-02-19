@@ -12,11 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal protocol APIDeclaration: Syntax {
-  associatedtype Name: Syntax
-  func normalizedAPIDeclaration() -> Self
-  func name() -> Name
-  func identifierList() -> Set<String>
-}
+  internal protocol APIDeclaration: Syntax {
+    associatedtype Name: Syntax
+    func normalizedAPIDeclaration() -> Self
+    func name() -> Name
+    func identifierList() -> Set<String>
+  }
+#endif

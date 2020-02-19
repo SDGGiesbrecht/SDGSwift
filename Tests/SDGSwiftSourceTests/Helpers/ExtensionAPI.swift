@@ -12,20 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-@testable import SDGSwiftSource
+  @testable import SDGSwiftSource
 
-extension ExtensionAPI {
+  extension ExtensionAPI {
 
-  convenience init(type: String) {
-    self.init(
-      type: SyntaxFactory.makeSimpleTypeIdentifier(
-        name: SyntaxFactory.makeToken(.identifier(type)),
-        genericArgumentClause: nil
-      ),
-      constraints: nil,
-      children: []
-    )
+    convenience init(type: String) {
+      self.init(
+        type: SyntaxFactory.makeSimpleTypeIdentifier(
+          name: SyntaxFactory.makeToken(.identifier(type)),
+          genericArgumentClause: nil
+        ),
+        constraints: nil,
+        children: []
+      )
+    }
   }
-}
+#endif

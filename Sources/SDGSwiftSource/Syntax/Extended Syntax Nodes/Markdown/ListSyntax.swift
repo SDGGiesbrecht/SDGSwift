@@ -12,49 +12,51 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-/// A list in documentation.
-public class ListSyntax: MarkdownSyntax {
+  /// A list in documentation.
+  public class ListSyntax: MarkdownSyntax {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(node: cmark_node, in documentation: String) {
-    super.init(node: node, in: documentation)
+    internal init(node: cmark_node, in documentation: String) {
+      super.init(node: node, in: documentation)
 
-    if children.contains(where: { $0 is CalloutSyntax }) {
-      var handlingCallouts: [ExtendedSyntax] = []
-      var currentList: [ExtendedSyntax] = []
-      for child in children {
-        if child is CalloutSyntax {
-          if ¬currentList.isEmpty {
-            handlingCallouts.append(ListSyntax(children: currentList))
-            currentList = []
+      if children.contains(where: { $0 is CalloutSyntax }) {
+        var handlingCallouts: [ExtendedSyntax] = []
+        var currentList: [ExtendedSyntax] = []
+        for child in children {
+          if child is CalloutSyntax {
+            if ¬currentList.isEmpty {
+              handlingCallouts.append(ListSyntax(children: currentList))
+              currentList = []
+            }
+
+            handlingCallouts.append(child)
+          } else {
+            currentList.append(child)
           }
-
-          handlingCallouts.append(child)
-        } else {
-          currentList.append(child)
         }
-      }
 
-      if ¬currentList.isEmpty {
-        handlingCallouts.append(ListSyntax(children: currentList))
+        if ¬currentList.isEmpty {
+          handlingCallouts.append(ListSyntax(children: currentList))
+        }
+        self.handlingCallouts = handlingCallouts
       }
-      self.handlingCallouts = handlingCallouts
+    }
+
+    internal override init(children: [ExtendedSyntax]) {
+      super.init(children: children)
+    }
+
+    // Storage if it is really a callout instead.
+    internal var handlingCallouts: [ExtendedSyntax]?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+      return "ul"
     }
   }
-
-  internal override init(children: [ExtendedSyntax]) {
-    super.init(children: children)
-  }
-
-  // Storage if it is really a callout instead.
-  internal var handlingCallouts: [ExtendedSyntax]?
-
-  // MARK: - ExtendedSyntax
-
-  internal override var renderedHtmlElement: String? {
-    return "ul"
-  }
-}
+#endif

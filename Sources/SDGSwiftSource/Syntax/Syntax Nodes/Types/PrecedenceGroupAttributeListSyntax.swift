@@ -12,25 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGMathematics
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGMathematics
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension PrecedenceGroupAttributeListSyntax {
+  extension PrecedenceGroupAttributeListSyntax {
 
-  internal enum PrecedenceAttributeGroup: OrderedEnumeration {
-    case before
-    case after
-    case associativity
-    case assignment
-    case unknown
+    internal enum PrecedenceAttributeGroup: OrderedEnumeration {
+      case before
+      case after
+      case associativity
+      case assignment
+      case unknown
+    }
+
+    internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
+      let normalized = map({ $0.normalizedPrecedenceAttribute() })
+      let sorted = normalized.sorted(
+        by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceAttributes
+      )
+      return SyntaxFactory.makePrecedenceGroupAttributeList(sorted)
+    }
   }
-
-  internal func normalizedForAPIDeclaration() -> PrecedenceGroupAttributeListSyntax {
-    let normalized = map({ $0.normalizedPrecedenceAttribute() })
-    let sorted = normalized.sorted(
-      by: PrecedenceGroupAttributeListSyntax.arrangePrecedenceAttributes
-    )
-    return SyntaxFactory.makePrecedenceGroupAttributeList(sorted)
-  }
-}
+#endif

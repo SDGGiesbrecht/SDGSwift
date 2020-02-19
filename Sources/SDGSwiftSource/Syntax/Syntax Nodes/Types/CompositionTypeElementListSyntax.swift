@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension CompositionTypeElementListSyntax {
+  extension CompositionTypeElementListSyntax {
 
-  internal func normalized() -> CompositionTypeElementListSyntax {
-    var result = map({ $0.normalized(withAmpersand: true) }).sorted(by: {
-      $0.source() < $1.source()
-    })
-    if let last = result.indices.last {
-      result[last] = result[last].normalized(withAmpersand: false)
+    internal func normalized() -> CompositionTypeElementListSyntax {
+      var result = map({ $0.normalized(withAmpersand: true) }).sorted(by: {
+        $0.source() < $1.source()
+      })
+      if let last = result.indices.last {
+        result[last] = result[last].normalized(withAmpersand: false)
+      }
+      return SyntaxFactory.makeCompositionTypeElementList(result)
     }
-    return SyntaxFactory.makeCompositionTypeElementList(result)
   }
-}
+#endif

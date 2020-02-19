@@ -12,37 +12,39 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension GenericParameterSyntax {
+  extension GenericParameterSyntax {
 
-  internal func normalizedForAPIDeclaration() -> (
-    GenericParameterSyntax, ConformanceRequirementSyntax?
-  ) {
-    let normalizedName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-    let parameter = SyntaxFactory.makeGenericParameter(
-      attributes: attributes?.normalizedForAPIDeclaration(),
-      name: normalizedName,
-      colon: nil,
-      inheritedType: nil,
-      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-    )
-    var requirement: ConformanceRequirementSyntax?
-    if let conformance = inheritedType {
-      requirement = SyntaxFactory.makeConformanceRequirement(
-        leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
-          name: normalizedName,
-          genericArgumentClause: nil
-        ),
-        colon: SyntaxFactory.makeToken(
-          .colon,
-          leadingTrivia: .spaces(1),
-          trailingTrivia: .spaces(1)
-        ),
-        rightTypeIdentifier: conformance.normalized(),
-        trailingComma: nil
+    internal func normalizedForAPIDeclaration() -> (
+      GenericParameterSyntax, ConformanceRequirementSyntax?
+    ) {
+      let normalizedName = self.name.generallyNormalizedAndMissingInsteadOfNil()
+      let parameter = SyntaxFactory.makeGenericParameter(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        name: normalizedName,
+        colon: nil,
+        inheritedType: nil,
+        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
       )
+      var requirement: ConformanceRequirementSyntax?
+      if let conformance = inheritedType {
+        requirement = SyntaxFactory.makeConformanceRequirement(
+          leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
+            name: normalizedName,
+            genericArgumentClause: nil
+          ),
+          colon: SyntaxFactory.makeToken(
+            .colon,
+            leadingTrivia: .spaces(1),
+            trailingTrivia: .spaces(1)
+          ),
+          rightTypeIdentifier: conformance.normalized(),
+          trailingComma: nil
+        )
+      }
+      return (parameter, requirement)
     }
-    return (parameter, requirement)
   }
-}
+#endif

@@ -12,52 +12,54 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension AssociatedtypeDeclSyntax: AccessControlled, Attributed, Constrained, Hidable,
-  TypeDeclaration
-{
+  extension AssociatedtypeDeclSyntax: AccessControlled, Attributed, Constrained, Hidable,
+    TypeDeclaration
+  {
 
-  // MARK: - Hidable
+    // MARK: - Hidable
 
-  var hidabilityIdentifier: TokenSyntax? {
-    return identifier
-  }
+    var hidabilityIdentifier: TokenSyntax? {
+      return identifier
+    }
 
-  // MARK: - TypeDeclaration
+    // MARK: - TypeDeclaration
 
-  var genericParameterClause: GenericParameterClauseSyntax? {
-    return nil
-  }
+    var genericParameterClause: GenericParameterClauseSyntax? {
+      return nil
+    }
 
-  internal func normalizedAPIDeclaration() -> (
-    declaration: AssociatedtypeDeclSyntax, constraints: GenericWhereClauseSyntax?
-  ) {
-    return (
-      SyntaxFactory.makeAssociatedtypeDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        associatedtypeKeyword: associatedtypeKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
+    internal func normalizedAPIDeclaration() -> (
+      declaration: AssociatedtypeDeclSyntax, constraints: GenericWhereClauseSyntax?
+    ) {
+      return (
+        SyntaxFactory.makeAssociatedtypeDecl(
+          attributes: attributes?.normalizedForAPIDeclaration(),
+          modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+          associatedtypeKeyword: associatedtypeKeyword.generallyNormalizedAndMissingInsteadOfNil(
+            trailingTrivia: .spaces(1)
+          ),
+          identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+          inheritanceClause: nil,
+          initializer: nil,
+          genericWhereClause: nil
         ),
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+        genericWhereClause?.normalized()
+      )
+    }
+
+    internal func name() -> AssociatedtypeDeclSyntax {
+      return SyntaxFactory.makeAssociatedtypeDecl(
+        attributes: nil,
+        modifiers: nil,
+        associatedtypeKeyword: SyntaxFactory.makeToken(.associatedtypeKeyword, presence: .missing),
+        identifier: identifier,
         inheritanceClause: nil,
         initializer: nil,
         genericWhereClause: nil
-      ),
-      genericWhereClause?.normalized()
-    )
+      )
+    }
   }
-
-  internal func name() -> AssociatedtypeDeclSyntax {
-    return SyntaxFactory.makeAssociatedtypeDecl(
-      attributes: nil,
-      modifiers: nil,
-      associatedtypeKeyword: SyntaxFactory.makeToken(.associatedtypeKeyword, presence: .missing),
-      identifier: identifier,
-      inheritanceClause: nil,
-      initializer: nil,
-      genericWhereClause: nil
-    )
-  }
-}
+#endif

@@ -12,24 +12,25 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension FunctionTypeSyntax {
+  extension FunctionTypeSyntax {
 
-  internal func normalized() -> FunctionTypeSyntax {
-    return SyntaxFactory.makeFunctionType(
-      leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-      arguments: arguments.normalized(),
-      rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil(),
-      throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
-        leadingTrivia: .spaces(1)
-      ),
-      arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      returnType: returnType.normalized()
-    )
+    internal func normalized() -> FunctionTypeSyntax {
+      return SyntaxFactory.makeFunctionType(
+        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+        arguments: arguments.normalized(),
+        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil(),
+        throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
+          leadingTrivia: .spaces(1)
+        ),
+        arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        returnType: returnType.normalized()
+      )
+    }
   }
-
-}
+#endif

@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension EnumCaseElementListSyntax {
+  extension EnumCaseElementListSyntax {
 
-  internal func normalizedForAPIDeclaration() -> EnumCaseElementListSyntax {
-    // Will only ever have one entry, because grouped declarations are split before reaching this.
-    return SyntaxFactory.makeEnumCaseElementList(map({ $0.normalizedForAPIDeclaration() }))
+    internal func normalizedForAPIDeclaration() -> EnumCaseElementListSyntax {
+      // Will only ever have one entry, because grouped declarations are split before reaching this.
+      return SyntaxFactory.makeEnumCaseElementList(map({ $0.normalizedForAPIDeclaration() }))
+    }
+
+    internal func forName() -> EnumCaseElementListSyntax {
+      // Will only ever have one entry, because grouped declarations are split before reaching this.
+      return SyntaxFactory.makeEnumCaseElementList(map({ $0.forName() }))
+    }
   }
-
-  internal func forName() -> EnumCaseElementListSyntax {
-    // Will only ever have one entry, because grouped declarations are split before reaching this.
-    return SyntaxFactory.makeEnumCaseElementList(map({ $0.forName() }))
-  }
-}
+#endif

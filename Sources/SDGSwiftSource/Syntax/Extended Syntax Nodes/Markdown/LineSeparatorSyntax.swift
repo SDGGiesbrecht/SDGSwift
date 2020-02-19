@@ -12,13 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// An explicit line separator in documentation.
-public class LineSeparatorSyntax: MarkdownSyntax {
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  /// An explicit line separator in documentation.
+  public class LineSeparatorSyntax: MarkdownSyntax {
 
-  internal init() {
-    super.init(children: [
-      ExtendedTokenSyntax(text: "  ", kind: .lineSeparator),
-      ExtendedTokenSyntax(text: "\n", kind: .newlines)
-    ])
+    internal init() {
+      super.init(children: [
+        ExtendedTokenSyntax(text: "  ", kind: .lineSeparator),
+        ExtendedTokenSyntax(text: "\n", kind: .newlines)
+      ])
+    }
   }
-}
+#endif

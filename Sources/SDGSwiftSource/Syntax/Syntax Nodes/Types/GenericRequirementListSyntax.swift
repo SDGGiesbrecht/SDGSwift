@@ -12,48 +12,50 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
-import SDGLogic
-import SDGMathematics
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGControlFlow
+  import SDGLogic
+  import SDGMathematics
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension GenericRequirementListSyntax: Mergeable {
+  extension GenericRequirementListSyntax: Mergeable {
 
-  internal func normalized() -> GenericRequirementListSyntax {
-    var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(
-      by: GenericRequirementListSyntax.arrangeGenericRequirements
-    )
-    if ¬requirements.isEmpty {
-      let last = requirements.removeLast()
-      requirements.append(last.normalizedGenericRequirement(comma: false))
+    internal func normalized() -> GenericRequirementListSyntax {
+      var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(
+        by: GenericRequirementListSyntax.arrangeGenericRequirements
+      )
+      if ¬requirements.isEmpty {
+        let last = requirements.removeLast()
+        requirements.append(last.normalizedGenericRequirement(comma: false))
+      }
+      return SyntaxFactory.makeGenericRequirementList(requirements)
     }
-    return SyntaxFactory.makeGenericRequirementList(requirements)
-  }
 
-  private enum Group: OrderedEnumeration {
-    case conformance
-    case sameType
-    case unknown
-  }
-  private static func group(for requirement: Syntax) -> Group {
-    switch requirement {
-    case is ConformanceRequirementSyntax:
-      return .conformance
-    case is SameTypeRequirementSyntax:
-      return .sameType
-    default:  // @exempt(from: tests)
-      requirement.warnUnidentified()
-      return .unknown
+    private enum Group: OrderedEnumeration {
+      case conformance
+      case sameType
+      case unknown
+    }
+    private static func group(for requirement: Syntax) -> Group {
+      switch requirement {
+      case is ConformanceRequirementSyntax:
+        return .conformance
+      case is SameTypeRequirementSyntax:
+        return .sameType
+      default:  // @exempt(from: tests)
+        requirement.warnUnidentified()
+        return .unknown
+      }
+    }
+    private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
+      return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
+    }
+
+    // MARK: - Mergeable
+
+    internal mutating func merge(with other: GenericRequirementListSyntax) {
+      self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
     }
   }
-  private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
-    return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
-  }
-
-  // MARK: - Mergeable
-
-  internal mutating func merge(with other: GenericRequirementListSyntax) {
-    self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
-  }
-}
+#endif

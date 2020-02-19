@@ -12,16 +12,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension TypeAnnotationSyntax {
+  extension TypeAnnotationSyntax {
 
-  internal func normalizedForVariableBindingForAPIDeclaration(
-    extractingFromIndexPath indexPath: [Int] = []
-  ) -> TypeAnnotationSyntax {
-    return SyntaxFactory.makeTypeAnnotation(
-      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-      type: type.normalized(extractingFromIndexPath: indexPath)
-    )
+    internal func normalizedForVariableBindingForAPIDeclaration(
+      extractingFromIndexPath indexPath: [Int] = []
+    ) -> TypeAnnotationSyntax {
+      return SyntaxFactory.makeTypeAnnotation(
+        colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+        type: type.normalized(extractingFromIndexPath: indexPath)
+      )
+    }
   }
-}
+#endif

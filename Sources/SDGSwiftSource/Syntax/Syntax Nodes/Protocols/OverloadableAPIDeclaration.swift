@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol OverloadableAPIDeclaration: APIDeclaration {
-  func overloadPattern() -> Self
-}
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  internal protocol OverloadableAPIDeclaration: APIDeclaration {
+    func overloadPattern() -> Self
+  }
+#endif

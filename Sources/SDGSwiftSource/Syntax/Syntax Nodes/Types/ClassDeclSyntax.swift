@@ -12,51 +12,53 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension ClassDeclSyntax: AccessControlled, Attributed, Constrained, Hidable, Generic,
-  TypeDeclaration
-{
+  extension ClassDeclSyntax: AccessControlled, Attributed, Constrained, Hidable, Generic,
+    TypeDeclaration
+  {
 
-  // MARK: - Hidable
+    // MARK: - Hidable
 
-  var hidabilityIdentifier: TokenSyntax? {
-    return identifier
-  }
+    var hidabilityIdentifier: TokenSyntax? {
+      return identifier
+    }
 
-  // MARK: - TypeDeclaration
+    // MARK: - TypeDeclaration
 
-  internal func normalizedAPIDeclaration() -> (
-    declaration: ClassDeclSyntax, constraints: GenericWhereClauseSyntax?
-  ) {
-    let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-    return (
-      SyntaxFactory.makeClassDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        classKeyword: classKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
+    internal func normalizedAPIDeclaration() -> (
+      declaration: ClassDeclSyntax, constraints: GenericWhereClauseSyntax?
+    ) {
+      let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
+      return (
+        SyntaxFactory.makeClassDecl(
+          attributes: attributes?.normalizedForAPIDeclaration(),
+          modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+          classKeyword: classKeyword.generallyNormalizedAndMissingInsteadOfNil(
+            trailingTrivia: .spaces(1)
+          ),
+          identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+          genericParameterClause: newGenericParemeterClause,
+          inheritanceClause: nil,
+          genericWhereClause: nil,
+          members: SyntaxFactory.makeBlankMemberDeclBlock()
         ),
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        genericParameterClause: newGenericParemeterClause,
+        newGenericWhereClause
+      )
+    }
+
+    internal func name() -> ClassDeclSyntax {
+      return SyntaxFactory.makeClassDecl(
+        attributes: nil,
+        modifiers: nil,
+        classKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
+        identifier: identifier,
+        genericParameterClause: genericParameterClause,
         inheritanceClause: nil,
         genericWhereClause: nil,
         members: SyntaxFactory.makeBlankMemberDeclBlock()
-      ),
-      newGenericWhereClause
-    )
+      )
+    }
   }
-
-  internal func name() -> ClassDeclSyntax {
-    return SyntaxFactory.makeClassDecl(
-      attributes: nil,
-      modifiers: nil,
-      classKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
-      identifier: identifier,
-      genericParameterClause: genericParameterClause,
-      inheritanceClause: nil,
-      genericWhereClause: nil,
-      members: SyntaxFactory.makeBlankMemberDeclBlock()
-    )
-  }
-}
+#endif

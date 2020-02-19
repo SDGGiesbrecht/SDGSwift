@@ -21,7 +21,9 @@ import SDGLocalization
 import SDGSwift
 import SDGSwiftPackageManager
 
-import Workspace
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  import Workspace
+#endif
 
 import SDGSwiftLocalizations
 
@@ -106,27 +108,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-          let package = try PackageRepository.initializePackage(
-            at: location,
-            named: StrictString(location.lastPathComponent),
-            type: .library
-          ).get()
-          _ = try package.checkout("master").get()
+          #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+            let package = try PackageRepository.initializePackage(
+              at: location,
+              named: StrictString(location.lastPathComponent),
+              type: .library
+            ).get()
+            _ = try package.checkout("master").get()
+          #endif
         }
       }
     }
   }
 
   func testManifestLoading() {
-    XCTAssert(try thisRepository.package().get().name == "SDGSwift")
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
+    #endif
   }
 
   func testPackageGraphLoading() {
-    XCTAssert(
-      try thisRepository.packageGraph().get().packages.contains(where: {
-        $0.name == "SDGCornerstone"
-      })
-    )
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      XCTAssert(
+        try thisRepository.packageGraph().get().packages.contains(where: {
+          $0.name == "SDGCornerstone"
+        })
+      )
+    #endif
   }
 
   func testTestCoverage() throws {

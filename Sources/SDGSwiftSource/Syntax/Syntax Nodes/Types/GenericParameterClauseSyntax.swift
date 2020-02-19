@@ -12,36 +12,38 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension GenericParameterClauseSyntax {
+  extension GenericParameterClauseSyntax {
 
-  internal func normalizedForAPIDeclaration() -> (
-    GenericParameterClauseSyntax?, GenericWhereClauseSyntax?
-  ) {
-    let (newParameters, newConstraints) = genericParameterList.normalizedForAPIDeclaration()
-    let parameters = SyntaxFactory.makeGenericParameterClause(
-      leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
-      genericParameterList: newParameters,
-      rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
-    )
-    var constraints: GenericWhereClauseSyntax?
-    if let new = newConstraints {
-      constraints = SyntaxFactory.makeGenericWhereClause(
-        whereKeyword: SyntaxFactory.makeToken(
-          .whereKeyword,
-          leadingTrivia: .spaces(1),
-          trailingTrivia: .spaces(1)
-        ),
-        requirementList: new
+    internal func normalizedForAPIDeclaration() -> (
+      GenericParameterClauseSyntax?, GenericWhereClauseSyntax?
+    ) {
+      let (newParameters, newConstraints) = genericParameterList.normalizedForAPIDeclaration()
+      let parameters = SyntaxFactory.makeGenericParameterClause(
+        leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
+        genericParameterList: newParameters,
+        rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
       )
+      var constraints: GenericWhereClauseSyntax?
+      if let new = newConstraints {
+        constraints = SyntaxFactory.makeGenericWhereClause(
+          whereKeyword: SyntaxFactory.makeToken(
+            .whereKeyword,
+            leadingTrivia: .spaces(1),
+            trailingTrivia: .spaces(1)
+          ),
+          requirementList: new
+        )
+      }
+      return (parameters, constraints)
     }
-    return (parameters, constraints)
-  }
 
-  internal func identifierList() -> Set<String> {
-    return Set(genericParameterList.map({ $0.name.text }))
+    internal func identifierList() -> Set<String> {
+      return Set(genericParameterList.map({ $0.name.text }))
+    }
   }
-}
+#endif

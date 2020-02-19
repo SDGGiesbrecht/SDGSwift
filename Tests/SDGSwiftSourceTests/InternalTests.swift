@@ -14,7 +14,9 @@
 
 import SDGLocalization
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
+#endif
 
 @testable import SDGSwiftSource
 
@@ -29,64 +31,73 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
-    XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
+    #endif
   }
 
   func testExtendedSyntaxContext() {
-    let context = ExtendedSyntaxContext._token(
-      SyntaxFactory.makeToken(.comma),
-      context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil)
-    )
-    _ = context.source
-    let source = ""
-    _ =
-      ExtendedSyntaxContext._fragment(
-        CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false),
-        context: context,
-        offset: 0
-      ).source
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let context = ExtendedSyntaxContext._token(
+        SyntaxFactory.makeToken(.comma),
+        context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil)
+      )
+      _ = context.source
+      let source = ""
+      _ =
+        ExtendedSyntaxContext._fragment(
+          CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false),
+          context: context,
+          offset: 0
+        ).source
+    #endif
   }
 
   func testLocalizations() {
     for localization in InterfaceLocalization.allCases {
       LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
-        _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
+        #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+          _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
+          _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
+        #endif
       }
     }
   }
 
   func testStringLiteral() {
-    let literal = "\u{22}...\u{22}"
-    let kind = TokenKind.stringLiteral(literal).normalized()
-    if case .stringLiteral(let normalized) = kind {
-      XCTAssertEqual(normalized, literal)
-    } else {
-      XCTFail("String literal not found.")
-    }
-
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let literal = "\u{22}...\u{22}"
+      let kind = TokenKind.stringLiteral(literal).normalized()
+      if case .stringLiteral(let normalized) = kind {
+        XCTAssertEqual(normalized, literal)
+      } else {
+        XCTFail("String literal not found.")
+      }
+    #endif
   }
 
   func testTokenNormalization() {
-    let tokens: [TokenKind] = [
-      .stringSegment("\u{C0}"),
-      .dollarIdentifier("$0"),
-      .unspacedBinaryOperator("=="),
-      .prefixOperator("!"),
-      .postfixOperator("..."),
-      .integerLiteral("0"),
-      .floatingLiteral("0"),
-      .contextualKeyword("mutating"),
-      .unknown("...")
-    ]
-    for kind in tokens {
-      let token = SyntaxFactory.makeToken(kind)
-      XCTAssert(
-        token.generallyNormalizedAndMissingInsteadOfNil().text.scalars.elementsEqual(
-          token.text.decomposedStringWithCanonicalMapping.scalars
-        ),
-        "Token kind not normalized."
-      )
-    }
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let tokens: [TokenKind] = [
+        .stringSegment("\u{C0}"),
+        .dollarIdentifier("$0"),
+        .unspacedBinaryOperator("=="),
+        .prefixOperator("!"),
+        .postfixOperator("..."),
+        .integerLiteral("0"),
+        .floatingLiteral("0"),
+        .contextualKeyword("mutating"),
+        .unknown("...")
+      ]
+      for kind in tokens {
+        let token = SyntaxFactory.makeToken(kind)
+        XCTAssert(
+          token.generallyNormalizedAndMissingInsteadOfNil().text.scalars.elementsEqual(
+            token.text.decomposedStringWithCanonicalMapping.scalars
+          ),
+          "Token kind not normalized."
+        )
+      }
+    #endif
   }
 }

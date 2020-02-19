@@ -12,48 +12,50 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-// Must be public so that `type` is accessible.
-public protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
-  var _undeclaredStorage: _UndeclaredAPIElementStorage { get set }
-}
+  // Must be public so that `type` is accessible.
+  public protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
+    var _undeclaredStorage: _UndeclaredAPIElementStorage { get set }
+  }
 
-extension _UndeclaredAPIElementProtocol {
+  extension _UndeclaredAPIElementProtocol {
 
-  internal var undeclaredStorage: UndeclaredAPIElementStorage {
-    get {
-      return _undeclaredStorage
+    internal var undeclaredStorage: UndeclaredAPIElementStorage {
+      get {
+        return _undeclaredStorage
+      }
+      set {
+        _undeclaredStorage = newValue
+      }
     }
-    set {
-      _undeclaredStorage = newValue
+
+    public var _storage: _APIElementStorage {
+      get {
+        undeclaredStorage.storage
+      }
+      set {
+        undeclaredStorage.storage = newValue
+      }
+    }
+
+    public var type: TypeSyntax {
+      return undeclaredStorage.type
+    }
+
+    public var possibleDeclaration: Syntax? {
+      return nil
+    }
+
+    public var genericName: Syntax {
+      return type
+    }
+
+    // MARK: - APIElementProtocol
+
+    public func _shallowIdentifierList() -> Set<String> {
+      return []
     }
   }
-
-  public var _storage: _APIElementStorage {
-    get {
-      undeclaredStorage.storage
-    }
-    set {
-      undeclaredStorage.storage = newValue
-    }
-  }
-
-  public var type: TypeSyntax {
-    return undeclaredStorage.type
-  }
-
-  public var possibleDeclaration: Syntax? {
-    return nil
-  }
-
-  public var genericName: Syntax {
-    return type
-  }
-
-  // MARK: - APIElementProtocol
-
-  public func _shallowIdentifierList() -> Set<String> {
-    return []
-  }
-}
+#endif

@@ -12,40 +12,42 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension ExtensionDeclSyntax: Attributed, APISyntax, Constrained, Hidable, Inheritor {
+  extension ExtensionDeclSyntax: Attributed, APISyntax, Constrained, Hidable, Inheritor {
 
-  // MARK: - APISyntax
+    // MARK: - APISyntax
 
-  internal func isPublic() -> Bool {
-    return true
-  }
-
-  internal var shouldLookForChildren: Bool {
-    return true
-  }
-
-  internal func createAPI(children: [APIElement]) -> [APIElement] {
-    guard ¬children.isEmpty else {
-      return []
+    internal func isPublic() -> Bool {
+      return true
     }
-    return [
-      .extension(
-        ExtensionAPI(
-          type: extendedType,
-          constraints: genericWhereClause,
-          children: children
+
+    internal var shouldLookForChildren: Bool {
+      return true
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+      guard ¬children.isEmpty else {
+        return []
+      }
+      return [
+        .extension(
+          ExtensionAPI(
+            type: extendedType,
+            constraints: genericWhereClause,
+            children: children
+          )
         )
-      )
-    ]
-  }
+      ]
+    }
 
-  // MARK: - Hidable
+    // MARK: - Hidable
 
-  internal var hidabilityIdentifier: TokenSyntax? {
-    return extendedType.hidabilityIdentifier
+    internal var hidabilityIdentifier: TokenSyntax? {
+      return extendedType.hidabilityIdentifier
+    }
   }
-}
+#endif

@@ -12,25 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension ReturnClauseSyntax {
+  extension ReturnClauseSyntax {
 
-  internal func normalizedForFunctionDeclaration() -> ReturnClauseSyntax? {
-    let result = normalizedForSubscriptDeclaration()
-    if result.returnType.source() == "Void" {
-      return nil
+    internal func normalizedForFunctionDeclaration() -> ReturnClauseSyntax? {
+      let result = normalizedForSubscriptDeclaration()
+      if result.returnType.source() == "Void" {
+        return nil
+      }
+      return result
     }
-    return result
-  }
 
-  internal func normalizedForSubscriptDeclaration() -> ReturnClauseSyntax {
-    return SyntaxFactory.makeReturnClause(
-      arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      returnType: returnType.normalized()
-    )
+    internal func normalizedForSubscriptDeclaration() -> ReturnClauseSyntax {
+      return SyntaxFactory.makeReturnClause(
+        arrow: arrow.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        returnType: returnType.normalized()
+      )
+    }
   }
-}
+#endif

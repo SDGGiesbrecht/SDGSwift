@@ -12,110 +12,113 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import Foundation
 
-import SDGLogic
-import SDGCollections
-import SDGText
+  import SDGLogic
+  import SDGCollections
+  import SDGText
 
-import CCommonMark
+  import CCommonMark
 
-/// A code block used in documentation.
-public class CodeBlockSyntax: MarkdownSyntax {
+  /// A code block used in documentation.
+  public class CodeBlockSyntax: MarkdownSyntax {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(node: cmark_node, in documentation: String) {
-    var precedingChildren: [ExtendedSyntax] = []
-    var followingChildren: [ExtendedSyntax] = []
+    internal init(node: cmark_node, in documentation: String) {
+      var precedingChildren: [ExtendedSyntax] = []
+      var followingChildren: [ExtendedSyntax] = []
 
-    var contents = String(
-      documentation.scalars[node.lowerBound(in: documentation)..<node.upperBound(in: documentation)]
-    )
+      var contents = String(
+        documentation.scalars[
+          node.lowerBound(in: documentation)..<node.upperBound(in: documentation)]
+      )
 
-    contents.removeFirst(3)
-    let openingDelimiter = ExtendedTokenSyntax(text: "```", kind: .codeDelimiter)
-    self.openingDelimiter = openingDelimiter
-    precedingChildren.append(openingDelimiter)
+      contents.removeFirst(3)
+      let openingDelimiter = ExtendedTokenSyntax(text: "```", kind: .codeDelimiter)
+      self.openingDelimiter = openingDelimiter
+      precedingChildren.append(openingDelimiter)
 
-    contents.removeLast(3)
-    let closingDelimiter = ExtendedTokenSyntax(text: "```", kind: .codeDelimiter)
-    self.closingDelimiter = closingDelimiter
-    followingChildren.prepend(closingDelimiter)
+      contents.removeLast(3)
+      let closingDelimiter = ExtendedTokenSyntax(text: "```", kind: .codeDelimiter)
+      self.closingDelimiter = closingDelimiter
+      followingChildren.prepend(closingDelimiter)
 
-    var isSwift: Bool?
-    if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern),
-      ¬language.range.isEmpty
-    {
-      let languageIdentifier = String(language.contents)
-      isSwift = languageIdentifier == "swift"
-      let token = ExtendedTokenSyntax(text: languageIdentifier, kind: .language)
-      contents.scalars.removeSubrange(language.range)
-      self.language = token
-      precedingChildren.append(token)
-    } else {
-      language = nil
-    }
+      var isSwift: Bool?
+      if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern),
+        ¬language.range.isEmpty
+      {
+        let languageIdentifier = String(language.contents)
+        isSwift = languageIdentifier == "swift"
+        let token = ExtendedTokenSyntax(text: languageIdentifier, kind: .language)
+        contents.scalars.removeSubrange(language.range)
+        self.language = token
+        precedingChildren.append(token)
+      } else {
+        language = nil
+      }
 
-    let openingVerticalMargin = ExtendedTokenSyntax(
-      text: String(contents.removeFirst()),
-      kind: .newlines
-    )
-    self.openingVerticalMargin = openingVerticalMargin
-    precedingChildren.append(openingVerticalMargin)
-
-    if ¬contents.isEmpty {
-      let closingVerticalMargin = ExtendedTokenSyntax(
-        text: String(contents.removeLast()),
+      let openingVerticalMargin = ExtendedTokenSyntax(
+        text: String(contents.removeFirst()),
         kind: .newlines
       )
-      self.closingVerticalMargin = closingVerticalMargin
-      followingChildren.prepend(closingVerticalMargin)
-    } else {
-      self.closingVerticalMargin = nil
+      self.openingVerticalMargin = openingVerticalMargin
+      precedingChildren.append(openingVerticalMargin)
+
+      if ¬contents.isEmpty {
+        let closingVerticalMargin = ExtendedTokenSyntax(
+          text: String(contents.removeLast()),
+          kind: .newlines
+        )
+        self.closingVerticalMargin = closingVerticalMargin
+        followingChildren.prepend(closingVerticalMargin)
+      } else {
+        self.closingVerticalMargin = nil
+      }
+
+      let source = CodeFragmentSyntax(range: contents.bounds, in: contents, isSwift: isSwift)
+      self.source = source
+
+      super.init(
+        node: node,
+        in: documentation,
+        precedingChildren: precedingChildren + [source] + followingChildren
+      )
     }
 
-    let source = CodeFragmentSyntax(range: contents.bounds, in: contents, isSwift: isSwift)
-    self.source = source
+    // MARK: - Properties
 
-    super.init(
-      node: node,
-      in: documentation,
-      precedingChildren: precedingChildren + [source] + followingChildren
-    )
+    /// The opening delimiter.
+    public let openingDelimiter: ExtendedTokenSyntax
+
+    /// The opening vertical margin (the newline between the delimiter and the content).
+    public let openingVerticalMargin: ExtendedTokenSyntax
+
+    /// The source language identifier.
+    public let language: ExtendedTokenSyntax?
+
+    /// The source code.
+    public let source: CodeFragmentSyntax
+
+    /// The closing vertical margin (the newline between the delimiter and the content).
+    public let closingVerticalMargin: ExtendedTokenSyntax?
+
+    /// The closing delimiter.
+    public let closingDelimiter: ExtendedTokenSyntax
+
+    // MARK: - ExtendedSyntax
+
+    public override func renderedHTML(
+      localization: String,
+      internalIdentifiers: Set<String>,
+      symbolLinks: [String: String]
+    ) -> String {
+      return source.syntaxHighlightedHTML(
+        inline: false,
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks
+      )
+    }
   }
-
-  // MARK: - Properties
-
-  /// The opening delimiter.
-  public let openingDelimiter: ExtendedTokenSyntax
-
-  /// The opening vertical margin (the newline between the delimiter and the content).
-  public let openingVerticalMargin: ExtendedTokenSyntax
-
-  /// The source language identifier.
-  public let language: ExtendedTokenSyntax?
-
-  /// The source code.
-  public let source: CodeFragmentSyntax
-
-  /// The closing vertical margin (the newline between the delimiter and the content).
-  public let closingVerticalMargin: ExtendedTokenSyntax?
-
-  /// The closing delimiter.
-  public let closingDelimiter: ExtendedTokenSyntax
-
-  // MARK: - ExtendedSyntax
-
-  public override func renderedHTML(
-    localization: String,
-    internalIdentifiers: Set<String>,
-    symbolLinks: [String: String]
-  ) -> String {
-    return source.syntaxHighlightedHTML(
-      inline: false,
-      internalIdentifiers: internalIdentifiers,
-      symbolLinks: symbolLinks
-    )
-  }
-}
+#endif

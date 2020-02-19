@@ -12,27 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// A line developer comment.
-public class LineDeveloperCommentSyntax: LineCommentSyntax {
+  /// A line developer comment.
+  public class LineDeveloperCommentSyntax: LineCommentSyntax {
 
-  // MARK: - Class Properties
+    // MARK: - Class Properties
 
-  internal override class var delimiter: ExtendedTokenSyntax {
-    return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
+    internal override class var delimiter: ExtendedTokenSyntax {
+      return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
+    }
+
+    internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index)
+      -> ExtendedSyntax
+    {
+      return CommentContentSyntax(source: contents)
+    }
+
+    // MARK: - Properties
+
+    /// The content of the comment.
+    public var content: CommentContentSyntax {
+      return _content as! CommentContentSyntax
+    }
   }
-
-  internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index)
-    -> ExtendedSyntax
-  {
-    return CommentContentSyntax(source: contents)
-  }
-
-  // MARK: - Properties
-
-  /// The content of the comment.
-  public var content: CommentContentSyntax {
-    return _content as! CommentContentSyntax
-  }
-}
+#endif

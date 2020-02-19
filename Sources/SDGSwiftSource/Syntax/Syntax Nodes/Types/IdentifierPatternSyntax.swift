@@ -12,31 +12,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension IdentifierPatternSyntax: Hidable {
+  extension IdentifierPatternSyntax: Hidable {
 
-  internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
-    return SyntaxFactory.makeIdentifierPattern(
-      identifier: identifier.generallyNormalizedAndMissingInsteadOfNil()
-    )
+    internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
+      return SyntaxFactory.makeIdentifierPattern(
+        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    }
+
+    internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
+      return SyntaxFactory.makeIdentifierPattern(
+        identifier: identifier
+      )
+    }
+
+    internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
+      return SyntaxFactory.makeIdentifierPattern(
+        identifier: identifier
+      )
+    }
+
+    // MARK: - Hidable
+
+    internal var hidabilityIdentifier: TokenSyntax? {
+      return identifier
+    }
   }
-
-  internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
-    return SyntaxFactory.makeIdentifierPattern(
-      identifier: identifier
-    )
-  }
-
-  internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
-    return SyntaxFactory.makeIdentifierPattern(
-      identifier: identifier
-    )
-  }
-
-  // MARK: - Hidable
-
-  internal var hidabilityIdentifier: TokenSyntax? {
-    return identifier
-  }
-}
+#endif

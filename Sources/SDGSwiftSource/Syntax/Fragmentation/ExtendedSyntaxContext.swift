@@ -12,27 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// The context of an extended syntax node.
-public indirect enum ExtendedSyntaxContext {
+  /// The context of an extended syntax node.
+  public indirect enum ExtendedSyntaxContext {
 
-  // MARK: - Cases
+    // MARK: - Cases
 
-  case _trivia(TriviaPiece, context: TriviaPieceContext)
-  case _token(TokenSyntax, context: SyntaxContext)
-  case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
+    case _trivia(TriviaPiece, context: TriviaPieceContext)
+    case _token(TokenSyntax, context: SyntaxContext)
+    case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
 
-  // MARK: - Properties
+    // MARK: - Properties
 
-  internal var source: String {
-    switch self {
-    case ._trivia(_, let context):
-      return context.source
-    case ._token(_, let context):
-      return context.fragmentContext
-    case ._fragment(_, let context, offset: _):
-      return context.source
+    internal var source: String {
+      switch self {
+      case ._trivia(_, let context):
+        return context.source
+      case ._token(_, let context):
+        return context.fragmentContext
+      case ._fragment(_, let context, offset: _):
+        return context.source
+      }
     }
   }
-}
+#endif

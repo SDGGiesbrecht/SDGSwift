@@ -12,20 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal protocol OverridableDeclaration {
-  var modifiers: ModifierListSyntax? { get }
-}
-
-extension OverridableDeclaration {
-
-  func isOverride() -> Bool {
-    if let modifiers = self.modifiers,
-      modifiers.contains(where: { $0.name.text == "override" })
-    {
-      return true
-    }
-    return false
+  internal protocol OverridableDeclaration {
+    var modifiers: ModifierListSyntax? { get }
   }
-}
+
+  extension OverridableDeclaration {
+
+    func isOverride() -> Bool {
+      if let modifiers = self.modifiers,
+        modifiers.contains(where: { $0.name.text == "override" })
+      {
+        return true
+      }
+      return false
+    }
+  }
+#endif

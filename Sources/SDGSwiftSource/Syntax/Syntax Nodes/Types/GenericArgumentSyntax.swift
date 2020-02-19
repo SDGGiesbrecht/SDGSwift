@@ -12,14 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension GenericArgumentSyntax {
+  extension GenericArgumentSyntax {
 
-  internal func normalized() -> GenericArgumentSyntax {
-    return SyntaxFactory.makeGenericArgument(
-      argumentType: argumentType.normalized(),
-      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-    )
+    internal func normalized() -> GenericArgumentSyntax {
+      return SyntaxFactory.makeGenericArgument(
+        argumentType: argumentType.normalized(),
+        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+      )
+    }
   }
-}
+#endif

@@ -12,33 +12,35 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-/// A declaration which can be either a type or instance member.
-public protocol Member: Syntax {
-  /// The declaration modifiers.
-  var modifiers: ModifierListSyntax? { get }
-}
+  /// A declaration which can be either a type or instance member.
+  public protocol Member: Syntax {
+    /// The declaration modifiers.
+    var modifiers: ModifierListSyntax? { get }
+  }
 
-extension Member {
+  extension Member {
 
-  private func typeMemberKeyword() -> TokenKind? {
-    guard let modifiers = self.modifiers else {
-      return nil  // @exempt(from: tests) SwiftSyntax seems to prefer empty over nil.
-    }
-    for modifier in modifiers {
-      let tokenKind = modifier.name.tokenKind
-      if tokenKind == .staticKeyword ∨ tokenKind == .classKeyword {
-        return tokenKind
+    private func typeMemberKeyword() -> TokenKind? {
+      guard let modifiers = self.modifiers else {
+        return nil  // @exempt(from: tests) SwiftSyntax seems to prefer empty over nil.
       }
+      for modifier in modifiers {
+        let tokenKind = modifier.name.tokenKind
+        if tokenKind == .staticKeyword ∨ tokenKind == .classKeyword {
+          return tokenKind
+        }
+      }
+      return nil
     }
-    return nil
-  }
 
-  /// Returns whether or not the declaration defines a type member (as opposed to an instance member).
-  public func isTypeMember() -> Bool {
-    return typeMemberKeyword() ≠ nil
+    /// Returns whether or not the declaration defines a type member (as opposed to an instance member).
+    public func isTypeMember() -> Bool {
+      return typeMemberKeyword() ≠ nil
+    }
   }
-}
+#endif

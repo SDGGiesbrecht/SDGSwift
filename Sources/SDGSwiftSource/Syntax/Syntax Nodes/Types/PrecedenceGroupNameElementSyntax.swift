@@ -12,21 +12,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension PrecedenceGroupNameElementSyntax {
+  extension PrecedenceGroupNameElementSyntax {
 
-  internal func normalizedForAPIDeclaration(comma: Bool) -> PrecedenceGroupNameElementSyntax {
-    return SyntaxFactory.makePrecedenceGroupNameElement(
-      name: name.generallyNormalizedAndMissingInsteadOfNil(),
-      trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
-    )
+    internal func normalizedForAPIDeclaration(comma: Bool) -> PrecedenceGroupNameElementSyntax {
+      return SyntaxFactory.makePrecedenceGroupNameElement(
+        name: name.generallyNormalizedAndMissingInsteadOfNil(),
+        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
+      )
+    }
+
+    internal static func arrange(
+      lhs: PrecedenceGroupNameElementSyntax,
+      rhs: PrecedenceGroupNameElementSyntax
+    ) -> Bool {
+      return lhs.name.text < rhs.name.text
+    }
   }
-
-  internal static func arrange(
-    lhs: PrecedenceGroupNameElementSyntax,
-    rhs: PrecedenceGroupNameElementSyntax
-  ) -> Bool {
-    return lhs.name.text < rhs.name.text
-  }
-}
+#endif

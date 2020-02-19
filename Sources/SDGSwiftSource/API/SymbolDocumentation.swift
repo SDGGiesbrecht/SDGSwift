@@ -12,20 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// Symbol documentation.
-public struct SymbolDocumentation {
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  /// Symbol documentation.
+  public struct SymbolDocumentation {
 
-  internal init(_ documentation: DocumentationSyntax) {
-    self.documentationComment = documentation
+    internal init(_ documentation: DocumentationSyntax) {
+      self.documentationComment = documentation
+    }
+
+    // MARK: - Properties
+
+    /// Any developer line comments preceding the documentation.
+    ///
+    /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
+    public internal(set) var developerComments: [LineDeveloperCommentSyntax] = []
+
+    /// The documentation itself.
+    public let documentationComment: DocumentationSyntax
   }
-
-  // MARK: - Properties
-
-  /// Any developer line comments preceding the documentation.
-  ///
-  /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
-  public internal(set) var developerComments: [LineDeveloperCommentSyntax] = []
-
-  /// The documentation itself.
-  public let documentationComment: DocumentationSyntax
-}
+#endif

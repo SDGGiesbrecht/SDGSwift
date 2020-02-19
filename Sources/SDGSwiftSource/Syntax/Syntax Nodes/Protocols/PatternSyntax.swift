@@ -12,78 +12,80 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGControlFlow
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension PatternSyntax {
+  extension PatternSyntax {
 
-  internal var concreteSyntaxIsHidden: Bool {
-    switch self {
-    case let identifier as IdentifierPatternSyntax:
-      return identifier.isHidden
-    case let tuple as TuplePatternSyntax:
-      return tuple.elements.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
-    default:  // @exempt(from: tests)
-      warnUnidentified()
-      return false
-    }
-  }
-
-  internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
-    var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
-    switch self {
-    case let identifier as IdentifierPatternSyntax:
-      list.append((identifier: identifier, indexPath: []))
-    case let tuple as TuplePatternSyntax:
-      var index = 0
-      for element in tuple.elements {
-        defer { index += 1 }
-        let nested = element.pattern.flattenedForAPI()
-
-        typealias Indexed = (identifier: IdentifierPatternSyntax, indexPath: [Int])
-        let indexed = nested.map { (entry: Indexed) -> Indexed in
-          var mutable = entry
-          mutable.indexPath.prepend(index)
-          return mutable
-        }
-
-        list.append(contentsOf: indexed)
+    internal var concreteSyntaxIsHidden: Bool {
+      switch self {
+      case let identifier as IdentifierPatternSyntax:
+        return identifier.isHidden
+      case let tuple as TuplePatternSyntax:
+        return tuple.elements.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
+      default:  // @exempt(from: tests)
+        warnUnidentified()
+        return false
       }
-    default:  // @exempt(from: tests)
-      warnUnidentified()
     }
-    return list.filter({ ¬$0.identifier.isHidden })
-  }
 
-  internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
-    switch self {
-    case let identifier as IdentifierPatternSyntax:
-      return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
-    default:  // @exempt(from: tests)
-      warnUnidentified()
-      return self
-    }
-  }
+    internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
+      var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
+      switch self {
+      case let identifier as IdentifierPatternSyntax:
+        list.append((identifier: identifier, indexPath: []))
+      case let tuple as TuplePatternSyntax:
+        var index = 0
+        for element in tuple.elements {
+          defer { index += 1 }
+          let nested = element.pattern.flattenedForAPI()
 
-  internal func variableBindingForOverloadPattern() -> PatternSyntax {
-    switch self {
-    case let identifier as IdentifierPatternSyntax:
-      return identifier.variableBindingIdentifierForOverloadPattern()
-    default:  // @exempt(from: tests)
-      warnUnidentified()
-      return self
-    }
-  }
+          typealias Indexed = (identifier: IdentifierPatternSyntax, indexPath: [Int])
+          let indexed = nested.map { (entry: Indexed) -> Indexed in
+            var mutable = entry
+            mutable.indexPath.prepend(index)
+            return mutable
+          }
 
-  internal func variableBindingForName() -> PatternSyntax {
-    switch self {
-    case let identifier as IdentifierPatternSyntax:
-      return identifier.variableBindingIdentifierForName()
-    default:  // @exempt(from: tests)
-      warnUnidentified()
-      return self
+          list.append(contentsOf: indexed)
+        }
+      default:  // @exempt(from: tests)
+        warnUnidentified()
+      }
+      return list.filter({ ¬$0.identifier.isHidden })
+    }
+
+    internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
+      switch self {
+      case let identifier as IdentifierPatternSyntax:
+        return identifier.normalizedVariableBindingIdentiferForAPIDeclaration()
+      default:  // @exempt(from: tests)
+        warnUnidentified()
+        return self
+      }
+    }
+
+    internal func variableBindingForOverloadPattern() -> PatternSyntax {
+      switch self {
+      case let identifier as IdentifierPatternSyntax:
+        return identifier.variableBindingIdentifierForOverloadPattern()
+      default:  // @exempt(from: tests)
+        warnUnidentified()
+        return self
+      }
+    }
+
+    internal func variableBindingForName() -> PatternSyntax {
+      switch self {
+      case let identifier as IdentifierPatternSyntax:
+        return identifier.variableBindingIdentifierForName()
+      default:  // @exempt(from: tests)
+        warnUnidentified()
+        return self
+      }
     }
   }
-}
+#endif
