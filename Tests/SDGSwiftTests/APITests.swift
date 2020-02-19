@@ -121,9 +121,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
 
-    try withDefaultMockRepository { mock in
-      _ = try mock.tag(version: Version(10, 0, 0)).get()
-    }
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      try withDefaultMockRepository { mock in
+        _ = try mock.tag(version: Version(10, 0, 0)).get()
+      }
+    #endif
   }
 
   func testSwiftCompiler() throws {
@@ -132,11 +134,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       versionConstraints: Version(Int.min)...Version(Int.max)
     ).get()
 
-    try withDefaultMockRepository { mock in
-      _ = try mock.resolve().get()
-      _ = try mock.build(releaseConfiguration: true).get()
-      _ = try mock.test().get()
-    }
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      try withDefaultMockRepository { mock in
+        _ = try mock.resolve().get()
+        _ = try mock.build(releaseConfiguration: true).get()
+        _ = try mock.test().get()
+      }
+    #endif
     XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
     try withMock(named: "Tool") { mock in

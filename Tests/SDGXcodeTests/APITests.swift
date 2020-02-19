@@ -70,199 +70,201 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    try withDefaultMockRepository { mock in
-      for withGeneratedProject in [false, true] {
-        if withGeneratedProject {
-          _ = try mock.generateXcodeProject().get()
-        }
-
-        if withGeneratedProject {
-          XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
-        }
-        let mockScheme = try? mock.scheme().get()
-        #if !os(Linux)
-          XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
-        #endif
-
-        var sdks: [Xcode.SDK] = [
-          .macOS,
-          .iOS(simulator: false),
-          .iOS(simulator: true),
-          .watchOS,
-          .tvOS(simulator: false),
-          .tvOS(simulator: true)
-        ]
-        if ¬withGeneratedProject {
-          // #workaround(xcodebuild -version 11.3.0, WatchOS cannot handle test targets.) @exempt(from: unicode)
-          sdks.removeAll(where: { $0 == .watchOS })
-        }
-        for sdk in sdks {
-          print("Testing build for \(sdk.commandLineName)...")
-
-          let derived = URL(fileURLWithPath: NSHomeDirectory())
-            .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-          for subdirectory in (
-            try? FileManager.default.contentsOfDirectory(
-              at: derived,
-              includingPropertiesForKeys: nil,
-              options: .skipsSubdirectoryDescendants
-            )
-          ) ?? []
-          where subdirectory.lastPathComponent.contains("Mock") {
-            try? FileManager.default.removeItem(at: subdirectory)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      try withDefaultMockRepository { mock in
+        for withGeneratedProject in [false, true] {
+          if withGeneratedProject {
+            _ = try mock.generateXcodeProject().get()
           }
 
-          var log = Set<String>()  // Xcode’s order is not deterministic.
-          let processLog: (String) -> Void = { outputLine in
-            if let abbreviated = Xcode.abbreviate(output: outputLine) {
-              XCTAssert(
-                abbreviated.count < 100
-                  ∨ abbreviated.contains("warning:")
-                  ∨ abbreviated.contains("error:")
-                  ∨ abbreviated.contains("note:")
-                  ∨ abbreviated.hasPrefix("$ "),
-                "Output is too long: " + abbreviated
-              )
-              log.insert(abbreviated)
-            }
+          if withGeneratedProject {
+            XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
           }
-          #if os(Linux)
-            _ = try? mock.build(for: sdk, reportProgress: processLog).get()
-          #else
-            _ = try mock.build(for: sdk, reportProgress: processLog).get()
-          #endif
-
-          // Variable Xcode location and version:
-          var filtered: [String] = log.filter({
-            ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F")
-              ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: "
-          })
-          // Inconsistent path:
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
-          // Depend on external code signing settings:
-          filtered = filtered.filter({
-            ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
-          })
-          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
-          // Inconsistent user:
-          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
-          // Inconsistently appear:
-          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
-          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
-          filtered = filtered.filter({ line in
-            ¬line.contains("Execution policy exception registration failed")
-          })
-          filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
-          filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
+          let mockScheme = try? mock.scheme().get()
           #if !os(Linux)
-            compare(
-              filtered.sorted().joined(separator: "\n"),
-              against: testSpecificationDirectory()
-                .appendingPathComponent("Xcode")
-                .appendingPathComponent("Build" + (withGeneratedProject ? "" : " Package"))
-                .appendingPathComponent(sdk.commandLineName + ".txt"),
-              overwriteSpecificationInsteadOfFailing: false
-            )
+            XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
           #endif
-        }
 
-        var testSDKs: [Xcode.SDK] = [
-          .macOS
-        ]
-        if ProcessInfo.processInfo.environment["TRAVIS"] == nil {  // Unavailable in CI.
-          testSDKs.append(contentsOf: [
+          var sdks: [Xcode.SDK] = [
+            .macOS,
+            .iOS(simulator: false),
             .iOS(simulator: true),
+            .watchOS,
+            .tvOS(simulator: false),
             .tvOS(simulator: true)
-          ])
-        }
-        for sdk in testSDKs {
-          print("Testing testing on \(sdk.commandLineName)...")
-
-          let derived = URL(fileURLWithPath: NSHomeDirectory())
-            .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-          for subdirectory in (
-            try? FileManager.default.contentsOfDirectory(
-              at: derived,
-              includingPropertiesForKeys: nil,
-              options: .skipsSubdirectoryDescendants
-            )
-          ) ?? []
-          where subdirectory.lastPathComponent.contains("Mock") {
-            try? FileManager.default.removeItem(at: subdirectory)
+          ]
+          if ¬withGeneratedProject {
+            // #workaround(xcodebuild -version 11.3.0, WatchOS cannot handle test targets.) @exempt(from: unicode)
+            sdks.removeAll(where: { $0 == .watchOS })
           }
+          for sdk in sdks {
+            print("Testing build for \(sdk.commandLineName)...")
 
-          var log = Set<String>()  // Xcode’s order is not deterministic.
-          let processLog: (String) -> Void = { outputLine in
-            if let abbreviated = Xcode.abbreviate(output: outputLine) {
-              XCTAssert(
-                abbreviated.count < 100
-                  ∨ abbreviated.contains("warning:")
-                  ∨ abbreviated.contains("error:")
-                  ∨ abbreviated.contains("Failed")
-                  ∨ abbreviated.contains("note:")
-                  ∨ abbreviated.contains("failed")
-                  ∨ abbreviated.contains("bug")
-                  ∨ abbreviated.contains("Promise")
-                  ∨ abbreviated.contains("Warning")
-                  ∨ abbreviated.hasPrefix("$ "),
-                "Output is too long: " + abbreviated
+            let derived = URL(fileURLWithPath: NSHomeDirectory())
+              .appendingPathComponent("Library/Developer/Xcode/DerivedData")
+            for subdirectory in (
+              try? FileManager.default.contentsOfDirectory(
+                at: derived,
+                includingPropertiesForKeys: nil,
+                options: .skipsSubdirectoryDescendants
               )
-              log.insert(abbreviated)
+            ) ?? []
+            where subdirectory.lastPathComponent.contains("Mock") {
+              try? FileManager.default.removeItem(at: subdirectory)
             }
-          }
-          #if os(Linux)
-            _ = try? mock.test(on: sdk, reportProgress: processLog).get()
-          #else
-            _ = try mock.test(on: sdk, reportProgress: processLog).get()
-          #endif
 
-          // Remove dates & times:
-          var filtered =
-            log
-              .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
-          // Inconsistent path:
-          filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
-          // Inconsistent number of occurrences: (???)
-          filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") })
-          // Inconsistent which target some directories are first created for:
-          filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") })
-          // Depend on external code signing settings:
-          filtered = filtered.filter({
-            ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
-          })
-          filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
-          // Inconsistent identifiers:
-          filtered = filtered.filter({ ¬$0.contains("<DVTiPhoneSimulator:") })
-          filtered = filtered.filter({ ¬$0.contains(" Promise ") })
-          filtered = filtered.filter({ ¬$0.contains("<NSThread:") })
-          // Inconsistent user:
-          filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
-          // Inconsistently appear:
-          filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
-          filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
-          filtered = filtered.filter({ line in
-            ¬line.contains("Execution policy exception registration failed")
-          })
-          filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
-          filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
-          // Incosistent identifiers:
-          filtered = filtered.filter({ ¬$0.contains("SimDevice") })
-          filtered = filtered.filter({ ¬$0.contains("} (.") })
-          filtered = filtered.filter({ ¬$0.contains("application\u{2D}identifier") })
-          filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
-          #if !os(Linux)
-            compare(
-              filtered.sorted().joined(separator: "\n"),
-              against: testSpecificationDirectory()
-                .appendingPathComponent("Xcode")
-                .appendingPathComponent("Test" + (withGeneratedProject ? "" : " Package"))
-                .appendingPathComponent(sdk.commandLineName + ".txt"),
-              overwriteSpecificationInsteadOfFailing: false
-            )
-          #endif
+            var log = Set<String>()  // Xcode’s order is not deterministic.
+            let processLog: (String) -> Void = { outputLine in
+              if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                XCTAssert(
+                  abbreviated.count < 100
+                    ∨ abbreviated.contains("warning:")
+                    ∨ abbreviated.contains("error:")
+                    ∨ abbreviated.contains("note:")
+                    ∨ abbreviated.hasPrefix("$ "),
+                  "Output is too long: " + abbreviated
+                )
+                log.insert(abbreviated)
+              }
+            }
+            #if os(Linux)
+              _ = try? mock.build(for: sdk, reportProgress: processLog).get()
+            #else
+              _ = try mock.build(for: sdk, reportProgress: processLog).get()
+            #endif
+
+            // Variable Xcode location and version:
+            var filtered: [String] = log.filter({
+              ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F")
+                ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: "
+            })
+            // Inconsistent path:
+            filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
+            // Depend on external code signing settings:
+            filtered = filtered.filter({
+              ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
+            })
+            filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
+            // Inconsistent user:
+            filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
+            // Inconsistently appear:
+            filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
+            filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
+            filtered = filtered.filter({ line in
+              ¬line.contains("Execution policy exception registration failed")
+            })
+            filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
+            filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
+            #if !os(Linux)
+              compare(
+                filtered.sorted().joined(separator: "\n"),
+                against: testSpecificationDirectory()
+                  .appendingPathComponent("Xcode")
+                  .appendingPathComponent("Build" + (withGeneratedProject ? "" : " Package"))
+                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                overwriteSpecificationInsteadOfFailing: false
+              )
+            #endif
+          }
+
+          var testSDKs: [Xcode.SDK] = [
+            .macOS
+          ]
+          if ProcessInfo.processInfo.environment["TRAVIS"] == nil {  // Unavailable in CI.
+            testSDKs.append(contentsOf: [
+              .iOS(simulator: true),
+              .tvOS(simulator: true)
+            ])
+          }
+          for sdk in testSDKs {
+            print("Testing testing on \(sdk.commandLineName)...")
+
+            let derived = URL(fileURLWithPath: NSHomeDirectory())
+              .appendingPathComponent("Library/Developer/Xcode/DerivedData")
+            for subdirectory in (
+              try? FileManager.default.contentsOfDirectory(
+                at: derived,
+                includingPropertiesForKeys: nil,
+                options: .skipsSubdirectoryDescendants
+              )
+            ) ?? []
+            where subdirectory.lastPathComponent.contains("Mock") {
+              try? FileManager.default.removeItem(at: subdirectory)
+            }
+
+            var log = Set<String>()  // Xcode’s order is not deterministic.
+            let processLog: (String) -> Void = { outputLine in
+              if let abbreviated = Xcode.abbreviate(output: outputLine) {
+                XCTAssert(
+                  abbreviated.count < 100
+                    ∨ abbreviated.contains("warning:")
+                    ∨ abbreviated.contains("error:")
+                    ∨ abbreviated.contains("Failed")
+                    ∨ abbreviated.contains("note:")
+                    ∨ abbreviated.contains("failed")
+                    ∨ abbreviated.contains("bug")
+                    ∨ abbreviated.contains("Promise")
+                    ∨ abbreviated.contains("Warning")
+                    ∨ abbreviated.hasPrefix("$ "),
+                  "Output is too long: " + abbreviated
+                )
+                log.insert(abbreviated)
+              }
+            }
+            #if os(Linux)
+              _ = try? mock.test(on: sdk, reportProgress: processLog).get()
+            #else
+              _ = try mock.test(on: sdk, reportProgress: processLog).get()
+            #endif
+
+            // Remove dates & times:
+            var filtered =
+              log
+                .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
+            // Inconsistent path:
+            filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
+            // Inconsistent number of occurrences: (???)
+            filtered = filtered.filter({ ¬$0.contains("Executed  test, with  failures") })
+            // Inconsistent which target some directories are first created for:
+            filtered = filtered.filter({ ¬$0.hasPrefix("CreateBuildDirectory ") })
+            // Depend on external code signing settings:
+            filtered = filtered.filter({
+              ¬$0.hasPrefix("xcodebuild: MessageTracer: Falling back to default whitelist")
+            })
+            filtered = filtered.filter({ ¬$0.hasPrefix("codesign: [") })
+            // Inconsistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("<DVTiPhoneSimulator:") })
+            filtered = filtered.filter({ ¬$0.contains(" Promise ") })
+            filtered = filtered.filter({ ¬$0.contains("<NSThread:") })
+            // Inconsistent user:
+            filtered = filtered.filter({ ¬$0.contains("IDEDerivedDataPathOverride") })
+            // Inconsistently appear:
+            filtered = filtered.filter({ ¬$0.contains("RegisterExecutionPolicyException") })
+            filtered = filtered.filter({ ¬$0.contains("Operation not permitted") })
+            filtered = filtered.filter({ line in
+              ¬line.contains("Execution policy exception registration failed")
+            })
+            filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
+            filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
+            // Incosistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("SimDevice") })
+            filtered = filtered.filter({ ¬$0.contains("} (.") })
+            filtered = filtered.filter({ ¬$0.contains("application\u{2D}identifier") })
+            filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
+            #if !os(Linux)
+              compare(
+                filtered.sorted().joined(separator: "\n"),
+                against: testSpecificationDirectory()
+                  .appendingPathComponent("Xcode")
+                  .appendingPathComponent("Test" + (withGeneratedProject ? "" : " Package"))
+                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                overwriteSpecificationInsteadOfFailing: false
+              )
+            #endif
+          }
         }
       }
-    }
+    #endif
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
   }
@@ -280,76 +282,78 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
     #endif
 
-    try withDefaultMockRepository { mock in
-      for withGeneratedProject in [false, true] {
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      try withDefaultMockRepository { mock in
+        for withGeneratedProject in [false, true] {
 
-        let coverageFiles = thisRepository.location.appendingPathComponent(
-          "Tests/Test Specifications/Test Coverage"
-        )
-        let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
-        let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
-        let testDestination = mock.location.appendingPathComponent(
-          "Tests/MockTests/MockTests.swift"
-        )
-        try? FileManager.default.removeItem(at: sourceDestination)
-        try FileManager.default.copy(
-          sourceURL,
-          to: sourceDestination
-        )
-        try? FileManager.default.removeItem(at: testDestination)
-        try FileManager.default.copy(
-          coverageFiles.appendingPathComponent("Tests.swift"),
-          to: testDestination
-        )
+          let coverageFiles = thisRepository.location.appendingPathComponent(
+            "Tests/Test Specifications/Test Coverage"
+          )
+          let sourceURL = coverageFiles.appendingPathComponent("Source.swift")
+          let sourceDestination = mock.location.appendingPathComponent("Sources/Mock/Mock.swift")
+          let testDestination = mock.location.appendingPathComponent(
+            "Tests/MockTests/MockTests.swift"
+          )
+          try? FileManager.default.removeItem(at: sourceDestination)
+          try FileManager.default.copy(
+            sourceURL,
+            to: sourceDestination
+          )
+          try? FileManager.default.removeItem(at: testDestination)
+          try FileManager.default.copy(
+            coverageFiles.appendingPathComponent("Tests.swift"),
+            to: testDestination
+          )
 
-        if withGeneratedProject {
-          _ = try mock.generateXcodeProject().get()
-        }
-        #if os(Linux)
-          _ = try? mock.test(on: .macOS).get()
-        #else
-          _ = try mock.test(on: .macOS).get()
-        #endif
-        for localization in InterfaceLocalization.allCases {
-          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-            let possibleReport = try? mock.codeCoverageReport(
-              on: .macOS,
-              ignoreCoveredRegions: true
-            ).get()
-            #if !os(Linux)
-              guard let coverageReport = possibleReport else {
-                XCTFail("No test coverage report found.")
-                return
-              }
-              guard
-                let file = coverageReport.files.first(where: {
-                  $0.file.lastPathComponent == "Mock.swift"
-                })
-              else {
-                XCTFail("File missing from coverage report.")
-                return
-              }
-              do {
-                var specification = try String(from: sourceURL)
-                for range in file.regions.reversed() {
-                  specification.insert("!", at: range.region.upperBound)
-                  specification.insert("¡", at: range.region.lowerBound)
+          if withGeneratedProject {
+            _ = try mock.generateXcodeProject().get()
+          }
+          #if os(Linux)
+            _ = try? mock.test(on: .macOS).get()
+          #else
+            _ = try mock.test(on: .macOS).get()
+          #endif
+          for localization in InterfaceLocalization.allCases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+              let possibleReport = try? mock.codeCoverageReport(
+                on: .macOS,
+                ignoreCoveredRegions: true
+              ).get()
+              #if !os(Linux)
+                guard let coverageReport = possibleReport else {
+                  XCTFail("No test coverage report found.")
+                  return
                 }
-                compare(
-                  specification,
-                  against: testSpecificationDirectory().appendingPathComponent(
-                    "Coverage.txt"
-                  ),
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              } catch {
-                XCTFail("Failed to load source.")
-              }
-            #endif
+                guard
+                  let file = coverageReport.files.first(where: {
+                    $0.file.lastPathComponent == "Mock.swift"
+                  })
+                else {
+                  XCTFail("File missing from coverage report.")
+                  return
+                }
+                do {
+                  var specification = try String(from: sourceURL)
+                  for range in file.regions.reversed() {
+                    specification.insert("!", at: range.region.upperBound)
+                    specification.insert("¡", at: range.region.lowerBound)
+                  }
+                  compare(
+                    specification,
+                    against: testSpecificationDirectory().appendingPathComponent(
+                      "Coverage.txt"
+                    ),
+                    overwriteSpecificationInsteadOfFailing: false
+                  )
+                } catch {
+                  XCTFail("Failed to load source.")
+                }
+              #endif
+            }
           }
         }
       }
-    }
+    #endif
   }
 
   func testXcodeError() {
