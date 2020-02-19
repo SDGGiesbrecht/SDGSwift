@@ -24,7 +24,7 @@ import SDGVersioning
 import SDGSwiftLocalizations
 import SDGSwift
 
-#if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
   import Workspace
 #endif
 
@@ -42,7 +42,7 @@ extension SwiftCompiler {
     }
   }
 
-  #if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     internal static func withDiagnostics<T>(
       _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
     ) -> Swift.Result<T, PackageLoadingError> {
@@ -109,7 +109,7 @@ extension SwiftCompiler {
 
   // MARK: - Test Coverage
 
-  #if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<
       Foundation.URL, SwiftCompiler.PackageLoadingError
     > {

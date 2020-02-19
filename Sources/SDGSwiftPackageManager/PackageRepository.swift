@@ -18,7 +18,7 @@ import SDGText
 import SDGLocalization
 import SDGVersioning
 
-#if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
   import PackageModel
   import Build
   import Workspace
@@ -31,7 +31,7 @@ extension PackageRepository {
 
   // MARK: - Initialization
 
-  #if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     /// Creates a new package by initializing it at the specified URL.
     ///
     /// - Parameters:
@@ -85,7 +85,7 @@ extension PackageRepository {
 
   // MARK: - Properties
 
-  #if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, _ in
@@ -168,7 +168,7 @@ extension PackageRepository {
     return Git.ignoredFiles(in: self)
   }
 
-  #if !os(Android)  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     public func _directoriesIgnoredForTestCoverage() -> Swift.Result<
       [Foundation.URL], SwiftCompiler.PackageLoadingError
     > {
