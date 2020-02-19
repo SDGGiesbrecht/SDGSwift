@@ -12,23 +12,25 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A block documentation comment.
-public class BlockDocumentationSyntax: BlockCommentSyntax {
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  /// A block documentation comment.
+  public class BlockDocumentationSyntax: BlockCommentSyntax {
 
-  // MARK: - Class Properties
+    // MARK: - Class Properties
 
-  internal override class var openingDelimiter: ExtendedTokenSyntax {
-    return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
+    internal override class var openingDelimiter: ExtendedTokenSyntax {
+      return ExtendedTokenSyntax(text: "/\u{2A}*", kind: .openingBlockDocumentationDelimiter)
+    }
+
+    internal override class func parse(contents: String) -> DocumentationSyntax {
+      return DocumentationSyntax.parse(source: contents)
+    }
+
+    // MARK: - Properties
+
+    /// The documentation content.
+    public var documentation: DocumentationSyntax {
+      return internalSyntax as! DocumentationSyntax
+    }
   }
-
-  internal override class func parse(contents: String) -> DocumentationSyntax {
-    return DocumentationSyntax.parse(source: contents)
-  }
-
-  // MARK: - Properties
-
-  /// The documentation content.
-  public var documentation: DocumentationSyntax {
-    return internalSyntax as! DocumentationSyntax
-  }
-}
+#endif

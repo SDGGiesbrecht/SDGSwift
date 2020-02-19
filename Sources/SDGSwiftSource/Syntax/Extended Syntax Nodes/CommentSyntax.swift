@@ -21,7 +21,6 @@ public class CommentContentSyntax: ExtendedSyntax {
   // MARK: - Initialization
 
   internal init(source: String) {
-    var source = source
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {

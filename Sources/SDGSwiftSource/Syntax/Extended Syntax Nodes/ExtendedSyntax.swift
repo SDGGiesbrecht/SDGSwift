@@ -83,52 +83,54 @@ public class ExtendedSyntax: TextOutputStreamable {
 
   // MARK: - Location
 
-  /// Returns the lower bound of the node.
-  ///
-  /// - Parameters:
-  ///     - context: The node’s context.
-  public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
-    switch context {
-    case ._trivia(let trivia, context: let triviaContext):
-      let sourceStart = trivia.lowerBound(in: triviaContext)
-      return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
-    case ._token(let token, context: let tokenContext):
-      let sourceStart = token.lowerSyntaxBound(in: tokenContext)
-      return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
-    case ._fragment(let code, context: let codeContext, let offset):
-      let fragmentLocation = code.lowerBound(in: codeContext)
-      return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    /// Returns the lower bound of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
+    public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+      switch context {
+      case ._trivia(let trivia, context: let triviaContext):
+        let sourceStart = trivia.lowerBound(in: triviaContext)
+        return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
+      case ._token(let token, context: let tokenContext):
+        let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+        return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
+      case ._fragment(let code, context: let codeContext, let offset):
+        let fragmentLocation = code.lowerBound(in: codeContext)
+        return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+      }
     }
-  }
 
-  /// Returns the upper bound of the node.
-  ///
-  /// - Parameters:
-  ///     - context: The node’s context.
-  public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
-    switch context {
-    case ._trivia(let trivia, context: let triviaContext):
-      let sourceStart = trivia.lowerBound(in: triviaContext)
-      return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
-    case ._token(let token, context: let tokenContext):
-      let sourceStart = token.lowerSyntaxBound(in: tokenContext)
-      return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
-    case ._fragment(let code, context: let codeContext, let offset):
-      let fragmentLocation = code.lowerBound(in: codeContext)
-      return codeContext.source.scalars.index(
-        fragmentLocation,
-        offsetBy: offset + text.scalars.count
-      )
+    /// Returns the upper bound of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
+    public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+      switch context {
+      case ._trivia(let trivia, context: let triviaContext):
+        let sourceStart = trivia.lowerBound(in: triviaContext)
+        return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
+      case ._token(let token, context: let tokenContext):
+        let sourceStart = token.lowerSyntaxBound(in: tokenContext)
+        return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
+      case ._fragment(let code, context: let codeContext, let offset):
+        let fragmentLocation = code.lowerBound(in: codeContext)
+        return codeContext.source.scalars.index(
+          fragmentLocation,
+          offsetBy: offset + text.scalars.count
+        )
+      }
     }
-  }
 
-  /// Returns the range of the node.
-  ///
-  /// - Parameters:
-  ///     - context: The node’s context.
-  public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
-    return lowerBound(in: context)..<upperBound(in: context)
-  }
+    /// Returns the range of the node.
+    ///
+    /// - Parameters:
+    ///     - context: The node’s context.
+    public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
+      return lowerBound(in: context)..<upperBound(in: context)
+    }
+  #endif
 
   // MARK: - Syntax Tree
 
