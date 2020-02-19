@@ -179,26 +179,26 @@ extension PackageRepository {
         ]
       }
     }
-  #endif
 
-  /// Returns the code coverage report for the package.
-  ///
-  /// - Parameters:
-  ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  ///
-  /// - Returns: The report, or `nil` if there is no code coverage information.
-  public func codeCoverageReport(
-    ignoreCoveredRegions: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
-    return SwiftCompiler.codeCoverageReport(
-      for: self,
-      ignoreCoveredRegions: ignoreCoveredRegions,
-      reportProgress: reportProgress
-    )
-  }
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public func codeCoverageReport(
+      ignoreCoveredRegions: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
+      return SwiftCompiler.codeCoverageReport(
+        for: self,
+        ignoreCoveredRegions: ignoreCoveredRegions,
+        reportProgress: reportProgress
+      )
+    }
+  #endif
 
   // MARK: - Workflow
 
