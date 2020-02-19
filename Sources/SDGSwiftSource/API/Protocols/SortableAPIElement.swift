@@ -21,7 +21,8 @@
     // MARK: - Comparable
 
     internal func comparisonIdentity() -> (String, String, String) {
-      return (genericName.source(), possibleDeclaration?.source() ?? "", constraints?.source() ?? ""
+      return (
+        genericName.source(), possibleDeclaration?.source() ?? "", constraints?.source() ?? ""
       )
     }
 
