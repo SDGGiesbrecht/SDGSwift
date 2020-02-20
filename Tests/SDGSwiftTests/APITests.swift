@@ -41,35 +41,41 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     testEquatableConformance(
       differingInstances: (Build.version(Version(1, 0, 0)), Build.development)
     )
-    testCustomStringConvertibleConformance(
-      of: Build.version(Version(1, 0, 0)),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "1.0.0",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Build.development,
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Development",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: Build.version(Version(1, 0, 0)),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "1.0.0",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Build.development,
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Development",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testGit() {
-    XCTAssertNotNil(
-      try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+      XCTAssertNotNil(
+        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      )
+    #endif
   }
 
   func testGitError() {
-    testCustomStringConvertibleConformance(
-      of: VersionedExternalProcessExecutionError<Git>.locationError(
-        .unavailable(versionConstraints: "...")
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: VersionedExternalProcessExecutionError<Git>.locationError(
+          .unavailable(versionConstraints: "...")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     switch Git.runCustomSubcommand(
       ["fail"],
       versionConstraints: Version(Int.min)...Version(Int.max)
@@ -77,12 +83,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     case .success:
       XCTFail()
     case .failure(let error):
-      testCustomStringConvertibleConformance(
-        of: error,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Git Execution",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Git Execution",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
     }
   }
 
@@ -91,35 +99,43 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    testCustomStringConvertibleConformance(
-      of: Package(url: URL(string: "https://domain.tld/Package")!),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Mock Package",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    XCTAssert(
-      try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions()
-        .get() ∋ Version(0, 1, 0),
-      "Failed to detect available versions."
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: Package(url: URL(string: "https://domain.tld/Package")!),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock Package",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+      XCTAssert(
+        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions()
+          .get() ∋ Version(0, 1, 0),
+        "Failed to detect available versions."
+      )
+    #endif
   }
 
   func testPackageError() {
-    testCustomStringConvertibleConformance(
-      of: Package.ExecutionError.noSuchExecutable(requested: ["tool"]),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "No Such Executable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: Package.ExecutionError.noSuchExecutable(requested: ["tool"]),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "No Such Executable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testPackageRepository() throws {
-    testCustomStringConvertibleConformance(
-      of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Mock",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
       try withDefaultMockRepository { mock in
@@ -171,66 +187,70 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
-    testCustomStringConvertibleConformance(
-      of: Package.BuildError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.BuildError.swiftError(.locationError(.unavailable(versionConstraints: "..."))),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Swift Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.BuildError.foundationError(StandInError()),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Foundation",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.ExecutionError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.ExecutionError.buildError(
-        .gitError(.locationError(.unavailable(versionConstraints: "...")))
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.ExecutionError.foundationError(StandInError()),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Foundation",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: Package.ExecutionError.executionError(.processError(code: 1, output: "[...]")),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Foundation",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: VersionedExternalProcessExecutionError<SwiftCompiler>.locationError(
-        .unavailable(versionConstraints: "...")
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Swift Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: VersionedExternalProcessExecutionError<SwiftCompiler>.executionError(
-        .processError(code: 1, output: "[...]")
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Swift Execution",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: Package.BuildError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.BuildError.swiftError(.locationError(.unavailable(versionConstraints: "..."))),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Swift Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.BuildError.foundationError(StandInError()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Foundation",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.ExecutionError.gitError(
+          .locationError(.unavailable(versionConstraints: "..."))
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.ExecutionError.buildError(
+          .gitError(.locationError(.unavailable(versionConstraints: "...")))
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.ExecutionError.foundationError(StandInError()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Foundation",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: Package.ExecutionError.executionError(.processError(code: 1, output: "[...]")),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Foundation",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: VersionedExternalProcessExecutionError<SwiftCompiler>.locationError(
+          .unavailable(versionConstraints: "...")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Swift Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: VersionedExternalProcessExecutionError<SwiftCompiler>.executionError(
+          .processError(code: 1, output: "[...]")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Swift Execution",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testVersion() {
