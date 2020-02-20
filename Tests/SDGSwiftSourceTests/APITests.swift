@@ -93,16 +93,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCallout() {
     for localization in InterfaceLocalization.allCases {
-      let specification = Callout.allCases.map({ $0.localizedText(localization.code) }).joined(
-        separator: "\n"
-      )
-      compare(
-        String(specification),
-        against: testSpecificationDirectory().appendingPathComponent(
-          "Localization/Callouts/\(localization.icon!).txt"
-        ),
-        overwriteSpecificationInsteadOfFailing: false
-      )
+      #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks permissions.)
+        let specification = Callout.allCases.map({ $0.localizedText(localization.code) }).joined(
+          separator: "\n"
+        )
+        compare(
+          String(specification),
+          against: testSpecificationDirectory().appendingPathComponent(
+            "Localization/Callouts/\(localization.icon!).txt"
+          ),
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
     }
   }
 
@@ -411,26 +413,31 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocations() throws {
-    let source = "/\u{2F} ...\nlet x = 0 \n"
-    let syntax = try SyntaxParser.parse(source: source)
-    var statementsFound = false
-    let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
-      if syntax is CodeBlockItemListSyntax {
-        statementsFound = true
-        XCTAssertEqual(
-          syntax.triviaRange(in: context),
-          source.startIndex..<source.index(source.endIndex, offsetBy: −1)
-        )
-        XCTAssertEqual(
-          syntax.syntaxRange(in: context),
-          source.index(source.startIndex, offsetBy: 7)..<source.index(source.endIndex, offsetBy: −2)
-        )
-        return false
-      }
-      return true
-    })
-    try scanner.scan(syntax)
-    XCTAssertTrue(statementsFound)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let source = "/\u{2F} ...\nlet x = 0 \n"
+      let syntax = try SyntaxParser.parse(source: source)
+      var statementsFound = false
+      let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
+        if syntax is CodeBlockItemListSyntax {
+          statementsFound = true
+          XCTAssertEqual(
+            syntax.triviaRange(in: context),
+            source.startIndex..<source.index(source.endIndex, offsetBy: −1)
+          )
+          XCTAssertEqual(
+            syntax.syntaxRange(in: context),
+            source.index(
+              source.startIndex,
+              offsetBy: 7
+            )..<source.index(source.endIndex, offsetBy: −2)
+          )
+          return false
+        }
+        return true
+      })
+      try scanner.scan(syntax)
+      XCTAssertTrue(statementsFound)
+    #endif
   }
 
   func testPackageDocumentation() throws {
