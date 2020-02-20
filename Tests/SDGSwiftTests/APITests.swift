@@ -155,24 +155,26 @@ class SDGSwiftAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    _ = try SwiftCompiler.runCustomSubcommand(
-      ["\u{2D}\u{2D}version"],
-      versionConstraints: Version(Int.min)...Version(Int.max)
-    ).get()
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      _ = try SwiftCompiler.runCustomSubcommand(
+        ["\u{2D}\u{2D}version"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ).get()
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-      try withDefaultMockRepository { mock in
-        _ = try mock.resolve().get()
+      #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+        try withDefaultMockRepository { mock in
+          _ = try mock.resolve().get()
+          _ = try mock.build(releaseConfiguration: true).get()
+          _ = try mock.test().get()
+        }
+      #endif
+      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+
+      try withMock(named: "Tool") { mock in
         _ = try mock.build(releaseConfiguration: true).get()
-        _ = try mock.test().get()
+        XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
       }
     #endif
-    XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-
-    try withMock(named: "Tool") { mock in
-      _ = try mock.build(releaseConfiguration: true).get()
-      XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
-    }
   }
 
   func testSwiftCompilerError() {
