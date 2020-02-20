@@ -29,7 +29,8 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: SDGSwiftTestUtilities.TestCase {
+// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
+class SDGSwiftAPITests: SDGSwiftTestUtilities.TestCase {
 
   func testBuild() {
     testEquatableConformance(

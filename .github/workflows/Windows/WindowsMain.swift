@@ -29,7 +29,7 @@ extension ReadMeExampleTests {
   ]
 }
 
-extension APITests {
+extension SDGSwiftPackageManagerAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testChangeDetection", testChangeDetection),
@@ -43,7 +43,7 @@ extension APITests {
   ]
 }
 
-extension APITests {
+extension SDGSwiftAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testBuild", testBuild),
@@ -61,7 +61,7 @@ extension APITests {
   ]
 }
 
-extension RegressionTests {
+extension SDGSwiftRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
@@ -71,7 +71,7 @@ extension RegressionTests {
   ]
 }
 
-extension APITests {
+extension SDGXcodeAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
@@ -82,7 +82,7 @@ extension APITests {
   ]
 }
 
-extension RegressionTests {
+extension SDGXcodeRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       (
@@ -93,7 +93,7 @@ extension RegressionTests {
   ]
 }
 
-extension APITests {
+extension SDGSwiftConfigurationAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testConfiguration", testConfiguration),
@@ -102,7 +102,7 @@ extension APITests {
   ]
 }
 
-extension InternalTests {
+extension SDGSwiftConfigurationInternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testLocalization", testLocalization),
@@ -110,7 +110,7 @@ extension InternalTests {
   ]
 }
 
-extension APITests {
+extension SDGSwiftSourceAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testAPIParsing", testAPIParsing),
@@ -132,7 +132,7 @@ extension APITests {
   ]
 }
 
-extension InternalTests {
+extension SDGSwiftSourceInternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testEmptySyntax", testEmptySyntax),
@@ -144,7 +144,7 @@ extension InternalTests {
   ]
 }
 
-extension RegressionTests {
+extension SDGSwiftSourceRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testContinuedCallout", testContinuedCallout),
@@ -157,15 +157,15 @@ extension RegressionTests {
 
 var tests = [XCTestCaseEntry]()
 tests += ReadMeExampleTests.windowsTests
-tests += APITests.windowsTests
-tests += APITests.windowsTests
-tests += RegressionTests.windowsTests
-tests += APITests.windowsTests
-tests += RegressionTests.windowsTests
-tests += APITests.windowsTests
-tests += InternalTests.windowsTests
-tests += APITests.windowsTests
-tests += InternalTests.windowsTests
-tests += RegressionTests.windowsTests
+tests += SDGSwiftPackageManagerAPITests.windowsTests
+tests += SDGSwiftAPITests.windowsTests
+tests += SDGSwiftRegressionTests.windowsTests
+tests += SDGXcodeAPITests.windowsTests
+tests += SDGXcodeRegressionTests.windowsTests
+tests += SDGSwiftConfigurationAPITests.windowsTests
+tests += SDGSwiftConfigurationInternalTests.windowsTests
+tests += SDGSwiftSourceAPITests.windowsTests
+tests += SDGSwiftSourceInternalTests.windowsTests
+tests += SDGSwiftSourceRegressionTests.windowsTests
 
 XCTMain(tests)

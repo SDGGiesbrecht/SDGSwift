@@ -33,7 +33,8 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: SDGSwiftTestUtilities.TestCase {
+// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
+class SDGSwiftSourceAPITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)

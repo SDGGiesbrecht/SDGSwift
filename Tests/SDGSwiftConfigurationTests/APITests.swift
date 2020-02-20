@@ -33,7 +33,8 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class APITests: SDGSwiftTestUtilities.TestCase {
+// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
+class SDGSwiftConfigurationAPITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
