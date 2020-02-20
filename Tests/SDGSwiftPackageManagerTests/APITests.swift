@@ -102,9 +102,12 @@ class SDGSwiftPackageManagerAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    XCTAssert(
-      try thisRepository.ignoredFiles().get().contains(where: { $0.lastPathComponent == ".build" })
-    )
+    #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+      XCTAssert(
+        try thisRepository.ignoredFiles().get().contains(where: { $0.lastPathComponent == ".build" }
+        )
+      )
+    #endif
   }
 
   func testInitialization() throws {

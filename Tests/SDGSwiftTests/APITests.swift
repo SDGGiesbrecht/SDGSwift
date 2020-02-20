@@ -59,10 +59,12 @@ class SDGSwiftAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
-      XCTAssertNotNil(
-        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-      )
+    #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+        XCTAssertNotNil(
+          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        )
+      #endif
     #endif
   }
 
@@ -110,12 +112,15 @@ class SDGSwiftAPITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
-    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
-      XCTAssert(
-        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!).versions()
-          .get() ∋ Version(0, 1, 0),
-        "Failed to detect available versions."
-      )
+    #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+        XCTAssert(
+          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+            .versions()
+            .get() ∋ Version(0, 1, 0),
+          "Failed to detect available versions."
+        )
+      #endif
     #endif
   }
 
@@ -131,19 +136,21 @@ class SDGSwiftAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
-      testCustomStringConvertibleConformance(
-        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Mock",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
+        testCustomStringConvertibleConformance(
+          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Mock",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-      try withDefaultMockRepository { mock in
-        _ = try mock.tag(version: Version(10, 0, 0)).get()
-      }
+      #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+        try withDefaultMockRepository { mock in
+          _ = try mock.tag(version: Version(10, 0, 0)).get()
+        }
+      #endif
     #endif
   }
 
