@@ -14,7 +14,9 @@
 
 import SwiftSyntax
 
-import SDGSwiftSource
+#if (os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGSwiftSource
+#endif
 
 import XCTest
 
