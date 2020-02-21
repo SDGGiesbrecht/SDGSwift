@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// An API element which has a unique declaration.
-public protocol DeclaredAPIElement: APIElementProtocol {
-  /// The unique declaration.
-  var genericDeclaration: Syntax { get }
-}
-
-extension DeclaredAPIElement {
-
-  public var possibleDeclaration: Syntax? {
-    return genericDeclaration
+  /// An API element which has a unique declaration.
+  public protocol DeclaredAPIElement: APIElementProtocol {
+    /// The unique declaration.
+    var genericDeclaration: Syntax { get }
   }
-}
+
+  extension DeclaredAPIElement {
+
+    public var possibleDeclaration: Syntax? {
+      return genericDeclaration
+    }
+  }
+#endif

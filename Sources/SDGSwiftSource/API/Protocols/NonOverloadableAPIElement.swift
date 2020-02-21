@@ -12,11 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public protocol _NonOverloadableAPIElement: APIElementProtocol {}
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  public protocol _NonOverloadableAPIElement: APIElementProtocol {}
 
-extension _NonOverloadableAPIElement {
+  extension _NonOverloadableAPIElement {
 
-  public var overloads: [APIElement] {
-    return []
+    public var overloads: [APIElement] {
+      return []
+    }
   }
-}
+#endif

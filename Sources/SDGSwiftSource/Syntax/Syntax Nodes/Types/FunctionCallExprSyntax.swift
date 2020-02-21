@@ -12,72 +12,74 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLocalization
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLocalization
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension FunctionCallExprSyntax {
+  extension FunctionCallExprSyntax {
 
-  internal static func normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
-    return normalizedManifest(
-      calledExpression: SyntaxFactory.makeIdentifierExpr(
-        identifier: SyntaxFactory.makeToken(.identifier("Package")),
-        declNameArguments: nil
-      ),
-      name: name
-    )
-  }
-
-  internal static func normalizedLibraryDeclaration(name: String) -> FunctionCallExprSyntax {
-    return normalizedManifest(memberEntry: "library", name: name)
-  }
-
-  internal static func normalizedModuleDeclaration(name: String) -> FunctionCallExprSyntax {
-    return normalizedManifest(memberEntry: "target", name: name)
-  }
-
-  private static func normalizedManifest(memberEntry entry: String, name: String)
-    -> FunctionCallExprSyntax
-  {
-    return normalizedManifest(
-      calledExpression: SyntaxFactory.makeMemberAccessExpr(
-        base: SyntaxFactory.makeBlankUnknownExpr(),
-        dot: SyntaxFactory.makeToken(.period),
-        name: SyntaxFactory.makeToken(.identifier(entry)),
-        declNameArguments: nil
-      ),
-      name: name
-    )
-  }
-
-  private static func normalizedManifest(calledExpression: ExprSyntax, name: String)
-    -> FunctionCallExprSyntax
-  {
-    return SyntaxFactory.makeFunctionCallExpr(
-      calledExpression: calledExpression,
-      leftParen: SyntaxFactory.makeToken(.leftParen),
-      argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-        SyntaxFactory.makeFunctionCallArgument(
-          label: SyntaxFactory.makeToken(.identifier("name")),
-          colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-          expression: SyntaxFactory.makeStringLiteralExpr(
-            name.decomposedStringWithCanonicalMapping
-          ),
-          trailingComma: nil
-        )
-      ]),
-      rightParen: SyntaxFactory.makeToken(.rightParen),
-      trailingClosure: nil
-    )
-  }
-
-  internal func manifestEntryName() -> TokenSyntax {
-    guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax,
-      let segment = literal.segments.first as? StringSegmentSyntax
-    else {
-      // @exempt(from: tests) Only reachable with a degenerate declaration.
-      return SyntaxFactory.makeUnknown("")
+    internal static func normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
+      return normalizedManifest(
+        calledExpression: SyntaxFactory.makeIdentifierExpr(
+          identifier: SyntaxFactory.makeToken(.identifier("Package")),
+          declNameArguments: nil
+        ),
+        name: name
+      )
     }
-    return segment.content
+
+    internal static func normalizedLibraryDeclaration(name: String) -> FunctionCallExprSyntax {
+      return normalizedManifest(memberEntry: "library", name: name)
+    }
+
+    internal static func normalizedModuleDeclaration(name: String) -> FunctionCallExprSyntax {
+      return normalizedManifest(memberEntry: "target", name: name)
+    }
+
+    private static func normalizedManifest(memberEntry entry: String, name: String)
+      -> FunctionCallExprSyntax
+    {
+      return normalizedManifest(
+        calledExpression: SyntaxFactory.makeMemberAccessExpr(
+          base: SyntaxFactory.makeBlankUnknownExpr(),
+          dot: SyntaxFactory.makeToken(.period),
+          name: SyntaxFactory.makeToken(.identifier(entry)),
+          declNameArguments: nil
+        ),
+        name: name
+      )
+    }
+
+    private static func normalizedManifest(calledExpression: ExprSyntax, name: String)
+      -> FunctionCallExprSyntax
+    {
+      return SyntaxFactory.makeFunctionCallExpr(
+        calledExpression: calledExpression,
+        leftParen: SyntaxFactory.makeToken(.leftParen),
+        argumentList: SyntaxFactory.makeFunctionCallArgumentList([
+          SyntaxFactory.makeFunctionCallArgument(
+            label: SyntaxFactory.makeToken(.identifier("name")),
+            colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+            expression: SyntaxFactory.makeStringLiteralExpr(
+              name.decomposedStringWithCanonicalMapping
+            ),
+            trailingComma: nil
+          )
+        ]),
+        rightParen: SyntaxFactory.makeToken(.rightParen),
+        trailingClosure: nil
+      )
+    }
+
+    internal func manifestEntryName() -> TokenSyntax {
+      guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax,
+        let segment = literal.segments.first as? StringSegmentSyntax
+      else {
+        // @exempt(from: tests) Only reachable with a degenerate declaration.
+        return SyntaxFactory.makeUnknown("")
+      }
+      return segment.content
+    }
   }
-}
+#endif

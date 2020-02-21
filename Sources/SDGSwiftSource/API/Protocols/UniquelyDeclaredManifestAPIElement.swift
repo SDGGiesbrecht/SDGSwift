@@ -12,26 +12,28 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal protocol _UniquelyDeclaredManifestAPIElement: _UniquelyDeclaredAPIElement
-where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
+  internal protocol _UniquelyDeclaredManifestAPIElement: _UniquelyDeclaredAPIElement
+  where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
 
-extension _UniquelyDeclaredManifestAPIElement {
+  extension _UniquelyDeclaredManifestAPIElement {
 
-  internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
-    self.init(
-      documentation: documentation,
-      alreadyNormalizedDeclaration: declaration,
-      constraints: nil,
-      name: declaration.manifestEntryName(),
-      children: []
-    )
+    internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
+      self.init(
+        documentation: documentation,
+        alreadyNormalizedDeclaration: declaration,
+        constraints: nil,
+        name: declaration.manifestEntryName(),
+        children: []
+      )
+    }
+
+    // MARK: - APIElementProtocol
+
+    public func _shallowIdentifierList() -> Set<String> {
+      return []
+    }
   }
-
-  // MARK: - APIElementProtocol
-
-  public func _shallowIdentifierList() -> Set<String> {
-    return []
-  }
-}
+#endif

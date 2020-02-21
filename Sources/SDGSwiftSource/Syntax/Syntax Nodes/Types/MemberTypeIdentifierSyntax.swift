@@ -12,51 +12,53 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension MemberTypeIdentifierSyntax {
+  extension MemberTypeIdentifierSyntax {
 
-  // MARK: - Normalization
+    // MARK: - Normalization
 
-  internal func normalized() -> TypeSyntax {
+    internal func normalized() -> TypeSyntax {
 
-    let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-    let newGenericArgumentClause = genericArgumentClause?.normalized()
+      let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
+      let newGenericArgumentClause = genericArgumentClause?.normalized()
 
-    if let simple = baseType as? SimpleTypeIdentifierSyntax,
-      simple.name.tokenKind == .capitalSelfKeyword
-    {
-      return SyntaxFactory.makeSimpleTypeIdentifier(
-        name: newName,
-        genericArgumentClause: newGenericArgumentClause
-      )
-    } else {
-      return SyntaxFactory.makeMemberTypeIdentifier(
-        baseType: baseType.normalized(),
-        period: period.generallyNormalizedAndMissingInsteadOfNil(),
-        name: newName,
-        genericArgumentClause: newGenericArgumentClause
-      )
-    }
-  }
-
-  // MARK: - Merging
-
-  internal func rootType() -> TypeSyntax {
-    guard let member = baseType as? MemberTypeIdentifierSyntax else {
-      return baseType
-    }
-    return member.rootType()
-  }
-
-  internal func strippingRootType() -> TypeSyntax {
-    guard let member = baseType as? MemberTypeIdentifierSyntax else {
-      return SyntaxFactory.makeSimpleTypeIdentifier(
-        name: name,
-        genericArgumentClause: genericArgumentClause
-      )
+      if let simple = baseType as? SimpleTypeIdentifierSyntax,
+        simple.name.tokenKind == .capitalSelfKeyword
+      {
+        return SyntaxFactory.makeSimpleTypeIdentifier(
+          name: newName,
+          genericArgumentClause: newGenericArgumentClause
+        )
+      } else {
+        return SyntaxFactory.makeMemberTypeIdentifier(
+          baseType: baseType.normalized(),
+          period: period.generallyNormalizedAndMissingInsteadOfNil(),
+          name: newName,
+          genericArgumentClause: newGenericArgumentClause
+        )
+      }
     }
 
-    return withBaseType(member.strippingRootType())
+    // MARK: - Merging
+
+    internal func rootType() -> TypeSyntax {
+      guard let member = baseType as? MemberTypeIdentifierSyntax else {
+        return baseType
+      }
+      return member.rootType()
+    }
+
+    internal func strippingRootType() -> TypeSyntax {
+      guard let member = baseType as? MemberTypeIdentifierSyntax else {
+        return SyntaxFactory.makeSimpleTypeIdentifier(
+          name: name,
+          genericArgumentClause: genericArgumentClause
+        )
+      }
+
+      return withBaseType(member.strippingRootType())
+    }
   }
-}
+#endif

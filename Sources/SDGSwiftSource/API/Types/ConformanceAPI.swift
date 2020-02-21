@@ -12,25 +12,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// A protocol conformance or superclass inheritance.
-public final class ConformanceAPI: SortableAPIElement,
-  _UndeclaredAPIElementProtocol
-{
+  /// A protocol conformance or superclass inheritance.
+  public final class ConformanceAPI: SortableAPIElement,
+    _UndeclaredAPIElementProtocol
+  {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(type: TypeSyntax) {
-    _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
+    internal init(type: TypeSyntax) {
+      _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
+    }
+
+    // MARK: - Properties
+
+    /// A weak reference to the protocol or superclass.
+    public internal(set) var reference: ConformanceReference?
+
+    // MARK: - UndeclaredAPIElementProtocol
+
+    public var _undeclaredStorage: _UndeclaredAPIElementStorage
   }
-
-  // MARK: - Properties
-
-  /// A weak reference to the protocol or superclass.
-  public internal(set) var reference: ConformanceReference?
-
-  // MARK: - UndeclaredAPIElementProtocol
-
-  public var _undeclaredStorage: _UndeclaredAPIElementStorage
-}
+#endif

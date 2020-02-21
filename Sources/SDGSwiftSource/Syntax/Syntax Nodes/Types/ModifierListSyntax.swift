@@ -12,19 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension ModifierListSyntax {
+  extension ModifierListSyntax {
 
-  internal func normalizedForAPIDeclaration(operatorFunction: Bool) -> ModifierListSyntax {
-    return SyntaxFactory.makeModifierList(
-      compactMap({ $0.normalizedForAPIDeclaration(operatorFunction: operatorFunction) }).sorted(
-        by: DeclModifierSyntax.arrange
+    internal func normalizedForAPIDeclaration(operatorFunction: Bool) -> ModifierListSyntax {
+      return SyntaxFactory.makeModifierList(
+        compactMap({ $0.normalizedForAPIDeclaration(operatorFunction: operatorFunction) }).sorted(
+          by: DeclModifierSyntax.arrange
+        )
       )
-    )
-  }
+    }
 
-  internal func forOverloadPattern() -> ModifierListSyntax {
-    return SyntaxFactory.makeModifierList(compactMap({ $0.forOverloadPattern() }))
+    internal func forOverloadPattern() -> ModifierListSyntax {
+      return SyntaxFactory.makeModifierList(compactMap({ $0.forOverloadPattern() }))
+    }
   }
-}
+#endif

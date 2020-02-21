@@ -12,27 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension GenericWhereClauseSyntax: Mergeable {
+  extension GenericWhereClauseSyntax: Mergeable {
 
-  internal func normalized() -> GenericWhereClauseSyntax? {
-    return SyntaxFactory.makeGenericWhereClause(
-      whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      requirementList: requirementList.normalized()
-    )
+    internal func normalized() -> GenericWhereClauseSyntax? {
+      return SyntaxFactory.makeGenericWhereClause(
+        whereKeyword: whereKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        requirementList: requirementList.normalized()
+      )
+    }
+
+    // MARK: - Mergeable
+
+    internal mutating func merge(with other: GenericWhereClauseSyntax) {
+      var requirementList = self.requirementList
+      requirementList.merge(with: other.requirementList)
+      self = withRequirementList(requirementList)
+    }
   }
-
-  // MARK: - Mergeable
-
-  internal mutating func merge(with other: GenericWhereClauseSyntax) {
-    var requirementList = self.requirementList
-    requirementList.merge(with: other.requirementList)
-    self = withRequirementList(requirementList)
-  }
-}
+#endif

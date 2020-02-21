@@ -12,13 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-@testable import SDGSwiftSource
+  @testable import SDGSwiftSource
 
-extension FunctionCallExprSyntax {
-  static func packageDeclaration(named name: String) -> FunctionCallExprSyntax {
-    /// Provides access to the internal function.
-    return FunctionCallExprSyntax.normalizedPackageDeclaration(name: name)
+  extension FunctionCallExprSyntax {
+    static func packageDeclaration(named name: String) -> FunctionCallExprSyntax {
+      /// Provides access to the internal function.
+      return FunctionCallExprSyntax.normalizedPackageDeclaration(name: name)
+    }
   }
-}
+#endif

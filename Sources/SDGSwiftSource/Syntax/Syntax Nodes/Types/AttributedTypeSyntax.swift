@@ -12,15 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension AttributedTypeSyntax {
+  extension AttributedTypeSyntax {
 
-  internal func normalized() -> AttributedTypeSyntax {
-    return SyntaxFactory.makeAttributedType(
-      specifier: specifier?.generallyNormalized(trailingTrivia: .spaces(1)),
-      attributes: attributes?.normalizedForAPIDeclaration(),
-      baseType: baseType.normalized()
-    )
+    internal func normalized() -> AttributedTypeSyntax {
+      return SyntaxFactory.makeAttributedType(
+        specifier: specifier?.generallyNormalized(trailingTrivia: .spaces(1)),
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        baseType: baseType.normalized()
+      )
+    }
   }
-}
+#endif

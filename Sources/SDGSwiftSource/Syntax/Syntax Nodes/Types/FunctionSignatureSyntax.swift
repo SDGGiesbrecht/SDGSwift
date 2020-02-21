@@ -12,45 +12,49 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension FunctionSignatureSyntax {
+  extension FunctionSignatureSyntax {
 
-  internal func normalizedForAPIDeclaration(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-    -> FunctionSignatureSyntax
-  {
-    return SyntaxFactory.makeFunctionSignature(
-      input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-      throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
-        leadingTrivia: .spaces(1)
-      ),
-      output: output?.normalizedForFunctionDeclaration()
+    internal func normalizedForAPIDeclaration(
+      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     )
-  }
+      -> FunctionSignatureSyntax
+    {
+      return SyntaxFactory.makeFunctionSignature(
+        input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
+        throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
+          leadingTrivia: .spaces(1)
+        ),
+        output: output?.normalizedForFunctionDeclaration()
+      )
+    }
 
-  internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-    -> FunctionSignatureSyntax
-  {
-    return SyntaxFactory.makeFunctionSignature(
-      input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
-      throwsOrRethrowsKeyword: nil,
-      output: nil
-    )
-  }
+    internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
+      -> FunctionSignatureSyntax
+    {
+      return SyntaxFactory.makeFunctionSignature(
+        input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
+        throwsOrRethrowsKeyword: nil,
+        output: nil
+      )
+    }
 
-  internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-    -> FunctionSignatureSyntax
-  {
-    return SyntaxFactory.makeFunctionSignature(
-      input: input.forName(labelBehaviour: labelBehaviour),
-      throwsOrRethrowsKeyword: nil,
-      output: nil
-    )
-  }
+    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
+      -> FunctionSignatureSyntax
+    {
+      return SyntaxFactory.makeFunctionSignature(
+        input: input.forName(labelBehaviour: labelBehaviour),
+        throwsOrRethrowsKeyword: nil,
+        output: nil
+      )
+    }
 
-  internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<
-    String
-  > {
-    return input.identifierList(labelBehaviour: labelBehaviour)
+    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<
+      String
+    > {
+      return input.identifierList(labelBehaviour: labelBehaviour)
+    }
   }
-}
+#endif

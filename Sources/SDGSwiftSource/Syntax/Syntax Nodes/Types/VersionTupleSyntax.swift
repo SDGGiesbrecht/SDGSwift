@@ -12,15 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension VersionTupleSyntax {
+  extension VersionTupleSyntax {
 
-  internal func normalized() -> VersionTupleSyntax {
-    return SyntaxFactory.makeVersionTuple(
-      majorMinor: majorMinor.normalizedVersion(),
-      patchPeriod: patchPeriod?.generallyNormalized(),
-      patchVersion: patchVersion?.generallyNormalized()
-    )
+    internal func normalized() -> VersionTupleSyntax {
+      return SyntaxFactory.makeVersionTuple(
+        majorMinor: majorMinor.normalizedVersion(),
+        patchPeriod: patchPeriod?.generallyNormalized(),
+        patchVersion: patchVersion?.generallyNormalized()
+      )
+    }
   }
-}
+#endif

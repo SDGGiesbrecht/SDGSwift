@@ -12,15 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// A declaration syntax node which includes constraints.
-public protocol Constrained: Syntax {
-  /// The constraint clause.
-  var genericWhereClause: GenericWhereClauseSyntax? { get }
-  /// Creates a new node by replacing the constraint clause.
-  ///
-  /// - Parameters:
-  ///     - clause: The new generic “where” clause.
-  func withGenericWhereClause(_ clause: GenericWhereClauseSyntax?) -> Self
-}
+  /// A declaration syntax node which includes constraints.
+  public protocol Constrained: Syntax {
+    /// The constraint clause.
+    var genericWhereClause: GenericWhereClauseSyntax? { get }
+    /// Creates a new node by replacing the constraint clause.
+    ///
+    /// - Parameters:
+    ///     - clause: The new generic “where” clause.
+    func withGenericWhereClause(_ clause: GenericWhereClauseSyntax?) -> Self
+  }
+#endif

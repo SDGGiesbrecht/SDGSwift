@@ -12,40 +12,42 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// An operator precedence group.
-public final class PrecedenceAPI: APIElementProtocol, DeclaredAPIElement,
-  _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
-  _UniquelyDeclaredSyntaxAPIElement
-{
+  /// An operator precedence group.
+  public final class PrecedenceAPI: APIElementProtocol, DeclaredAPIElement,
+    _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
+    _UniquelyDeclaredSyntaxAPIElement
+  {
 
-  // MARK: - APIElementProtocol
+    // MARK: - APIElementProtocol
 
-  public var _storage: _APIElementStorage
+    public var _storage: _APIElementStorage
 
-  // MARK: - DeclaredAPIElement
+    // MARK: - DeclaredAPIElement
 
-  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-  /// The element’s declaration.
-  public internal(set) var declaration: PrecedenceGroupDeclSyntax
-  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-  /// The element’s name.
-  public let name: PrecedenceGroupDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
+    public internal(set) var declaration: PrecedenceGroupDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
+    public let name: PrecedenceGroupDeclSyntax
 
-  // MARK: - UniquelyDeclaredAPIElement
+    // MARK: - UniquelyDeclaredAPIElement
 
-  internal init(
-    documentation: [SymbolDocumentation],
-    alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax,
-    constraints: GenericWhereClauseSyntax?,
-    name: PrecedenceGroupDeclSyntax,
-    children: [APIElement]
-  ) {
+    internal init(
+      documentation: [SymbolDocumentation],
+      alreadyNormalizedDeclaration declaration: PrecedenceGroupDeclSyntax,
+      constraints: GenericWhereClauseSyntax?,
+      name: PrecedenceGroupDeclSyntax,
+      children: [APIElement]
+    ) {
 
-    self.declaration = declaration
-    self.name = name
-    _storage = APIElementStorage(documentation: documentation)
-    self.constraints = constraints
+      self.declaration = declaration
+      self.name = name
+      _storage = APIElementStorage(documentation: documentation)
+      self.constraints = constraints
+    }
   }
-}
+#endif

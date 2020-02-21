@@ -12,42 +12,44 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal protocol _OverloadableAPIElement: SortableAPIElement {
-  func genericOverloadPattern() -> Syntax
-  var isProtocolRequirement: Bool { get }
-  var hasDefaultImplementation: Bool { get set }
-  var _overloads: [APIElement] { get set }
-}
+  internal protocol _OverloadableAPIElement: SortableAPIElement {
+    func genericOverloadPattern() -> Syntax
+    var isProtocolRequirement: Bool { get }
+    var hasDefaultImplementation: Bool { get set }
+    var _overloads: [APIElement] { get set }
+  }
 
-extension _OverloadableAPIElement {
+  extension _OverloadableAPIElement {
 
-  // MARK: - Overloads
+    // MARK: - Overloads
 
-  public var overloads: [APIElement] {
-    get {
-      return _overloads
-    }
-    set {
-      var new = newValue.sorted()
-      if isProtocolRequirement {
-        for index in new.indices {
-          let overload = new[index]
-          if type(of: overload.elementProtocol) == type(of: self),
-            let overloadDeclaration = overload.elementProtocol.possibleDeclaration,
-            let declaration = possibleDeclaration,
-            overloadDeclaration.source() == declaration.source(),
-            overload.constraints?.source() == constraints?.source()
-          {
+    public var overloads: [APIElement] {
+      get {
+        return _overloads
+      }
+      set {
+        var new = newValue.sorted()
+        if isProtocolRequirement {
+          for index in new.indices {
+            let overload = new[index]
+            if type(of: overload.elementProtocol) == type(of: self),
+              let overloadDeclaration = overload.elementProtocol.possibleDeclaration,
+              let declaration = possibleDeclaration,
+              overloadDeclaration.source() == declaration.source(),
+              overload.constraints?.source() == constraints?.source()
+            {
 
-            hasDefaultImplementation = true
-            new.remove(at: index)
-            break
+              hasDefaultImplementation = true
+              new.remove(at: index)
+              break
+            }
           }
         }
+        _overloads = new
       }
-      _overloads = new
     }
   }
-}
+#endif

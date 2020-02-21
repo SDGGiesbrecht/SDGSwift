@@ -12,31 +12,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension TupleTypeSyntax {
+  extension TupleTypeSyntax {
 
-  internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
-    if let index = indexPath.first {
-      let elementsArray = Array(elements)
-      if elementsArray.indices.contains(index) {
-        return elementsArray[index].type.normalized(
-          extractingFromIndexPath: Array(indexPath.dropFirst())
+    internal func normalized(extractingFromIndexPath indexPath: [Int] = []) -> TypeSyntax {
+      if let index = indexPath.first {
+        let elementsArray = Array(elements)
+        if elementsArray.indices.contains(index) {
+          return elementsArray[index].type.normalized(
+            extractingFromIndexPath: Array(indexPath.dropFirst())
+          )
+        }
+      }
+
+      if elements.isEmpty {
+        return SyntaxFactory.makeSimpleTypeIdentifier(
+          name: SyntaxFactory.makeToken(.identifier("Void")),
+          genericArgumentClause: nil
+        )
+      } else {
+        return SyntaxFactory.makeTupleType(
+          leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+          elements: elements.normalized(),
+          rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
         )
       }
     }
-
-    if elements.isEmpty {
-      return SyntaxFactory.makeSimpleTypeIdentifier(
-        name: SyntaxFactory.makeToken(.identifier("Void")),
-        genericArgumentClause: nil
-      )
-    } else {
-      return SyntaxFactory.makeTupleType(
-        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-        elements: elements.normalized(),
-        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-      )
-    }
   }
-}
+#endif

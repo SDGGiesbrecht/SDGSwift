@@ -12,44 +12,46 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-import SDGCollections
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
+  import SDGCollections
 
-import SwiftSyntax
+  import SwiftSyntax
 
-/// A function or method.
-public final class FunctionAPI: SortableAPIElement,
-  UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-{
+  /// A function or method.
+  public final class FunctionAPI: SortableAPIElement,
+    UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+  {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(
-    documentation: [SymbolDocumentation],
-    alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
-    constraints: GenericWhereClauseSyntax?,
-    name: FunctionDeclSyntax,
-    children: [APIElement]
-  ) {
+    internal init(
+      documentation: [SymbolDocumentation],
+      alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
+      constraints: GenericWhereClauseSyntax?,
+      name: FunctionDeclSyntax,
+      children: [APIElement]
+    ) {
 
-    self.declaration = declaration
-    self.name = name
-    _storage = APIElementStorage(documentation: documentation)
-    self.constraints = constraints
+      self.declaration = declaration
+      self.name = name
+      _storage = APIElementStorage(documentation: documentation)
+      self.constraints = constraints
+    }
+
+    // MARK: - APIElementProtocol
+
+    public var _storage: _APIElementStorage
+
+    // MARK: - DeclaredAPIElement
+
+    internal typealias Declaration = FunctionDeclSyntax
+
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
+    public internal(set) var declaration: FunctionDeclSyntax
+    // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
+    public let name: FunctionDeclSyntax
   }
-
-  // MARK: - APIElementProtocol
-
-  public var _storage: _APIElementStorage
-
-  // MARK: - DeclaredAPIElement
-
-  internal typealias Declaration = FunctionDeclSyntax
-
-  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-  /// The element’s declaration.
-  public internal(set) var declaration: FunctionDeclSyntax
-  // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-  /// The element’s name.
-  public let name: FunctionDeclSyntax
-}
+#endif

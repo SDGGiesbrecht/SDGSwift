@@ -12,16 +12,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGControlFlow
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension AvailabilityArgumentSyntax {
+  extension AvailabilityArgumentSyntax {
 
-  internal func normalized() -> AvailabilityArgumentSyntax {
-    return SyntaxFactory.makeAvailabilityArgument(
-      entry: entry.normalizedAvailabilityArgument(),
-      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-    )
+    internal func normalized() -> AvailabilityArgumentSyntax {
+      return SyntaxFactory.makeAvailabilityArgument(
+        entry: entry.normalizedAvailabilityArgument(),
+        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+      )
+    }
   }
-}
+#endif

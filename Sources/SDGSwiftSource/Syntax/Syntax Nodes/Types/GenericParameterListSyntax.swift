@@ -12,28 +12,30 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension GenericParameterListSyntax {
+  extension GenericParameterListSyntax {
 
-  internal func normalizedForAPIDeclaration() -> (
-    GenericParameterListSyntax, GenericRequirementListSyntax?
-  ) {
-    var parameters: [GenericParameterSyntax] = []
-    var requirements: [ConformanceRequirementSyntax] = []
-    for parameter in self {
-      let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
-      parameters.append(parameter)
-      if let requirement = conformance {
-        requirements.append(requirement)
+    internal func normalizedForAPIDeclaration() -> (
+      GenericParameterListSyntax, GenericRequirementListSyntax?
+    ) {
+      var parameters: [GenericParameterSyntax] = []
+      var requirements: [ConformanceRequirementSyntax] = []
+      for parameter in self {
+        let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
+        parameters.append(parameter)
+        if let requirement = conformance {
+          requirements.append(requirement)
+        }
       }
+      return (
+        SyntaxFactory.makeGenericParameterList(parameters),
+        requirements.isEmpty
+          ? nil : SyntaxFactory.makeGenericRequirementList(requirements).normalized()
+      )
     }
-    return (
-      SyntaxFactory.makeGenericParameterList(parameters),
-      requirements.isEmpty
-        ? nil : SyntaxFactory.makeGenericRequirementList(requirements).normalized()
-    )
   }
-}
+#endif

@@ -83,20 +83,22 @@ public func withMock(
   }
 }
 
-public func withDefaultMockRepository(
-  file: StaticString = #file,
-  line: UInt = #line,
-  test: (PackageRepository) throws -> Void
-) throws {
-  return try withMock(file: file, line: line) { mock in
-    let repository = try PackageRepository.initializePackage(
-      at: mock,
-      named: StrictString(mock.lastPathComponent),
-      type: .library
-    ).get()
-    try test(repository)
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  public func withDefaultMockRepository(
+    file: StaticString = #file,
+    line: UInt = #line,
+    test: (PackageRepository) throws -> Void
+  ) throws {
+    return try withMock(file: file, line: line) { mock in
+      let repository = try PackageRepository.initializePackage(
+        at: mock,
+        named: StrictString(mock.lastPathComponent),
+        type: .library
+      ).get()
+      try test(repository)
+    }
   }
-}
+#endif
 
 public func withMockDynamicLinkedExecutable(
   file: StaticString = #file,

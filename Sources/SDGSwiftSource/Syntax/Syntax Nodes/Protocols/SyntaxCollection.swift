@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension SyntaxCollection {
+  extension SyntaxCollection {
 
-  /// Returns whether the collection is empty.
-  public var isEmpty: Bool {
-    return first == nil
+    /// Returns whether the collection is empty.
+    public var isEmpty: Bool {
+      return first == nil
+    }
+
+    /// Returns the first element of the collection.
+    public var first: Element? {
+      return first(where: { _ in true })
+    }
   }
-
-  /// Returns the first element of the collection.
-  public var first: Element? {
-    return first(where: { _ in true })
-  }
-}
+#endif

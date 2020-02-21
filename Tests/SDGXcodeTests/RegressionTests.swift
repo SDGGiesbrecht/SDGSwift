@@ -16,12 +16,13 @@ import XCTest
 
 import SDGSwiftTestUtilities
 
-class RegressionTests: SDGSwiftTestUtilities.TestCase {
+// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
+class SDGXcodeRegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
-    #if !os(Linux)
+    #if !(os(Windows) || os(Linux) || os(Android))
       try withMock(named: "MultipleSchemes") { package in
         let scheme = try package.scheme().get()
         XCTAssertEqual(scheme, "SomePackage\u{2D}Package")

@@ -12,22 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension TupleTypeElementSyntax {
+  extension TupleTypeElementSyntax {
 
-  internal func normalized() -> TupleTypeElementSyntax {
-    return SyntaxFactory.makeTupleTypeElement(
-      inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
-      name: name?.generallyNormalized(),
-      secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
-      colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
-      type: type.normalized(),
-      ellipsis: ellipsis?.generallyNormalized(),
-      initializer: initializer?.normalizeForDefaultArgument(),
-      trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-    )
+    internal func normalized() -> TupleTypeElementSyntax {
+      return SyntaxFactory.makeTupleTypeElement(
+        inOut: inOut?.generallyNormalized(trailingTrivia: .spaces(1)),
+        name: name?.generallyNormalized(),
+        secondName: secondName?.generallyNormalized(leadingTrivia: .spaces(1)),
+        colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+        type: type.normalized(),
+        ellipsis: ellipsis?.generallyNormalized(),
+        initializer: initializer?.normalizeForDefaultArgument(),
+        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+      )
+    }
   }
-}
+#endif

@@ -12,39 +12,41 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension Optional: Mergeable where Wrapped: Mergeable {
+  extension Optional: Mergeable where Wrapped: Mergeable {
 
-  internal mutating func merge(with other: Wrapped?) {
-    switch self {
-    case .some(var instance):
-      switch other {
-      case .some(let otherInstance):
-        instance.merge(with: otherInstance)
-        self = .some(instance)
+    internal mutating func merge(with other: Wrapped?) {
+      switch self {
+      case .some(var instance):
+        switch other {
+        case .some(let otherInstance):
+          instance.merge(with: otherInstance)
+          self = .some(instance)
+        case .none:
+          break
+        }
       case .none:
-        break
+        self = other
       }
-    case .none:
-      self = other
     }
   }
-}
 
-extension Optional where Wrapped == Syntax {
+  extension Optional where Wrapped == Syntax {
 
-  internal mutating func prependCompilationConditions(_ addition: Syntax?) {
-    switch self {
-    case .some(let instance):
-      switch addition {
-      case .some(let additionInstance):
-        self = .some(instance.prependingCompilationConditions(additionInstance))
+    internal mutating func prependCompilationConditions(_ addition: Syntax?) {
+      switch self {
+      case .some(let instance):
+        switch addition {
+        case .some(let additionInstance):
+          self = .some(instance.prependingCompilationConditions(additionInstance))
+        case .none:
+          break
+        }
       case .none:
-        break
+        self = addition
       }
-    case .none:
-      self = addition
     }
   }
-}
+#endif

@@ -17,35 +17,39 @@ import SDGLocalization
 
 import SDGSwift
 
-import Workspace
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  import Workspace
+#endif
 
 extension SwiftCompiler {
 
-  /// An error encountered while loading a Swift package.
-  public enum PackageLoadingError: PresentableError {
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    /// An error encountered while loading a Swift package.
+    public enum PackageLoadingError: PresentableError {
 
-    // MARK: - Cases
+      // MARK: - Cases
 
-    /// Swift could not be located.
-    case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
+      /// Swift could not be located.
+      case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
-    /// The package manager encountered an error.
-    case packageManagerError(Swift.Error?, [Diagnostic])
+      /// The package manager encountered an error.
+      case packageManagerError(Swift.Error?, [Diagnostic])
 
-    // MARK: - PresentableError
+      // MARK: - PresentableError
 
-    public func presentableDescription() -> StrictString {
-      switch self {
-      case .swiftLocationError(let error):
-        return error.presentableDescription()
-      case .packageManagerError(let error, let diagnostics):
-        var lines: [String] = []
-        if let error = error {
-          lines.append(error.localizedDescription)
+      public func presentableDescription() -> StrictString {
+        switch self {
+        case .swiftLocationError(let error):
+          return error.presentableDescription()
+        case .packageManagerError(let error, let diagnostics):
+          var lines: [String] = []
+          if let error = error {
+            lines.append(error.localizedDescription)
+          }
+          lines += diagnostics.map({ $0.localizedDescription })
+          return StrictString(lines.joined(separator: "\n"))
         }
-        lines += diagnostics.map({ $0.localizedDescription })
-        return StrictString(lines.joined(separator: "\n"))
       }
     }
-  }
+  #endif
 }

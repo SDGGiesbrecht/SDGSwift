@@ -12,18 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension OperatorPrecedenceAndTypesSyntax {
+  extension OperatorPrecedenceAndTypesSyntax {
 
-  internal func normalizedForAPIDeclaration() -> OperatorPrecedenceAndTypesSyntax {
-    return SyntaxFactory.makeOperatorPrecedenceAndTypes(
-      colon: colon.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      precedenceGroupAndDesignatedTypes:
-        precedenceGroupAndDesignatedTypes.normalizedPrecedenceGroupAndDesignatedTypes()
-    )
+    internal func normalizedForAPIDeclaration() -> OperatorPrecedenceAndTypesSyntax {
+      return SyntaxFactory.makeOperatorPrecedenceAndTypes(
+        colon: colon.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        precedenceGroupAndDesignatedTypes:
+          precedenceGroupAndDesignatedTypes.normalizedPrecedenceGroupAndDesignatedTypes()
+      )
+    }
   }
-}
+#endif

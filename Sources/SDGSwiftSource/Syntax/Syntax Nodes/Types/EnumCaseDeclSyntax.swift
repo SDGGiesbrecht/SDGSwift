@@ -12,70 +12,72 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension EnumCaseDeclSyntax: APIDeclaration, APISyntax, Attributed {
+  extension EnumCaseDeclSyntax: APIDeclaration, APISyntax, Attributed {
 
-  // MARK: - APIDeclaration
+    // MARK: - APIDeclaration
 
-  internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
-    return SyntaxFactory.makeEnumCaseDecl(
-      attributes: attributes?.normalizedForAPIDeclaration(),
-      modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-      caseKeyword: caseKeyword.generallyNormalizedAndMissingInsteadOfNil(
-        trailingTrivia: .spaces(1)
-      ),
-      elements: elements.normalizedForAPIDeclaration()
-    )
-  }
+    internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
+      return SyntaxFactory.makeEnumCaseDecl(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+        caseKeyword: caseKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          trailingTrivia: .spaces(1)
+        ),
+        elements: elements.normalizedForAPIDeclaration()
+      )
+    }
 
-  internal func name() -> EnumCaseDeclSyntax {
-    return SyntaxFactory.makeEnumCaseDecl(
-      attributes: nil,
-      modifiers: nil,
-      caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
-      elements: elements.forName()
-    )
-  }
+    internal func name() -> EnumCaseDeclSyntax {
+      return SyntaxFactory.makeEnumCaseDecl(
+        attributes: nil,
+        modifiers: nil,
+        caseKeyword: SyntaxFactory.makeToken(.caseKeyword, presence: .missing),
+        elements: elements.forName()
+      )
+    }
 
-  internal func identifierList() -> Set<String> {
-    return Set(elements.lazy.map({ $0.identifier.text }))
-  }
+    internal func identifierList() -> Set<String> {
+      return Set(elements.lazy.map({ $0.identifier.text }))
+    }
 
-  // MARK: - APISyntax
+    // MARK: - APISyntax
 
-  internal func isPublic() -> Bool {
-    return true
-  }
+    internal func isPublic() -> Bool {
+      return true
+    }
 
-  internal var isHidden: Bool {
-    return elements.allSatisfy({ $0.isHidden })
-  }
+    internal var isHidden: Bool {
+      return elements.allSatisfy({ $0.isHidden })
+    }
 
-  internal var shouldLookForChildren: Bool {
-    return false
-  }
+    internal var shouldLookForChildren: Bool {
+      return false
+    }
 
-  internal func createAPI(children: [APIElement]) -> [APIElement] {
-    var list: [APIElement] = []
-    for element in elements where ¬element.isHidden {
-      list.append(
-        .case(
-          CaseAPI(
-            // The documentation only applies to the first.
-            documentation: list.isEmpty ? documentation : [],
-            declaration: SyntaxFactory.makeEnumCaseDecl(
-              attributes: attributes,
-              modifiers: modifiers,
-              caseKeyword: caseKeyword,
-              elements: SyntaxFactory.makeEnumCaseElementList([element])
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+      var list: [APIElement] = []
+      for element in elements where ¬element.isHidden {
+        list.append(
+          .case(
+            CaseAPI(
+              // The documentation only applies to the first.
+              documentation: list.isEmpty ? documentation : [],
+              declaration: SyntaxFactory.makeEnumCaseDecl(
+                attributes: attributes,
+                modifiers: modifiers,
+                caseKeyword: caseKeyword,
+                elements: SyntaxFactory.makeEnumCaseElementList([element])
+              )
             )
           )
         )
-      )
+      }
+      return list
     }
-    return list
   }
-}
+#endif

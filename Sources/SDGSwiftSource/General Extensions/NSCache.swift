@@ -12,28 +12,30 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import Foundation
 
-internal class ParsedDocumentationCache: NSCache<NSString, DocumentationSyntax> {
+  internal class ParsedDocumentationCache: NSCache<NSString, DocumentationSyntax> {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal override init() {
-    super.init()
-    totalCostLimit = 10_000
-  }
-
-  // MARK: - Subscripts
-
-  internal subscript(key: String) -> DocumentationSyntax? {
-    get {
-      return object(forKey: NSString(string: key))
+    internal override init() {
+      super.init()
+      totalCostLimit = 10_000
     }
-    set {
-      let bridged = NSString(string: key)
-      if let new = newValue {
-        setObject(new, forKey: bridged, cost: bridged.length)
-      } else { removeObject(forKey: bridged) }  // @exempt(from: tests) Unused.
+
+    // MARK: - Subscripts
+
+    internal subscript(key: String) -> DocumentationSyntax? {
+      get {
+        return object(forKey: NSString(string: key))
+      }
+      set {
+        let bridged = NSString(string: key)
+        if let new = newValue {
+          setObject(new, forKey: bridged, cost: bridged.length)
+        } else { removeObject(forKey: bridged) }  // @exempt(from: tests) Unused.
+      }
     }
   }
-}
+#endif

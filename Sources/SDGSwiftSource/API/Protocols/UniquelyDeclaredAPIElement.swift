@@ -12,35 +12,37 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal protocol _UniquelyDeclaredAPIElement: DeclaredAPIElement {
-  associatedtype Declaration: Syntax
-  associatedtype Name: Syntax
+  internal protocol _UniquelyDeclaredAPIElement: DeclaredAPIElement {
+    associatedtype Declaration: Syntax
+    associatedtype Name: Syntax
 
-  init(
-    documentation: [SymbolDocumentation],
-    alreadyNormalizedDeclaration declaration: Declaration,
-    constraints: GenericWhereClauseSyntax?,
-    name: Name,
-    children: [APIElement]
-  )
+    init(
+      documentation: [SymbolDocumentation],
+      alreadyNormalizedDeclaration declaration: Declaration,
+      constraints: GenericWhereClauseSyntax?,
+      name: Name,
+      children: [APIElement]
+    )
 
-  // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
-  /// The element’s declaration.
-  var declaration: Declaration { get }
-  // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
-  /// The element’s name.
-  var name: Name { get }
-}
-
-extension _UniquelyDeclaredAPIElement {
-
-  public var genericDeclaration: Syntax {
-    return declaration
+    // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
+    /// The element’s declaration.
+    var declaration: Declaration { get }
+    // @documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.name)
+    /// The element’s name.
+    var name: Name { get }
   }
 
-  public var genericName: Syntax {
-    return name
+  extension _UniquelyDeclaredAPIElement {
+
+    public var genericDeclaration: Syntax {
+      return declaration
+    }
+
+    public var genericName: Syntax {
+      return name
+    }
   }
-}
+#endif

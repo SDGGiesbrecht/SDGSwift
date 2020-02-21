@@ -12,22 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-/// The context of a trivia group.
-public struct TriviaContext {
+  /// The context of a trivia group.
+  public struct TriviaContext {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(token: TokenSyntax, tokenContext: SyntaxContext, leading: Bool) {
-    self.token = token
-    self.tokenContext = tokenContext
-    self.leading = leading
+    internal init(token: TokenSyntax, tokenContext: SyntaxContext, leading: Bool) {
+      self.token = token
+      self.tokenContext = tokenContext
+      self.leading = leading
+    }
+
+    // MARK: - Properties
+
+    internal let token: TokenSyntax
+    internal let tokenContext: SyntaxContext
+    internal let leading: Bool
   }
-
-  // MARK: - Properties
-
-  internal let token: TokenSyntax
-  internal let tokenContext: SyntaxContext
-  internal let leading: Bool
-}
+#endif

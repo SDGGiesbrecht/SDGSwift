@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension PrecedenceGroupRelationSyntax {
+  extension PrecedenceGroupRelationSyntax {
 
-  internal func normalizedForAPIDeclaration() -> PrecedenceGroupRelationSyntax {
-    return SyntaxFactory.makePrecedenceGroupRelation(
-      higherThanOrLowerThan: higherThanOrLowerThan.generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: .spaces(1)
-      ),
-      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-      otherNames: otherNames.normalizedForAPIDeclaration()
-    )
+    internal func normalizedForAPIDeclaration() -> PrecedenceGroupRelationSyntax {
+      return SyntaxFactory.makePrecedenceGroupRelation(
+        higherThanOrLowerThan: higherThanOrLowerThan.generallyNormalizedAndMissingInsteadOfNil(
+          leadingTrivia: .spaces(1)
+        ),
+        colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+        otherNames: otherNames.normalizedForAPIDeclaration()
+      )
+    }
   }
-}
+#endif

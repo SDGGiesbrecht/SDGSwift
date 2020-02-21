@@ -12,17 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension DictionaryTypeSyntax {
+  extension DictionaryTypeSyntax {
 
-  internal func normalized() -> DictionaryTypeSyntax {
-    return SyntaxFactory.makeDictionaryType(
-      leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
-      keyType: keyType.normalized(),
-      colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-      valueType: valueType.normalized(),
-      rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil()
-    )
+    internal func normalized() -> DictionaryTypeSyntax {
+      return SyntaxFactory.makeDictionaryType(
+        leftSquareBracket: leftSquareBracket.generallyNormalizedAndMissingInsteadOfNil(),
+        keyType: keyType.normalized(),
+        colon: colon.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
+        valueType: valueType.normalized(),
+        rightSquareBracket: rightSquareBracket.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    }
   }
-}
+#endif

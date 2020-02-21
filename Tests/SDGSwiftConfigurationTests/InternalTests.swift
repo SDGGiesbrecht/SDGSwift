@@ -25,14 +25,17 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-class InternalTests: SDGSwiftTestUtilities.TestCase {
+// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
+class SDGSwiftConfigurationInternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testLocalization() {
-    for localization in InterfaceLocalization.allCases {
-      LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        _ = Configuration.reportForNoConfigurationFound().resolved()
-        _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file)).resolved()
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+      for localization in InterfaceLocalization.allCases {
+        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+          _ = Configuration.reportForNoConfigurationFound().resolved()
+          _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file)).resolved()
+        }
       }
-    }
+    #endif
   }
 }

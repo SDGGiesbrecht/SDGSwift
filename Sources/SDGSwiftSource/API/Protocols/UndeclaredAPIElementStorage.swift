@@ -12,20 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-internal typealias UndeclaredAPIElementStorage = _UndeclaredAPIElementStorage
-public struct _UndeclaredAPIElementStorage {
+  internal typealias UndeclaredAPIElementStorage = _UndeclaredAPIElementStorage
+  public struct _UndeclaredAPIElementStorage {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(type: TypeSyntax) {
-    self.type = type.normalized()
-    self.storage = APIElementStorage(documentation: [])
+    internal init(type: TypeSyntax) {
+      self.type = type.normalized()
+      self.storage = APIElementStorage(documentation: [])
+    }
+
+    // MARK: - Properties
+
+    internal let type: TypeSyntax
+    internal var storage: APIElementStorage
   }
-
-  // MARK: - Properties
-
-  internal let type: TypeSyntax
-  internal var storage: APIElementStorage
-}
+#endif

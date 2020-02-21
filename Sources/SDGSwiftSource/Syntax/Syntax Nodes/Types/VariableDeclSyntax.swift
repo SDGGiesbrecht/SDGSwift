@@ -12,95 +12,97 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGControlFlow
+  import SDGLogic
 
-import SwiftSyntax
+  import SwiftSyntax
 
-extension VariableDeclSyntax: AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed,
-  Member, OverloadableAPIDeclaration, OverridableDeclaration
-{
+  extension VariableDeclSyntax: AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed,
+    Member, OverloadableAPIDeclaration, OverridableDeclaration
+  {
 
-  // MARK: - Accessor
+    // MARK: - Accessor
 
-  var keyword: TokenSyntax {
-    return letOrVarKeyword
-  }
-
-  var accessors: Syntax? {
-    return bindings.first?.accessor
-  }
-
-  // MARK: - APIDeclaration
-
-  internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
-    return SyntaxFactory.makeVariableDecl(
-      attributes: attributes?.normalizedForAPIDeclaration(),
-      modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-      letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
-      bindings: bindings.normalizedForVariableAPIDeclaration(
-        accessor: accessorListForAPIDeclaration()
-      )
-    )
-  }
-
-  internal func name() -> VariableDeclSyntax {
-    return SyntaxFactory.makeVariableDecl(
-      attributes: nil,
-      modifiers: nil,
-      letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, presence: .missing),
-      bindings: bindings.forVariableName()
-    )
-  }
-
-  internal func identifierList() -> Set<String> {
-    let identifiers = bindings.lazy.map { binding in
-      return binding.pattern.flattenedForAPI().lazy.map { flattened in
-        return flattened.identifier.identifier.text
-      }
+    var keyword: TokenSyntax {
+      return letOrVarKeyword
     }
-    return Set(identifiers.joined())
-  }
 
-  // MARK: - APISyntax
+    var accessors: Syntax? {
+      return bindings.first?.accessor
+    }
 
-  internal var isHidden: Bool {
-    return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
-  }
+    // MARK: - APIDeclaration
 
-  internal var shouldLookForChildren: Bool {
-    return false
-  }
-
-  internal func createAPI(children: [APIElement]) -> [APIElement] {
-    var list: [APIElement] = []
-    for separate in bindings.flattenedForAPI() {
-      list.append(
-        .variable(
-          VariableAPI(
-            // The documentation only applies to the first.
-            documentation: list.isEmpty ? documentation : [],
-            declaration: SyntaxFactory.makeVariableDecl(
-              attributes: attributes,
-              modifiers: modifiers,
-              letOrVarKeyword: letOrVarKeyword,
-              bindings: separate
-            )
-          )
+    internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
+      return SyntaxFactory.makeVariableDecl(
+        attributes: attributes?.normalizedForAPIDeclaration(),
+        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
+        letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
+        bindings: bindings.normalizedForVariableAPIDeclaration(
+          accessor: accessorListForAPIDeclaration()
         )
       )
     }
-    return list
-  }
 
-  // MARK: - OverloadableAPIDeclaration
+    internal func name() -> VariableDeclSyntax {
+      return SyntaxFactory.makeVariableDecl(
+        attributes: nil,
+        modifiers: nil,
+        letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, presence: .missing),
+        bindings: bindings.forVariableName()
+      )
+    }
 
-  internal func overloadPattern() -> VariableDeclSyntax {
-    return SyntaxFactory.makeVariableDecl(
-      attributes: nil,
-      modifiers: modifiers?.forOverloadPattern(),
-      letOrVarKeyword: letOrVarKeyword,
-      bindings: bindings.forVariableOverloadPattern()
-    )
+    internal func identifierList() -> Set<String> {
+      let identifiers = bindings.lazy.map { binding in
+        return binding.pattern.flattenedForAPI().lazy.map { flattened in
+          return flattened.identifier.identifier.text
+        }
+      }
+      return Set(identifiers.joined())
+    }
+
+    // MARK: - APISyntax
+
+    internal var isHidden: Bool {
+      return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
+    }
+
+    internal var shouldLookForChildren: Bool {
+      return false
+    }
+
+    internal func createAPI(children: [APIElement]) -> [APIElement] {
+      var list: [APIElement] = []
+      for separate in bindings.flattenedForAPI() {
+        list.append(
+          .variable(
+            VariableAPI(
+              // The documentation only applies to the first.
+              documentation: list.isEmpty ? documentation : [],
+              declaration: SyntaxFactory.makeVariableDecl(
+                attributes: attributes,
+                modifiers: modifiers,
+                letOrVarKeyword: letOrVarKeyword,
+                bindings: separate
+              )
+            )
+          )
+        )
+      }
+      return list
+    }
+
+    // MARK: - OverloadableAPIDeclaration
+
+    internal func overloadPattern() -> VariableDeclSyntax {
+      return SyntaxFactory.makeVariableDecl(
+        attributes: nil,
+        modifiers: modifiers?.forOverloadPattern(),
+        letOrVarKeyword: letOrVarKeyword,
+        bindings: bindings.forVariableOverloadPattern()
+      )
+    }
   }
-}
+#endif

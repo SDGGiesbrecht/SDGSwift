@@ -87,7 +87,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 0, 1)
+      from: Version(4, 3, 0)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
@@ -102,7 +102,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50100))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 0, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0))
   ],
   targets: [
 
@@ -352,3 +352,61 @@ let package = Package(
     )
   ]
 )
+
+func adjustForWindows() {
+  // #workaround(workspace version 0.30.1, CMake cannot handle Unicode.)
+  package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
+
+  let impossibleProducts: Set<String> = [
+    // #workaround(workspace version 0.30.1, Windows cannot build C.)
+    // SwiftPM
+    "SwiftPM\u{2D}auto",
+    // SwiftSyntax,
+    "SwiftSyntax",
+    // CommonMark
+    "CommonMark"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      default:
+        return false
+      }
+    })
+  }
+}
+#if os(Windows)
+  adjustForWindows()
+#endif
+import Foundation
+if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
+  adjustForWindows()
+}
+
+func adjustForAndroid() {
+  let impossibleProducts: Set<String> = [
+    // SwiftPM #workaround(SwiftPM 0.5.0, Cannot build for Android.)
+    "SwiftPM\u{2D}auto",
+    // SwiftSyntax
+    "SwiftSyntax"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      default:
+        return false
+      }
+    })
+  }
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}

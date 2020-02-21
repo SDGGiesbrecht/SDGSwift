@@ -308,213 +308,215 @@ public enum Xcode: VersionedExternalProcess {
     ).mapError { .xcodeError($0) }  // @exempt(from: tests)
   }
 
-  /// Returns the code coverage report for the package.
-  ///
-  /// - Parameters:
-  ///     - package: The package to test.
-  ///     - sdk: The SDK to run tests on.
-  ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  ///
-  /// - Returns: The report, or `nil` if there is no code coverage information.
-  public static func codeCoverageReport(
-    for package: PackageRepository,
-    on sdk: SDK,
-    ignoreCoveredRegions: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<TestCoverageReport?, CoverageReportingError> {
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - sdk: The SDK to run tests on.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public static func codeCoverageReport(
+      for package: PackageRepository,
+      on sdk: SDK,
+      ignoreCoveredRegions: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
-    let ignoredDirectories: [URL]
-    switch package._directoriesIgnoredForTestCoverage() {
-    case .failure(let error):
-      return .failure(.packageManagerError(error))
-    case .success(let directories):
-      ignoredDirectories = directories
-    }
+      let ignoredDirectories: [URL]
+      switch package._directoriesIgnoredForTestCoverage() {
+      case .failure(let error):
+        return .failure(.packageManagerError(error))
+      case .success(let directories):
+        ignoredDirectories = directories
+      }
 
-    let resultBundle = self.resultBundle(for: package, on: sdk)
+      let resultBundle = self.resultBundle(for: package, on: sdk)
 
-    let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
-    let fileURLs: [URL]
-    switch runCustomCoverageSubcommand(
-      [
-        "view",
-        "\u{2D}\u{2D}file\u{2D}list",
-        "\u{2D}\u{2D}archive", resultBundle.path
-      ],
-      versionConstraints: compatibleVersions
-    ) {
-    case .failure(let error):
-      return .failure(.xcodeError(error))
-    case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
-      fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
-        .filter({ file in  // @exempt(from: tests) Unreachable on Linux.
-          if file.pathExtension ≠ "swift" {
-            // @exempt(from: tests)
-            // The report is unlikely to be readable.
-            return false
-          }
-          if ignoredDirectories.contains(where: { file.is(in: $0) }) {
-            // @exempt(from: tests)
-            // Belongs to a dependency.
-            return false
-          }
-          return true
-        }).sorted()
-    }
+      let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
+      let fileURLs: [URL]
+      switch runCustomCoverageSubcommand(
+        [
+          "view",
+          "\u{2D}\u{2D}file\u{2D}list",
+          "\u{2D}\u{2D}archive", resultBundle.path
+        ],
+        versionConstraints: compatibleVersions
+      ) {
+      case .failure(let error):
+        return .failure(.xcodeError(error))
+      case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
+        fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
+          .filter({ file in  // @exempt(from: tests) Unreachable on Linux.
+            if file.pathExtension ≠ "swift" {
+              // @exempt(from: tests)
+              // The report is unlikely to be readable.
+              return false
+            }
+            if ignoredDirectories.contains(where: { file.is(in: $0) }) {
+              // @exempt(from: tests)
+              // Belongs to a dependency.
+              return false
+            }
+            return true
+          }).sorted()
+      }
 
-    var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
-    for fileURL in fileURLs {
-      // @exempt(from: tests) Unreachable on Linux.
-      let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
+      var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
+      for fileURL in fileURLs {
+        // @exempt(from: tests) Unreachable on Linux.
+        let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
 
-        reportProgress(
-          String(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              let relativePath = fileURL.path(relativeTo: package.location)
-              switch localization {
-              case .englishUnitedKingdom:
-                return "Parsing report for ‘\(relativePath)’..."
-              case .englishUnitedStates, .englishCanada:
-                return "Parsing report for “\(relativePath)”..."
-              case .deutschDeutschland:
-                return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
-              }
-            }).resolved()
-          )
-        )
-
-        var report: String
-        switch runCustomCoverageSubcommand(
-          [
-            "view",
-            "\u{2D}\u{2D}file", fileURL.path,
-            "\u{2D}\u{2D}archive", resultBundle.path
-          ],
-          versionConstraints: compatibleVersions
-        ) {
-        case .failure(let error):
-          return .failure(.xcodeError(error))
-        case .success(let output):
-          report = output
-        }
-        if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
-          report.removeSubrange(..<match.range.upperBound)
-        }
-
-        let source: String
-        do {
-          source = try String(from: fileURL)
-        } catch {
-          return .failure(.foundationError(error))
-        }
-        let sourceLines = source.lines
-        func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
-          let digitsOnly = string.replacingOccurrences(of: " ", with: "")
-          if let integer = Int(digitsOnly) {
-            return integer
-          }
-          if ¬digitsOnly.scalars.contains(where: {  // @exempt(from: tests)
-            $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-          }) {
-            // It is an integer; it is just to large.
-            return Int.max
-          }
-          return nil
-        }
-
-        var regions: [CoverageRegion] = []
-        while ¬report.isEmpty {
-          let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
-          var line = String(report[lineRange])
-          report.removeSubrange(lineRange)
-          if line.contains("*") {
-            continue
-          }
-
-          while line.hasSuffix("\n") {
-            line.removeLast()
-          }
-
-          let base: String
-          let hasSubranges: Bool
-          if line.hasSuffix("[") {
-            base = String(line.dropLast())
-            hasSubranges = true
-          } else {
-            base = line
-            hasSubranges = false
-          }
-          let components = base.components(separatedBy: ":") as [String]
-          guard let lineString = components.first,
-            let lineNumber = toIntegerIgnoringWhitespace(lineString),
-            let columnString = components.last,
-            let count = toIntegerIgnoringWhitespace(columnString)
-          else {
-            // @exempt(from: tests)
-            return .failure(.corruptTestCoverageReport)
-          }
-          regions.append(
-            CoverageRegion(
-              region: source._toIndex(line: lineNumber)..<source._toIndex(line: lineNumber + 1),
-              count: count
+          reportProgress(
+            String(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                let relativePath = fileURL.path(relativeTo: package.location)
+                switch localization {
+                case .englishUnitedKingdom:
+                  return "Parsing report for ‘\(relativePath)’..."
+                case .englishUnitedStates, .englishCanada:
+                  return "Parsing report for “\(relativePath)”..."
+                case .deutschDeutschland:
+                  return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
+                }
+              }).resolved()
             )
           )
 
-          if hasSubranges {
-            guard let subrange = report.prefix(through: "]\n")?.range else {
+          var report: String
+          switch runCustomCoverageSubcommand(
+            [
+              "view",
+              "\u{2D}\u{2D}file", fileURL.path,
+              "\u{2D}\u{2D}archive", resultBundle.path
+            ],
+            versionConstraints: compatibleVersions
+          ) {
+          case .failure(let error):
+            return .failure(.xcodeError(error))
+          case .success(let output):
+            report = output
+          }
+          if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
+            report.removeSubrange(..<match.range.upperBound)
+          }
+
+          let source: String
+          do {
+            source = try String(from: fileURL)
+          } catch {
+            return .failure(.foundationError(error))
+          }
+          let sourceLines = source.lines
+          func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
+            let digitsOnly = string.replacingOccurrences(of: " ", with: "")
+            if let integer = Int(digitsOnly) {
+              return integer
+            }
+            if ¬digitsOnly.scalars.contains(where: {  // @exempt(from: tests)
+              $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+            }) {
+              // It is an integer; it is just to large.
+              return Int.max
+            }
+            return nil
+          }
+
+          var regions: [CoverageRegion] = []
+          while ¬report.isEmpty {
+            let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
+            var line = String(report[lineRange])
+            report.removeSubrange(lineRange)
+            if line.contains("*") {
+              continue
+            }
+
+            while line.hasSuffix("\n") {
+              line.removeLast()
+            }
+
+            let base: String
+            let hasSubranges: Bool
+            if line.hasSuffix("[") {
+              base = String(line.dropLast())
+              hasSubranges = true
+            } else {
+              base = line
+              hasSubranges = false
+            }
+            let components = base.components(separatedBy: ":") as [String]
+            guard let lineString = components.first,
+              let lineNumber = toIntegerIgnoringWhitespace(lineString),
+              let columnString = components.last,
+              let count = toIntegerIgnoringWhitespace(columnString)
+            else {
               // @exempt(from: tests)
               return .failure(.corruptTestCoverageReport)
             }
-            var substring = String(report[subrange])
-            report.removeSubrange(subrange)
-            while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")") {
-              let regionString = nested.contents.contents
-              substring.removeSubrange(nested.container.range)
+            regions.append(
+              CoverageRegion(
+                region: source._toIndex(line: lineNumber)..<source._toIndex(line: lineNumber + 1),
+                count: count
+              )
+            )
 
-              let components = regionString.components(separatedBy: ",") as [String]
-              guard components.count == 3,
-                let start = toIntegerIgnoringWhitespace(components[0]),
-                let length = toIntegerIgnoringWhitespace(components[1]),
-                let count = toIntegerIgnoringWhitespace(components[2])
-              else {
+            if hasSubranges {
+              guard let subrange = report.prefix(through: "]\n")?.range else {
                 // @exempt(from: tests)
                 return .failure(.corruptTestCoverageReport)
               }
-              regions.append(
-                CoverageRegion(
-                  region: source._toIndex(
-                    line: lineNumber,
-                    column: start
-                  )..<source._toIndex(line: lineNumber, column: start + length),
-                  count: count
+              var substring = String(report[subrange])
+              report.removeSubrange(subrange)
+              while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")") {
+                let regionString = nested.contents.contents
+                substring.removeSubrange(nested.container.range)
+
+                let components = regionString.components(separatedBy: ",") as [String]
+                guard components.count == 3,
+                  let start = toIntegerIgnoringWhitespace(components[0]),
+                  let length = toIntegerIgnoringWhitespace(components[1]),
+                  let count = toIntegerIgnoringWhitespace(components[2])
+                else {
+                  // @exempt(from: tests)
+                  return .failure(.corruptTestCoverageReport)
+                }
+                regions.append(
+                  CoverageRegion(
+                    region: source._toIndex(
+                      line: lineNumber,
+                      column: start
+                    )..<source._toIndex(line: lineNumber, column: start + length),
+                    count: count
+                  )
                 )
-              )
+              }
             }
           }
+
+          CoverageRegion._normalize(
+            regions: &regions,
+            source: source,
+            ignoreCoveredRegions: ignoreCoveredRegions
+          )
+
+          files.append(FileTestCoverage(file: fileURL, regions: regions))
+
+          return .success(())
         }
 
-        CoverageRegion._normalize(
-          regions: &regions,
-          source: source,
-          ignoreCoveredRegions: ignoreCoveredRegions
-        )
-
-        files.append(FileTestCoverage(file: fileURL, regions: regions))
-
-        return .success(())
+        switch fileResult {
+        case .failure(let error):
+          return .failure(error)
+        case .success:
+          break
+        }
       }
-
-      switch fileResult {
-      case .failure(let error):
-        return .failure(error)
-      case .success:
-        break
-      }
+      return .success(TestCoverageReport(files: files))
     }
-    return .success(TestCoverageReport(files: files))
-  }
+  #endif
 
   /// Returns the main package scheme.
   ///

@@ -12,153 +12,155 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import Foundation
 
-import SDGLogic
-import SDGCollections
-import SDGText
+  import SDGLogic
+  import SDGCollections
+  import SDGText
 
-/// A list entry in documentation.
-public class ListEntrySyntax: MarkdownSyntax {
+  /// A list entry in documentation.
+  public class ListEntrySyntax: MarkdownSyntax {
 
-  internal init(node: cmark_node, in documentation: String) {
-    var precedingChildren: [ExtendedSyntax] = []
+    internal init(node: cmark_node, in documentation: String) {
+      var precedingChildren: [ExtendedSyntax] = []
 
-    let contentStart = node.lowerBound(in: documentation)
-    let contentEnd = node.upperBound(in: documentation)
-    if let whitespace = documentation.scalars[contentStart..<contentEnd].firstMatch(
-      for: RepetitionPattern(
-        ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
-        count: 1..<Int.max
-      )
-    ) {
+      let contentStart = node.lowerBound(in: documentation)
+      let contentEnd = node.upperBound(in: documentation)
+      if let whitespace = documentation.scalars[contentStart..<contentEnd].firstMatch(
+        for: RepetitionPattern(
+          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
+          count: 1..<Int.max
+        )
+      ) {
 
-      let bullet = ExtendedTokenSyntax(
-        text: String(documentation.scalars[contentStart..<whitespace.range.lowerBound]),
-        kind: .bullet
-      )
-      self.bullet = bullet
-      precedingChildren.append(bullet)
+        let bullet = ExtendedTokenSyntax(
+          text: String(documentation.scalars[contentStart..<whitespace.range.lowerBound]),
+          kind: .bullet
+        )
+        self.bullet = bullet
+        precedingChildren.append(bullet)
 
-      let space = ExtendedTokenSyntax(
-        text: String(documentation.scalars[whitespace.range]),
-        kind: .whitespace
-      )
-      self.indent = space
-      precedingChildren.append(space)
-    } else {
-      bullet = nil  // @exempt(from: tests) Unreachable with valid syntax.
-      indent = nil
-    }
+        let space = ExtendedTokenSyntax(
+          text: String(documentation.scalars[whitespace.range]),
+          kind: .whitespace
+        )
+        self.indent = space
+        precedingChildren.append(space)
+      } else {
+        bullet = nil  // @exempt(from: tests) Unreachable with valid syntax.
+        indent = nil
+      }
 
-    super.init(node: node, in: documentation, precedingChildren: precedingChildren)
+      super.init(node: node, in: documentation, precedingChildren: precedingChildren)
 
-    contents = Array(children.drop(while: { $0 === bullet ∨ $0 === indent }))
+      contents = Array(children.drop(while: { $0 === bullet ∨ $0 === indent }))
 
-    // Detect callouts.
-    search: for index in children.indices {
-      let child = children[index]
-      if let token = child as? ExtendedTokenSyntax,
-        token.kind ∈ Set([.bullet, .whitespace])
-      {
-        continue
-      } else if let paragraph = child as? ParagraphSyntax,
-        let token = paragraph.children.first as? ExtendedTokenSyntax,
-        token.kind == .documentationText,
-        let colonMatch = token.text.firstMatch(for: ":")
-      {
-
-        var possibleCalloutText = String(token.text[..<colonMatch.range.lowerBound])
-
-        var space: String?
-        var parameterName: String?
-        if possibleCalloutText.lowercased().hasPrefix("parameter "),
-          let spaceMatch = possibleCalloutText.firstMatch(for: " "),
-          spaceMatch.range.upperBound ≠ possibleCalloutText.endIndex
+      // Detect callouts.
+      search: for index in children.indices {
+        let child = children[index]
+        if let token = child as? ExtendedTokenSyntax,
+          token.kind ∈ Set([.bullet, .whitespace])
         {
-          space = String(spaceMatch.contents)
-          parameterName = String(possibleCalloutText[spaceMatch.range.upperBound...])
-          possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
-        }
+          continue
+        } else if let paragraph = child as? ParagraphSyntax,
+          let token = paragraph.children.first as? ExtendedTokenSyntax,
+          token.kind == .documentationText,
+          let colonMatch = token.text.firstMatch(for: ":")
+        {
 
-        if let callout = Callout(possibleCalloutText) {
+          var possibleCalloutText = String(token.text[..<colonMatch.range.lowerBound])
 
-          paragraph.children.removeFirst()
-          let calloutSyntax = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
-          var scalarCount = calloutSyntax.text.scalars.count
-
-          var spaceSyntax: ExtendedTokenSyntax?
-          if let spaceString = space {
-            spaceSyntax = ExtendedTokenSyntax(text: spaceString, kind: .whitespace)
-            scalarCount += spaceString.scalars.count
-          }
-          var parameterSyntax: ExtendedTokenSyntax?
-          if let parameter = parameterName {
-            parameterSyntax = ExtendedTokenSyntax(text: parameter, kind: .parameter)
-            scalarCount += parameter.scalars.count
+          var space: String?
+          var parameterName: String?
+          if possibleCalloutText.lowercased().hasPrefix("parameter "),
+            let spaceMatch = possibleCalloutText.firstMatch(for: " "),
+            spaceMatch.range.upperBound ≠ possibleCalloutText.endIndex
+          {
+            space = String(spaceMatch.contents)
+            parameterName = String(possibleCalloutText[spaceMatch.range.upperBound...])
+            possibleCalloutText = String(possibleCalloutText[..<spaceMatch.range.lowerBound])
           }
 
-          let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
-          scalarCount += colon.text.scalars.count
+          if let callout = Callout(possibleCalloutText) {
 
-          var remainder = token.text
-          remainder.scalars.removeFirst(scalarCount)
-          let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
-          paragraph.children.prepend(remainderSyntax)
-          children.insert(contentsOf: [calloutSyntax, colon], at: index)
+            paragraph.children.removeFirst()
+            let calloutSyntax = ExtendedTokenSyntax(text: possibleCalloutText, kind: .callout)
+            var scalarCount = calloutSyntax.text.scalars.count
 
-          let colonIndex = children.firstIndex(where: { $0 === colon })!
-          let contentsIndex = children.index(after: colonIndex)
+            var spaceSyntax: ExtendedTokenSyntax?
+            if let spaceString = space {
+              spaceSyntax = ExtendedTokenSyntax(text: spaceString, kind: .whitespace)
+              scalarCount += spaceString.scalars.count
+            }
+            var parameterSyntax: ExtendedTokenSyntax?
+            if let parameter = parameterName {
+              parameterSyntax = ExtendedTokenSyntax(text: parameter, kind: .parameter)
+              scalarCount += parameter.scalars.count
+            }
 
-          var calloutType: CalloutSyntax.Type = CalloutSyntax.self
-          if callout == .parameters {
-            calloutType = ParametersCalloutSyntax.self
+            let colon = ExtendedTokenSyntax(text: ":", kind: .colon)
+            scalarCount += colon.text.scalars.count
+
+            var remainder = token.text
+            remainder.scalars.removeFirst(scalarCount)
+            let remainderSyntax = ExtendedTokenSyntax(text: remainder, kind: .documentationText)
+            paragraph.children.prepend(remainderSyntax)
+            children.insert(contentsOf: [calloutSyntax, colon], at: index)
+
+            let colonIndex = children.firstIndex(where: { $0 === colon })!
+            let contentsIndex = children.index(after: colonIndex)
+
+            var calloutType: CalloutSyntax.Type = CalloutSyntax.self
+            if callout == .parameters {
+              calloutType = ParametersCalloutSyntax.self
+            }
+            asCallout = calloutType.init(
+              bullet: self.bullet,
+              indent: self.indent,
+              name: calloutSyntax,
+              space: spaceSyntax,
+              parameterName: parameterSyntax,
+              colon: colon,
+              contents: Array(children[contentsIndex...])
+            )
+
+            break
           }
-          asCallout = calloutType.init(
-            bullet: self.bullet,
-            indent: self.indent,
-            name: calloutSyntax,
-            space: spaceSyntax,
-            parameterName: parameterSyntax,
-            colon: colon,
-            contents: Array(children[contentsIndex...])
-          )
-
+        } else {
           break
         }
-      } else {
-        break
       }
     }
-  }
 
-  /// The bullet.
-  public let bullet: ExtendedTokenSyntax?
+    /// The bullet.
+    public let bullet: ExtendedTokenSyntax?
 
-  /// The indent after the bullet.
-  public let indent: ExtendedTokenSyntax?
+    /// The indent after the bullet.
+    public let indent: ExtendedTokenSyntax?
 
-  /// The list entry contents.
-  public internal(set) var contents: [ExtendedSyntax] = [] {
-    didSet {
-      var newChildren: [ExtendedSyntax] = []
-      if let bullet = self.bullet {
-        newChildren.append(bullet)
+    /// The list entry contents.
+    public internal(set) var contents: [ExtendedSyntax] = [] {
+      didSet {
+        var newChildren: [ExtendedSyntax] = []
+        if let bullet = self.bullet {
+          newChildren.append(bullet)
+        }
+        if let indent = self.indent {
+          newChildren.append(indent)
+        }
+        newChildren.append(contentsOf: contents)
+        children = newChildren
       }
-      if let indent = self.indent {
-        newChildren.append(indent)
-      }
-      newChildren.append(contentsOf: contents)
-      children = newChildren
+    }
+
+    // Storage if it is really a callout instead.
+    internal var asCallout: CalloutSyntax?
+
+    // MARK: - ExtendedSyntax
+
+    internal override var renderedHtmlElement: String? {
+      return "li"
     }
   }
-
-  // Storage if it is really a callout instead.
-  internal var asCallout: CalloutSyntax?
-
-  // MARK: - ExtendedSyntax
-
-  internal override var renderedHtmlElement: String? {
-    return "li"
-  }
-}
+#endif

@@ -12,26 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-import SDGLogic
+  import SDGLogic
 
-internal protocol Generic: Constrained {
-  var genericParameterClause: GenericParameterClauseSyntax? { get }
-}
-
-extension Generic {
-
-  internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?) {
-
-    var newGenericParemeterClause: GenericParameterClauseSyntax?
-    var newGenericWhereClause: GenericWhereClauseSyntax?
-    if let originalGenericParameterClause = genericParameterClause {
-      (newGenericParemeterClause, newGenericWhereClause) =
-        originalGenericParameterClause.normalizedForAPIDeclaration()
-    }
-
-    newGenericWhereClause.merge(with: genericWhereClause?.normalized())
-    return (newGenericParemeterClause, newGenericWhereClause)
+  internal protocol Generic: Constrained {
+    var genericParameterClause: GenericParameterClauseSyntax? { get }
   }
-}
+
+  extension Generic {
+
+    internal func normalizedGenerics() -> (GenericParameterClauseSyntax?, GenericWhereClauseSyntax?)
+    {
+
+      var newGenericParemeterClause: GenericParameterClauseSyntax?
+      var newGenericWhereClause: GenericWhereClauseSyntax?
+      if let originalGenericParameterClause = genericParameterClause {
+        (newGenericParemeterClause, newGenericWhereClause) =
+          originalGenericParameterClause.normalizedForAPIDeclaration()
+      }
+
+      newGenericWhereClause.merge(with: genericWhereClause?.normalized())
+      return (newGenericParemeterClause, newGenericWhereClause)
+    }
+  }
+#endif

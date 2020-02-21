@@ -12,14 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension OptionalTypeSyntax {
+  extension OptionalTypeSyntax {
 
-  internal func normalized() -> OptionalTypeSyntax {
-    return SyntaxFactory.makeOptionalType(
-      wrappedType: wrappedType.normalized(),
-      questionMark: questionMark.generallyNormalizedAndMissingInsteadOfNil()
-    )
+    internal func normalized() -> OptionalTypeSyntax {
+      return SyntaxFactory.makeOptionalType(
+        wrappedType: wrappedType.normalized(),
+        questionMark: questionMark.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    }
   }
-}
+#endif

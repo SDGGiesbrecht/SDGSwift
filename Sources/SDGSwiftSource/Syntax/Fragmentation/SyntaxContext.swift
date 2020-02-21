@@ -12,31 +12,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
 
-/// The context of a syntax node.
-public struct SyntaxContext {
+  /// The context of a syntax node.
+  public struct SyntaxContext {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(
-    fragmentContext: String,
-    fragmentOffset: Int,
-    parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
-  ) {
-    self.fragmentContext = fragmentContext
-    self.fragmentOffset = fragmentOffset
-    self.parentContext = parentContext
+    internal init(
+      fragmentContext: String,
+      fragmentOffset: Int,
+      parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
+    ) {
+      self.fragmentContext = fragmentContext
+      self.fragmentOffset = fragmentOffset
+      self.parentContext = parentContext
+    }
+
+    // MARK: - Properties
+
+    internal let fragmentContext: String
+    internal let fragmentOffset: Int
+    internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
+
+    /// Returns whether or not the context is fragmented.
+    public func isFragmented() -> Bool {
+      return parentContext ≠ nil
+    }
   }
-
-  // MARK: - Properties
-
-  internal let fragmentContext: String
-  internal let fragmentOffset: Int
-  internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
-
-  /// Returns whether or not the context is fragmented.
-  public func isFragmented() -> Bool {
-    return parentContext ≠ nil
-  }
-}
+#endif

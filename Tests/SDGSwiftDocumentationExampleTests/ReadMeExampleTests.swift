@@ -25,16 +25,20 @@ import SDGSwiftTestUtilities
 class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+      #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
-      func print(_ string: String) {}  // Prevent test clutter.
+          func print(_ string: String) {}  // Prevent test clutter.
 
-      // @example(readMe🇨🇦EN)
-      let package = Package(
-        url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
-      )
-      try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
-      // @endExample
-    }
+          // @example(readMe🇨🇦EN)
+          let package = Package(
+            url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
+          )
+          try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+          // @endExample
+        }
+      #endif
+    #endif
   }
 }

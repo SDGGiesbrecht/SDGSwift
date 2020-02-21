@@ -12,15 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension GenericArgumentClauseSyntax {
+  extension GenericArgumentClauseSyntax {
 
-  internal func normalized() -> GenericArgumentClauseSyntax {
-    return SyntaxFactory.makeGenericArgumentClause(
-      leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
-      arguments: arguments.normalized(),
-      rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
-    )
+    internal func normalized() -> GenericArgumentClauseSyntax {
+      return SyntaxFactory.makeGenericArgumentClause(
+        leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
+        arguments: arguments.normalized(),
+        rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
+      )
+    }
   }
-}
+#endif

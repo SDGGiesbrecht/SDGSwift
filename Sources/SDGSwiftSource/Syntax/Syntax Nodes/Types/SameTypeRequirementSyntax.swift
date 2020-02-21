@@ -12,24 +12,26 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SwiftSyntax
 
-extension SameTypeRequirementSyntax {
+  extension SameTypeRequirementSyntax {
 
-  internal func normalized(comma: Bool) -> SameTypeRequirementSyntax {
-    var types = (leftTypeIdentifier.normalized(), rightTypeIdentifier.normalized())
-    if types.0.source() > types.1.source() {
-      swap(&types.0, &types.1)
+    internal func normalized(comma: Bool) -> SameTypeRequirementSyntax {
+      var types = (leftTypeIdentifier.normalized(), rightTypeIdentifier.normalized())
+      if types.0.source() > types.1.source() {
+        swap(&types.0, &types.1)
+      }
+      return SyntaxFactory.makeSameTypeRequirement(
+        leftTypeIdentifier: types.0,
+        equalityToken: SyntaxFactory.makeToken(
+          .spacedBinaryOperator("=="),
+          leadingTrivia: .spaces(1),
+          trailingTrivia: .spaces(1)
+        ),
+        rightTypeIdentifier: types.1,
+        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
+      )
     }
-    return SyntaxFactory.makeSameTypeRequirement(
-      leftTypeIdentifier: types.0,
-      equalityToken: SyntaxFactory.makeToken(
-        .spacedBinaryOperator("=="),
-        leadingTrivia: .spaces(1),
-        trailingTrivia: .spaces(1)
-      ),
-      rightTypeIdentifier: types.1,
-      trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
-    )
   }
-}
+#endif
