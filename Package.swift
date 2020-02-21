@@ -167,9 +167,6 @@ let package = Package(
         .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
         .product(name: "CommonMark", package: "swift\u{2D}cmark"),
         .product(name: "SDGHTML", package: "SDGWeb")
-      ],
-      swiftSettings: [
-        .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
       ]
     ),
 

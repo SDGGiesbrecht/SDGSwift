@@ -497,7 +497,7 @@
       file: StaticString = #file,
       function: StaticString = #function
     ) {  // @exempt(from: tests)
-      #if UNIDENTIFIED_SYNTAX_WARNINGS
+      #if DEBUG
         switch self {
         case is UnknownSyntax,
           is UnknownPatternSyntax,
