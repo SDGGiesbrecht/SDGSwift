@@ -48,42 +48,44 @@ class SDGSwiftRegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-        try withMockDynamicLinkedExecutable { mock in
+    #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
+      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+          try withMockDynamicLinkedExecutable { mock in
 
-          XCTAssertEqual(
-            try Package(url: mock.location).execute(
-              .development,
-              of: ["tool"],
-              with: [],
-              cacheDirectory: moved
-            ).get(),
-            "Hello, world!"
-          )
-          XCTAssertEqual(
-            try Package(url: mock.location).execute(
+            XCTAssertEqual(
+              try Package(url: mock.location).execute(
+                .development,
+                of: ["tool"],
+                with: [],
+                cacheDirectory: moved
+              ).get(),
+              "Hello, world!"
+            )
+            XCTAssertEqual(
+              try Package(url: mock.location).execute(
+                .version(Version(1, 0, 0)),
+                of: ["tool"],
+                with: [],
+                cacheDirectory: moved
+              ).get(),
+              "Hello, world!"
+            )
+
+            switch Package(url: mock.location).execute(
               .version(Version(1, 0, 0)),
               of: ["tool"],
-              with: [],
+              with: ["fail"],
               cacheDirectory: moved
-            ).get(),
-            "Hello, world!"
-          )
-
-          switch Package(url: mock.location).execute(
-            .version(Version(1, 0, 0)),
-            of: ["tool"],
-            with: ["fail"],
-            cacheDirectory: moved
-          ) {
-          case .success:
-            XCTFail("Should have failed.")
-          case .failure:
-            break
+            ) {
+            case .success:
+              XCTFail("Should have failed.")
+            case .failure:
+              break
+            }
           }
         }
-      }
+      #endif
     #endif
   }
 

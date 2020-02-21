@@ -37,18 +37,23 @@ import SDGSwiftTestUtilities
 class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      for withGeneratedProject in [false, true] {
-        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          if withGeneratedProject {
-            _ = try package.generateXcodeProject().get()
+    #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
+      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+        for withGeneratedProject in [false, true] {
+          try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+            if withGeneratedProject {
+              _ = try package.generateXcodeProject().get()
+            }
+            #if !(os(Windows) || os(Linux))
+              let build = try package.build(for: .macOS).get()
+              XCTAssertFalse(
+                Xcode.warningsOccurred(during: build),
+                "Warning triggered in:\n\(build)"
+              )
+            #endif
           }
-          #if !(os(Windows) || os(Linux))
-            let build = try package.build(for: .macOS).get()
-            XCTAssertFalse(Xcode.warningsOccurred(during: build), "Warning triggered in:\n\(build)")
-          #endif
         }
-      }
+      #endif
     #endif
   }
 
