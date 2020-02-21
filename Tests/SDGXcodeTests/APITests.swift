@@ -43,7 +43,7 @@ class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
           if withGeneratedProject {
             _ = try package.generateXcodeProject().get()
           }
-          #if !os(Linux)
+          #if !(os(Windows) || os(Linux))
             let build = try package.build(for: .macOS).get()
             XCTAssertFalse(Xcode.warningsOccurred(during: build), "Warning triggered in:\n\(build)")
           #endif
@@ -59,7 +59,7 @@ class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
       )
       XCTAssertNil(try noProject.xcodeProject())
 
-      #if os(Linux)
+      #if os(Windows) || os(Linux)
         _ = try? Xcode.runCustomSubcommand(
           ["\u{2D}version"],
           versionConstraints: Version(Int.min)...Version(Int.max)
@@ -74,7 +74,7 @@ class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
         versionConstraints: Version(Int.min)...Version(Int.max)
       )
         .get()
-      #if !os(Linux)
+      #if !(os(Windows) || os(Linux))
         XCTAssertNotNil(xcodeLocation)
       #endif
 
@@ -280,7 +280,7 @@ class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
 
   func testXcodeCoverage() throws {
     #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      #if os(Linux)
+      #if os(Windows) || os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(
           ["help"],
           versionConstraints: Version(0)..<Version(100)
