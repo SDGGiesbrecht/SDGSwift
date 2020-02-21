@@ -22,7 +22,7 @@ class SDGXcodeRegressionTests: SDGSwiftTestUtilities.TestCase {
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
-    #if !os(Linux)
+    #if !(os(Windows) || os(Linux) || os(Android))
       try withMock(named: "MultipleSchemes") { package in
         let scheme = try package.scheme().get()
         XCTAssertEqual(scheme, "SomePackage\u{2D}Package")
