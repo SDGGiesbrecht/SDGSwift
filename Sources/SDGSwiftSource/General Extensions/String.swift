@@ -22,7 +22,7 @@ extension String {
     file: StaticString = #file,
     function: StaticString = #function
   ) {  // @exempt(from: tests)
-    #if UNIDENTIFIED_SYNTAX_WARNINGS
+    #if DEBUG
       if first ≠ "_" {
         let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
         print("Unidentified token: \(self) (\(fileName).\(function))")
