@@ -58,7 +58,8 @@ class SDGSwiftSourceInternalTests: SDGSwiftTestUtilities.TestCase {
     #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+          // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+          #if !(os(Windows) || os(Android))
             _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
             _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
           #endif
