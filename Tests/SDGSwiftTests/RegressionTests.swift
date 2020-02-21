@@ -31,61 +31,67 @@ class SDGSwiftRegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDependencyWarnings() throws {
     // Untracked.
 
-    try withMock(named: "Warnings") { package in
-      let build = try package.build().get()
-      XCTAssert(SwiftCompiler.warningsOccurred(during: build))
-    }
-    try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-      let build = try package.build().get()
-      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
-    }
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+      try withMock(named: "Warnings") { package in
+        let build = try package.build().get()
+        XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+      }
+      try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+        let build = try package.build().get()
+        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+      }
+    #endif
   }
 
   func testDynamicLinking() throws {
     // Untracked.
 
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-      try withMockDynamicLinkedExecutable { mock in
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+        try withMockDynamicLinkedExecutable { mock in
 
-        XCTAssertEqual(
-          try Package(url: mock.location).execute(
-            .development,
-            of: ["tool"],
-            with: [],
-            cacheDirectory: moved
-          ).get(),
-          "Hello, world!"
-        )
-        XCTAssertEqual(
-          try Package(url: mock.location).execute(
+          XCTAssertEqual(
+            try Package(url: mock.location).execute(
+              .development,
+              of: ["tool"],
+              with: [],
+              cacheDirectory: moved
+            ).get(),
+            "Hello, world!"
+          )
+          XCTAssertEqual(
+            try Package(url: mock.location).execute(
+              .version(Version(1, 0, 0)),
+              of: ["tool"],
+              with: [],
+              cacheDirectory: moved
+            ).get(),
+            "Hello, world!"
+          )
+
+          switch Package(url: mock.location).execute(
             .version(Version(1, 0, 0)),
             of: ["tool"],
-            with: [],
+            with: ["fail"],
             cacheDirectory: moved
-          ).get(),
-          "Hello, world!"
-        )
-
-        switch Package(url: mock.location).execute(
-          .version(Version(1, 0, 0)),
-          of: ["tool"],
-          with: ["fail"],
-          cacheDirectory: moved
-        ) {
-        case .success:
-          XCTFail("Should have failed.")
-        case .failure:
-          break
+          ) {
+          case .success:
+            XCTFail("Should have failed.")
+          case .failure:
+            break
+          }
         }
       }
-    }
+    #endif
   }
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
 
-    let ignored = try thisRepository.ignoredFiles().get()
-    let expected = thisRepository.location.appendingPathComponent(".build").path
-    XCTAssert(ignored.contains(where: { $0.path == expected }))
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+      let ignored = try thisRepository.ignoredFiles().get()
+      let expected = thisRepository.location.appendingPathComponent(".build").path
+      XCTAssert(ignored.contains(where: { $0.path == expected }))
+    #endif
   }
 }
