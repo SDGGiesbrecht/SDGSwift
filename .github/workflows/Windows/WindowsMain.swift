@@ -21,7 +21,7 @@ import XCTest
 @testable import SDGSwiftConfigurationTests
 @testable import SDGSwiftSourceTests
 
-extension ReadMeExampleTests {
+extension SDGSwiftDocumentationExampleTests.ReadMeExampleTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testReadMe", testReadMe),
@@ -29,7 +29,7 @@ extension ReadMeExampleTests {
   ]
 }
 
-extension SDGSwiftPackageManagerAPITests {
+extension SDGSwiftPackageManagerTests.SDGSwiftPackageManagerAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testChangeDetection", testChangeDetection),
@@ -43,7 +43,7 @@ extension SDGSwiftPackageManagerAPITests {
   ]
 }
 
-extension SDGSwiftAPITests {
+extension SDGSwiftTests.SDGSwiftAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testBuild", testBuild),
@@ -61,7 +61,7 @@ extension SDGSwiftAPITests {
   ]
 }
 
-extension SDGSwiftRegressionTests {
+extension SDGSwiftTests.SDGSwiftRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
@@ -71,7 +71,7 @@ extension SDGSwiftRegressionTests {
   ]
 }
 
-extension SDGXcodeAPITests {
+extension SDGXcodeTests.SDGXcodeAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
@@ -82,7 +82,7 @@ extension SDGXcodeAPITests {
   ]
 }
 
-extension SDGXcodeRegressionTests {
+extension SDGXcodeTests.SDGXcodeRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       (
@@ -93,7 +93,7 @@ extension SDGXcodeRegressionTests {
   ]
 }
 
-extension SDGSwiftConfigurationAPITests {
+extension SDGSwiftConfigurationTests.SDGSwiftConfigurationAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testConfiguration", testConfiguration),
@@ -102,7 +102,7 @@ extension SDGSwiftConfigurationAPITests {
   ]
 }
 
-extension SDGSwiftConfigurationInternalTests {
+extension SDGSwiftConfigurationTests.SDGSwiftConfigurationInternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testLocalization", testLocalization),
@@ -110,7 +110,7 @@ extension SDGSwiftConfigurationInternalTests {
   ]
 }
 
-extension SDGSwiftSourceAPITests {
+extension SDGSwiftSourceTests.SDGSwiftSourceAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testAPIParsing", testAPIParsing),
@@ -132,7 +132,7 @@ extension SDGSwiftSourceAPITests {
   ]
 }
 
-extension SDGSwiftSourceInternalTests {
+extension SDGSwiftSourceTests.SDGSwiftSourceInternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testEmptySyntax", testEmptySyntax),
@@ -144,7 +144,7 @@ extension SDGSwiftSourceInternalTests {
   ]
 }
 
-extension SDGSwiftSourceRegressionTests {
+extension SDGSwiftSourceTests.SDGSwiftSourceRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testContinuedCallout", testContinuedCallout),
@@ -156,16 +156,16 @@ extension SDGSwiftSourceRegressionTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += ReadMeExampleTests.windowsTests
-tests += SDGSwiftPackageManagerAPITests.windowsTests
-tests += SDGSwiftAPITests.windowsTests
-tests += SDGSwiftRegressionTests.windowsTests
-tests += SDGXcodeAPITests.windowsTests
-tests += SDGXcodeRegressionTests.windowsTests
-tests += SDGSwiftConfigurationAPITests.windowsTests
-tests += SDGSwiftConfigurationInternalTests.windowsTests
-tests += SDGSwiftSourceAPITests.windowsTests
-tests += SDGSwiftSourceInternalTests.windowsTests
-tests += SDGSwiftSourceRegressionTests.windowsTests
+tests += SDGSwiftDocumentationExampleTests.ReadMeExampleTests.windowsTests
+tests += SDGSwiftPackageManagerTests.SDGSwiftPackageManagerAPITests.windowsTests
+tests += SDGSwiftTests.SDGSwiftAPITests.windowsTests
+tests += SDGSwiftTests.SDGSwiftRegressionTests.windowsTests
+tests += SDGXcodeTests.SDGXcodeAPITests.windowsTests
+tests += SDGXcodeTests.SDGXcodeRegressionTests.windowsTests
+tests += SDGSwiftConfigurationTests.SDGSwiftConfigurationAPITests.windowsTests
+tests += SDGSwiftConfigurationTests.SDGSwiftConfigurationInternalTests.windowsTests
+tests += SDGSwiftSourceTests.SDGSwiftSourceAPITests.windowsTests
+tests += SDGSwiftSourceTests.SDGSwiftSourceInternalTests.windowsTests
+tests += SDGSwiftSourceTests.SDGSwiftSourceRegressionTests.windowsTests
 
 XCTMain(tests)
