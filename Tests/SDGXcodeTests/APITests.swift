@@ -33,8 +33,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGXcodeAPITests: SDGSwiftTestUtilities.TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)

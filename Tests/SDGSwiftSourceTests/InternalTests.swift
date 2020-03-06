@@ -28,8 +28,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGSwiftSourceInternalTests: SDGSwiftTestUtilities.TestCase {
+class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
