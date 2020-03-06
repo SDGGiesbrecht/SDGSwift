@@ -96,9 +96,9 @@ class SDGSwiftSourceAPITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
         #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks permissions.)
-          let specification = Callout.allCases.map({ $0.localizedText(localization.code) }).joined(
-            separator: "\n"
-          )
+          let specification = Callout.allCases
+            .map({ $0.localizedText(localization.code) })
+            .joined(separator: "\n")
           compare(
             String(specification),
             against: testSpecificationDirectory().appendingPathComponent(
