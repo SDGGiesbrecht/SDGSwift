@@ -49,7 +49,7 @@ extension Package {
       case .foundationError(let error):
         return StrictString(error.localizedDescription)
       case .noSuchExecutable(let requested):
-        let list = StrictString(requested.sorted().joined(separator: "\n".scalars))
+        let list = requested.sorted().joined(separator: "\n")
 
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

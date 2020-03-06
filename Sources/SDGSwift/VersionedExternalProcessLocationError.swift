@@ -48,7 +48,7 @@ where Process: VersionedExternalProcess {
         }
         lines += Process.searchCommands
           .map({ "$ \($0.joined(separator: " "))" })
-        return StrictString(lines.joined(separator: "\n" as StrictString))
+        return lines.joined(separator: "\n")
       }).resolved()
     }
   }

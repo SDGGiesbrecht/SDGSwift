@@ -21,7 +21,7 @@
 
     /// The source code of the trivia.
     public func source() -> String {
-      return String(map({ $0.text }).joined())
+      return map({ $0.text }).joined()
     }
 
     // MARK: - Location
