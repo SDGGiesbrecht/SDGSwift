@@ -92,9 +92,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCallout() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
-        #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks permissions.)
           let specification = Callout.allCases
             .map({ $0.localizedText(localization.code) })
             .joined(separator: "\n")
@@ -105,9 +103,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             ),
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       }
-    #endif
   }
 
   func testCodeFragmentSyntax() throws {
@@ -302,7 +298,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCSS() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
       #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
         let highlighted = SyntaxFactory.makeVariableDecl(
@@ -321,7 +316,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           highlighted
         )
       #endif
-    #endif
   }
 
   func testExtension() {

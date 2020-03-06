@@ -32,7 +32,6 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBuild() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       testEquatableConformance(
         differingInstances: (Build.development, Build.version(Version(1, 0, 0)))
       )
@@ -42,7 +41,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       testEquatableConformance(
         differingInstances: (Build.version(Version(1, 0, 0)), Build.development)
       )
-      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
         testCustomStringConvertibleConformance(
           of: Build.version(Version(1, 0, 0)),
           localizations: InterfaceLocalization.self,
@@ -55,13 +53,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           uniqueTestName: "Development",
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
-    #endif
   }
 
   func testGit() {
     #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks Git.)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
@@ -70,9 +66,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
-        #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
           testCustomStringConvertibleConformance(
             of: VersionedExternalProcessExecutionError<Git>.locationError(
               .unavailable(versionConstraints: "...")
@@ -81,7 +75,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             uniqueTestName: "Git Unavailable",
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
         switch Git.runCustomSubcommand(
           ["fail"],
           versionConstraints: Version(Int.min)...Version(Int.max)
@@ -89,36 +82,29 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         case .success:
           XCTFail()
         case .failure(let error):
-          #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
             testCustomStringConvertibleConformance(
               of: error,
               localizations: InterfaceLocalization.self,
               uniqueTestName: "Git Execution",
               overwriteSpecificationInsteadOfFailing: false
             )
-          #endif
         }
       #endif
-    #endif
   }
 
   func testLocalizations() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       XCTAssert(_InterfaceLocalization.codeSet() ⊆ InterfaceLocalization.codeSet())
-    #endif
   }
 
   func testPackage() {
-    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
       testCustomStringConvertibleConformance(
         of: Package(url: URL(string: "https://domain.tld/Package")!),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Mock Package",
         overwriteSpecificationInsteadOfFailing: false
       )
-    #endif
     #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks Git.)
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
             .versions()
@@ -130,26 +116,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageError() {
-    #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
       testCustomStringConvertibleConformance(
         of: Package.ExecutionError.noSuchExecutable(requested: ["tool"]),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "No Such Executable",
         overwriteSpecificationInsteadOfFailing: false
       )
-    #endif
   }
 
   func testPackageRepository() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
-      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
         testCustomStringConvertibleConformance(
           of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
           localizations: InterfaceLocalization.self,
           uniqueTestName: "Mock",
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
 
       #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
         try withDefaultMockRepository { mock in
@@ -160,7 +142,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],
@@ -181,11 +162,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
         }
       #endif
-    #endif
   }
 
   func testSwiftCompilerError() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       struct StandInError: PresentableError {
         func presentableDescription() -> StrictString {
           return "[...]"
@@ -207,7 +186,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif
-      #if !os(Android)  // #workaorund(workspace version 0.30.1, Emulator lacks permissions.)
         testCustomStringConvertibleConformance(
           of: Package.BuildError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
           localizations: InterfaceLocalization.self,
@@ -272,12 +250,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           uniqueTestName: "Swift Execution",
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
-    #endif
   }
 
   func testVersion() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
         testCustomStringConvertibleConformance(
           of: Version(1, 2, 3),
@@ -298,11 +273,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
         XCTAssertEqual(Version(1, 0, 0), "1.0.0")
       #endif
-    #endif
   }
 
   func testVersionedExternalProcess() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
         do {
           // Fresh
@@ -315,6 +288,5 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           XCTFail("Failed to throw.")
         } catch {}
       #endif
-    #endif
   }
 }

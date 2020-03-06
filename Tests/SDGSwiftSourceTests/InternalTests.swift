@@ -54,7 +54,6 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocalizations() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
@@ -64,7 +63,6 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           #endif
         }
       }
-    #endif
   }
 
   func testStringLiteral() {

@@ -47,7 +47,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testErrors() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       struct StandInError: PresentableError {
         func presentableDescription() -> StrictString {
           return "[...]"
@@ -99,11 +98,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         }
       #endif
-    #endif
   }
 
   func testIgnoredFileDetection() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
         XCTAssert(
           try thisRepository.ignoredFiles().get().contains(where: {
@@ -112,11 +109,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         )
       #endif
-    #endif
   }
 
   func testInitialization() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
         try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
@@ -131,7 +126,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           }
         }
       }
-    #endif
   }
 
   func testManifestLoading() {

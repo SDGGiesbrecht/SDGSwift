@@ -31,7 +31,6 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, No package manager on Windows yet.)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
         try withMock(named: "Warnings") { package in
           let build = try package.build().get()
           XCTAssert(SwiftCompiler.warningsOccurred(during: build))
@@ -40,7 +39,6 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           let build = try package.build().get()
           XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
         }
-      #endif
     #endif
   }
 
@@ -48,7 +46,6 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
           try withMockDynamicLinkedExecutable { mock in
 
@@ -84,18 +81,15 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
             }
           }
         }
-      #endif
     #endif
   }
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
     #if !os(Windows)  // #workaround(workspace version 0.30.1, Windows CI has no Git?)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
         let ignored = try thisRepository.ignoredFiles().get()
         let expected = thisRepository.location.appendingPathComponent(".build").path
         XCTAssert(ignored.contains(where: { $0.path == expected }))
-      #endif
     #endif
   }
 }

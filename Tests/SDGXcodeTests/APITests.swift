@@ -37,7 +37,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
         for withGeneratedProject in [false, true] {
           try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             if withGeneratedProject {
@@ -52,12 +51,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             #endif
           }
         }
-      #endif
     #endif
   }
 
   func testXcode() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       let noProject = PackageRepository(
         at: thisRepository.location.appendingPathComponent("Sources")
       )
@@ -106,7 +103,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               .tvOS(simulator: true)
             ]
             if ¬withGeneratedProject {
-              // #workaround(xcodebuild -version 11.3.0, WatchOS cannot handle test targets.) @exempt(from: unicode)
+              // #workaround(xcodebuild -version 11.3.0, watchOS cannot handle test targets.) @exempt(from: unicode)
               sdks.removeAll(where: { $0 == .watchOS })
             }
             for sdk in sdks {
@@ -279,11 +276,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
 
       XCTAssert(¬Xcode.warningsOccurred(during: ""))
-    #endif
   }
 
   func testXcodeCoverage() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       #if os(Windows) || os(Linux)
         _ = try? Xcode.runCustomCoverageSubcommand(
           ["help"],
@@ -368,11 +363,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           }
         }
       #endif
-    #endif
   }
 
   func testXcodeError() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       struct StandInError: PresentableError {
         func presentableDescription() -> StrictString {
           return "[...]"
@@ -444,6 +437,5 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Foundation",
         overwriteSpecificationInsteadOfFailing: false
       )
-    #endif
   }
 }

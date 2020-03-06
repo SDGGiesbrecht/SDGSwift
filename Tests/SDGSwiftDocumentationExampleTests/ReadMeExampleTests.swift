@@ -25,8 +25,7 @@ import SDGSwiftTestUtilities
 class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+      #if !os(Windows)  // #workaround(workspace version 0.30.2, GitHub workflow host lacks Git.)
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
           func print(_ string: String) {}  // Prevent test clutter.
@@ -39,6 +38,5 @@ class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
           // @endExample
         }
       #endif
-    #endif
   }
 }

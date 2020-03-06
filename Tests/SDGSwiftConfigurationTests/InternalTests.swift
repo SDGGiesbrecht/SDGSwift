@@ -28,13 +28,11 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testLocalization() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
       for localization in InterfaceLocalization.allCases {
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           _ = Configuration.reportForNoConfigurationFound().resolved()
           _ = Configuration.reportForLoading(file: URL(fileURLWithPath: #file)).resolved()
         }
       }
-    #endif
   }
 }
