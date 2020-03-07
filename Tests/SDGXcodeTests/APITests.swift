@@ -60,7 +60,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     XCTAssertNil(try noProject.xcodeProject())
 
-    #if os(Windows) || os(Linux)
+    #if os(Windows) || os(Linux) || os(Android)
       _ = try? Xcode.runCustomSubcommand(
         ["\u{2D}version"],
         versionConstraints: Version(Int.min)...Version(Int.max)
@@ -279,7 +279,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcodeCoverage() throws {
-    #if os(Windows) || os(Linux)
+    #if os(Windows) || os(Linux) || os(Android)
       _ = try? Xcode.runCustomCoverageSubcommand(
         ["help"],
         versionConstraints: Version(0)..<Version(100)

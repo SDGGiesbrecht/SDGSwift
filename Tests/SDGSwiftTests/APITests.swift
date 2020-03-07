@@ -82,12 +82,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       case .success:
         XCTFail()
       case .failure(let error):
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Git Execution",
-          overwriteSpecificationInsteadOfFailing: false
-        )
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Git Execution",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
       }
     #endif
   }
@@ -143,10 +145,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSwiftCompiler() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
-      _ = try SwiftCompiler.runCustomSubcommand(
-        ["\u{2D}\u{2D}version"],
-        versionConstraints: Version(Int.min)...Version(Int.max)
-      ).get()
+      #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Swift.)
+        _ = try SwiftCompiler.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ).get()
+      #endif
 
       #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
         try withDefaultMockRepository { mock in
@@ -158,8 +162,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
       try withMock(named: "Tool") { mock in
-        _ = try mock.build(releaseConfiguration: true).get()
-        XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Swift.)
+          _ = try mock.build(releaseConfiguration: true).get()
+          XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+        #endif
       }
     #endif
   }
