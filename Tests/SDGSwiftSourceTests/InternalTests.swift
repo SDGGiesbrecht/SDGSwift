@@ -54,15 +54,15 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocalizations() {
-      for localization in InterfaceLocalization.allCases {
-        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
-          #if !(os(Windows) || os(Android))
-            _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
-            _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
-          #endif
-        }
+    for localization in InterfaceLocalization.allCases {
+      LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+        #if !(os(Windows) || os(Android))
+          _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
+          _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
+        #endif
       }
+    }
   }
 
   func testStringLiteral() {

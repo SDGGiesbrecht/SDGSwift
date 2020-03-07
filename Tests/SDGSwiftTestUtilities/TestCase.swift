@@ -42,6 +42,6 @@ open class TestCase: SDGXCTestUtilities.TestCase {
   }()
   open override func setUp() {
     super.setUp()
-      TestCase.configureGit
+    TestCase.configureGit
   }
 }

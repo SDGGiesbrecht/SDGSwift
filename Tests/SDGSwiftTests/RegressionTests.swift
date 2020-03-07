@@ -31,14 +31,14 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, No package manager on Windows yet.)
-        try withMock(named: "Warnings") { package in
-          let build = try package.build().get()
-          XCTAssert(SwiftCompiler.warningsOccurred(during: build))
-        }
-        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          let build = try package.build().get()
-          XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
-        }
+      try withMock(named: "Warnings") { package in
+        let build = try package.build().get()
+        XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+      }
+      try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+        let build = try package.build().get()
+        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+      }
     #endif
   }
 
@@ -46,50 +46,50 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-          try withMockDynamicLinkedExecutable { mock in
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+        try withMockDynamicLinkedExecutable { mock in
 
-            XCTAssertEqual(
-              try Package(url: mock.location).execute(
-                .development,
-                of: ["tool"],
-                with: [],
-                cacheDirectory: moved
-              ).get(),
-              "Hello, world!"
-            )
-            XCTAssertEqual(
-              try Package(url: mock.location).execute(
-                .version(Version(1, 0, 0)),
-                of: ["tool"],
-                with: [],
-                cacheDirectory: moved
-              ).get(),
-              "Hello, world!"
-            )
-
-            switch Package(url: mock.location).execute(
+          XCTAssertEqual(
+            try Package(url: mock.location).execute(
+              .development,
+              of: ["tool"],
+              with: [],
+              cacheDirectory: moved
+            ).get(),
+            "Hello, world!"
+          )
+          XCTAssertEqual(
+            try Package(url: mock.location).execute(
               .version(Version(1, 0, 0)),
               of: ["tool"],
-              with: ["fail"],
+              with: [],
               cacheDirectory: moved
-            ) {
-            case .success:
-              XCTFail("Should have failed.")
-            case .failure:
-              break
-            }
+            ).get(),
+            "Hello, world!"
+          )
+
+          switch Package(url: mock.location).execute(
+            .version(Version(1, 0, 0)),
+            of: ["tool"],
+            with: ["fail"],
+            cacheDirectory: moved
+          ) {
+          case .success:
+            XCTFail("Should have failed.")
+          case .failure:
+            break
           }
         }
+      }
     #endif
   }
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
     #if !os(Windows)  // #workaround(workspace version 0.30.1, Windows CI has no Git?)
-        let ignored = try thisRepository.ignoredFiles().get()
-        let expected = thisRepository.location.appendingPathComponent(".build").path
-        XCTAssert(ignored.contains(where: { $0.path == expected }))
+      let ignored = try thisRepository.ignoredFiles().get()
+      let expected = thisRepository.location.appendingPathComponent(".build").path
+      XCTAssert(ignored.contains(where: { $0.path == expected }))
     #endif
   }
 }

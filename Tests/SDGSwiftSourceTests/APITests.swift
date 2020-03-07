@@ -92,18 +92,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCallout() {
-      for localization in InterfaceLocalization.allCases {
-          let specification = Callout.allCases
-            .map({ $0.localizedText(localization.code) })
-            .joined(separator: "\n")
-          compare(
-            String(specification),
-            against: testSpecificationDirectory().appendingPathComponent(
-              "Localization/Callouts/\(localization.icon!).txt"
-            ),
-            overwriteSpecificationInsteadOfFailing: false
-          )
-      }
+    for localization in InterfaceLocalization.allCases {
+      let specification = Callout.allCases
+        .map({ $0.localizedText(localization.code) })
+        .joined(separator: "\n")
+      compare(
+        String(specification),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Localization/Callouts/\(localization.icon!).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
   }
 
   func testCodeFragmentSyntax() throws {
@@ -298,24 +298,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCSS() {
-      XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-      #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
-        let highlighted = SyntaxFactory.makeVariableDecl(
-          attributes: nil,
-          modifiers: nil,
-          letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
-          bindings: SyntaxFactory.makePatternBindingList([])
-        )
-          .syntaxHighlightedHTML(inline: true)
-        XCTAssert(
-          highlighted.contains("TokenSyntax letKeyword"),
-          highlighted
-        )
-        XCTAssert(
-          highlighted.contains("VariableDeclSyntax"),
-          highlighted
-        )
-      #endif
+    XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let highlighted = SyntaxFactory.makeVariableDecl(
+        attributes: nil,
+        modifiers: nil,
+        letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
+        bindings: SyntaxFactory.makePatternBindingList([])
+      )
+        .syntaxHighlightedHTML(inline: true)
+      XCTAssert(
+        highlighted.contains("TokenSyntax letKeyword"),
+        highlighted
+      )
+      XCTAssert(
+        highlighted.contains("VariableDeclSyntax"),
+        highlighted
+      )
+    #endif
   }
 
   func testExtension() {

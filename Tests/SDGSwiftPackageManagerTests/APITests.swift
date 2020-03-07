@@ -47,85 +47,85 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testErrors() {
-      struct StandInError: PresentableError {
-        func presentableDescription() -> StrictString {
-          return "[...]"
-        }
+    struct StandInError: PresentableError {
+      func presentableDescription() -> StrictString {
+        return "[...]"
       }
-      #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-        testCustomStringConvertibleConformance(
-          of: PackageRepository.InitializationError.gitError(
-            .locationError(.unavailable(versionConstraints: "..."))
-          ),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Git Unavailable",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCustomStringConvertibleConformance(
-          of: PackageRepository.InitializationError.packageManagerError(StandInError()),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Package Manager",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCustomStringConvertibleConformance(
-          of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Foundation",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCustomStringConvertibleConformance(
-          of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Package Manager",
-          overwriteSpecificationInsteadOfFailing: false
-        )
+    }
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+      testCustomStringConvertibleConformance(
+        of: PackageRepository.InitializationError.gitError(
+          .locationError(.unavailable(versionConstraints: "..."))
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: PackageRepository.InitializationError.packageManagerError(StandInError()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Package Manager",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Foundation",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Package Manager",
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
-        let invalidPackage = URL(fileURLWithPath: #file)
-          .deletingLastPathComponent()
-          .deletingLastPathComponent()
-          .appendingPathComponent("Mock Projects")
-          .appendingPathComponent("Invalid")
-        switch PackageRepository(at: invalidPackage).packageGraph() {
-        case .success(let graph):
-          print(graph.allTargets.map({ $0.name }))
-          XCTFail("Should not have succeeded.")
-        case .failure(let error):
-          testCustomStringConvertibleConformance(
-            of: error,
-            localizations: InterfaceLocalization.self,
-            uniqueTestName: "Diagnostics",
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        }
-      #endif
+      let invalidPackage = URL(fileURLWithPath: #file)
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
+        .appendingPathComponent("Mock Projects")
+        .appendingPathComponent("Invalid")
+      switch PackageRepository(at: invalidPackage).packageGraph() {
+      case .success(let graph):
+        print(graph.allTargets.map({ $0.name }))
+        XCTFail("Should not have succeeded.")
+      case .failure(let error):
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Diagnostics",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      }
+    #endif
   }
 
   func testIgnoredFileDetection() {
-      #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
-        XCTAssert(
-          try thisRepository.ignoredFiles().get().contains(where: {
-            $0.lastPathComponent == ".build"
-          }
-          )
+    #if !os(Windows)  // #workaround(workspace version 0.30.1, GitHub workflow host lacks Git.)
+      XCTAssert(
+        try thisRepository.ignoredFiles().get().contains(where: {
+          $0.lastPathComponent == ".build"
+        }
         )
-      #endif
+      )
+    #endif
   }
 
   func testInitialization() throws {
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-            #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-              let package = try PackageRepository.initializePackage(
-                at: location,
-                named: StrictString(location.lastPathComponent),
-                type: .library
-              ).get()
-              _ = try package.checkout("master").get()
-            #endif
-          }
+    for localization in InterfaceLocalization.allCases {
+      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
+          #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+            let package = try PackageRepository.initializePackage(
+              at: location,
+              named: StrictString(location.lastPathComponent),
+              type: .library
+            ).get()
+            _ = try package.checkout("master").get()
+          #endif
         }
       }
+    }
   }
 
   func testManifestLoading() {
