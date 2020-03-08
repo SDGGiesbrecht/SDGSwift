@@ -27,6 +27,7 @@ public let thisRepository: PackageRepository = {
     .deletingLastPathComponent()
     .deletingLastPathComponent()
   if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+    // @exempt(from: tests)
     root = URL(fileURLWithPath: overridden)
   }
   return PackageRepository(at: root)
