@@ -21,10 +21,16 @@ import SDGExternalProcess
 import SDGSwift
 import SDGSwiftPackageManager
 
-public let thisRepository = PackageRepository(
-  at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent()
+public let thisRepository: PackageRepository = {
+  var root = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
-)
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+  if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+    root = URL(fileURLWithPath: overridden)
+  }
+  return PackageRepository(at: root)
+}()
 public let mocksDirectory = thisRepository.location.appendingPathComponent("Tests/Mock Projects")
 
 private func withMock(
