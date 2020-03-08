@@ -26,8 +26,9 @@ public let thisRepository: PackageRepository = {
     .deletingLastPathComponent()
     .deletingLastPathComponent()
     .deletingLastPathComponent()
-  if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
-    // @exempt(from: tests)
+  if let overridden = ProcessInfo.processInfo
+    .environment["SWIFTPM_PACKAGE_ROOT"]
+  {  // @exempt(from: tests)
     root = URL(fileURLWithPath: overridden)
   }
   return PackageRepository(at: root)
@@ -50,7 +51,14 @@ private func withMock(
   }
 
   @discardableResult func setUpMock(named name: String) throws -> PackageRepository {
-    let mock = PackageRepository(at: URL(fileURLWithPath: "/tmp/" + name))
+    let temporaryDirectory: URL
+    #if os(macOS)
+      // Fixed path to prevent run‐away growth of Xcode’s derived data.
+      temporaryDirectory = URL(fileURLWithPath: "/tmp")
+    #else
+      temporaryDirectory = FileManager.default.temporaryDirectory
+    #endif
+    let mock = PackageRepository(at: temporaryDirectory.appendingPathComponent(name))
     try? FileManager.default.removeItem(at: mock.location)
     mocks.append(mock.location)
     try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
@@ -66,16 +74,8 @@ private func withMock(
   for dependency in dependencies {
     try setUpMock(named: dependency)
   }
-  let mock: URL
-  if let specific = name {
-    mock = try setUpMock(named: specific).location
-  } else {
-    // Fixed path to prevent run‐away growth of Xcode’s derived data.
-    mock = URL(fileURLWithPath: "/tmp/Mock")
-    mocks.append(mock)
-  }
-
-  try test(mock)
+  let mock = try setUpMock(named: name ?? "Mock")
+  try test(mock.location)
 }
 
 public func withMock(
