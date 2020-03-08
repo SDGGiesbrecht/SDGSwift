@@ -52,11 +52,11 @@ private func withMock(
 
   @discardableResult func setUpMock(named name: String) throws -> PackageRepository {
     let temporaryDirectory: URL
-    #if os(macOS)
+    #if os(Android)
+      temporaryDirectory = FileManager.default.temporaryDirectory
+    #else
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
-    #else
-      temporaryDirectory = FileManager.default.temporaryDirectory
     #endif
     let mock = PackageRepository(at: temporaryDirectory.appendingPathComponent(name))
     try? FileManager.default.removeItem(at: mock.location)
