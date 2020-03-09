@@ -83,6 +83,7 @@ private func withMock(
     mock = temporaryDirectory.appendingPathComponent("Mock")
     mocks.append(mock)
   }
+  try test(mock)
 }
 
 public func withMock(
