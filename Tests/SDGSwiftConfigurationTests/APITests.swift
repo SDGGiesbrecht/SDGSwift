@@ -100,106 +100,104 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             reportProgress: { print($0, to: &log) }
           ).get()
           XCTAssertEqual(cached.option, "Configured")
-        #endif
 
-        print("", to: &log)
-        print("None", to: &log)
-        let none = specifications.appendingPathComponent("None")
-        XCTAssertEqual(
-          try SampleConfiguration.load(
+          print("", to: &log)
+          print("None", to: &log)
+          let none = specifications.appendingPathComponent("None")
+          XCTAssertEqual(
+            try SampleConfiguration.load(
+              configuration: type,
+              named: name,
+              from: none,
+              linkingAgainst: product,
+              in: package,
+              at: version,
+              minimumMacOSVersion: minimumMacOSVersion,
+              context: context,
+              reportProgress: { print($0, to: &log) }
+            ).get().option,
+            "Default"
+          )
+
+          print("", to: &log)
+          print("Empty", to: &log)
+          let emptyDirectory = specifications.appendingPathComponent("Empty")
+          XCTAssertNil(
+            try? SampleConfiguration.load(
+              configuration: type,
+              named: name,
+              from: emptyDirectory,
+              linkingAgainst: product,
+              in: package,
+              at: version,
+              minimumMacOSVersion: minimumMacOSVersion,
+              context: context,
+              reportProgress: { print($0, to: &log) }
+            ).get()
+          )
+
+          print("", to: &log)
+          print("Mock", to: &log)
+
+          let mock = SampleConfiguration()
+          mock.option = "Mock"
+          Configuration.queue(mock: mock)
+          let loadedMock = try SampleConfiguration.load(
             configuration: type,
             named: name,
-            from: none,
+            from: configuredDirectory,
             linkingAgainst: product,
             in: package,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
-            context: context,
-            reportProgress: { print($0, to: &log) }
-          ).get().option,
-          "Default"
-        )
-
-        print("", to: &log)
-        print("Empty", to: &log)
-        let emptyDirectory = specifications.appendingPathComponent("Empty")
-        XCTAssertNil(
-          try? SampleConfiguration.load(
-            configuration: type,
-            named: name,
-            from: emptyDirectory,
-            linkingAgainst: product,
-            in: package,
-            at: version,
-            minimumMacOSVersion: minimumMacOSVersion,
-            context: context,
             reportProgress: { print($0, to: &log) }
           ).get()
-        )
+          XCTAssertEqual(loadedMock.option, "Mock")
 
-        print("", to: &log)
-        print("Mock", to: &log)
+          func abbreviate(logEntry: String) {
+            let pattern = (logEntry + " ").scalars
+              + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+              + "\n".scalars
+            log.scalars.replaceMatches(
+              for: pattern,
+              with: (logEntry + " [...]\n").scalars
+            )
+          }
+          func remove(logEntry: String) {
+            let pattern = (logEntry + " ").scalars
+              + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+              + "\n".scalars
+            log.scalars.replaceMatches(for: pattern, with: "".scalars)
+          }
+          abbreviate(logEntry: "Fetching")
+          abbreviate(logEntry: "Completed resolution in")
+          abbreviate(logEntry: "Cloning")
+          abbreviate(logEntry: "Resolving")
 
-        let mock = SampleConfiguration()
-        mock.option = "Mock"
-        Configuration.queue(mock: mock)
-        let loadedMock = try SampleConfiguration.load(
-          configuration: type,
-          named: name,
-          from: configuredDirectory,
-          linkingAgainst: product,
-          in: package,
-          at: version,
-          minimumMacOSVersion: minimumMacOSVersion,
-          reportProgress: { print($0, to: &log) }
-        ).get()
-        XCTAssertEqual(loadedMock.option, "Mock")
-
-        func abbreviate(logEntry: String) {
-          let pattern = (logEntry + " ").scalars
+          // These may occur out of order.
+          remove(logEntry: "Compile Swift Module")
+          let patternStart = "[".scalars
+            + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
+          let pattern = patternStart
+            + "] Compiling ".scalars
             + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
             + "\n".scalars
-          log.scalars.replaceMatches(
-            for: pattern,
-            with: (logEntry + " [...]\n").scalars
-          )
-        }
-        func remove(logEntry: String) {
-          let pattern = (logEntry + " ").scalars
+          log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
+          remove(logEntry: "Linking")
+          remove(logEntry: "warning: invalid duplicate target dependency declaration")
+
+          let fractionPatternStart = "[".scalars
+            + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
+            + "/".scalars
+          let fractionPattern = fractionPatternStart
+            + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
+            + "]".scalars
+          log.scalars.replaceMatches(for: fractionPattern, with: "[[...]/[...]]".scalars)
+          let astPattern = "[[...]/[...]] Wrapping AST for ".scalars
             + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
-            + "\n".scalars
-          log.scalars.replaceMatches(for: pattern, with: "".scalars)
-        }
-        abbreviate(logEntry: "Fetching")
-        abbreviate(logEntry: "Completed resolution in")
-        abbreviate(logEntry: "Cloning")
-        abbreviate(logEntry: "Resolving")
+            + " for debugging\n".scalars
+          log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-        // These may occur out of order.
-        remove(logEntry: "Compile Swift Module")
-        let patternStart = "[".scalars
-          + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
-        let pattern = patternStart
-          + "] Compiling ".scalars
-          + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
-          + "\n".scalars
-        log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
-        remove(logEntry: "Linking")
-        remove(logEntry: "warning: invalid duplicate target dependency declaration")
-
-        let fractionPatternStart = "[".scalars
-          + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
-          + "/".scalars
-        let fractionPattern = fractionPatternStart
-          + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
-          + "]".scalars
-        log.scalars.replaceMatches(for: fractionPattern, with: "[[...]/[...]]".scalars)
-        let astPattern = "[[...]/[...]] Wrapping AST for ".scalars
-          + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
-          + " for debugging\n".scalars
-        log.scalars.replaceMatches(for: astPattern, with: "".scalars)
-
-        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
           compare(
             log,
             against: testSpecificationDirectory().appendingPathComponent(
