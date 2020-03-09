@@ -63,13 +63,15 @@ private func withMock(
     try? FileManager.default.removeItem(at: mock.location)
     mocks.append(mock.location)
     try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-    _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
-    _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
-    _ = try Shell.default.run(
-      command: ["git", "commit", "\u{2D}m", "Initialized."],
-      in: mock.location
-    ).get()
-    _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+    #if !os(Android)  // #workaround(Swift 5.1.3, Process has its wires crossed.)
+      _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+      _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
+      _ = try Shell.default.run(
+        command: ["git", "commit", "\u{2D}m", "Initialized."],
+        in: mock.location
+      ).get()
+      _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+    #endif
     return mock
   }
   for dependency in dependencies {

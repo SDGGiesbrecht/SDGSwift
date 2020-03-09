@@ -53,24 +53,26 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
 
-          XCTAssertEqual(
-            try Package(url: mock.location).execute(
-              .development,
-              of: ["tool"],
-              with: [],
-              cacheDirectory: moved
-            ).get(),
-            "Hello, world!"
-          )
-          XCTAssertEqual(
-            try Package(url: mock.location).execute(
-              .version(Version(1, 0, 0)),
-              of: ["tool"],
-              with: [],
-              cacheDirectory: moved
-            ).get(),
-            "Hello, world!"
-          )
+          #if !os(Android)  // #workaround(Swift 5.1.3, Emulator has no Swift.)
+            XCTAssertEqual(
+              try Package(url: mock.location).execute(
+                .development,
+                of: ["tool"],
+                with: [],
+                cacheDirectory: moved
+              ).get(),
+              "Hello, world!"
+            )
+            XCTAssertEqual(
+              try Package(url: mock.location).execute(
+                .version(Version(1, 0, 0)),
+                of: ["tool"],
+                with: [],
+                cacheDirectory: moved
+              ).get(),
+              "Hello, world!"
+            )
+          #endif
 
           switch Package(url: mock.location).execute(
             .version(Version(1, 0, 0)),
