@@ -43,6 +43,14 @@ private func withMock(
   test: (URL) throws -> Void
 ) throws {
 
+  let temporaryDirectory: URL
+  #if os(Android)
+    temporaryDirectory = FileManager.default.temporaryDirectory
+  #else
+    // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    temporaryDirectory = URL(fileURLWithPath: "/tmp")
+  #endif
+
   var mocks: [URL] = []
   defer {
     for mock in mocks {
@@ -51,13 +59,6 @@ private func withMock(
   }
 
   @discardableResult func setUpMock(named name: String) throws -> PackageRepository {
-    let temporaryDirectory: URL
-    #if os(Android)
-      temporaryDirectory = FileManager.default.temporaryDirectory
-    #else
-      // Fixed path to prevent run‐away growth of Xcode’s derived data.
-      temporaryDirectory = URL(fileURLWithPath: "/tmp")
-    #endif
     let mock = PackageRepository(at: temporaryDirectory.appendingPathComponent(name))
     try? FileManager.default.removeItem(at: mock.location)
     mocks.append(mock.location)
@@ -74,8 +75,14 @@ private func withMock(
   for dependency in dependencies {
     try setUpMock(named: dependency)
   }
-  let mock = try setUpMock(named: name ?? "Mock")
-  try test(mock.location)
+  let mock: URL
+  if let specific = name {
+    mock = try setUpMock(named: specific).location
+  } else {
+    // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    mock = temporaryDirectory.appendingPathComponent("Mock")
+    mocks.append(mock)
+  }
 }
 
 public func withMock(
