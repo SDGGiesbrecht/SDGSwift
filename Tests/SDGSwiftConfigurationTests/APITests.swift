@@ -47,58 +47,60 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
         let wherever = specifications.appendingPathComponent("Configured")
-        // @example(configurationLoading)
-        // These refer to a real, working sample product.
-        // See its source for more details:
-        // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.6.0/Sources/SampleConfiguration
-        let product = "SampleConfiguration"
-        let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-        let minimumMacOSVersion = Version(10, 13)
-        let version = Version(0, 12, 7)
-        let type = SampleConfiguration.self  // Import it first if necessary.
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+          // @example(configurationLoading)
+          // These refer to a real, working sample product.
+          // See its source for more details:
+          // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.6.0/Sources/SampleConfiguration
+          let product = "SampleConfiguration"
+          let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+          let minimumMacOSVersion = Version(10, 13)
+          let version = Version(0, 12, 7)
+          let type = SampleConfiguration.self  // Import it first if necessary.
 
-        // Assuming the above file is called “SampleConfigurationFile.swift”...
-        let name = UserFacing<StrictString, APILocalization>(
-          { _ in return "SampleConfigurationFile" }
-        )
+          // Assuming the above file is called “SampleConfigurationFile.swift”...
+          let name = UserFacing<StrictString, APILocalization>(
+            { _ in return "SampleConfigurationFile" }
+          )
 
-        // Change this to actually point at a directory containing the above file.
-        let configuredDirectory: URL = wherever
+          // Change this to actually point at a directory containing the above file.
+          let configuredDirectory: URL = wherever
 
-        // Context information can be provided. (Optional.)
-        let context = SampleContext(information: "Information")
+          // Context information can be provided. (Optional.)
+          let context = SampleContext(information: "Information")
 
-        // A log to collect progress reports while loading. (Optional.)
-        var log = String()
+          // A log to collect progress reports while loading. (Optional.)
+          var log = String()
 
-        let loadedConfiguration = try SampleConfiguration.load(
-          configuration: type,
-          named: name,
-          from: configuredDirectory,
-          linkingAgainst: product,
-          in: package,
-          at: version,
-          minimumMacOSVersion: minimumMacOSVersion,
-          context: context,
-          reportProgress: { print($0, to: &log) }
-        ).get()
-        XCTAssertEqual(loadedConfiguration.option, "Configured")
-        // @endExample
+          let loadedConfiguration = try SampleConfiguration.load(
+            configuration: type,
+            named: name,
+            from: configuredDirectory,
+            linkingAgainst: product,
+            in: package,
+            at: version,
+            minimumMacOSVersion: minimumMacOSVersion,
+            context: context,
+            reportProgress: { print($0, to: &log) }
+          ).get()
+          XCTAssertEqual(loadedConfiguration.option, "Configured")
+          // @endExample
 
-        print("", to: &log)
-        print("Cached", to: &log)
-        let cached = try SampleConfiguration.load(
-          configuration: type,
-          named: name,
-          from: configuredDirectory,
-          linkingAgainst: product,
-          in: package,
-          at: version,
-          minimumMacOSVersion: minimumMacOSVersion,
-          context: context,
-          reportProgress: { print($0, to: &log) }
-        ).get()
-        XCTAssertEqual(cached.option, "Configured")
+          print("", to: &log)
+          print("Cached", to: &log)
+          let cached = try SampleConfiguration.load(
+            configuration: type,
+            named: name,
+            from: configuredDirectory,
+            linkingAgainst: product,
+            in: package,
+            at: version,
+            minimumMacOSVersion: minimumMacOSVersion,
+            context: context,
+            reportProgress: { print($0, to: &log) }
+          ).get()
+          XCTAssertEqual(cached.option, "Configured")
+        #endif
 
         print("", to: &log)
         print("None", to: &log)
@@ -197,13 +199,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           + " for debugging\n".scalars
         log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-        compare(
-          log,
-          against: testSpecificationDirectory().appendingPathComponent(
-            "Configuration Loading.txt"
-          ),
-          overwriteSpecificationInsteadOfFailing: false
-        )
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+          compare(
+            log,
+            against: testSpecificationDirectory().appendingPathComponent(
+              "Configuration Loading.txt"
+            ),
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
       }
     #endif
   }

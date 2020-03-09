@@ -32,12 +32,16 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, No package manager on Windows yet.)
       try withMock(named: "Warnings") { package in
-        let build = try package.build().get()
-        XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+          let build = try package.build().get()
+          XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+        #endif
       }
       try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-        let build = try package.build().get()
-        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+          let build = try package.build().get()
+          XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+        #endif
       }
     #endif
   }

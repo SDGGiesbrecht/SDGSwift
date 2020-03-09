@@ -39,15 +39,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          if withGeneratedProject {
-            _ = try package.generateXcodeProject().get()
-          }
-          #if !(os(Windows) || os(Linux))
-            let build = try package.build(for: .macOS).get()
-            XCTAssertFalse(
-              Xcode.warningsOccurred(during: build),
-              "Warning triggered in:\n\(build)"
-            )
+          #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Swift.)
+            if withGeneratedProject {
+              _ = try package.generateXcodeProject().get()
+            }
+            #if !(os(Windows) || os(Linux))
+              let build = try package.build(for: .macOS).get()
+              XCTAssertFalse(
+                Xcode.warningsOccurred(during: build),
+                "Warning triggered in:\n\(build)"
+              )
+            #endif
           #endif
         }
       }
@@ -75,7 +77,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       versionConstraints: Version(Int.min)...Version(Int.max)
     )
       .get()
-    #if !(os(Windows) || os(Linux))
+    #if !(os(Windows) || os(Linux) || os(Android))
       XCTAssertNotNil(xcodeLocation)
     #endif
 
