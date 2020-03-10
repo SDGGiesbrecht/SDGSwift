@@ -33,8 +33,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGSwiftSourceAPITests: SDGSwiftTestUtilities.TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
@@ -93,22 +92,18 @@ class SDGSwiftSourceAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCallout() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      for localization in InterfaceLocalization.allCases {
-        #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks permissions.)
-          let specification = Callout.allCases
-            .map({ $0.localizedText(localization.code) })
-            .joined(separator: "\n")
-          compare(
-            String(specification),
-            against: testSpecificationDirectory().appendingPathComponent(
-              "Localization/Callouts/\(localization.icon!).txt"
-            ),
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
-      }
-    #endif
+    for localization in InterfaceLocalization.allCases {
+      let specification = Callout.allCases
+        .map({ $0.localizedText(localization.code) })
+        .joined(separator: "\n")
+      compare(
+        String(specification),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Localization/Callouts/\(localization.icon!).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
   }
 
   func testCodeFragmentSyntax() throws {
@@ -303,25 +298,23 @@ class SDGSwiftSourceAPITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCSS() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-      #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
-        let highlighted = SyntaxFactory.makeVariableDecl(
-          attributes: nil,
-          modifiers: nil,
-          letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
-          bindings: SyntaxFactory.makePatternBindingList([])
-        )
-          .syntaxHighlightedHTML(inline: true)
-        XCTAssert(
-          highlighted.contains("TokenSyntax letKeyword"),
-          highlighted
-        )
-        XCTAssert(
-          highlighted.contains("VariableDeclSyntax"),
-          highlighted
-        )
-      #endif
+    XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+      let highlighted = SyntaxFactory.makeVariableDecl(
+        attributes: nil,
+        modifiers: nil,
+        letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
+        bindings: SyntaxFactory.makePatternBindingList([])
+      )
+        .syntaxHighlightedHTML(inline: true)
+      XCTAssert(
+        highlighted.contains("TokenSyntax letKeyword"),
+        highlighted
+      )
+      XCTAssert(
+        highlighted.contains("VariableDeclSyntax"),
+        highlighted
+      )
     #endif
   }
 

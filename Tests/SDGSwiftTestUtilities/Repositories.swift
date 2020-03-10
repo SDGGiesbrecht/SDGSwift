@@ -21,10 +21,18 @@ import SDGExternalProcess
 import SDGSwift
 import SDGSwiftPackageManager
 
-public let thisRepository = PackageRepository(
-  at: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent()
+public let thisRepository: PackageRepository = {
+  var root = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
-)
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+  if let overridden = ProcessInfo.processInfo
+    .environment["SWIFTPM_PACKAGE_ROOT"]
+  {  // @exempt(from: tests)
+    root = URL(fileURLWithPath: overridden)
+  }
+  return PackageRepository(at: root)
+}()
 public let mocksDirectory = thisRepository.location.appendingPathComponent("Tests/Mock Projects")
 
 private func withMock(
@@ -35,6 +43,14 @@ private func withMock(
   test: (URL) throws -> Void
 ) throws {
 
+  let temporaryDirectory: URL
+  #if os(Android)
+    temporaryDirectory = FileManager.default.temporaryDirectory
+  #else
+    // Fixed path to prevent run‐away growth of Xcode’s derived data.
+    temporaryDirectory = URL(fileURLWithPath: "/tmp")
+  #endif
+
   var mocks: [URL] = []
   defer {
     for mock in mocks {
@@ -43,17 +59,19 @@ private func withMock(
   }
 
   @discardableResult func setUpMock(named name: String) throws -> PackageRepository {
-    let mock = PackageRepository(at: URL(fileURLWithPath: "/tmp/" + name))
+    let mock = PackageRepository(at: temporaryDirectory.appendingPathComponent(name))
     try? FileManager.default.removeItem(at: mock.location)
     mocks.append(mock.location)
     try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-    _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
-    _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
-    _ = try Shell.default.run(
-      command: ["git", "commit", "\u{2D}m", "Initialized."],
-      in: mock.location
-    ).get()
-    _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+    #if !os(Android)  // #workaround(Swift 5.1.3, Process has its wires crossed.)
+      _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+      _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
+      _ = try Shell.default.run(
+        command: ["git", "commit", "\u{2D}m", "Initialized."],
+        in: mock.location
+      ).get()
+      _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+    #endif
     return mock
   }
   for dependency in dependencies {
@@ -64,10 +82,9 @@ private func withMock(
     mock = try setUpMock(named: specific).location
   } else {
     // Fixed path to prevent run‐away growth of Xcode’s derived data.
-    mock = URL(fileURLWithPath: "/tmp/Mock")
+    mock = temporaryDirectory.appendingPathComponent("Mock")
     mocks.append(mock)
   }
-
   try test(mock)
 }
 

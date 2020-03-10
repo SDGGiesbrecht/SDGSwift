@@ -33,22 +33,21 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGSwiftConfigurationAPITests: SDGSwiftTestUtilities.TestCase {
+class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
-        try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
-          FileManager.default.delete(.cache)
-          defer { FileManager.default.delete(.cache) }
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
+        FileManager.default.delete(.cache)
+        defer { FileManager.default.delete(.cache) }
 
-          XCTAssertEqual(SampleConfiguration().option, "Default")
-          testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+        XCTAssertEqual(SampleConfiguration().option, "Default")
+        testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
 
-          let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
+        let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-          let wherever = specifications.appendingPathComponent("Configured")
+        let wherever = specifications.appendingPathComponent("Configured")
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
@@ -206,42 +205,40 @@ class SDGSwiftConfigurationAPITests: SDGSwiftTestUtilities.TestCase {
             ),
             overwriteSpecificationInsteadOfFailing: false
           )
-        }
-      #endif
+        #endif
+      }
     #endif
   }
 
   func testConfigurationError() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      struct StandInError: PresentableError {
-        func presentableDescription() -> StrictString {
-          return "[...]"
-        }
+    struct StandInError: PresentableError {
+      func presentableDescription() -> StrictString {
+        return "[...]"
       }
-      testCustomStringConvertibleConformance(
-        of: Configuration.Error.corruptConfiguration,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Corrupt",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Configuration.Error.emptyConfiguration,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Empty",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Configuration.Error.foundationError(StandInError()),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Foundation",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Configuration.Error.swiftError(.locationError(.unavailable(versionConstraints: "..."))),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Swift Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    }
+    testCustomStringConvertibleConformance(
+      of: Configuration.Error.corruptConfiguration,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Corrupt",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Configuration.Error.emptyConfiguration,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Empty",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Configuration.Error.foundationError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Foundation",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Configuration.Error.swiftError(.locationError(.unavailable(versionConstraints: "..."))),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Swift Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 }

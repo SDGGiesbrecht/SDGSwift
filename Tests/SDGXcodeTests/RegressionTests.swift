@@ -16,8 +16,7 @@ import XCTest
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGXcodeRegressionTests: SDGSwiftTestUtilities.TestCase {
+class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.

@@ -28,8 +28,7 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGSwiftSourceInternalTests: SDGSwiftTestUtilities.TestCase {
+class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
@@ -55,17 +54,15 @@ class SDGSwiftSourceInternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocalizations() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      for localization in InterfaceLocalization.allCases {
-        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
-          #if !(os(Windows) || os(Android))
-            _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
-            _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
-          #endif
-        }
+    for localization in InterfaceLocalization.allCases {
+      LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+        #if !(os(Windows) || os(Android))
+          _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
+          _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
+        #endif
       }
-    #endif
+    }
   }
 
   func testStringLiteral() {

@@ -42,8 +42,6 @@ open class TestCase: SDGXCTestUtilities.TestCase {
   }()
   open override func setUp() {
     super.setUp()
-    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-      TestCase.configureGit
-    #endif
+    TestCase.configureGit
   }
 }

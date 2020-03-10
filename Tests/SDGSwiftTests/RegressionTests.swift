@@ -25,23 +25,24 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGSwiftRegressionTests: SDGSwiftTestUtilities.TestCase {
+class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, No package manager on Windows yet.)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-        try withMock(named: "Warnings") { package in
+      try withMock(named: "Warnings") { package in
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
           let build = try package.build().get()
           XCTAssert(SwiftCompiler.warningsOccurred(during: build))
-        }
-        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+        #endif
+      }
+      try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+        #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
           let build = try package.build().get()
           XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
-        }
-      #endif
+        #endif
+      }
     #endif
   }
 
@@ -49,10 +50,10 @@ class SDGSwiftRegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-          try withMockDynamicLinkedExecutable { mock in
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+        try withMockDynamicLinkedExecutable { mock in
 
+          #if !os(Android)  // #workaround(Swift 5.1.3, Emulator has no Swift.)
             XCTAssertEqual(
               try Package(url: mock.location).execute(
                 .development,
@@ -71,28 +72,28 @@ class SDGSwiftRegressionTests: SDGSwiftTestUtilities.TestCase {
               ).get(),
               "Hello, world!"
             )
+          #endif
 
-            switch Package(url: mock.location).execute(
-              .version(Version(1, 0, 0)),
-              of: ["tool"],
-              with: ["fail"],
-              cacheDirectory: moved
-            ) {
-            case .success:
-              XCTFail("Should have failed.")
-            case .failure:
-              break
-            }
+          switch Package(url: mock.location).execute(
+            .version(Version(1, 0, 0)),
+            of: ["tool"],
+            with: ["fail"],
+            cacheDirectory: moved
+          ) {
+          case .success:
+            XCTFail("Should have failed.")
+          case .failure:
+            break
           }
         }
-      #endif
+      }
     #endif
   }
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
-    #if !os(Windows)  // #workaround(workspace version 0.30.1, Windows CI has no Git?)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction)
+    #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Git.)
+      #if !os(Windows)  // #workaround(workspace version 0.30.1, Windows CI has no Git?)
         let ignored = try thisRepository.ignoredFiles().get()
         let expected = thisRepository.location.appendingPathComponent(".build").path
         XCTAssert(ignored.contains(where: { $0.path == expected }))
