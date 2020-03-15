@@ -142,8 +142,8 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        // SwiftPM‐auto (except Windows and Android; see end of file)
       ]
     ),
 
@@ -164,8 +164,8 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-        .product(name: "CommonMark", package: "swift\u{2D}cmark"),
+        // SwiftSyntax (except Windows and Android; see end of file)
+        // CommonMark (except Windows; see end of file)
         .product(name: "SDGHTML", package: "SDGWeb")
       ]
     ),
@@ -235,8 +235,8 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        // SwiftSyntax (except Windows and Android; see end of file)
       ]
     ),
 
@@ -298,8 +298,8 @@ let package = Package(
         .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        // SwiftSyntax (except Windows and Android; see end of file)
       ]
     ),
     .testTarget(
@@ -350,60 +350,47 @@ let package = Package(
   ]
 )
 
-func adjustForWindows() {
-  // #workaround(workspace version 0.30.2, CMake cannot handle Unicode.)
-  package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
+// #workaround(workspace version 0.30.2, Windows cannot build C.)
+// #workaround(SwiftPM 0.5.0, Cannot build for Android.)
+import Foundation
+#if !os(Windows) && !os(Android)
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil,
+    ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == nil
+  {
 
-  let impossibleProducts: Set<String> = [
-    // #workaround(workspace version 0.30.2, Windows cannot build C.)
-    // SwiftPM
-    "SwiftPM\u{2D}auto",
-    // SwiftSyntax,
-    "SwiftSyntax",
-    // CommonMark
-    "CommonMark"
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._productItem(let name, _):
-        return impossibleProducts.contains(name)
-      default:
-        return false
-      }
-    })
+    let needSwiftSyntax: Set<String> = [
+      "SDGSwiftSource",
+      "refresh‐core‐libraries",
+      "SDGSwiftSourceTests"
+    ]
+    for target in package.targets where needSwiftSyntax.contains(target.name) {
+      target.dependencies.append(.product(name: "SwiftSyntax", package: "swift\u{2D}syntax"))
+    }
+
+    for target in package.targets where target.name == "SDGSwiftPackageManager" {
+      target.dependencies.append(
+        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+      )
+    }
   }
+#endif
+
+// #workaround(workspace version 0.30.2, Windows cannot build C.)
+#if !os(Windows)
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
+    for target in package.targets where target.name == "SDGSwiftSource" {
+      target.dependencies.append(.product(name: "CommonMark", package: "swift\u{2D}cmark"))
+    }
+  }
+#endif
+
+// #workaround(workspace version 0.30.2, CMake cannot handle Unicode.)
+func adjustForWindows() {
+  package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
 }
 #if os(Windows)
   adjustForWindows()
 #endif
-import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
-}
-
-func adjustForAndroid() {
-  let impossibleProducts: Set<String> = [
-    // SwiftPM #workaround(SwiftPM 0.5.0, Cannot build for Android.)
-    "SwiftPM\u{2D}auto",
-    // SwiftSyntax
-    "SwiftSyntax"
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._productItem(let name, _):
-        return impossibleProducts.contains(name)
-      default:
-        return false
-      }
-    })
-  }
-}
-#if os(Android)
-  adjustForAndroid()
-#endif
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
 }
