@@ -11,10 +11,13 @@ CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 CreateUniversalBinary [...]/Mock.o normal armv7\ arm64
 CreateUniversalBinary [...]/MockTests normal armv7\ arm64
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftsourceinfo
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
+Ditto [...]/MockTests.swiftsourceinfo
 GenerateDSYMFile [...]/MockTests
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal arm64
@@ -27,14 +30,17 @@ MkDir [...]/MockTests.xctest
 ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
+SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.modulemap
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
 WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
+note: Building targets in parallel
 note: Constructing build description
 note: Planning build
 note: Using new build system
