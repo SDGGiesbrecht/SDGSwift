@@ -72,6 +72,7 @@ public enum Xcode: VersionedExternalProcess {
     "swift",
     "swiftc",
     "touch",
+    "xcodebuild",
     "write\u{2D}file"
   ]
   private static let abbreviableCommands: [String] = [
@@ -100,6 +101,7 @@ public enum Xcode: VersionedExternalProcess {
 
   private static let otherIgnored: [String] = [
     "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
+    "Command line invocation:",
     "Beginning test session",
     "Build settings from command line:",
     "device_map.plist",

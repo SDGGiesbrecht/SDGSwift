@@ -75,8 +75,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
     let xcodeLocation = try? Xcode.location(
       versionConstraints: Version(Int.min)...Version(Int.max)
-    )
-      .get()
+    ).get()
     #if !(os(Windows) || os(Linux) || os(Android))
       XCTAssertNotNil(xcodeLocation)
     #endif
