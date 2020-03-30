@@ -44,7 +44,7 @@
       return self.type.source() == type.genericName.source()
     }
     internal func nested(in type: TypeAPI) -> ExtensionAPI? {
-      guard let memberType = self.type as? MemberTypeIdentifierSyntax,
+      guard let memberType = self.type.as(MemberTypeIdentifierSyntax.self),
         memberType.rootType().source() == type.genericName.source()
       else {
         return nil
