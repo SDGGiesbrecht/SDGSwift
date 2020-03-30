@@ -91,7 +91,8 @@ extension PackageRepository {
       return SwiftCompiler.withDiagnostics { compiler, _ in
         return try ManifestLoader.loadManifest(
           packagePath: AbsolutePath(location.path),
-          swiftCompiler: AbsolutePath(compiler.path)
+          swiftCompiler: AbsolutePath(compiler.path),
+          packageKind: .root
         )
       }
     }
