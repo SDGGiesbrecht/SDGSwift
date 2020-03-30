@@ -33,8 +33,8 @@
           child.appendInheritables(to: &api)
         }
       case .type(let type):
-        switch type.genericDeclaration {
-        case let `class` as ClassDeclSyntax:
+        let genericDeclaration = type.genericDeclaration
+        if let `class` = genericDeclaration.as(ClassDeclSyntax.self) {
           if let modifiers = `class`.modifiers,
             modifiers.contains(where: { $0.name.text == "open" })
           {
@@ -48,9 +48,9 @@
             }
             api.append("}")
           }
-        case let associatedType as AssociatedtypeDeclSyntax:
+        } else if let associatedType = genericDeclaration.as(AssociatedtypeDeclSyntax.self) {
           append(simpleDeclaration: associatedType, implementation: false, to: &api)
-        default:
+        } else {
           break
         }
       case .protocol(let `protocol`):
@@ -102,18 +102,19 @@
       }
     }
 
-    private func append(
-      simpleDeclaration declarationSyntax: Syntax,
+    private func append<Declaration>(
+      simpleDeclaration specificDeclarationSyntax: Declaration,
       implementation: Bool,
       to api: inout [String]
-    ) {
+    ) where Declaration: SyntaxProtocol {
+      let declarationSyntax = Syntax(specificDeclarationSyntax)
       var declaration = "    " + declarationSyntax.withoutAccessors.source()
       if let constraints = self.constraints?.source() {
         declaration += constraints
-        if declarationSyntax is InitializerDeclSyntax
-          ∨ declarationSyntax is VariableDeclSyntax
-          ∨ declarationSyntax is SubscriptDeclSyntax
-          ∨ declarationSyntax is FunctionDeclSyntax,
+        if declarationSyntax.is(InitializerDeclSyntax.self)
+          ∨ declarationSyntax.is(VariableDeclSyntax.self)
+          ∨ declarationSyntax.is(SubscriptDeclSyntax.self)
+          ∨ declarationSyntax.is(FunctionDeclSyntax.self),
           declarationSyntax.genericParameters?.source().isEmpty ≠ false
         {
           // Restricted default implementation.
