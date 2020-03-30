@@ -132,7 +132,7 @@
     ///     - node: The node to scan.
     public func scan(_ node: SourceFileSyntax) throws {
       try scan(
-        node,
+        Syntax(node),
         context: SyntaxContext(
           fragmentContext: node.source(),
           fragmentOffset: 0,
@@ -154,7 +154,7 @@
             }
           }
         } else {
-          _ = visit(token, context: context)
+          _ = visit(Syntax(token), context: context)
         }
         let trailingTriviaContext = TriviaContext(
           token: token,
