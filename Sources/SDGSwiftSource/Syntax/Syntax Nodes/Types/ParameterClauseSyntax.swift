@@ -37,9 +37,9 @@
       )
     }
 
-    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-      -> ParameterClauseSyntax
-    {
+    internal func forName(
+      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
+    ) -> ParameterClauseSyntax {
       switch labelBehaviour {
       case .function, .operator:
         return SyntaxFactory.makeParameterClause(
@@ -56,9 +56,9 @@
       }
     }
 
-    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<
-      String
-    > {
+    internal func identifierList(
+      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
+    ) -> Set<String> {
       return parameterList.identifierList(labelBehaviour: labelBehaviour)
     }
 
