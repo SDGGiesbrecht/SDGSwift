@@ -16,8 +16,8 @@
   import SwiftSyntax
 
   internal protocol _UniquelyDeclaredAPIElement: DeclaredAPIElement {
-    associatedtype Declaration: Syntax
-    associatedtype Name: Syntax
+    associatedtype Declaration: SyntaxProtocol
+    associatedtype Name: SyntaxProtocol
 
     init(
       documentation: [SymbolDocumentation],

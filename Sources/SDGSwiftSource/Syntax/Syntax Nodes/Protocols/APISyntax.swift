@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  internal protocol APISyntax: Syntax {
+  internal protocol APISyntax: SyntaxProtocol {
     func isPublic() -> Bool
     func isUnavailable() -> Bool
     var isHidden: Bool { get }

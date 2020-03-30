@@ -18,7 +18,7 @@
   import SwiftSyntax
 
   /// A declaration which can be either a type or instance member.
-  public protocol Member: Syntax {
+  public protocol Member: SyntaxProtocol {
     /// The declaration modifiers.
     var modifiers: ModifierListSyntax? { get }
   }

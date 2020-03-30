@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   /// A declaration syntax node which includes constraints.
-  public protocol Constrained: Syntax {
+  public protocol Constrained: SyntaxProtocol {
     /// The constraint clause.
     var genericWhereClause: GenericWhereClauseSyntax? { get }
     /// Creates a new node by replacing the constraint clause.

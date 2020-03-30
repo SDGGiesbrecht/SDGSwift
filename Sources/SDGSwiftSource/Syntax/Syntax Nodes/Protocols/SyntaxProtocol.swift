@@ -26,7 +26,7 @@
   import SwiftSyntax
   import enum SDGHTML.HTML
 
-  extension Syntax {
+  extension SyntaxProtocol {
 
     // MARK: - Properties
 
