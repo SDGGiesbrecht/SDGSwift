@@ -51,7 +51,7 @@
           rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket)
         )
       }
-      return result
+      return TypeSyntax(result)
     }
   }
 #endif
