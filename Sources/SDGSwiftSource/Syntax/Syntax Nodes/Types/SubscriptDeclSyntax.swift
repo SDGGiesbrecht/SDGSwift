@@ -1,5 +1,5 @@
 /*
- SubscriptDeclSyntaxDeclSyntax.swift
+ SubscriptDeclSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -43,7 +43,7 @@
         indices: indices.normalizedForDeclaration(labelBehaviour: .subscript),
         result: result.normalizedForSubscriptDeclaration(),
         genericWhereClause: newGenericWhereClause,
-        accessor: accessorListForAPIDeclaration()
+        accessor: Syntax(accessorListForAPIDeclaration())
       )
     }
 
