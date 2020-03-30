@@ -7,10 +7,10 @@ Structure • struct Structure
 Wrapper • @propertyWrapper struct Wrapper
 (Int)
  staticProperty • static var staticProperty: Int { get }
+ `var` • var `var`: Int { get }
  constantWithInferredType • var constantWithInferredType { get }
  fileprivateSetter • var fileprivateSetter { get }
  groupedInteger • var groupedInteger: Int { get }
  groupedString • var groupedString: String { get }
  optional • weak var optional: SomeType? { get set }
  privateSetter • var privateSetter { get }
- var • var var: Int { get }
