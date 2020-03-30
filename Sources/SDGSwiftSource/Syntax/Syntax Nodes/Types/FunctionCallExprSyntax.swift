@@ -74,8 +74,8 @@
     }
 
     internal func manifestEntryName() -> TokenSyntax {
-      guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax,
-        let segment = literal.segments.first as? StringSegmentSyntax
+      guard let literal = argumentList.first?.expression.as(StringLiteralExprSyntax.self),
+        let segment = literal.segments.first?.as(StringSegmentSyntax.self)
       else {
         // @exempt(from: tests) Only reachable with a degenerate declaration.
         return SyntaxFactory.makeUnknown("")
