@@ -53,11 +53,11 @@
 
     // MARK: - Initialization
 
-    internal convenience init(
+    internal convenience init<Syntax>(
       product: Product,
       manifest: Syntax,
       reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress
-    ) throws {
+    ) throws where Syntax: SyntaxProtocol {
       let search = ".library(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(product.name)\u{22}".scalars
