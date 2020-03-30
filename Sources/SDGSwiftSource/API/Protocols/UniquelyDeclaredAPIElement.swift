@@ -38,11 +38,11 @@
   extension _UniquelyDeclaredAPIElement {
 
     public var genericDeclaration: Syntax {
-      return declaration
+      return Syntax(declaration)
     }
 
     public var genericName: Syntax {
-      return name
+      return Syntax(name)
     }
   }
 #endif
