@@ -20,7 +20,7 @@
     internal func flattenedForAPI() -> [PatternBindingSyntax] {
       return pattern.flattenedForAPI().map { (pattern, indexPath) in
         return SyntaxFactory.makePatternBinding(
-          pattern: pattern,
+          pattern: PatternSyntax(pattern),
           typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(
             extractingFromIndexPath: indexPath
           ),
@@ -31,14 +31,14 @@
       }
     }
 
-    internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax)
-      -> PatternBindingSyntax
-    {
+    internal func normalizedForVariableAPIDeclaration(
+      accessor: AccessorBlockSyntax
+    ) -> PatternBindingSyntax {
       return SyntaxFactory.makePatternBinding(
         pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
         typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
         initializer: nil,
-        accessor: accessor,
+        accessor: Syntax(accessor),
         trailingComma: nil
       )
     }
