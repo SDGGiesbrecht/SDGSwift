@@ -253,7 +253,7 @@
       default:
         var identifiers = internalIdentifiers
         var parameterClause: ParameterClauseSyntax?
-        switch self {
+        switch existential {
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
         case let `subscript` as SubscriptDeclSyntax:
@@ -295,7 +295,7 @@
       if let element = self.resolvedExistential() as? APISyntax {
         return element.parseAPI()
       }
-      switch self {
+      switch resolvedExistential() {
       case let conditionallyCompiledSection as IfConfigDeclSyntax:
         return conditionallyCompiledSection.conditionalAPI
       default:
@@ -353,7 +353,7 @@
     }
 
     internal func normalizedPrecedenceAttribute() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let relation as PrecedenceGroupRelationSyntax:
         return Syntax(relation.normalizedForAPIDeclaration())
       case let associativity as PrecedenceGroupAssociativitySyntax:
@@ -369,7 +369,7 @@
     private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax
       .PrecedenceAttributeGroup
     {
-      switch self {
+      switch resolvedExistential() {
       case let relation as PrecedenceGroupRelationSyntax:
         if relation.higherThanOrLowerThan.text == "lowerThan" {
           return .before
@@ -393,7 +393,7 @@
     }
 
     internal func attributeIndicatesAbsence() -> Bool {
-      switch self {
+      switch resolvedExistential() {
       case let attribute as AttributeSyntax:
         return attribute.indicatesAbsence()
       case is CustomAttributeSyntax:
@@ -405,7 +405,7 @@
     }
 
     internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
-      switch self {
+      switch resolvedExistential() {
       case let attribute as AttributeSyntax:
         return Syntax(attribute.normalizedForAPIDeclaration())
       case let attribute as CustomAttributeSyntax:
@@ -417,7 +417,7 @@
     }
 
     internal func normalizedAttributeArgument() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let availablitiy as AvailabilitySpecListSyntax:
         return Syntax(availablitiy.normalized())
       default:  // @exempt(from: tests)
@@ -427,7 +427,7 @@
     }
 
     internal func normalizedAvailabilityArgument() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
         return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let labeled as AvailabilityLabeledArgumentSyntax:
@@ -441,7 +441,7 @@
     }
 
     internal func normalizedAvailability() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
         return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let version as VersionTupleSyntax:
@@ -453,7 +453,7 @@
     }
 
     internal func normalizedVersion() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
         return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       default:  // @exempt(from: tests)
@@ -492,7 +492,7 @@
       function: StaticString = #function
     ) {  // @exempt(from: tests)
       #if DEBUG
-        switch self {
+        switch resolvedExistential() {
         case is UnknownSyntax,
           is UnknownPatternSyntax,
           is UnknownTypeSyntax:
