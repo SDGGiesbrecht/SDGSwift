@@ -25,8 +25,7 @@
           leadingTrivia: .spaces(1),
           trailingTrivia: .spaces(1)
         ),
-        rightTypeIdentifier: rightTypeIdentifier.normalized(),
-        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
+        rightTypeIdentifier: rightTypeIdentifier.normalized()
       )
     }
   }
