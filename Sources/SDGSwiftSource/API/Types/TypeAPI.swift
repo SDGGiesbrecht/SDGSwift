@@ -33,6 +33,7 @@
 
       let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
       self.declaration = normalizedDeclaration
+      genericDeclaration = Syntax(normalizedDeclaration)
       genericName = Syntax(normalizedDeclaration.name())
       _storage = APIElementStorage(documentation: documentation, children: children)
       self.constraints = normalizedConstraints
@@ -71,10 +72,7 @@
 
     // MARK: - DeclaredAPIElement
 
-    public var genericDeclaration: Syntax {
-      return declaration
-    }
-
+    public let genericDeclaration: Syntax
     public let genericName: Syntax
 
     // MARK: - OverloadableAPIElement
