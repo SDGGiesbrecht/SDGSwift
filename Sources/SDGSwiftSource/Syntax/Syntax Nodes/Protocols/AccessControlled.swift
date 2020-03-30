@@ -29,7 +29,7 @@
       {
         return true
       } else {
-        return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
+        return ancestors().contains(where: { $0.is(ProtocolDeclSyntax.self) })
       }
     }
   }
