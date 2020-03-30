@@ -98,7 +98,7 @@ let package = Package(
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50100, 0))
+      .exact(Version(0, 50200, 0))
     ),
     .package(
       name: "CommonMark",
