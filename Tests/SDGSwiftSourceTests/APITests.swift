@@ -129,7 +129,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       var foundDocumentationComment = false
       try FunctionalSyntaxScanner(
         checkSyntax: { syntax, context in
-          if let token = syntax as? TokenSyntax {
+          if let token = syntax.as(TokenSyntax.self) {
             if token.tokenKind == .colon {
               foundColon = true
               XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
@@ -249,7 +249,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       var foundY = false
       try FunctionalSyntaxScanner(
         checkSyntax: { syntax, context in
-          if let token = syntax as? TokenSyntax {
+          if let token = syntax.as(TokenSyntax.self) {
             if token.text == "x" {
               foundX = true
               XCTAssert(context.isFragmented())
@@ -277,12 +277,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       var foundEncodable = false
       try FunctionalSyntaxScanner(
         checkSyntax: { syntax, _ in
-          if let function = syntax as? FunctionDeclSyntax {
+          if let function = syntax.as(FunctionDeclSyntax.self) {
             XCTAssert(function.identifier.text ≠ "", "Corrupt function:\n\(function)")
             if function.identifier.text == "<" {
               foundLessThan = true
             }
-          } else if let `protocol` = syntax as? ProtocolDeclSyntax {
+          } else if let `protocol` = syntax.as(ProtocolDeclSyntax.self) {
             if `protocol`.identifier.text == "Encodable" {
               foundEncodable = true
             }
@@ -416,7 +416,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let syntax = try SyntaxParser.parse(source: source)
       var statementsFound = false
       let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
-        if syntax is CodeBlockItemListSyntax {
+        if syntax.is(CodeBlockItemListSyntax.self) {
           statementsFound = true
           XCTAssertEqual(
             syntax.triviaRange(in: context),
