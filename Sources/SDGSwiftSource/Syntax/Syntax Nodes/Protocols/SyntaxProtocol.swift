@@ -30,6 +30,10 @@
 
     // MARK: - Properties
 
+    private func resolvedExistential() -> SyntaxProtocol {
+      return Syntax(self).asProtocol(SyntaxProtocol.self)
+    }
+
     /// Returns the source code of this syntax node.
     public func source() -> String {
       var result = ""
@@ -286,7 +290,7 @@
 
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-      if let element = self as? APISyntax {
+      if let element = self.resolvedExistential() as? APISyntax {
         return element.parseAPI()
       }
       switch self {
