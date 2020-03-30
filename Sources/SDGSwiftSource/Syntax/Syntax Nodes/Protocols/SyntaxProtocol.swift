@@ -274,7 +274,7 @@
         var classes = [
           existentialName,
         ]
-        if self is StringLiteralExprSyntax {
+        if existential is StringLiteralExprSyntax {
           classes.prepend("string")
         }
         result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
