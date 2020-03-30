@@ -24,41 +24,41 @@
       let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
       let newGenericArgumentClause = genericArgumentClause?.normalized()
 
-      if let simple = baseType as? SimpleTypeIdentifierSyntax,
+      if let simple = baseType.as(SimpleTypeIdentifierSyntax.self),
         simple.name.tokenKind == .capitalSelfKeyword
       {
-        return SyntaxFactory.makeSimpleTypeIdentifier(
+        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
           name: newName,
           genericArgumentClause: newGenericArgumentClause
-        )
+        ))
       } else {
-        return SyntaxFactory.makeMemberTypeIdentifier(
+        return TypeSyntax(SyntaxFactory.makeMemberTypeIdentifier(
           baseType: baseType.normalized(),
           period: period.generallyNormalizedAndMissingInsteadOfNil(),
           name: newName,
           genericArgumentClause: newGenericArgumentClause
-        )
+        ))
       }
     }
 
     // MARK: - Merging
 
     internal func rootType() -> TypeSyntax {
-      guard let member = baseType as? MemberTypeIdentifierSyntax else {
+      guard let member = baseType.as(MemberTypeIdentifierSyntax.self) else {
         return baseType
       }
       return member.rootType()
     }
 
     internal func strippingRootType() -> TypeSyntax {
-      guard let member = baseType as? MemberTypeIdentifierSyntax else {
-        return SyntaxFactory.makeSimpleTypeIdentifier(
+      guard let member = baseType.as(MemberTypeIdentifierSyntax.self) else {
+        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
           name: name,
           genericArgumentClause: genericArgumentClause
-        )
+        ))
       }
 
-      return withBaseType(member.strippingRootType())
+      return TypeSyntax(withBaseType(member.strippingRootType()))
     }
   }
 #endif
