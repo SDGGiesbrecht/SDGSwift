@@ -134,7 +134,7 @@
     internal func tokens() -> [TokenSyntax] {
       var tokens: [TokenSyntax] = []
       for child in children {
-        if let token = child as? TokenSyntax {
+        if let token = child.as(TokenSyntax.self) {
           tokens.append(token)
         } else {
           tokens.append(contentsOf: child.tokens())
@@ -337,7 +337,7 @@
           return found
         }
       }
-      return self
+      return Syntax(self)
     }
 
     // MARK: - Normalization
@@ -349,26 +349,26 @@
     internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
       switch self {
       case let conformance as ConformanceRequirementSyntax:
-        return conformance.normalized(comma: comma)
+        return Syntax(conformance.normalized(comma: comma))
       case let sameType as SameTypeRequirementSyntax:
-        return sameType.normalized(comma: comma)
+        return Syntax(sameType.normalized(comma: comma))
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedPrecedenceAttribute() -> Syntax {
       switch self {
       case let relation as PrecedenceGroupRelationSyntax:
-        return relation.normalizedForAPIDeclaration()
+        return Syntax(relation.normalizedForAPIDeclaration())
       case let associativity as PrecedenceGroupAssociativitySyntax:
-        return associativity.normalizedForAPIDeclaration()
+        return Syntax(associativity.normalizedForAPIDeclaration())
       case let assignment as PrecedenceGroupAssignmentSyntax:
-        return assignment.normalizedForAPIDeclaration()
+        return Syntax(assignment.normalizedForAPIDeclaration())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
@@ -413,58 +413,58 @@
     internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
       switch self {
       case let attribute as AttributeSyntax:
-        return attribute.normalizedForAPIDeclaration()
+        return Syntax(attribute.normalizedForAPIDeclaration())
       case let attribute as CustomAttributeSyntax:
-        return attribute.normalizedForAPIDeclaration()
+        return Syntax(attribute.normalizedForAPIDeclaration())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self as? AttributeSyntax
+        return Syntax(AttributeSyntax(Syntax(self)))
       }
     }
 
     internal func normalizedAttributeArgument() -> Syntax {
       switch self {
       case let availablitiy as AvailabilitySpecListSyntax:
-        return availablitiy.normalized()
+        return Syntax(availablitiy.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedAvailabilityArgument() -> Syntax {
       switch self {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let labeled as AvailabilityLabeledArgumentSyntax:
-        return labeled.normalized()
+        return Syntax(labeled.normalized())
       case let restriction as AvailabilityVersionRestrictionSyntax:
-        return restriction.normalized()
+        return Syntax(restriction.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedAvailability() -> Syntax {
       switch self {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let version as VersionTupleSyntax:
-        return version.normalized()
+        return Syntax(version.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedVersion() -> Syntax {
       switch self {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
@@ -473,7 +473,7 @@
     internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
       let existingCondition = Array(tokens().dropFirst())
       let newCondition = Array(addition.tokens().dropFirst())
-      return SyntaxFactory.makeUnknownSyntax(
+      return Syntax(SyntaxFactory.makeUnknownSyntax(
         tokens: [
           SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
           SyntaxFactory.makeToken(.leftParen)
@@ -488,7 +488,7 @@
         ] + existingCondition + [
           SyntaxFactory.makeToken(.rightParen)
         ]
-      )
+      ))
     }
 
     // MARK: - Debugging
