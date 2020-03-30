@@ -33,7 +33,10 @@
     /// - Parameters:
     ///     - module: The module target.
     ///     - manifest: The syntax of the package manifest.
-    public convenience init<Syntax>(module: PackageModel.Target, manifest: Syntax?) throws where Syntax: SyntaxProtocol {
+    public convenience init<Syntax>(
+      module: PackageModel.Target,
+      manifest: Syntax?
+    ) throws where Syntax: SyntaxProtocol {
       let search = ".target(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(module.name)\u{22}".scalars
