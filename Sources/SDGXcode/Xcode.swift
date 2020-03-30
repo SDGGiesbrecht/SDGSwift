@@ -412,7 +412,6 @@ public enum Xcode: VersionedExternalProcess {
           } catch {
             return .failure(.foundationError(error))
           }
-          let sourceLines = source.lines
           func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
             let digitsOnly = string.replacingOccurrences(of: " ", with: "")
             if let integer = Int(digitsOnly) {
