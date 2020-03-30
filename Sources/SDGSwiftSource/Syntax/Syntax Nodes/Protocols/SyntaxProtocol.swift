@@ -343,7 +343,7 @@
     // MARK: - Normalization
 
     internal func withTriviaReducedToSpaces() -> Syntax {
-      return TriviaNormalizer().visit(self)
+      return TriviaNormalizer().visit(Syntax(self))
     }
 
     internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
