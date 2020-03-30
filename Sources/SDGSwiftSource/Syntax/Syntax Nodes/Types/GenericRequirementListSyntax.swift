@@ -37,18 +37,17 @@
       case sameType
       case unknown
     }
-    private static func group(for requirement: Syntax) -> Group {
-      switch requirement {
-      case is ConformanceRequirementSyntax:
+    private static func group(for requirement: GenericRequirementSyntax) -> Group {
+      if requirement.body.is(ConformanceRequirementSyntax.self) {
         return .conformance
-      case is SameTypeRequirementSyntax:
+      } else if requirement.body.is(SameTypeRequirementSyntax.self) {
         return .sameType
-      default:  // @exempt(from: tests)
+      } else {  // @exempt(from: tests)
         requirement.warnUnidentified()
         return .unknown
       }
     }
-    private static func arrangeGenericRequirements(lhs: Syntax, rhs: Syntax) -> Bool {
+    private static func arrangeGenericRequirements(lhs: GenericRequirementSyntax, rhs: GenericRequirementSyntax) -> Bool {
       return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
     }
 
