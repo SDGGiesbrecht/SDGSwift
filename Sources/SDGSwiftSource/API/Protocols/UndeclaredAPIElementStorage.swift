@@ -20,8 +20,8 @@
 
     // MARK: - Initialization
 
-    internal init(type: TypeSyntax) {
-      self.type = type.normalized()
+    internal init<Syntax>(type: Syntax) where Syntax: TypeSyntaxProtocol {
+      self.type = TypeSyntax(type).normalized()
       self.storage = APIElementStorage(documentation: [])
     }
 
