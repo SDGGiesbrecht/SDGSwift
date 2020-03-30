@@ -261,9 +261,10 @@
       )
     }
 
-    internal func generallyNormalized(leadingTrivia: Trivia = [], trailingTrivia: Trivia = [])
-      -> TokenSyntax?
-    {
+    internal func generallyNormalized(
+      leadingTrivia: Trivia = [],
+      trailingTrivia: Trivia = []
+    ) -> TokenSyntax? {
       if ¬isPresent {
         return nil
       }
