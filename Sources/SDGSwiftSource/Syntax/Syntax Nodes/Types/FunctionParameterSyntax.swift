@@ -71,9 +71,9 @@
 
     // MARK: - API
 
-    internal func normalizedForDeclaration(labelBehaviour: LabelBehaviour)
-      -> FunctionParameterSyntax
-    {
+    internal func normalizedForDeclaration(
+      labelBehaviour: LabelBehaviour
+    ) -> FunctionParameterSyntax {
 
       var firstName = self.firstName?.generallyNormalized()
       var secondName = self.secondName?.generallyNormalized(leadingTrivia: .spaces(1))
