@@ -146,7 +146,7 @@
     // @documentation(SDGSwiftSource.Syntax.firstToken())
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
-      if let token = self as? TokenSyntax,
+      if let token = Syntax(self).as(TokenSyntax.self),
         token.isPresent
       {
         return token
@@ -157,7 +157,7 @@
     // @documentation(SDGSwiftSource.Syntax.lastToken())
     /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
-      if let token = self as? TokenSyntax,
+      if let token = Syntax(self).as(TokenSyntax.self),
         token.isPresent
       {
         return token
