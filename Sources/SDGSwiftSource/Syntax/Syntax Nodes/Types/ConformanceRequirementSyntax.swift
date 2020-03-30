@@ -17,7 +17,7 @@
 
   extension ConformanceRequirementSyntax {
 
-    internal func normalized(comma: Bool) -> ConformanceRequirementSyntax {
+    internal func normalized() -> ConformanceRequirementSyntax {
       return SyntaxFactory.makeConformanceRequirement(
         leftTypeIdentifier: leftTypeIdentifier.normalized(),
         colon: SyntaxFactory.makeToken(

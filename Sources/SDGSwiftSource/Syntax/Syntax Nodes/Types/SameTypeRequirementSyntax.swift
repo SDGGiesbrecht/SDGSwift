@@ -17,7 +17,7 @@
 
   extension SameTypeRequirementSyntax {
 
-    internal func normalized(comma: Bool) -> SameTypeRequirementSyntax {
+    internal func normalized() -> SameTypeRequirementSyntax {
       var types = (leftTypeIdentifier.normalized(), rightTypeIdentifier.normalized())
       if types.0.source() > types.1.source() {
         swap(&types.0, &types.1)
@@ -29,8 +29,7 @@
           leadingTrivia: .spaces(1),
           trailingTrivia: .spaces(1)
         ),
-        rightTypeIdentifier: types.1,
-        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
+        rightTypeIdentifier: types.1
       )
     }
   }

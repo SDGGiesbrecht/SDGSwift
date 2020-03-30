@@ -346,18 +346,6 @@
       return TriviaNormalizer().visit(Syntax(self))
     }
 
-    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
-      switch self {
-      case let conformance as ConformanceRequirementSyntax:
-        return Syntax(conformance.normalized(comma: comma))
-      case let sameType as SameTypeRequirementSyntax:
-        return Syntax(sameType.normalized(comma: comma))
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
     internal func normalizedPrecedenceAttribute() -> Syntax {
       switch self {
       case let relation as PrecedenceGroupRelationSyntax:

@@ -22,33 +22,14 @@
   extension GenericRequirementListSyntax: Mergeable {
 
     internal func normalized() -> GenericRequirementListSyntax {
-      var requirements = map({ $0.normalizedGenericRequirement(comma: true) }).sorted(
-        by: GenericRequirementListSyntax.arrangeGenericRequirements
+      var requirements = map({ $0.normalized(comma: true) }).sorted(
+        by: GenericRequirementSyntax.arrangeGenericRequirements
       )
       if ¬requirements.isEmpty {
         let last = requirements.removeLast()
-        requirements.append(last.normalizedGenericRequirement(comma: false))
+        requirements.append(last.normalized(comma: false))
       }
       return SyntaxFactory.makeGenericRequirementList(requirements)
-    }
-
-    private enum Group: OrderedEnumeration {
-      case conformance
-      case sameType
-      case unknown
-    }
-    private static func group(for requirement: GenericRequirementSyntax) -> Group {
-      if requirement.body.is(ConformanceRequirementSyntax.self) {
-        return .conformance
-      } else if requirement.body.is(SameTypeRequirementSyntax.self) {
-        return .sameType
-      } else {  // @exempt(from: tests)
-        requirement.warnUnidentified()
-        return .unknown
-      }
-    }
-    private static func arrangeGenericRequirements(lhs: GenericRequirementSyntax, rhs: GenericRequirementSyntax) -> Bool {
-      return (group(for: lhs), lhs.source()) < (group(for: rhs), rhs.source())
     }
 
     // MARK: - Mergeable
