@@ -49,7 +49,7 @@
     }
 
     public var genericName: Syntax {
-      return type
+      return Syntax(type)
     }
 
     // MARK: - APIElementProtocol
