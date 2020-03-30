@@ -141,7 +141,7 @@
       )
     }
     private func scan(_ node: Syntax, context: SyntaxContext) throws {
-      if let token = node as? TokenSyntax {
+      if let token = node.as(TokenSyntax.self) {
         let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: true)
         try scan(token.leadingTrivia, context: leadingTriviaContext)
         if shouldExtend(token),
