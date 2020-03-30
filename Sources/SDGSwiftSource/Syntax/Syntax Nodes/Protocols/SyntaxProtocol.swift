@@ -205,7 +205,9 @@
       internalIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> String {
-      switch resolvedExistential() {
+      let existential = resolvedExistential()
+      let existentialName = "\(type(of: existential))"
+      switch existential {
       case let token as TokenSyntax:
         var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(
           internalIdentifiers: internalIdentifiers,
@@ -219,14 +221,14 @@
           )
           result.prepend(
             contentsOf:
-              "<span class=\u{22}\(Self.self) \(token.tokenKind.cssName)\u{22}>"
+              "<span class=\u{22}\(existentialName) \(token.tokenKind.cssName)\u{22}>"
           )
           result.append(contentsOf: "</span>")
         } else {
           var source = HTML.escapeTextForCharacterData(token.text)
 
           var classes = [
-            "\(Self.self)", token.tokenKind.cssName
+            existentialName, token.tokenKind.cssName
           ]
           if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
             classes.prepend(`class`)
@@ -270,7 +272,7 @@
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
         var classes = [
-          "\(Self.self)",
+          existentialName,
         ]
         if self is StringLiteralExprSyntax {
           classes.prepend("string")
