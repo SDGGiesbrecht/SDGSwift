@@ -33,7 +33,7 @@
 
       let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
       self.declaration = normalizedDeclaration
-      genericName = normalizedDeclaration.name()
+      genericName = Syntax(normalizedDeclaration.name())
       _storage = APIElementStorage(documentation: documentation, children: children)
       self.constraints = normalizedConstraints
     }
