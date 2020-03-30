@@ -205,7 +205,7 @@
       internalIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> String {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
         var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(
           internalIdentifiers: internalIdentifiers,
