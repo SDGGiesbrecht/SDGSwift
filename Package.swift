@@ -91,9 +91,9 @@ let package = Package(
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
+      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .branch("swift‐5.2")
+      .exact(Version(0, 6, 0))
     ),
     .package(
       name: "SwiftSyntax",
