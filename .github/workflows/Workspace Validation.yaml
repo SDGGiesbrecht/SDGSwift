@@ -240,6 +240,20 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
           --output '/Library/icu-64/usr/lib/libicudt64.so'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_ANDROID=true
+        swift build --destination .github/workflows/Android/SDK.json \
+          --build-tests --enable-test-discovery \
+          -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
     - name: Copy libraries
       shell: bash
       run: |
@@ -252,6 +266,11 @@ jobs:
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
         mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
   Android_II:
     name: Android II
     runs-on: macos-10.15
@@ -259,8 +278,34 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare script
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/SDGSwiftPackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
     - name: Install emulator
       uses: malinskiy/action-android/install-sdk@release/0.0.5
+    - name: Test
+      uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+      with:
+        abi: x86_64
+        cmd: .build/SDG/Emulator.sh
   Miscellaneous:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
@@ -284,6 +329,54 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
+    - name: Install Workspace
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace version •language '🇨🇦EN' •use‐version 0.31.0
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.31.0
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.31.0
+        fi
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace refresh •language '🇨🇦EN' •use‐version 0.31.0
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.31.0
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.31.0
+        fi
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace validate •job miscellaneous •language '🇨🇦EN' •use‐version 0.31.0
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇨🇦EN' •use‐version 0.31.0
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇨🇦EN' •use‐version 0.31.0
+        fi
     - name: Grant permission to cache
       shell: bash
       run: |
