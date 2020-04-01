@@ -36,6 +36,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        swift --version
         swift test
   Windows:
     runs-on: windows-2019
