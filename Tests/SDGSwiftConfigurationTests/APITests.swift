@@ -60,7 +60,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
           // Assuming the above file is called “SampleConfigurationFile.swift”...
           let name = UserFacing<StrictString, APILocalization>(
-            { _ in return "SampleConfigurationFile" }
+            { localization in
+              return "SampleConfigurationFile"
+            }
           )
 
           // Change this to actually point at a directory containing the above file.
