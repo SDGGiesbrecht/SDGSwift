@@ -29,15 +29,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        export DEVELOPER_DIR=/Applications/Xcode_11.4.app/Contents/Developer
-        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift --version
-        swift package --version
         swift test
   Windows:
     runs-on: windows-2019
@@ -128,10 +125,11 @@ jobs:
         git clone https://github.com/SDGGiesbrecht/swift-cmark .build/SDG/Dependencies/CommonMark --branch 0.0.50100 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 4.4.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGWeb .build/SDG/Dependencies/SDGWeb --branch 5.1.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.5.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50100.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.2.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.6.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.3.0 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.5 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
     - name: Build
       shell: bash
       run: |
@@ -310,7 +308,7 @@ jobs:
         cmd: .build/SDG/Emulator.sh
   Miscellaneous:
     runs-on: ubuntu-18.04
-    container: swift:5.1.3-bionic
+    container: swift:5.2-bionic
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -331,6 +329,22 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
+    - name: Install Workspace
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.31.0
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.31.0
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
+            .build/SDG/Workspace/workspace version •use‐version 0.31.0
+        fi
     - name: Grant permission to cache
       shell: bash
       run: |
