@@ -36,8 +36,6 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    // #workaround(This test is currently impossible.)
-    #if false
     #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
       try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
         FileManager.default.delete(.cache)
@@ -209,7 +207,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         #endif
       }
-    #endif
     #endif
   }
 
