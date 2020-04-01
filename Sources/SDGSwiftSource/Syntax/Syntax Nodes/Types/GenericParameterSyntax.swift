@@ -31,17 +31,16 @@
       var requirement: ConformanceRequirementSyntax?
       if let conformance = inheritedType {
         requirement = SyntaxFactory.makeConformanceRequirement(
-          leftTypeIdentifier: SyntaxFactory.makeSimpleTypeIdentifier(
+          leftTypeIdentifier: TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
             name: normalizedName,
             genericArgumentClause: nil
-          ),
+          )),
           colon: SyntaxFactory.makeToken(
             .colon,
             leadingTrivia: .spaces(1),
             trailingTrivia: .spaces(1)
           ),
-          rightTypeIdentifier: conformance.normalized(),
-          trailingComma: nil
+          rightTypeIdentifier: conformance.normalized()
         )
       }
       return (parameter, requirement)

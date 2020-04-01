@@ -19,7 +19,7 @@
 
   import SDGSwiftSource
 
-  internal protocol AccessControlled: Syntax {
+  internal protocol AccessControlled: SyntaxProtocol {
     var modifiers: ModifierListSyntax? { get }
     func withModifiers(_ modifiers: ModifierListSyntax?) -> Self
   }

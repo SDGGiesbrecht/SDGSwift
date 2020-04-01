@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 /*
  Package.swift
@@ -90,15 +90,18 @@ let package = Package(
       from: Version(4, 4, 1)
     ),
     .package(
+      name: "SwiftPM",
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 5, 0))
+      .exact(Version(0, 6, 0))
     ),
     .package(
+      name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50100, 0))
+      .exact(Version(0, 50200, 0))
     ),
     .package(
+      name: "CommonMark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50100))
     ),
@@ -364,12 +367,12 @@ import Foundation
       "SDGSwiftSourceTests"
     ]
     for target in package.targets where needSwiftSyntax.contains(target.name) {
-      target.dependencies.append(.product(name: "SwiftSyntax", package: "swift\u{2D}syntax"))
+      target.dependencies.append(.product(name: "SwiftSyntax", package: "SwiftSyntax"))
     }
 
     for target in package.targets where target.name == "SDGSwiftPackageManager" {
       target.dependencies.append(
-        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
       )
     }
   }
@@ -379,7 +382,7 @@ import Foundation
 #if !os(Windows)
   if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
     for target in package.targets where target.name == "SDGSwiftSource" {
-      target.dependencies.append(.product(name: "CommonMark", package: "swift\u{2D}cmark"))
+      target.dependencies.append(.product(name: "CommonMark", package: "CommonMark"))
     }
   }
 #endif

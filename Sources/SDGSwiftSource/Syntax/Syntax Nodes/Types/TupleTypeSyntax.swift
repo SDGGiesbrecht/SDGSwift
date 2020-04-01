@@ -28,16 +28,16 @@
       }
 
       if elements.isEmpty {
-        return SyntaxFactory.makeSimpleTypeIdentifier(
+        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
           name: SyntaxFactory.makeToken(.identifier("Void")),
           genericArgumentClause: nil
-        )
+        ))
       } else {
-        return SyntaxFactory.makeTupleType(
+        return TypeSyntax(SyntaxFactory.makeTupleType(
           leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
           elements: elements.normalized(),
           rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-        )
+        ))
       }
     }
   }

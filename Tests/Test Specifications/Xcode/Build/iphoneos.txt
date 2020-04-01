@@ -8,6 +8,7 @@ CreateBuildDirectory [...]/Products
 CreateUniversalBinary [...]/Mock normal armv7\ arm64
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftsourceinfo
 Ld [...]/Mock normal arm64
 Ld [...]/Mock normal armv7
 MergeSwiftModule normal arm64
@@ -20,6 +21,7 @@ Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Building targets in parallel
 note: Constructing build description
 note: Planning build
 note: Using new build system

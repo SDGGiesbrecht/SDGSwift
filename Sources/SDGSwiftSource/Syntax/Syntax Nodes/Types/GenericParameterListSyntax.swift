@@ -23,12 +23,15 @@
       GenericParameterListSyntax, GenericRequirementListSyntax?
     ) {
       var parameters: [GenericParameterSyntax] = []
-      var requirements: [ConformanceRequirementSyntax] = []
+      var requirements: [GenericRequirementSyntax] = []
       for parameter in self {
         let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
         parameters.append(parameter)
         if let requirement = conformance {
-          requirements.append(requirement)
+          requirements.append(SyntaxFactory.makeGenericRequirement(
+            body: Syntax(requirement),
+            trailingComma: nil
+          ))
         }
       }
       return (

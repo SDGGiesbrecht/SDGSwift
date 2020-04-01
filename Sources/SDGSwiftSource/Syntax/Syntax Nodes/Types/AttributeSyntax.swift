@@ -25,16 +25,16 @@
     internal func indicatesAbsence() -> Bool {
       switch attributeName.text {
       case "available":
-        guard let arguments = argument as? AvailabilitySpecListSyntax else {
+        guard let arguments = argument?.as(AvailabilitySpecListSyntax.self) else {
           return false  // @exempt(from: tests) Should never occur.
         }
         return arguments.contains(where: { argument in
-          if let token = argument.entry as? TokenSyntax,
+          if let token = argument.entry.as(TokenSyntax.self),
             token.text ∈ AttributeSyntax.absenceIndicators
           {
             return true
           }
-          if let labelled = argument.entry as? AvailabilityLabeledArgumentSyntax,
+          if let labelled = argument.entry.as(AvailabilityLabeledArgumentSyntax.self),
             labelled.label.text ∈ AttributeSyntax.absenceIndicators
           {
             return true

@@ -24,8 +24,11 @@
 
     // MARK: - Initialization
 
-    internal init(type: TypeSyntax, constraints: GenericWhereClauseSyntax?, children: [APIElement])
-    {
+    internal init<Syntax>(
+      type: Syntax,
+      constraints: GenericWhereClauseSyntax?,
+      children: [APIElement]
+    ) where Syntax: TypeSyntaxProtocol {
       _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
       self.constraints = constraints
       self.children = children
@@ -41,7 +44,7 @@
       return self.type.source() == type.genericName.source()
     }
     internal func nested(in type: TypeAPI) -> ExtensionAPI? {
-      guard let memberType = self.type as? MemberTypeIdentifierSyntax,
+      guard let memberType = self.type.as(MemberTypeIdentifierSyntax.self),
         memberType.rootType().source() == type.genericName.source()
       else {
         return nil

@@ -15,7 +15,7 @@
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
   import SwiftSyntax
 
-  internal protocol Inheritor: Syntax {
+  internal protocol Inheritor: SyntaxProtocol {
     var inheritanceClause: TypeInheritanceClauseSyntax? { get }
   }
 #endif

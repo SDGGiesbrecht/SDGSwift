@@ -26,9 +26,13 @@
   import SwiftSyntax
   import enum SDGHTML.HTML
 
-  extension Syntax {
+  extension SyntaxProtocol {
 
     // MARK: - Properties
+
+    private func resolvedExistential() -> SyntaxProtocol {
+      return Syntax(self).asProtocol(SyntaxProtocol.self)
+    }
 
     /// Returns the source code of this syntax node.
     public func source() -> String {
@@ -134,7 +138,7 @@
     internal func tokens() -> [TokenSyntax] {
       var tokens: [TokenSyntax] = []
       for child in children {
-        if let token = child as? TokenSyntax {
+        if let token = child.as(TokenSyntax.self) {
           tokens.append(token)
         } else {
           tokens.append(contentsOf: child.tokens())
@@ -146,7 +150,7 @@
     // @documentation(SDGSwiftSource.Syntax.firstToken())
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
-      if let token = self as? TokenSyntax,
+      if let token = Syntax(self).as(TokenSyntax.self),
         token.isPresent
       {
         return token
@@ -157,7 +161,7 @@
     // @documentation(SDGSwiftSource.Syntax.lastToken())
     /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
-      if let token = self as? TokenSyntax,
+      if let token = Syntax(self).as(TokenSyntax.self),
         token.isPresent
       {
         return token
@@ -201,7 +205,9 @@
       internalIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> String {
-      switch self {
+      let existential = resolvedExistential()
+      let existentialName = "\(type(of: existential))"
+      switch existential {
       case let token as TokenSyntax:
         var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(
           internalIdentifiers: internalIdentifiers,
@@ -215,14 +221,14 @@
           )
           result.prepend(
             contentsOf:
-              "<span class=\u{22}\(Self.self) \(token.tokenKind.cssName)\u{22}>"
+              "<span class=\u{22}\(existentialName) \(token.tokenKind.cssName)\u{22}>"
           )
           result.append(contentsOf: "</span>")
         } else {
           var source = HTML.escapeTextForCharacterData(token.text)
 
           var classes = [
-            "\(Self.self)", token.tokenKind.cssName
+            existentialName, token.tokenKind.cssName
           ]
           if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
             classes.prepend(`class`)
@@ -247,7 +253,7 @@
       default:
         var identifiers = internalIdentifiers
         var parameterClause: ParameterClauseSyntax?
-        switch self {
+        switch existential {
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
         case let `subscript` as SubscriptDeclSyntax:
@@ -266,9 +272,9 @@
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
         var classes = [
-          "\(Self.self)",
+          existentialName,
         ]
-        if self is StringLiteralExprSyntax {
+        if existential is StringLiteralExprSyntax {
           classes.prepend("string")
         }
         result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
@@ -286,10 +292,10 @@
 
     /// Returns the API provided by this node.
     public func api() -> [APIElement] {
-      if let element = self as? APISyntax {
+      if let element = self.resolvedExistential() as? APISyntax {
         return element.parseAPI()
       }
-      switch self {
+      switch resolvedExistential() {
       case let conditionallyCompiledSection as IfConfigDeclSyntax:
         return conditionallyCompiledSection.conditionalAPI
       default:
@@ -337,45 +343,33 @@
           return found
         }
       }
-      return self
+      return Syntax(self)
     }
 
     // MARK: - Normalization
 
     internal func withTriviaReducedToSpaces() -> Syntax {
-      return TriviaNormalizer().visit(self)
-    }
-
-    internal func normalizedGenericRequirement(comma: Bool) -> Syntax {
-      switch self {
-      case let conformance as ConformanceRequirementSyntax:
-        return conformance.normalized(comma: comma)
-      case let sameType as SameTypeRequirementSyntax:
-        return sameType.normalized(comma: comma)
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return self
-      }
+      return TriviaNormalizer().visit(Syntax(self))
     }
 
     internal func normalizedPrecedenceAttribute() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let relation as PrecedenceGroupRelationSyntax:
-        return relation.normalizedForAPIDeclaration()
+        return Syntax(relation.normalizedForAPIDeclaration())
       case let associativity as PrecedenceGroupAssociativitySyntax:
-        return associativity.normalizedForAPIDeclaration()
+        return Syntax(associativity.normalizedForAPIDeclaration())
       case let assignment as PrecedenceGroupAssignmentSyntax:
-        return assignment.normalizedForAPIDeclaration()
+        return Syntax(assignment.normalizedForAPIDeclaration())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax
       .PrecedenceAttributeGroup
     {
-      switch self {
+      switch resolvedExistential() {
       case let relation as PrecedenceGroupRelationSyntax:
         if relation.higherThanOrLowerThan.text == "lowerThan" {
           return .before
@@ -399,7 +393,7 @@
     }
 
     internal func attributeIndicatesAbsence() -> Bool {
-      switch self {
+      switch resolvedExistential() {
       case let attribute as AttributeSyntax:
         return attribute.indicatesAbsence()
       case is CustomAttributeSyntax:
@@ -411,60 +405,60 @@
     }
 
     internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
-      switch self {
+      switch resolvedExistential() {
       case let attribute as AttributeSyntax:
-        return attribute.normalizedForAPIDeclaration()
+        return Syntax(attribute.normalizedForAPIDeclaration())
       case let attribute as CustomAttributeSyntax:
-        return attribute.normalizedForAPIDeclaration()
+        return Syntax(attribute.normalizedForAPIDeclaration())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self as? AttributeSyntax
+        return Syntax(AttributeSyntax(Syntax(self)))
       }
     }
 
     internal func normalizedAttributeArgument() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let availablitiy as AvailabilitySpecListSyntax:
-        return availablitiy.normalized()
+        return Syntax(availablitiy.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedAvailabilityArgument() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let labeled as AvailabilityLabeledArgumentSyntax:
-        return labeled.normalized()
+        return Syntax(labeled.normalized())
       case let restriction as AvailabilityVersionRestrictionSyntax:
-        return restriction.normalized()
+        return Syntax(restriction.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedAvailability() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       case let version as VersionTupleSyntax:
-        return version.normalized()
+        return Syntax(version.normalized())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
     internal func normalizedVersion() -> Syntax {
-      switch self {
+      switch resolvedExistential() {
       case let token as TokenSyntax:
-        return token.generallyNormalizedAndMissingInsteadOfNil()
+        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
       default:  // @exempt(from: tests)
         warnUnidentified()
-        return self
+        return Syntax(self)
       }
     }
 
@@ -473,7 +467,7 @@
     internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
       let existingCondition = Array(tokens().dropFirst())
       let newCondition = Array(addition.tokens().dropFirst())
-      return SyntaxFactory.makeUnknownSyntax(
+      return Syntax(SyntaxFactory.makeUnknownSyntax(
         tokens: [
           SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
           SyntaxFactory.makeToken(.leftParen)
@@ -488,7 +482,7 @@
         ] + existingCondition + [
           SyntaxFactory.makeToken(.rightParen)
         ]
-      )
+      ))
     }
 
     // MARK: - Debugging
@@ -498,7 +492,7 @@
       function: StaticString = #function
     ) {  // @exempt(from: tests)
       #if DEBUG
-        switch self {
+        switch resolvedExistential() {
         case is UnknownSyntax,
           is UnknownPatternSyntax,
           is UnknownTypeSyntax:

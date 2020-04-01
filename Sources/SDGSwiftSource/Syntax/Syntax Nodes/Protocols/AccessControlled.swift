@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  internal protocol AccessControlled: Syntax {
+  internal protocol AccessControlled: SyntaxProtocol {
     var modifiers: ModifierListSyntax? { get }
   }
 
@@ -29,7 +29,7 @@
       {
         return true
       } else {
-        return ancestors().contains(where: { $0 is ProtocolDeclSyntax })
+        return ancestors().contains(where: { $0.is(ProtocolDeclSyntax.self) })
       }
     }
   }

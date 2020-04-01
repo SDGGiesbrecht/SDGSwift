@@ -26,7 +26,7 @@
       if ¬token.trailingTrivia.isEmpty {
         token = token.withTrailingTrivia(Trivia(pieces: [.spaces(1)]))
       }
-      return token
+      return Syntax(token)
     }
   }
 #endif

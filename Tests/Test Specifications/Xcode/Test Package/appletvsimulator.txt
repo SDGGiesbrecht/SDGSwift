@@ -7,10 +7,14 @@ CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftsourceinfo
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
+Ditto [...]/MockTests.swiftsourceinfo
 Ld [...]/Mock.o normal x_
 Ld [...]/MockTests normal x_
 MergeSwiftModule normal x_
@@ -32,6 +36,7 @@ Testing started on 'Apple TV K'
 Touch [...]/MockTests.xctest
 User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.modulemap
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
 WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
@@ -39,6 +44,7 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
 Writing result bundle at path:
+note: Building targets in parallel
 note: Constructing build description
 note: Planning build
 note: Using new build system

@@ -24,7 +24,7 @@
     // MARK: - OverloadableAPIElement
 
     internal func genericOverloadPattern() -> Syntax {
-      return declaration.overloadPattern()
+      return Syntax(declaration.overloadPattern())
     }
   }
 #endif

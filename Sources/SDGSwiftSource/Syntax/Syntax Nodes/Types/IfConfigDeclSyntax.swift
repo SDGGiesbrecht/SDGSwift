@@ -25,9 +25,9 @@
       var previousGroups: [(condition: Syntax, elements: Set<APIElement>)] = []
 
       for syntaxGroup in clauses {
-        let currentCondition = SyntaxFactory.makeUnknownSyntax(
+        let currentCondition = Syntax(SyntaxFactory.makeUnknownSyntax(
           tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? []
-        )
+        ))
 
         var apiGroup: (condition: Syntax, elements: Set<APIElement>) = (currentCondition, [])
         defer { previousGroups.append(apiGroup) }
@@ -96,7 +96,7 @@
 
             var composedConditions: Syntax?
             if ¬composedConditionTokens.isEmpty {
-              composedConditions = SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
+              composedConditions = Syntax(SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens))
             }
             combined[apiElement] = composedConditions
           }

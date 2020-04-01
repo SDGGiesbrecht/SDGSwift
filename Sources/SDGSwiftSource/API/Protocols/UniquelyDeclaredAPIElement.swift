@@ -16,8 +16,8 @@
   import SwiftSyntax
 
   internal protocol _UniquelyDeclaredAPIElement: DeclaredAPIElement {
-    associatedtype Declaration: Syntax
-    associatedtype Name: Syntax
+    associatedtype Declaration: SyntaxProtocol
+    associatedtype Name: SyntaxProtocol
 
     init(
       documentation: [SymbolDocumentation],
@@ -38,11 +38,11 @@
   extension _UniquelyDeclaredAPIElement {
 
     public var genericDeclaration: Syntax {
-      return declaration
+      return Syntax(declaration)
     }
 
     public var genericName: Syntax {
-      return name
+      return Syntax(name)
     }
   }
 #endif

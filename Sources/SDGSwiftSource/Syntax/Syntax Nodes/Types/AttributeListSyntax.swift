@@ -26,13 +26,13 @@
       var builtIn: [AttributeSyntax] = []
       var custom: [Syntax] = []
       for entry in unsorted {
-        if let attribute = entry as? AttributeSyntax {  // Built‐in
+        if let attribute = entry.as(AttributeSyntax.self) {  // Built‐in
           builtIn.append(attribute)
         } else {  // Custom
           custom.append(entry)
         }
       }
-      let sorted = builtIn.sorted(by: AttributeSyntax.arrange) + custom
+      let sorted = builtIn.sorted(by: AttributeSyntax.arrange).map({ Syntax($0) }) + custom
       return sorted.isEmpty ? nil : SyntaxFactory.makeAttributeList(sorted)
     }
   }

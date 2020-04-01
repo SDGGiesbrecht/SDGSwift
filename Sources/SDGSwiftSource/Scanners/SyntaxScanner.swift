@@ -132,7 +132,7 @@
     ///     - node: The node to scan.
     public func scan(_ node: SourceFileSyntax) throws {
       try scan(
-        node,
+        Syntax(node),
         context: SyntaxContext(
           fragmentContext: node.source(),
           fragmentOffset: 0,
@@ -141,7 +141,7 @@
       )
     }
     private func scan(_ node: Syntax, context: SyntaxContext) throws {
-      if let token = node as? TokenSyntax {
+      if let token = node.as(TokenSyntax.self) {
         let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: true)
         try scan(token.leadingTrivia, context: leadingTriviaContext)
         if shouldExtend(token),
@@ -154,7 +154,7 @@
             }
           }
         } else {
-          _ = visit(token, context: context)
+          _ = visit(Syntax(token), context: context)
         }
         let trailingTriviaContext = TriviaContext(
           token: token,

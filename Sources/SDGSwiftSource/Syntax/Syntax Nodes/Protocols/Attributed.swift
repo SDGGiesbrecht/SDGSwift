@@ -15,7 +15,7 @@
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
   import SwiftSyntax
 
-  internal protocol Attributed: Syntax {
+  internal protocol Attributed: SyntaxProtocol {
     var attributes: AttributeListSyntax? { get }
   }
 

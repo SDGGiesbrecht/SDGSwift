@@ -13,6 +13,8 @@
  */
 
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+  import SDGLogic
+
   import SwiftSyntax
 
   import SDGSwiftSource
@@ -20,65 +22,62 @@
   extension Syntax {
 
     var accessors: Syntax? {
-      switch self {
-      case is StructDeclSyntax,
-        is ClassDeclSyntax,
-        is EnumDeclSyntax,
-        is TypealiasDeclSyntax,
-        is AssociatedtypeDeclSyntax,
+      if self.is(StructDeclSyntax.self)
+        ∨ self.is(ClassDeclSyntax.self)
+        ∨ self.is(EnumDeclSyntax.self)
+        ∨ self.is(TypealiasDeclSyntax.self)
+        ∨ self.is(AssociatedtypeDeclSyntax.self)
 
-        is InitializerDeclSyntax,
-        is FunctionDeclSyntax:
+        ∨ self.is(InitializerDeclSyntax.self)
+        ∨ self.is(FunctionDeclSyntax.self) {
         return nil
-      case let variable as VariableDeclSyntax:
+      } else if let variable = self.as(VariableDeclSyntax.self) {
         return variable.bindings.first?.accessor
-      case let `subscript` as SubscriptDeclSyntax:
+      } else if let `subscript` = self.as(SubscriptDeclSyntax.self) {
         return `subscript`.accessor
-      default:
+      } else {
         print("Unidentified declaration type: \(self)")
         return nil
       }
     }
 
     var withoutAccessors: Syntax {
-      switch self {
-      case is StructDeclSyntax,
-        is ClassDeclSyntax,
-        is EnumDeclSyntax,
-        is TypealiasDeclSyntax,
-        is AssociatedtypeDeclSyntax,
+      if self.is(StructDeclSyntax.self)
+        ∨ self.is(ClassDeclSyntax.self)
+        ∨ self.is(EnumDeclSyntax.self)
+        ∨ self.is(TypealiasDeclSyntax.self)
+        ∨ self.is(AssociatedtypeDeclSyntax.self)
 
-        is InitializerDeclSyntax,
-        is FunctionDeclSyntax:
+        ∨ self.is(InitializerDeclSyntax.self)
+        ∨ self.is(FunctionDeclSyntax.self) {
         return self
-      case let variable as VariableDeclSyntax:
+      } else if let variable = self.as(VariableDeclSyntax.self) {
         let bindings = variable.bindings.map({ $0.withAccessor(nil) })
-        return variable.withBindings(SyntaxFactory.makePatternBindingList(bindings))
-      case let `subscript` as SubscriptDeclSyntax:
-        return `subscript`.withAccessor(nil)
-      default:
+        return Syntax(variable.withBindings(SyntaxFactory.makePatternBindingList(bindings)))
+      } else if let `subscript` = self.as(SubscriptDeclSyntax.self) {
+        return Syntax(`subscript`.withAccessor(nil))
+      } else {
         print("Unidentified declaration type: \(self)")
         return self
       }
     }
 
     var genericParameters: GenericParameterClauseSyntax? {
-      switch self {
-      case is StructDeclSyntax,
-        is ClassDeclSyntax,
-        is EnumDeclSyntax,
-        is TypealiasDeclSyntax,
-        is AssociatedtypeDeclSyntax,
+      if self.is(StructDeclSyntax.self)
+        ∨ self.is(ClassDeclSyntax.self)
+        ∨ self.is(EnumDeclSyntax.self)
+        ∨ self.is(TypealiasDeclSyntax.self)
+        ∨ self.is(AssociatedtypeDeclSyntax.self)
 
-        is VariableDeclSyntax:
+        ∨ self.is(VariableDeclSyntax.self) {
         return nil
-      case let initializer as InitializerDeclSyntax:
+      } else if let initializer = self.as(InitializerDeclSyntax.self) {
         return initializer.genericParameterClause
-      case let `subscript` as SubscriptDeclSyntax:
+      } else if let `subscript` = self.as(SubscriptDeclSyntax.self) {
         return `subscript`.genericParameterClause
-      case let function as FunctionDeclSyntax:
+      } else if let function = self.as(FunctionDeclSyntax.self) {
         return function.genericParameterClause
-      default:
+      } else {
         print("Unidentified declaration type: \(self)")
         return nil
       }

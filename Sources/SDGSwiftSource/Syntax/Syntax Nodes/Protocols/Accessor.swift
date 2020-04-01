@@ -54,8 +54,7 @@
           // Stored.
           return true
         }
-        switch accessors {
-        case let accessorBlock as AccessorBlockSyntax:
+        if let accessorBlock = accessors.as(AccessorBlockSyntax.self) {
           if accessorBlock.accessors.count > 1 {
             // Two accessors: get + set
             return true
@@ -63,7 +62,7 @@
             // Just one accessor: get
             return false
           }
-        default:
+        } else {
           // Computed.
           return false
         }

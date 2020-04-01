@@ -96,7 +96,7 @@
         reportProgress(
           String(PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved())
         )
-        dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: nil))
+        dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none))
       }
 
       for module in dependencyModules {
@@ -115,7 +115,7 @@
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(package.name)\u{22}".scalars
       let node = manifest.smallestSubnode(containing: search)
-      let manifestDeclaration = node?.ancestors().first(where: { $0 is VariableDeclSyntax })
+      let manifestDeclaration = node?.ancestors().first(where: { $0.is(VariableDeclSyntax.self) })
       return manifestDeclaration?.documentation ?? []  // @exempt(from: tests)
     }
 

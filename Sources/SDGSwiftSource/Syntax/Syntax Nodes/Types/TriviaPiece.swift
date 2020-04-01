@@ -31,7 +31,7 @@
     /// Whether or not the trivia piece represents a newline.
     public var isNewline: Bool {
       switch self {
-      case .spaces, .tabs, .backticks, .lineComment, .blockComment, .docLineComment,
+      case .spaces, .tabs, .lineComment, .blockComment, .docLineComment,
         .docBlockComment,
         .garbageText:
         return false
@@ -166,8 +166,6 @@
         result = ExtendedTokenSyntax(text: text, kind: .whitespace)
       case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
         result = ExtendedTokenSyntax(text: text, kind: .newlines)
-      case .backticks:
-        result = ExtendedTokenSyntax(text: text, kind: .escape)
       case .lineComment:
         result = LineDeveloperCommentSyntax(source: text, siblings: siblings, index: index)
       case .blockComment:

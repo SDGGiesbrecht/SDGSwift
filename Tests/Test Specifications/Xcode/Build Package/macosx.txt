@@ -8,10 +8,14 @@ CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
+Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftsourceinfo
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
+Ditto [...]/MockTests.swiftsourceinfo
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal x86_64
 Ld [...]/MockTests normal x86_64
@@ -24,12 +28,14 @@ Resolve Package Graph
 Resolved source packages:
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.modulemap
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
 WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty.plist
+note: Building targets in parallel
 note: Constructing build description
 note: Planning build
 note: Using new build system

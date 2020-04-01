@@ -65,7 +65,7 @@
     }
 
     func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
-      if let token = node as? TokenSyntax {
+      if let token = node.as(TokenSyntax.self) {
         highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
       }
       return true

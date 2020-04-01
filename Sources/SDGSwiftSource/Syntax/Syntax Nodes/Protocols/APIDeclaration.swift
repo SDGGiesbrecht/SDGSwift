@@ -15,8 +15,8 @@
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
   import SwiftSyntax
 
-  internal protocol APIDeclaration: Syntax {
-    associatedtype Name: Syntax
+  internal protocol APIDeclaration: SyntaxProtocol {
+    associatedtype Name: SyntaxProtocol
     func normalizedAPIDeclaration() -> Self
     func name() -> Name
     func identifierList() -> Set<String>

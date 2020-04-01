@@ -42,7 +42,7 @@
     {
       return normalizedManifest(
         calledExpression: SyntaxFactory.makeMemberAccessExpr(
-          base: SyntaxFactory.makeBlankUnknownExpr(),
+          base: ExprSyntax(SyntaxFactory.makeBlankUnknownExpr()),
           dot: SyntaxFactory.makeToken(.period),
           name: SyntaxFactory.makeToken(.identifier(entry)),
           declNameArguments: nil
@@ -51,19 +51,20 @@
       )
     }
 
-    private static func normalizedManifest(calledExpression: ExprSyntax, name: String)
-      -> FunctionCallExprSyntax
-    {
+    private static func normalizedManifest<Expression>(
+      calledExpression: Expression,
+      name: String
+    ) -> FunctionCallExprSyntax where Expression: ExprSyntaxProtocol {
       return SyntaxFactory.makeFunctionCallExpr(
-        calledExpression: calledExpression,
+        calledExpression: ExprSyntax(calledExpression),
         leftParen: SyntaxFactory.makeToken(.leftParen),
-        argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-          SyntaxFactory.makeFunctionCallArgument(
+        argumentList: SyntaxFactory.makeTupleExprElementList([
+          SyntaxFactory.makeTupleExprElement(
             label: SyntaxFactory.makeToken(.identifier("name")),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: SyntaxFactory.makeStringLiteralExpr(
+            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(
               name.decomposedStringWithCanonicalMapping
-            ),
+            )),
             trailingComma: nil
           )
         ]),
@@ -73,8 +74,8 @@
     }
 
     internal func manifestEntryName() -> TokenSyntax {
-      guard let literal = argumentList.first?.expression as? StringLiteralExprSyntax,
-        let segment = literal.segments.first as? StringSegmentSyntax
+      guard let literal = argumentList.first?.expression.as(StringLiteralExprSyntax.self),
+        let segment = literal.segments.first?.as(StringSegmentSyntax.self)
       else {
         // @exempt(from: tests) Only reachable with a degenerate declaration.
         return SyntaxFactory.makeUnknown("")

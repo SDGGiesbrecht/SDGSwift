@@ -52,12 +52,12 @@
     public func syntax() throws -> [SyntaxFragment]? {
       if isSwift == true {
         let parsed = try SyntaxParser.parse(source: context)
-        return syntax(of: parsed)
+        return syntax(of: Syntax(parsed))
       } else if isSwift == false {
         return nil
       } else {
         if let parsed = try? SyntaxParser.parse(source: context) {
-          return syntax(of: parsed)
+          return syntax(of: Syntax(parsed))
         } else {  // @exempt(from: tests)
           // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
           return nil
@@ -73,7 +73,7 @@
         if location ⊆ range {
           return [.syntax(node)]
         } else {
-          if let token = node as? TokenSyntax {
+          if let token = node.as(TokenSyntax.self) {
             var position = location.lowerBound
             var result = syntax(of: token.leadingTrivia, startingAt: position)
             position = context.scalars.index(
@@ -83,7 +83,7 @@
 
             let end = context.scalars.index(position, offsetBy: token.text.scalars.count)
             if position..<end ⊆ range {
-              result.append(.syntax(token.withLeadingTrivia([]).withTrailingTrivia([])))
+              result.append(.syntax(Syntax(token.withLeadingTrivia([]).withTrailingTrivia([]))))
             }
             position = end
 
@@ -133,7 +133,6 @@
             .newlines,
             .carriageReturns,
             .carriageReturnLineFeeds,
-            .backticks,
             .lineComment,
             .docLineComment,
             .garbageText:
