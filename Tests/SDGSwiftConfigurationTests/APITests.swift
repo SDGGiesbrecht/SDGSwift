@@ -51,11 +51,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
-          // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.6.0/Sources/SampleConfiguration
+          // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
           let product = "SampleConfiguration"
           let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
           let minimumMacOSVersion = Version(10, 13)
-          let version = Version(0, 12, 7)
+          let version = Version(0, 20, 7)
           let type = SampleConfiguration.self  // Import it first if necessary.
 
           // Assuming the above file is called “SampleConfigurationFile.swift”...
