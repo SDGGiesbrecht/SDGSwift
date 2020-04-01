@@ -55,7 +55,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           let product = "SampleConfiguration"
           let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
           let minimumMacOSVersion = Version(10, 13)
-          let version = Version(0, 20, 7)
+          let version = Version(0, 20, 0)
           let type = SampleConfiguration.self  // Import it first if necessary.
 
           // Assuming the above file is called “SampleConfigurationFile.swift”...
