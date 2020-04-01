@@ -37,6 +37,7 @@ jobs:
       run: |
         set -x
         swift --version
+        swift package --version
         swift test
   Windows:
     runs-on: windows-2019
