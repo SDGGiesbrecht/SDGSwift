@@ -166,7 +166,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )
           }
           func remove(logEntry: String) {
-            let pattern = (logEntry + " ").scalars
+            let pattern = logEntry.scalars
               + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
               + "\n".scalars
             log.scalars.replaceMatches(for: pattern, with: "".scalars)
@@ -175,6 +175,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           abbreviate(logEntry: "Completed resolution in")
           abbreviate(logEntry: "Cloning")
           abbreviate(logEntry: "Resolving")
+          log.lines.removeAll(where: { line in
+            return line.line.contains("Started resolution using".scalars)
+          })
 
           // These may occur out of order.
           remove(logEntry: "Compile Swift Module")
@@ -187,6 +190,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
           remove(logEntry: "Linking")
           remove(logEntry: "warning: invalid duplicate target dependency declaration")
+          remove(logEntry: "\u{27}llbuild\u{27}")
 
           let fractionPatternStart = "[".scalars
             + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
