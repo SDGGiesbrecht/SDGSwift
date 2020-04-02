@@ -44,7 +44,7 @@
         followingChildren: [
           medialDelimiter,
           url,
-          closingDelimiter
+          closingDelimiter,
         ]
       )
 

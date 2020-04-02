@@ -22,9 +22,10 @@ public struct CoverageRegion {
 
   // MARK: - Static Methods
 
-  private static let charactersIrrelevantToCoverage = CharacterSet.whitespacesAndNewlines ∪ [
-    "{", "}", "(", ")"
-  ]
+  private static let charactersIrrelevantToCoverage =
+    CharacterSet.whitespacesAndNewlines ∪ [
+      "{", "}", "(", ")",
+    ]
 
   public static func _normalize(
     regions: inout [CoverageRegion],

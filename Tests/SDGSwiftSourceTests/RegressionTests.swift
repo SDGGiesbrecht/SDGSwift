@@ -36,7 +36,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "///",
         "/// \u{2D} Note: ...",
         "/// ...",
-        "public func function() {}"
+        "public func function() {}",
       ].joined(separator: "\n")
       let parsed = try SyntaxParser.parse(source: source)
       _ = parsed.api()
@@ -49,7 +49,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
       let source = [
         "/// ...&#x2D;...",
-        "public func function() {}"
+        "public func function() {}",
       ].joined(separator: "\n")
       let parsed = try SyntaxParser.parse(source: source)
       XCTAssertEqual(parsed.source(), source)
@@ -72,7 +72,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// > Line 2",
         "/// >",
         "/// > Line 3",
-        "public func function() {}"
+        "public func function() {}",
       ].joined(separator: "\n")
       let parsed = try SyntaxParser.parse(source: source)
       XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)

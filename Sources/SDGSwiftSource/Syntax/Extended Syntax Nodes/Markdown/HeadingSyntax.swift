@@ -71,10 +71,10 @@
 
           var delimiterEnd = documentation.scalars.endIndex
           if let nextNewline = documentation.scalars[
-            newline.range.upperBound..<documentation.scalars.endIndex].firstMatch(
-              for: CharacterSet.newlinePattern
-            )
-          {
+            newline.range.upperBound..<documentation.scalars.endIndex
+          ].firstMatch(
+            for: CharacterSet.newlinePattern
+          ) {
             delimiterEnd = nextNewline.range.lowerBound
           }
           let underline = ExtendedTokenSyntax(

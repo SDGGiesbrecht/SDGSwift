@@ -90,7 +90,7 @@
                     ExtendedTokenSyntax(
                       text: indent?.text ?? " ",  // @exempt(from: tests)
                       kind: .whitespace
-                    )
+                    ),
                   ],
                   at: index
                 )

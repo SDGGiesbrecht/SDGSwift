@@ -25,6 +25,6 @@ func HTMLPage(content: String, cssPath: String) -> String {
     content,
     "",
     " </body>",
-    "</html>"
+    "</html>",
   ].joined(separator: "\n")
 }

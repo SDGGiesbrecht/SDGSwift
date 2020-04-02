@@ -67,7 +67,7 @@ extension Git {
     return runCustomSubcommand(
       [
         "add",
-        "."
+        ".",
       ],
       in: repository.location,
       versionConstraints: versions
@@ -77,7 +77,7 @@ extension Git {
         [
           "commit",
           "\u{2D}\u{2D}message",
-          String(description)
+          String(description),
         ],
         in: repository.location,
         versionConstraints: versions
@@ -97,7 +97,7 @@ extension Git {
     return runCustomSubcommand(
       [
         "tag",
-        releaseVersion.string()
+        releaseVersion.string(),
       ],
       in: repository.location,
       versionConstraints: versions
@@ -119,7 +119,7 @@ extension Git {
       [
         "add",
         ".",
-        "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
+        "\u{2D}\u{2D}intent\u{2D}to\u{2D}add",
       ],
       in: repository.location,
       versionConstraints: versions
@@ -145,7 +145,7 @@ extension Git {
       [
         "status",
         "\u{2D}\u{2D}ignored",
-        "\u{2D}\u{2D}porcelain"
+        "\u{2D}\u{2D}porcelain",
       ],
       in: repository.location,
       versionConstraints: versions

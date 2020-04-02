@@ -73,7 +73,7 @@ public enum Xcode: VersionedExternalProcess {
     "swiftc",
     "touch",
     "xcodebuild",
-    "write\u{2D}file"
+    "write\u{2D}file",
   ]
   private static let abbreviableCommands: [String] = [
     "CodeSign",
@@ -96,7 +96,7 @@ public enum Xcode: VersionedExternalProcess {
     "SwiftMergeGeneratedHeaders",
     "SymLink",
     "Touch",
-    "WriteAuxiliaryFile"
+    "WriteAuxiliaryFile",
   ]
 
   private static let otherIgnored: [String] = [
@@ -110,7 +110,7 @@ public enum Xcode: VersionedExternalProcess {
     "Probing signature of",
     "replacing existing signature",
     "Writing diagnostic log for test session to:",
-    ".xcresult"
+    ".xcresult",
   ]
 
   /// Abbreviates Xcode output to make it more readable.
@@ -206,7 +206,7 @@ public enum Xcode: VersionedExternalProcess {
       let command = [
         "build",
         "\u{2D}sdk", sdk.commandLineName,
-        "\u{2D}scheme", scheme
+        "\u{2D}scheme", scheme,
       ]
       return runCustomSubcommand(
         command,
@@ -344,7 +344,7 @@ public enum Xcode: VersionedExternalProcess {
         [
           "view",
           "\u{2D}\u{2D}file\u{2D}list",
-          "\u{2D}\u{2D}archive", resultBundle.path
+          "\u{2D}\u{2D}archive", resultBundle.path,
         ],
         versionConstraints: compatibleVersions
       ) {
@@ -393,7 +393,7 @@ public enum Xcode: VersionedExternalProcess {
             [
               "view",
               "\u{2D}\u{2D}file", fileURL.path,
-              "\u{2D}\u{2D}archive", resultBundle.path
+              "\u{2D}\u{2D}archive", resultBundle.path,
             ],
             versionConstraints: compatibleVersions
           ) {

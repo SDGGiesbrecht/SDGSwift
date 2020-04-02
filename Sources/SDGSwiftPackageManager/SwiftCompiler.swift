@@ -34,9 +34,11 @@ extension SwiftCompiler {
 
   private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 1)
 
-  internal static func swiftCLocation() -> Swift.Result<
-    Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>
-  > {
+  internal static func swiftCLocation()
+    -> Swift.Result<
+      Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>
+    >
+  {
     return location(versionConstraints: compatibleVersions).map { swift in
       return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
     }
@@ -94,9 +96,11 @@ extension SwiftCompiler {
       }
     }
 
-    private static func manifestResourceProvider() -> Swift.Result<
-      ManifestResourceProvider, PackageLoadingError
-    > {
+    private static func manifestResourceProvider()
+      -> Swift.Result<
+        ManifestResourceProvider, PackageLoadingError
+      >
+    {
       return withDiagnostics { compiler, _ in
         return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
       }
@@ -110,21 +114,27 @@ extension SwiftCompiler {
   // MARK: - Test Coverage
 
   #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-    private static func codeCoverageDirectory(for package: PackageRepository) -> Swift.Result<
-      Foundation.URL, SwiftCompiler.PackageLoadingError
-    > {
+    private static func codeCoverageDirectory(for package: PackageRepository)
+      -> Swift.Result<
+        Foundation.URL, SwiftCompiler.PackageLoadingError
+      >
+    {
       return package.hostBuildParameters().map { $0.codeCovPath.asURL }
     }
 
-    private static func codeCoverageDataFileName(for package: PackageRepository) -> Swift.Result<
-      String, SwiftCompiler.PackageLoadingError
-    > {
+    private static func codeCoverageDataFileName(for package: PackageRepository)
+      -> Swift.Result<
+        String, SwiftCompiler.PackageLoadingError
+      >
+    {
       return package.manifest().map { $0.name }
     }
 
-    private static func codeCoverageDataFile(for package: PackageRepository) -> Swift.Result<
-      Foundation.URL, SwiftCompiler.PackageLoadingError
-    > {
+    private static func codeCoverageDataFile(for package: PackageRepository)
+      -> Swift.Result<
+        Foundation.URL, SwiftCompiler.PackageLoadingError
+      >
+    {
       // #workaround(Swift 5.1.3, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
       switch codeCoverageDirectory(for: package) {
       case .failure(let error):

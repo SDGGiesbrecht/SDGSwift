@@ -32,7 +32,8 @@
 
       var contents = String(
         documentation.scalars[
-          node.lowerBound(in: documentation)..<node.upperBound(in: documentation)]
+          node.lowerBound(in: documentation)..<node.upperBound(in: documentation)
+        ]
       )
 
       contents.removeFirst(3)

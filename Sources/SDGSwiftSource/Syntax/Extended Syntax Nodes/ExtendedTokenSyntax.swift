@@ -89,7 +89,7 @@ public class ExtendedTokenSyntax: ExtendedSyntax {
     symbolLinks: [String: String]
   ) -> String {
     switch kind {
-    case .quotationMark, .string, .whitespace, .newlines, .escape, .lineCommentDelimiter,
+    case .quotationMark, .string, .whitespace, .newlines, .lineCommentDelimiter,
       .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL,
       .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
       .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source,
@@ -124,9 +124,6 @@ public class ExtendedTokenSyntax: ExtendedSyntax {
 
     case .newlines, .commentURL, .source, .linkURL, .lineSeparator:
       return nil  // Handled elsewhere.
-
-    case .escape:
-      return "punctuation"
 
     case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter,
       .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,

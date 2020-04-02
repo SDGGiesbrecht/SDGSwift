@@ -100,7 +100,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     let earliest = Version(4, 0, 0)
     var arguments = [
       "build",
-      "\u{2D}\u{2D}show\u{2D}bin\u{2D}path"
+      "\u{2D}\u{2D}show\u{2D}bin\u{2D}path",
     ]
     if releaseConfiguration {
       arguments += ["\u{2D}\u{2D}configuration", "release"]
@@ -223,7 +223,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
   public static let searchCommands: [[String]] = [
     ["which", "swift"],  // Swift
     ["xcrun", "\u{2D}\u{2D}find", "swift"],  // Xcode
-    ["swiftenv", "which", "swift"]  // Swift Version Manager
+    ["swiftenv", "which", "swift"],  // Swift Version Manager
   ]
 
   public static var versionQuery: [String] = ["\u{2D}\u{2D}version"]

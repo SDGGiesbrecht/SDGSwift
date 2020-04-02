@@ -19,7 +19,7 @@
     internal init() {
       super.init(children: [
         ExtendedTokenSyntax(text: "  ", kind: .lineSeparator),
-        ExtendedTokenSyntax(text: "\n", kind: .newlines)
+        ExtendedTokenSyntax(text: "\n", kind: .newlines),
       ])
     }
   }

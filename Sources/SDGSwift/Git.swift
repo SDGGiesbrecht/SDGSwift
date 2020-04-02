@@ -54,7 +54,7 @@ public enum Git: VersionedExternalProcess {
     var command = [
       "clone",
       package.url.absoluteString,
-      location.path
+      location.path,
     ]
 
     switch build {
@@ -105,7 +105,7 @@ public enum Git: VersionedExternalProcess {
       [
         "ls\u{2D}remote",
         "\u{2D}\u{2D}tags",
-        package.url.absoluteString
+        package.url.absoluteString,
       ],
       versionConstraints: version
     ).map { output in
@@ -136,7 +136,7 @@ public enum Git: VersionedExternalProcess {
       [
         "ls\u{2D}remote",
         package.url.absoluteString,
-        "master"
+        "master",
       ],
       versionConstraints: versions
     ).map { output in

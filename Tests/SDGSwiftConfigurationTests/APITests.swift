@@ -153,7 +153,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           XCTAssertEqual(loadedMock.option, "Mock")
 
           func abbreviate(logEntry: String) {
-            let pattern = (logEntry + " ").scalars
+            let pattern =
+              (logEntry + " ").scalars
               + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
               + "\n".scalars
             log.scalars.replaceMatches(
@@ -162,7 +163,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )
           }
           func remove(logEntry: String) {
-            let pattern = logEntry.scalars
+            let pattern =
+              logEntry.scalars
               + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
               + "\n".scalars
             log.scalars.replaceMatches(for: pattern, with: "".scalars)
@@ -177,9 +179,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
           // These may occur out of order.
           remove(logEntry: "Compile Swift Module")
-          let patternStart = "[".scalars
+          let patternStart =
+            "[".scalars
             + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
-          let pattern = patternStart
+          let pattern =
+            patternStart
             + "] Compiling ".scalars
             + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
             + "\n".scalars
@@ -188,14 +192,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           remove(logEntry: "warning: invalid duplicate target dependency declaration")
           remove(logEntry: "\u{27}llbuild\u{27}")
 
-          let fractionPatternStart = "[".scalars
+          let fractionPatternStart =
+            "[".scalars
             + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
             + "/".scalars
-          let fractionPattern = fractionPatternStart
+          let fractionPattern =
+            fractionPatternStart
             + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
             + "]".scalars
           log.scalars.replaceMatches(for: fractionPattern, with: "[[...]/[...]]".scalars)
-          let astPattern = "[[...]/[...]] Wrapping AST for ".scalars
+          let astPattern =
+            "[[...]/[...]] Wrapping AST for ".scalars
             + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
             + " for debugging\n".scalars
           log.scalars.replaceMatches(for: astPattern, with: "".scalars)

@@ -118,9 +118,11 @@ extension PackageRepository {
       }
     }
 
-    internal func hostBuildParameters() -> Swift.Result<
-      BuildParameters, SwiftCompiler.PackageLoadingError
-    > {
+    internal func hostBuildParameters()
+      -> Swift.Result<
+        BuildParameters, SwiftCompiler.PackageLoadingError
+      >
+    {
       switch packageWorkspace() {
       case .failure(let error):
         return .failure(error)
@@ -156,27 +158,33 @@ extension PackageRepository {
   /// Checks for uncommitted changes or additions.
   ///
   /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-  public func uncommittedChanges() -> Swift.Result<
-    String, VersionedExternalProcessExecutionError<SDGSwift.Git>
-  > {
+  public func uncommittedChanges()
+    -> Swift.Result<
+      String, VersionedExternalProcessExecutionError<SDGSwift.Git>
+    >
+  {
     return Git.uncommittedChanges(in: self)
   }
 
   /// Returns the list of files ignored by source control.
-  public func ignoredFiles() -> Swift.Result<
-    [Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>
-  > {
+  public func ignoredFiles()
+    -> Swift.Result<
+      [Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>
+    >
+  {
     return Git.ignoredFiles(in: self)
   }
 
   #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
-    public func _directoriesIgnoredForTestCoverage() -> Swift.Result<
-      [Foundation.URL], SwiftCompiler.PackageLoadingError
-    > {
+    public func _directoriesIgnoredForTestCoverage()
+      -> Swift.Result<
+        [Foundation.URL], SwiftCompiler.PackageLoadingError
+      >
+    {
       return packageWorkspace().map { workspace in
         return [
           workspace.dataPath.asURL,
-          workspace.editablesPath.asURL
+          workspace.editablesPath.asURL,
         ]
       }
     }
@@ -207,9 +215,11 @@ extension PackageRepository {
   ///
   /// - Parameters:
   ///     - branch: The branch to check out.
-  public func checkout(_ branch: String) -> Swift.Result<
-    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-  > {
+  public func checkout(_ branch: String)
+    -> Swift.Result<
+      Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+    >
+  {
     return Git.checkout(branch, in: self)
   }
 
@@ -217,9 +227,11 @@ extension PackageRepository {
   ///
   /// - Parameters:
   ///     - description: A description for the commit.
-  public func commitChanges(description: StrictString) -> Swift.Result<
-    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-  > {
+  public func commitChanges(description: StrictString)
+    -> Swift.Result<
+      Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+    >
+  {
     return Git.commitChanges(in: self, description: description)
   }
 
@@ -227,9 +239,11 @@ extension PackageRepository {
   ///
   /// - Parameters:
   ///     - releaseVersion: The semantic version.
-  public func tag(version releaseVersion: SDGVersioning.Version) -> Swift.Result<
-    Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-  > {
+  public func tag(version releaseVersion: SDGVersioning.Version)
+    -> Swift.Result<
+      Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
+    >
+  {
     return Git.tag(version: releaseVersion, in: self)
   }
 }

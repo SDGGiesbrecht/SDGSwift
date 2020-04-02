@@ -124,7 +124,7 @@ public struct Package: TransparentWrapper {
                     "install_name_tool",
                     "\u{2D}change", Shell.quote(dynamicLibrary.path),
                     Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent),
-                    Shell.quote(component.path)
+                    Shell.quote(component.path),
                   ]).get()
                 }
               }

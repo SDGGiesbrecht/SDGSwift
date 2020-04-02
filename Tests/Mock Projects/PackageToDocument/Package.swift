@@ -25,11 +25,11 @@ let package = Package(
 
     .executable(name: "executable", targets: ["executable"]),
 
-    .library(name: "_Hidden", targets: ["Hidden"])
+    .library(name: "_Hidden", targets: ["Hidden"]),
   ],
   dependencies: [
     .package(path: "../Dependency"),
-    .package(path: "../Dependency2")
+    .package(path: "../Dependency2"),
   ],
   targets: [
     .target(name: "executable"),
@@ -37,6 +37,6 @@ let package = Package(
     /// Module documentation.
     .target(name: "PrimaryModule", dependencies: ["Dependency", "Dependency2", "Hidden"]),
 
-    .target(name: "Hidden")
+    .target(name: "Hidden"),
   ]
 )

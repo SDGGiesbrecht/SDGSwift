@@ -54,14 +54,19 @@ extension VersionedExternalProcess {
   where Constraints: RangeFamily, Constraints.Bound == Version {
     get {
       let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[
-        versionConstraints.lowerBound]?[versionConstraints.upperBound]
+        versionConstraints.lowerBound
+      ]?[versionConstraints.upperBound]
       return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
     }
     set {
       let converted = newValue?.mapError { $0 as Error }
       locationCache[ObjectIdentifier(self), default: [:]][
-        ObjectIdentifier(Constraints.self), default: [:]][
-          versionConstraints.lowerBound, default: [:]][versionConstraints.upperBound] = converted
+        ObjectIdentifier(Constraints.self),
+        default: [:]
+      ][
+        versionConstraints.lowerBound,
+        default: [:]
+      ][versionConstraints.upperBound] = converted
     }
   }
 

@@ -25,9 +25,11 @@
       var previousGroups: [(condition: Syntax, elements: Set<APIElement>)] = []
 
       for syntaxGroup in clauses {
-        let currentCondition = Syntax(SyntaxFactory.makeUnknownSyntax(
-          tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? []
-        ))
+        let currentCondition = Syntax(
+          SyntaxFactory.makeUnknownSyntax(
+            tokens: syntaxGroup.condition?.withTriviaReducedToSpaces().tokens() ?? []
+          )
+        )
 
         var apiGroup: (condition: Syntax, elements: Set<APIElement>) = (currentCondition, [])
         defer { previousGroups.append(apiGroup) }
@@ -56,21 +58,21 @@
                       .spacedBinaryOperator("\u{7C}|"),
                       leadingTrivia: .spaces(1),
                       trailingTrivia: .spaces(1)
-                    )
+                    ),
                   ]
                 )
               } else {
                 composedConditionTokens.append(
                   contentsOf: [
                     SyntaxFactory.makeToken(.prefixOperator("!")),
-                    SyntaxFactory.makeToken(.leftParen)
+                    SyntaxFactory.makeToken(.leftParen),
                   ] + previousGroup.condition.tokens() + [
                     SyntaxFactory.makeToken(.rightParen),
                     SyntaxFactory.makeToken(
                       .spacedBinaryOperator("\u{26}&"),
                       leadingTrivia: .spaces(1),
                       trailingTrivia: .spaces(1)
-                    )
+                    ),
                   ]
                 )
               }
@@ -96,7 +98,9 @@
 
             var composedConditions: Syntax?
             if ¬composedConditionTokens.isEmpty {
-              composedConditions = Syntax(SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens))
+              composedConditions = Syntax(
+                SyntaxFactory.makeUnknownSyntax(tokens: composedConditionTokens)
+              )
             }
             combined[apiElement] = composedConditions
           }

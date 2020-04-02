@@ -40,7 +40,7 @@
       "Swift": ("swift", "stdlib/public/core"),
       "Foundation": ("swift\u{2D}corelibs\u{2D}foundation", "Foundation"),
       "Dispatch": ("swift\u{2D}corelibs\u{2D}libdispatch", "src/swift"),
-      "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public")
+      "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public"),
     ]
 
     let resources = URL(fileURLWithPath: #file).deletingLastPathComponent()
@@ -61,7 +61,7 @@
               gitHubRepository.absoluteString,
               cloneURL.path,
               "\u{2D}\u{2D}branch", branchName,
-              "\u{2D}\u{2D}depth", "1"
+              "\u{2D}\u{2D}depth", "1",
             ],
             reportProgress: { print($0) }
           ).get()
@@ -82,7 +82,7 @@
                   command: [
                     "utils/gyb",
                     source.path,
-                    "\u{2D}o", source.deletingPathExtension().path
+                    "\u{2D}o", source.deletingPathExtension().path,
                   ],
                   in: cloneURL
                 ).get()
