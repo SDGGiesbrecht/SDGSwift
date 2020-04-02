@@ -249,9 +249,9 @@ extension Configuration {
       manifest.replaceMatches(for: "[*macOS*]", with: macOS)
       manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
       manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
-      manifest.replaceMatches(for: "[*packages*]", with: packages)
+      manifest.replaceMatches(for: "[*packages*],", with: packages)
       manifest.replaceMatches(for: "[*product*]", with: product)
-      manifest.replaceMatches(for: "[*products*]", with: products)
+      manifest.replaceMatches(for: "[*products*],", with: products)
       if let existingManifest = try? String(from: manifestLocation),
         existingManifest == manifest
       {
