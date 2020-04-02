@@ -28,16 +28,20 @@
       }
 
       if elements.isEmpty {
-        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
-          name: SyntaxFactory.makeToken(.identifier("Void")),
-          genericArgumentClause: nil
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeSimpleTypeIdentifier(
+            name: SyntaxFactory.makeToken(.identifier("Void")),
+            genericArgumentClause: nil
+          )
+        )
       } else {
-        return TypeSyntax(SyntaxFactory.makeTupleType(
-          leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-          elements: elements.normalized(),
-          rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeTupleType(
+            leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+            elements: elements.normalized(),
+            rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+          )
+        )
       }
     }
   }

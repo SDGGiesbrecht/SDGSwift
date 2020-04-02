@@ -82,7 +82,7 @@ let package = Package(
     /// A sample configuration demonstrating the use of `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`.
     ///
     /// (`SampleConfiguration` is not intended as a real product. It is does not factor into the SDGSwift’s semantic version and should not be used as a real dependency.)
-    .library(name: "SampleConfiguration", targets: ["SampleConfiguration"])
+    .library(name: "SampleConfiguration", targets: ["SampleConfiguration"]),
   ],
   dependencies: [
     .package(
@@ -105,7 +105,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50100))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
   ],
   targets: [
 
@@ -126,7 +126,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
       ]
     ),
 
@@ -145,7 +145,7 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
         // SwiftPM‐auto (except Windows and Android; see end of file)
       ]
     ),
@@ -169,7 +169,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         // SwiftSyntax (except Windows and Android; see end of file)
         // CommonMark (except Windows; see end of file)
-        .product(name: "SDGHTML", package: "SDGWeb")
+        .product(name: "SDGHTML", package: "SDGWeb"),
       ]
     ),
 
@@ -188,7 +188,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
       ]
     ),
 
@@ -207,7 +207,7 @@ let package = Package(
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
       ]
     ),
 
@@ -238,7 +238,7 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         // SwiftSyntax (except Windows and Android; see end of file)
       ]
     ),
@@ -254,7 +254,7 @@ let package = Package(
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ],
       path: "Tests/SDGSwiftTestUtilities"
     ),
@@ -270,7 +270,7 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(
@@ -285,7 +285,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(
@@ -301,7 +301,7 @@ let package = Package(
         .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         // SwiftSyntax (except Windows and Android; see end of file)
       ]
     ),
@@ -320,7 +320,7 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(
@@ -338,7 +338,7 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(
@@ -347,9 +347,9 @@ let package = Package(
         "SDGSwift",
         "SDGSwiftTestUtilities",
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
-    )
+    ),
   ]
 )
 
@@ -364,7 +364,7 @@ import Foundation
     let needSwiftSyntax: Set<String> = [
       "SDGSwiftSource",
       "refresh‐core‐libraries",
-      "SDGSwiftSourceTests"
+      "SDGSwiftSourceTests",
     ]
     for target in package.targets where needSwiftSyntax.contains(target.name) {
       target.dependencies.append(.product(name: "SwiftSyntax", package: "SwiftSyntax"))

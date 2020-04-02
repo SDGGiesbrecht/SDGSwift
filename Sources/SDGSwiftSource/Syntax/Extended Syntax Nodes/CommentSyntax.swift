@@ -40,7 +40,7 @@ public class CommentContentSyntax: ExtendedSyntax {
         while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
           let start =
             line.scalars[line.startIndex..<`protocol`.lowerBound].lastMatch(for: " ".scalars)?.range
-              .upperBound ?? line.startIndex
+            .upperBound ?? line.startIndex
           let end =
             line.scalars[`protocol`.upperBound..<line.scalars.endIndex].firstMatch(
               for: " ".scalars

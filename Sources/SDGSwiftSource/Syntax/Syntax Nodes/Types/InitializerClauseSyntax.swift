@@ -23,10 +23,12 @@
           leadingTrivia: .spaces(1),
           trailingTrivia: .spaces(1)
         ),
-        value: ExprSyntax(SyntaxFactory.makeIdentifierExpr(
-          identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
-          declNameArguments: nil
-        ))
+        value: ExprSyntax(
+          SyntaxFactory.makeIdentifierExpr(
+            identifier: SyntaxFactory.makeToken(.contextualKeyword("default")),
+            declNameArguments: nil
+          )
+        )
       )
     }
   }

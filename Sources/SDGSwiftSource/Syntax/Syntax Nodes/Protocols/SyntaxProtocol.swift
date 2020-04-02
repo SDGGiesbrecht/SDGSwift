@@ -1,5 +1,5 @@
 /*
- Syntax.swift
+ SyntaxProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -43,7 +43,8 @@
 
     // MARK: - Location
 
-    private func index(in context: SyntaxContext, for position: AbsolutePosition) -> String
+    private func index(in context: SyntaxContext, for position: AbsolutePosition)
+      -> String
       .ScalarView
       .Index
     {
@@ -228,7 +229,7 @@
           var source = HTML.escapeTextForCharacterData(token.text)
 
           var classes = [
-            existentialName, token.tokenKind.cssName
+            existentialName, token.tokenKind.cssName,
           ]
           if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
             classes.prepend(`class`)
@@ -366,7 +367,8 @@
       }
     }
 
-    private func precedenceAttributeGroup() -> PrecedenceGroupAttributeListSyntax
+    private func precedenceAttributeGroup()
+      -> PrecedenceGroupAttributeListSyntax
       .PrecedenceAttributeGroup
     {
       switch resolvedExistential() {
@@ -467,22 +469,24 @@
     internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
       let existingCondition = Array(tokens().dropFirst())
       let newCondition = Array(addition.tokens().dropFirst())
-      return Syntax(SyntaxFactory.makeUnknownSyntax(
-        tokens: [
-          SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
-          SyntaxFactory.makeToken(.leftParen)
-        ] + newCondition + [
-          SyntaxFactory.makeToken(.rightParen),
-          SyntaxFactory.makeToken(
-            .spacedBinaryOperator("\u{26}&"),
-            leadingTrivia: .spaces(1),
-            trailingTrivia: .spaces(1)
-          ),
-          SyntaxFactory.makeToken(.leftParen)
-        ] + existingCondition + [
-          SyntaxFactory.makeToken(.rightParen)
-        ]
-      ))
+      return Syntax(
+        SyntaxFactory.makeUnknownSyntax(
+          tokens: [
+            SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
+            SyntaxFactory.makeToken(.leftParen),
+          ] + newCondition + [
+            SyntaxFactory.makeToken(.rightParen),
+            SyntaxFactory.makeToken(
+              .spacedBinaryOperator("\u{26}&"),
+              leadingTrivia: .spaces(1),
+              trailingTrivia: .spaces(1)
+            ),
+            SyntaxFactory.makeToken(.leftParen),
+          ] + existingCondition + [
+            SyntaxFactory.makeToken(.rightParen)
+          ]
+        )
+      )
     }
 
     // MARK: - Debugging

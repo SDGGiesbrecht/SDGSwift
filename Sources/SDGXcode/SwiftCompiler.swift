@@ -35,7 +35,7 @@ extension SwiftCompiler {
     return runCustomSubcommand(
       [
         "package", "generate\u{2D}xcodeproj",
-        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"
+        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
       ],
       in: package.location,
       versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,

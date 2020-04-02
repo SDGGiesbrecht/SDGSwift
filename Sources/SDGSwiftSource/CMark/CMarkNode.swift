@@ -77,7 +77,8 @@
       }
       return indexFor(line: Int(line), column: Int(column), in: documentation)
     }
-    private func indexFor(line: Int, column: Int, in documentation: String) -> String.ScalarView
+    private func indexFor(line: Int, column: Int, in documentation: String)
+      -> String.ScalarView
       .Index
     {
       let scalars = documentation.scalars
@@ -86,11 +87,12 @@
 
       let lineIndex = lines.index(lines.startIndex, offsetBy: line − 1)
       let lineStartByteIndex = lineIndex.samePosition(in: scalars).samePosition(in: utf8)!
-      var index = utf8.index(
-        lineStartByteIndex,
-        offsetBy: column − 1,
-        limitedBy: utf8.endIndex
-      ) ?? utf8.endIndex
+      var index =
+        utf8.index(
+          lineStartByteIndex,
+          offsetBy: column − 1,
+          limitedBy: utf8.endIndex
+        ) ?? utf8.endIndex
       var result: String.ScalarView.Index? = index.samePosition(in: scalars)
       while result == nil {  // @exempt(from: tests) Only occurs when CommonMark exhibits bugs.
         index = utf8.index(before: index)

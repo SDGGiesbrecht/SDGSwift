@@ -29,7 +29,8 @@
         ∨ self.is(AssociatedtypeDeclSyntax.self)
 
         ∨ self.is(InitializerDeclSyntax.self)
-        ∨ self.is(FunctionDeclSyntax.self) {
+        ∨ self.is(FunctionDeclSyntax.self)
+      {
         return nil
       } else if let variable = self.as(VariableDeclSyntax.self) {
         return variable.bindings.first?.accessor
@@ -49,7 +50,8 @@
         ∨ self.is(AssociatedtypeDeclSyntax.self)
 
         ∨ self.is(InitializerDeclSyntax.self)
-        ∨ self.is(FunctionDeclSyntax.self) {
+        ∨ self.is(FunctionDeclSyntax.self)
+      {
         return self
       } else if let variable = self.as(VariableDeclSyntax.self) {
         let bindings = variable.bindings.map({ $0.withAccessor(nil) })
@@ -69,7 +71,8 @@
         ∨ self.is(TypealiasDeclSyntax.self)
         ∨ self.is(AssociatedtypeDeclSyntax.self)
 
-        ∨ self.is(VariableDeclSyntax.self) {
+        ∨ self.is(VariableDeclSyntax.self)
+      {
         return nil
       } else if let initializer = self.as(InitializerDeclSyntax.self) {
         return initializer.genericParameterClause

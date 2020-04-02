@@ -23,14 +23,14 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "[*URL*]", .exact("[*version*]")),
-    [*packages*]
+    [*packages*],
   ],
   targets: [
     .target(
       name: "configure",
       dependencies: [
         "[*product*]",
-        [*products*]
+        [*products*],
       ]
     )
   ]

@@ -37,7 +37,8 @@
       module: PackageModel.Target,
       manifest: Syntax?
     ) throws where Syntax: SyntaxProtocol {
-      let search = ".target(".scalars
+      let search =
+        ".target(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(module.name)\u{22}".scalars
       let manifestDeclaration = manifest?.smallestSubnode(containing: search)?.parent

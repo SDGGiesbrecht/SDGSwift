@@ -88,7 +88,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         .integerLiteral("0"),
         .floatingLiteral("0"),
         .contextualKeyword("mutating"),
-        .unknown("...")
+        .unknown("..."),
       ]
       for kind in tokens {
         let token = SyntaxFactory.makeToken(kind)

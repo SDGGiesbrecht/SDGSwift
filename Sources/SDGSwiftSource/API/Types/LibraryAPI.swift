@@ -58,7 +58,8 @@
       manifest: Syntax,
       reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress
     ) throws where Syntax: SyntaxProtocol {
-      let search = ".library(".scalars
+      let search =
+        ".library(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(product.name)\u{22}".scalars
       let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent

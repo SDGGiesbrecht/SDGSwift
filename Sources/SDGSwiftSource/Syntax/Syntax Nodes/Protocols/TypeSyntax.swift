@@ -47,10 +47,12 @@
         return TypeSyntax(restriction.normalized())
       } else {  // @exempt(from: tests)
         warnUnidentified()
-        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
-          name: SyntaxFactory.makeToken(.wildcardKeyword),
-          genericArgumentClause: nil
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeSimpleTypeIdentifier(
+            name: SyntaxFactory.makeToken(.wildcardKeyword),
+            genericArgumentClause: nil
+          )
+        )
       }
     }
 

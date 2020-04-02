@@ -101,7 +101,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .iOS(simulator: true),
             .watchOS,
             .tvOS(simulator: false),
-            .tvOS(simulator: true)
+            .tvOS(simulator: true),
           ]
           if ¬withGeneratedProject {
             // #workaround(xcodebuild -version 11.3.0, watchOS cannot handle test targets.) @exempt(from: unicode)
@@ -112,13 +112,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-            for subdirectory in (
-              try? FileManager.default.contentsOfDirectory(
+            for subdirectory
+              in (try? FileManager.default.contentsOfDirectory(
                 at: derived,
                 includingPropertiesForKeys: nil,
                 options: .skipsSubdirectoryDescendants
-              )
-            ) ?? []
+              )) ?? []
             where subdirectory.lastPathComponent.contains("Mock") {
               try? FileManager.default.removeItem(at: subdirectory)
             }
@@ -183,7 +182,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           if ProcessInfo.processInfo.environment["TRAVIS"] == nil {  // Unavailable in CI.
             testSDKs.append(contentsOf: [
               .iOS(simulator: true),
-              .tvOS(simulator: true)
+              .tvOS(simulator: true),
             ])
           }
           for sdk in testSDKs {
@@ -191,13 +190,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
-            for subdirectory in (
-              try? FileManager.default.contentsOfDirectory(
+            for subdirectory
+              in (try? FileManager.default.contentsOfDirectory(
                 at: derived,
                 includingPropertiesForKeys: nil,
                 options: .skipsSubdirectoryDescendants
-              )
-            ) ?? []
+              )) ?? []
             where subdirectory.lastPathComponent.contains("Mock") {
               try? FileManager.default.removeItem(at: subdirectory)
             }
@@ -230,7 +228,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             // Remove dates & times:
             var filtered =
               log
-                .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
+              .map({ String($0.scalars.filter({ $0 ∉ CharacterSet.decimalDigits })) })
             // Inconsistent path:
             filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
             // Inconsistent number of occurrences: (???)

@@ -28,10 +28,12 @@
         let (parameter, conformance) = parameter.normalizedForAPIDeclaration()
         parameters.append(parameter)
         if let requirement = conformance {
-          requirements.append(SyntaxFactory.makeGenericRequirement(
-            body: Syntax(requirement),
-            trailingComma: nil
-          ))
+          requirements.append(
+            SyntaxFactory.makeGenericRequirement(
+              body: Syntax(requirement),
+              trailingComma: nil
+            )
+          )
         }
       }
       return (

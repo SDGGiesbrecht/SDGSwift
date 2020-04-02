@@ -32,24 +32,28 @@
         elements.count == 1,
         let element = elements.first?.argumentType
       {
-        return TypeSyntax(SyntaxFactory.makeArrayType(
-          leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
-          elementType: element,
-          rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket)
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeArrayType(
+            leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
+            elementType: element,
+            rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket)
+          )
+        )
       } else if result.name.text == "Dictionary",
         let elements = newGenericArgumentClause?.arguments,
         elements.count == 2,
         let key = elements.first?.argumentType,
         let value = elements.dropFirst().first?.argumentType
       {
-        return TypeSyntax(SyntaxFactory.makeDictionaryType(
-          leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
-          keyType: key,
-          colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-          valueType: value,
-          rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket)
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeDictionaryType(
+            leftSquareBracket: SyntaxFactory.makeToken(.leftSquareBracket),
+            keyType: key,
+            colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+            valueType: value,
+            rightSquareBracket: SyntaxFactory.makeToken(.rightSquareBracket)
+          )
+        )
       }
       return TypeSyntax(result)
     }

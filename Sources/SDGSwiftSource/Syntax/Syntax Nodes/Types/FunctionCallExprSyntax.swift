@@ -62,9 +62,11 @@
           SyntaxFactory.makeTupleExprElement(
             label: SyntaxFactory.makeToken(.identifier("name")),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(
-              name.decomposedStringWithCanonicalMapping
-            )),
+            expression: ExprSyntax(
+              SyntaxFactory.makeStringLiteralExpr(
+                name.decomposedStringWithCanonicalMapping
+              )
+            ),
             trailingComma: nil
           )
         ]),

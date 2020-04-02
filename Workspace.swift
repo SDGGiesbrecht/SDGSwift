@@ -96,7 +96,7 @@ configuration.documentation.api.ignoredDependencies = [
 
   // SwiftSyntax
   "_CSwiftSyntax",
-  "SwiftSyntax"
+  "SwiftSyntax",
 ]
 
 // #workaround(workspace version 0.30.1, SwiftFormat is extremely slow.)

@@ -75,7 +75,7 @@
         ("Swift", Resources.CoreLibraries.swift),
         ("Foundation", Resources.CoreLibraries.foundation),
         ("Dispatch", Resources.CoreLibraries.dispatch),
-        ("XCTest", Resources.CoreLibraries.xctest)
+        ("XCTest", Resources.CoreLibraries.xctest),
       ] where name ∉ ignoredDependencies {
         reportProgress(
           String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved())
@@ -96,7 +96,9 @@
         reportProgress(
           String(PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved())
         )
-        dependencyModules.append(try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none))
+        dependencyModules.append(
+          try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none)
+        )
       }
 
       for module in dependencyModules {
@@ -111,7 +113,8 @@
       for package: PackageModel.Package,
       from manifest: SourceFileSyntax
     ) -> [SymbolDocumentation] {
-      let search = "Package(".scalars
+      let search =
+        "Package(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
         + "name: \u{22}\(package.name)\u{22}".scalars
       let node = manifest.smallestSubnode(containing: search)

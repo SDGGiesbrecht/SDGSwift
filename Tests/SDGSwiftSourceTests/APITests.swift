@@ -306,7 +306,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
         bindings: SyntaxFactory.makePatternBindingList([])
       )
-        .syntaxHighlightedHTML(inline: true)
+      .syntaxHighlightedHTML(inline: true)
       XCTAssert(
         highlighted.contains("TokenSyntax letKeyword"),
         highlighted
@@ -333,7 +333,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "/// ```",
         "func helloWorld() {",
         "    print(\u{22}Hello, world!\u{22})",
-        "}"
+        "}",
       ].joined(separator: "\n")
       let syntax = try SyntaxParser.parse(source: source)
 
@@ -559,7 +559,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 method,
                 `extension`.instanceMethods.first(where: {
                   $0.name.source().hasPrefix("withSeparateParameters")
-                })!
+                })!,
               ]
               _ = method.documentation.last!.documentationComment.renderedHTML(localization: "zxx")
 

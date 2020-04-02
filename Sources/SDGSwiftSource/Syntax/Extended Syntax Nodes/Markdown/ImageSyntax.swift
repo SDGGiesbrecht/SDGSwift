@@ -43,12 +43,12 @@
         in: documentation,
         precedingChildren: [
           imageDelimiter,
-          openingDelimiter
+          openingDelimiter,
         ],
         followingChildren: [
           medialDelimiter,
           url,
-          closingDelimiter
+          closingDelimiter,
         ]
       )
 

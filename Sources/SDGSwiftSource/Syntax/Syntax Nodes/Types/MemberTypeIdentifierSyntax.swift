@@ -27,17 +27,21 @@
       if let simple = baseType.as(SimpleTypeIdentifierSyntax.self),
         simple.name.tokenKind == .capitalSelfKeyword
       {
-        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
-          name: newName,
-          genericArgumentClause: newGenericArgumentClause
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeSimpleTypeIdentifier(
+            name: newName,
+            genericArgumentClause: newGenericArgumentClause
+          )
+        )
       } else {
-        return TypeSyntax(SyntaxFactory.makeMemberTypeIdentifier(
-          baseType: baseType.normalized(),
-          period: period.generallyNormalizedAndMissingInsteadOfNil(),
-          name: newName,
-          genericArgumentClause: newGenericArgumentClause
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeMemberTypeIdentifier(
+            baseType: baseType.normalized(),
+            period: period.generallyNormalizedAndMissingInsteadOfNil(),
+            name: newName,
+            genericArgumentClause: newGenericArgumentClause
+          )
+        )
       }
     }
 
@@ -52,10 +56,12 @@
 
     internal func strippingRootType() -> TypeSyntax {
       guard let member = baseType.as(MemberTypeIdentifierSyntax.self) else {
-        return TypeSyntax(SyntaxFactory.makeSimpleTypeIdentifier(
-          name: name,
-          genericArgumentClause: genericArgumentClause
-        ))
+        return TypeSyntax(
+          SyntaxFactory.makeSimpleTypeIdentifier(
+            name: name,
+            genericArgumentClause: genericArgumentClause
+          )
+        )
       }
 
       return TypeSyntax(withBaseType(member.strippingRootType()))

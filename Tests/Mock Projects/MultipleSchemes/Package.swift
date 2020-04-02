@@ -20,7 +20,7 @@ let package = Package(
   name: "SomePackage",
   products: [
     .library(name: "SomeLibrary", targets: ["SomeLibrary"]),
-    .library(name: "SomeOtherLibrary", targets: ["SomeOtherLibrary"])
+    .library(name: "SomeOtherLibrary", targets: ["SomeOtherLibrary"]),
   ],
   targets: [
     .target(
@@ -37,6 +37,6 @@ let package = Package(
       dependencies: [
         "SomeLibrary"
       ]
-    )
+    ),
   ]
 )
