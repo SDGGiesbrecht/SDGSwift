@@ -31,9 +31,6 @@ public enum ExtendedTokenKind {
   /// A newline; a line feeds (U+000A) or similar ASCII controls.
   case newlines
 
-  /// An ASCII grave accent (U+0060) used in Swift to escape identifiers.
-  case escape
-
   /// A pair of slashes delimiting a line comment.
   case lineCommentDelimiter
 
@@ -120,7 +117,7 @@ public enum ExtendedTokenKind {
     switch self {
     case .string, .whitespace, .commentText, .sourceHeadingText, .documentationText:
       return .arbitrary
-    case .quotationMark, .newlines, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter,
+    case .quotationMark, .newlines, .lineCommentDelimiter, .openingBlockCommentDelimiter,
       .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter,
       .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet,
       .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .fontModificationDelimiter,
