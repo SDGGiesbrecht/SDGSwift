@@ -36,8 +36,6 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    // #workaround(This test is currently impossible.)
-    #if false
     #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
       try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
         FileManager.default.delete(.cache)
@@ -53,17 +51,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
-          // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.6.0/Sources/SampleConfiguration
+          // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
           let product = "SampleConfiguration"
           let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
           let minimumMacOSVersion = Version(10, 13)
-          let version = Version(0, 12, 7)
+          let version = Version(0, 20, 0)
           let type = SampleConfiguration.self  // Import it first if necessary.
 
           // Assuming the above file is called “SampleConfigurationFile.swift”...
-          let name = UserFacing<StrictString, APILocalization>(
-            { _ in return "SampleConfigurationFile" }
-          )
+          let name = UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" })
 
           // Change this to actually point at a directory containing the above file.
           let configuredDirectory: URL = wherever
@@ -166,7 +162,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )
           }
           func remove(logEntry: String) {
-            let pattern = (logEntry + " ").scalars
+            let pattern = logEntry.scalars
               + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
               + "\n".scalars
             log.scalars.replaceMatches(for: pattern, with: "".scalars)
@@ -175,6 +171,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           abbreviate(logEntry: "Completed resolution in")
           abbreviate(logEntry: "Cloning")
           abbreviate(logEntry: "Resolving")
+          log.lines.removeAll(where: { line in
+            return line.line.contains("Starting resolution using".scalars)
+          })
 
           // These may occur out of order.
           remove(logEntry: "Compile Swift Module")
@@ -187,6 +186,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
           remove(logEntry: "Linking")
           remove(logEntry: "warning: invalid duplicate target dependency declaration")
+          remove(logEntry: "\u{27}llbuild\u{27}")
 
           let fractionPatternStart = "[".scalars
             + RepetitionPattern(ConditionalPattern({ $0.properties.isASCIIHexDigit }))
@@ -209,7 +209,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         #endif
       }
-    #endif
     #endif
   }
 
