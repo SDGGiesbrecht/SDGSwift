@@ -59,11 +59,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           let type = SampleConfiguration.self  // Import it first if necessary.
 
           // Assuming the above file is called “SampleConfigurationFile.swift”...
-          let name = UserFacing<StrictString, APILocalization>(
-            { localization in
-              return "SampleConfigurationFile"
-            }
-          )
+          let name = UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" })
 
           // Change this to actually point at a directory containing the above file.
           let configuredDirectory: URL = wherever
@@ -176,7 +172,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           abbreviate(logEntry: "Cloning")
           abbreviate(logEntry: "Resolving")
           log.lines.removeAll(where: { line in
-            return line.line.contains("Started resolution using".scalars)
+            return line.line.contains("Starting resolution using".scalars)
           })
 
           // These may occur out of order.
