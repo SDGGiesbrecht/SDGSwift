@@ -19,7 +19,7 @@
   import SDGCollections
   import SDGText
 
-  import CCommonMark
+  import cmark
 
   /// A quotation in documentation.
   public class QuotationSyntax: MarkdownSyntax {

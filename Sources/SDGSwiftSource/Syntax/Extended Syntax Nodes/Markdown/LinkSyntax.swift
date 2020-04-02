@@ -15,7 +15,7 @@
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
   import SDGCollections
 
-  import CCommonMark
+  import cmark
   import enum SDGHTML.HTML
 
   /// A link in documentation.

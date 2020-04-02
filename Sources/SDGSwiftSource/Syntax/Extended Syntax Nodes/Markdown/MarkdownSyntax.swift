@@ -19,7 +19,7 @@
   import SDGLogic
   import SDGCollections
 
-  import CCommonMark
+  import cmark
 
   /// A Markdown node in documentation.
   public class MarkdownSyntax: ExtendedSyntax {

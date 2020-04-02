@@ -16,7 +16,7 @@
   import SDGLogic
   import SDGMathematics
 
-  import CCommonMark
+  import cmark
 
   internal typealias cmark_node = OpaquePointer?
 

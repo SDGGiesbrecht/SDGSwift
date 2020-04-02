@@ -19,7 +19,7 @@
   import SDGCollections
   import SDGText
 
-  import CCommonMark
+  import cmark
 
   /// A documentation heading.
   public class HeadingSyntax: MarkdownSyntax {

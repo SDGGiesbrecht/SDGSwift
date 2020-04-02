@@ -19,7 +19,7 @@
   import SDGCollections
   import SDGText
 
-  import CCommonMark
+  import cmark
 
   /// A code block used in documentation.
   public class CodeBlockSyntax: MarkdownSyntax {
