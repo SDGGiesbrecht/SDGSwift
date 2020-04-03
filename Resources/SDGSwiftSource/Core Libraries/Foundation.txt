@@ -191,7 +191,7 @@ open class DirectoryEnumerator : AnyObject, CustomDebugStringConvertible, Custom
     open var level: Int { get }
     open func skipDescendants() {}
 }
-    open class var default: FileManager { get }
+    open class var `default`: FileManager { get }
     open var currentDirectoryPath: String { get }
     open weak var delegate: FileManagerDelegate? { get set }
     open var homeDirectoryForCurrentUser: URL { get }
@@ -354,8 +354,6 @@ open class MassFormatter : AnyObject, CustomDebugStringConvertible, CustomString
     open func unitString(fromKilograms numberInKilograms: Double, usedUnit unitp: UnsafeMutablePointer<Unit>?) -> String {}
     open func unitString(fromValue value: Double, unit: Unit) -> String {}
     open func unitStringDisplayedAdjacent(toValue value: Double, unit: Unit) -> String {}
-}
-open class MessagePort : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port {
 }
 open class NSAffineTransform : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _StructTypeBridgeable {
     public convenience init(transform: AffineTransform) {}
@@ -617,10 +615,10 @@ open class NSConditionLock : AnyObject, CustomDebugStringConvertible, CustomStri
     public init(condition: Int) {}
     open var condition: Int { get }
     open var name: String? { get set }
+    open func `try`() -> Bool {}
     open func lock(before limit: Date) -> Bool {}
     open func lock(whenCondition condition: Int) {}
     open func lock(whenCondition condition: Int, before limit: Date) -> Bool {}
-    open func try() -> Bool {}
     open func tryLock(whenCondition condition: Int) -> Bool {}
     open func unlock(withCondition condition: Int) {}
 }
@@ -740,7 +738,7 @@ open class NSDecimalNumber : AnyObject, Comparable, CustomDebugStringConvertible
     open func subtracting(_ other: NSDecimalNumber, withBehavior b: NSDecimalNumberBehaviors?) -> NSDecimalNumber {}
 }
 open class NSDecimalNumberHandler : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSDecimalNumberBehaviors, NSObject, NSObjectProtocol {
-    open class var default: NSDecimalNumberHandler { get }
+    open class var `default`: NSDecimalNumberHandler { get }
     public init(roundingMode: NSDecimalNumber.RoundingMode, scale: Int16, raiseOnExactness exact: Bool, raiseOnOverflow overflow: Bool, raiseOnUnderflow underflow: Bool, raiseOnDivideByZero divideByZero: Bool) {}
 }
 open class NSDictionary : AnyObject, CustomDebugStringConvertible, CustomReflectable, CustomStringConvertible, Equatable, ExpressibleByDictionaryLiteral, Hashable, NSCoding, NSCopying, NSMutableCopying, NSObject, NSObjectProtocol, NSSecureCoding, Sequence, _CFBridgeable, _StructTypeBridgeable, _SwiftBridgeable {
@@ -852,14 +850,14 @@ open class NSKeyedArchiver : AnyObject, CustomDebugStringConvertible, CustomStri
     open func setClassName(_ codedName: String?, for cls: AnyClass) {}
 }
 open class NSKeyedUnarchiver : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoder, NSObject, NSObjectProtocol {
-    open class func class(forClassName codedName: String) -> AnyClass? {}
+    open class func `class`(forClassName codedName: String) -> AnyClass? {}
     open class func setClass(_ cls: AnyClass?, forClassName codedName: String) {}
     open class func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any? {}
     public static func unarchivedObject<DecodedObjectType>(ofClass cls: DecodedObjectType.Type, from data: Data) throws -> DecodedObjectType? where DecodedObjectType : NSCoding, DecodedObjectType : NSObject {}
     public static func unarchivedObject(ofClasses classes: [AnyClass], from data: Data) throws -> Any? {}
     public init(forReadingFrom data: Data) throws {}
     open weak var delegate: NSKeyedUnarchiverDelegate? { get set }
-    open func class(forClassName codedName: String) -> AnyClass? {}
+    open func `class`(forClassName codedName: String) -> AnyClass? {}
     open func finishDecoding() {}
     open func setClass(_ cls: AnyClass?, forClassName codedName: String) {}
 }
@@ -888,8 +886,8 @@ open class NSLocale : AnyObject, CustomDebugStringConvertible, CustomStringConve
 }
 open class NSLock : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     open var name: String? { get set }
+    open func `try`() -> Bool {}
     open func lock(before limit: Date) -> Bool {}
-    open func try() -> Bool {}
 }
 open class NSMeasurement : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _HasCustomAnyHashableRepresentation, _StructTypeBridgeable {
     public init(doubleValue: Double, unit: Unit) {}
@@ -1163,8 +1161,8 @@ open class NSPredicate : AnyObject, CustomDebugStringConvertible, CustomStringCo
 }
 open class NSRecursiveLock : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSLocking, NSObject, NSObjectProtocol {
     open var name: String? { get set }
+    open func `try`() -> Bool {}
     open func lock(before limit: Date) -> Bool {}
-    open func try() -> Bool {}
 }
 open class NSRegularExpression : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding {
     open class func escapedPattern(for string: String) -> String {}
@@ -1349,8 +1347,8 @@ open class NSTextCheckingResult : AnyObject, CustomDebugStringConvertible, Custo
     @available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *) open func range(withName: String) -> NSRange {}
 }
 open class NSTimeZone : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, NSSecureCoding, _CFBridgeable, _SwiftBridgeable {
+    open class var `default`: TimeZone { get set }
     open class var abbreviationDictionary: [String: String] { get set }
-    open class var default: TimeZone { get set }
     open class var knownTimeZoneNames: [String] { get }
     open class var local: TimeZone { get }
     open class var system: TimeZone { get }
@@ -1505,7 +1503,7 @@ open class NSValue : AnyObject, CustomDebugStringConvertible, CustomStringConver
     open func getValue(_ value: UnsafeMutableRawPointer) {}
 }
 open class NotificationCenter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
-    open class var default: NotificationCenter { get }
+    open class var `default`: NotificationCenter { get }
     open func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {}
     open func post(_ notification: Notification) {}
     open func post(name aName: NSNotification.Name, object anObject: Any?, userInfo aUserInfo: [AnyHashable: Any]? = x) {}
@@ -1513,7 +1511,7 @@ open class NotificationCenter : AnyObject, CustomDebugStringConvertible, CustomS
     open func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object: Any?) {}
 }
 open class NotificationQueue : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
-    open class var default: NotificationQueue { get }
+    open class var `default`: NotificationQueue { get }
     public init(notificationCenter: NotificationCenter) {}
     open func dequeueNotifications(matching notification: Notification, coalesceMask: NotificationCoalescing) {}
     open func enqueue(_ notification: Notification, postingStyle: PostingStyle) {}
@@ -1634,29 +1632,23 @@ open class OutputStream : AnyObject, CustomDebugStringConvertible, CustomStringC
     open var hasSpaceAvailable: Bool { get }
     open func write(_ buffer: UnsafePointer<UInt8>, maxLength len: Int) -> Int {}
 }
-open class PersonNameComponentsFormatter : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Formatter, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
-    open class func localizedString(from components: PersonNameComponents, style nameFormatStyle: Style, options nameOptions: Options = x) -> String {}
-    open var isPhonetic: Bool { get set }
-    open var style: Style { get set }
-    open func annotatedString(from components: PersonNameComponents) -> NSAttributedString {}
-    open func personNameComponents(from string: String) -> PersonNameComponents? {}
-    open func string(from components: PersonNameComponents) -> String {}
-}
 open class Pipe : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public var fileHandleForReading: FileHandle { get }
     public var fileHandleForWriting: FileHandle { get }
 }
-open class Port : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol {
+open class Port : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
     public static var didBecomeInvalidNotification { get }
     open var isValid: Bool { get }
     open var reservedSpaceLength: Int { get }
+    open func delegate() -> PortDelegate? {}
     open func invalidate() {}
     open func remove(from runLoop: RunLoop, forMode mode: RunLoop.Mode) {}
     open func schedule(in runLoop: RunLoop, forMode mode: RunLoop.Mode) {}
     open func sendBeforeDate(_ limitDate: Date, components: NSMutableArray?, from receivePort: Port?, reserved headerSpaceReserved: Int) -> Bool {}
     open func sendBeforeDate(_ limitDate: Date, msgid msgID: Int, components: NSMutableArray?, from receivePort: Port?, reserved headerSpaceReserved: Int) -> Bool {}
+    open func setDelegate(_ anObject: PortDelegate?) {}
 }
-open class PortMessage : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
+open class PortMessage : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
     public init(sendPort: Port?, receivePort replyPort: Port?, components: [AnyObject]?) {}
     open var components: [AnyObject]? { get }
     open var msgid: UInt32 { get set }
@@ -1668,7 +1660,7 @@ open class Process : AnyObject, CustomDebugStringConvertible, CustomStringConver
     public static var didTerminateNotification { get }
     open class func run(_ url: URL, arguments: [String], terminationHandler: ((Process) -> Void)? = x) throws -> Process {}
     open var arguments: [String]? { get set }
-    open var currentDirectoryURL { get set }
+    open var currentDirectoryURL: URL? { get set }
     open var environment: [String: String]? { get set }
     open var executableURL: URL? { get set }
     open var isRunning: Bool { get }
@@ -1805,14 +1797,14 @@ open class Scanner : AnyObject, CustomDebugStringConvertible, CustomStringConver
     public func scanUpToCharacters(from set: CharacterSet) -> String? {}
     public func scanUpToString(_ substring: String) -> String? {}
 }
-open class SocketPort : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSCopying, NSObject, NSObjectProtocol, Port {
+open class SocketPort : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, Port {
     public init?(protocolFamily family: Int32, socketType type: Int32, protocol: Int32, address: Data) {}
     public init?(protocolFamily family: Int32, socketType type: Int32, protocol: Int32, socket sock: SocketNativeHandle) {}
     public init(remoteWithProtocolFamily family: Int32, socketType type: Int32, protocol: Int32, address: Data) {}
     public convenience init?(remoteWithTCPPort port: UInt16, host hostName: String?) {}
     public convenience init?(tcpPort port: UInt16) {}
+    open var `protocol`: Int32 { get }
     open var address: Data { get }
-    open var protocol: Int32 { get }
     open var protocolFamily: Int32 { get }
     open var socket: SocketNativeHandle { get }
     open var socketType: Int32 { get }
@@ -1870,7 +1862,7 @@ open class Timer : AnyObject, CustomDebugStringConvertible, CustomStringConverti
     open func fire() {}
     open func invalidate() {}
 }
-open class URLAuthenticationChallenge : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObject, NSObjectProtocol, NSSecureCoding {
+open class URLAuthenticationChallenge : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSObject, NSObjectProtocol {
     public init(authenticationChallenge challenge: URLAuthenticationChallenge, sender: URLAuthenticationChallengeSender) {}
     public init(protectionSpace space: URLProtectionSpace, proposedCredential credential: URLCredential?, previousFailureCount: Int, failureResponse response: URLResponse?, error: Error?, sender: URLAuthenticationChallengeSender) {}
     open var error: Error? { get }
@@ -1919,10 +1911,10 @@ open class URLCredentialStorage : AnyObject, CustomDebugStringConvertible, Custo
 open class URLProtectionSpace : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
     public init(host: String, port: Int, protocol: String?, realm: String?, authenticationMethod: String?) {}
     public init(proxyHost host: String, port: Int, type: String?, realm: String?, authenticationMethod: String?) {}
+    open var `protocol`: String? { get }
     open var authenticationMethod: String { get }
     open var host: String { get }
     open var port: Int { get }
-    open var protocol: String? { get }
     open var proxyType: String? { get }
     open var realm: String? { get }
     open var receivesCredentialSecurely: Bool { get }
@@ -1973,7 +1965,6 @@ open class URLSession : AnyObject, CustomDebugStringConvertible, CustomStringCon
     open func getTasksWithCompletionHandler(completionHandler: @escaping ([URLSessionDataTask], [URLSessionUploadTask], [URLSessionDownloadTask]) -> Void) {}
     open func invalidateAndCancel() {}
     open func reset(completionHandler: @escaping () -> Void) {}
-    open func streamTask(withHostName hostname: String, port: Int) -> URLSessionStreamTask {}
     open func uploadTask(with request: URLRequest, from bodyData: Data) -> URLSessionUploadTask {}
     open func uploadTask(with request: URLRequest, from bodyData: Data?, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionUploadTask {}
     open func uploadTask(with request: URLRequest, fromFile fileURL: URL) -> URLSessionUploadTask {}
@@ -1981,7 +1972,7 @@ open class URLSession : AnyObject, CustomDebugStringConvertible, CustomStringCon
     open func uploadTask(withStreamedRequest request: URLRequest) -> URLSessionUploadTask {}
 }
 open class URLSessionConfiguration : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol {
-    open class var default: URLSessionConfiguration { get }
+    open class var `default`: URLSessionConfiguration { get }
     open class var ephemeral: URLSessionConfiguration { get }
     open var allowsCellularAccess: Bool { get set }
     open var connectionProxyDictionary: [AnyHashable: Any]? { get set }
@@ -2007,15 +1998,6 @@ open class URLSessionDataTask : AnyObject, CustomDebugStringConvertible, CustomS
 }
 open class URLSessionDownloadTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask {
     open func cancel(byProducingResumeData completionHandler: @escaping (Data?) -> Void) {}
-}
-open class URLSessionStreamTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting, URLSessionTask {
-    open func captureStreams() {}
-    open func closeRead() {}
-    open func closeWrite() {}
-    open func readData(ofMinLength minBytes: Int, maxLength maxBytes: Int, timeout: TimeInterval, completionHandler: @escaping (Data?, Bool, Error?) -> Void) {}
-    open func startSecureConnection() {}
-    open func stopSecureConnection() {}
-    open func write(_ data: Data, timeout: TimeInterval, completionHandler: @escaping (Error?) -> Void) {}
 }
 open class URLSessionTask : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, ProgressReporting {
     public static var defaultPriority: Float { get }
@@ -2117,7 +2099,6 @@ open class XMLDTDNode : AnyObject, CustomDebugStringConvertible, CustomStringCon
     open var systemID: String? { get set }
 }
 open class XMLDocument : AnyObject, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCopying, NSObject, NSObjectProtocol, XMLNode, _NSXMLNodeCollectionType {
-    open class func replacementClass(for cls: AnyClass) -> AnyClass {}
     public convenience init(contentsOf url: URL, options mask: XMLNode.Options = x) throws {}
     public init(data: Data, options mask: XMLNode.Options = x) throws {}
     public init(rootElement element: XMLElement?) {}
@@ -2132,9 +2113,6 @@ open class XMLDocument : AnyObject, CustomDebugStringConvertible, CustomStringCo
     open func addChild(_ child: XMLNode) {}
     open func insertChild(_ child: XMLNode, at index: Int) {}
     open func insertChildren(_ children: [XMLNode], at index: Int) {}
-    open func object(byApplyingXSLT xslt: Data, arguments: [String: String]?) throws -> Any {}
-    open func object(byApplyingXSLTString xslt: String, arguments: [String: String]?) throws -> Any {}
-    open func objectByApplyingXSLT(at xsltURL: URL, arguments argument: [String: String]?) throws -> Any {}
     open func removeChild(at index: Int) {}
     open func replaceChild(at index: Int, with node: XMLNode) {}
     open func rootElement() -> XMLElement? {}
@@ -2216,8 +2194,6 @@ open class XMLNode : AnyObject, CustomDebugStringConvertible, CustomStringConver
     open func detach() {}
     public func index(after i: Index) -> Index {}
     open func nodes(forXPath xpath: String) throws -> [XMLNode] {}
-    open func objects(forXQuery xquery: String) throws -> [Any] {}
-    open func objects(forXQuery xquery: String, constants: [String: Any]?) throws -> [Any] {}
     open func setStringValue(_ string: String, resolvingEntities resolve: Bool) {}
     open func xmlString(options: Options) -> String {}
 }
@@ -2327,15 +2303,15 @@ public protocol NSObjectProtocol : AnyObject {
     var debugDescription: String { get }
     var description: String { get }
     var hash: Int { get }
+    func `self`() -> Self
     func isEqual(_ object: Any?) -> Bool
     func isProxy() -> Bool
-    func self() -> Self
 }
 public protocol NSSecureCoding : NSCoding {
     static var supportsSecureCoding: Bool { get }
 }
 public protocol PortDelegate : AnyObject {
-    func handlePortMessage(_ message: PortMessage)
+    func handle(_ message: PortMessage)
 }
 public protocol ProgressReporting : AnyObject, NSObjectProtocol {
     var progress: Progress { get }
@@ -2537,6 +2513,8 @@ extension NSExpression {
 extension Optional {
 }
 extension POSIXErrorCode {
+}
+extension PersonNameComponentsFormatter {
 }
 extension Range {
 }

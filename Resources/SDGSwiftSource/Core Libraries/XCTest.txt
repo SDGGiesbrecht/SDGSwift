@@ -29,13 +29,16 @@ open class XCTest {
     open func perform(_ run: XCTestRun) {}
     open func run() {}
     open func setUp() {}
+    open func setUpWithError() throws {}
     open func tearDown() {}
+    open func tearDownWithError() throws {}
 }
 open class XCTestCase : AnyObject, PerformanceMeterDelegate, XCTWaiterDelegate, XCTest {
     open class func setUp() {}
     open class func tearDown() {}
     public required init(name: String, testClosure: @escaping XCTestCaseClosure) {}
     open var continueAfterFailure: Bool { get set }
+    open func addTeardownBlock(_ block: @escaping () -> Void) {}
     open func invokeTest() {}
     open func recordFailure(withDescription description: String, inFile filePath: String, atLine lineNumber: Int, expected: Bool) {}
 }
@@ -56,7 +59,9 @@ open class XCTestRun {
     public required init(test: XCTest) {}
     open var executionCount: Int { get }
     open var failureCount: Int { get }
+    open var hasBeenSkipped { get }
     open var hasSucceeded: Bool { get }
+    open var skipCount: Int { get }
     open var startDate: Date? { get }
     open var stopDate: Date? { get }
     public var test: XCTest { get }
