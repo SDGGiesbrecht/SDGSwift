@@ -395,3 +395,9 @@ func adjustForAndroid() {
     })
   }
 }
+#if os(Android)
+  adjustForAndroid()
+#endif
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}
