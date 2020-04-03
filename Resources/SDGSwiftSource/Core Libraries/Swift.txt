@@ -242,7 +242,6 @@ public protocol FloatingPoint : AdditiveArithmetic, Comparable, Equatable, Expre
     static var radix: Int { get }
     static var signalingNaN: Self { get }
     static var ulpOfOne: Self { get }
-    static var ulpOfOne: Self { get }
     static func maximum(_ x: Self, _ y: Self) -> Self
     static func maximumMagnitude(_ x: Self, _ y: Self) -> Self
     static func minimum(_ x: Self, _ y: Self) -> Self
@@ -862,26 +861,13 @@ extension StrideTo {
 }
 extension StrideToIterator {
 }
-extension String.Index {
-    public init<S>(utf16Offset offset: Int, in s: S) where S : StringProtocol {}
-    public func utf16Offset<S>(in s: S) -> Int where S : StringProtocol {}
-}
 extension String.UTF16View {
-    public subscript(idx: Index) -> UTF16.CodeUnit { get } {}
-}
-extension String.UTF16View.Index {
-    public init?(_ idx: String.Index, within target: String.UTF16View) {}
-    public func samePosition(in unicodeScalars: String.UnicodeScalarView) -> String.UnicodeScalarIndex? {}
 }
 extension String.UTF8View {
     public subscript(i: Index) -> UTF8.CodeUnit { get } {}
 }
 extension String.UTF8View.Index {
     public init?(_ idx: String.Index, within target: String.UTF8View) {}
-}
-extension String.UnicodeScalarIndex {
-    public init?(_ sourcePosition: String.Index, within unicodeScalars: String.UnicodeScalarView) {}
-    public func samePosition(in characters: String) -> String.Index? {}
 }
 extension String.UnicodeScalarView {
 }
@@ -898,19 +884,98 @@ extension UTF8.ReverseParser {
 }
 extension UTF8ValidationResult {
 }
-extension Unicode.ASCII {
-    public static var encodedReplacementCharacter: EncodedScalar { get }
-    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
-    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
-    public static func isASCII(_ x: CodeUnit) -> Bool {}
-    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
-}
 extension Unicode.ASCII.Parser {
     public mutating func parseScalar<I>(from input: inout I) -> Unicode.ParseResult<Encoding.EncodedScalar> where I : IteratorProtocol, Encoding.CodeUnit == I.Element {}
 }
 extension Unicode.Scalar {
 }
+extension Unicode.Scalar.Properties {
+    public var age: Unicode.Version? { get }
+    public var canonicalCombiningClass: Unicode.CanonicalCombiningClass { get }
+    public var changesWhenCaseFolded: Bool { get }
+    public var changesWhenCaseMapped: Bool { get }
+    public var changesWhenLowercased: Bool { get }
+    public var changesWhenNFKCCaseFolded: Bool { get }
+    public var changesWhenTitlecased: Bool { get }
+    public var changesWhenUppercased: Bool { get }
+    public var generalCategory: Unicode.GeneralCategory { get }
+    public var isASCIIHexDigit: Bool { get }
+    public var isAlphabetic: Bool { get }
+    public var isBidiControl: Bool { get }
+    public var isBidiMirrored: Bool { get }
+    public var isCaseIgnorable: Bool { get }
+    public var isCased: Bool { get }
+    public var isDash: Bool { get }
+    public var isDefaultIgnorableCodePoint: Bool { get }
+    public var isDeprecated: Bool { get }
+    public var isDiacritic: Bool { get }
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmoji: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifier: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiModifierBase: Bool { get }
+#endif
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    @available(macOS 10.12.2, iOS 10.2, tvOS 10.1, watchOS 3.1.1, *) public var isEmojiPresentation: Bool { get }
+#endif
+    public var isExtender: Bool { get }
+    public var isFullCompositionExclusion: Bool { get }
+    public var isGraphemeBase: Bool { get }
+    public var isGraphemeExtend: Bool { get }
+    public var isHexDigit: Bool { get }
+    public var isIDContinue: Bool { get }
+    public var isIDSBinaryOperator: Bool { get }
+    public var isIDSTrinaryOperator: Bool { get }
+    public var isIDStart: Bool { get }
+    public var isIdeographic: Bool { get }
+    public var isJoinControl: Bool { get }
+    public var isLogicalOrderException: Bool { get }
+    public var isLowercase: Bool { get }
+    public var isMath: Bool { get }
+    public var isNoncharacterCodePoint: Bool { get }
+    public var isPatternSyntax: Bool { get }
+    public var isPatternWhitespace: Bool { get }
+    public var isQuotationMark: Bool { get }
+    public var isRadical: Bool { get }
+    public var isSentenceTerminal: Bool { get }
+    public var isSoftDotted: Bool { get }
+    public var isTerminalPunctuation: Bool { get }
+    public var isUnifiedIdeograph: Bool { get }
+    public var isUppercase: Bool { get }
+    public var isVariationSelector: Bool { get }
+    public var isWhitespace: Bool { get }
+    public var isXIDContinue: Bool { get }
+    public var isXIDStart: Bool { get }
+    public var lowercaseMapping: String { get }
+    public var name: String? { get }
+    public var nameAlias: String? { get }
+    public var numericType: Unicode.NumericType? { get }
+    public var numericValue: Double? { get }
+    public var titlecaseMapping: String { get }
+    public var uppercaseMapping: String { get }
+}
 extension Unicode.Scalar.UTF16View {
+}
+extension Unicode.Scalar.UTF8View {
+}
+extension Unicode.UTF16 {
+    public static var encodedReplacementCharacter: EncodedScalar { get }
+    public static func decode(_ source: EncodedScalar) -> Unicode.Scalar {}
+    public static func encode(_ source: Unicode.Scalar) -> EncodedScalar? {}
+    public static func isASCII(_ x: CodeUnit) -> Bool {}
+    public static func isLeadSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func isSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func isTrailSurrogate(_ x: CodeUnit) -> Bool {}
+    public static func leadSurrogate(_ x: Unicode.Scalar) -> UTF16.CodeUnit {}
+    public static func trailSurrogate(_ x: Unicode.Scalar) -> UTF16.CodeUnit {}
+    public static func transcode<FromEncoding>(_ content: FromEncoding.EncodedScalar, from _: FromEncoding.Type) -> EncodedScalar? where FromEncoding : Unicode.Encoding {}
+    public static func transcodedLength<Input, Encoding>(of input: Input, decodedAs sourceEncoding: Encoding.Type, repairingIllFormedSequences: Bool) -> (count: Int, isASCII: Bool)? where Encoding : Unicode.Encoding, Input : IteratorProtocol, Encoding.CodeUnit == Input.Element {}
+    public static func width(_ x: Unicode.Scalar) -> Int {}
+}
+extension Unicode.UTF16.ForwardParser {
 }
 extension Unicode.UTF8 {
     public static var encodedReplacementCharacter: EncodedScalar { get }
