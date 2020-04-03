@@ -13,7 +13,7 @@
  */
 
 #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
-  import CCommonMark
+  import cmark
 
   /// Inline code use in documentation.
   public class InlineCodeSyntax: MarkdownSyntax {

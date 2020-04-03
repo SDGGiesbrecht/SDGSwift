@@ -101,9 +101,9 @@ let package = Package(
       .exact(Version(0, 50200, 0))
     ),
     .package(
-      name: "CommonMark",
+      name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      .exact(Version(0, 0, 50100))
+      .exact(Version(0, 0, 50200))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
   ],
@@ -168,7 +168,7 @@ let package = Package(
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         // SwiftSyntax (except Windows and Android; see end of file)
-        // CommonMark (except Windows; see end of file)
+        // cmark (except Windows; see end of file)
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
     ),
@@ -382,7 +382,7 @@ import Foundation
 #if !os(Windows)
   if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
     for target in package.targets where target.name == "SDGSwiftSource" {
-      target.dependencies.append(.product(name: "CommonMark", package: "CommonMark"))
+      target.dependencies.append(.product(name: "cmark", package: "cmark"))
     }
   }
 #endif
