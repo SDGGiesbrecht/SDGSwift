@@ -103,8 +103,7 @@ let package = Package(
     .package(
       name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      // #warning(Pointing at branch.)
-      .branch("swift‐5.2")
+      .exact(Version(0, 0, 50200))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
   ],

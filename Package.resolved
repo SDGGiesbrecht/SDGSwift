@@ -23,9 +23,9 @@
         "package": "cmark",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
         "state": {
-          "branch": "swift‐5.2",
+          "branch": null,
           "revision": "bfa95d55b535fa178f75484b5e8f82ae3d8517af",
-          "version": null
+          "version": "0.0.50200"
         }
       },
       {
