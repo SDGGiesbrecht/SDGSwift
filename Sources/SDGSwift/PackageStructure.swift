@@ -115,21 +115,6 @@ public struct Package: TransparentWrapper {
               return .failure(.foundationError(error))
             }
 
-            #if os(macOS)
-              // #workaround(Swift 5.1.3, Swift links with absolute paths on macOS.)
-              for dynamicLibrary in enumeratedProducts where dynamicLibrary.pathExtension == "dylib"
-              {
-                for component in enumeratedProducts {
-                  _ = try? Shell.default.run(command: [
-                    "install_name_tool",
-                    "\u{2D}change", Shell.quote(dynamicLibrary.path),
-                    Shell.quote("@executable_path/" + dynamicLibrary.lastPathComponent),
-                    Shell.quote(component.path),
-                  ]).get()
-                }
-              }
-            #endif
-
             let intermediateDirectory = temporaryDirectory.appendingPathComponent(UUID().uuidString)
             for component in enumeratedProducts {
               let filename = component.lastPathComponent
