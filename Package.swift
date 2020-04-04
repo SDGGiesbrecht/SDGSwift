@@ -146,7 +146,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        // SwiftPM‐auto (except Windows and Android; see end of file)
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
       ]
     ),
 
@@ -167,8 +167,8 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        // SwiftSyntax (except Windows and Android; see end of file)
-        // cmark (except Windows; see end of file)
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
     ),
@@ -239,7 +239,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        // SwiftSyntax (except Windows and Android; see end of file)
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
       ]
     ),
 
@@ -302,7 +302,7 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        // SwiftSyntax (except Windows and Android; see end of file)
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
       ]
     ),
     .testTarget(
@@ -353,47 +353,51 @@ let package = Package(
   ]
 )
 
-// #workaround(workspace version 0.30.2, Windows cannot build C.)
-// #workaround(SwiftPM 0.5.0, Cannot build for Android.)
-import Foundation
-#if !os(Windows) && !os(Android)
-  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil,
-    ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == nil
-  {
-
-    let needSwiftSyntax: Set<String> = [
-      "SDGSwiftSource",
-      "refresh‐core‐libraries",
-      "SDGSwiftSourceTests",
-    ]
-    for target in package.targets where needSwiftSyntax.contains(target.name) {
-      target.dependencies.append(.product(name: "SwiftSyntax", package: "SwiftSyntax"))
-    }
-
-    for target in package.targets where target.name == "SDGSwiftPackageManager" {
-      target.dependencies.append(
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
-      )
-    }
-  }
-#endif
-
-// #workaround(workspace version 0.30.2, Windows cannot build C.)
-#if !os(Windows)
-  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
-    for target in package.targets where target.name == "SDGSwiftSource" {
-      target.dependencies.append(.product(name: "cmark", package: "cmark"))
-    }
-  }
-#endif
-
-// #workaround(workspace version 0.30.2, CMake cannot handle Unicode.)
 func adjustForWindows() {
+
+  // #workaround(workspace version 0.32.0, CMake cannot handle Unicode.)
   package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
+
+  // #workaround(workspace version 0.30.2, Windows cannot build C.)
+  let impossibleDependencies = [
+    "cmark",
+    "SwiftPM",
+    "SwiftSyntax",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
 }
 #if os(Windows)
   adjustForWindows()
 #endif
+import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
+}
+
+func adjustForAndroid() {
+  let impossibleDependencies = [
+    // #workaround(SwiftPM 0.5.0, Cannot build for Android.)
+    "SwiftPM",
+    // #workaround(SwiftSyntax 0.50100.0, Cannot build for Android.)
+    "SwiftSyntax",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
 }
