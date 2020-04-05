@@ -180,18 +180,6 @@ extension PackageRepository {
 
   // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
-    public func _directoriesIgnoredForTestCoverage()
-      -> Swift.Result<
-        [Foundation.URL], SwiftCompiler.PackageLoadingError
-      >
-    {
-      return packageWorkspace().map { workspace in
-        return [
-          workspace.dataPath.asURL,
-          workspace.editablesPath.asURL,
-        ]
-      }
-    }
 
     /// Returns the code coverage report for the package.
     ///

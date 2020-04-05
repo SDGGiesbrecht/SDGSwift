@@ -115,34 +115,6 @@ extension SwiftCompiler {
 
   // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
-    private static func codeCoverageDirectory(
-      for package: PackageRepository
-    ) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
-      return package.hostBuildParameters().map { $0.codeCovPath.asURL }
-    }
-
-    private static func codeCoverageDataFileName(
-      for package: PackageRepository
-    ) -> Swift.Result<String, SwiftCompiler.PackageLoadingError> {
-      return package.manifest().map { $0.name }
-    }
-
-    private static func codeCoverageDataFile(
-      for package: PackageRepository
-    ) -> Swift.Result<Foundation.URL, SwiftCompiler.PackageLoadingError> {
-      // #workaround(Swift 5.1.3, This will be provided by the CLI. Can test coverage move to SDGSwift?) @exempt(from: unicode)
-      switch codeCoverageDirectory(for: package) {
-      case .failure(let error):
-        return .failure(error)
-      case .success(let directory):
-        switch codeCoverageDataFileName(for: package) {
-        case .failure(let error):
-          return .failure(error)
-        case .success(let fileName):
-          return .success(directory.appendingPathComponent(fileName.appending(".json")))
-        }
-      }
-    }
 
     /// Returns the code coverage report for the package.
     ///
@@ -162,7 +134,7 @@ extension SwiftCompiler {
       let coverageDataFile: Foundation.URL
       switch codeCoverageDataFile(for: package) {
       case .failure(let error):
-        return .failure(.packageManagerError(error))
+        return .failure(.swiftError(error))
       case .success(let file):
         coverageDataFile = file
       }
@@ -184,13 +156,7 @@ extension SwiftCompiler {
         return .failure(.corruptTestCoverageReport)
       }
 
-      let ignoredDirectories: [Foundation.URL]
-      switch package._directoriesIgnoredForTestCoverage() {
-      case .failure(let error):
-        return .failure(.packageManagerError(error))
-      case .success(let directories):
-        ignoredDirectories = directories
-      }
+      let ignoredDirectories: [Foundation.URL] = package._directoriesIgnoredForTestCoverage()
       var fileReports: [FileTestCoverage] = []
       for entry in data {
         if let dictionary = entry as? [String: Any],

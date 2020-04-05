@@ -132,6 +132,13 @@ public struct PackageRepository: TransparentWrapper {
     return SwiftCompiler.test(self, reportProgress: reportProgress)
   }
 
+  public func _directoriesIgnoredForTestCoverage() -> [Foundation.URL] {
+    return [
+      ".build",
+      "Packages",
+    ].map { location.appendingPathComponent($0) }
+  }
+
   /// Resolves the package, fetching its dependencies.
   ///
   /// - Parameters:

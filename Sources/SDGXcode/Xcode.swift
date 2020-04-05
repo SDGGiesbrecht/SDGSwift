@@ -329,13 +329,7 @@ public enum Xcode: VersionedExternalProcess {
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
     ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
-      let ignoredDirectories: [URL]
-      switch package._directoriesIgnoredForTestCoverage() {
-      case .failure(let error):
-        return .failure(.packageManagerError(error))
-      case .success(let directories):
-        ignoredDirectories = directories
-      }
+      let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
 
       let resultBundle = self.resultBundle(for: package, on: sdk)
 

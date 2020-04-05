@@ -27,8 +27,8 @@ extension SwiftCompiler {
 
       // MARK: - Cases
 
-      /// The package manager encountered an error.
-      case packageManagerError(PackageLoadingError)
+      /// Swift encountered an error.
+      case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
       /// Foundation encountered an error.
       case foundationError(Swift.Error)
@@ -40,7 +40,7 @@ extension SwiftCompiler {
 
       public func presentableDescription() -> StrictString {
         switch self {
-        case .packageManagerError(let error):
+        case .swiftError(let error):
           return error.presentableDescription()
         case .foundationError(let error):
           return StrictString(error.localizedDescription)

@@ -213,6 +213,20 @@ public enum SwiftCompiler: VersionedExternalProcess {
     )
   }
 
+  // MARK: - Test Coverage
+
+  #warning("Should be private.")
+  public static func codeCoverageDataFile(
+    for package: PackageRepository
+  ) -> Swift.Result<Foundation.URL, VersionedExternalProcessExecutionError<Self>> {
+    let earliest = Version(5, 2, 0)
+    return runCustomSubcommand(
+      [],
+      in: package.location,
+      versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+    ).map { URL(fileURLWithPath: $0) }
+  }
+
   // MARK: - VersionedExternalProcess
 
   public static let englishName: StrictString = "Swift"
