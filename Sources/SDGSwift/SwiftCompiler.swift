@@ -220,7 +220,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
   ) -> Swift.Result<Foundation.URL, VersionedExternalProcessExecutionError<Self>> {
     let earliest = Version(5, 2, 0)
     return runCustomSubcommand(
-      [],
+      ["test", "show\u{2D}codecov\u{2D}path"],
       in: package.location,
       versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
     ).map { URL(fileURLWithPath: $0) }
