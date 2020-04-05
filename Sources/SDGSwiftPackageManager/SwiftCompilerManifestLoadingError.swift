@@ -17,13 +17,15 @@ import SDGLocalization
 
 import SDGSwift
 
-#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+// #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+#if !(os(Windows) || os(Android))
   import Workspace
 #endif
 
 extension SwiftCompiler {
 
-  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))
     /// An error encountered while loading a Swift package.
     public enum PackageLoadingError: PresentableError {
 

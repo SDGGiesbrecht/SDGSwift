@@ -14,7 +14,8 @@
 
 import SDGLocalization
 
-#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+// #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+#if !(os(Windows) || os(Android))
   import SwiftSyntax
 #endif
 
@@ -31,13 +32,15 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
     #endif
   }
 
   func testExtendedSyntaxContext() {
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let context = ExtendedSyntaxContext._token(
         SyntaxFactory.makeToken(.comma),
         context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil)
@@ -56,7 +59,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   func testLocalizations() {
     for localization in InterfaceLocalization.allCases {
       LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+        // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
         #if !(os(Windows) || os(Android))
           _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
           _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
@@ -66,7 +69,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testStringLiteral() {
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let literal = "\u{22}...\u{22}"
       let kind = TokenKind.stringLiteral(literal).normalized()
       if case .stringLiteral(let normalized) = kind {
@@ -78,7 +82,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenNormalization() {
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),
         .dollarIdentifier("$0"),

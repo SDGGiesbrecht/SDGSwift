@@ -358,7 +358,7 @@ func adjustForWindows() {
   // #workaround(workspace version 0.32.0, CMake cannot handle Unicode.)
   package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
 
-  // #workaround(workspace version 0.30.2, Windows cannot build C.)
+  // #workaround(workspace version 0.32.0, Windows cannot build C.)
   let impossibleDependencies = [
     "cmark",
     "SwiftPM",
@@ -382,9 +382,9 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 
 func adjustForAndroid() {
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.5.0, Cannot build for Android.)
+    // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftPM",
-    // #workaround(SwiftSyntax 0.50100.0, Cannot build for Android.)
+    // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftSyntax",
   ]
   for target in package.targets {

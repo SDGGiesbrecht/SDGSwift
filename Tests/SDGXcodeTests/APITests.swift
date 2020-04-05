@@ -36,10 +36,10 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.3, Windows has no SwiftPM.)
+    #if !os(Windows)  // #workaround(Swift 5.2, Windows has no SwiftPM.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.30.2, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.32.0, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
@@ -80,7 +80,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
           if withGeneratedProject {
@@ -104,7 +105,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .tvOS(simulator: true),
           ]
           if ¬withGeneratedProject {
-            // #workaround(xcodebuild -version 11.3.0, watchOS cannot handle test targets.) @exempt(from: unicode)
+            // #workaround(xcodebuild -version 11.4.0, watchOS cannot handle test targets.) @exempt(from: unicode)
             sdks.removeAll(where: { $0 == .watchOS })
           }
           for sdk in sdks {
@@ -290,7 +291,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
     #endif
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
 
@@ -370,7 +372,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.xcodeError(
           .locationError(.unavailable(versionConstraints: "..."))
@@ -386,7 +389,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.corruptTestCoverageReport,
         localizations: InterfaceLocalization.self,
