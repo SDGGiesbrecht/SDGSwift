@@ -22,7 +22,8 @@ import SDGSwiftPackageManager
 
 extension Xcode {
 
-  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(Android))
     /// An error encountered while checking test coverage.
     public enum CoverageReportingError: PresentableError {
 

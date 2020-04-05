@@ -63,7 +63,7 @@ private func withMock(
     try? FileManager.default.removeItem(at: mock.location)
     mocks.append(mock.location)
     try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-    #if !os(Android)  // #workaround(Swift 5.1.3, Process has its wires crossed.)
+    #if !os(Android)  // #workaround(workspace version 0.32.0, Process has its wires crossed.)
       _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
       _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
       _ = try Shell.default.run(
@@ -100,7 +100,8 @@ public func withMock(
   }
 }
 
-#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+// #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+#if !(os(Windows) || os(Android))
   public func withDefaultMockRepository(
     file: StaticString = #file,
     line: UInt = #line,

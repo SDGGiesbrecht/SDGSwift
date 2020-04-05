@@ -12,7 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+// #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+#if !(os(Windows) || os(Android))
   import SwiftSyntax
 
   extension GenericArgumentSyntax {

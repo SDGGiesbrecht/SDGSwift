@@ -12,7 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+// #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+#if !(os(Windows) || os(Android))
   import SwiftSyntax
 #endif
 
@@ -30,7 +31,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testContinuedCallout() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let source = [
         "/// ...",
         "///",
@@ -46,7 +48,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownEntity() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let source = [
         "/// ...&#x2D;...",
         "public func function() {}",
@@ -63,7 +66,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownQuotation() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let source = [
         "/// ...",
         "///",
@@ -87,7 +91,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testPackageDeclaration() {
     // Untracked.
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftSyntax won’t compile.)
+    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
       let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
       let highlighted = declaration.syntaxHighlightedHTML(
         inline: false,
