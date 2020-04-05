@@ -15,7 +15,6 @@
 import SDGText
 import SDGLocalization
 
-import SDGSwift
 import SDGSwiftLocalizations
 
 extension SwiftCompiler {
