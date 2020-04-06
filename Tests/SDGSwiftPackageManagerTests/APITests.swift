@@ -82,6 +82,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Package Manager",
         overwriteSpecificationInsteadOfFailing: false
       )
+      testCustomStringConvertibleConformance(
+        of: SwiftCompiler.PackageLoadingError.swiftLocationError(
+          .unavailable(versionConstraints: "[...]")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "No Swift",
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
       let invalidPackage = URL(fileURLWithPath: #file)
         .deletingLastPathComponent()
@@ -135,6 +143,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testManifestLoading() {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
+      XCTAssert(try thisRepository.manifest().get().name == "SDGSwift")
+    #endif
+  }
+
+  func testPackageLoading() {
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
       XCTAssert(try thisRepository.package().get().name == "SDGSwift")
     #endif
   }
@@ -143,9 +158,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(
-        try thisRepository.packageGraph().get().packages.contains(where: {
-          $0.name == "SDGCornerstone"
-        })
+        try thisRepository.packageGraph().get().packages
+          .contains(where: { $0.name == "SDGCornerstone" })
       )
     #endif
   }
@@ -205,6 +219,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           }
         }
       }
+    #endif
+  }
+
+  func testWorkspaceLoading() {
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      XCTAssertEqual(
+        try thisRepository.packageWorkspace().get().resolvedFile.basename,
+        "Package.resolved"
+      )
     #endif
   }
 }

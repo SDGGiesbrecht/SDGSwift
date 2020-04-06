@@ -181,8 +181,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.packageManagerError(
-          .swiftLocationError(.unavailable(versionConstraints: "..."))
+        of: SwiftCompiler.CoverageReportingError.swiftError(
+          .locationError(.unavailable(versionConstraints: "..."))
         ),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Unavailable",

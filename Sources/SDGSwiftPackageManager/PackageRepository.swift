@@ -26,6 +26,7 @@ import SDGVersioning
 #endif
 
 import SDGSwift
+
 import SDGSwiftLocalizations
 
 extension PackageRepository {
@@ -121,31 +122,6 @@ extension PackageRepository {
       }
     }
 
-    internal func hostBuildParameters()
-      -> Swift.Result<
-        BuildParameters, SwiftCompiler.PackageLoadingError
-      >
-    {
-      switch packageWorkspace() {
-      case .failure(let error):
-        return .failure(error)
-      case .success(let workspace):
-        switch SwiftCompiler.hostToolchain() {
-        case .failure(let error):
-          return .failure(error)
-        case .success(let toolchain):
-          return .success(
-            BuildParameters(
-              dataPath: workspace.dataPath,
-              configuration: .debug,
-              toolchain: toolchain,
-              flags: BuildFlags()
-            )
-          )
-        }
-      }
-    }
-
     /// Returns the package graph.
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
@@ -177,41 +153,6 @@ extension PackageRepository {
   {
     return Git.ignoredFiles(in: self)
   }
-
-  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
-    public func _directoriesIgnoredForTestCoverage()
-      -> Swift.Result<
-        [Foundation.URL], SwiftCompiler.PackageLoadingError
-      >
-    {
-      return packageWorkspace().map { workspace in
-        return [
-          workspace.dataPath.asURL,
-          workspace.editablesPath.asURL,
-        ]
-      }
-    }
-
-    /// Returns the code coverage report for the package.
-    ///
-    /// - Parameters:
-    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
-    ///
-    /// - Returns: The report, or `nil` if there is no code coverage information.
-    public func codeCoverageReport(
-      ignoreCoveredRegions: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-    ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
-      return SwiftCompiler.codeCoverageReport(
-        for: self,
-        ignoreCoveredRegions: ignoreCoveredRegions,
-        reportProgress: reportProgress
-      )
-    }
-  #endif
 
   // MARK: - Workflow
 

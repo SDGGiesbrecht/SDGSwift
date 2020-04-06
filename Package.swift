@@ -31,8 +31,6 @@ import PackageDescription
 /// - Package Manager operations such as fetching and manifest loading: `SDGSwiftPackageManager`
 /// - Utilities for defining configuration files written in Swift (similar to package manifests): `SDGSwiftConfiguration`, `SDGSwiftConfigurationLoading`
 ///
-/// Versioning note: Most products are already “finalized” at a state comparable to a semantic version one (`SDGSwift`, `SDGSwiftSource`, `SDGXcode`, `SDGSwiftConfiguration` and `SDGSwiftConfigurationLoading`). The package as a whole remains zero‐versioned because `SDGSwiftPackageManager` still relies on hidden implementation details of the package manager.
-///
 /// ### Example Usage
 ///
 /// ```swift
@@ -106,6 +104,10 @@ let package = Package(
       .exact(Version(0, 0, 50200))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
+    .package(
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
+      .exact(Version(0, 1, 0))
+    ),
   ],
   targets: [
 
@@ -139,14 +141,15 @@ let package = Package(
       dependencies: [
         "SDGSwift",
         "SDGSwiftLocalizations",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(
+          name: "SwiftToolsSupport\u{2D}auto",
+          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
+        ),
       ]
     ),
 
@@ -179,7 +182,6 @@ let package = Package(
       name: "SDGXcode",
       dependencies: [
         "SDGSwift",
-        "SDGSwiftPackageManager",
         "SDGSwiftLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -362,6 +364,7 @@ func adjustForWindows() {
   let impossibleDependencies = [
     "cmark",
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
     "SwiftSyntax",
   ]
   for target in package.targets {
@@ -384,6 +387,7 @@ func adjustForAndroid() {
   let impossibleDependencies = [
     // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
     // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftSyntax",
   ]

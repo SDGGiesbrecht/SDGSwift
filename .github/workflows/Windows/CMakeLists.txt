@@ -447,12 +447,17 @@ target_link_libraries("SDGSwiftLocalizations" PRIVATE
 
 add_library("SDGSwift"
   "../../../Sources/SDGSwift/Build.swift"
+  "../../../Sources/SDGSwift/CoverageRegion.swift"
+  "../../../Sources/SDGSwift/FileTestCoverage.swift"
   "../../../Sources/SDGSwift/Git.swift"
   "../../../Sources/SDGSwift/PackageRepository.swift"
   "../../../Sources/SDGSwift/PackageStructure.swift"
   "../../../Sources/SDGSwift/PackageStructureBuildError.swift"
   "../../../Sources/SDGSwift/PackageStructureExecutionError.swift"
+  "../../../Sources/SDGSwift/String.swift"
   "../../../Sources/SDGSwift/SwiftCompiler.swift"
+  "../../../Sources/SDGSwift/SwiftCompilerCoverageReportingError.swift"
+  "../../../Sources/SDGSwift/TestCoverageReport.swift"
   "../../../Sources/SDGSwift/VersionedExternalProcess.swift"
   "../../../Sources/SDGSwift/VersionedExternalProcessExecutionError.swift"
   "../../../Sources/SDGSwift/VersionedExternalProcessLocationError.swift"
@@ -489,26 +494,18 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
 )
 
 add_library("SDGSwiftPackageManager"
-  "../../../Sources/SDGSwiftPackageManager/CoverageRegion.swift"
-  "../../../Sources/SDGSwiftPackageManager/FileTestCoverage.swift"
   "../../../Sources/SDGSwiftPackageManager/Git.swift"
   "../../../Sources/SDGSwiftPackageManager/PackageRepository.swift"
   "../../../Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
-  "../../../Sources/SDGSwiftPackageManager/String.swift"
   "../../../Sources/SDGSwiftPackageManager/SwiftCompiler.swift"
-  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerCoverageReportingError.swift"
-  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerManifestLoadingError.swift"
-  "../../../Sources/SDGSwiftPackageManager/TestCoverageReport.swift"
+  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerPackageLoadingError.swift"
 )
 set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)
 target_link_libraries("SDGSwiftPackageManager" PRIVATE
   "SDGSwift"
   "SDGSwiftLocalizations"
-  "SDGControlFlow"
   "SDGLogic"
-  "SDGMathematics"
-  "SDGCollections"
   "SDGText"
   "SDGLocalization"
   "SDGVersioning"
@@ -593,7 +590,6 @@ set_target_properties("SDGXcode" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAK
 target_compile_options("SDGXcode" PRIVATE -enable-testing)
 target_link_libraries("SDGXcode" PRIVATE
   "SDGSwift"
-  "SDGSwiftPackageManager"
   "SDGSwiftLocalizations"
   "SDGControlFlow"
   "SDGLogic"
