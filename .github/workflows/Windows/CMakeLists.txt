@@ -689,7 +689,7 @@ add_library("SDGSwiftPackageManager"
   "../../../Sources/SDGSwiftPackageManager/PackageRepository.swift"
   "../../../Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
   "../../../Sources/SDGSwiftPackageManager/SwiftCompiler.swift"
-  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerManifestLoadingError.swift"
+  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerPackageLoadingError.swift"
 )
 set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)

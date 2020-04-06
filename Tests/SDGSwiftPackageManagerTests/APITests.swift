@@ -83,10 +83,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
       testCustomStringConvertibleConformance(
-        of: SwiftCompiler.PackageLoadingError.swiftLocationError(.unavailable(versionConstraints: "[...]")),
+        of: SwiftCompiler.PackageLoadingError.swiftLocationError(
+          .unavailable(versionConstraints: "[...]")
+        ),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "No Swift",
-        overwriteSpecificationInsteadOfFailing: false)
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
       let invalidPackage = URL(fileURLWithPath: #file)
         .deletingLastPathComponent()
