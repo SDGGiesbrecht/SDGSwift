@@ -141,14 +141,12 @@ let package = Package(
       dependencies: [
         "SDGSwift",
         "SDGSwiftLocalizations",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        //.product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core"),
+        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core"),
       ]
     ),
 
