@@ -122,31 +122,6 @@ extension PackageRepository {
       }
     }
 
-    internal func hostBuildParameters()
-      -> Swift.Result<
-        BuildParameters, SwiftCompiler.PackageLoadingError
-      >
-    {
-      switch packageWorkspace() {
-      case .failure(let error):
-        return .failure(error)
-      case .success(let workspace):
-        switch SwiftCompiler.hostToolchain() {
-        case .failure(let error):
-          return .failure(error)
-        case .success(let toolchain):
-          return .success(
-            BuildParameters(
-              dataPath: workspace.dataPath,
-              configuration: .debug,
-              toolchain: toolchain,
-              flags: BuildFlags()
-            )
-          )
-        }
-      }
-    }
-
     /// Returns the package graph.
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
