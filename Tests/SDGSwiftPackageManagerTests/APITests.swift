@@ -150,9 +150,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(
-        try thisRepository.packageGraph().get().packages.contains(where: {
-          $0.name == "SDGCornerstone"
-        })
+        try thisRepository.packageGraph().get().packages
+          .contains(where: { $0.name == "SDGCornerstone" })
       )
     #endif
   }
