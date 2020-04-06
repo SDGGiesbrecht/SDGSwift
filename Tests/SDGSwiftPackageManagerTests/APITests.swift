@@ -135,17 +135,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testManifestLoading() {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
-      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
+      XCTAssert(try thisRepository.manifest().get().name == "SDGSwift")
     #endif
   }
 
-  func testWorkspaceLoading() {
+  func testPackageLoading() {
     // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
-      XCTAssertEqual(
-        try thisRepository.packageWorkspace().get().resolvedFile.basename,
-        "Package.resolved"
-      )
+      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
     #endif
   }
 
@@ -215,6 +212,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           }
         }
       }
+    #endif
+  }
+
+  func testWorkspaceLoading() {
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      XCTAssertEqual(
+        try thisRepository.packageWorkspace().get().resolvedFile.basename,
+        "Package.resolved"
+      )
     #endif
   }
 }
