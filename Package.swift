@@ -383,6 +383,7 @@ func adjustForAndroid() {
   let impossibleDependencies = [
     // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
     // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftSyntax",
   ]
