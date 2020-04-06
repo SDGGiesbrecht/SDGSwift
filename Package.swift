@@ -364,6 +364,7 @@ func adjustForWindows() {
   let impossibleDependencies = [
     "cmark",
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
     "SwiftSyntax",
   ]
   for target in package.targets {

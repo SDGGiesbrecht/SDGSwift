@@ -493,6 +493,91 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGVersioning"
 )
 
+add_library("SDGSwiftPackageManager"
+  "../../../Sources/SDGSwiftPackageManager/Git.swift"
+  "../../../Sources/SDGSwiftPackageManager/PackageRepository.swift"
+  "../../../Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
+  "../../../Sources/SDGSwiftPackageManager/SwiftCompiler.swift"
+  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerPackageLoadingError.swift"
+)
+set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftPackageManager" PRIVATE
+  "SDGSwift"
+  "SDGSwiftLocalizations"
+  "SDGLogic"
+  "SDGText"
+  "SDGLocalization"
+  "SDGVersioning"
+)
+
+add_library("SDGSwiftTestUtilities"
+  "../../../Tests/SDGSwiftTestUtilities/ProcessInfo.swift"
+  "../../../Tests/SDGSwiftTestUtilities/Repositories.swift"
+  "../../../Tests/SDGSwiftTestUtilities/TestCase.swift"
+)
+set_target_properties("SDGSwiftTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftTestUtilities" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftTestUtilities" PRIVATE
+  "SDGSwift"
+  "SDGSwiftPackageManager"
+  "SDGLogic"
+  "SDGText"
+  "SDGPersistence"
+  "SDGExternalProcess"
+  "SDGVersioning"
+  "SDGXCTestUtilities"
+)
+
+add_library("SDGSwiftDocumentationExampleTests"
+  "../../../Tests/SDGSwiftDocumentationExampleTests/ReadMeExampleTests.swift"
+)
+set_target_properties("SDGSwiftDocumentationExampleTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftDocumentationExampleTests" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftDocumentationExampleTests" PRIVATE
+  "SDGSwift"
+  "SDGSwiftTestUtilities"
+  "SDGVersioning"
+  "SDGXCTestUtilities"
+)
+
+add_library("SDGSwiftPackageManagerTests"
+  "../../../Tests/SDGSwiftPackageManagerTests/APITests.swift"
+)
+set_target_properties("SDGSwiftPackageManagerTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftPackageManagerTests" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftPackageManagerTests" PRIVATE
+  "SDGSwift"
+  "SDGSwiftPackageManager"
+  "SDGSwiftLocalizations"
+  "SDGSwiftTestUtilities"
+  "SDGText"
+  "SDGPersistence"
+  "SDGLocalization"
+  "SDGLocalizationTestUtilities"
+  "SDGPersistenceTestUtilities"
+  "SDGXCTestUtilities"
+)
+
+add_library("SDGSwiftTests"
+  "../../../Tests/SDGSwiftTests/APITests.swift"
+  "../../../Tests/SDGSwiftTests/RegressionTests.swift"
+)
+set_target_properties("SDGSwiftTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftTests" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftTests" PRIVATE
+  "SDGSwiftLocalizations"
+  "SDGSwift"
+  "SDGSwiftTestUtilities"
+  "SDGCollections"
+  "SDGText"
+  "SDGLocalization"
+  "SDGVersioning"
+  "SDGLogicTestUtilities"
+  "SDGLocalizationTestUtilities"
+  "SDGXCTestUtilities"
+)
+
 add_library("SDGXcode"
   "../../../Sources/SDGXcode/PackageRepository.swift"
   "../../../Sources/SDGXcode/SwiftCompiler.swift"
@@ -516,6 +601,28 @@ target_link_libraries("SDGXcode" PRIVATE
   "SDGVersioning"
 )
 
+add_library("SDGXcodeTests"
+  "../../../Tests/SDGXcodeTests/APITests.swift"
+  "../../../Tests/SDGXcodeTests/RegressionTests.swift"
+)
+set_target_properties("SDGXcodeTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGXcodeTests" PRIVATE -enable-testing)
+target_link_libraries("SDGXcodeTests" PRIVATE
+  "SDGXcode"
+  "SDGSwift"
+  "SDGSwiftLocalizations"
+  "SDGSwiftTestUtilities"
+  "SDGLogic"
+  "SDGCollections"
+  "SDGText"
+  "SDGPersistence"
+  "SDGLocalization"
+  "SDGVersioning"
+  "SDGPersistenceTestUtilities"
+  "SDGLocalizationTestUtilities"
+  "SDGXCTestUtilities"
+)
+
 add_library("SampleConfiguration"
   "../../../Sources/SampleConfiguration/SampleConfiguration.swift"
   "../../../Sources/SampleConfiguration/SampleContext.swift"
@@ -524,6 +631,28 @@ set_target_properties("SampleConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTO
 target_compile_options("SampleConfiguration" PRIVATE -enable-testing)
 target_link_libraries("SampleConfiguration" PRIVATE
   "SDGSwiftConfiguration"
+)
+
+add_library("SDGSwiftConfigurationTests"
+  "../../../Tests/SDGSwiftConfigurationTests/APITests.swift"
+  "../../../Tests/SDGSwiftConfigurationTests/InternalTests.swift"
+)
+set_target_properties("SDGSwiftConfigurationTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftConfigurationTests" PRIVATE -enable-testing)
+target_link_libraries("SDGSwiftConfigurationTests" PRIVATE
+  "SDGSwift"
+  "SDGSwiftConfiguration"
+  "SDGSwiftConfigurationLoading"
+  "SDGSwiftTestUtilities"
+  "SampleConfiguration"
+  "SDGLogic"
+  "SDGCollections"
+  "SDGText"
+  "SDGLocalization"
+  "SDGVersioning"
+  "SDGPersistenceTestUtilities"
+  "SDGLocalizationTestUtilities"
+  "SDGXCTestUtilities"
 )
 
 add_library("SDGWebLocalizations"
@@ -584,124 +713,6 @@ target_link_libraries("SDGHTML" PRIVATE
   "SDGCollections"
   "SDGText"
   "SDGLocalization"
-)
-
-add_library("TSCclibc"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCclibc/libc.c"
-)
-set_target_properties("TSCclibc" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("TSCclibc" PRIVATE -enable-testing)
-
-add_library("TSCLibc"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCLibc/libc.swift"
-)
-set_target_properties("TSCLibc" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("TSCLibc" PRIVATE -enable-testing)
-target_link_libraries("TSCLibc" PRIVATE
-  "TSCclibc"
-)
-
-add_library("TSCBasic"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Await.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/ByteString.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/CStringArray.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/CacheableSequence.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/CodableResult.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/CollectionAlgorithms.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/CollectionExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Condition.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/DeltaAlgorithm.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/DiagnosticsEngine.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/DictionaryExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/DictionaryLiteralExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/EditDistance.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/FileInfo.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/FileSystem.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/GraphAlgorithms.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/JSON.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/JSONMapper.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/KeyedPair.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/LazyCache.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Lock.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/OSLog.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/ObjectIdentifierProtocol.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/OrderedDictionary.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/OrderedSet.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/OutputByteStream.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Path.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/PathShims.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Process.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/ProcessEnv.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/ProcessSet.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/RegEx.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Result.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/SHA256.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/SortedArray.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/StringConversions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/SynchronizedQueue.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/TemporaryFile.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/TerminalController.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Thread.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/Tuple.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCBasic/misc.swift"
-)
-set_target_properties("TSCBasic" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("TSCBasic" PRIVATE -enable-testing)
-target_link_libraries("TSCBasic" PRIVATE
-  "TSCLibc"
-)
-
-add_library("TSCUtility"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Archiver.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/ArgumentParser.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/ArgumentParserShellCompletion.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/BuildFlags.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/CollectionExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Diagnostics.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Downloader.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/FSWatch.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/FloatingPointExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Git.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/IndexStore.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/InterruptHandler.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/OSLog.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/PkgConfig.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Platform.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/ProgressAnimation.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/SimplePersistence.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/StringExtensions.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/StringMangling.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/URL.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Verbosity.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Version.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/Versioning.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/dlopen.swift"
-  "../../../.build/SDG/Dependencies/swift-tools-support-core/Sources/TSCUtility/misc.swift"
-)
-set_target_properties("TSCUtility" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("TSCUtility" PRIVATE -enable-testing)
-target_link_libraries("TSCUtility" PRIVATE
-  "TSCBasic"
-)
-
-add_library("SDGSwiftPackageManager"
-  "../../../Sources/SDGSwiftPackageManager/Git.swift"
-  "../../../Sources/SDGSwiftPackageManager/PackageRepository.swift"
-  "../../../Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
-  "../../../Sources/SDGSwiftPackageManager/SwiftCompiler.swift"
-  "../../../Sources/SDGSwiftPackageManager/SwiftCompilerPackageLoadingError.swift"
-)
-set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftPackageManager" PRIVATE
-  "SDGSwift"
-  "SDGSwiftLocalizations"
-  "SDGLogic"
-  "SDGText"
-  "SDGLocalization"
-  "SDGVersioning"
-  "TSCBasic"
-  "TSCUtility"
 )
 
 add_library("SDGSwiftSource"
@@ -894,76 +905,6 @@ target_link_libraries("SDGSwiftSource" PRIVATE
   "SDGHTML"
 )
 
-add_library("SDGSwiftTestUtilities"
-  "../../../Tests/SDGSwiftTestUtilities/ProcessInfo.swift"
-  "../../../Tests/SDGSwiftTestUtilities/Repositories.swift"
-  "../../../Tests/SDGSwiftTestUtilities/TestCase.swift"
-)
-set_target_properties("SDGSwiftTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftTestUtilities" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftTestUtilities" PRIVATE
-  "SDGSwift"
-  "SDGSwiftPackageManager"
-  "SDGLogic"
-  "SDGText"
-  "SDGPersistence"
-  "SDGExternalProcess"
-  "SDGVersioning"
-  "SDGXCTestUtilities"
-)
-
-add_library("SDGSwiftConfigurationTests"
-  "../../../Tests/SDGSwiftConfigurationTests/APITests.swift"
-  "../../../Tests/SDGSwiftConfigurationTests/InternalTests.swift"
-)
-set_target_properties("SDGSwiftConfigurationTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftConfigurationTests" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftConfigurationTests" PRIVATE
-  "SDGSwift"
-  "SDGSwiftConfiguration"
-  "SDGSwiftConfigurationLoading"
-  "SDGSwiftTestUtilities"
-  "SampleConfiguration"
-  "SDGLogic"
-  "SDGCollections"
-  "SDGText"
-  "SDGLocalization"
-  "SDGVersioning"
-  "SDGPersistenceTestUtilities"
-  "SDGLocalizationTestUtilities"
-  "SDGXCTestUtilities"
-)
-
-add_library("SDGSwiftDocumentationExampleTests"
-  "../../../Tests/SDGSwiftDocumentationExampleTests/ReadMeExampleTests.swift"
-)
-set_target_properties("SDGSwiftDocumentationExampleTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftDocumentationExampleTests" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftDocumentationExampleTests" PRIVATE
-  "SDGSwift"
-  "SDGSwiftTestUtilities"
-  "SDGVersioning"
-  "SDGXCTestUtilities"
-)
-
-add_library("SDGSwiftPackageManagerTests"
-  "../../../Tests/SDGSwiftPackageManagerTests/APITests.swift"
-)
-set_target_properties("SDGSwiftPackageManagerTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftPackageManagerTests" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftPackageManagerTests" PRIVATE
-  "SDGSwift"
-  "SDGSwiftPackageManager"
-  "SDGSwiftLocalizations"
-  "SDGSwiftTestUtilities"
-  "SDGText"
-  "SDGPersistence"
-  "SDGLocalization"
-  "SDGLocalizationTestUtilities"
-  "SDGPersistenceTestUtilities"
-  "SDGXCTestUtilities"
-)
-
 add_library("SDGSwiftSourceTests"
   "../../../Tests/SDGSwiftSourceTests/APITests.swift"
   "../../../Tests/SDGSwiftSourceTests/Helpers/APIElement.swift"
@@ -993,57 +934,16 @@ target_link_libraries("SDGSwiftSourceTests" PRIVATE
   "SDGXCTestUtilities"
 )
 
-add_library("SDGSwiftTests"
-  "../../../Tests/SDGSwiftTests/APITests.swift"
-  "../../../Tests/SDGSwiftTests/RegressionTests.swift"
-)
-set_target_properties("SDGSwiftTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftTests" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftTests" PRIVATE
-  "SDGSwiftLocalizations"
-  "SDGSwift"
-  "SDGSwiftTestUtilities"
-  "SDGCollections"
-  "SDGText"
-  "SDGLocalization"
-  "SDGVersioning"
-  "SDGLogicTestUtilities"
-  "SDGLocalizationTestUtilities"
-  "SDGXCTestUtilities"
-)
-
-add_library("SDGXcodeTests"
-  "../../../Tests/SDGXcodeTests/APITests.swift"
-  "../../../Tests/SDGXcodeTests/RegressionTests.swift"
-)
-set_target_properties("SDGXcodeTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGXcodeTests" PRIVATE -enable-testing)
-target_link_libraries("SDGXcodeTests" PRIVATE
-  "SDGXcode"
-  "SDGSwift"
-  "SDGSwiftLocalizations"
-  "SDGSwiftTestUtilities"
-  "SDGLogic"
-  "SDGCollections"
-  "SDGText"
-  "SDGPersistence"
-  "SDGLocalization"
-  "SDGVersioning"
-  "SDGPersistenceTestUtilities"
-  "SDGLocalizationTestUtilities"
-  "SDGXCTestUtilities"
-)
-
 add_executable(WindowsMain
   WindowsMain.swift
 )
 target_link_libraries(WindowsMain PRIVATE
-  "SDGSwiftConfigurationTests"
   "SDGSwiftDocumentationExampleTests"
   "SDGSwiftPackageManagerTests"
-  "SDGSwiftSourceTests"
   "SDGSwiftTests"
   "SDGXcodeTests"
+  "SDGSwiftConfigurationTests"
+  "SDGSwiftSourceTests"
 )
 add_test(NAME WindowsMain COMMAND WindowsMain)
 set_property(TEST WindowsMain PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
