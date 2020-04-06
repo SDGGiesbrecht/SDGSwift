@@ -18,7 +18,6 @@ import SDGLocalization
 import SDGSwiftLocalizations
 
 import SDGSwift
-import SDGSwiftPackageManager
 
 extension Xcode {
 
@@ -28,9 +27,6 @@ extension Xcode {
     public enum CoverageReportingError: PresentableError {
 
       // MARK: - Cases
-
-      /// The package manager encountered an error.
-      case packageManagerError(SwiftCompiler.PackageLoadingError)
 
       /// Foundation encountered an error.
       case foundationError(Swift.Error)
@@ -45,8 +41,6 @@ extension Xcode {
 
       public func presentableDescription() -> StrictString {
         switch self {
-        case .packageManagerError(let error):
-          return error.presentableDescription()
         case .foundationError(let error):
           return StrictString(error.localizedDescription)
         case .xcodeError(let error):

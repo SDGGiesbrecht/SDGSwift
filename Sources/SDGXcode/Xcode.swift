@@ -25,7 +25,6 @@ import SDGVersioning
 
 import SDGSwiftLocalizations
 import SDGSwift
-import SDGSwiftPackageManager
 
 /// Xcode.
 public enum Xcode: VersionedExternalProcess {

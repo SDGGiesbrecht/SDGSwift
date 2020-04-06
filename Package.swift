@@ -104,6 +104,10 @@ let package = Package(
       .exact(Version(0, 0, 50200))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
+    .package(
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
+      .exact(Version(0, 1, 0))
+    ),
   ],
   targets: [
 
@@ -144,6 +148,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        //.product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core"),
       ]
     ),
 
@@ -176,7 +181,6 @@ let package = Package(
       name: "SDGXcode",
       dependencies: [
         "SDGSwift",
-        "SDGSwiftPackageManager",
         "SDGSwiftLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),

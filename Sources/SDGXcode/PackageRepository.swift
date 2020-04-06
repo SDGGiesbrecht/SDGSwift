@@ -15,7 +15,6 @@
 import Foundation
 
 import SDGSwift
-import SDGSwiftPackageManager
 
 extension PackageRepository {
 

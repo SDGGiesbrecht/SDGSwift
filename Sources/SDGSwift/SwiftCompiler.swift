@@ -19,8 +19,11 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 import SDGText
+import SDGLocalization
 import SDGExternalProcess
 import SDGVersioning
+
+import SDGSwiftLocalizations
 
 /// The Swift compiler.
 public enum SwiftCompiler: VersionedExternalProcess {

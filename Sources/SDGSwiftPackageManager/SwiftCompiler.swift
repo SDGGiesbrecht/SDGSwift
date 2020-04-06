@@ -14,20 +14,15 @@
 
 import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGMathematics
-import SDGText
-import SDGLocalization
 import SDGVersioning
-
-import SDGSwiftLocalizations
-import SDGSwift
 
 // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
 #if !(os(Windows) || os(Android))
+  import TSCBasic
   import Workspace
 #endif
+
+import SDGSwift
 
 extension SwiftCompiler {
 
