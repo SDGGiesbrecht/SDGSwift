@@ -60,37 +60,6 @@ extension SwiftCompiler {
       }
     }
 
-    private static func hostDestination() -> Swift.Result<Destination, PackageLoadingError> {
-      switch swiftCLocation() {
-      case .failure(let error):
-        return .failure(.swiftLocationError(error))
-      case .success(let location):
-        let destination: Destination
-        do {
-          destination = try Destination.hostDestination(
-            AbsolutePath(location.deletingLastPathComponent().path)
-          )
-        } catch {
-          return .failure(.packageManagerError(error, []))
-        }
-        return .success(destination)
-      }
-    }
-    internal static func hostToolchain() -> Swift.Result<UserToolchain, PackageLoadingError> {
-      switch hostDestination() {
-      case .failure(let error):
-        return .failure(error)
-      case .success(let destination):
-        let toolchain: UserToolchain
-        do {
-          toolchain = try UserToolchain(destination: destination)
-        } catch {
-          return .failure(.packageManagerError(error, []))
-        }
-        return .success(toolchain)
-      }
-    }
-
     private static func manifestResourceProvider()
       -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
     {
