@@ -143,9 +143,9 @@ target_link_libraries("SDGCollections" PRIVATE
 )
 
 add_library("SDGText"
-  "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/Array.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CharacterSet.swift"
-  "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/Collection.swift"
+  "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CollectionStringFamily.swift"
+  "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CollectionUnicodeScalar.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/Compatibility/StaticString.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/Compatibility/String.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/Compatibility/StringClusterView.swift"
@@ -665,7 +665,6 @@ target_link_libraries("SDGWebLocalizations" PRIVATE
 )
 
 add_library("SDGHTML"
-  "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/AnyLocalization.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/Entities.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/HTML.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/Localization.swift"
