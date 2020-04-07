@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 4, 1)
+      from: Version(4, 6, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -103,7 +103,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50200))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 2, 0)),
     .package(
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 1, 0))
