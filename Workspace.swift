@@ -99,6 +99,3 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
-
-// #workaround(For now.)
-configuration.supportedPlatforms.remove(.web)
