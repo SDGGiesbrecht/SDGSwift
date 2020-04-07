@@ -383,6 +383,25 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
   adjustForWindows()
 }
 
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  let impossibleDependencies = [
+    // #workaround(workspace version 0.32.0, Cannot resolve with web toolchain.)
+    "cmark",
+  ]
+  package.dependencies.removeAll(where: { dependency in
+    return dependency.name
+      .map({ impossibleDependencies.contains($0) })
+      ?? false
+  })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
+}
+
 func adjustForAndroid() {
   let impossibleDependencies = [
     // #workaround(workspace version 0.32.0, Cannot build for Android.)
