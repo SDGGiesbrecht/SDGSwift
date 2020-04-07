@@ -391,9 +391,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   package.dependencies.removeAll(where: { dependency in
-    return dependency.name
-      .map({ impossibleDependencies.contains($0) })
-      ?? false
+    return impossibleDependencies.contains(where: { impossible in
+      "\(dependency)".contains(impossible)
+    })
   })
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
