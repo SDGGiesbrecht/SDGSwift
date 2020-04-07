@@ -385,9 +385,10 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies = [
-    // #workaround(workspace version 0.32.0, Cannot build.)
+    // #workaround(workspace version 0.32.0, Cannot build for web.)
     "cmark",
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   package.dependencies.removeAll(where: { dependency in
     return dependency.name
