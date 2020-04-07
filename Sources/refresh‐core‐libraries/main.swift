@@ -102,7 +102,7 @@
               if source.lastPathComponent == "Array.swift"
                 ∨ source.lastPathComponent == "String.swift"
               {
-                // #workaround(CommonMark 0.0.50100, Indexing bug leads to infinite loop?)
+                // #workaround(cmark 0.0.50200, Indexing bug leads to infinite loop?)
                 normalized.replaceMatches(
                   for: "///".scalars
                     + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
