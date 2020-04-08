@@ -403,6 +403,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
+  for target in package.targets {
+    // #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+    target.exclude.append("Resources.swift")
+  }
 }
 
 func adjustForAndroid() {
