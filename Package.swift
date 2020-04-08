@@ -393,7 +393,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      "\(dependency)".contains(impossible)
+      return (dependency.name ?? dependency.url).contains(impossible)
     })
   })
   for target in package.targets {
