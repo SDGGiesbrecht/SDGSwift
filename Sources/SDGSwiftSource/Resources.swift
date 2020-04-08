@@ -13,7 +13,7 @@
  */
 
 #if !os(WASI)  // #workaround(workspace version 0.32.0, Web lacks Foundation.)
-import Foundation
+  import Foundation
 #endif
 
 internal enum Resources {}

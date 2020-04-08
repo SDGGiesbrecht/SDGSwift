@@ -13,12 +13,13 @@
  */
 
 #if !os(WASI)  // #workaround(workspace version 0.32.0, Web lacks Foundation.)
-import Foundation
+  import Foundation
 
-import SDGLogic
+  import SDGLogic
 
-extension ProcessInfo {
+  extension ProcessInfo {
 
-  internal static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
-}
+    internal static let isInGitHubAction =
+      ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+  }
 #endif
