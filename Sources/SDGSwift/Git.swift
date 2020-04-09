@@ -12,150 +12,150 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(workspace version 0.32.0, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
   import Foundation
-#endif
 
-import SDGControlFlow
-import SDGMathematics
-import SDGCollections
-import SDGText
-import SDGExternalProcess
-import SDGVersioning
+  import SDGControlFlow
+  import SDGMathematics
+  import SDGCollections
+  import SDGText
+  import SDGExternalProcess
+  import SDGVersioning
 
-/// Git.
-public enum Git: VersionedExternalProcess {
+  /// Git.
+  public enum Git: VersionedExternalProcess {
 
-  // MARK: - Static Properties
+    // MARK: - Static Properties
 
-  public static let _currentMajor = Version(2)
-  private static var currentMajor: Version {
-    return _currentMajor
-  }
-
-  // MARK: - Usage
-
-  /// Creates a local repository by cloning the remote package.
-  ///
-  /// - Parameters:
-  ///     - package: The package to clone.
-  ///     - location: The location to create the clone.
-  ///     - build: Optional. A specific version to check out.
-  ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
-  ///     - reportProgress: Optional. A closure to execute for each line of output.
-  ///     - progressReport: A line of output.
-  @discardableResult public static func clone(
-    _ package: Package,
-    to location: URL,
-    at build: Build = .development,
-    shallow: Bool = false,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
-
-    var earliest = Version(1, 0, 0)
-    var command = [
-      "clone",
-      package.url.absoluteString,
-      location.path,
-    ]
-
-    switch build {
-    case .version(let stable):
-      earliest.increase(to: Version(1, 6, 5))
-      command += ["\u{2D}\u{2D}branch", stable.string()]
-      let configurationAvailable = Version(1, 7, 7)
-      if let resolved = version(
-        forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
-      ),
-        resolved ≥ configurationAvailable
-      {
-        earliest.increase(to: configurationAvailable)
-        command += ["\u{2D}\u{2D}config", "advice.detachedHead=false"]
-      }
-    case .development:
-      break
+    public static let _currentMajor = Version(2)
+    private static var currentMajor: Version {
+      return _currentMajor
     }
 
-    if shallow {
-      let depthAvailable = Version(1, 5, 0)
-      if let resolved = version(
-        forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
-      ),
-        resolved ≥ depthAvailable
-      {
-        earliest.increase(to: depthAvailable)
-        command += ["\u{2D}\u{2D}depth", "1"]
-      }
-    }
+    // MARK: - Usage
 
-    return runCustomSubcommand(
-      command,
-      versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
-      reportProgress: reportProgress
-    )
-  }
+    /// Creates a local repository by cloning the remote package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to clone.
+    ///     - location: The location to create the clone.
+    ///     - build: Optional. A specific version to check out.
+    ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    @discardableResult public static func clone(
+      _ package: Package,
+      to location: URL,
+      at build: Build = .development,
+      shallow: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
 
-  /// Retrieves the list of available versions of the package.
-  ///
-  /// - Parameters:
-  ///     - package: The package.
-  public static func versions(of package: Package) -> Result<
-    Set<Version>, VersionedExternalProcessExecutionError<Git>
-  > {
-    let version = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand(
-      [
-        "ls\u{2D}remote",
-        "\u{2D}\u{2D}tags",
+      var earliest = Version(1, 0, 0)
+      var command = [
+        "clone",
         package.url.absoluteString,
-      ],
-      versionConstraints: version
-    ).map { output in
+        location.path,
+      ]
 
-      var versions: Set<Version> = []
-      for line in output.lines {
-        let lineText = line.line
-        if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
-          let tag = String(lineText[tagPrefix.range.upperBound...])
-          if let version = Version(tag) {
-            versions.insert(version)
-          }
+      switch build {
+      case .version(let stable):
+        earliest.increase(to: Version(1, 6, 5))
+        command += ["\u{2D}\u{2D}branch", stable.string()]
+        let configurationAvailable = Version(1, 7, 7)
+        if let resolved = version(
+          forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ configurationAvailable
+        {
+          earliest.increase(to: configurationAvailable)
+          command += ["\u{2D}\u{2D}config", "advice.detachedHead=false"]
+        }
+      case .development:
+        break
+      }
+
+      if shallow {
+        let depthAvailable = Version(1, 5, 0)
+        if let resolved = version(
+          forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ depthAvailable
+        {
+          earliest.increase(to: depthAvailable)
+          command += ["\u{2D}\u{2D}depth", "1"]
         }
       }
-      return versions
+
+      return runCustomSubcommand(
+        command,
+        versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress
+      )
     }
-  }
 
-  /// Retrieves the latest commit identifier in the master branch of the package.
-  ///
-  /// - Parameters:
-  ///     - package: The package.
-  public static func latestCommitIdentifier(in package: Package) -> Result<
-    String, VersionedExternalProcessExecutionError<Git>
-  > {
-    let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
-    return runCustomSubcommand(
-      [
-        "ls\u{2D}remote",
-        package.url.absoluteString,
-        "master",
-      ],
-      versionConstraints: versions
-    ).map { output in
-      return output.truncated(before: "\u{9}")
+    /// Retrieves the list of available versions of the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package.
+    public static func versions(of package: Package) -> Result<
+      Set<Version>, VersionedExternalProcessExecutionError<Git>
+    > {
+      let version = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
+      return runCustomSubcommand(
+        [
+          "ls\u{2D}remote",
+          "\u{2D}\u{2D}tags",
+          package.url.absoluteString,
+        ],
+        versionConstraints: version
+      ).map { output in
+
+        var versions: Set<Version> = []
+        for line in output.lines {
+          let lineText = line.line
+          if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
+            let tag = String(lineText[tagPrefix.range.upperBound...])
+            if let version = Version(tag) {
+              versions.insert(version)
+            }
+          }
+        }
+        return versions
+      }
     }
+
+    /// Retrieves the latest commit identifier in the master branch of the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package.
+    public static func latestCommitIdentifier(in package: Package) -> Result<
+      String, VersionedExternalProcessExecutionError<Git>
+    > {
+      let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
+      return runCustomSubcommand(
+        [
+          "ls\u{2D}remote",
+          package.url.absoluteString,
+          "master",
+        ],
+        versionConstraints: versions
+      ).map { output in
+        return output.truncated(before: "\u{9}")
+      }
+    }
+
+    // MARK: - VersionedExternalProcess
+
+    public static let englishName: StrictString = "Git"
+    public static var deutscherNameInDativ: StrictString = "Git"
+
+    public static var commandName: String = "git"
+
+    public static let searchCommands: [[String]] = [
+      ["which", "git"]
+    ]
+
+    public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
   }
-
-  // MARK: - VersionedExternalProcess
-
-  public static let englishName: StrictString = "Git"
-  public static var deutscherNameInDativ: StrictString = "Git"
-
-  public static var commandName: String = "git"
-
-  public static let searchCommands: [[String]] = [
-    ["which", "git"]
-  ]
-
-  public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
-}
+#endif

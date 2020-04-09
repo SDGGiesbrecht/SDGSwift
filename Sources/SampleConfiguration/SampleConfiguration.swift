@@ -58,7 +58,8 @@ public final class SampleConfiguration: Configuration, Equatable {
   /// Compares the configurations for equality.
   public static func == (
     precedingValue: SampleConfiguration,
-    followingValue: SampleConfiguration) -> Bool {
+    followingValue: SampleConfiguration
+  ) -> Bool {
     return precedingValue.option == followingValue.option
   }
 }
