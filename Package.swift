@@ -357,10 +357,10 @@ let package = Package(
 
 func adjustForWindows() {
 
-  // #workaround(workspace version 0.32.0, CMake cannot handle Unicode.)
+  // #workaround(Swift 5.2.1, CMake cannot handle Unicode.)
   package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
 
-  // #workaround(workspace version 0.32.0, Windows cannot build C.)
+  // #workaround(Swift 5.2.1, Windows cannot build C.)
   let impossibleDependencies = [
     "cmark",
     "SwiftPM",
