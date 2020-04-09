@@ -12,38 +12,38 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
   import Foundation
-#endif
 
-import SDGVersioning
+  import SDGVersioning
 
-import SDGSwift
+  import SDGSwift
 
-import SDGXCTestUtilities
+  import SDGXCTestUtilities
 
-open class TestCase: SDGXCTestUtilities.TestCase {
+  open class TestCase: SDGXCTestUtilities.TestCase {
 
-  static let configureGit: Void = {
-    if ProcessInfo.isInGitHubAction {
-      // @exempt(from: tests)
-      #if os(Linux)
-        _ = try? Git.runCustomSubcommand(
-          [
-            "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com",
-          ],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-        ).get()
-        _ = try? Git.runCustomSubcommand(
-          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-        )
-        .get()
-      #endif
+    static let configureGit: Void = {
+      if ProcessInfo.isInGitHubAction {
+        // @exempt(from: tests)
+        #if os(Linux)
+          _ = try? Git.runCustomSubcommand(
+            [
+              "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com",
+            ],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          )
+          .get()
+        #endif
+      }
+    }()
+    open override func setUp() {
+      super.setUp()
+      TestCase.configureGit
     }
-  }()
-  open override func setUp() {
-    super.setUp()
-    TestCase.configureGit
   }
-}
+#endif

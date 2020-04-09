@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -35,7 +35,7 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  #if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
     private static func coverageTool<Constraints>(
       versionConstraints: Constraints
     ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
@@ -188,7 +188,7 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
-  #if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -252,7 +252,7 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
     private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
       return project.location.appendingPathComponent(
         ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -32,7 +32,7 @@ extension SwiftCompiler {
 
   private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 1)
 
-  #if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
     internal static func swiftCLocation()
       -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
     {

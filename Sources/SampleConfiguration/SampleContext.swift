@@ -19,7 +19,7 @@ public struct SampleContext: Context {
 
   // MARK: - Static Properties
 
-  #if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
     /// The context received from the configuration loader.
     public static var context: SampleContext? = SampleContext.accept()
   #endif
