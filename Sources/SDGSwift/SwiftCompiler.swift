@@ -167,7 +167,8 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
 
       var environment = ProcessInfo.processInfo.environment
-      environment["XCTestConfigurationFilePath"] = nil  // Causes issues when run from within Xcode.
+      // Causes issues when run from within Xcode.
+      environment["XCTestConfigurationFilePath"] = nil
 
       var earliest = Version(3, 0, 0)
       var arguments = [
