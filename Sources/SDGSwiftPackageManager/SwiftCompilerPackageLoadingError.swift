@@ -12,46 +12,48 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !os(WASI)  // #workaround(workspace version 0.32.1, Web lacks Foundation.)
+  import SDGText
+  import SDGLocalization
 
-import SDGSwift
-
-// #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
-#if !(os(Windows) || os(Android))
-  import Workspace
-#endif
-
-extension SwiftCompiler {
+  import SDGSwift
 
   // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
-    /// An error encountered while loading a Swift package.
-    public enum PackageLoadingError: PresentableError {
+    import Workspace
+  #endif
 
-      // MARK: - Cases
+  extension SwiftCompiler {
 
-      /// Swift could not be located.
-      case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      /// An error encountered while loading a Swift package.
+      public enum PackageLoadingError: PresentableError {
 
-      /// The package manager encountered an error.
-      case packageManagerError(Swift.Error?, [Diagnostic])
+        // MARK: - Cases
 
-      // MARK: - PresentableError
+        /// Swift could not be located.
+        case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
-      public func presentableDescription() -> StrictString {
-        switch self {
-        case .swiftLocationError(let error):
-          return error.presentableDescription()
-        case .packageManagerError(let error, let diagnostics):
-          var lines: [String] = []
-          if let error = error {
-            lines.append(error.localizedDescription)
+        /// The package manager encountered an error.
+        case packageManagerError(Swift.Error?, [Diagnostic])
+
+        // MARK: - PresentableError
+
+        public func presentableDescription() -> StrictString {
+          switch self {
+          case .swiftLocationError(let error):
+            return error.presentableDescription()
+          case .packageManagerError(let error, let diagnostics):
+            var lines: [String] = []
+            if let error = error {
+              lines.append(error.localizedDescription)
+            }
+            lines += diagnostics.map({ $0.localizedDescription })
+            return StrictString(lines.joined(separator: "\n"))
           }
-          lines += diagnostics.map({ $0.localizedDescription })
-          return StrictString(lines.joined(separator: "\n"))
         }
       }
-    }
-  #endif
-}
+    #endif
+  }
+#endif
