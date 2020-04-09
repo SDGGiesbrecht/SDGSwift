@@ -127,28 +127,32 @@ public enum Xcode: VersionedExternalProcess {
     if output.hasPrefix("$ ") {
       return output
     }
-    if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
-      return nil
-    }
+    #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+      if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
+        return nil
+      }
+    #endif
     for ignored in otherIgnored {
       if output.contains(ignored) {
         return nil
       }
     }
 
-    // Log style entry.
-    let logComponents: [String] = output.components(separatedBy: " ")
-    if logComponents.count ≥ 4,
-      logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-      logComponents[1].scalars.allSatisfy({
+    #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+      // Log style entry.
+      let logComponents: [String] = output.components(separatedBy: " ")
+      if logComponents.count ≥ 4,
+        logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
+        logComponents[1].scalars.allSatisfy({
+          // @exempt(from: tests) False coverage result.
+          $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
+        }),
+        let process = logComponents[2].prefix(upTo: "[")?.contents
+      {
         // @exempt(from: tests) False coverage result.
-        $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
-      }),
-      let process = logComponents[2].prefix(upTo: "[")?.contents
-    {
-      // @exempt(from: tests) False coverage result.
-      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
-    }
+        return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+      }
+    #endif
 
     // Command style entry.
     var indentation = ""
