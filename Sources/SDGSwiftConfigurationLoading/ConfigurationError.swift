@@ -12,60 +12,62 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+  import SDGText
+  import SDGLocalization
 
-import SDGSwift
-import SDGSwiftConfiguration
+  import SDGSwift
+  import SDGSwiftConfiguration
 
-import SDGSwiftLocalizations
+  import SDGSwiftLocalizations
 
-extension Configuration {
+  extension Configuration {
 
-  /// An error encountered while loading a configuration.
-  public enum Error: PresentableError {
+    /// An error encountered while loading a configuration.
+    public enum Error: PresentableError {
 
-    // MARK: - Cases
+      // MARK: - Cases
 
-    /// Foundation encountered an error.
-    case foundationError(Swift.Error)
+      /// Foundation encountered an error.
+      case foundationError(Swift.Error)
 
-    /// Swift encountered an error.
-    case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
+      /// Swift encountered an error.
+      case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
-    /// The configuration is empty.
-    case emptyConfiguration
+      /// The configuration is empty.
+      case emptyConfiguration
 
-    /// The configuration is corrupt.
-    case corruptConfiguration
+      /// The configuration is corrupt.
+      case corruptConfiguration
 
-    // MARK: - PresentableError
+      // MARK: - PresentableError
 
-    public func presentableDescription() -> StrictString {
-      switch self {
-      case .foundationError(let error):
-        return StrictString(error.localizedDescription)
-      case .swiftError(let error):
-        return error.presentableDescription()
-      case .emptyConfiguration:
-        return UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "The configuration is empty."
-          case .deutschDeutschland:
-            return "Die Konfiguration ist lehr."
-          }
-        }).resolved()
-      case .corruptConfiguration:
-        return UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "The configuration is corrupt."
-          case .deutschDeutschland:
-            return "Die Konfiguration ist beschädigt."
-          }
-        }).resolved()
+      public func presentableDescription() -> StrictString {
+        switch self {
+        case .foundationError(let error):
+          return StrictString(error.localizedDescription)
+        case .swiftError(let error):
+          return error.presentableDescription()
+        case .emptyConfiguration:
+          return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "The configuration is empty."
+            case .deutschDeutschland:
+              return "Die Konfiguration ist lehr."
+            }
+          }).resolved()
+        case .corruptConfiguration:
+          return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "The configuration is corrupt."
+            case .deutschDeutschland:
+              return "Die Konfiguration ist beschädigt."
+            }
+          }).resolved()
+        }
       }
     }
   }
-}
+#endif

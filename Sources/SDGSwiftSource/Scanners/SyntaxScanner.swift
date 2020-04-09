@@ -13,7 +13,7 @@
  */
 
 // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(Android))
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 
   /// A scanner for read‐only handling of a syntax tree.

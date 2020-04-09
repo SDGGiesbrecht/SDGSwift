@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 4, 1)
+      from: Version(4, 6, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -103,7 +103,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50200))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 0)),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 2, 0)),
     .package(
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 1, 0))
@@ -381,6 +381,32 @@ func adjustForWindows() {
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  let impossibleDependencies = [
+    // #workaround(workspace version 0.32.0, Cannot build for web.)
+    "cmark",
+    "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
+    "SwiftSyntax",
+  ]
+  package.dependencies.removeAll(where: { dependency in
+    return impossibleDependencies.contains(where: { impossible in
+      return (dependency.name ?? dependency.url).contains(impossible)
+    })
+  })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
+  for target in package.targets {
+    // #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+    target.exclude.append("Resources.swift")
+  }
 }
 
 func adjustForAndroid() {

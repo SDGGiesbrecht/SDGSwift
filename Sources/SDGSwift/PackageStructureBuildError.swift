@@ -12,34 +12,36 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+  import SDGText
+  import SDGLocalization
 
-extension Package {
+  extension Package {
 
-  /// An error encountered while building a Swift package.
-  public enum BuildError: PresentableError {
+    /// An error encountered while building a Swift package.
+    public enum BuildError: PresentableError {
 
-    /// Git encountered an error.
-    case gitError(VersionedExternalProcessExecutionError<Git>)
+      /// Git encountered an error.
+      case gitError(VersionedExternalProcessExecutionError<Git>)
 
-    /// Swift encountered an error.
-    case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
+      /// Swift encountered an error.
+      case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
-    /// Foundation encountered an error.
-    case foundationError(Swift.Error)
+      /// Foundation encountered an error.
+      case foundationError(Swift.Error)
 
-    // MARK: - PresentableError
+      // MARK: - PresentableError
 
-    public func presentableDescription() -> StrictString {
-      switch self {
-      case .gitError(let error):
-        return error.presentableDescription()
-      case .swiftError(let error):
-        return error.presentableDescription()
-      case .foundationError(let error):
-        return StrictString(error.localizedDescription)
+      public func presentableDescription() -> StrictString {
+        switch self {
+        case .gitError(let error):
+          return error.presentableDescription()
+        case .swiftError(let error):
+          return error.presentableDescription()
+        case .foundationError(let error):
+          return StrictString(error.localizedDescription)
+        }
       }
     }
   }
-}
+#endif

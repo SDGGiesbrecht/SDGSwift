@@ -19,8 +19,10 @@ public struct SampleContext: Context {
 
   // MARK: - Static Properties
 
-  /// The context received from the configuration loader.
-  public static var context: SampleContext? = SampleContext.accept()
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+    /// The context received from the configuration loader.
+    public static var context: SampleContext? = SampleContext.accept()
+  #endif
 
   // MARK: - Initialization
 

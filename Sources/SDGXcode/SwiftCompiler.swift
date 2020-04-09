@@ -21,25 +21,27 @@ extension SwiftCompiler {
     return _currentMajor
   }
 
-  /// Generates or refreshes the package’s Xcode project.
-  ///
-  /// - Parameters:
-  ///     - package: The package.
-  ///     - reportProgress: A closure to execute for each line of the compiler’s output.
-  ///     - progressReport: A line of compiler output.
-  @discardableResult public static func generateXcodeProject(
-    for package: PackageRepository,
-    reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-    let earliest = Version(3, 0, 0)
-    return runCustomSubcommand(
-      [
-        "package", "generate\u{2D}xcodeproj",
-        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
-      ],
-      in: package.location,
-      versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
-      reportProgress: reportProgress
-    )
-  }
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+    /// Generates or refreshes the package’s Xcode project.
+    ///
+    /// - Parameters:
+    ///     - package: The package.
+    ///     - reportProgress: A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of compiler output.
+    @discardableResult public static func generateXcodeProject(
+      for package: PackageRepository,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+      let earliest = Version(3, 0, 0)
+      return runCustomSubcommand(
+        [
+          "package", "generate\u{2D}xcodeproj",
+          "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
+        ],
+        in: package.location,
+        versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress
+      )
+    }
+  #endif
 }

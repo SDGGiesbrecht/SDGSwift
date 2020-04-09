@@ -13,7 +13,7 @@
  */
 
 // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(Android))
+#if !(os(Windows) || os(WASI) || os(Android))
   /// A section of documentation text with font modifications.
   ///
   /// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.

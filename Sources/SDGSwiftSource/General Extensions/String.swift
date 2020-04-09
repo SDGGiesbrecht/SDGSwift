@@ -12,7 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+  import Foundation
+#endif
 
 import SDGLogic
 
@@ -24,8 +26,10 @@ extension String {
   ) {  // @exempt(from: tests)
     #if DEBUG
       if first ≠ "_" {
-        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
-        print("Unidentified token: \(self) (\(fileName).\(function))")
+        #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+          let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
+          print("Unidentified token: \(self) (\(fileName).\(function))")
+        #endif
       }
     #endif
   }

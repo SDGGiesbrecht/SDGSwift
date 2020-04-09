@@ -12,12 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+  import Foundation
+#endif
 
 import SDGVersioning
 
 // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
-#if !(os(Windows) || os(Android))
+#if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
   import Workspace
 #endif
@@ -30,46 +32,48 @@ extension SwiftCompiler {
 
   private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 1)
 
-  internal static func swiftCLocation()
-    -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
-  {
-    return location(versionConstraints: compatibleVersions).map { swift in
-      return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
+  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+    internal static func swiftCLocation()
+      -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
+    {
+      return location(versionConstraints: compatibleVersions).map { swift in
+        return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
+      }
     }
-  }
 
-  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
-    internal static func withDiagnostics<T>(
-      _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
-    ) -> Swift.Result<T, PackageLoadingError> {
-      switch SwiftCompiler.swiftCLocation() {
-      case .failure(let error):
-        return .failure(.swiftLocationError(error))
-      case .success(let compiler):
-        let diagnostics = DiagnosticsEngine()
-        do {
-          let result = try closure(compiler, diagnostics)
-          if diagnostics.hasErrors {
-            return .failure(.packageManagerError(nil, diagnostics.diagnostics))
+    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      internal static func withDiagnostics<T>(
+        _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
+      ) -> Swift.Result<T, PackageLoadingError> {
+        switch SwiftCompiler.swiftCLocation() {
+        case .failure(let error):
+          return .failure(.swiftLocationError(error))
+        case .success(let compiler):
+          let diagnostics = DiagnosticsEngine()
+          do {
+            let result = try closure(compiler, diagnostics)
+            if diagnostics.hasErrors {
+              return .failure(.packageManagerError(nil, diagnostics.diagnostics))
+            }
+            return .success(result)
+          } catch {
+            return .failure(.packageManagerError(error, diagnostics.diagnostics))
           }
-          return .success(result)
-        } catch {
-          return .failure(.packageManagerError(error, diagnostics.diagnostics))
         }
       }
-    }
 
-    private static func manifestResourceProvider()
-      -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
-    {
-      return withDiagnostics { compiler, _ in
-        return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+      private static func manifestResourceProvider()
+        -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
+      {
+        return withDiagnostics { compiler, _ in
+          return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+        }
       }
-    }
 
-    internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
-      return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
-    }
+      internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
+        return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
+      }
+    #endif
   #endif
 }
