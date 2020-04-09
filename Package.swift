@@ -389,7 +389,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "cmark",
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
-    "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
