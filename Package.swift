@@ -414,6 +414,7 @@ func adjustForAndroid() {
     // #workaround(Swift 5.2.1, Cannot build for Android.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
+    "SwiftSyntax",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
