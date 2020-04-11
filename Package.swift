@@ -411,10 +411,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
 func adjustForAndroid() {
   let impossibleDependencies = [
-    // #workaround(workspace version 0.32.0, Cannot build for Android.)
+    // #workaround(Swift 5.2.1, Cannot build for Android.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
-    // #workaround(workspace version 0.32.0, Cannot build for Android.)
     "SwiftSyntax",
   ]
   for target in package.targets {
