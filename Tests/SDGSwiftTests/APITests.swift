@@ -135,7 +135,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
 
-      // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+      // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
       #if !(os(Windows) || os(Android))
         try withDefaultMockRepository { mock in
           _ = try mock.tag(version: Version(10, 0, 0)).get()
@@ -153,7 +153,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         ).get()
       #endif
 
-      // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+      // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
       #if !(os(Windows) || os(Android))
         try withDefaultMockRepository { mock in
           _ = try mock.resolve().get()
@@ -178,7 +178,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: SwiftCompiler.CoverageReportingError.swiftError(

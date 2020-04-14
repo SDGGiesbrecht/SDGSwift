@@ -320,7 +320,7 @@ public enum Xcode: VersionedExternalProcess {
       ).mapError { .xcodeError($0) }  // @exempt(from: tests)
     }
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Returns the code coverage report for the package.
       ///

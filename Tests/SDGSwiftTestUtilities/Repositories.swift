@@ -101,7 +101,7 @@
     }
   }
 
-  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     public func withDefaultMockRepository(
       file: StaticString = #file,

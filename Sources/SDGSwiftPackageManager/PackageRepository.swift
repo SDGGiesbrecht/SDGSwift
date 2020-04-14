@@ -19,7 +19,7 @@
   import SDGLocalization
   import SDGVersioning
 
-  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     import PackageModel
     import Build
@@ -34,7 +34,7 @@
 
     // MARK: - Initialization
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Creates a new package by initializing it at the specified URL.
       ///
@@ -89,7 +89,7 @@
 
     // MARK: - Properties
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Returns the package manifest.
       public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {

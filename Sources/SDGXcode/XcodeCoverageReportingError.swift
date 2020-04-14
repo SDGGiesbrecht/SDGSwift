@@ -22,7 +22,7 @@
 
   extension Xcode {
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// An error encountered while checking test coverage.
       public enum CoverageReportingError: PresentableError {
