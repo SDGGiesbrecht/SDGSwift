@@ -49,11 +49,11 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(Windows)  // #workaround(Swift 5.2, Windows has no SwiftPM.)
+    #if !os(Windows)  // #workaround(Swift 5.2.1, Windows has no SwiftPM.)
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
 
-          #if !os(Android)  // #workaround(workspace version 0.32.0, Emulator has no Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.32.1, Emulator has no Swift.)
             XCTAssertEqual(
               try Package(url: mock.location).execute(
                 .development,

@@ -36,7 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2, Windows has no SwiftPM.)
+    #if !os(Windows)  // #workaround(Swift 5.2.1, Windows has no SwiftPM.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
           #if !os(Android)  // #workaround(workspace version 0.32.1, Emulator lacks Swift.)
