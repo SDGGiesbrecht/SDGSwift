@@ -39,7 +39,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.2, Windows has no SwiftPM.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.32.0, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.32.1, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
