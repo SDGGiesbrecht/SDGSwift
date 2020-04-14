@@ -83,7 +83,7 @@ public class ExtendedSyntax: TextOutputStreamable {
 
   // MARK: - Location
 
-  // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+  // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
   #if !(os(Windows) || os(WASI) || os(Android))
     /// Returns the lower bound of the node.
     ///
