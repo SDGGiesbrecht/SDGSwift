@@ -47,7 +47,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
         let wherever = specifications.appendingPathComponent("Configured")
-        #if !os(Android)  // #workaround(workspace version 0.32.0, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.32.1, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
