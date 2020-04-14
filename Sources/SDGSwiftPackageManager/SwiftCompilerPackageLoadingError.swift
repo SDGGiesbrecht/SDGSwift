@@ -18,14 +18,14 @@
 
   import SDGSwift
 
-  // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     import Workspace
   #endif
 
   extension SwiftCompiler {
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// An error encountered while loading a Swift package.
       public enum PackageLoadingError: PresentableError {

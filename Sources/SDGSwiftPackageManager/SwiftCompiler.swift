@@ -18,7 +18,7 @@
 
 import SDGVersioning
 
-// #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+// #workaround(Swift 5.2.1, SwiftPM won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
   import Workspace
@@ -41,7 +41,7 @@ extension SwiftCompiler {
       }
     }
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       internal static func withDiagnostics<T>(
         _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T

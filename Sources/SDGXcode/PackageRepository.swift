@@ -79,7 +79,7 @@
       return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
 
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Returns the code coverage report for the package.
       ///

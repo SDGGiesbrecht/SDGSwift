@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   /// A grouped “Paramaters” callout.
   public class ParametersCalloutSyntax: CalloutSyntax {

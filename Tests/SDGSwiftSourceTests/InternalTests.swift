@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-// #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
@@ -32,14 +32,14 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
-    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
     #endif
   }
 
   func testExtendedSyntaxContext() {
-    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let context = ExtendedSyntaxContext._token(
         SyntaxFactory.makeToken(.comma),
@@ -59,7 +59,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   func testLocalizations() {
     for localization in InterfaceLocalization.allCases {
       LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+        // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
         #if !(os(Windows) || os(Android))
           _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
           _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
@@ -69,7 +69,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testStringLiteral() {
-    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let literal = "\u{22}...\u{22}"
       let kind = TokenKind.stringLiteral(literal).normalized()
@@ -82,7 +82,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenNormalization() {
-    // #workaround(workspace version 0.32.0, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),

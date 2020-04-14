@@ -21,7 +21,7 @@ import SDGLocalization
 import SDGSwift
 import SDGSwiftPackageManager
 
-// #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+// #workaround(Swift 5.2.1, SwiftPM won’t compile.)
 #if !(os(Windows) || os(Android))
   import Workspace
 #endif
@@ -39,7 +39,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testChangeDetection() throws {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         try "...".save(to: mock.location.appendingPathComponent("File.md"))
@@ -54,7 +54,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: PackageRepository.InitializationError.gitError(
@@ -112,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    #if !os(Android)  // #workaround(workspace version 0.32.0, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.32.1, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(workspace version 0.32.0, GitHub workflow host lacks Git.)
         XCTAssert(
           try thisRepository.ignoredFiles().get()
@@ -126,7 +126,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { location in
-          // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+          // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
           #if !(os(Windows) || os(Android))
             let package = try PackageRepository.initializePackage(
               at: location,
@@ -141,21 +141,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testManifestLoading() {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(try thisRepository.manifest().get().name == "SDGSwift")
     #endif
   }
 
   func testPackageLoading() {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(try thisRepository.package().get().name == "SDGSwift")
     #endif
   }
 
   func testPackageGraphLoading() {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssert(
         try thisRepository.packageGraph().get().packages
@@ -165,7 +165,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTestCoverage() throws {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         let coverageFiles = thisRepository.location.appendingPathComponent(
@@ -223,7 +223,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testWorkspaceLoading() {
-    // #workaround(workspace version 0.32.0, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       XCTAssertEqual(
         try thisRepository.packageWorkspace().get().resolvedFile.basename,
