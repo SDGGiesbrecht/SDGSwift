@@ -147,13 +147,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testPackageLoading() {
-    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
-    #endif
-  }
-
   func testPackageGraphLoading() {
     // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
@@ -161,6 +154,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         try thisRepository.packageGraph().get().packages
           .contains(where: { $0.name == "SDGCornerstone" })
       )
+    #endif
+  }
+
+  func testPackageLoading() {
+    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
     #endif
   }
 
