@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -26,7 +26,7 @@ extension String {
   ) {  // @exempt(from: tests)
     #if DEBUG
       if first ≠ "_" {
-        #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+        #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
           let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
           print("Unidentified token: \(self) (\(fileName).\(function))")
         #endif

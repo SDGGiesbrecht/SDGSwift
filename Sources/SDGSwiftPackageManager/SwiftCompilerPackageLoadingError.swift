@@ -12,20 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
   import SDGText
   import SDGLocalization
 
   import SDGSwift
 
-  // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     import Workspace
   #endif
 
   extension SwiftCompiler {
 
-    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// An error encountered while loading a Swift package.
       public enum PackageLoadingError: PresentableError {
