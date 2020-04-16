@@ -37,8 +37,8 @@ extension SDGSwiftPackageManagerTests.APITests {
       ("testIgnoredFileDetection", testIgnoredFileDetection),
       ("testInitialization", testInitialization),
       ("testManifestLoading", testManifestLoading),
-      ("testPackageLoading", testPackageLoading),
       ("testPackageGraphLoading", testPackageGraphLoading),
+      ("testPackageLoading", testPackageLoading),
       ("testTestCoverage", testTestCoverage),
       ("testWorkspaceLoading", testWorkspaceLoading),
     ])
