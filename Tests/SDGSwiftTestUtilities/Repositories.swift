@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
   import Foundation
   import XCTest
 
@@ -64,7 +64,7 @@
       try? FileManager.default.removeItem(at: mock.location)
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-      #if !os(Android)  // #workaround(workspace version 0.32.0, Process has its wires crossed.)
+      #if !os(Android)  // #workaround(workspace version 0.32.2, Process has its wires crossed.)
         _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
         _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
         _ = try Shell.default.run(
@@ -101,7 +101,7 @@
     }
   }
 
-  // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     public func withDefaultMockRepository(
       file: StaticString = #file,

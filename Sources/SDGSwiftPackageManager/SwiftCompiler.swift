@@ -12,13 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
   import Foundation
 #endif
 
 import SDGVersioning
 
-// #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+// #workaround(Swift 5.2.2, SwiftPM won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
   import Workspace
@@ -32,7 +32,7 @@ extension SwiftCompiler {
 
   private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 2)
 
-  #if !os(WASI)  // #workaround(Swift 5.2.1, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
     internal static func swiftCLocation()
       -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
     {
@@ -41,7 +41,7 @@ extension SwiftCompiler {
       }
     }
 
-    // #workaround(Swift 5.2.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       internal static func withDiagnostics<T>(
         _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
