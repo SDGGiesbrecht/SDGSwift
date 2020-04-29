@@ -74,7 +74,7 @@
           )
           if name == "Swift" {
             for source in sources.filter({ $0.pathExtension == "gyb" }) {
-              try autoreleasepool {
+              try purgingAutoreleased {
                 var normalized = try StrictString(from: source)
                 normalized.replaceMatches(for: "CMAKE_SIZEOF_VOID_P", with: "64")
                 try normalized.save(to: source)
@@ -97,7 +97,7 @@
           sources = sources.filter { $0.pathExtension == "swift" }
           sources = sources.sorted()
           for source in sources {
-            try autoreleasepool {
+            try purgingAutoreleased {
               var normalized = try StrictString(from: source)
               if source.lastPathComponent == "Array.swift"
                 ∨ source.lastPathComponent == "String.swift"

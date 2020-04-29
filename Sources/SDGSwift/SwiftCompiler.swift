@@ -315,7 +315,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
                   return .failure(.foundationError(error))
                 }
                 var regions: [CoverageRegion] = []
-                autoreleasepool {
+                purgingAutoreleased {
                   if let segments = fileDictionary["segments"] as? [Any] {
                     for (index, segment) in segments.enumerated() {
                       if let segmentData = segment as? [Any],
