@@ -375,7 +375,7 @@ public enum Xcode: VersionedExternalProcess {
         var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
         for fileURL in fileURLs {
           // @exempt(from: tests) Unreachable on Linux.
-          let fileResult = autoreleasepool { () -> Result<Void, CoverageReportingError> in
+          let fileResult = purgingAutoreleased { () -> Result<Void, CoverageReportingError> in
 
             reportProgress(
               String(

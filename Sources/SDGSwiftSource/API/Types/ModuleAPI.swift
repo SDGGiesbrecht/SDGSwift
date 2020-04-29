@@ -65,7 +65,7 @@
       self.init(documentation: documentation, declaration: declaration)
       var api: [APIElement] = []
       for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
-        try autoreleasepool {
+        try purgingAutoreleased {
           let source = try SyntaxParser.parseAndRetry(sourceFile)
           api.append(contentsOf: source.api())
         }
