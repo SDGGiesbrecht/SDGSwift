@@ -99,6 +99,3 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
-
-// #workaround(Until Workspace is compatible with 5.2.3.)
-configuration.continuousIntegration.manage = false
