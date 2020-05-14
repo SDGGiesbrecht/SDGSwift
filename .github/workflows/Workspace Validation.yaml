@@ -231,7 +231,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift test
+        swift test --enable-test-discovery
   Android:
     runs-on: ubuntu-18.04
     steps:
