@@ -30,7 +30,7 @@ extension SwiftCompiler {
 
   // MARK: - Properties
 
-  private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 2)
+  private static let compatibleVersions = SDGVersioning.Version(5, 2, 0)...Version(5, 2, 3)
 
   #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
     internal static func swiftCLocation()
