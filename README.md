@@ -49,21 +49,28 @@ Simply add SDGSwift as a dependency in `Package.swift` and specify which of the 
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", from: Version(1, 0, 1)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "SDGSwift", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftSource", package: "SDGSwift"),
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
-            .productItem(name: "SampleConfiguration", package: "SDGSwift"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "SDGSwift",
+      url: "https://github.com/SDGGiesbrecht/SDGSwift",
+      from: Version(1, 0, 1)
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "SDGSwift", package: "SDGSwift"),
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGXcode", package: "SDGSwift"),
+        .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
+        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
+        .product(name: "SampleConfiguration", package: "SDGSwift"),
+      ]
+    )
+  ]
 )
 ```
 
