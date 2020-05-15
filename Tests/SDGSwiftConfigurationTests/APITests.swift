@@ -53,7 +53,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // See its source for more details:
           // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
           let product = "SampleConfiguration"
-          let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+          let packageName = "SDGSwift"
+          let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
           let minimumMacOSVersion = Version(10, 13)
           let version = Version(0, 20, 0)
           let type = SampleConfiguration.self  // Import it first if necessary.
@@ -75,7 +76,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             context: context,
@@ -91,7 +93,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             context: context,
@@ -108,7 +111,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               named: name,
               from: none,
               linkingAgainst: product,
-              in: package,
+              in: packageName,
+              from: packageURL,
               at: version,
               minimumMacOSVersion: minimumMacOSVersion,
               context: context,
@@ -126,7 +130,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               named: name,
               from: emptyDirectory,
               linkingAgainst: product,
-              in: package,
+              in: packageName,
+              from: packageURL,
               at: version,
               minimumMacOSVersion: minimumMacOSVersion,
               context: context,
@@ -145,7 +150,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             reportProgress: { print($0, to: &log) }
