@@ -171,6 +171,10 @@ extension Configuration {
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
 
+      let have5_2 =
+        SwiftCompiler.version(forConstraints: Version(5, 2)..<Version(Int.max)) ≠ nil
+        ∧ ¬legacyMode
+
       var jsonData: Data
       if let mock = Configuration.mockQueue.first {
         configuration.mockQueue.removeFirst()
@@ -241,16 +245,29 @@ extension Configuration {
               {
                 dependencies.append((components[0], url, version, components[3]))
               }
+            } else if components.count == 3 {
+              // Legacy declaration without package name.
+              if let url = URL(string: components[0]),
+                let version = Version(components[1])
+              {
+                dependencies.append((url.lastPathComponent, url, version, components[2]))
+              }
             }
           }
         }
+
         let packages = dependencies.map({ dependency in
+          let packageName = have5_2 ? "name: \u{22}\(dependency.packageName)\u{22}, " : ""
           return
-            "        .package(name: \u{22}\(dependency.packageName)\u{22}, url: \u{22}\(dependency.packageURL.absoluteString)\u{22}, .exact(\u{22}\(dependency.version.string())\u{22})),"
+            "        .package(\(packageName)url: \u{22}\(dependency.packageURL.absoluteString)\u{22}, .exact(\u{22}\(dependency.version.string())\u{22})),"
         }).joined(separator: "\n")
         let products = dependencies.map({ dependency in
-          return
-            "            .product(name: \u{22}\(dependency.product)\u{22}, package: \u{22}\(dependency.packageName)\u{22}),"
+          if have5_2 {
+            return
+              "            .product(name: \u{22}\(dependency.product)\u{22}, package: \u{22}\(dependency.packageName)\u{22}),"
+          } else {
+            return "            \u{22}\(dependency.product)\u{22},"
+          }
         }).joined(separator: "\n")
 
         let resolvedMacOS = max(minimumMacOSVersion, Configuration.minimumMacOSVersion)
@@ -260,9 +277,11 @@ extension Configuration {
         let manifestLocation = configurationRepository.location.appendingPathComponent(
           "Package.swift"
         )
+        let packageNameDeclaration = have5_2 ? "name: \u{22}\(packageName)\u{22}, " : ""
         var manifest = String(data: Resources.package, encoding: .utf8)!
+        manifest.replaceMatches(for: "[*tools version*]", with: have5_2 ? "5.2" : "5.0")
         manifest.replaceMatches(for: "[*macOS*]", with: macOS)
-        manifest.replaceMatches(for: "[*name*]", with: packageName)
+        manifest.replaceMatches(for: "[*package name*]", with: packageNameDeclaration)
         manifest.replaceMatches(for: "[*URL*]", with: packageURL.absoluteString)
         manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
         manifest.replaceMatches(for: "[*packages*],", with: packages)

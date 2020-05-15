@@ -483,6 +483,7 @@ target_link_libraries("SDGSwift" PRIVATE
 add_library("SDGSwiftConfigurationLoading"
   "../../../Sources/SDGSwiftConfigurationLoading/Configuration.swift"
   "../../../Sources/SDGSwiftConfigurationLoading/ConfigurationError.swift"
+  "../../../Sources/SDGSwiftConfigurationLoading/LegacyMode.swift"
   "../../../Sources/SDGSwiftConfigurationLoading/Resources.swift"
 )
 set_target_properties("SDGSwiftConfigurationLoading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})

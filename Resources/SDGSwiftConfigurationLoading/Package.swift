@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:[*tools version*]
 
 /*
  Package.swift
@@ -22,7 +22,7 @@ let package = Package(
     .macOS(.v[*macOS*])
   ],
   dependencies: [
-    .package(name: "[*name*]", url: "[*URL*]", .exact("[*version*]")),
+    .package([*package name*]url: "[*URL*]", .exact("[*version*]")),
     [*packages*],
   ],
   targets: [
