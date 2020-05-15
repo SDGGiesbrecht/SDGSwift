@@ -100,6 +100,7 @@ extension SDGSwiftConfigurationTests.APITests {
     testCase([
       ("testConfiguration", testConfiguration),
       ("testConfigurationError", testConfigurationError),
+      ("testLegacyConfiguration", testLegacyConfiguration),
     ])
   ]
 }

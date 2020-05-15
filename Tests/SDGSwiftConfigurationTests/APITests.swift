@@ -256,4 +256,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
   }
+
+  func testLegacyConfiguration() throws {
+    try withLegacyMode {
+      _ = try SampleConfiguration.load(
+        configuration: SampleConfiguration.self,
+        named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
+        from: testSpecificationDirectory()
+          .appendingPathComponent("Configuration")
+          .appendingPathComponent("Legacy"),
+        linkingAgainst: "SampleConfiguration",
+        in: "SDGSwift",
+        from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
+        at: Version(0, 20, 0),
+        minimumMacOSVersion: Version(10, 12)
+      ).get()
+    }
+  }
 }

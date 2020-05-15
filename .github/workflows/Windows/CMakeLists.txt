@@ -641,6 +641,7 @@ target_link_libraries("SampleConfiguration" PRIVATE
 add_library("SDGSwiftConfigurationTests"
   "../../../Tests/SDGSwiftConfigurationTests/APITests.swift"
   "../../../Tests/SDGSwiftConfigurationTests/InternalTests.swift"
+  "../../../Tests/SDGSwiftConfigurationTests/LegacyMode.swift"
 )
 set_target_properties("SDGSwiftConfigurationTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftConfigurationTests" PRIVATE -enable-testing)
