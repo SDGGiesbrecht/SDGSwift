@@ -105,7 +105,6 @@ extension Configuration {
     ///     - product: The name of the product which defines the `Configuration` subclass. Users will directly import it in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
     ///     - packageName: The name of the package where the module is defined.
     ///     - packageURL: The URL of the package were the module is defined.
-    ///     - package: The package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
     ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
