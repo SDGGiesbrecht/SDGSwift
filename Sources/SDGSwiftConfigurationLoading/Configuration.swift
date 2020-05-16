@@ -275,7 +275,8 @@ extension Configuration {
         macOS.replaceMatches(for: ".", with: "_")
 
         let packageNameDeclaration = have5_2 ? "name: \u{22}\(packageName)\u{22}, " : ""
-        let productDependency = have5_2
+        let productDependency =
+          have5_2
           ? ".product(name: \u{22}\(product)\u{22}, package: \u{22}\(packageName)\u{22})"
           : "\u{22}\(product)\u{22}"
 
