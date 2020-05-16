@@ -259,20 +259,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testLegacyConfiguration() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
-      try withLegacyMode {
-        _ = try SampleConfiguration.load(
-          configuration: SampleConfiguration.self,
-          named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
-          from: testSpecificationDirectory()
-            .appendingPathComponent("Configuration")
-            .appendingPathComponent("Legacy"),
-          linkingAgainst: "SampleConfiguration",
-          in: "SDGSwift",
-          from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
-          at: Version(0, 20, 0),
-          minimumMacOSVersion: Version(10, 12)
-        ).get()
-      }
+      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
+        try withLegacyMode {
+          _ = try SampleConfiguration.load(
+            configuration: SampleConfiguration.self,
+            named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
+            from: testSpecificationDirectory()
+              .appendingPathComponent("Configuration")
+              .appendingPathComponent("Legacy"),
+            linkingAgainst: "SampleConfiguration",
+            in: "SDGSwift",
+            from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
+            at: Version(0, 20, 0),
+            minimumMacOSVersion: Version(10, 12)
+          ).get()
+        }
+      #endif
     #endif
   }
 }
