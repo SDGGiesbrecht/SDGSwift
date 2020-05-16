@@ -274,10 +274,11 @@ extension Configuration {
         var macOS = resolvedMacOS.string(droppingEmptyPatch: true)
         macOS.replaceMatches(for: ".", with: "_")
 
-        let manifestLocation = configurationRepository.location.appendingPathComponent(
-          "Package.swift"
-        )
         let packageNameDeclaration = have5_2 ? "name: \u{22}\(packageName)\u{22}, " : ""
+        let productDependency = have5_2
+          ? ".product(name: \u{22}\(product)\u{22}, package: \u{22}\(packageName)\u{22})"
+          : "\u{22}\(product)\u{22}"
+
         var manifest = String(data: Resources.package, encoding: .utf8)!
         manifest.replaceMatches(for: "[*tools version*]", with: have5_2 ? "5.2" : "5.0")
         manifest.replaceMatches(for: "[*macOS*]", with: macOS)
@@ -285,8 +286,11 @@ extension Configuration {
         manifest.replaceMatches(for: "[*URL*]", with: packageURL.absoluteString)
         manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
         manifest.replaceMatches(for: "[*packages*],", with: packages)
-        manifest.replaceMatches(for: "[*product*]", with: product)
+        manifest.replaceMatches(for: "[*product*]", with: productDependency)
         manifest.replaceMatches(for: "[*products*],", with: products)
+
+        let manifestLocation = configurationRepository.location
+          .appendingPathComponent("Package.swift")
         if let existingManifest = try? String(from: manifestLocation),
           existingManifest == manifest
         {

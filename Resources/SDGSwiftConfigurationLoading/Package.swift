@@ -29,7 +29,7 @@ let package = Package(
     .target(
       name: "configure",
       dependencies: [
-        "[*product*]",
+        [*product*],
         [*products*],
       ]
     )
