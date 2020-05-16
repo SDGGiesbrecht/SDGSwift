@@ -20,7 +20,7 @@ import SampleConfiguration
  Exernal packages can be imported with this syntax:
  import [module] // [package name], [url], [version], [product]
  */
-import SDGControlFlow  // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGControlFlow
+import SDGText  // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGText
 
 // Initialize the configuration with its defaults.
 let configuration = SampleConfiguration()
