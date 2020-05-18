@@ -146,7 +146,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSwiftCompiler() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
-      #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Swift.)
+      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],
           versionConstraints: Version(Int.min)...Version(Int.max)
@@ -164,7 +164,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
       try withMock(named: "Tool") { mock in
-        #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Swift.)
+        #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
           _ = try mock.build(releaseConfiguration: true).get()
           XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
         #endif
