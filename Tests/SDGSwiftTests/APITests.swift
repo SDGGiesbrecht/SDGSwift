@@ -57,7 +57,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testGit() {
     #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
@@ -82,7 +82,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       case .success:
         XCTFail()
       case .failure(let error):
-        #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
           testCustomStringConvertibleConformance(
             of: error,
             localizations: InterfaceLocalization.self,
@@ -106,7 +106,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
     #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
             .versions()
