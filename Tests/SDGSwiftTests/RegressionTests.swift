@@ -53,7 +53,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
 
-          #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator has no Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator has no Swift.)
             XCTAssertEqual(
               try Package(url: mock.location).execute(
                 .development,
