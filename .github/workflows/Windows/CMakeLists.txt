@@ -493,6 +493,7 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGSwiftConfiguration"
   "SDGSwift"
   "SDGLogic"
+  "SDGCollections"
   "SDGText"
   "SDGLocalization"
   "SDGVersioning"
