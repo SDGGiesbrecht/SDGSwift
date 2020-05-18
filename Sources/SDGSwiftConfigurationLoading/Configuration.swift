@@ -17,6 +17,7 @@
 #endif
 
 import SDGLogic
+import SDGCollections
 import SDGText
 import SDGLocalization
 import SDGVersioning
@@ -236,22 +237,33 @@ extension Configuration {
 
         var dependencies:
           [(packageName: String, packageURL: URL, version: Version, product: String)] = []
-        for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
-          if let comment = line.line.suffix(after: "/\u{2F} ".scalars) {
-            let components = String(comment.contents).components(separatedBy: ", ") as [String]
-            if components.count == 4 {
-              if let url = URL(string: components[1]),
-                let version = Version(components[2])
-              {
-                dependencies.append((components[0], url, version, components[3]))
-              }
-            } else if components.count == 3 {
-              // Legacy declaration without package name.
-              if let url = URL(string: components[0]),
-                let version = Version(components[1])
-              {
-                dependencies.append((url.lastPathComponent, url, version, components[2]))
-              }
+        importSearch: for lineIndex in configurationContents.lines.indices
+        where configurationContents.lines[lineIndex].line.hasPrefix("import ".scalars) {
+          let comment: PatternMatch<String.ScalarView.SubSequence>
+          if let sameLineComment = configurationContents.lines[lineIndex].line
+            .suffix(after: "/\u{2F} ".scalars)
+          {
+            comment = sameLineComment
+          } else if let nextLine = configurationContents.lines[lineIndex...].dropFirst().first,
+            let nextLineComment = nextLine.line.suffix(after: "/\u{2F} ".scalars)
+          {
+            comment = nextLineComment
+          } else {
+            continue importSearch
+          }
+          let components = String(comment.contents).components(separatedBy: ", ") as [String]
+          if components.count == 4 {
+            if let url = URL(string: components[1]),
+              let version = Version(components[2])
+            {
+              dependencies.append((components[0], url, version, components[3]))
+            }
+          } else if components.count == 3 {
+            // Legacy declaration without package name.
+            if let url = URL(string: components[0]),
+              let version = Version(components[1])
+            {
+              dependencies.append((url.lastPathComponent, url, version, components[2]))
             }
           }
         }
