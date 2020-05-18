@@ -483,6 +483,7 @@ target_link_libraries("SDGSwift" PRIVATE
 add_library("SDGSwiftConfigurationLoading"
   "../../../Sources/SDGSwiftConfigurationLoading/Configuration.swift"
   "../../../Sources/SDGSwiftConfigurationLoading/ConfigurationError.swift"
+  "../../../Sources/SDGSwiftConfigurationLoading/LegacyMode.swift"
   "../../../Sources/SDGSwiftConfigurationLoading/Resources.swift"
 )
 set_target_properties("SDGSwiftConfigurationLoading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -492,6 +493,7 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGSwiftConfiguration"
   "SDGSwift"
   "SDGLogic"
+  "SDGCollections"
   "SDGText"
   "SDGLocalization"
   "SDGVersioning"
@@ -640,6 +642,7 @@ target_link_libraries("SampleConfiguration" PRIVATE
 add_library("SDGSwiftConfigurationTests"
   "../../../Tests/SDGSwiftConfigurationTests/APITests.swift"
   "../../../Tests/SDGSwiftConfigurationTests/InternalTests.swift"
+  "../../../Tests/SDGSwiftConfigurationTests/LegacyMode.swift"
 )
 set_target_properties("SDGSwiftConfigurationTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftConfigurationTests" PRIVATE -enable-testing)

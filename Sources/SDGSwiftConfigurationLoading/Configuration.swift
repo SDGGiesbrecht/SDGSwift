@@ -17,6 +17,7 @@
 #endif
 
 import SDGLogic
+import SDGCollections
 import SDGText
 import SDGLocalization
 import SDGVersioning
@@ -44,9 +45,10 @@ extension Configuration {
     ///
     /// /*
     ///  Exernal packages can be imported with this syntax:
-    ///  import [module] // [url], [version], [product]
+    ///  import [module] // [package name], [url], [version], [product]
     ///  */
-    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGControlFlow
+    /// import SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGControlFlow
     ///
     /// // Initialize the configuration with its defaults.
     /// let configuration = SampleConfiguration()
@@ -65,7 +67,8 @@ extension Configuration {
     /// // See its source for more details:
     /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
     /// let product = "SampleConfiguration"
-    /// let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+    /// let packageName = "SDGSwift"
+    /// let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
     /// let minimumMacOSVersion = Version(10, 13)
     /// let version = Version(0, 20, 0)
     /// let type = SampleConfiguration.self  // Import it first if necessary.
@@ -87,7 +90,8 @@ extension Configuration {
     ///   named: name,
     ///   from: configuredDirectory,
     ///   linkingAgainst: product,
-    ///   in: package,
+    ///   in: packageName,
+    ///   from: packageURL,
     ///   at: version,
     ///   minimumMacOSVersion: minimumMacOSVersion,
     ///   context: context,
@@ -101,7 +105,8 @@ extension Configuration {
     ///     - fileName: The localized file name (without “.swift”) of the configuration. Any of the localized names will be detected. If several are present, which one gets loaded is undefined. (This file name is equivalent to the package manager’s `Package.swift`.)
     ///     - directory: The directory in which to look for a configuration.
     ///     - product: The name of the product which defines the `Configuration` subclass. Users will directly import it in configuration files. (This is equivalent to the package manager’s `PackageDescription` module).
-    ///     - package: The package were the module is defined.
+    ///     - packageName: The name of the package where the module is defined.
+    ///     - packageURL: The URL of the package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
     ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
@@ -113,7 +118,8 @@ extension Configuration {
       named fileName: UserFacing<StrictString, L>,
       from directory: URL,
       linkingAgainst product: String,
-      in package: Package,
+      in packageName: String,
+      from packageURL: URL,
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
@@ -125,7 +131,8 @@ extension Configuration {
         named: fileName,
         from: directory,
         linkingAgainst: product,
-        in: package,
+        in: packageName,
+        from: packageURL,
         at: releaseVersion,
         minimumMacOSVersion: minimumMacOSVersion,
         context: nullContext,
@@ -145,7 +152,8 @@ extension Configuration {
     ///     - fileName: The localized file name of the configuration.
     ///     - directory: The directory in which to look for a configuration.
     ///     - product: The name of the product which defines the `Configuration` subclass.
-    ///     - package: The package were the module is defined.
+    ///     - packageName: The name of the package where the module is defined.
+    ///     - packageURL: The URL of the package were the module is defined.
     ///     - releaseVersion: The version of the package to link against.
     ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - context: The context to provide to the configuration file.
@@ -156,12 +164,17 @@ extension Configuration {
       named fileName: UserFacing<StrictString, L>,
       from directory: URL,
       linkingAgainst product: String,
-      in package: Package,
+      in packageName: String,
+      from packageURL: URL,
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
       context: E?,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
+
+      let have5_2 =
+        SwiftCompiler.version(forConstraints: Version(5, 2)..<Version(Int.max)) ≠ nil
+        ∧ ¬legacyMode
 
       var jsonData: Data
       if let mock = Configuration.mockQueue.first {
@@ -222,41 +235,75 @@ extension Configuration {
           }
         }
 
-        var dependencies: [(package: URL, version: Version, product: String)] = []
-        for line in configurationContents.lines where line.line.hasPrefix("import ".scalars) {
-          if let comment = line.line.suffix(after: "/\u{2F} ".scalars) {
-            let components = String(comment.contents).components(separatedBy: ", ") as [String]
-            if components.count == 3 {
-              if let url = URL(string: components[0]),
-                let version = Version(components[1])
-              {
-                dependencies.append((url, version, components[2]))
-              }
+        var dependencies:
+          [(packageName: String, packageURL: URL, version: Version, product: String)] = []
+        importSearch: for lineIndex in configurationContents.lines.indices
+        where configurationContents.lines[lineIndex].line.hasPrefix("import ".scalars) {
+          let comment: PatternMatch<String.ScalarView.SubSequence>
+          if let sameLineComment = configurationContents.lines[lineIndex].line
+            .suffix(after: "/\u{2F} ".scalars)
+          {
+            comment = sameLineComment
+          } else if let nextLine = configurationContents.lines[lineIndex...].dropFirst().first,
+            let nextLineComment = nextLine.line.suffix(after: "/\u{2F} ".scalars)
+          {
+            comment = nextLineComment
+          } else {
+            continue importSearch
+          }
+          let components = String(comment.contents).components(separatedBy: ", ") as [String]
+          if components.count == 4 {
+            if let url = URL(string: components[1]),
+              let version = Version(components[2])
+            {
+              dependencies.append((components[0], url, version, components[3]))
+            }
+          } else if components.count == 3 {
+            // Legacy declaration without package name.
+            if let url = URL(string: components[0]),
+              let version = Version(components[1])
+            {
+              dependencies.append((url.lastPathComponent, url, version, components[2]))
             }
           }
         }
-        let packages = dependencies.map({
+
+        let packages = dependencies.map({ dependency in
+          let packageName = have5_2 ? "name: \u{22}\(dependency.packageName)\u{22}, " : ""
           return
-            "        .package(url: \u{22}\($0.package.absoluteString)\u{22}, .exact(\u{22}\($0.version.string())\u{22})),"
+            "        .package(\(packageName)url: \u{22}\(dependency.packageURL.absoluteString)\u{22}, .exact(\u{22}\(dependency.version.string())\u{22})),"
         }).joined(separator: "\n")
-        let products = dependencies.map({
-          return "            \u{22}\($0.product)\u{22},"
+        let products = dependencies.map({ dependency in
+          if have5_2 {
+            return
+              "            .product(name: \u{22}\(dependency.product)\u{22}, package: \u{22}\(dependency.packageName)\u{22}),"
+          } else {
+            return "            \u{22}\(dependency.product)\u{22},"
+          }
         }).joined(separator: "\n")
 
         let resolvedMacOS = max(minimumMacOSVersion, Configuration.minimumMacOSVersion)
         var macOS = resolvedMacOS.string(droppingEmptyPatch: true)
         macOS.replaceMatches(for: ".", with: "_")
 
-        let manifestLocation = configurationRepository.location.appendingPathComponent(
-          "Package.swift"
-        )
+        let packageNameDeclaration = have5_2 ? "name: \u{22}\(packageName)\u{22}, " : ""
+        let productDependency =
+          have5_2
+          ? ".product(name: \u{22}\(product)\u{22}, package: \u{22}\(packageName)\u{22})"
+          : "\u{22}\(product)\u{22}"
+
         var manifest = String(data: Resources.package, encoding: .utf8)!
+        manifest.replaceMatches(for: "[*tools version*]", with: have5_2 ? "5.2" : "5.0")
         manifest.replaceMatches(for: "[*macOS*]", with: macOS)
-        manifest.replaceMatches(for: "[*URL*]", with: package.url.absoluteString)
+        manifest.replaceMatches(for: "[*package name*]", with: packageNameDeclaration)
+        manifest.replaceMatches(for: "[*URL*]", with: packageURL.absoluteString)
         manifest.replaceMatches(for: "[*version*]", with: releaseVersion.string())
         manifest.replaceMatches(for: "[*packages*],", with: packages)
-        manifest.replaceMatches(for: "[*product*]", with: product)
+        manifest.replaceMatches(for: "[*product*]", with: productDependency)
         manifest.replaceMatches(for: "[*products*],", with: products)
+
+        let manifestLocation = configurationRepository.location
+          .appendingPathComponent("Package.swift")
         if let existingManifest = try? String(from: manifestLocation),
           existingManifest == manifest
         {
@@ -333,9 +380,9 @@ extension Configuration {
       })
     }
 
-    internal static func reportForLoading(file: URL) -> UserFacing<
-      StrictString, InterfaceLocalization
-    > {
+    internal static func reportForLoading(
+      file: URL
+    ) -> UserFacing<StrictString, InterfaceLocalization> {
       return UserFacing<StrictString, InterfaceLocalization>({ localization in
         let file = StrictString(file.lastPathComponent)
         switch localization {

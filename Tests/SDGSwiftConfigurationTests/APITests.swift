@@ -53,7 +53,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // See its source for more details:
           // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
           let product = "SampleConfiguration"
-          let package = Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+          let packageName = "SDGSwift"
+          let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
           let minimumMacOSVersion = Version(10, 13)
           let version = Version(0, 20, 0)
           let type = SampleConfiguration.self  // Import it first if necessary.
@@ -75,7 +76,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             context: context,
@@ -91,7 +93,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             context: context,
@@ -108,7 +111,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               named: name,
               from: none,
               linkingAgainst: product,
-              in: package,
+              in: packageName,
+              from: packageURL,
               at: version,
               minimumMacOSVersion: minimumMacOSVersion,
               context: context,
@@ -126,7 +130,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               named: name,
               from: emptyDirectory,
               linkingAgainst: product,
-              in: package,
+              in: packageName,
+              from: packageURL,
               at: version,
               minimumMacOSVersion: minimumMacOSVersion,
               context: context,
@@ -145,7 +150,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             named: name,
             from: configuredDirectory,
             linkingAgainst: product,
-            in: package,
+            in: packageName,
+            from: packageURL,
             at: version,
             minimumMacOSVersion: minimumMacOSVersion,
             reportProgress: { print($0, to: &log) }
@@ -249,5 +255,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Swift Unavailable",
       overwriteSpecificationInsteadOfFailing: false
     )
+  }
+
+  func testLegacyConfiguration() throws {
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
+        try withLegacyMode {
+          _ = try SampleConfiguration.load(
+            configuration: SampleConfiguration.self,
+            named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
+            from: testSpecificationDirectory()
+              .appendingPathComponent("Configuration")
+              .appendingPathComponent("Legacy"),
+            linkingAgainst: "SampleConfiguration",
+            in: "SDGSwift",
+            from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
+            at: Version(0, 20, 0),
+            minimumMacOSVersion: Version(10, 12)
+          ).get()
+        }
+      #endif
+    #endif
   }
 }
