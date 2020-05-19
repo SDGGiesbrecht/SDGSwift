@@ -56,8 +56,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+      #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
@@ -66,7 +66,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
       testCustomStringConvertibleConformance(
         of: VersionedExternalProcessExecutionError<Git>.locationError(
           .unavailable(versionConstraints: "...")
@@ -105,8 +105,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Mock Package",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+      #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
             .versions()
@@ -127,7 +127,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
       testCustomStringConvertibleConformance(
         of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
         localizations: InterfaceLocalization.self,
@@ -145,7 +145,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
       #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],
@@ -262,7 +262,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
       testCustomStringConvertibleConformance(
         of: Version(1, 2, 3),
         localizations: InterfaceLocalization.self,
@@ -285,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersionedExternalProcess() {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
       do {
         // Fresh
         _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()

@@ -93,7 +93,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
     #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
-      #if !os(Windows)  // #workaround(workspace version 0.32.2, Windows CI has no Git?)
+      #if !os(Windows)  // #workaround(Swift 5.2.3, Windows won’t have built it as a package.)
         let ignored = try thisRepository.ignoredFiles().get()
         let expected = thisRepository.location.appendingPathComponent(".build").path
         XCTAssert(ignored.contains(where: { $0.path == expected }))
