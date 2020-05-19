@@ -112,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    #if !os(Android)  // #workaround(workspace version 0.32.2, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
         XCTAssert(
           try thisRepository.ignoredFiles().get()
