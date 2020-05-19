@@ -57,9 +57,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testGit() {
     #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
-      XCTAssertNotNil(
-        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-      )
+      #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
+        XCTAssertNotNil(
+          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        )
+      #endif
     #endif
   }
 
