@@ -113,7 +113,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testIgnoredFileDetection() {
     #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
-      #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
+      #if !os(Windows)  // #workaround(Swift 5.2.3, Windows won’t have built it as a package.)
         XCTAssert(
           try thisRepository.ignoredFiles().get()
             .contains(where: { $0.lastPathComponent == ".build" })

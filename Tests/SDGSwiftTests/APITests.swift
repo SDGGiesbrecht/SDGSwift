@@ -56,12 +56,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
-        XCTAssertNotNil(
-          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-        )
-      #endif
+    #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+      XCTAssertNotNil(
+        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      )
     #endif
   }
 
@@ -105,15 +103,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Mock Package",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !os(Windows)  // #workaround(workspace version 0.32.2, GitHub workflow host lacks Git.)
-      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
-        XCTAssert(
-          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-            .versions()
-            .get() ∋ Version(0, 1, 0),
-          "Failed to detect available versions."
-        )
-      #endif
+    #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+      XCTAssert(
+        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+          .versions()
+          .get() ∋ Version(0, 1, 0),
+        "Failed to detect available versions."
+      )
     #endif
   }
 
