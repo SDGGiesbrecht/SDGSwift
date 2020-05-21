@@ -234,7 +234,7 @@ extension Configuration {
         in: "",  // Not used.
         from: package.url,
         at: releaseVersion,
-        minimumMacOSVersion: minimumMacOSVersion
+        minimumMacOSVersion: minimumMacOSVersion,
         context: context,
         forcePre5_2: true,
         reportProgress: reportProgress
