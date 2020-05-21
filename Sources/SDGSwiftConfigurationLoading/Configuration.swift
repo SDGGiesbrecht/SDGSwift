@@ -150,7 +150,8 @@ extension Configuration {
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-    ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization {
+    ) -> Result<C, Configuration.Error>
+    where C: Configuration, L: InputLocalization {  // @exempt(from: tests)
       let nullContext: NullContext? = nil
       return load(
         configuration: configuration,
@@ -224,13 +225,13 @@ extension Configuration {
       minimumMacOSVersion: Version,
       context: E?,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-    ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
+    ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {  // @exempt(from: tests)
       load(
         configuration: configuration,
         named: fileName,
         from: directory,
         linkingAgainst: product,
-        in: "", // Not used.
+        in: "",  // Not used.
         from: package.url,
         at: releaseVersion,
         minimumMacOSVersion: minimumMacOSVersion
