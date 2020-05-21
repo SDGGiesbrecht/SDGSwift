@@ -225,7 +225,8 @@ extension Configuration {
       minimumMacOSVersion: Version,
       context: E?,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
-    ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {  // @exempt(from: tests)
+    ) -> Result<C, Configuration.Error>
+    where C: Configuration, L: InputLocalization, E: Context {  // @exempt(from: tests)
       load(
         configuration: configuration,
         named: fileName,
