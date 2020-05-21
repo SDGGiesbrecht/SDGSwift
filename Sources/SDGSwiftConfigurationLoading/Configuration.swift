@@ -140,7 +140,11 @@ extension Configuration {
       )
     }
 
-    @available(*, deprecated, message: "Use the variant that takes the package name and URL separately instead.")
+    @available(
+      *,
+      deprecated,
+      message: "Use the variant that takes the package name and URL separately instead."
+    )
     public class func load<C, L>(
       configuration: C.Type,
       named fileName: UserFacing<StrictString, L>,
@@ -158,7 +162,7 @@ extension Configuration {
         named: fileName,
         from: directory,
         linkingAgainst: product,
-        in: "", // Not used.
+        in: "",  // Not used.
         from: package.url,
         at: releaseVersion,
         minimumMacOSVersion: minimumMacOSVersion,
@@ -214,7 +218,11 @@ extension Configuration {
       )
     }
 
-    @available(*, deprecated, message: "Use the variant that takes the package name and URL separately instead.")
+    @available(
+      *,
+      deprecated,
+      message: "Use the variant that takes the package name and URL separately instead."
+    )
     public class func load<C, L, E>(
       configuration: C.Type,
       named fileName: UserFacing<StrictString, L>,
