@@ -139,6 +139,38 @@ extension Configuration {
         reportProgress: reportProgress
       )
     }
+
+    @available(
+      *,
+      deprecated,
+      message: "Use the variant that takes the package name and URL separately instead."
+    )
+    public class func load<C, L>(
+      configuration: C.Type,
+      named fileName: UserFacing<StrictString, L>,
+      from directory: URL,
+      linkingAgainst product: String,
+      in package: Package,
+      at releaseVersion: Version,
+      minimumMacOSVersion: Version,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<C, Configuration.Error>
+    where C: Configuration, L: InputLocalization {  // @exempt(from: tests)
+      let nullContext: NullContext? = nil
+      return load(
+        configuration: configuration,
+        named: fileName,
+        from: directory,
+        linkingAgainst: product,
+        in: "",  // Not used.
+        from: package.url,
+        at: releaseVersion,
+        minimumMacOSVersion: minimumMacOSVersion,
+        context: nullContext,
+        forcePre5_2: true,
+        reportProgress: reportProgress
+      )
+    }
   #endif
   private struct NullContext: Context {}
 
@@ -171,9 +203,71 @@ extension Configuration {
       context: E?,
       reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
+      return load(
+        configuration: configuration,
+        named: fileName,
+        from: directory,
+        linkingAgainst: product,
+        in: packageName,
+        from: packageURL,
+        at: releaseVersion,
+        minimumMacOSVersion: minimumMacOSVersion,
+        context: context,
+        forcePre5_2: false,
+        reportProgress: reportProgress
+      )
+    }
+
+    @available(
+      *,
+      deprecated,
+      message: "Use the variant that takes the package name and URL separately instead."
+    )
+    public class func load<C, L, E>(
+      configuration: C.Type,
+      named fileName: UserFacing<StrictString, L>,
+      from directory: URL,
+      linkingAgainst product: String,
+      in package: Package,
+      at releaseVersion: Version,
+      minimumMacOSVersion: Version,
+      context: E?,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<C, Configuration.Error>
+    where C: Configuration, L: InputLocalization, E: Context {  // @exempt(from: tests)
+      load(
+        configuration: configuration,
+        named: fileName,
+        from: directory,
+        linkingAgainst: product,
+        in: "",  // Not used.
+        from: package.url,
+        at: releaseVersion,
+        minimumMacOSVersion: minimumMacOSVersion,
+        context: context,
+        forcePre5_2: true,
+        reportProgress: reportProgress
+      )
+    }
+
+    private class func load<C, L, E>(
+      configuration: C.Type,
+      named fileName: UserFacing<StrictString, L>,
+      from directory: URL,
+      linkingAgainst product: String,
+      in packageName: String,
+      from packageURL: URL,
+      at releaseVersion: Version,
+      minimumMacOSVersion: Version,
+      context: E?,
+      // #workaround(Until next major release.)
+      forcePre5_2: Bool,
+      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+    ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
 
       let have5_2 =
-        SwiftCompiler.version(forConstraints: Version(5, 2)..<Version(Int.max)) ≠ nil
+        ¬forcePre5_2
+        ∧ SwiftCompiler.version(forConstraints: Version(5, 2)..<Version(Int.max)) ≠ nil
         ∧ ¬legacyMode
 
       var jsonData: Data
