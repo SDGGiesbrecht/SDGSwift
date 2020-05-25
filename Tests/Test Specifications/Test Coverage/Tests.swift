@@ -33,6 +33,6 @@ final class MockTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testCoverage", testCoverage),
+    ("testCoverage", testCoverage)
   ]
 }

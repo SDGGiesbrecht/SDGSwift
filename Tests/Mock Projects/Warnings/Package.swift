@@ -22,12 +22,12 @@ let package = Package(
     .library(
       name: "Warnings",
       targets: ["Warnings"]
-    ),
+    )
   ],
   targets: [
     .target(
       name: "Warnings",
       dependencies: []
-    ),
+    )
   ]
 )

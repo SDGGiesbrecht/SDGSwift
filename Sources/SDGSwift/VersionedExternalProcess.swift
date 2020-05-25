@@ -45,9 +45,8 @@ public protocol VersionedExternalProcess {
 
 #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
   private var locationCache:
-    [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] = [
-      :
-    ]
+    [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] =
+      [:]
 
   extension VersionedExternalProcess {
 

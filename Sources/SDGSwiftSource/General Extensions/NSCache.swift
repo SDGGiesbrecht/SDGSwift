@@ -35,7 +35,9 @@
         let bridged = NSString(string: key)
         if let new = newValue {
           setObject(new, forKey: bridged, cost: bridged.length)
-        } else { removeObject(forKey: bridged) }  // @exempt(from: tests) Unused.
+        } else {  // @exempt(from: tests) Unused.
+          removeObject(forKey: bridged)
+        }
       }
     }
   }

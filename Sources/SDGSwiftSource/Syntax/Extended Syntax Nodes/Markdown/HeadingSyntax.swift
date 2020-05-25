@@ -50,7 +50,8 @@
 
         var indentEnd = delimiterEnd
         while indentEnd ≠ nodeEnd,
-        documentation.scalars[indentEnd].properties.isWhitespace {
+          documentation.scalars[indentEnd].properties.isWhitespace
+        {
           indentEnd = documentation.scalars.index(after: indentEnd)
         }
         let indent = ExtendedTokenSyntax(

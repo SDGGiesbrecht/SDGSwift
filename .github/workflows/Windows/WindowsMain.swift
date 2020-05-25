@@ -24,7 +24,7 @@ import XCTest
 extension SDGSwiftDocumentationExampleTests.ReadMeExampleTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testReadMe", testReadMe),
+      ("testReadMe", testReadMe)
     ])
   ]
 }
@@ -90,7 +90,7 @@ extension SDGXcodeTests.RegressionTests {
       (
         "testSchemeDetectionWithMutlipleLibrariesAndTool",
         testSchemeDetectionWithMutlipleLibrariesAndTool
-      ),
+      )
     ])
   ]
 }
@@ -108,7 +108,7 @@ extension SDGSwiftConfigurationTests.APITests {
 extension SDGSwiftConfigurationTests.InternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testLocalization", testLocalization),
+      ("testLocalization", testLocalization)
     ])
   ]
 }
