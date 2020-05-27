@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -41,7 +41,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   public static func _ignoreProgress(_ output: String) {}
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -92,7 +92,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     /// The directory to which the products are built.
     ///
     /// - Parameters:

@@ -358,10 +358,10 @@ let package = Package(
 
 func adjustForWindows() {
 
-  // #workaround(Swift 5.2.2, CMake cannot handle Unicode.)
+  // #workaround(Swift 5.2.4, CMake cannot handle Unicode.)
   package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
 
-  // #workaround(Swift 5.2.2, Windows cannot build C.)
+  // #workaround(Swift 5.2.4, Windows cannot build C.)
   let impossibleDependencies = [
     "cmark",
     "SwiftPM",
@@ -386,7 +386,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies = [
-    // #workaround(Swift 5.2.2, Cannot build for web.)
+    // #workaround(Swift 5.2.4, Cannot build for web.)
     "cmark",
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
@@ -405,14 +405,14 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   }
   for target in package.targets {
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
 }
 
 func adjustForAndroid() {
   let impossibleDependencies = [
-    // #workaround(Swift 5.2.2, Cannot build for Android.)
+    // #workaround(Swift 5.2.4, Cannot build for Android.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
     "SwiftSyntax",

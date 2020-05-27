@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
@@ -31,7 +31,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testContinuedCallout() throws {
     // Untracked.
 
-    // #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let source = [
         "/// ...",
@@ -48,7 +48,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownEntity() throws {
     // Untracked.
 
-    // #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let source = [
         "/// ...&#x2D;...",
@@ -66,7 +66,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownQuotation() throws {
     // Untracked.
 
-    // #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let source = [
         "/// ...",
@@ -91,7 +91,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testPackageDeclaration() {
     // Untracked.
 
-    // #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
       let highlighted = declaration.syntaxHighlightedHTML(

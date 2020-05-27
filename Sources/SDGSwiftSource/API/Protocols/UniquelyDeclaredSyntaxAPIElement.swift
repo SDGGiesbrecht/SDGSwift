@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   internal protocol _UniquelyDeclaredSyntaxAPIElement: _UniquelyDeclaredAPIElement
   where Declaration: APIDeclaration, Name == Declaration.Name {}

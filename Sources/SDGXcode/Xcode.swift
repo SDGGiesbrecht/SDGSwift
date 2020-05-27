@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -35,7 +35,7 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     private static func coverageTool<Constraints>(
       versionConstraints: Constraints
     ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
@@ -127,7 +127,7 @@ public enum Xcode: VersionedExternalProcess {
     if output.hasPrefix("$ ") {
       return output
     }
-    #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
       if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
         return nil
       }
@@ -138,7 +138,7 @@ public enum Xcode: VersionedExternalProcess {
       }
     }
 
-    #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
       // Log style entry.
       let logComponents: [String] = output.components(separatedBy: " ")
       if logComponents.count ≥ 4,
@@ -192,7 +192,7 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -256,7 +256,7 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
       return project.location.appendingPathComponent(
         ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
@@ -320,7 +320,7 @@ public enum Xcode: VersionedExternalProcess {
       ).mapError { .xcodeError($0) }  // @exempt(from: tests)
     }
 
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Returns the code coverage report for the package.
       ///

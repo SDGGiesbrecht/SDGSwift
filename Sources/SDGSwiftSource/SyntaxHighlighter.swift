@@ -18,7 +18,7 @@ import SDGText
 /// A namespace for syntax highlighting.
 public enum SyntaxHighlighter {
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     /// The CSS to use with syntax‐highlighted HTML.
     public static var css: StrictString {
       return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")

@@ -36,10 +36,10 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, No package manager on Windows yet.)
+    #if !os(Windows)  // #workaround(Swift 5.2.4, No package manager on Windows yet.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
@@ -80,7 +80,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -291,7 +291,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
     #endif
 
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -372,7 +372,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.xcodeError(
@@ -389,7 +389,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.corruptTestCoverageReport,
