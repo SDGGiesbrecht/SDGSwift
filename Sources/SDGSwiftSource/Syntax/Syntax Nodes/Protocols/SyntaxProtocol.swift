@@ -274,7 +274,7 @@
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
         var classes = [
-          existentialName,
+          existentialName
         ]
         if existential is StringLiteralExprSyntax {
           classes.prepend("string")

@@ -22,6 +22,6 @@ let package = Package(
     .target(
       name: "Tool",
       dependencies: []
-    ),
+    )
   ]
 )

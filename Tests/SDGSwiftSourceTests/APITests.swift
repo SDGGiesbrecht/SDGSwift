@@ -561,7 +561,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if url.deletingPathExtension().lastPathComponent == "Documentation" {
           var found = false
           search: for element in api {
-            `switch`:switch element {
+            `switch`: switch element {
             case .extension(let `extension`):
               found = true
               let method = `extension`.instanceMethods.first(where: {
@@ -610,7 +610,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if url.deletingPathExtension().lastPathComponent == "Attributes" {
           var found = false
           search: for element in api {
-            `switch`:switch element {
+            `switch`: switch element {
             case .function(let function):
               if function.name.identifier.text == "withHiddenAttribute" {
                 XCTAssertNotNil(element.documentation)

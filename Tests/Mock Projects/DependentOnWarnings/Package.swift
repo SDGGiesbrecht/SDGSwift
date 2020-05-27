@@ -22,7 +22,7 @@ let package = Package(
     .library(
       name: "DependentOnWarnings",
       targets: ["DependentOnWarnings"]
-    ),
+    )
   ],
   dependencies: [
     .package(url: "/tmp/Warnings", .branch("master"))
@@ -31,6 +31,6 @@ let package = Package(
     .target(
       name: "DependentOnWarnings",
       dependencies: ["Warnings"]
-    ),
+    )
   ]
 )

@@ -44,7 +44,8 @@
             var whitespace = String(first)
             trivia.scalars.removeFirst()
             while let another = trivia.scalars.first,
-            another ∈ CharacterSet.whitespaces {
+              another ∈ CharacterSet.whitespaces
+            {
               whitespace.scalars.append(trivia.scalars.removeFirst())
             }
             children.append(ExtendedTokenSyntax(text: whitespace, kind: .whitespace))
@@ -52,7 +53,8 @@
             var newlines = String(first)
             trivia.scalars.removeFirst()
             while let another = trivia.scalars.first,
-            another ∈ CharacterSet.newlines {
+              another ∈ CharacterSet.newlines
+            {
               newlines.scalars.append(trivia.scalars.removeFirst())
             }
             children.append(ExtendedTokenSyntax(text: newlines, kind: .newlines))
