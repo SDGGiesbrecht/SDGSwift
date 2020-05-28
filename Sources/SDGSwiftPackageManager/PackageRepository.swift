@@ -12,14 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   import Foundation
 
   import SDGText
   import SDGLocalization
   import SDGVersioning
 
-  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     import PackageModel
     import Build
@@ -34,7 +34,7 @@
 
     // MARK: - Initialization
 
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Creates a new package by initializing it at the specified URL.
       ///
@@ -89,7 +89,7 @@
 
     // MARK: - Properties
 
-    // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       /// Returns the package manifest.
       public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {

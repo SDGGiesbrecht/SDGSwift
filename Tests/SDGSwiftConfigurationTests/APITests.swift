@@ -36,7 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
       try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
         FileManager.default.delete(.cache)
         defer { FileManager.default.delete(.cache) }
@@ -47,7 +47,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
         let wherever = specifications.appendingPathComponent("Configured")
-        #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
@@ -258,8 +258,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLegacyConfiguration() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.3, SegFault)
-      #if !os(Android)  // #workaround(workspace version 0.32.3, Emulator lacks Swift.)
+    #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
+      #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Swift.)
         try withLegacyMode {
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,

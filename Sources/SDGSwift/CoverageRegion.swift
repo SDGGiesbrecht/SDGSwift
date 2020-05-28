@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -24,7 +24,7 @@ public struct CoverageRegion {
 
   // MARK: - Static Methods
 
-  #if !os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     private static let charactersIrrelevantToCoverage =
       CharacterSet.whitespacesAndNewlines ∪ [
         "{", "}", "(", ")",
