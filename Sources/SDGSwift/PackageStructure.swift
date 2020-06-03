@@ -123,10 +123,14 @@
                 let filename = component.lastPathComponent
 
                 if filename ≠ "ModuleCache",
-                  ¬filename.hasSuffix(".product"),
+                  ¬filename.hasSuffix(".a"),
                   ¬filename.hasSuffix(".build"),
+                  ¬filename.hasSuffix(".dSYM"),
+                  ¬filename.hasSuffix(".json"),
+                  ¬filename.hasSuffix(".product"),
                   ¬filename.hasSuffix(".swiftdoc"),
-                  ¬filename.hasSuffix(".swiftmodule")
+                  ¬filename.hasSuffix(".swiftmodule"),
+                  ¬filename.hasSuffix(".swiftsourceinfo")
                 {
 
                   do {
