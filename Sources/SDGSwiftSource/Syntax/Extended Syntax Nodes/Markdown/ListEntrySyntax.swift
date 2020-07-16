@@ -21,7 +21,7 @@
   import SDGText
 
   /// A list entry in documentation.
-  public class ListEntrySyntax: MarkdownSyntax {
+  public final class ListEntrySyntax: MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
       var precedingChildren: [ExtendedSyntax] = []

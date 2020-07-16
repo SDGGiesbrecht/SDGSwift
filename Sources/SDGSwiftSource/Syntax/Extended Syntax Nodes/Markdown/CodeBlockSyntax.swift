@@ -23,7 +23,7 @@
   import cmark
 
   /// A code block used in documentation.
-  public class CodeBlockSyntax: MarkdownSyntax {
+  public final class CodeBlockSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 

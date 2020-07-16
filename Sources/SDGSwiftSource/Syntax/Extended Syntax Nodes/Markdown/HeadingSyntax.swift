@@ -23,7 +23,7 @@
   import cmark
 
   /// A documentation heading.
-  public class HeadingSyntax: MarkdownSyntax {
+  public final class HeadingSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 

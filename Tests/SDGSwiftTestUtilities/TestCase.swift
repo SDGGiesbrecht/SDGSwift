@@ -23,7 +23,7 @@
 
   open class TestCase: SDGXCTestUtilities.TestCase {
 
-    static let configureGit: Void = {
+    private static let configureGit: Void = {
       if ProcessInfo.isInGitHubAction {
         // @exempt(from: tests)
         #if os(Linux)

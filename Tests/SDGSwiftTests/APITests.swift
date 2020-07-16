@@ -56,7 +56,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
@@ -82,7 +82,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       case .success:
         XCTFail()
       case .failure(let error):
-        #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
           testCustomStringConvertibleConformance(
             of: error,
             localizations: InterfaceLocalization.self,
@@ -105,7 +105,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Mock Package",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
@@ -146,7 +146,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSwiftCompiler() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
-      #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Swift.)
+      #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Swift.)
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],
           versionConstraints: Version(Int.min)...Version(Int.max)
@@ -164,7 +164,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
       try withMock(named: "Tool") { mock in
-        #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Swift.)
+        #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Swift.)
           _ = try mock.build(releaseConfiguration: true).get()
           XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
         #endif

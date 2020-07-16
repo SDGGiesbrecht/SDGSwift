@@ -20,7 +20,7 @@
   import cmark
 
   /// The content of a documentation comment.
-  public class DocumentationSyntax: MarkdownSyntax {
+  public final class DocumentationSyntax: MarkdownSyntax {
 
     private static let documentationCache = ParsedDocumentationCache()
     internal static func parse(source: String) -> DocumentationSyntax {

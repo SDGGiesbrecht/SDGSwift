@@ -20,13 +20,13 @@
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax? {
+    internal var hidabilityIdentifier: TokenSyntax? {
       return identifier
     }
 
     // MARK: - TypeDeclaration
 
-    var inheritanceClause: TypeInheritanceClauseSyntax? {
+    internal var inheritanceClause: TypeInheritanceClauseSyntax? {
       return nil
     }
 

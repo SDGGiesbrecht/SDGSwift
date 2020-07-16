@@ -15,7 +15,7 @@
 // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   /// A grouped “Paramaters” callout.
-  public class ParametersCalloutSyntax: CalloutSyntax {
+  public final class ParametersCalloutSyntax: CalloutSyntax {
 
     internal required init(
       bullet: ExtendedTokenSyntax?,

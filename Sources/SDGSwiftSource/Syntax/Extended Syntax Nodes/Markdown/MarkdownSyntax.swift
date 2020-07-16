@@ -23,7 +23,7 @@
   import cmark
 
   /// A Markdown node in documentation.
-  public class MarkdownSyntax: ExtendedSyntax {
+  public final class MarkdownSyntax: ExtendedSyntax {
 
     // MARK: - Initialization
 

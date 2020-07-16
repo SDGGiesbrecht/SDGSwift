@@ -32,13 +32,13 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
     #if !os(Windows)  // #workaround(Swift 5.2.4, No package manager on Windows yet.)
       try withMock(named: "Warnings") { package in
-        #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
           let build = try package.build().get()
           XCTAssert(SwiftCompiler.warningsOccurred(during: build))
         #endif
       }
       try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-        #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
           let build = try package.build().get()
           XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
         #endif
@@ -53,7 +53,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
 
-          #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator has no Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator has no Swift.)
             XCTAssertEqual(
               try Package(url: mock.location).execute(
                 .development,
@@ -92,7 +92,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
-    #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Git.)
+    #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(Swift 5.2.4, Windows won’t have built it as a package.)
         let ignored = try thisRepository.ignoredFiles().get()
         let expected = thisRepository.location.appendingPathComponent(".build").path

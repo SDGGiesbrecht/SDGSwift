@@ -17,7 +17,7 @@
   /// A section of documentation text with font modifications.
   ///
   /// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.
-  public class FontSyntax: MarkdownSyntax {
+  public final class FontSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 

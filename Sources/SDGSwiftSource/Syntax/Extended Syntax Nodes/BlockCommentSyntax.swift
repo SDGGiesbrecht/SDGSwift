@@ -22,7 +22,7 @@
   import SDGLocalization
 
   /// A block comment.
-  public class BlockCommentSyntax: ExtendedSyntax {
+  public final class BlockCommentSyntax: ExtendedSyntax {
 
     // MARK: - Class Properties
 

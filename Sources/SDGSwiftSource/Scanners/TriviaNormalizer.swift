@@ -19,7 +19,7 @@
   import SwiftSyntax
 
   internal class TriviaNormalizer: SyntaxRewriter {
-    override func visit(_ token: TokenSyntax) -> Syntax {
+    internal override func visit(_ token: TokenSyntax) -> Syntax {
       var token = token
       if ¬token.leadingTrivia.isEmpty {
         token = token.withLeadingTrivia(Trivia(pieces: [.spaces(1)]))

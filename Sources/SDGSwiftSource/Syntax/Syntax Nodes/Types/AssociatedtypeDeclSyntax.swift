@@ -22,13 +22,13 @@
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax? {
+    internal var hidabilityIdentifier: TokenSyntax? {
       return identifier
     }
 
     // MARK: - TypeDeclaration
 
-    var genericParameterClause: GenericParameterClauseSyntax? {
+    internal var genericParameterClause: GenericParameterClauseSyntax? {
       return nil
     }
 

@@ -19,7 +19,7 @@ import enum SDGHTML.HTML
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public class ExtendedTokenSyntax: ExtendedSyntax {
+public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 

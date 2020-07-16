@@ -22,7 +22,7 @@
   import enum SDGHTML.HTML
 
   /// A fragment of code used in documentation.
-  public class CodeFragmentSyntax: ExtendedSyntax {
+  public final class CodeFragmentSyntax: ExtendedSyntax {
 
     internal init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
       self.isSwift = isSwift

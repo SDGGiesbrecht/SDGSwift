@@ -13,7 +13,7 @@
  */
 
 /// A documentation callout.
-public class CalloutSyntax: ExtendedSyntax {
+public final class CalloutSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 

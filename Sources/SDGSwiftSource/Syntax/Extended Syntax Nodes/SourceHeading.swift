@@ -13,7 +13,7 @@
  */
 
 /// A heading in source code.
-public class SourceHeadingSyntax: ExtendedSyntax {
+public final class SourceHeadingSyntax: ExtendedSyntax {
 
   internal init(mark: String, heading: String) {
     let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
@@ -26,8 +26,8 @@ public class SourceHeadingSyntax: ExtendedSyntax {
   }
 
   /// The delimiter.
-  let mark: ExtendedTokenSyntax
+  public let mark: ExtendedTokenSyntax
 
   /// The heading.
-  let heading: ExtendedTokenSyntax
+  public let heading: ExtendedTokenSyntax
 }

@@ -16,7 +16,7 @@ import SDGLogic
 import SDGLocalization
 
 /// The content of a comment.
-public class CommentContentSyntax: ExtendedSyntax {
+public final class CommentContentSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 

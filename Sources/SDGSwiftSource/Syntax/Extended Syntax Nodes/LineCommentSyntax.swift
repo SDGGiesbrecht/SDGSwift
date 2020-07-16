@@ -19,7 +19,7 @@
   import SwiftSyntax
 
   /// A line comment.
-  public class LineCommentSyntax: ExtendedSyntax {
+  public final class LineCommentSyntax: ExtendedSyntax {
 
     // MARK: - Class Properties
 

@@ -24,7 +24,7 @@
 
     // MARK: - Hidable
 
-    var hidabilityIdentifier: TokenSyntax? {
+    internal var hidabilityIdentifier: TokenSyntax? {
       return identifier
     }
 
