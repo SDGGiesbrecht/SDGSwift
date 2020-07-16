@@ -17,7 +17,7 @@
   import SwiftSyntax
 
   /// A line developer comment.
-  public class LineDeveloperCommentSyntax: LineCommentSyntax {
+  public final class LineDeveloperCommentSyntax: LineCommentSyntax {
 
     // MARK: - Class Properties
 

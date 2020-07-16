@@ -25,11 +25,11 @@
 
     // MARK: - Accessor
 
-    var keyword: TokenSyntax {
+    internal var keyword: TokenSyntax {
       return letOrVarKeyword
     }
 
-    var accessors: Syntax? {
+    internal var accessors: Syntax? {
       return bindings.first?.accessor
     }
 

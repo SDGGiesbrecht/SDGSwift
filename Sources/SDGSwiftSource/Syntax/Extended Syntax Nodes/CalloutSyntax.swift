@@ -13,7 +13,7 @@
  */
 
 /// A documentation callout.
-public class CalloutSyntax: ExtendedSyntax {
+public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
   // MARK: - Initialization
 

@@ -22,7 +22,7 @@
 
   extension OverridableDeclaration {
 
-    func isOverride() -> Bool {
+    internal func isOverride() -> Bool {
       if let modifiers = self.modifiers,
         modifiers.contains(where: { $0.name.text == "override" })
       {

@@ -15,7 +15,7 @@
 // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   /// A paragraph in documentation.
-  public class ParagraphSyntax: MarkdownSyntax {
+  public final class ParagraphSyntax: MarkdownSyntax {
 
     // MARK: - Properties
 

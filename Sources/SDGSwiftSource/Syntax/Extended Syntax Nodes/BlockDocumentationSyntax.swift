@@ -15,7 +15,7 @@
 // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   /// A block documentation comment.
-  public class BlockDocumentationSyntax: BlockCommentSyntax {
+  public final class BlockDocumentationSyntax: BlockCommentSyntax {
 
     // MARK: - Class Properties
 

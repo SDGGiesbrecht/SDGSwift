@@ -20,7 +20,7 @@
   import SwiftSyntax
 
   /// A line documentation comment.
-  public class LineDocumentationSyntax: LineCommentSyntax {
+  public final class LineDocumentationSyntax: LineCommentSyntax {
 
     // MARK: - Class Properties
 

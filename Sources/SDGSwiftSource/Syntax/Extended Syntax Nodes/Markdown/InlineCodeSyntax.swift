@@ -17,7 +17,7 @@
   import cmark
 
   /// Inline code use in documentation.
-  public class InlineCodeSyntax: MarkdownSyntax {
+  public final class InlineCodeSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 

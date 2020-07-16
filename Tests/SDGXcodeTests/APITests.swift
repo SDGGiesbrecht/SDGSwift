@@ -39,7 +39,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.2.4, No package manager on Windows yet.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.32.4, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
@@ -105,7 +105,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .tvOS(simulator: true),
           ]
           if ¬withGeneratedProject {
-            // #workaround(xcodebuild -version 11.5, watchOS cannot handle test targets.) @exempt(from: unicode)
+            // #workaround(xcodebuild -version 11.6, watchOS cannot handle test targets.) @exempt(from: unicode)
             sdks.removeAll(where: { $0 == .watchOS })
           }
           for sdk in sdks {

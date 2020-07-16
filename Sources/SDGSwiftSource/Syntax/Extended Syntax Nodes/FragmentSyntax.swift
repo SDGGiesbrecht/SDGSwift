@@ -18,11 +18,11 @@
   import SDGCollections
 
   /// A smaller fragment of a larger syntax node.
-  public class FragmentSyntax: ExtendedSyntax {
+  public final class FragmentSyntax: ExtendedSyntax {
 
     // MARK: - Initialization
 
-    init(scalarOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
+    internal init(scalarOffsets: CountableRange<Int>, in syntax: ExtendedSyntax) {
       context = syntax
 
       var cropped: [ExtendedSyntax] = []

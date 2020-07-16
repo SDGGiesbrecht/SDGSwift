@@ -20,7 +20,7 @@
   import enum SDGHTML.HTML
 
   /// An image insertion in documentation.
-  public class ImageSyntax: MarkdownSyntax {
+  public final class ImageSyntax: MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
 

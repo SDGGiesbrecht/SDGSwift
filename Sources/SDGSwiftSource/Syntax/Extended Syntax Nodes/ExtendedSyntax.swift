@@ -17,7 +17,7 @@ import SDGLogic
 /// A syntax node.
 ///
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public class ExtendedSyntax: TextOutputStreamable {
+public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinality)
 
   internal init(children: [ExtendedSyntax]) {
     self.children = children

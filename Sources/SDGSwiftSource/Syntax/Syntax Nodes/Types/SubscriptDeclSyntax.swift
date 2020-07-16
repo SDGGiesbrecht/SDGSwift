@@ -24,11 +24,11 @@
 
     // MARK: - Accessor
 
-    var keyword: TokenSyntax {
+    internal var keyword: TokenSyntax {
       return subscriptKeyword
     }
 
-    var accessors: Syntax? {
+    internal var accessors: Syntax? {
       return accessor
     }
 

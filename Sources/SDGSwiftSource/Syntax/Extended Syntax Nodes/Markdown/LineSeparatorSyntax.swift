@@ -15,7 +15,7 @@
 // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   /// An explicit line separator in documentation.
-  public class LineSeparatorSyntax: MarkdownSyntax {
+  public final class LineSeparatorSyntax: MarkdownSyntax {
 
     internal init() {
       super.init(children: [

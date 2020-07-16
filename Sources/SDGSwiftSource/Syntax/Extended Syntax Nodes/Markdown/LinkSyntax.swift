@@ -20,7 +20,7 @@
   import enum SDGHTML.HTML
 
   /// A link in documentation.
-  public class LinkSyntax: MarkdownSyntax {
+  public final class LinkSyntax: MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
 

@@ -23,7 +23,7 @@
   import cmark
 
   /// A quotation in documentation.
-  public class QuotationSyntax: MarkdownSyntax {
+  public final class QuotationSyntax: MarkdownSyntax {
 
     internal init(node: cmark_node, in documentation: String) {
       var precedingChildren: [ExtendedSyntax] = []

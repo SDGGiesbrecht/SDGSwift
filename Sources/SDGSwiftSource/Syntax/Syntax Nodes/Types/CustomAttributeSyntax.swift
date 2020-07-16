@@ -18,7 +18,7 @@
 
   extension CustomAttributeSyntax {
 
-    func normalizedForAPIDeclaration() -> CustomAttributeSyntax {
+    internal func normalizedForAPIDeclaration() -> CustomAttributeSyntax {
       return SyntaxFactory.makeCustomAttribute(
         atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
         attributeName: attributeName.normalized(),

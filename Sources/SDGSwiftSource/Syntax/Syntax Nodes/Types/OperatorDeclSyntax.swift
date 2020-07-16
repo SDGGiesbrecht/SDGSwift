@@ -50,7 +50,7 @@
 
     // MARK: - APISyntax
 
-    func isPublic() -> Bool {
+    internal func isPublic() -> Bool {
       return true
     }
 
