@@ -23,7 +23,7 @@
   import cmark
 
   /// A Markdown node in documentation.
-  public class MarkdownSyntax: ExtendedSyntax { // @exempt(from: classFinality)
+  public class MarkdownSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
     // MARK: - Initialization
 
