@@ -380,6 +380,9 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  adjustForWindows()
+}
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
