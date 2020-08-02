@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 0, 0)
+      from: Version(5, 4, 0)
     ),
     .package(
       name: "SwiftPM",
