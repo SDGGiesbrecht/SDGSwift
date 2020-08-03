@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 0, 0)
+      from: Version(5, 4, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -380,6 +380,9 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  adjustForWindows()
+}
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
