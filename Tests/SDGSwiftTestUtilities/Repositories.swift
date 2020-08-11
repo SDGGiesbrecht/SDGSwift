@@ -27,6 +27,16 @@
       .deletingLastPathComponent()
       .deletingLastPathComponent()
       .deletingLastPathComponent()
+    #if os(Windows)
+      // Fix WSL paths if cross‐compiled.
+      var directory = root.path
+      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        root = URL(fileURLWithPath: directory)
+      }
+    #endif
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
