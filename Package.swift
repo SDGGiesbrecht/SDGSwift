@@ -358,9 +358,6 @@ let package = Package(
 
 func adjustForWindows() {
 
-  // #workaround(Swift 5.2.4, CMake cannot handle Unicode.)
-  package.targets.removeAll(where: { $0.name == "refresh‐core‐libraries" })
-
   // #workaround(Swift 5.2.4, Windows cannot build C.)
   let impossibleDependencies = [
     "cmark",
@@ -381,9 +378,6 @@ func adjustForWindows() {
 #endif
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  adjustForWindows()
-}
-if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
