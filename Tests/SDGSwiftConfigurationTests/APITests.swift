@@ -47,7 +47,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
         let wherever = specifications.appendingPathComponent("Configured")
-        #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
@@ -259,7 +259,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testLegacyConfiguration() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
-      #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Swift.)
+      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
         try withLegacyMode {
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
