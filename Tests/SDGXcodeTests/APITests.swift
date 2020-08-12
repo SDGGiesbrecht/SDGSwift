@@ -57,7 +57,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.2.4, No package manager on Windows yet.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.33.2, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
