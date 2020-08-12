@@ -358,8 +358,10 @@ let package = Package(
 
 func adjustForWindows() {
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.6.0, Does not support Windows.)
-    "SwiftPM"
+    // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
+    "SwiftPM",
+    // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
+    "SwiftSyntax"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
