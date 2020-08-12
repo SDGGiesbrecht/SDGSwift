@@ -357,13 +357,9 @@ let package = Package(
 )
 
 func adjustForWindows() {
-
-  // #workaround(Swift 5.2.4, Windows cannot build C.)
   let impossibleDependencies = [
-    "cmark",
-    "SwiftPM",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
-    "SwiftSyntax",
+    // #workaround(SwiftPM 0.6.0, Does not support Windows.)
+    "SwiftPM"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
