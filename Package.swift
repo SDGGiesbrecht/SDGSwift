@@ -362,7 +362,7 @@ func adjustForWindows() {
     "SwiftPM",
     // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
     "SwiftSyntax",
-    // #workaround(swift-tools-support-core 0.1.0, Does not support Windows yet.)
+    // #workaround(swift-tools-support-core 0.1.0, Does not support Windows yet.) @exempt(from: unicode)
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
