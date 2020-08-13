@@ -57,9 +57,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
       FileManager.default.delete(.cache)
       defer { FileManager.default.delete(.cache) }
-      #warning("Succeeded here.")
 
       print(type(of: SampleConfiguration()))
+      #warning("Succeeded here.")
+      print(type(of: SampleConfiguration().option))
       #warning("Here?.")
       return;
       XCTAssertEqual(SampleConfiguration().option, "Default")
