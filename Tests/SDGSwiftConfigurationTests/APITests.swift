@@ -57,6 +57,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
       FileManager.default.delete(.cache)
       defer { FileManager.default.delete(.cache) }
+      #warning("Debugging")
+      return
 
       XCTAssertEqual(SampleConfiguration().option, "Default")
       testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
@@ -104,9 +106,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         ).get()
         XCTAssertEqual(loadedConfiguration.option, "Configured")
         // @endExample
-
-      #warning("Debugging")
-      return
 
         print("", to: &log)
         print("Cached", to: &log)
