@@ -60,14 +60,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #warning("Succeeded here.")
 
       XCTAssertEqual(SampleConfiguration().option, "Default")
-      testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
       #warning("Here?")
+      return
+      testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+      #warning("Failed here.")
       return
 
       let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-      #warning("Failed here.")
-      return
       let wherever = specifications.appendingPathComponent("Configured")
       #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
         // @example(configurationLoading)
