@@ -57,15 +57,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
       FileManager.default.delete(.cache)
       defer { FileManager.default.delete(.cache) }
-      #warning("Debugging")
-      return
+      #warning("Succeeded here.")
 
       XCTAssertEqual(SampleConfiguration().option, "Default")
       testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+      #warning("Here?")
+      return
 
       let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-      #warning("Debugging")
+      #warning("Failed here.")
       return
       let wherever = specifications.appendingPathComponent("Configured")
       #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
