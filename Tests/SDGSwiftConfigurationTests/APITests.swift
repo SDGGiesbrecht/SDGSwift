@@ -58,11 +58,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       FileManager.default.delete(.cache)
       defer { FileManager.default.delete(.cache) }
 
-      #warning("Succeeded here.")
       XCTAssertEqual(SampleConfiguration().option, "Default")
+      #warning("Succeeded here.")
+      testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
       #warning("Here?")
       return;
-      testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
 
       let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
