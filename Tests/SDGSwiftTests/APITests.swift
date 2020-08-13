@@ -169,9 +169,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
     try withMock(named: "Tool") { mock in
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
-        _ = try mock.build(releaseConfiguration: true).get()
-        XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+      #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
+        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+          _ = try mock.build(releaseConfiguration: true).get()
+          XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+        #endif
       #endif
     }
   }
