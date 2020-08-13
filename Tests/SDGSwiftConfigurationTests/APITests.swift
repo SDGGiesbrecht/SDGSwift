@@ -61,7 +61,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertEqual(SampleConfiguration().option, "Default")
       #warning("Succeeded here.")
       testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
-      #warning("Here?")
+      #warning("Failed here.")
       return;
 
       let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
