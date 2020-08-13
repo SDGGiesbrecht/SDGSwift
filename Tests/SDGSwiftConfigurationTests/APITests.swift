@@ -103,6 +103,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertEqual(loadedConfiguration.option, "Configured")
         // @endExample
 
+      #warning("Debugging")
+      return
+
         print("", to: &log)
         print("Cached", to: &log)
         let cached = try SampleConfiguration.load(
