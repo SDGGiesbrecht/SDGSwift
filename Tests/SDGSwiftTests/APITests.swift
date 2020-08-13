@@ -151,31 +151,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
-      _ = try SwiftCompiler.runCustomSubcommand(
-        ["\u{2D}\u{2D}version"],
-        versionConstraints: Version(Int.min)...Version(Int.max)
-      ).get()
-    #endif
+    #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
+      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+        _ = try SwiftCompiler.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ).get()
+      #endif
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      try withDefaultMockRepository { mock in
-        _ = try mock.resolve().get()
-        _ = try mock.build(releaseConfiguration: true).get()
-        _ = try mock.test().get()
+      // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+      #if !(os(Windows) || os(Android))
+        try withDefaultMockRepository { mock in
+          _ = try mock.resolve().get()
+          _ = try mock.build(releaseConfiguration: true).get()
+          _ = try mock.test().get()
+        }
+      #endif
+      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+
+      try withMock(named: "Tool") { mock in
+        #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
+          #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+            _ = try mock.build(releaseConfiguration: true).get()
+            XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+          #endif
+        #endif
       }
     #endif
-    XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-
-    try withMock(named: "Tool") { mock in
-      #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
-        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
-          _ = try mock.build(releaseConfiguration: true).get()
-          XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
-        #endif
-      #endif
-    }
   }
 
   func testSwiftCompilerError() {
