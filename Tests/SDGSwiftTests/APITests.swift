@@ -56,10 +56,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
-      XCTAssertNotNil(
-        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-      )
+    #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
+      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+        XCTAssertNotNil(
+          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        )
+      #endif
     #endif
   }
 
@@ -79,13 +81,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     case .success:
       XCTFail()
     case .failure(let error):
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Git Execution",
-          overwriteSpecificationInsteadOfFailing: false
-        )
+      #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
+        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Git Execution",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
       #endif
     }
   }
@@ -101,13 +105,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Mock Package",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
-      XCTAssert(
-        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-          .versions()
-          .get() ∋ Version(0, 1, 0),
-        "Failed to detect available versions."
-      )
+    #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
+      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+        XCTAssert(
+          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+            .versions()
+            .get() ∋ Version(0, 1, 0),
+          "Failed to detect available versions."
+        )
+      #endif
     #endif
   }
 
@@ -121,12 +127,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    testCustomStringConvertibleConformance(
-      of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Mock",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if os(Windows)  // Paths differ.
+      _ = String(
+        describing: PackageRepository(
+          at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
+        )
+      )
+    #else
+      testCustomStringConvertibleConformance(
+        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
 
     // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
