@@ -44,7 +44,8 @@
     }
     return PackageRepository(at: root)
   }()
-  public let mocksDirectory = thisRepository.location.appendingPathComponent("Tests/Mock Projects")
+  public let mocksDirectory = thisRepository.location
+    .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
   private func withMock(
     named name: String? = nil,
@@ -55,7 +56,7 @@
   ) throws {
 
     let temporaryDirectory: URL
-    #if os(Android)
+    #if os(Windows) || os(Android)
       temporaryDirectory = FileManager.default.temporaryDirectory
     #else
       // Fixed path to prevent run‐away growth of Xcode’s derived data.

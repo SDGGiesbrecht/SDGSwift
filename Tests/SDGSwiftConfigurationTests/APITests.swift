@@ -35,18 +35,36 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  static let configureWindowsTestDirectory: Void = {
+    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
+    #if os(Windows)
+      var directory = testSpecificationDirectory().path
+      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        let url = URL(fileURLWithPath: directory)
+        setTestSpecificationDirectory(to: url)
+      }
+    #endif
+  }()
+  override func setUp() {
+    super.setUp()
+    APITests.configureWindowsTestDirectory
+  }
+
   func testConfiguration() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
-      try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
-        FileManager.default.delete(.cache)
-        defer { FileManager.default.delete(.cache) }
+    try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
+      FileManager.default.delete(.cache)
+      defer { FileManager.default.delete(.cache) }
 
-        XCTAssertEqual(SampleConfiguration().option, "Default")
-        testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
+      XCTAssertEqual(SampleConfiguration().option, "Default")
+      testCodableConformance(of: SampleConfiguration(), uniqueTestName: "Sample Configuration")
 
-        let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
+      let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
-        let wherever = specifications.appendingPathComponent("Configured")
+      let wherever = specifications.appendingPathComponent("Configured")
+      #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
         #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
@@ -221,8 +239,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             overwriteSpecificationInsteadOfFailing: false
           )
         #endif
-      }
-    #endif
+      #endif
+    }
   }
 
   func testConfigurationError() {
@@ -258,9 +276,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLegacyConfiguration() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
-        try withLegacyMode {
+    #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+      try withLegacyMode {
+        #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
             named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
@@ -273,8 +291,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             at: Version(0, 20, 0),
             minimumMacOSVersion: Version(10, 12)
           ).get()
-        }
-      #endif
+        #endif
+      }
     #endif
   }
 }
