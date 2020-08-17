@@ -15,6 +15,7 @@
 #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   import Foundation
 
+  import SDGExternalProcess
   import SDGVersioning
 
   import SDGSwift
@@ -26,13 +27,11 @@
     private static let configureGit: Void = {
       if ProcessInfo.isInGitHubAction {
         // @exempt(from: tests)
-        _ = try? Git.runCustomSubcommand(
-          ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        _ = try? Shell.default.run(
+          command: ["git", "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"]
         ).get()
-        _ = try? Git.runCustomSubcommand(
-          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        _ = try? Shell.default.run(
+          command: ["git", "config", "\u{2D}\u{2D}global", "user.name", "John Doe"]
         ).get()
       }
     }()
