@@ -31,6 +31,11 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testAtStart() {
+    #warning("Debugging...")
+    print(ExternalProcess(searching: [], commandName: "git", validate: { _ in true }))
+  }
+
   func testBuild() {
     testEquatableConformance(
       differingInstances: (Build.development, Build.version(Version(1, 0, 0)))
