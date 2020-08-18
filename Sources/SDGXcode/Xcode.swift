@@ -363,7 +363,9 @@ public enum Xcode: VersionedExternalProcess {
                 // The report is unlikely to be readable.
                 return false
               }
-              if ignoredDirectories.contains(where: { file.is(in: $0) }) {
+              if file.pathComponents.contains("DerivedData")
+                ∨ ignoredDirectories.contains(where: { file.is(in: $0) })
+              {
                 // @exempt(from: tests)
                 // Belongs to a dependency.
                 return false
