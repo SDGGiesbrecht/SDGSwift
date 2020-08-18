@@ -20,7 +20,6 @@ import SDGVersioning
 
 // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
-  import TSCBasic
   import Workspace
 #endif
 
