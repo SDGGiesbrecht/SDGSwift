@@ -85,6 +85,7 @@ public protocol VersionedExternalProcess {
           guard let output = try? Shell.default.run(command: command).get() else {
             return nil
           }
+          // @exempt(from: tests) Unreachable on CentOS.
           return URL(fileURLWithPath: output)
         }
 

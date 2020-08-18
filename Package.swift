@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 4, 0)
+      from: Version(5, 5, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -104,10 +104,6 @@ let package = Package(
       .exact(Version(0, 0, 50200))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
-    .package(
-      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
-      .exact(Version(0, 1, 0))
-    ),
   ],
   targets: [
 
@@ -146,10 +142,6 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(
-          name: "SwiftToolsSupport\u{2D}auto",
-          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
-        ),
       ]
     ),
 
@@ -362,8 +354,6 @@ func adjustForWindows() {
     "SwiftPM",
     // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
     "SwiftSyntax",
-    // #workaround(swift-tools-support-core 0.1.0, Does not support Windows yet.) @exempt(from: unicode)
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -386,7 +376,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #workaround(Swift 5.2.4, Cannot build for web.)
     "cmark",
     "SwiftPM",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
     "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -411,7 +400,6 @@ func adjustForAndroid() {
   let impossibleDependencies = [
     // #workaround(Swift 5.2.4, Cannot build for Android.)
     "SwiftPM",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
     "SwiftSyntax",
   ]
   for target in package.targets {
@@ -431,9 +419,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 
 // Windows Tests (Generated automatically by Workspace.)
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true",
-  ProcessInfo.processInfo.environment["GENERATING_TESTS"] == nil
-{
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   var tests: [Target] = []
   var other: [Target] = []
   for target in package.targets {
