@@ -288,7 +288,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
               let url = URL(fileURLWithPath: fileName)
 
               if ¬ignoredDirectories.contains(where: { url.is(in: $0) }),
-                ¬url.pathComponents.contains("DerivedData"),
                 url.pathExtension == "swift",
                 url.lastPathComponent ≠ "LinuxMain.swift"
               {
