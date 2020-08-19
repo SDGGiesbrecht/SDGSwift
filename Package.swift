@@ -348,7 +348,8 @@ let package = Package(
   ]
 )
 
-func adjustForWindows() {
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
     // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
     "SwiftPM",
@@ -362,13 +363,6 @@ func adjustForWindows() {
       })
     })
   }
-}
-#if os(Windows)
-  adjustForWindows()
-#endif
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  adjustForWindows()
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
@@ -396,7 +390,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   }
 }
 
-func adjustForAndroid() {
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   let impossibleDependencies = [
     // #workaround(Swift 5.2.4, Cannot build for Android.)
     "SwiftPM",
@@ -409,12 +403,6 @@ func adjustForAndroid() {
       })
     })
   }
-}
-#if os(Android)
-  adjustForAndroid()
-#endif
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
 }
 
 // Windows Tests (Generated automatically by Workspace.)
