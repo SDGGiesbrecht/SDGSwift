@@ -351,6 +351,11 @@ let package = Package(
 )
 
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
+  // #workaround(Swift 5.3, There is no way to set deployment targets on a per‐target basis.)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
     // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
