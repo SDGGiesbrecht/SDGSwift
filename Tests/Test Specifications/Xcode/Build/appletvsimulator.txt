@@ -2,19 +2,23 @@ $ xcodebuild build -sdk appletvsimulator -scheme Mock-Package
 ** BUILD SUCCEEDED **
 CodeSign [...]/Mock.framework
 CompileSwift [...]/Mock.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
-Ditto [...]/Mock-Swift.h
+CreateUniversalBinary [...]/Mock normal arm64\ x86_64
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
+Ld [...]/Mock normal arm64
 Ld [...]/Mock normal x86_64
+MergeSwiftModule normal arm64
 MergeSwiftModule normal x86_64
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
 Signing Identity:     "-"
+SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
