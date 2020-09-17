@@ -32,8 +32,8 @@
         "package": "llbuild",
         "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
-          "branch": "master",
-          "revision": "8d693118bae072148c6f2a904c2d095da66af1e2",
+          "branch": "swift-5.3-RELEASE",
+          "revision": "ef2e9ba657fd0a4e6e25fff05051b328bf27aeaf",
           "version": null
         }
       },
@@ -48,10 +48,10 @@
       },
       {
         "package": "SwiftPM",
-        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
-          "branch": "swift-5.3-RELEASE",
-          "revision": "91bdc78dbd4595e69a45654d1e80eb334e1977c4",
+          "branch": "swift‐5.3",
+          "revision": "a1351c45c7b8a702dee3863912254dbed2d7bbe3",
           "version": null
         }
       },
@@ -68,9 +68,9 @@
         "package": "swift-tools-support-core",
         "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
         "state": {
-          "branch": "master",
-          "revision": "0e32e38dca80ead4f1b2ce2eb0418af4debc0f8d",
-          "version": null
+          "branch": null,
+          "revision": "f39fc6c12266697b1585589090f0004903974685",
+          "version": "0.1.10"
         }
       }
     ]
