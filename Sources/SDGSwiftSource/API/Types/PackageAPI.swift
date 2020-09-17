@@ -86,7 +86,7 @@
 
       let declaredDependencies = package.reachableTargets.filter({ module in
         switch module.type {
-        case .executable, .systemModule, .test:
+        case .executable, .systemModule, .test, .binary:
           return false
         case .library:
           return ¬root.targets.contains(module.underlyingTarget)
