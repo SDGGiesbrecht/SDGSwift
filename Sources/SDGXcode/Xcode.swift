@@ -103,6 +103,7 @@ public enum Xcode: VersionedExternalProcess {
   ]
 
   private static let otherIgnored: [String] = [
+    "[Arbitration]",
     "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
     "Command line invocation:",
     "Beginning test session",
