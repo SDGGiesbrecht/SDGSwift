@@ -72,7 +72,8 @@
           )
         ]),
         rightParen: SyntaxFactory.makeToken(.rightParen),
-        trailingClosure: nil
+        trailingClosure: nil,
+        additionalTrailingClosures: nil
       )
     }
 

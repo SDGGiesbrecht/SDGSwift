@@ -137,7 +137,7 @@
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote,
         .dollarIdentifier, .contextualKeyword, .unknown, .pound, .backtick, .poundAssertKeyword,
         .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis, .singleQuote,
-        .rawStringDelimiter:
+        .rawStringDelimiter, .poundFileIDKeyword:
         return .invariable
       }
     }
@@ -223,7 +223,7 @@
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,
-        .contextualKeyword, .poundAssertKeyword, .yield:
+        .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword:
         return "keyword"
 
       case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound,
