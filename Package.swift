@@ -98,8 +98,7 @@ let package = Package(
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .branch("swift-5.3-RELEASE") // #warning(Temporary branch!)
-      //.exact(Version(0, 50200, 0))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       name: "cmark",
