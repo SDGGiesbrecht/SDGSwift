@@ -234,7 +234,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift test
+        swift test --enable-test-discovery
     - name: Grant permission to cache
       shell: bash
       run: |
@@ -275,7 +275,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift test
+        swift test --enable-test-discovery
     - name: Grant permission to cache
       shell: bash
       run: |
@@ -404,7 +404,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift test
+        swift test --enable-test-discovery
     - name: Grant permission to cache
       shell: bash
       run: |
