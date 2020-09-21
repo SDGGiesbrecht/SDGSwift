@@ -105,7 +105,11 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50200))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
+    .package(
+      url: "https://github.com/SDGGiesbrecht/SDGWeb",
+      .branch("swift‐5.3") // #warning(Temporary branch!)
+      //from: Version(5, 3, 1)
+    ),
   ],
   targets: [
 
