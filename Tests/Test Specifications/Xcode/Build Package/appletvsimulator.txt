@@ -5,11 +5,13 @@ CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
-Ditto [...]/Mock-Swift.h
+CreateUniversalBinary [...]/Mock.o normal arm64\ x86_64
+CreateUniversalBinary [...]/MockTests normal arm64\ x86_64
 Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
@@ -17,14 +19,18 @@ Ditto [...]/Mock.swiftsourceinfo
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
+Ld [...]/Mock.o normal arm64
 Ld [...]/Mock.o normal x86_64
+Ld [...]/MockTests normal arm64
 Ld [...]/MockTests normal x86_64
+MergeSwiftModule normal arm64
 MergeSwiftModule normal x86_64
 MkDir [...]/MockTests.xctest
 ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
 Signing Identity:     "-"
+SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.modulemap

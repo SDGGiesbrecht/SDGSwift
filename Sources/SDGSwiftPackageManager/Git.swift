@@ -72,7 +72,7 @@
         ],
         in: repository.location,
         versionConstraints: versions
-      ).map { _ in
+      ).flatMap { _ in
 
         return runCustomSubcommand(
           [
@@ -82,7 +82,7 @@
           ],
           in: repository.location,
           versionConstraints: versions
-        )
+        ).map { _ in () }
       }
     }
 

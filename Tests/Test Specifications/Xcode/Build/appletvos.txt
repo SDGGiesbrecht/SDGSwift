@@ -8,7 +8,7 @@ Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
-Ld [...]/Mock normal arm64
+Ld [...]/Mock normal
 MergeSwiftModule normal arm64
 MkDir [...]/Headers
 MkDir [...]/Mock.framework

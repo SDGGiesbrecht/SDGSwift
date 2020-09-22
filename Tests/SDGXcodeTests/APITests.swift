@@ -273,7 +273,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             })
             filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
             filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
-            // Incosistent identifiers:
+            // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("SimDevice") })
             filtered = filtered.filter({ ¬$0.contains("} (.") })
             filtered = filtered.filter({ ¬$0.contains("application\u{2D}identifier") })

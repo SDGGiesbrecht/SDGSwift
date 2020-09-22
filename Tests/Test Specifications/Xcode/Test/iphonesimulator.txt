@@ -18,8 +18,8 @@ Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
 Entitlements:
-Ld [...]/Mock normal x_
-Ld [...]/MockTests normal x_
+Ld [...]/Mock normal
+Ld [...]/MockTests normal
 MergeSwiftModule normal x_
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
@@ -37,7 +37,7 @@ Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
-Testing started on 'iPhone '
+Testing started
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 User defaults from command line:

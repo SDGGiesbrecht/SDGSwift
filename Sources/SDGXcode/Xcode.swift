@@ -31,7 +31,7 @@ import SDGSwift
 /// Xcode.
 public enum Xcode: VersionedExternalProcess {
 
-  private static let currentMajor = Version(11)
+  private static let currentMajor = Version(12)
 
   // MARK: - Locating
 
@@ -103,6 +103,7 @@ public enum Xcode: VersionedExternalProcess {
   ]
 
   private static let otherIgnored: [String] = [
+    "[Arbitration]",
     "com.apple.dt.XCTest/IDETestRunSession\u{2D}",
     "Command line invocation:",
     "Beginning test session",

@@ -15,8 +15,8 @@ Ditto [...]/Mock.swiftsourceinfo
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
-Ld [...]/Mock.o normal x_
-Ld [...]/MockTests normal x_
+Ld [...]/Mock.o normal
+Ld [...]/MockTests normal
 MergeSwiftModule normal x_
 MkDir [...]/MockTests.xctest
 ProcessInfoPlistFile [...]/empty.plist
@@ -32,7 +32,7 @@ Test Suite 'MockTests' started at -- ::.
 Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
-Testing started on 'iPhone '
+Testing started
 Touch [...]/MockTests.xctest
 User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json

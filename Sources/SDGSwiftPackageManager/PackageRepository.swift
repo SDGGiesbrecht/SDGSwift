@@ -109,6 +109,8 @@
           return try PackageBuilder.loadPackage(
             packagePath: AbsolutePath(location.path),
             swiftCompiler: AbsolutePath(compiler.path),
+            // #workaround(swift-package-manager 0.7.0, Will eventually have a default value.)
+            xcTestMinimumDeploymentTargets: [:],
             diagnostics: diagnostics
           )
         }

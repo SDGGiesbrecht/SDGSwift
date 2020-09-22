@@ -18,8 +18,8 @@ Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
 GenerateDSYMFile [...]/MockTests
 Ignoring --strip-bitcode because --sign was not passed
-Ld [...]/Mock.o normal arm64
-Ld [...]/MockTests normal arm64
+Ld [...]/Mock.o normal
+Ld [...]/MockTests normal
 MergeSwiftModule normal arm64
 MkDir [...]/MockTests.xctest
 ProcessInfoPlistFile [...]/empty.plist

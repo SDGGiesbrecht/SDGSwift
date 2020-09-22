@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 
 /*
  Package.swift
@@ -85,25 +85,28 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 5, 0)
+      from: Version(6, 0, 0)
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 6, 0))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50200, 0))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50200))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
+    .package(
+      url: "https://github.com/SDGGiesbrecht/SDGWeb",
+      from: Version(5, 4, 1)
+    ),
   ],
   targets: [
 
@@ -349,6 +352,11 @@ let package = Package(
 )
 
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
+  // #workaround(Swift 5.3, There is no way to set deployment targets on a per‐target basis.)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
     // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)

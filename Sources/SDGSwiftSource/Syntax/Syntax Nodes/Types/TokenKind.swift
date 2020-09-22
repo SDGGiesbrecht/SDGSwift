@@ -41,7 +41,7 @@
         .rightAngle, .prefixAmpersand, .postfixQuestionMark, .infixQuestionMark, .exclamationMark,
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote, .pound,
         .backtick, .poundAssertKeyword, .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis,
-        .singleQuote, .rawStringDelimiter:
+        .singleQuote, .rawStringDelimiter, .poundFileIDKeyword:
         return self
       case .stringSegment(let text):
         return .stringSegment(text.decomposedStringWithCanonicalMapping)
@@ -94,7 +94,7 @@
         .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
         .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword,
         .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier,
-        .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
+        .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield, .poundFileIDKeyword:
         return false
       case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
         .prefixOperator:
