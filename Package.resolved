@@ -5,18 +5,18 @@
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": "swift‐5.3",
-          "revision": "d3e53f857743b540a87ab3238a6e502857caa0de",
-          "version": null
+          "branch": null,
+          "revision": "e91e93e92b3ea7e99b6d24fcf10f2ed8eb69aef4",
+          "version": "6.0.0"
         }
       },
       {
         "package": "SDGWeb",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
-          "branch": "swift‐5.3",
-          "revision": "6ed758e7bbb43a5e8078d7789ccfb4bf86e5fa5a",
-          "version": null
+          "branch": null,
+          "revision": "c6baf912a20ff62993761a8cb26eea4e6308994f",
+          "version": "5.4.1"
         }
       },
       {
@@ -32,9 +32,9 @@
         "package": "llbuild",
         "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
-          "branch": "swift-5.3-RELEASE",
-          "revision": "ef2e9ba657fd0a4e6e25fff05051b328bf27aeaf",
-          "version": null
+          "branch": null,
+          "revision": "fb7ebf0b06c0d7c45ca8e18b3371424503a38b5c",
+          "version": "0.3.0"
         }
       },
       {
@@ -51,7 +51,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": "swift‐5.3",
-          "revision": "a1351c45c7b8a702dee3863912254dbed2d7bbe3",
+          "revision": "b31923ce9a30e4039dd28f3472d5fca514125181",
           "version": null
         }
       },

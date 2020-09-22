@@ -85,8 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      .branch("swift‐5.3") // #warning(Temporary branch!)
-      // from: Version(5, 5, 0)
+      from: Version(6, 0, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -107,8 +106,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      .branch("swift‐5.3") // #warning(Temporary branch!)
-      //from: Version(5, 3, 1)
+      from: Version(5, 4, 1)
     ),
   ],
   targets: [
