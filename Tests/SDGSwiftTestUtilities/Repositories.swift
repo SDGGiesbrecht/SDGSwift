@@ -23,14 +23,14 @@
   import SDGSwiftPackageManager
 
   public let thisRepository: PackageRepository = {
-    var root = URL(fileURLWithPath: #file)
+    var root = URL(fileURLWithPath: #filePath)
       .deletingLastPathComponent()
       .deletingLastPathComponent()
       .deletingLastPathComponent()
     #if os(Windows)
       // Fix WSL paths if cross‐compiled.
       var directory = root.path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+      if directory.hasPrefix("/mnt/") {
         directory.removeFirst(5)
         let driveLetter = directory.removeFirst()
         directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
