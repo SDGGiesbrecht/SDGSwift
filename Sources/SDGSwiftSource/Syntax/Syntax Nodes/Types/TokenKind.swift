@@ -94,7 +94,8 @@
         .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
         .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword,
         .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier,
-        .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield, .poundFileIDKeyword:
+        .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield,
+        .poundFileIDKeyword:
         return false
       case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
         .prefixOperator:
