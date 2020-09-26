@@ -240,6 +240,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         #endif
       #endif
+
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        _ = try? SampleConfiguration.load(
+          configuration: SampleConfiguration.self,
+          named: UserFacing<StrictString, APILocalization>({ _ in "..." }),
+          from: url,
+          linkingAgainst: "...",
+          in: "...",
+          from: url,
+          at: Version(1),
+          minimumMacOSVersion: Version(1)
+        ).get()
+      }
     }
   }
 

@@ -74,6 +74,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testSwiftCompiler() {
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      let package = PackageRepository(at: url)
+      _ = try? package.generateXcodeProject().get()
+    }
+  }
+
   func testXcode() throws {
     let noProject = PackageRepository(
       at: thisRepository.location.appendingPathComponent("Sources")
@@ -294,6 +302,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
+
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      let package = PackageRepository(at: url)
+      _ = try? package.build(for: .iOS(simulator: false)).get()
+      _ = try? package.test(on: .iOS(simulator: true)).get()
+      _ = try? package.codeCoverageReport(on: .iOS(simulator: true)).get()
+    }
   }
 
   func testXcodeCoverage() throws {

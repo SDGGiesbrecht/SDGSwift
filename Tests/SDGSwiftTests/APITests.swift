@@ -64,7 +64,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     #endif
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      let url = URL(fileURLWithPath: "/no/such/URL")
+      let url = directory.appendingPathComponent("no such URL")
       _ = try? Git.clone(Package(url: url), to: url).get()
     }
   }
@@ -152,6 +152,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try mock.tag(version: Version(10, 0, 0)).get()
       }
     #endif
+
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      _ = try? PackageRepository.clone(Package(url: url), to: url).get()
+    }
   }
 
   func testSwiftCompiler() throws {
@@ -182,6 +187,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       }
     #endif
+
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      let package = PackageRepository(at: url)
+      _ = try? package.build().get()
+      _ = try? package.run("no such target").get()
+      _ = try? package.test().get()
+      _ = try? package.resolve().get()
+      _ = try? package.codeCoverageReport().get()
+    }
   }
 
   func testSwiftCompilerError() {
