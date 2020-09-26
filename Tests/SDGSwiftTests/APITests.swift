@@ -191,11 +191,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       let url = directory.appendingPathComponent("no such URL")
       let package = PackageRepository(at: url)
-      _ = try? package.build().get()
-      _ = try? package.run("no such target").get()
-      _ = try? package.test().get()
-      _ = try? package.resolve().get()
-      _ = try? package.codeCoverageReport().get()
+      _ = try? SwiftCompiler.build(package).get()
+      _ = try? SwiftCompiler.run("no such target", from: package).get()
+      _ = try? SwiftCompiler.test(package).get()
+      _ = try? SwiftCompiler.resolve(package).get()
+      _ = try? SwiftCompiler.codeCoverageReport(for: package).get()
     }
   }
 

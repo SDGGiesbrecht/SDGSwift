@@ -251,7 +251,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           in: "...",
           from: url,
           at: Version(1),
-          minimumMacOSVersion: Version(1)
+          minimumMacOSVersion: Version(1),
+          context: SampleContext(information: "...")
         ).get()
       }
     }

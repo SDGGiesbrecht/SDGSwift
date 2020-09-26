@@ -78,7 +78,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       let url = directory.appendingPathComponent("no such URL")
       let package = PackageRepository(at: url)
-      _ = try? package.generateXcodeProject().get()
+      _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
     }
   }
 
@@ -306,9 +306,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       let url = directory.appendingPathComponent("no such URL")
       let package = PackageRepository(at: url)
-      _ = try? package.build(for: .iOS(simulator: false)).get()
-      _ = try? package.test(on: .iOS(simulator: true)).get()
-      _ = try? package.codeCoverageReport(on: .iOS(simulator: true)).get()
+      _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
+      _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
+      _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
     }
   }
 
