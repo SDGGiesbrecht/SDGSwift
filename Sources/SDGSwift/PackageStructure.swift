@@ -64,7 +64,7 @@
     public func build(
       _ build: Build,
       to destination: URL,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<Void, BuildError> {
 
       return FileManager.default
@@ -187,7 +187,7 @@
       of executableNames: Set<StrictString>,
       with arguments: [String],
       cacheDirectory: URL?,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, ExecutionError> {
 
       return FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in

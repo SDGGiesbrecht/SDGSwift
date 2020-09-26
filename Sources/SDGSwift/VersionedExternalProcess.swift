@@ -145,7 +145,7 @@ public protocol VersionedExternalProcess {
       in workingDirectory: URL? = nil,
       with environment: [String: String]? = nil,
       versionConstraints: Constraints,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
     where Constraints: RangeFamily, Constraints.Bound == Version {
 

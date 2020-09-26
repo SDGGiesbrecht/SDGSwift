@@ -44,7 +44,7 @@
       to location: URL,
       at build: Build = .development,
       shallow: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<PackageRepository, VersionedExternalProcessExecutionError<Git>> {
 
       let repository = PackageRepository(at: location)
@@ -87,7 +87,7 @@
     ///     - progressReport: A line of output.
     @discardableResult public func build(
       releaseConfiguration: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.build(
         self,
@@ -110,7 +110,7 @@
       arguments: [String] = [],
       environment: [String: String]? = nil,
       releaseConfiguration: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       SwiftCompiler.run(
         target,
@@ -128,7 +128,7 @@
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     @discardableResult public func test(
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.test(self, reportProgress: reportProgress)
     }
@@ -150,7 +150,7 @@
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(
       ignoreCoveredRegions: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
       return SwiftCompiler.codeCoverageReport(
         for: self,
@@ -165,7 +165,7 @@
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     @discardableResult public func resolve(
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }

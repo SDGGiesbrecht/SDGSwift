@@ -48,7 +48,7 @@
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func generateXcodeProject(
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
     }
@@ -61,7 +61,7 @@
     ///     - progressReport: A line of output.
     @discardableResult public func build(
       for sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
@@ -74,7 +74,7 @@
     ///     - progressReport: A line of output.
     @discardableResult public func test(
       on sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
@@ -93,7 +93,7 @@
       public func codeCoverageReport(
         on sdk: Xcode.SDK,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        reportProgress: (_ progressReport: String) -> Void = { _ in }
       ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
         return Xcode.codeCoverageReport(
           for: self,

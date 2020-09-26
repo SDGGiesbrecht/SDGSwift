@@ -48,7 +48,7 @@
       to location: URL,
       at build: Build = .development,
       shallow: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
 
       var earliest = Version(1, 0, 0)

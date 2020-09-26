@@ -122,7 +122,7 @@ extension Configuration {
       from packageURL: URL,
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization {
 
       let nullContext: NullContext? = nil
@@ -169,7 +169,7 @@ extension Configuration {
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
       context: E?,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
 
       let have5_2 =
