@@ -63,6 +63,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       #endif
     #endif
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = URL(fileURLWithPath: "/no/such/URL")
+      _ = try? Git.clone(Package(url: url), to: url).get()
+    }
   }
 
   func testGitError() {
