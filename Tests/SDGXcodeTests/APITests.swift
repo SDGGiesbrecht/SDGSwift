@@ -305,7 +305,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
-      try withDefaultMockRepository() { package in
+      try withDefaultMockRepository { package in
         _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
         _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
         _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()

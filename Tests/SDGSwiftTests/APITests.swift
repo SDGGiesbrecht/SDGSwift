@@ -188,7 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       }
     #endif
 
-    try withDefaultMockRepository() { package in
+    try withDefaultMockRepository { package in
       _ = try? SwiftCompiler.build(package).get()
       _ = try? SwiftCompiler.run("no such target", from: package).get()
       _ = try SwiftCompiler.test(package).get()
