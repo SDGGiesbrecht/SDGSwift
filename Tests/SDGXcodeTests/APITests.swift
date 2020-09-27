@@ -303,14 +303,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-    try withDefaultMockRepository() { package in
-      _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
-      _ = try Xcode.test(package, on: .iOS(simulator: true)).get()
-      // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(Android))
-        _ = try Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
-      #endif
-    }
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      try withDefaultMockRepository() { package in
+        _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
+        _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
+        _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
+      }
+    #endif
   }
 
   func testXcodeCoverage() throws {
