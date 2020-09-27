@@ -61,7 +61,7 @@
     ///     - progressReport: A line of output.
     @discardableResult public func build(
       for sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.build(self, for: sdk, reportProgress: reportProgress)
     }
@@ -74,7 +74,7 @@
     ///     - progressReport: A line of output.
     @discardableResult public func test(
       on sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
@@ -93,7 +93,7 @@
       public func codeCoverageReport(
         on sdk: Xcode.SDK,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = { _ in }
+        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
         return Xcode.codeCoverageReport(
           for: self,
