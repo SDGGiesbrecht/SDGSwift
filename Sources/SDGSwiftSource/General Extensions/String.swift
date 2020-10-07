@@ -21,14 +21,13 @@ import SDGLogic
 extension String {
 
   internal func warnUnidentified(
-    file: StaticString = #file,
+    file: StaticString = #fileID,
     function: StaticString = #function
   ) {  // @exempt(from: tests)
     #if DEBUG
       if first ≠ "_" {
         #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
-          let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
-          print("Unidentified token: \(self) (\(fileName).\(function))")
+          print("Unidentified token: \(self) (\(file), \(function))")
         #endif
       }
     #endif

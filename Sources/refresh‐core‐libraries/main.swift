@@ -44,7 +44,7 @@
       "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public"),
     ]
 
-    let resources = URL(fileURLWithPath: #file).deletingLastPathComponent()
+    let resources = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(
         "Resources/SDGSwiftSource/Core Libraries"
       )
@@ -53,7 +53,7 @@
       let gitHubRepository = URL(string: "https://github.com/apple/" + module.url)!
       try FileManager.default
         .withTemporaryDirectory(
-          appropriateFor: URL(fileURLWithPath: #file)
+          appropriateFor: URL(fileURLWithPath: #filePath)
         ) { temporaryDirectory in
           let cloneURL = temporaryDirectory.appendingPathComponent(module.url)
           _ = try Shell.default.run(

@@ -39,7 +39,7 @@
       parsedFrom url: URL,
       againstSpecification name: String,
       overwriteSpecificationInsteadOfFailing: Bool,
-      file: StaticString = #file,
+      file: StaticString = #filePath,
       line: UInt = #line
     ) throws -> String {
       let result = try highlight(syntax)

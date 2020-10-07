@@ -16,7 +16,7 @@
   import Foundation
 
   public func _exportConfiguration(
-    file: StaticString = #file,
+    file: StaticString = #fileID,
     line: UInt = #line
   ) {  // @exempt(from: tests)
     // Testing occurs beyond the reach of coverage tracking.

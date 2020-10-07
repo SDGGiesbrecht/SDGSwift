@@ -290,7 +290,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
       let syntax = try SyntaxParser.parse(
-        URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent()
+        URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
           .deletingLastPathComponent().appendingPathComponent(
             "Resources/SDGSwiftSource/Core Libraries/Swift.txt"
           )
