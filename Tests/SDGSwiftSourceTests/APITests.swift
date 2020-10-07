@@ -466,6 +466,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testPackageAPI() throws {
+    // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))
+      try withDefaultMockRepository { package in
+        _ = try? PackageAPI(package: package.packageGraph().get())
+      }
+    #endif
+  }
+
   func testPackageDocumentation() throws {
     // #workaround(Swift 5.2.4, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))

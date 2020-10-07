@@ -204,7 +204,7 @@ public enum Xcode: VersionedExternalProcess {
     @discardableResult public static func build(
       _ package: PackageRepository,
       for sdk: SDK,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
 
       switch scheme(for: package) {
@@ -274,7 +274,7 @@ public enum Xcode: VersionedExternalProcess {
     @discardableResult public static func test(
       _ package: PackageRepository,
       on sdk: SDK,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
 
       var earliestVersion = Version(8, 0, 0)
@@ -337,7 +337,7 @@ public enum Xcode: VersionedExternalProcess {
         for package: PackageRepository,
         on sdk: SDK,
         ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
         let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
@@ -583,7 +583,7 @@ public enum Xcode: VersionedExternalProcess {
       in workingDirectory: URL? = nil,
       with environment: [String: String]? = nil,
       versionConstraints: Constraints,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
     where Constraints: RangeFamily, Constraints.Bound == Version {
 

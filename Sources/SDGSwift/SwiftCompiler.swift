@@ -39,8 +39,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   // MARK: - Usage
 
-  public static func _ignoreProgress(_ output: String) {}
-
   #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     /// Builds the package.
     ///
@@ -52,7 +50,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     @discardableResult public static func build(
       _ package: PackageRepository,
       releaseConfiguration: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(3, 0, 0)
       var arguments = ["build"]
@@ -103,7 +101,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     public static func productsDirectory(
       for package: PackageRepository,
       releaseConfiguration: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(4, 0, 0)
       var arguments = [
@@ -137,7 +135,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
       arguments: [String] = [],
       environment: [String: String]? = nil,
       releaseConfiguration: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(4, 0, 0)
       var subcommandArguments = ["run"]
@@ -163,7 +161,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
 
       var environment = ProcessInfo.processInfo.environment
@@ -213,7 +211,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - progressReport: A line of output.
     @discardableResult public static func resolve(
       _ package: PackageRepository,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(4, 0, 0)
       return runCustomSubcommand(
@@ -249,7 +247,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     public static func codeCoverageReport(
       for package: PackageRepository,
       ignoreCoveredRegions: Bool = false,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
       let coverageDataFile: Foundation.URL

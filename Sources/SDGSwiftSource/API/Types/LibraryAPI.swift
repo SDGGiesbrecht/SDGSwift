@@ -57,7 +57,7 @@
     internal convenience init<Syntax>(
       product: Product,
       manifest: Syntax,
-      reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (String) -> Void
     ) throws where Syntax: SyntaxProtocol {
       let search =
         ".library(".scalars

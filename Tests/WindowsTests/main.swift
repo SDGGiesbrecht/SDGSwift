@@ -76,6 +76,7 @@ extension SDGSwiftSourceTests.APITests {
       ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
       ("testLineDocumentationCommentSyntax", testLineDocumentationCommentSyntax),
       ("testLocations", testLocations),
+      ("testPackageAPI", testPackageAPI),
       ("testPackageDocumentation", testPackageDocumentation),
       ("testParsing", testParsing),
       ("testTokenSyntax", testTokenSyntax),
@@ -140,6 +141,7 @@ extension SDGXcodeTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
+      ("testSwiftCompiler", testSwiftCompiler),
       ("testXcode", testXcode),
       ("testXcodeCoverage", testXcodeCoverage),
       ("testXcodeError", testXcodeError),

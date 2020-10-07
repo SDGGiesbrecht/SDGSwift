@@ -30,7 +30,7 @@ extension SwiftCompiler {
     ///     - progressReport: A line of compiler output.
     @discardableResult public static func generateXcodeProject(
       for package: PackageRepository,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(3, 0, 0)
       return runCustomSubcommand(

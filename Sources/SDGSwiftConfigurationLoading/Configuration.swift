@@ -122,7 +122,7 @@ extension Configuration {
       from packageURL: URL,
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization {
 
       let nullContext: NullContext? = nil
@@ -169,7 +169,7 @@ extension Configuration {
       at releaseVersion: Version,
       minimumMacOSVersion: Version,
       context: E?,
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<C, Configuration.Error> where C: Configuration, L: InputLocalization, E: Context {
 
       let have5_2 =
@@ -292,7 +292,7 @@ extension Configuration {
           ? ".product(name: \u{22}\(product)\u{22}, package: \u{22}\(packageName)\u{22})"
           : "\u{22}\(product)\u{22}"
 
-        var manifest = String(data: Resources.package, encoding: .utf8)!
+        var manifest = Resources.packageSwift
         manifest.replaceMatches(for: "[*tools version*]", with: have5_2 ? "5.2" : "5.0")
         manifest.replaceMatches(for: "[*macOS*]", with: macOS)
         manifest.replaceMatches(for: "[*package name*]", with: packageNameDeclaration)

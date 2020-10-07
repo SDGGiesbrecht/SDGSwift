@@ -74,6 +74,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testSwiftCompiler() {
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      let package = PackageRepository(at: url)
+      _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
+    }
+  }
+
   func testXcode() throws {
     let noProject = PackageRepository(
       at: thisRepository.location.appendingPathComponent("Sources")
@@ -294,6 +302,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
+
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      try withDefaultMockRepository { package in
+        _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
+        _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
+        _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
+      }
+    #endif
   }
 
   func testXcodeCoverage() throws {

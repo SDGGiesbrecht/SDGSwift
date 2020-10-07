@@ -63,6 +63,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       #endif
     #endif
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      _ = try? Git.clone(Package(url: url), to: url).get()
+    }
   }
 
   func testGitError() {
@@ -148,6 +152,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try mock.tag(version: Version(10, 0, 0)).get()
       }
     #endif
+
+    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      let url = directory.appendingPathComponent("no such URL")
+      _ = try? PackageRepository.clone(Package(url: url), to: url).get()
+    }
   }
 
   func testSwiftCompiler() throws {
@@ -176,6 +185,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
           #endif
         #endif
+      }
+    #endif
+
+    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))
+      try withDefaultMockRepository { package in
+        _ = try? SwiftCompiler.build(package).get()
+        _ = try? SwiftCompiler.run("no such target", from: package).get()
+        _ = try SwiftCompiler.test(package).get()
+        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+        _ = try? SwiftCompiler.resolve(package).get()
       }
     #endif
   }

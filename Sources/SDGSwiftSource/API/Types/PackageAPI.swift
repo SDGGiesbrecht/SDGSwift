@@ -64,7 +64,7 @@
     public convenience init(
       package: PackageGraph,
       ignoredDependencies: Set<String> = [],
-      reportProgress: (_ progressReport: String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) throws {
 
       let root = package.rootPackages.first!.underlyingPackage
@@ -127,9 +127,9 @@
     ///
     /// - Parameters:
     ///     - package: The package, already loaded by the `SwiftPM` package.
-    public static func documentation(for package: PackageModel.Package) throws
-      -> [SymbolDocumentation]
-    {
+    public static func documentation(
+      for package: PackageModel.Package
+    ) throws -> [SymbolDocumentation] {
       let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
       let manifest = try SyntaxParser.parseAndRetry(manifestURL)
       return documentation(for: package, from: manifest)
@@ -137,7 +137,7 @@
 
     internal convenience init(
       package: PackageModel.Package,
-      reportProgress: (String) -> Void = SwiftCompiler._ignoreProgress
+      reportProgress: (String) -> Void
     ) throws {
 
       let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
