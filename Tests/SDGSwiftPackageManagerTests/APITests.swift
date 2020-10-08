@@ -91,7 +91,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
 
-      let invalidPackage = URL(fileURLWithPath: #file)
+      let invalidPackage = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent()
         .deletingLastPathComponent()
         .appendingPathComponent("Mock Projects")

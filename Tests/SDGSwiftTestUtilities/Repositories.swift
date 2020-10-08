@@ -50,7 +50,7 @@
   private func withMock(
     named name: String? = nil,
     dependentOn dependencies: [String] = [],
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line,
     test: (URL) throws -> Void
   ) throws {
@@ -103,7 +103,7 @@
   public func withMock(
     named name: String,
     dependentOn dependencies: [String] = [],
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line,
     test: (PackageRepository) throws -> Void
   ) throws {
@@ -115,7 +115,7 @@
   // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     public func withDefaultMockRepository(
-      file: StaticString = #file,
+      file: StaticString = #filePath,
       line: UInt = #line,
       test: (PackageRepository) throws -> Void
     ) throws {
@@ -131,7 +131,7 @@
   #endif
 
   public func withMockDynamicLinkedExecutable(
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line,
     test: (PackageRepository) throws -> Void
   ) throws {

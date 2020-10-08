@@ -493,7 +493,7 @@
     // MARK: - Debugging
 
     internal func warnUnidentified(
-      file: StaticString = #file,
+      file: StaticString = #fileID,
       function: StaticString = #function
     ) {  // @exempt(from: tests)
       #if DEBUG
@@ -503,8 +503,7 @@
           is UnknownTypeSyntax:
           break
         default:  // @exempt(from: tests)
-          let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
-          print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
+          print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
         }
       #endif
     }

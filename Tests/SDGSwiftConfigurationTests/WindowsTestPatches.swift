@@ -20,7 +20,7 @@
   func testCodableConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line
   ) where T: Codable, T: Equatable {}
 #endif
