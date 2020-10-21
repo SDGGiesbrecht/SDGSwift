@@ -393,7 +393,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  let impossibleDependencies = [
+  let impossibleDependencies: [String] = [
     // #workaround(Swift 5.2.4, Cannot build for web.)
     //"cmark",
     //"SwiftPM",
