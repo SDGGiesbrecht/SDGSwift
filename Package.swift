@@ -144,7 +144,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(
+          name: "SwiftPM\u{2D}auto",
+          package: "SwiftPM",
+          // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+        ),
       ]
     ),
 
@@ -165,7 +170,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(
+          name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+        ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
@@ -237,7 +247,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(
+          name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+        ),
       ]
     ),
 
@@ -300,7 +315,12 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(
+          name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+        ),
       ]
     ),
     .testTarget(
@@ -358,10 +378,9 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
     "SwiftPM",
-    // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
     "SwiftSyntax",
   ]
   for target in package.targets {
