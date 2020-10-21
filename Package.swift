@@ -144,12 +144,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftPM\u{2D}auto",
-          package: "SwiftPM",
-          // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
-        ),
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
       ]
     ),
 
@@ -360,6 +355,22 @@ import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
   // #workaround(Swift 5.3, There is no way to set deployment targets on a per‐target basis.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  let impossibleDependencies = [
+    // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
+    "SwiftPM",
+    // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
+    "SwiftSyntax",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
