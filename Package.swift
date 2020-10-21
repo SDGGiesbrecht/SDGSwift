@@ -395,9 +395,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies = [
     // #workaround(Swift 5.2.4, Cannot build for web.)
-    "cmark",
-    "SwiftPM",
-    "SwiftSyntax",
+    //"cmark",
+    //"SwiftPM",
+    //"SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
