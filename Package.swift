@@ -144,7 +144,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(
+          name: "SwiftPM\u{2D}auto",
+          package: "SwiftPM",
+          // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+        ),
       ]
     ),
 
@@ -359,10 +364,10 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
+    // #workaround(Swift 5.3, Conditional dependencies fail to skip for Windows.)
     "SwiftPM",
     // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
-    "SwiftSyntax",
+    //"SwiftSyntax",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
