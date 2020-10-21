@@ -359,8 +359,6 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.6.0, Does not support Windows yet.)
-    "SwiftPM",
     // #workaround(SwiftSyntax 0.50200.0, Does not support Windows yet.)
     "SwiftSyntax",
   ]
