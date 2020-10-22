@@ -421,10 +421,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  let impossibleDependencies = [
-    // #workaround(Swift 5.2.4, Cannot build for Android.)
-    "SwiftPM",
-    "SwiftSyntax",
+  let impossibleDependencies: [String] = [
+    // #warning(Swift 5.2.4, Cannot build for Android.)
+    //"SwiftPM",
+    //"SwiftSyntax",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
