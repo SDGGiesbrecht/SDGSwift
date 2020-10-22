@@ -148,7 +148,8 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          // #workaround(SwiftPM 0.50300.0, Does not support Andriod yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
       ]
     ),
@@ -175,7 +176,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
@@ -253,7 +255,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
@@ -322,7 +325,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
@@ -421,8 +425,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  let impossibleDependencies = [
-    // #workaround(Swift 5.2.4, Cannot build for Android.)
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
+  let impossibleDependencies: [String] = [
     "SwiftPM",
     "SwiftSyntax",
   ]
