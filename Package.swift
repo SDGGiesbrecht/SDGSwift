@@ -176,7 +176,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
@@ -254,7 +255,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
@@ -323,7 +325,8 @@ let package = Package(
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
