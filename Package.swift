@@ -401,7 +401,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SwiftPM",
     // #workaround(Swift 5.2.4, Cannot build for web.)
     //"cmark",
-    //"SwiftSyntax",
+    // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
+    "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
