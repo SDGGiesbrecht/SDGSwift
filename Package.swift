@@ -174,7 +174,8 @@ let package = Package(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
+          condition: .when(platforms: [.macOS, .linux, .android])
         ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
@@ -251,7 +252,8 @@ let package = Package(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
+          condition: .when(platforms: [.macOS, .linux, .android])
         ),
       ]
     ),
@@ -319,7 +321,8 @@ let package = Package(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
+          condition: .when(platforms: [.macOS, .linux, .android])
         ),
       ]
     ),
@@ -393,10 +396,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  let impossibleDependencies = [
-    // #workaround(Swift 5.2.4, Cannot build for web.)
-    "cmark",
+  let impossibleDependencies: [String] = [
+    // #workaround(Swift 5.3, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
+    // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -412,7 +415,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   }
   for target in package.targets {
-    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
 }
