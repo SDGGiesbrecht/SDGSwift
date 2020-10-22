@@ -425,10 +425,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
-    // #warning(Swift 5.2.4, Cannot build for Android.)
-    //"SwiftPM",
-    //"SwiftSyntax",
+    "SwiftPM",
+    "SwiftSyntax",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
