@@ -399,8 +399,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.3, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
-    // #workaround(Swift 5.2.4, Cannot build for web.)
-    //"cmark",
     // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
   ]
