@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
   import XCTest
 
@@ -112,7 +112,7 @@
     }
   }
 
-  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     public func withDefaultMockRepository(
       file: StaticString = #filePath,

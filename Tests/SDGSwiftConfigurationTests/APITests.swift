@@ -35,24 +35,6 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  static let configureWindowsTestDirectory: Void = {
-    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
-    #if os(Windows)
-      var directory = testSpecificationDirectory().path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        let url = URL(fileURLWithPath: directory)
-        setTestSpecificationDirectory(to: url)
-      }
-    #endif
-  }()
-  override func setUp() {
-    super.setUp()
-    APITests.configureWindowsTestDirectory
-  }
-
   func testConfiguration() throws {
     try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
       FileManager.default.delete(.cache)
@@ -64,8 +46,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
       let wherever = specifications.appendingPathComponent("Configured")
-      #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
-        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+      #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
           // @example(configurationLoading)
           // These refer to a real, working sample product.
           // See its source for more details:
@@ -291,9 +273,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLegacyConfiguration() throws {
-    #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
       try withLegacyMode {
-        #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
+        #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
             named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
