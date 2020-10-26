@@ -56,13 +56,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    //#if !os(Windows)  // #warning(SDGCornerstone 5.4.1, Git cannot be located.)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        XCTAssertNotNil(
-          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-        )
-      #endif
-    //#endif
+    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      XCTAssertNotNil(
+        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      )
+    #endif
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       let url = directory.appendingPathComponent("no such URL")
       _ = try? Git.clone(Package(url: url), to: url).get()
@@ -85,15 +83,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     case .success:
       XCTFail()
     case .failure(let error):
-      #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
-        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-          testCustomStringConvertibleConformance(
-            of: error,
-            localizations: InterfaceLocalization.self,
-            uniqueTestName: "Git Execution",
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Git Execution",
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
   }
@@ -109,15 +105,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Mock Package",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        XCTAssert(
-          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-            .versions()
-            .get() ∋ Version(0, 1, 0),
-          "Failed to detect available versions."
-        )
-      #endif
+    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      XCTAssert(
+        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+          .versions()
+          .get() ∋ Version(0, 1, 0),
+        "Failed to detect available versions."
+      )
     #endif
   }
 
