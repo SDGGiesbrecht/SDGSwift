@@ -16,11 +16,11 @@
 
   import SDGText
 
-  // #warning(SDGCornerstone 5.4.1, Encounters segmentation fault.)
-  /*func testCodableConformance<T>(
+  // #workaround(SDGCornerstone 6.0.0, Encounters segmentation fault.)
+  func testCodableConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
     file: StaticString = #filePath,
     line: UInt = #line
-  ) where T: Codable, T: Equatable {}*/
+  ) where T: Codable, T: Equatable {}
 #endif
