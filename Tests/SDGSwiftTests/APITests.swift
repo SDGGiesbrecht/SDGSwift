@@ -57,7 +57,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testGit() {
     #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
@@ -86,7 +86,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTFail()
     case .failure(let error):
       #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
-        #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
           testCustomStringConvertibleConformance(
             of: error,
             localizations: InterfaceLocalization.self,
@@ -110,7 +110,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
     #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
             .versions()
@@ -146,7 +146,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
     #endif
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         _ = try mock.tag(version: Version(10, 0, 0)).get()
@@ -160,15 +160,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+    #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],
           versionConstraints: Version(Int.min)...Version(Int.max)
         ).get()
       #endif
 
-      // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+      // #workaround(Swift 5.3, SwiftPM won’t compile.)
       #if !(os(Windows) || os(Android))
         try withDefaultMockRepository { mock in
           _ = try mock.resolve().get()
@@ -179,8 +179,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
 
       try withMock(named: "Tool") { mock in
-        #if !os(Windows)  // #workaround(Swift 5.2.4, SwiftPM is unavailable.)
-          #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+        #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
+          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
             _ = try mock.build(releaseConfiguration: true).get()
             XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
           #endif
@@ -188,7 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       }
     #endif
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
@@ -206,7 +206,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: SwiftCompiler.CoverageReportingError.swiftError(

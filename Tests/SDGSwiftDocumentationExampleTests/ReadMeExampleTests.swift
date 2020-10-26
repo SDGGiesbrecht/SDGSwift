@@ -27,9 +27,9 @@ class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
   func testReadMe() throws {
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
-      #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
         #if !os(Windows)
-          // #workaround(workspace version 0.34.0, GitHub workflow host lacks SwiftPM.)
+          // #workaround(workspace version 0.35.2, GitHub workflow host lacks SwiftPM.)
           // @example(readMe🇨🇦EN)
           let package = Package(
             url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!

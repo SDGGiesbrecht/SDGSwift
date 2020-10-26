@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
 #endif
 
@@ -31,7 +31,7 @@ extension Configuration {
 
   private static let minimumMacOSVersion: Version = Version(10, 10)
 
-  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
     // #example(1, configurationFile) #example(2, configurationLoading)
@@ -142,7 +142,7 @@ extension Configuration {
   #endif
   private struct NullContext: Context {}
 
-  #if !os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     /// Loads the configuration, providing it with additional context information.
     ///
     /// This method has the additional ability to supply context to the configuration file as it loads. See the simpler version  (`load(configuration:named:from:linkingAgainst:in:at:reportProgress:)`) for general information about loading configurations.

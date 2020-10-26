@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(Swift 5.3, Web lacks Foundation.)
 #if !os(WASI)
   /// A test coverage report.
   public struct TestCoverageReport {

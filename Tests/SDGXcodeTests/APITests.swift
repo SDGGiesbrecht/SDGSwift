@@ -35,29 +35,11 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  static let configureWindowsTestDirectory: Void = {
-    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
-    #if os(Windows)
-      var directory = testSpecificationDirectory().path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        let url = URL(fileURLWithPath: directory)
-        setTestSpecificationDirectory(to: url)
-      }
-    #endif
-  }()
-  override func setUp() {
-    super.setUp()
-    APITests.configureWindowsTestDirectory
-  }
-
   func testDependencyWarnings() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, No package manager on Windows yet.)
+    #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.34.0, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
             if withGeneratedProject {
               _ = try package.generateXcodeProject().get()
             }
@@ -106,7 +88,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -131,7 +113,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .tvOS(simulator: true),
           ]
           if ¬withGeneratedProject {
-            // #workaround(xcodebuild -version 11.6, watchOS cannot handle test targets.) @exempt(from: unicode)
+            // #workaround(xcodebuild -version 12.1, watchOS cannot handle test targets.) @exempt(from: unicode)
             sdks.removeAll(where: { $0 == .watchOS })
           }
           for sdk in sdks {
@@ -303,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { package in
         _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
@@ -326,7 +308,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
     #endif
 
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -407,7 +389,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.xcodeError(
@@ -424,7 +406,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.corruptTestCoverageReport,
