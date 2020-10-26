@@ -56,13 +56,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Windows)  // #workaround(SDGCornerstone 5.4.1, Git cannot be located.)
+    //#if !os(Windows)  // #warning(SDGCornerstone 5.4.1, Git cannot be located.)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
       #endif
-    #endif
+    //#endif
     FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       let url = directory.appendingPathComponent("no such URL")
       _ = try? Git.clone(Package(url: url), to: url).get()
