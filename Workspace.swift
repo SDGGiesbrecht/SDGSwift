@@ -100,5 +100,5 @@ configuration.documentation.api.ignoredDependencies = [
   "SwiftSyntax",
 ]
 
-// #workaround(workspace version 0.34.0, Rule has false positives.)
+// #workaround(workspace version 0.35.2, Rule has false positives.)
 configuration.proofreading.swiftFormatConfiguration?.rules["UseLetInEveryBoundCaseVariable"] = false
