@@ -30,7 +30,7 @@ configuration.documentation.repositoryURL = URL(
   string: "https://github.com/SDGGiesbrecht/SDGSwift"
 )!
 
-// #workaround(Swift 5.2.4, Until dependencies can be conditional.)
+// #workaround(SDGCornerstone 6.0.0, Until ExternalProcess is available.)
 configuration.supportedPlatforms.remove(.iOS)
 configuration.supportedPlatforms.remove(.watchOS)
 configuration.supportedPlatforms.remove(.tvOS)
