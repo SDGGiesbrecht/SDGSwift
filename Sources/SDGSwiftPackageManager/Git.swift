@@ -152,7 +152,7 @@
         versionConstraints: versions
       ).map { ignoredSummary in
         #warning("Debugging...")
-        print(ignoredSummary)
+        print(#function, ignoredSummary)
         let indicator = Array("!! ".scalars)
         var result: [URL] = []
         for line in ignoredSummary.lines.lazy.map({ $0.line })
