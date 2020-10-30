@@ -138,9 +138,9 @@
     ///
     /// - Parameters:
     ///     - repository: The repository.
-    public static func ignoredFiles(in repository: PackageRepository) -> Result<
-      [URL], VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func ignoredFiles(
+      in repository: PackageRepository
+    ) -> Result<[URL], VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 7, 7)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
