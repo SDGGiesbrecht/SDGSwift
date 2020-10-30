@@ -157,7 +157,13 @@
         var result: [URL] = []
         for line in ignoredSummary.lines.lazy.map({ $0.line })
         where line.hasPrefix(indicator) {
-          let relativePath = String(line.dropFirst(indicator.count))
+          var relativePath = String(line.dropFirst(indicator.count))
+          if relativePath.hasPrefix("\u{22}"),
+            relativePath.dropFirst().hasSuffix("\u{22}")
+          {
+            relativePath.removeFirst()
+            relativePath.removeLast()
+          }
           result.append(repository.location.appendingPathComponent(relativePath))
         }
         return result
