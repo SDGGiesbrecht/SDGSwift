@@ -63,6 +63,14 @@ extension SDGSwiftPackageManagerTests.APITests {
   ]
 }
 
+extension SDGSwiftPackageManagerTests.RegressionTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testIgnoredFilesPreserveSpecialCharacters", testIgnoredFilesPreserveSpecialCharacters)
+    ])
+  ]
+}
+
 extension SDGSwiftSourceTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
@@ -165,6 +173,7 @@ tests += SDGSwiftConfigurationTests.APITests.windowsTests
 tests += SDGSwiftConfigurationTests.InternalTests.windowsTests
 tests += SDGSwiftDocumentationExampleTests.ReadMeExampleTests.windowsTests
 tests += SDGSwiftPackageManagerTests.APITests.windowsTests
+tests += SDGSwiftPackageManagerTests.RegressionTests.windowsTests
 tests += SDGSwiftSourceTests.APITests.windowsTests
 tests += SDGSwiftSourceTests.InternalTests.windowsTests
 tests += SDGSwiftSourceTests.RegressionTests.windowsTests

@@ -138,9 +138,9 @@
     ///
     /// - Parameters:
     ///     - repository: The repository.
-    public static func ignoredFiles(in repository: PackageRepository) -> Result<
-      [URL], VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func ignoredFiles(
+      in repository: PackageRepository
+    ) -> Result<[URL], VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 7, 7)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -155,7 +155,13 @@
         var result: [URL] = []
         for line in ignoredSummary.lines.lazy.map({ $0.line })
         where line.hasPrefix(indicator) {
-          let relativePath = String(line.dropFirst(indicator.count))
+          var relativePath = String(line.dropFirst(indicator.count))
+          if relativePath.hasPrefix("\u{22}"),
+            relativePath.dropFirst().hasSuffix("\u{22}")
+          {  // @exempt(from: tests) Depends on version of Git available.
+            relativePath.removeFirst()
+            relativePath.removeLast()
+          }
           result.append(repository.location.appendingPathComponent(relativePath))
         }
         return result
