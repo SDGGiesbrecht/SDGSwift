@@ -160,7 +160,7 @@
           var relativePath = String(line.dropFirst(indicator.count))
           if relativePath.hasPrefix("\u{22}"),
             relativePath.dropFirst().hasSuffix("\u{22}")
-          {
+          {  // @exempt(from: tests) Depends on version of Git available.
             relativePath.removeFirst()
             relativePath.removeLast()
           }
