@@ -29,9 +29,10 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       try escaped.save(to: repository.location.appendingPathComponent(".gitignore"))
       try "".save(to: repository.location.appendingPathComponent(file))
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        let ignored = try thisRepository.ignoredFiles().get()
         XCTAssert(
-          try thisRepository.ignoredFiles().get()
-            .contains(where: { $0.lastPathComponent == file })
+          ignored.contains(where: { $0.lastPathComponent == file }),
+          "\(ignored.map({ $0.path }))"
         )
       #endif
     }
