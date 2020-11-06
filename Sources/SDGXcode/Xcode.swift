@@ -282,8 +282,22 @@ public enum Xcode: VersionedExternalProcess {
 
       switch sdk {
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
+
         earliestVersion.increase(to: Version(11, 0, 0))
-        command += ["\u{2D}destination", "name=iPhone 11"]
+        var iphoneVersion = "11"
+
+        let iPhone12Available = Version(12, 1)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ Version(12, 1)
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: iPhone12Available)
+          iphoneVersion = "12"
+        }
+
+        command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
       case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
         earliestVersion.increase(to: Version(9, 0, 0))
         command += ["\u{2D}destination", "name=Apple TV 4K"]
