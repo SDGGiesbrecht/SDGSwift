@@ -147,7 +147,7 @@
         [
           "status",
           "\u{2D}\u{2D}ignored",
-          "\u{2D}\u{2D}porcelain"
+          "\u{2D}\u{2D}porcelain",
         ],
         in: repository.location,
         versionConstraints: versions
@@ -165,10 +165,10 @@
             relativePath.removeFirst()
             relativePath.removeLast()
 
-            let octal: Set<UTF8.CodeUnit> = Set(0x30 ..< 0x38)
+            let octal: Set<UTF8.CodeUnit> = Set(0x30..<0x38)
             var utf8 = Array(relativePath.utf8)
             utf8.mutateMatches(
-              for: [0x58] + RepetitionPattern(ConditionalPattern({ $0 ∈ octal }), count: 3 ... 3)
+              for: [0x58] + RepetitionPattern(ConditionalPattern({ $0 ∈ octal }), count: 3...3)
             ) { (match) -> [UTF8.CodeUnit] in
               let escapeScalars = match.contents.dropFirst().lazy.map({ Unicode.Scalar($0) })
               let escape = String(String.UnicodeScalarView(escapeScalars))
