@@ -16,6 +16,7 @@
   import Foundation
 
   import SDGLogic
+  import SDGCollections
   import SDGText
   import SDGVersioning
 
@@ -146,11 +147,13 @@
         [
           "status",
           "\u{2D}\u{2D}ignored",
-          "\u{2D}\u{2D}porcelain", "\u{2D}z"
+          "\u{2D}\u{2D}porcelain"
         ],
         in: repository.location,
         versionConstraints: versions
       ).map { ignoredSummary in
+        #warning("Debugging...")
+        print(ignoredSummary)
         let indicator = Array("!! ".scalars)
         var result: [URL] = []
         for line in ignoredSummary.lines.lazy.map({ $0.line })
@@ -161,6 +164,18 @@
           {  // @exempt(from: tests) Depends on version of Git available.
             relativePath.removeFirst()
             relativePath.removeLast()
+
+            let octal: Set<UTF8.CodeUnit> = Set(0x30 ..< 0x38)
+            var utf8 = Array(relativePath.utf8)
+            utf8.mutateMatches(
+              for: [0x58] + RepetitionPattern(ConditionalPattern({ $0 ∈ octal }), count: 3 ... 3)
+            ) { (match) -> [UTF8.CodeUnit] in
+              let escapeScalars = match.contents.dropFirst().lazy.map({ Unicode.Scalar($0) })
+              let escape = String(String.UnicodeScalarView(escapeScalars))
+              let integer = UTF8.CodeUnit(escape, radix: 8)!
+              return [integer]
+            }
+            relativePath = String(decoding: utf8, as: UTF8.self)
           }
           result.append(repository.location.appendingPathComponent(relativePath))
         }
