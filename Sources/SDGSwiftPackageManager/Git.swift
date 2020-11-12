@@ -146,7 +146,7 @@
         [
           "status",
           "\u{2D}\u{2D}ignored",
-          "\u{2D}\u{2D}porcelain",
+          "\u{2D}\u{2D}porcelain", "\u{2D}z"
         ],
         in: repository.location,
         versionConstraints: versions
