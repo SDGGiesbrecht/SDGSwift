@@ -5,7 +5,6 @@ CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
-CreateUniversalBinary [...]/Mock normal armv7\ arm64
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
@@ -24,4 +23,3 @@ WriteAuxiliaryFile [...]/Mock.SwiftFileList
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-note: Using new build system
