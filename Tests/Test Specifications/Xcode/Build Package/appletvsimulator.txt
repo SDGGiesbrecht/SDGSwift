@@ -10,8 +10,6 @@ CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
-CreateUniversalBinary [...]/Mock.o normal arm64\ x86_64
-CreateUniversalBinary [...]/MockTests normal arm64\ x86_64
 Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
@@ -43,4 +41,3 @@ WriteAuxiliaryFile [...]/empty.plist
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-note: Using new build system

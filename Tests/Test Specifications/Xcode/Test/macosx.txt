@@ -58,4 +58,3 @@ Writing result bundle at path:
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-note: Using new build system
