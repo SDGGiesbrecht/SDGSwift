@@ -173,6 +173,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             })
             filtered = filtered.filter({ ¬$0.contains("Copying [...]/libswift") })
             filtered = filtered.filter({ ¬$0.contains("Codesigning [...]/libswift") })
+            filtered = filtered.filter({ ¬$0.contains("Using new build system") })
+            filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
+            filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
             #if !os(Linux)
               compare(
                 filtered.sorted().joined(separator: "\n"),
@@ -268,6 +271,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.contains("} (.") })
             filtered = filtered.filter({ ¬$0.contains("application\u{2D}identifier") })
             filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
+            filtered = filtered.filter({ ¬$0.contains("Using new build system") })
+            filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
             #if !os(Linux)
               compare(
                 filtered.sorted().joined(separator: "\n"),
