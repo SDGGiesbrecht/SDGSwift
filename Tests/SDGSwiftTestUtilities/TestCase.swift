@@ -26,14 +26,17 @@
     private static let configureGit: Void = {
       if ProcessInfo.isInGitHubAction {
         // @exempt(from: tests)
-        _ = try? Git.runCustomSubcommand(
-          ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-        ).get()
-        _ = try? Git.runCustomSubcommand(
-          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-        ).get()
+        // #workaround(Swift 5.3.1, Segmentation fault.)
+        #if !os(Windows)
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+        #endif
       }
     }()
     open override func setUp() {
