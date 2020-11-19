@@ -71,30 +71,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    testCustomStringConvertibleConformance(
-      of: VersionedExternalProcessExecutionError<Git>.locationError(
-        .unavailable(versionConstraints: "...")
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    switch Git.runCustomSubcommand(
-      ["fail"],
-      versionConstraints: Version(Int.min)...Version(Int.max)
-    ) {
-    case .success:
-      XCTFail()
-    case .failure(let error):
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Git Execution",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
-    }
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: VersionedExternalProcessExecutionError<Git>.locationError(
+          .unavailable(versionConstraints: "...")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      switch Git.runCustomSubcommand(
+        ["fail"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ) {
+      case .success:
+        XCTFail()
+      case .failure(let error):
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Git Execution",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
+      }
+    #endif
   }
 
   func testLocalizations() {
