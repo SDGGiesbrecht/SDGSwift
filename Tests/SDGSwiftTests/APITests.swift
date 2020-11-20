@@ -296,24 +296,27 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    testCustomStringConvertibleConformance(
-      of: Version(1, 2, 3),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "1.2.3",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: Version(1, 2, 3),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "1.2.3",
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
-    XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
-    XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
-    XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
-    XCTAssertNil(Version(String("Blah blah blah...")))
-    XCTAssertNil(Version(firstIn: "Blah blah blah..."))
-    XCTAssertNil(Version(String("1.0.0.0")))
-    XCTAssertNil(Version(String("1.0.A")))
-    XCTAssertNil(Version(String("1.A")))
-    XCTAssertNil(Version(String("A")))
-    XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
-    XCTAssertEqual(Version(1, 0, 0), "1.0.0")
+      XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
+      XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
+      XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
+      XCTAssertNil(Version(String("Blah blah blah...")))
+      XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+      XCTAssertNil(Version(String("1.0.0.0")))
+      XCTAssertNil(Version(String("1.0.A")))
+      XCTAssertNil(Version(String("1.A")))
+      XCTAssertNil(Version(String("A")))
+      XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
+      XCTAssertEqual(Version(1, 0, 0), "1.0.0")
+    #endif
   }
 
   func testVersionedExternalProcess() {
