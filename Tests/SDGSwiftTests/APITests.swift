@@ -320,15 +320,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersionedExternalProcess() {
-    do {
-      // Fresh
-      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-      XCTFail("Failed to throw.")
-    } catch {}
-    do {
-      // Cached
-      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-      XCTFail("Failed to throw.")
-    } catch {}
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      do {
+        // Fresh
+        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+        XCTFail("Failed to throw.")
+      } catch {}
+      do {
+        // Cached
+        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+        XCTFail("Failed to throw.")
+      } catch {}
+    #endif
   }
 }
