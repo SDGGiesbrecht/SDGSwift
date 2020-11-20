@@ -105,19 +105,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    testCustomStringConvertibleConformance(
-      of: Package(url: URL(string: "https://domain.tld/Package")!),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Mock Package",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-      XCTAssert(
-        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-          .versions()
-          .get() ∋ Version(0, 1, 0),
-        "Failed to detect available versions."
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: Package(url: URL(string: "https://domain.tld/Package")!),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock Package",
+        overwriteSpecificationInsteadOfFailing: false
       )
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        XCTAssert(
+          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+            .versions()
+            .get() ∋ Version(0, 1, 0),
+          "Failed to detect available versions."
+        )
+      #endif
     #endif
   }
 
