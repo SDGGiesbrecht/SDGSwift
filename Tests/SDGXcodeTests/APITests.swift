@@ -57,11 +57,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() {
-    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      let url = directory.appendingPathComponent("no such URL")
-      let package = PackageRepository(at: url)
-      _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
-    }
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        let package = PackageRepository(at: url)
+        _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
+      }
+    #endif
   }
 
   func testXcode() throws {
