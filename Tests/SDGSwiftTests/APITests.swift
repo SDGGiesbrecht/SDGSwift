@@ -134,32 +134,35 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    #if os(Windows)  // Paths differ.
-      _ = String(
-        describing: PackageRepository(
-          at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      #if os(Windows)  // Paths differ.
+        _ = String(
+          describing: PackageRepository(
+            at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
+          )
         )
-      )
-    #else
-      testCustomStringConvertibleConformance(
-        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Mock",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+      #else
+        testCustomStringConvertibleConformance(
+          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Mock",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      try withDefaultMockRepository { mock in
-        _ = try mock.tag(version: Version(10, 0, 0)).get()
+      // #workaround(Swift 5.3, SwiftPM won’t compile.)
+      #if !(os(Windows) || os(Android))
+        try withDefaultMockRepository { mock in
+          _ = try mock.tag(version: Version(10, 0, 0)).get()
+        }
+      #endif
+
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        _ = try? PackageRepository.clone(Package(url: url), to: url).get()
       }
     #endif
-
-    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      let url = directory.appendingPathComponent("no such URL")
-      _ = try? PackageRepository.clone(Package(url: url), to: url).get()
-    }
   }
 
   func testSwiftCompiler() throws {
