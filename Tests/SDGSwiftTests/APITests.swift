@@ -56,42 +56,48 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-      XCTAssertNotNil(
-        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-      )
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        XCTAssertNotNil(
+          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        )
+      #endif
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        _ = try? Git.clone(Package(url: url), to: url).get()
+      }
     #endif
-    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      let url = directory.appendingPathComponent("no such URL")
-      _ = try? Git.clone(Package(url: url), to: url).get()
-    }
   }
 
   func testGitError() {
-    testCustomStringConvertibleConformance(
-      of: VersionedExternalProcessExecutionError<Git>.locationError(
-        .unavailable(versionConstraints: "...")
-      ),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Git Unavailable",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    switch Git.runCustomSubcommand(
-      ["fail"],
-      versionConstraints: Version(Int.min)...Version(Int.max)
-    ) {
-    case .success:
-      XCTFail()
-    case .failure(let error):
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Git Execution",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
-    }
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: VersionedExternalProcessExecutionError<Git>.locationError(
+          .unavailable(versionConstraints: "...")
+        ),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Git Unavailable",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      switch Git.runCustomSubcommand(
+        ["fail"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ) {
+      case .success:
+        XCTFail()
+      case .failure(let error):
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Git Execution",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
+      }
+    #endif
   }
 
   func testLocalizations() {
@@ -99,19 +105,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    testCustomStringConvertibleConformance(
-      of: Package(url: URL(string: "https://domain.tld/Package")!),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Mock Package",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-      XCTAssert(
-        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-          .versions()
-          .get() ∋ Version(0, 1, 0),
-        "Failed to detect available versions."
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: Package(url: URL(string: "https://domain.tld/Package")!),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock Package",
+        overwriteSpecificationInsteadOfFailing: false
       )
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        XCTAssert(
+          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+            .versions()
+            .get() ∋ Version(0, 1, 0),
+          "Failed to detect available versions."
+        )
+      #endif
     #endif
   }
 
@@ -125,32 +134,35 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    #if os(Windows)  // Paths differ.
-      _ = String(
-        describing: PackageRepository(
-          at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      #if os(Windows)  // Paths differ.
+        _ = String(
+          describing: PackageRepository(
+            at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
+          )
         )
-      )
-    #else
-      testCustomStringConvertibleConformance(
-        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Mock",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+      #else
+        testCustomStringConvertibleConformance(
+          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Mock",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      try withDefaultMockRepository { mock in
-        _ = try mock.tag(version: Version(10, 0, 0)).get()
+      // #workaround(Swift 5.3, SwiftPM won’t compile.)
+      #if !(os(Windows) || os(Android))
+        try withDefaultMockRepository { mock in
+          _ = try mock.tag(version: Version(10, 0, 0)).get()
+        }
+      #endif
+
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        _ = try? PackageRepository.clone(Package(url: url), to: url).get()
       }
     #endif
-
-    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      let url = directory.appendingPathComponent("no such URL")
-      _ = try? PackageRepository.clone(Package(url: url), to: url).get()
-    }
   }
 
   func testSwiftCompiler() throws {
@@ -284,36 +296,42 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    testCustomStringConvertibleConformance(
-      of: Version(1, 2, 3),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "1.2.3",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      testCustomStringConvertibleConformance(
+        of: Version(1, 2, 3),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "1.2.3",
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
-    XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
-    XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
-    XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
-    XCTAssertNil(Version(String("Blah blah blah...")))
-    XCTAssertNil(Version(firstIn: "Blah blah blah..."))
-    XCTAssertNil(Version(String("1.0.0.0")))
-    XCTAssertNil(Version(String("1.0.A")))
-    XCTAssertNil(Version(String("1.A")))
-    XCTAssertNil(Version(String("A")))
-    XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
-    XCTAssertEqual(Version(1, 0, 0), "1.0.0")
+      XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
+      XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
+      XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
+      XCTAssertNil(Version(String("Blah blah blah...")))
+      XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+      XCTAssertNil(Version(String("1.0.0.0")))
+      XCTAssertNil(Version(String("1.0.A")))
+      XCTAssertNil(Version(String("1.A")))
+      XCTAssertNil(Version(String("A")))
+      XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
+      XCTAssertEqual(Version(1, 0, 0), "1.0.0")
+    #endif
   }
 
   func testVersionedExternalProcess() {
-    do {
-      // Fresh
-      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-      XCTFail("Failed to throw.")
-    } catch {}
-    do {
-      // Cached
-      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-      XCTFail("Failed to throw.")
-    } catch {}
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      do {
+        // Fresh
+        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+        XCTFail("Failed to throw.")
+      } catch {}
+      do {
+        // Cached
+        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+        XCTFail("Failed to throw.")
+      } catch {}
+    #endif
   }
 }

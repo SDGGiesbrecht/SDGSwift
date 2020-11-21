@@ -112,11 +112,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-      XCTAssert(
-        try thisRepository.ignoredFiles().get()
-          .contains(where: { $0.lastPathComponent == ".build" })
-      )
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        XCTAssert(
+          try thisRepository.ignoredFiles().get()
+            .contains(where: { $0.lastPathComponent == ".build" })
+        )
+      #endif
     #endif
   }
 
