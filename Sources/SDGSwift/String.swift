@@ -16,6 +16,26 @@ import SDGMathematics
 
 extension String {
 
+  /// Returns the index corresponding to a particular scalar offset.
+  ///
+  /// - Parameters:
+  ///   - offset: The scalar offset.
+  public func index(of offset: ScalarOffset) -> String.ScalarView.Index {
+    let scalars = self.scalars
+    return scalars.index(scalars.startIndex, offsetBy: offset.offset)
+  }
+
+  /// Returns the scalar offset corresponding to a particular index.
+  ///
+  /// - Precondition: The index represents a valid scalar boundary in the string.
+  ///
+  /// - Parameters:
+  ///   - index: The index.
+  public func offset(of index: String.ScalarView.Index) -> ScalarOffset {
+    let scalars = self.scalars
+    return ScalarOffset(offset: scalars.distance(from: scalars.startIndex, to: index))
+  }
+
   public func _toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
     let lines = self.lines
     let scalars = self.scalars
