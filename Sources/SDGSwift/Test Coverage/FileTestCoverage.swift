@@ -25,7 +25,7 @@
     /// - Parameters:
     ///     - file: The URL of the corresponding file.
     ///     - regions: The regions of the file.
-    public init(file: URL, regions: [CoverageRegion]) {
+    public init(file: URL, regions: [CoverageRegion<String.ScalarOffset>]) {
       self.file = file
       self.regions = regions
     }
@@ -36,6 +36,6 @@
     public let file: URL
 
     /// The regions of the file.
-    public let regions: [CoverageRegion]
+    public let regions: [CoverageRegion<String.ScalarOffset>]
   }
 #endif

@@ -314,7 +314,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
                 } catch {
                   return .failure(.foundationError(error))
                 }
-                var regions: [CoverageRegion] = []
+                var regions: [CoverageRegion<String.ScalarView.Index>] = []
                 purgingAutoreleased {
                   if let segments = fileDictionary["segments"] as? [Any] {
                     for (index, segment) in segments.enumerated() {
@@ -353,7 +353,12 @@ public enum SwiftCompiler: VersionedExternalProcess {
                   source: source,
                   ignoreCoveredRegions: ignoreCoveredRegions
                 )
-                fileReports.append(FileTestCoverage(file: url, regions: regions))
+                let stabilized = regions.map { region in
+                  return region.convert { index in
+                    return source.offset(of: index)
+                  }
+                }
+                fileReports.append(FileTestCoverage(file: url, regions: stabilized))
               }
             }
           }
