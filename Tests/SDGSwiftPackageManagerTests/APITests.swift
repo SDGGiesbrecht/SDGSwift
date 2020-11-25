@@ -209,8 +209,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             var specification = try String(from: sourceURL)
             for range in file.regions.reversed() {
-              specification.insert("!", at: range.region.upperBound)
-              specification.insert("¡", at: range.region.lowerBound)
+              specification.insert("!", at: specification.index(of: range.region.upperBound))
+              specification.insert("¡", at: specification.index(of: range.region.lowerBound))
             }
             compare(
               specification,

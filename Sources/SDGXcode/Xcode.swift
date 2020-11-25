@@ -448,7 +448,7 @@ public enum Xcode: VersionedExternalProcess {
               return nil
             }
 
-            var regions: [CoverageRegion] = []
+            var regions: [CoverageRegion<String.ScalarView.Index>] = []
             while ¬report.isEmpty {
               let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
               var line = String(report[lineRange])
@@ -525,7 +525,12 @@ public enum Xcode: VersionedExternalProcess {
               ignoreCoveredRegions: ignoreCoveredRegions
             )
 
-            files.append(FileTestCoverage(file: fileURL, regions: regions))
+            let stabilized = regions.map { region in
+              return region.convert { index in
+                return source.offset(of: index)
+              }
+            }
+            files.append(FileTestCoverage(file: fileURL, regions: stabilized))
 
             return .success(())
           }
