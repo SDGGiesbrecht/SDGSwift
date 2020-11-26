@@ -52,17 +52,16 @@
       let utf8 = string.utf8
       let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
       let fragmentIndex = utf8Index.samePosition(in: string.scalars)!
+      let fragmentOffset = string.offset(of: fragmentIndex)
 
       guard let parent = context.parentContext else {
-        return string.offset(of: fragmentIndex)
+        return fragmentOffset
       }
       let code = parent.code
       let codeFragmentContext = code.context
-      let codeOffset = codeFragmentContext.scalars.distance(
-        from: code.range.lowerBound,
-        to: fragmentIndex
-      )
-      let codePosition = code.lowerBound(in: parent.context)
+      let codeRangeStart = codeFragmentContext.offset(of: code.range.lowerBound)
+      let codeOffset = fragmentOffset − codeRangeStart
+      let codePosition: String.ScalarOffset = code.lowerBound(in: parent.context)
       return codePosition + codeOffset
     }
 
