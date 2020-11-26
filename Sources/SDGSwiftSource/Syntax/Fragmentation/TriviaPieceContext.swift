@@ -23,16 +23,5 @@
 
     case _trivia(Trivia, index: Trivia.Index, parent: TriviaContext)
     case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
-
-    // MARK: - Properties
-
-    internal var source: String {
-      switch self {
-      case ._trivia(_, index: _, let parent):
-        return parent.tokenContext.fragmentContext
-      case ._fragment(_, let context, offset: _):
-        return context.source
-      }
-    }
   }
 #endif

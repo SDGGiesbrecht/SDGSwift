@@ -50,7 +50,6 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           parentContext: nil
         )
       )
-      _ = context.source
       let source = ""
       _ =
         ExtendedSyntaxContext._fragment(
@@ -61,7 +60,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           ),
           context: context,
           offset: 0
-        ).source
+        )
     #endif
   }
 
