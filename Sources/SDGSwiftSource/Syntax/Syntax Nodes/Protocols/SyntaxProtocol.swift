@@ -44,18 +44,17 @@
 
     // MARK: - Location
 
-    private func index(in context: SyntaxContext, for position: AbsolutePosition)
-      -> String
-      .ScalarView
-      .Index
-    {
+    private func index(
+      in context: SyntaxContext,
+      for position: AbsolutePosition
+    ) -> String.ScalarOffset {
       let string = context.fragmentContext
       let utf8 = string.utf8
       let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
       let fragmentIndex = utf8Index.samePosition(in: string.scalars)!
 
       guard let parent = context.parentContext else {
-        return fragmentIndex
+        return string.offset(of: fragmentIndex)
       }
       let code = parent.code
       let codeFragmentContext = code.context
@@ -64,7 +63,8 @@
         to: fragmentIndex
       )
       let codePosition = code.lowerBound(in: parent.context)
-      return parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
+      let result = parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
+      return string.offset(of: result)
     }
 
     /// Returns the lower bound of the leading trivia.
