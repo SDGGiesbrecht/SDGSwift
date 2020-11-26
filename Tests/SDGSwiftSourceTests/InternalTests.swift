@@ -50,7 +50,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       _ =
         ExtendedSyntaxContext._fragment(
           CodeFragmentSyntax(
-            range: source.bounds.map({ source.offset(of: $0) }),
+            range: source.offsets(of: source.bounds),
             in: source,
             isSwift: false
           ),

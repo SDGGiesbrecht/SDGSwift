@@ -27,7 +27,7 @@
 
       let sourceText = node.literal ?? ""  // @exempt(from: tests) Literal never empty.
       let source = CodeFragmentSyntax(
-        range: sourceText.bounds.map({ sourceText.offset(of: $0) }),
+        range: sourceText.offsets(of: sourceText.bounds),
         in: sourceText,
         isSwift: nil
       )

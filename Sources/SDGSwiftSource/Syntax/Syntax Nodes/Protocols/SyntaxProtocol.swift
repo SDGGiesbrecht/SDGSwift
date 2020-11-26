@@ -58,7 +58,6 @@
         return fragmentOffset
       }
       let code = parent.code
-      let codeFragmentContext = code.context
       let codeOffset = fragmentOffset − code.range.lowerBound
       let codePosition: String.ScalarOffset = code.lowerBound(in: parent.context)
       return codePosition + codeOffset

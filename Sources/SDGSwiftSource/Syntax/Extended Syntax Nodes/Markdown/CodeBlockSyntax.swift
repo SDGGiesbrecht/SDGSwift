@@ -80,7 +80,7 @@
       }
 
       let source = CodeFragmentSyntax(
-        range: contents.bounds.map({ contents.offset(of: $0) }),
+        range: contents.offsets(of: contents.bounds),
         in: contents,
         isSwift: isSwift
       )

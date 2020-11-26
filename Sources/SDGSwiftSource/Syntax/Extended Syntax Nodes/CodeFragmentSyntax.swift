@@ -29,7 +29,7 @@
 
       self.context = source
       self.range = range
-      let rangeIndices = range.map { source.index(of: $0) }
+      let rangeIndices = source.indices(of: range)
       let fragmentSource = String(source.scalars[rangeIndices])
       let fragment = ExtendedTokenSyntax(text: fragmentSource, kind: .source)
       self.source = fragment

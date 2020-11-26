@@ -26,6 +26,18 @@ extension String {
     let scalars = self.scalars
     return scalars.index(scalars.startIndex, offsetBy: offset.offset)
   }
+  /// Returns the indices corresponding to particular scalar offsets.
+  ///
+  /// - Precondition: The offsets are within the string’s bounds.
+  ///
+  /// - Parameters:
+  ///   - offsets: The scalar offsets.
+  public func indices(of offsets: Range<ScalarOffset>) -> Range<String.ScalarView.Index> {
+    let lower = index(of: offsets.lowerBound)
+    let length = offsets.upperBound − offsets.lowerBound
+    let upper = scalars.index(lower, offsetBy: length)
+    return lower..<upper
+  }
 
   /// Returns the scalar offset corresponding to a particular index.
   ///
@@ -37,8 +49,18 @@ extension String {
     let scalars = self.scalars
     return ScalarOffset(offset: scalars.distance(from: scalars.startIndex, to: index))
   }
-
-  #warning("Include range conversions, and switch any map operations.")
+  /// Returns the scalar offsets corresponding to particular indices.
+  ///
+  /// - Precondition: The indices represent valid scalar boundaries in the string.
+  ///
+  /// - Parameters:
+  ///   - indices: The indices.
+  public func offsets(of indices: Range<String.ScalarView.Index>) -> Range<ScalarOffset> {
+    let lower = offset(of: indices.lowerBound)
+    let length = distance(from: indices.lowerBound, to: indices.upperBound)
+    let upper = lower + length
+    return lower..<upper
+  }
 
   public func _toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
     let lines = self.lines
