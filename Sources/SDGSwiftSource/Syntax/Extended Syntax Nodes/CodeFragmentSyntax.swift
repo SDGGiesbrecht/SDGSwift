@@ -28,7 +28,7 @@
       self.isSwift = isSwift
 
       self.context = source
-      self.range = range
+      self.range = range.map { source.offset(of: $0) }
       let fragmentSource = String(source.scalars[range])
       let fragment = ExtendedTokenSyntax(text: fragmentSource, kind: .source)
       self.source = fragment
@@ -44,9 +44,10 @@
 
     internal let context: String
 
-    internal let range: Range<String.ScalarView.Index>
+    internal let range: Range<String.ScalarOffset>
     internal var offset: Int {
-      return context.scalars.distance(from: context.scalars.startIndex, to: range.lowerBound)
+      #warning("Necessary?")
+      return range.lowerBound − context.offset(of: context.scalars.startIndex)
     }
 
     /// The syntax of the source code contained in this token.
@@ -77,12 +78,9 @@
           if let token = node.as(TokenSyntax.self) {
             var position = location.lowerBound
             var result = syntax(of: token.leadingTrivia, startingAt: position)
-            position = context.scalars.index(
-              position,
-              offsetBy: token.leadingTrivia.source().scalars.count
-            )
+            position += token.leadingTrivia.source().scalars.count
 
-            let end = context.scalars.index(position, offsetBy: token.text.scalars.count)
+            let end = position + token.text.scalars.count
             if position..<end ⊆ range {
               result.append(.syntax(Syntax(token.withLeadingTrivia([]).withTrailingTrivia([]))))
             }
@@ -102,7 +100,7 @@
 
     private func syntax(
       of trivia: Trivia,
-      startingAt position: String.ScalarView.Index
+      startingAt position: String.ScalarOffset
     ) -> [SyntaxFragment] {
       var location = position
       var result: [SyntaxFragment] = []
@@ -111,18 +109,18 @@
         result.append(
           contentsOf: syntax(of: piece, startingAt: location, siblings: trivia, index: index)
         )
-        location = context.scalars.index(location, offsetBy: piece.text.scalars.count)
+        location += piece.text.scalars.count
       }
       return result
     }
 
     private func syntax(
       of trivia: TriviaPiece,
-      startingAt position: String.ScalarView.Index,
+      startingAt position: String.ScalarOffset,
       siblings: Trivia,
       index: Trivia.Index
     ) -> [SyntaxFragment] {
-      let location = position..<context.scalars.index(position, offsetBy: trivia.text.scalars.count)
+      let location = position..<(position + trivia.text.scalars.count)
       if location.overlaps(range) {
         if location ⊆ range {
           return [.trivia(trivia, siblings, index)]
@@ -147,13 +145,10 @@
             var startOffset = 0
             var endOffset = text.scalars.count
             if location.lowerBound < range.lowerBound {
-              startOffset += context.scalars.distance(
-                from: location.lowerBound,
-                to: range.lowerBound
-              )
+              startOffset += range.lowerBound − location.lowerBound
             }
             if location.upperBound > range.upperBound {
-              endOffset −= context.scalars.distance(from: range.upperBound, to: location.upperBound)
+              endOffset −= location.upperBound − range.upperBound
             }
 
             let fragment = FragmentSyntax(scalarOffsets: startOffset..<endOffset, in: extended)
