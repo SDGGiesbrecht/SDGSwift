@@ -90,27 +90,16 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     /// - Parameters:
     ///     - context: The node’s context.
     public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarOffset {
-      let result: String.ScalarView.Index = lowerBound(in: context)
-      switch context {
-      case ._trivia(_, context: let triviaContext):
-        return triviaContext.source.offset(of: result)
-      case ._token(_, context: let tokenContext):
-        return tokenContext.fragmentContext.offset(of: result)
-      case ._fragment(_, context: let codeContext, _):
-        return codeContext.source.offset(of: result)
-      }
-    }
-    internal func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
       switch context {
       case ._trivia(let trivia, context: let triviaContext):
         let sourceStart = trivia.lowerBound(in: triviaContext)
-        return triviaContext.source.scalars.index(sourceStart, offsetBy: positionOffset)
+        return sourceStart + positionOffset
       case ._token(let token, context: let tokenContext):
         let sourceStart = token.lowerSyntaxBound(in: tokenContext)
-        return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: positionOffset)
+        return sourceStart + positionOffset
       case ._fragment(let code, context: let codeContext, let offset):
         let fragmentLocation = code.lowerBound(in: codeContext)
-        return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+        return fragmentLocation + offset
       }
     }
 
@@ -119,30 +108,16 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     /// - Parameters:
     ///     - context: The node’s context.
     public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarOffset {
-      let result: String.ScalarView.Index = upperBound(in: context)
-      switch context {
-      case ._trivia(_, context: let triviaContext):
-        return triviaContext.source.offset(of: result)
-      case ._token(_, context: let tokenContext):
-        return tokenContext.fragmentContext.offset(of: result)
-      case ._fragment(_, context: let codeContext, _):
-        return codeContext.source.offset(of: result)
-      }
-    }
-    internal func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
       switch context {
       case ._trivia(let trivia, context: let triviaContext):
         let sourceStart = trivia.lowerBound(in: triviaContext)
-        return triviaContext.source.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        return sourceStart + endPositionOffset
       case ._token(let token, context: let tokenContext):
         let sourceStart = token.lowerSyntaxBound(in: tokenContext)
-        return tokenContext.fragmentContext.scalars.index(sourceStart, offsetBy: endPositionOffset)
+        return sourceStart + endPositionOffset
       case ._fragment(let code, context: let codeContext, let offset):
         let fragmentLocation = code.lowerBound(in: codeContext)
-        return codeContext.source.scalars.index(
-          fragmentLocation,
-          offsetBy: offset + text.scalars.count
-        )
+        return fragmentLocation + (offset + text.scalars.count)
       }
     }
 
@@ -151,9 +126,6 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     /// - Parameters:
     ///     - context: The node’s context.
     public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarOffset> {
-      return lowerBound(in: context)..<upperBound(in: context)
-    }
-    internal func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
       return lowerBound(in: context)..<upperBound(in: context)
     }
   #endif
