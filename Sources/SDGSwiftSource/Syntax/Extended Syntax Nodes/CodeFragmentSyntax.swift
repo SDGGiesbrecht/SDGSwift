@@ -100,9 +100,10 @@
       }
     }
 
-    private func syntax(of trivia: Trivia, startingAt position: String.ScalarView.Index)
-      -> [SyntaxFragment]
-    {
+    private func syntax(
+      of trivia: Trivia,
+      startingAt position: String.ScalarView.Index
+    ) -> [SyntaxFragment] {
       var location = position
       var result: [SyntaxFragment] = []
       for index in trivia.indices {
