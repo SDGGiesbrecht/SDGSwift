@@ -24,12 +24,13 @@
   /// A fragment of code used in documentation.
   public final class CodeFragmentSyntax: ExtendedSyntax {
 
-    internal init(range: Range<String.ScalarView.Index>, in source: String, isSwift: Bool?) {
+    internal init(range: Range<String.ScalarOffset>, in source: String, isSwift: Bool?) {
       self.isSwift = isSwift
 
       self.context = source
-      self.range = range.map { source.offset(of: $0) }
-      let fragmentSource = String(source.scalars[range])
+      self.range = range
+      let rangeIndices = range.map { source.index(of: $0) }
+      let fragmentSource = String(source.scalars[rangeIndices])
       let fragment = ExtendedTokenSyntax(text: fragmentSource, kind: .source)
       self.source = fragment
 

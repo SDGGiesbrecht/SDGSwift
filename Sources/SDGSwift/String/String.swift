@@ -38,6 +38,8 @@ extension String {
     return ScalarOffset(offset: scalars.distance(from: scalars.startIndex, to: index))
   }
 
+  #warning("Include range conversions, and switch any map operations.")
+
   public func _toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
     let lines = self.lines
     let scalars = self.scalars

@@ -63,16 +63,10 @@
     }
 
     private func upperBound(
-      from lowerBound: String.ScalarView.Index,
+      from lowerBound: String.ScalarOffset,
       in context: TriviaPieceContext
-    ) -> String.ScalarView.Index {
-      switch context {
-      case ._trivia(_, index: _, let parent):
-        let source = parent.tokenContext.fragmentContext
-        return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-      case ._fragment(_, context: let codeContext, offset: _):
-        return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-      }
+    ) -> String.ScalarOffset {
+      return lowerBound + text.scalars.count
     }
     /// Returns the upper bound of the trivia piece.
     ///

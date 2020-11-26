@@ -49,7 +49,11 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       let source = ""
       _ =
         ExtendedSyntaxContext._fragment(
-          CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false),
+          CodeFragmentSyntax(
+            range: source.bounds.map({ source.offset(of: $0) }),
+            in: source,
+            isSwift: false
+          ),
           context: context,
           offset: 0
         ).source
