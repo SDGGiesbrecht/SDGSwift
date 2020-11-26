@@ -151,7 +151,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             XCTAssertEqual(source[source.indices(of: token.range(in: context))], "`")
           } else if syntax is InlineCodeSyntax {
             foundCode = true
-            XCTAssertEqual(source[source.indices(of: syntax.range(in: context))], "`selector(style:notation:)`")
+            XCTAssertEqual(
+              source[source.indices(of: syntax.range(in: context))],
+              "`selector(style:notation:)`"
+            )
           }
           return true
         },
@@ -225,7 +228,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         checkExtendedSyntax: { syntax, context in
           if syntax is LineDeveloperCommentSyntax {
             foundCommentSyntax = true
-            XCTAssertEqual(evenMoreSource[evenMoreSource.indices(of: syntax.range(in: context))], "// Comment.")
+            XCTAssertEqual(
+              evenMoreSource[evenMoreSource.indices(of: syntax.range(in: context))],
+              "// Comment."
+            )
           }
           return true
         },
@@ -234,7 +240,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             ¬trivia.text.isEmpty
           {
             foundTriviaFragment = true
-            XCTAssertEqual(evenMoreSource[evenMoreSource.indices(of: trivia.range(in: context))], "// Comment.")
+            XCTAssertEqual(
+              evenMoreSource[evenMoreSource.indices(of: trivia.range(in: context))],
+              "// Comment."
+            )
             XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
             XCTAssertNil(trivia.parentTrivia(context: context))
             XCTAssertNil(trivia.nextTriviaPiece(context: context))
