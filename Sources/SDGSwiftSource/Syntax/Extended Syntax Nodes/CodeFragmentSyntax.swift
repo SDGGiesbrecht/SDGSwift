@@ -46,10 +46,6 @@
     internal let context: String
 
     internal let range: Range<String.ScalarOffset>
-    internal var offset: Int {
-      #warning("Necessary?")
-      return range.lowerBound − context.offset(of: context.scalars.startIndex)
-    }
 
     /// The syntax of the source code contained in this token.
     public func syntax() throws -> [SyntaxFragment]? {
@@ -69,8 +65,13 @@
     }
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
+      let context = self.context
       let location = node.triviaRange(
-        in: SyntaxContext(fragmentContext: context, fragmentOffset: 0, parentContext: nil)
+        in: SyntaxContext(
+          fragmentContext: context,
+          fragmentOffset: context.offset(of: context.scalars.startIndex),
+          parentContext: nil
+        )
       )
       if location.overlaps(range) {
         if location ⊆ range {
