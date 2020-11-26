@@ -63,8 +63,7 @@
         to: fragmentIndex
       )
       let codePosition = code.lowerBound(in: parent.context)
-      let result = parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
-      return string.offset(of: result)
+      return codePosition + codeOffset
     }
 
     /// Returns the lower bound of the leading trivia.
@@ -103,7 +102,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarOffset {
+    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarOffset> {
       return lowerSyntaxBound(in: context)..<upperSyntaxBound(in: context)
     }
 
@@ -111,7 +110,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarOffset {
+    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarOffset> {
       return lowerTriviaBound(in: context)..<upperTriviaBound(in: context)
     }
 
