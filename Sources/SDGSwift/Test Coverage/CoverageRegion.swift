@@ -52,10 +52,12 @@ public struct CoverageRegion<Index> where Index: Comparable {
   }
 }
 
-private let charactersIrrelevantToCoverage =
-  CharacterSet.whitespacesAndNewlines ∪ [
-    "{", "}", "(", ")",
-  ]
+#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
+  private let charactersIrrelevantToCoverage =
+    CharacterSet.whitespacesAndNewlines ∪ [
+      "{", "}", "(", ")",
+    ]
+#endif
 extension CoverageRegion where Index == String.ScalarView.Index {
 
   #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
