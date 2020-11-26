@@ -78,10 +78,11 @@
       }
       return indexFor(line: Int(line), column: Int(column), in: documentation)
     }
-    private func indexFor(line: Int, column: Int, in documentation: String)
-      -> String.ScalarView
-      .Index
-    {
+    private func indexFor(
+      line: Int,
+      column: Int,
+      in documentation: String
+    ) -> String.ScalarView.Index {
       let scalars = documentation.scalars
       let lines = documentation.lines
       let utf8 = documentation.utf8
