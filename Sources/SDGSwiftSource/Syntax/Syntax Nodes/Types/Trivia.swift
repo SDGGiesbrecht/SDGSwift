@@ -31,7 +31,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia’s context.
-    public func lowerBound(in context: TriviaContext) -> String.ScalarView.Index {
+    public func lowerBound(in context: TriviaContext) -> String.ScalarOffset {
       if context.leading {
         return context.token.lowerTriviaBound(in: context.tokenContext)
       } else {
@@ -43,7 +43,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia’s context.
-    public func upperBound(in context: TriviaContext) -> String.ScalarView.Index {
+    public func upperBound(in context: TriviaContext) -> String.ScalarOffset {
       if context.leading {
         return context.token.lowerSyntaxBound(in: context.tokenContext)
       } else {
@@ -55,7 +55,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia’s context.
-    public func range(in context: TriviaContext) -> Range<String.ScalarView.Index> {
+    public func range(in context: TriviaContext) -> Range<String.ScalarOffset> {
       return lowerBound(in: context)..<upperBound(in: context)
     }
 

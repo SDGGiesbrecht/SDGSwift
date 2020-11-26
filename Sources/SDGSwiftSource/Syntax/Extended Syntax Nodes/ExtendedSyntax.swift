@@ -89,7 +89,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+    public func lowerBound(in context: ExtendedSyntaxContext) -> String.ScalarOffset {
       switch context {
       case ._trivia(let trivia, context: let triviaContext):
         let sourceStart = trivia.lowerBound(in: triviaContext)
@@ -107,7 +107,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarView.Index {
+    public func upperBound(in context: ExtendedSyntaxContext) -> String.ScalarOffset {
       switch context {
       case ._trivia(let trivia, context: let triviaContext):
         let sourceStart = trivia.lowerBound(in: triviaContext)
@@ -128,7 +128,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarView.Index> {
+    public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarOffset> {
       return lowerBound(in: context)..<upperBound(in: context)
     }
   #endif

@@ -47,7 +47,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+    public func lowerBound(in context: TriviaPieceContext) -> String.ScalarOffset {
       switch context {
       case ._trivia(let trivia, let index, let parent):
         var location = trivia.lowerBound(in: parent)
@@ -68,9 +68,7 @@
     private func upperBound(
       from lowerBound: String.ScalarView.Index,
       in context: TriviaPieceContext
-    )
-      -> String.ScalarView.Index
-    {
+    ) -> String.ScalarView.Index {
       switch context {
       case ._trivia(_, index: _, let parent):
         let source = parent.tokenContext.fragmentContext
@@ -83,7 +81,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+    public func upperBound(in context: TriviaPieceContext) -> String.ScalarOffset {
       return upperBound(from: lowerBound(in: context), in: context)
     }
 
@@ -91,7 +89,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func range(in context: TriviaPieceContext) -> Range<String.ScalarView.Index> {
+    public func range(in context: TriviaPieceContext) -> Range<String.ScalarOffset> {
       let lowerBound = self.lowerBound(in: context)
       return lowerBound..<upperBound(from: lowerBound, in: context)
     }

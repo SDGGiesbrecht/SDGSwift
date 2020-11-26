@@ -71,7 +71,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: position)
     }
 
@@ -79,7 +79,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: positionAfterSkippingLeadingTrivia)
     }
 
@@ -87,7 +87,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: endPositionBeforeTrailingTrivia)
     }
 
@@ -95,7 +95,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: endPosition)
     }
 
@@ -103,7 +103,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarOffset {
       return lowerSyntaxBound(in: context)..<upperSyntaxBound(in: context)
     }
 
@@ -111,7 +111,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarOffset {
       return lowerTriviaBound(in: context)..<upperTriviaBound(in: context)
     }
 
