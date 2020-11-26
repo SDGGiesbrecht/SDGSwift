@@ -43,8 +43,17 @@ configuration._validateSDGStandards()
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 configuration.documentation.api.ignoredDependencies = [
 
-  // CommonMark
-  "CCommonMark",
+  // cmark
+  "cmark",
+
+  // llbuild
+  "libllbuild",
+  "llbuildBasic",
+  "llbuildBuildSystem",
+  "llbuildCore",
+  "llbuildSwift",
+  "llvmDemangle",
+  "llvmSupport",
 
   // SDGCornerstone
   "SDGCalendar",
@@ -54,7 +63,6 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGLocalizationTestUtilities",
   "SDGLogic",
   "SDGLogicTestUtilities",
-  "SDGMathematics",
   "SDGPersistence",
   "SDGPersistenceTestUtilities",
   "SDGVersioning",
@@ -66,29 +74,32 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGHTML",
   "SDGWebLocalizations",
 
-  // llbuild
-  "libllbuild",
-  "llbuildBasic",
-  "llbuildBuildSystem",
-  "llbuildCore",
-  "llbuildSwift",
-  "llvmDemangle",
-  "llvmSupport",
-
   // Swift
   "Dispatch",
   "Foundation",
   "XCTest",
 
+  // swift‐numerics
+  "_NumericsShims",
+  "RealModule",
+
+  // swift‐tools‐support‐core
+  "TSCBasic",
+  "TSCclibc",
+  "TSCLibc",
+  "TSCUtility",
+
   // SwiftPM
   "Basic",
   "Build",
   "clibc",
+  "LLBuildManifest",
   "PackageGraph",
   "PackageLoading",
   "PackageModel",
   "POSIX",
   "SourceControl",
+  "SPMBuildCore",
   "SPMLLBuild",
   "SPMLibc",
   "SPMUtility",
