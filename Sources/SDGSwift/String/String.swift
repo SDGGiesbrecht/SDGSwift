@@ -18,6 +18,8 @@ extension String {
 
   /// Returns the index corresponding to a particular scalar offset.
   ///
+  /// - Precondition: The offset is within the string’s bounds.
+  ///
   /// - Parameters:
   ///   - offset: The scalar offset.
   public func index(of offset: ScalarOffset) -> String.ScalarView.Index {

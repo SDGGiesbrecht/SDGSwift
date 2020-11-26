@@ -18,7 +18,7 @@ extension String {
 
   /// An offset into a String’s scalar view.
   ///
-  /// An offset produced by one string is valid in any string that contains the same scalars, which is not true of a raw string index.
+  /// An offset produced by one string is valid in any string instance which contains the same scalars. (The same is not true of a raw string index.)
   public struct ScalarOffset: Comparable, OneDimensionalPoint {
 
     // MARK: - Properties
