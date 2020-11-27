@@ -41,18 +41,26 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   func testExtendedSyntaxContext() {
     // #workaround(Swift 5.3, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(Android))
+      let contextSource = ""
       let context = ExtendedSyntaxContext._token(
         SyntaxFactory.makeToken(.comma),
-        context: SyntaxContext(fragmentContext: "", fragmentOffset: 0, parentContext: nil)
+        context: SyntaxContext(
+          fragmentContext: contextSource,
+          fragmentOffset: contextSource.offset(of: contextSource.scalars.startIndex),
+          parentContext: nil
+        )
       )
-      _ = context.source
       let source = ""
       _ =
         ExtendedSyntaxContext._fragment(
-          CodeFragmentSyntax(range: source.bounds, in: source, isSwift: false),
+          CodeFragmentSyntax(
+            range: source.offsets(of: source.bounds),
+            in: source,
+            isSwift: false
+          ),
           context: context,
           offset: 0
-        ).source
+        )
     #endif
   }
 

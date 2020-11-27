@@ -44,14 +44,8 @@
           let childOffsets = lower..<upper
 
           if let code = child as? CodeFragmentSyntax {
-            let newStart = code.context.scalars.index(
-              code.range.lowerBound,
-              offsetBy: childOffsets.lowerBound
-            )
-            let newEnd = code.context.scalars.index(
-              code.range.lowerBound,
-              offsetBy: childOffsets.upperBound
-            )
+            let newStart = code.range.lowerBound + childOffsets.lowerBound
+            let newEnd = code.range.lowerBound + childOffsets.upperBound
             cropped.append(
               CodeFragmentSyntax(range: newStart..<newEnd, in: code.context, isSwift: code.isSwift)
             )

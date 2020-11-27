@@ -12,24 +12,55 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGCollections
 
 /// A region with the same contiguous coverage status.
-public struct CoverageRegion {
+public struct CoverageRegion<Index> where Index: Comparable {
 
-  // MARK: - Static Methods
+  // MARK: - Initialization
+
+  /// Creates a coverage region.
+  ///
+  /// - Parameters:
+  ///     - region: The region of the source code.
+  ///     - count: The execution count.
+  public init(region: Range<Index>, count: Int) {
+    self.region = region
+    self.count = count
+  }
+
+  // MARK: - Properties
+
+  /// The region.
+  public let region: Range<Index>
+
+  /// The execution count.
+  public let count: Int
+
+  // MARK: - Conversions
+
+  /// Returns the coverage region converted to a different indexing scheme.
+  ///
+  /// - Parameters:
+  ///   - indexConversion: A closure which converts the index.
+  ///   - index: An instance of the original index type.
+  public func convert<I>(using indexConversion: (_ index: Index) -> I) -> CoverageRegion<I> {
+    return CoverageRegion<I>(region: region.map(indexConversion), count: count)
+  }
+}
+
+#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
+  private let charactersIrrelevantToCoverage =
+    CharacterSet.whitespacesAndNewlines ∪ [
+      "{", "}", "(", ")",
+    ]
+#endif
+extension CoverageRegion where Index == String.ScalarView.Index {
 
   #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-    private static let charactersIrrelevantToCoverage =
-      CharacterSet.whitespacesAndNewlines ∪ [
-        "{", "}", "(", ")",
-      ]
-
     public static func _normalize(
       regions: inout [CoverageRegion],
       source: String,
@@ -135,24 +166,4 @@ public struct CoverageRegion {
       }
     }
   #endif
-
-  // MARK: - Initialization
-
-  /// Creates a coverage region.
-  ///
-  /// - Parameters:
-  ///     - region: The region of the source code.
-  ///     - count: The execution count.
-  public init(region: Range<String.ScalarView.Index>, count: Int) {
-    self.region = region
-    self.count = count
-  }
-
-  // MARK: - Properties
-
-  /// The region.
-  public let region: Range<String.ScalarView.Index>
-
-  /// The execution count.
-  public let count: Int
 }

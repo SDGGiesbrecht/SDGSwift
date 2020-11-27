@@ -132,11 +132,12 @@
     /// - Parameters:
     ///     - node: The node to scan.
     public func scan(_ node: SourceFileSyntax) throws {
+      let nodeSource = node.source()
       try scan(
         Syntax(node),
         context: SyntaxContext(
-          fragmentContext: node.source(),
-          fragmentOffset: 0,
+          fragmentContext: nodeSource,
+          fragmentOffset: nodeSource.offset(of: nodeSource.scalars.startIndex),
           parentContext: nil
         )
       )
@@ -183,7 +184,7 @@
           case .syntax(let node):
             let newContext = SyntaxContext(
               fragmentContext: code.context,
-              fragmentOffset: code.offset,
+              fragmentOffset: code.range.lowerBound,
               parentContext: (code, context)
             )
             try scan(node, context: newContext)

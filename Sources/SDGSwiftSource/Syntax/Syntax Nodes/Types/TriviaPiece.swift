@@ -15,6 +15,7 @@
 // #workaround(Swift 5.3, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SDGLogic
+  import SDGMathematics
 
   import SwiftSyntax
 
@@ -47,43 +48,31 @@
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func lowerBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+    public func lowerBound(in context: TriviaPieceContext) -> String.ScalarOffset {
       switch context {
       case ._trivia(let trivia, let index, let parent):
         var location = trivia.lowerBound(in: parent)
-        let source = parent.tokenContext.fragmentContext
         for predecessor in trivia.indices where predecessor < index {
-          location = source.scalars.index(
-            location,
-            offsetBy: trivia[predecessor].text.scalars.count
-          )
+          location += trivia[predecessor].text.scalars.count
         }
         return location
       case ._fragment(let code, context: let codeContext, let offset):
-        let fragmentLocation = code.lowerBound(in: codeContext)
-        return codeContext.source.scalars.index(fragmentLocation, offsetBy: offset)
+        let fragmentLocation: String.ScalarOffset = code.lowerBound(in: codeContext)
+        return fragmentLocation + offset
       }
     }
 
     private func upperBound(
-      from lowerBound: String.ScalarView.Index,
+      from lowerBound: String.ScalarOffset,
       in context: TriviaPieceContext
-    )
-      -> String.ScalarView.Index
-    {
-      switch context {
-      case ._trivia(_, index: _, let parent):
-        let source = parent.tokenContext.fragmentContext
-        return source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-      case ._fragment(_, context: let codeContext, offset: _):
-        return codeContext.source.scalars.index(lowerBound, offsetBy: text.scalars.count)
-      }
+    ) -> String.ScalarOffset {
+      return lowerBound + text.scalars.count
     }
     /// Returns the upper bound of the trivia piece.
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func upperBound(in context: TriviaPieceContext) -> String.ScalarView.Index {
+    public func upperBound(in context: TriviaPieceContext) -> String.ScalarOffset {
       return upperBound(from: lowerBound(in: context), in: context)
     }
 
@@ -91,7 +80,7 @@
     ///
     /// - Parameters:
     ///     - context: The trivia piece’s context.
-    public func range(in context: TriviaPieceContext) -> Range<String.ScalarView.Index> {
+    public func range(in context: TriviaPieceContext) -> Range<String.ScalarOffset> {
       let lowerBound = self.lowerBound(in: context)
       return lowerBound..<upperBound(from: lowerBound, in: context)
     }

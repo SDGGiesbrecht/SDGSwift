@@ -23,7 +23,7 @@
 
     internal init(
       fragmentContext: String,
-      fragmentOffset: Int,
+      fragmentOffset: String.ScalarOffset,
       parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
     ) {
       self.fragmentContext = fragmentContext
@@ -34,7 +34,7 @@
     // MARK: - Properties
 
     internal let fragmentContext: String
-    internal let fragmentOffset: Int
+    internal let fragmentOffset: String.ScalarOffset
     internal let parentContext: (code: CodeFragmentSyntax, context: ExtendedSyntaxContext)?
 
     /// Returns whether or not the context is fragmented.

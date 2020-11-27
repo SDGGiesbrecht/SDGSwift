@@ -44,34 +44,30 @@
 
     // MARK: - Location
 
-    private func index(in context: SyntaxContext, for position: AbsolutePosition)
-      -> String
-      .ScalarView
-      .Index
-    {
+    private func index(
+      in context: SyntaxContext,
+      for position: AbsolutePosition
+    ) -> String.ScalarOffset {
       let string = context.fragmentContext
       let utf8 = string.utf8
       let utf8Index = utf8.index(utf8.startIndex, offsetBy: position.utf8Offset)
       let fragmentIndex = utf8Index.samePosition(in: string.scalars)!
+      let fragmentOffset = string.offset(of: fragmentIndex)
 
       guard let parent = context.parentContext else {
-        return fragmentIndex
+        return fragmentOffset
       }
       let code = parent.code
-      let codeFragmentContext = code.context
-      let codeOffset = codeFragmentContext.scalars.distance(
-        from: code.range.lowerBound,
-        to: fragmentIndex
-      )
-      let codePosition = code.lowerBound(in: parent.context)
-      return parent.context.source.scalars.index(codePosition, offsetBy: codeOffset)
+      let codeOffset = fragmentOffset − code.range.lowerBound
+      let codePosition: String.ScalarOffset = code.lowerBound(in: parent.context)
+      return codePosition + codeOffset
     }
 
     /// Returns the lower bound of the leading trivia.
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func lowerTriviaBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: position)
     }
 
@@ -79,7 +75,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func lowerSyntaxBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: positionAfterSkippingLeadingTrivia)
     }
 
@@ -87,7 +83,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func upperSyntaxBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: endPositionBeforeTrailingTrivia)
     }
 
@@ -95,7 +91,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarView.Index {
+    public func upperTriviaBound(in context: SyntaxContext) -> String.ScalarOffset {
       return index(in: context, for: endPosition)
     }
 
@@ -103,7 +99,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+    public func syntaxRange(in context: SyntaxContext) -> Range<String.ScalarOffset> {
       return lowerSyntaxBound(in: context)..<upperSyntaxBound(in: context)
     }
 
@@ -111,7 +107,7 @@
     ///
     /// - Parameters:
     ///     - context: The node’s context.
-    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarView.Index> {
+    public func triviaRange(in context: SyntaxContext) -> Range<String.ScalarOffset> {
       return lowerTriviaBound(in: context)..<upperTriviaBound(in: context)
     }
 

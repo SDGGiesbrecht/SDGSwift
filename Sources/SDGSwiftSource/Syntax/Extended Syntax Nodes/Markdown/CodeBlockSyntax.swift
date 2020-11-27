@@ -79,7 +79,11 @@
         self.closingVerticalMargin = nil
       }
 
-      let source = CodeFragmentSyntax(range: contents.bounds, in: contents, isSwift: isSwift)
+      let source = CodeFragmentSyntax(
+        range: contents.offsets(of: contents.bounds),
+        in: contents,
+        isSwift: isSwift
+      )
       self.source = source
 
       super.init(

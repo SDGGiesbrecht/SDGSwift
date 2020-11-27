@@ -135,10 +135,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           if let token = syntax.as(TokenSyntax.self) {
             if token.tokenKind == .colon {
               foundColon = true
-              XCTAssertEqual(source[token.syntaxRange(in: context)], ":")
+              XCTAssertEqual(source[source.indices(of: token.syntaxRange(in: context))], ":")
             } else if token.tokenKind == .funcKeyword {
               foundFunction = true
-              XCTAssertEqual(source[token.syntaxRange(in: context)], "func")
+              XCTAssertEqual(source[source.indices(of: token.syntaxRange(in: context))], "func")
             }
           }
           return true
@@ -148,17 +148,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             token.kind == .codeDelimiter
           {
             foundCodeDelimiters = true
-            XCTAssertEqual(source[token.range(in: context)], "`")
+            XCTAssertEqual(source[source.indices(of: token.range(in: context))], "`")
           } else if syntax is InlineCodeSyntax {
             foundCode = true
-            XCTAssertEqual(source[syntax.range(in: context)], "`selector(style:notation:)`")
+            XCTAssertEqual(
+              source[source.indices(of: syntax.range(in: context))],
+              "`selector(style:notation:)`"
+            )
           }
           return true
         },
         checkTrivia: { trivia, context in
           if trivia.source() == " " {
             foundSpaces = true
-            XCTAssertEqual(source[trivia.range(in: context)], " ")
+            XCTAssertEqual(source[source.indices(of: trivia.range(in: context))], " ")
           }
           XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
           foundPreviousTrivia ∨= trivia.previousTrivia(context: context) ≠ nil
@@ -169,7 +172,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         checkTriviaPiece: { trivia, context in
           if case .newlines = trivia {
             foundNewline = true
-            XCTAssertEqual(source[trivia.range(in: context)], "\n")
+            XCTAssertEqual(source[source.indices(of: trivia.range(in: context))], "\n")
             if trivia.parentTrivia(context: context)?.count == 2 {
               XCTAssert(trivia.previousTriviaPiece(context: context)?.text.hasPrefix("/") == true)
             }
@@ -205,12 +208,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             token.kind == .quotationMark
           {
             foundQuotationMark = true
-            XCTAssertEqual(moreSource[token.range(in: context)], "\u{22}")
+            XCTAssertEqual(moreSource[moreSource.indices(of: token.range(in: context))], "\u{22}")
           } else if let token = syntax as? ExtendedTokenSyntax,
             token.kind == .commentText
           {
             foundComment = true
-            XCTAssertEqual(moreSource[token.range(in: context)], "Comment.")
+            XCTAssertEqual(moreSource[moreSource.indices(of: token.range(in: context))], "Comment.")
           }
           return true
         }).scan(moreSyntax)
@@ -225,7 +228,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         checkExtendedSyntax: { syntax, context in
           if syntax is LineDeveloperCommentSyntax {
             foundCommentSyntax = true
-            XCTAssertEqual(evenMoreSource[syntax.range(in: context)], "// Comment.")
+            XCTAssertEqual(
+              evenMoreSource[evenMoreSource.indices(of: syntax.range(in: context))],
+              "// Comment."
+            )
           }
           return true
         },
@@ -234,7 +240,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             ¬trivia.text.isEmpty
           {
             foundTriviaFragment = true
-            XCTAssertEqual(evenMoreSource[trivia.range(in: context)], "// Comment.")
+            XCTAssertEqual(
+              evenMoreSource[evenMoreSource.indices(of: trivia.range(in: context))],
+              "// Comment."
+            )
             XCTAssertEqual(trivia.upperBound(in: context), trivia.range(in: context).upperBound)
             XCTAssertNil(trivia.parentTrivia(context: context))
             XCTAssertNil(trivia.nextTriviaPiece(context: context))
@@ -429,11 +438,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if syntax.is(CodeBlockItemListSyntax.self) {
           statementsFound = true
           XCTAssertEqual(
-            syntax.triviaRange(in: context),
+            source.indices(of: syntax.triviaRange(in: context)),
             source.startIndex..<source.index(source.endIndex, offsetBy: −1)
           )
           XCTAssertEqual(
-            syntax.syntaxRange(in: context),
+            source.indices(of: syntax.syntaxRange(in: context)),
             source.index(
               source.startIndex,
               offsetBy: 7
