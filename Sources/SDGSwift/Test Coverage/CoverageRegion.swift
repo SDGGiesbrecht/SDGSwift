@@ -52,15 +52,12 @@ public struct CoverageRegion<Index> where Index: Comparable {
   }
 }
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   private let charactersIrrelevantToCoverage =
     CharacterSet.whitespacesAndNewlines ∪ [
       "{", "}", "(", ")",
     ]
-#endif
 extension CoverageRegion where Index == String.ScalarView.Index {
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     public static func _normalize(
       regions: inout [CoverageRegion],
       source: String,
@@ -165,5 +162,4 @@ extension CoverageRegion where Index == String.ScalarView.Index {
         return CoverageRegion(region: start..<end, count: region.count)
       }
     }
-  #endif
 }

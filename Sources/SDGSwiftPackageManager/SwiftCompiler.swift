@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
-#endif
 
 import SDGVersioning
 
@@ -31,7 +29,6 @@ extension SwiftCompiler {
 
   private static let compatibleVersions = SDGVersioning.Version(5, 3, 0)...Version(5, 3, 1)
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     internal static func swiftCLocation()
       -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
     {
@@ -74,5 +71,4 @@ extension SwiftCompiler {
         return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
       }
     #endif
-  #endif
 }

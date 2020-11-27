@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -35,7 +33,6 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     private static func coverageTool<Constraints>(
       versionConstraints: Constraints
     ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
@@ -47,7 +44,6 @@ public enum Xcode: VersionedExternalProcess {
           )
         }
     }
-  #endif
 
   // MARK: - Usage
 
@@ -128,18 +124,15 @@ public enum Xcode: VersionedExternalProcess {
     if output.hasPrefix("$ ") {
       return output
     }
-    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
       if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
         return nil
       }
-    #endif
     for ignored in otherIgnored {
       if output.contains(ignored) {
         return nil
       }
     }
 
-    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
       // Log style entry.
       let logComponents: [String] = output.components(separatedBy: " ")
       if logComponents.count ≥ 4,
@@ -153,7 +146,6 @@ public enum Xcode: VersionedExternalProcess {
         // @exempt(from: tests) False coverage result.
         return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
       }
-    #endif
 
     // Command style entry.
     var indentation = ""
@@ -193,7 +185,6 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -225,7 +216,6 @@ public enum Xcode: VersionedExternalProcess {
         ).mapError { .xcodeError($0) }  // @exempt(from: tests)
       }
     }
-  #endif
 
   /// Returns whether the log contains warnings.
   ///
@@ -257,7 +247,6 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
     private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
       return project.location.appendingPathComponent(
         ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
@@ -544,7 +533,6 @@ public enum Xcode: VersionedExternalProcess {
         }
         return .success(TestCoverageReport(files: files))
       }
-    #endif
 
     /// Returns the main package scheme.
     ///

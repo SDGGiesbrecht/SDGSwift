@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import SDGText
   import SDGLocalization
   import SDGVersioning
@@ -54,4 +53,3 @@
       }
     }
   }
-#endif

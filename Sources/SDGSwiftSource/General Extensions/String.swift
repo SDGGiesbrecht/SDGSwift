@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
-#endif
 
 import SDGLogic
 
@@ -26,9 +24,7 @@ extension String {
   ) {  // @exempt(from: tests)
     #if DEBUG
       if first ≠ "_" {
-        #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
           print("Unidentified token: \(self) (\(file), \(function))")
-        #endif
       }
     #endif
   }

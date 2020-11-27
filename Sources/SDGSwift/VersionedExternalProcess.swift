@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGCollections
@@ -43,7 +41,6 @@ public protocol VersionedExternalProcess {
   static var versionQuery: [String] { get }
 }
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
   private var locationCache:
     [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] =
       [:]
@@ -184,4 +181,3 @@ public protocol VersionedExternalProcess {
       }
     }
   }
-#endif
