@@ -53,6 +53,7 @@
 
     // MARK: - Workflow
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Retrieves the package, builds it, and copies its products to the specified destination.
     ///
     /// - Parameters:
@@ -154,6 +155,7 @@
           }
         }
     }
+    #endif
 
     private func developmentCache(for cache: URL) -> URL {
       return cache.appendingPathComponent("Development")
