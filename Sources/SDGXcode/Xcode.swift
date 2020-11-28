@@ -185,6 +185,7 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -216,6 +217,7 @@ public enum Xcode: VersionedExternalProcess {
         ).mapError { .xcodeError($0) }  // @exempt(from: tests)
       }
     }
+  #endif
 
   /// Returns whether the log contains warnings.
   ///
@@ -253,6 +255,7 @@ public enum Xcode: VersionedExternalProcess {
       )
     }
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Tests the package.
     ///
     /// - Parameters:
@@ -613,6 +616,7 @@ public enum Xcode: VersionedExternalProcess {
         }
       }
     }
+  #endif
   #endif
 
   // MARK: - VersionedExternalProcess

@@ -27,13 +27,14 @@
       return _currentMajor
     }
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Initializes a repository with Git.
     ///
     /// - Parameters:
     ///     - repository: The uninitialized repository.
-    public static func initialize(_ repository: PackageRepository) -> Result<
-      Void, VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func initialize(
+      _ repository: PackageRepository
+    ) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 5, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions)
         .map { _ in () }
@@ -91,9 +92,10 @@
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
     ///     - repository: The repository to tag.
-    public static func tag(version releaseVersion: Version, in repository: PackageRepository)
-      -> Result<Void, VersionedExternalProcessExecutionError<Git>>
-    {
+    public static func tag(
+      version releaseVersion: Version,
+      in repository: PackageRepository
+    ) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -179,4 +181,5 @@
         return result
       }
     }
+    #endif
   }

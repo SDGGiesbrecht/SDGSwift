@@ -128,6 +128,7 @@ public protocol VersionedExternalProcess {
       return tool(versionConstraints: versionConstraints).map { $0.executable }
     }
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Runs a custom subcommand.
     ///
     /// - Parameters:
@@ -180,4 +181,5 @@ public protocol VersionedExternalProcess {
         return Version(firstIn: output)
       }
     }
+    #endif
   }

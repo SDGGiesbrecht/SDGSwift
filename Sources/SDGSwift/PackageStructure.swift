@@ -174,6 +174,7 @@
       }
     }
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Retrieves, builds and runs a command line tool defined by a Swift package.
     ///
     /// - Parameters:
@@ -251,6 +252,7 @@
         }
       }
     }
+    #endif
 
     // MARK: - TransparentWrapper
 

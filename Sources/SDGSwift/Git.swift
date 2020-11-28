@@ -33,6 +33,7 @@
 
     // MARK: - Usage
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Creates a local repository by cloning the remote package.
     ///
     /// - Parameters:
@@ -97,9 +98,9 @@
     ///
     /// - Parameters:
     ///     - package: The package.
-    public static func versions(of package: Package) -> Result<
-      Set<Version>, VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func versions(
+      of package: Package
+    ) -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
       let version = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -128,9 +129,9 @@
     ///
     /// - Parameters:
     ///     - package: The package.
-    public static func latestCommitIdentifier(in package: Package) -> Result<
-      String, VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func latestCommitIdentifier(
+      in package: Package
+    ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -143,6 +144,7 @@
         return output.truncated(before: "\u{9}")
       }
     }
+    #endif
 
     // MARK: - VersionedExternalProcess
 

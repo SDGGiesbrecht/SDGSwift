@@ -21,6 +21,7 @@ extension SwiftCompiler {
     return _currentMajor
   }
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Generates or refreshes the package’s Xcode project.
     ///
     /// - Parameters:
@@ -42,4 +43,5 @@ extension SwiftCompiler {
         reportProgress: reportProgress
       )
     }
+  #endif
 }
