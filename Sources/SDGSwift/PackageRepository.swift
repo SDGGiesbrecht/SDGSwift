@@ -29,6 +29,7 @@
       self.location = location
     }
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Creates a local repository by cloning a remote package.
     ///
     /// - Parameters:
@@ -60,19 +61,21 @@
         return .success(repository)
       }
     }
+    #endif
 
     // MARK: - Properties
 
     /// The location of the repository.
     public let location: URL
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// The directory to which products are built.
     ///
     /// - Parameters:
     ///     - releaseConfiguration: Whether or not the sought directory is for the release configuration.
-    public func productsDirectory(releaseConfiguration: Bool) -> Result<
-      URL, VersionedExternalProcessExecutionError<SwiftCompiler>
-    > {
+    public func productsDirectory(
+      releaseConfiguration: Bool
+    ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.productsDirectory(for: self, releaseConfiguration: releaseConfiguration)
     }
 
@@ -131,6 +134,7 @@
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.test(self, reportProgress: reportProgress)
     }
+    #endif
 
     public func _directoriesIgnoredForTestCoverage() -> [Foundation.URL] {
       return [
@@ -139,6 +143,7 @@
       ].map { location.appendingPathComponent($0) }
     }
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:
@@ -168,6 +173,7 @@
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
+    #endif
 
     // MARK: - TransparentWrapper
 

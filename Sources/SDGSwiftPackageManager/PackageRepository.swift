@@ -34,7 +34,7 @@
     // MARK: - Initialization
 
     // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(Android))
       /// Creates a new package by initializing it at the specified URL.
       ///
       /// - Parameters:
@@ -89,7 +89,7 @@
     // MARK: - Properties
 
     // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(Android))
       /// Returns the package manifest.
       public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
         return SwiftCompiler.withDiagnostics { compiler, _ in
@@ -137,23 +137,18 @@
       }
     #endif
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Checks for uncommitted changes or additions.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
     public func uncommittedChanges()
-      -> Swift.Result<
-        String, VersionedExternalProcessExecutionError<SDGSwift.Git>
-      >
-    {
+      -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.uncommittedChanges(in: self)
     }
 
     /// Returns the list of files ignored by source control.
     public func ignoredFiles()
-      -> Swift.Result<
-        [Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>
-      >
-    {
+      -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.ignoredFiles(in: self)
     }
 
@@ -163,11 +158,9 @@
     ///
     /// - Parameters:
     ///     - branch: The branch to check out.
-    public func checkout(_ branch: String)
-      -> Swift.Result<
-        Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-      >
-    {
+    public func checkout(
+      _ branch: String
+    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.checkout(branch, in: self)
     }
 
@@ -175,11 +168,9 @@
     ///
     /// - Parameters:
     ///     - description: A description for the commit.
-    public func commitChanges(description: StrictString)
-      -> Swift.Result<
-        Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-      >
-    {
+    public func commitChanges(
+      description: StrictString
+    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.commitChanges(in: self, description: description)
     }
 
@@ -187,11 +178,10 @@
     ///
     /// - Parameters:
     ///     - releaseVersion: The semantic version.
-    public func tag(version releaseVersion: SDGVersioning.Version)
-      -> Swift.Result<
-        Void, VersionedExternalProcessExecutionError<SDGSwift.Git>
-      >
-    {
+    public func tag(
+      version releaseVersion: SDGVersioning.Version
+    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.tag(version: releaseVersion, in: self)
     }
+    #endif
   }

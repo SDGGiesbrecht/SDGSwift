@@ -20,6 +20,7 @@
 
     // MARK: - Properties
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Returns the package’s Xcode project.
     public func xcodeProject() throws -> URL? {
       let files = try FileManager.default.contentsOfDirectory(
@@ -33,7 +34,9 @@
       }
       return nil
     }
+    #endif
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Returns the main package scheme.
     public func scheme() -> Result<String, Xcode.SchemeError> {
       return Xcode.scheme(for: self)
@@ -77,9 +80,10 @@
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
+    #endif
 
     // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(Android))
       /// Returns the code coverage report for the package.
       ///
       /// - Parameters:
