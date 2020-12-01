@@ -39,6 +39,7 @@
     /// The URL of the package.
     public let url: URL
 
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Retrieves the list of available versions.
     public func versions() -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
       return Git.versions(of: self)
@@ -50,6 +51,7 @@
     > {
       return Git.latestCommitIdentifier(in: self)
     }
+    #endif
 
     // MARK: - Workflow
 
