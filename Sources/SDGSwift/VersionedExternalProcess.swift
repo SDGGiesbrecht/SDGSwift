@@ -79,14 +79,21 @@ public protocol VersionedExternalProcess {
       return cached(in: &self[versionConstraints]) {
 
         let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
+          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+            return nil
+          #else
           guard let output = try? Shell.default.run(command: command).get() else {
             return nil
           }
           // @exempt(from: tests) Unreachable on CentOS.
           return URL(fileURLWithPath: output)
+          #endif
         }
 
         func validate(_ process: ExternalProcess) -> Bool {
+          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+            return false // Cannot ensure version matches.
+          #else
           // Make sure version is compatible.
           guard let output = try? process.run(versionQuery).get(),
             let version = Version(firstIn: output)
@@ -95,6 +102,7 @@ public protocol VersionedExternalProcess {
             // Would require corrupt tools to be present during tests.
           }
           return versionConstraints.contains(version)
+          #endif
         }
 
         if let found = ExternalProcess(
