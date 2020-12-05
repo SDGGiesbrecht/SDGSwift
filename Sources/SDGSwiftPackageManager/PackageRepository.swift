@@ -18,8 +18,8 @@
   import SDGLocalization
   import SDGVersioning
 
-  // #workaround(Swift 5.3, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
+  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     import PackageModel
     import Build
     import Workspace
@@ -33,7 +33,7 @@
 
     // MARK: - Initialization
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(Android))
       /// Creates a new package by initializing it at the specified URL.
       ///
@@ -88,7 +88,7 @@
 
     // MARK: - Properties
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(Android))
       /// Returns the package manifest.
       public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {

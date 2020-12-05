@@ -111,7 +111,7 @@
     }
   }
 
-  // #workaround(Swift 5.3, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(Android))
     public func withDefaultMockRepository(
       file: StaticString = #filePath,

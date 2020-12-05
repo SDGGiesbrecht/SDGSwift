@@ -17,15 +17,15 @@
 
   import SDGSwift
 
-  // #workaround(Swift 5.3, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
+  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     import Workspace
   #endif
 
   extension SwiftCompiler {
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       /// An error encountered while loading a Swift package.
       public enum PackageLoadingError: PresentableError {
 
