@@ -163,9 +163,11 @@
       return cache.appendingPathComponent("Development")
     }
 
-    private func cacheDirectory(in cache: URL, for version: Build) -> Result<
-      URL, VersionedExternalProcessExecutionError<Git>
-    > {
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    private func cacheDirectory(
+      in cache: URL,
+      for version: Build
+    ) -> Result<URL, VersionedExternalProcessExecutionError<Git>> {
       switch version {
       case .version(let specific):
         return .success(cache.appendingPathComponent(specific.string()))
@@ -175,6 +177,7 @@
         }
       }
     }
+    #endif
 
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Retrieves, builds and runs a command line tool defined by a Swift package.
