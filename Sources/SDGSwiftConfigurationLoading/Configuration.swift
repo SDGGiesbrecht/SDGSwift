@@ -31,6 +31,7 @@ extension Configuration {
 
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     // #example(1, configurationFile) #example(2, configurationLoading)
     /// Loads the configuration in the specified directory with the specified file name.
     ///
@@ -136,8 +137,10 @@ extension Configuration {
         reportProgress: reportProgress
       )
     }
+  #endif
   private struct NullContext: Context {}
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Loads the configuration, providing it with additional context information.
     ///
     /// This method has the additional ability to supply context to the configuration file as it loads. See the simpler version  (`load(configuration:named:from:linkingAgainst:in:at:reportProgress:)`) for general information about loading configurations.
@@ -361,6 +364,7 @@ extension Configuration {
       }
       return .success(registered)
     }
+  #endif
 
     internal static func reportForNoConfigurationFound() -> UserFacing<
       StrictString, InterfaceLocalization
