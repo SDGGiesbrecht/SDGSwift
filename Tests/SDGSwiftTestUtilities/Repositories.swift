@@ -46,6 +46,7 @@
   public let mocksDirectory = thisRepository.location
     .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
+#if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
   private func withMock(
     named name: String? = nil,
     dependentOn dependencies: [String] = [],
@@ -142,3 +143,4 @@
       test: test
     )
   }
+#endif

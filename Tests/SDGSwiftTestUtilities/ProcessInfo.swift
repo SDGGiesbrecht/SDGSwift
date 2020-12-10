@@ -16,8 +16,10 @@
 
   import SDGLogic
 
+#if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks ProcessInfo.)
   extension ProcessInfo {
 
     internal static let isInGitHubAction =
       ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
   }
+#endif
