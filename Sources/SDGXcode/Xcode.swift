@@ -536,6 +536,7 @@ public enum Xcode: VersionedExternalProcess {
         }
         return .success(TestCoverageReport(files: files))
       }
+    #endif
 
     /// Returns the main package scheme.
     ///
@@ -616,7 +617,6 @@ public enum Xcode: VersionedExternalProcess {
         }
       }
     }
-  #endif
   #endif
 
   // MARK: - VersionedExternalProcess
