@@ -29,9 +29,9 @@ extension Configuration {
 
   private static let minimumMacOSVersion: Version = Version(10, 10)
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     private static let cache = FileManager.default.url(in: .cache, at: "Configurations")
 
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     // #example(1, configurationFile) #example(2, configurationLoading)
     /// Loads the configuration in the specified directory with the specified file name.
     ///
