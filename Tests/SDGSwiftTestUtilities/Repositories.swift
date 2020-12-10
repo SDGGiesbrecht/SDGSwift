@@ -36,11 +36,13 @@
         root = URL(fileURLWithPath: directory)
       }
     #endif
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
       root = URL(fileURLWithPath: overridden)
     }
+    #endif
     return PackageRepository(at: root)
   }()
   public let mocksDirectory = thisRepository.location
