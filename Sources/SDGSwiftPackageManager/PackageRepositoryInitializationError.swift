@@ -12,31 +12,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SDGText
-  import SDGLocalization
+import SDGText
+import SDGLocalization
 
-  import SDGSwift
+import SDGSwift
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    /// An error encountered while initializing a package repository.
-    public enum InitializationError: PresentableError {
+  /// An error encountered while initializing a package repository.
+  public enum InitializationError: PresentableError {
 
-      /// The package manager encountered an error.
-      case packageManagerError(Swift.Error)
+    /// The package manager encountered an error.
+    case packageManagerError(Swift.Error)
 
-      /// Git encountered an error.
-      case gitError(VersionedExternalProcessExecutionError<Git>)
+    /// Git encountered an error.
+    case gitError(VersionedExternalProcessExecutionError<Git>)
 
-      // MARK: - PresentableError
+    // MARK: - PresentableError
 
-      public func presentableDescription() -> StrictString {
-        switch self {
-        case .packageManagerError(let error):
-          return StrictString(error.localizedDescription)
-        case .gitError(let error):
-          return error.presentableDescription()
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .packageManagerError(let error):
+        return StrictString(error.localizedDescription)
+      case .gitError(let error):
+        return error.presentableDescription()
       }
     }
   }
+}

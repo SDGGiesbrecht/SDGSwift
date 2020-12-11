@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGCollections
@@ -41,59 +41,59 @@ public protocol VersionedExternalProcess {
   static var versionQuery: [String] { get }
 }
 
-  private var locationCache:
-    [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] =
-      [:]
+private var locationCache:
+  [ObjectIdentifier: [ObjectIdentifier: [Version: [Version: Result<ExternalProcess, Error>]]]] =
+    [:]
 
-  extension VersionedExternalProcess {
+extension VersionedExternalProcess {
 
-    // MARK: - Locating
+  // MARK: - Locating
 
-    private static subscript<Constraints>(
-      versionConstraints: Constraints
-    ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>?
-    where Constraints: RangeFamily, Constraints.Bound == Version {
-      get {
-        let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[
-          versionConstraints.lowerBound
-        ]?[versionConstraints.upperBound]
-        return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
-      }
-      set {
-        let converted = newValue?.mapError { $0 as Error }
-        locationCache[ObjectIdentifier(self), default: [:]][
-          ObjectIdentifier(Constraints.self),
-          default: [:]
-        ][
-          versionConstraints.lowerBound,
-          default: [:]
-        ][versionConstraints.upperBound] = converted
-      }
+  private static subscript<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>?
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    get {
+      let result = locationCache[ObjectIdentifier(self)]?[ObjectIdentifier(Constraints.self)]?[
+        versionConstraints.lowerBound
+      ]?[versionConstraints.upperBound]
+      return result?.mapError { $0 as! VersionedExternalProcessLocationError<Self> }
     }
+    set {
+      let converted = newValue?.mapError { $0 as Error }
+      locationCache[ObjectIdentifier(self), default: [:]][
+        ObjectIdentifier(Constraints.self),
+        default: [:]
+      ][
+        versionConstraints.lowerBound,
+        default: [:]
+      ][versionConstraints.upperBound] = converted
+    }
+  }
 
-    private static func tool<Constraints>(
-      versionConstraints: Constraints
-    ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
-    where Constraints: RangeFamily, Constraints.Bound == Version {
+  private static func tool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
 
-      return cached(in: &self[versionConstraints]) {
+    return cached(in: &self[versionConstraints]) {
 
-        let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
-          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
-            return nil
-          #else
+      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
+        #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+          return nil
+        #else
           guard let output = try? Shell.default.run(command: command).get() else {
             return nil
           }
           // @exempt(from: tests) Unreachable on CentOS.
           return URL(fileURLWithPath: output)
-          #endif
-        }
+        #endif
+      }
 
-        func validate(_ process: ExternalProcess) -> Bool {
-          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
-            return false // Cannot ensure version matches.
-          #else
+      func validate(_ process: ExternalProcess) -> Bool {
+        #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+          return false  // Cannot ensure version matches.
+        #else
           // Make sure version is compatible.
           guard let output = try? process.run(versionQuery).get(),
             let version = Version(firstIn: output)
@@ -102,41 +102,41 @@ public protocol VersionedExternalProcess {
             // Would require corrupt tools to be present during tests.
           }
           return versionConstraints.contains(version)
-          #endif
-        }
+        #endif
+      }
 
-        if let found = ExternalProcess(
-          searching: searchLocations,
-          commandName: commandName,
-          validate: validate
-        ) {
-          return .success(found)
-        } else {
-          return .failure(
-            .unavailable(
-              versionConstraints: versionConstraints.inInequalityNotation({
-                StrictString($0.string())
-              })
-            )
+      if let found = ExternalProcess(
+        searching: searchLocations,
+        commandName: commandName,
+        validate: validate
+      ) {
+        return .success(found)
+      } else {
+        return .failure(
+          .unavailable(
+            versionConstraints: versionConstraints.inInequalityNotation({
+              StrictString($0.string())
+            })
           )
-        }
+        )
       }
     }
+  }
 
-    // MARK: - Usage
+  // MARK: - Usage
 
-    /// Returns the location of the process.
-    ///
-    /// - Parameters:
-    ///   - versionConstraints: The acceptable range of versions.
-    public static func location<Constraints>(
-      versionConstraints: Constraints
-    ) -> Result<URL, VersionedExternalProcessLocationError<Self>>
-    where Constraints: RangeFamily, Constraints.Bound == Version {
-      return tool(versionConstraints: versionConstraints).map { $0.executable }
-    }
+  /// Returns the location of the process.
+  ///
+  /// - Parameters:
+  ///   - versionConstraints: The acceptable range of versions.
+  public static func location<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<URL, VersionedExternalProcessLocationError<Self>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return tool(versionConstraints: versionConstraints).map { $0.executable }
+  }
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Runs a custom subcommand.
     ///
     /// - Parameters:
@@ -189,5 +189,5 @@ public protocol VersionedExternalProcess {
         return Version(firstIn: output)
       }
     }
-    #endif
-  }
+  #endif
+}

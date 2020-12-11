@@ -12,15 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
-  import SDGSwift
+import SDGSwift
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Returns the package’s Xcode project.
     public func xcodeProject() throws -> URL? {
       let files = try FileManager.default.contentsOfDirectory(
@@ -34,9 +34,9 @@
       }
       return nil
     }
-    #endif
+  #endif
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Returns the main package scheme.
     public func scheme() -> Result<String, Xcode.SchemeError> {
       return Xcode.scheme(for: self)
@@ -80,30 +80,30 @@
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.test(self, on: sdk, reportProgress: reportProgress)
     }
-    #endif
+  #endif
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      /// Returns the code coverage report for the package.
-      ///
-      /// - Parameters:
-      ///     - sdk: The SDK to run tests on.
-      ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-      ///     - reportProgress: Optional. A closure to execute for each line of output.
-      ///     - progressReport: A line of output.
-      ///
-      /// - Returns: The report, or `nil` if there is no code coverage information.
-      public func codeCoverageReport(
-        on sdk: Xcode.SDK,
-        ignoreCoveredRegions: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-      ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
-        return Xcode.codeCoverageReport(
-          for: self,
-          on: sdk,
-          ignoreCoveredRegions: ignoreCoveredRegions,
-          reportProgress: reportProgress
-        )
-      }
-    #endif
-  }
+  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(WASI) || os(Android))
+    /// Returns the code coverage report for the package.
+    ///
+    /// - Parameters:
+    ///     - sdk: The SDK to run tests on.
+    ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    ///
+    /// - Returns: The report, or `nil` if there is no code coverage information.
+    public func codeCoverageReport(
+      on sdk: Xcode.SDK,
+      ignoreCoveredRegions: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+    ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
+      return Xcode.codeCoverageReport(
+        for: self,
+        on: sdk,
+        ignoreCoveredRegions: ignoreCoveredRegions,
+        reportProgress: reportProgress
+      )
+    }
+  #endif
+}

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -33,17 +33,17 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-    private static func coverageTool<Constraints>(
-      versionConstraints: Constraints
-    ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
-    where Constraints: RangeFamily, Constraints.Bound == Version {
-      return location(versionConstraints: versionConstraints)
-        .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
-          return ExternalProcess(
-            at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
-          )
-        }
-    }
+  private static func coverageTool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return location(versionConstraints: versionConstraints)
+      .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(
+          at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
+        )
+      }
+  }
 
   // MARK: - Usage
 
@@ -124,28 +124,28 @@ public enum Xcode: VersionedExternalProcess {
     if output.hasPrefix("$ ") {
       return output
     }
-      if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
-        return nil
-      }
+    if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
+      return nil
+    }
     for ignored in otherIgnored {
       if output.contains(ignored) {
         return nil
       }
     }
 
-      // Log style entry.
-      let logComponents: [String] = output.components(separatedBy: " ")
-      if logComponents.count ≥ 4,
-        logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-        logComponents[1].scalars.allSatisfy({
-          // @exempt(from: tests) False coverage result.
-          $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
-        }),
-        let process = logComponents[2].prefix(upTo: "[")?.contents
-      {
+    // Log style entry.
+    let logComponents: [String] = output.components(separatedBy: " ")
+    if logComponents.count ≥ 4,
+      logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
+      logComponents[1].scalars.allSatisfy({
         // @exempt(from: tests) False coverage result.
-        return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
-      }
+        $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
+      }),
+      let process = logComponents[2].prefix(upTo: "[")?.contents
+    {
+      // @exempt(from: tests) False coverage result.
+      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+    }
 
     // Command style entry.
     var indentation = ""
@@ -249,11 +249,11 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-    private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
-      return project.location.appendingPathComponent(
-        ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
-      )
-    }
+  private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
+    return project.location.appendingPathComponent(
+      ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
+    )
+  }
 
   #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Tests the package.

@@ -12,34 +12,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
-  import SDGControlFlow
-  import SDGLogic
-  import SDGCollections
-  import SDGText
-  import SDGExternalProcess
-  import SDGVersioning
+import SDGControlFlow
+import SDGLogic
+import SDGCollections
+import SDGText
+import SDGExternalProcess
+import SDGVersioning
 
-  /// A remote Swift package.
-  public struct Package: TransparentWrapper {
+/// A remote Swift package.
+public struct Package: TransparentWrapper {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates an instance describing the package at the specified url.
-    ///
-    /// - Parameters:
-    ///     - url: The package URL.
-    public init(url: URL) {
-      self.url = url
-    }
+  /// Creates an instance describing the package at the specified url.
+  ///
+  /// - Parameters:
+  ///     - url: The package URL.
+  public init(url: URL) {
+    self.url = url
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The URL of the package.
-    public let url: URL
+  /// The URL of the package.
+  public let url: URL
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Retrieves the list of available versions.
     public func versions() -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
       return Git.versions(of: self)
@@ -51,11 +51,11 @@
     > {
       return Git.latestCommitIdentifier(in: self)
     }
-    #endif
+  #endif
 
-    // MARK: - Workflow
+  // MARK: - Workflow
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Retrieves the package, builds it, and copies its products to the specified destination.
     ///
     /// - Parameters:
@@ -157,13 +157,13 @@
           }
         }
     }
-    #endif
+  #endif
 
-    private func developmentCache(for cache: URL) -> URL {
-      return cache.appendingPathComponent("Development")
-    }
+  private func developmentCache(for cache: URL) -> URL {
+    return cache.appendingPathComponent("Development")
+  }
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     private func cacheDirectory(
       in cache: URL,
       for version: Build
@@ -177,9 +177,9 @@
         }
       }
     }
-    #endif
+  #endif
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Retrieves, builds and runs a command line tool defined by a Swift package.
     ///
     /// - Parameters:
@@ -257,11 +257,11 @@
         }
       }
     }
-    #endif
+  #endif
 
-    // MARK: - TransparentWrapper
+  // MARK: - TransparentWrapper
 
-    public var wrappedInstance: Any {
-      return url
-    }
+  public var wrappedInstance: Any {
+    return url
   }
+}

@@ -18,10 +18,10 @@ import SDGText
 /// A namespace for syntax highlighting.
 public enum SyntaxHighlighter {
 
-    /// The CSS to use with syntax‐highlighted HTML.
-    public static var css: StrictString {
-      return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
-    }
+  /// The CSS to use with syntax‐highlighted HTML.
+  public static var css: StrictString {
+    return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
+  }
 
   internal static func frame(highlightedSyntax: String, inline: Bool) -> String {
     var result = "<code class=\u{22}swift"

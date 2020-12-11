@@ -12,143 +12,144 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
-  import SDGText
-  import SDGLocalization
-  import SDGVersioning
+import SDGText
+import SDGLocalization
+import SDGVersioning
+
+// #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import PackageModel
+  import Build
+  import Workspace
+#endif
+
+import SDGSwift
+
+import SDGSwiftLocalizations
+
+extension PackageRepository {
+
+  // MARK: - Initialization
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    import PackageModel
-    import Build
-    import Workspace
+    /// Creates a new package by initializing it at the specified URL.
+    ///
+    /// - Parameters:
+    ///     - location: The location at which to initialize the new package.
+    ///     - name: A name for the package.
+    ///     - type: The type of package.
+    public static func initializePackage(
+      at location: Foundation.URL,
+      named name: StrictString,
+      type: InitPackage.PackageType
+    ) -> Swift.Result<PackageRepository, InitializationError> {
+
+      let repository = PackageRepository(at: location)
+
+      do {
+        let initializer = try InitPackage(
+          name: String(name),
+          destinationPath: AbsolutePath(location.path),
+          packageType: type
+        )
+        try initializer.writePackageStructure()
+      } catch {
+        return .failure(.packageManagerError(error))
+      }
+
+      switch Git.initialize(repository) {
+      case .failure(let error):
+        return .failure(.gitError(error))
+      case .success:
+        break
+      }
+      switch repository.commitChanges(
+        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom:
+            return "Initialised."
+          case .englishUnitedStates, .englishCanada:
+            return "Initialized."
+          case .deutschDeutschland:
+            return "Stellte vorein."
+          }
+        }).resolved()
+      ) {
+      case .failure(let error):
+        return .failure(.gitError(error))
+      case .success:
+        return .success(repository)
+      }
+    }
   #endif
 
-  import SDGSwift
+  // MARK: - Properties
 
-  import SDGSwiftLocalizations
-
-  extension PackageRepository {
-
-    // MARK: - Initialization
-
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      /// Creates a new package by initializing it at the specified URL.
-      ///
-      /// - Parameters:
-      ///     - location: The location at which to initialize the new package.
-      ///     - name: A name for the package.
-      ///     - type: The type of package.
-      public static func initializePackage(
-        at location: Foundation.URL,
-        named name: StrictString,
-        type: InitPackage.PackageType
-      ) -> Swift.Result<PackageRepository, InitializationError> {
-
-        let repository = PackageRepository(at: location)
-
-        do {
-          let initializer = try InitPackage(
-            name: String(name),
-            destinationPath: AbsolutePath(location.path),
-            packageType: type
-          )
-          try initializer.writePackageStructure()
-        } catch {
-          return .failure(.packageManagerError(error))
-        }
-
-        switch Git.initialize(repository) {
-        case .failure(let error):
-          return .failure(.gitError(error))
-        case .success:
-          break
-        }
-        switch repository.commitChanges(
-          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return "Initialised."
-            case .englishUnitedStates, .englishCanada:
-              return "Initialized."
-            case .deutschDeutschland:
-              return "Stellte vorein."
-            }
-          }).resolved()
-        ) {
-        case .failure(let error):
-          return .failure(.gitError(error))
-        case .success:
-          return .success(repository)
-        }
+  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  #if !(os(Windows) || os(WASI) || os(Android))
+    /// Returns the package manifest.
+    public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
+      return SwiftCompiler.withDiagnostics { compiler, _ in
+        return try ManifestLoader.loadManifest(
+          packagePath: AbsolutePath(location.path),
+          swiftCompiler: AbsolutePath(compiler.path),
+          packageKind: .root
+        )
       }
-    #endif
+    }
 
-    // MARK: - Properties
-
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      /// Returns the package manifest.
-      public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
-        return SwiftCompiler.withDiagnostics { compiler, _ in
-          return try ManifestLoader.loadManifest(
-            packagePath: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            packageKind: .root
-          )
-        }
+    /// Returns the package structure.
+    public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
+      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
+        return try PackageBuilder.loadPackage(
+          packagePath: AbsolutePath(location.path),
+          swiftCompiler: AbsolutePath(compiler.path),
+          // #workaround(swift-package-manager 0.7.0, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
+          xcTestMinimumDeploymentTargets: [:],
+          diagnostics: diagnostics
+        )
       }
+    }
 
-      /// Returns the package structure.
-      public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError>
-      {
-        return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-          return try PackageBuilder.loadPackage(
-            packagePath: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            // #workaround(swift-package-manager 0.7.0, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
-            xcTestMinimumDeploymentTargets: [:],
-            diagnostics: diagnostics
-          )
-        }
+    /// Returns the package workspace.
+    public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
+      return SwiftCompiler.manifestLoader().map { loader in
+        return Workspace.create(
+          forRootPackage: AbsolutePath(location.path),
+          manifestLoader: loader
+        )
       }
+    }
 
-      /// Returns the package workspace.
-      public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
-        return SwiftCompiler.manifestLoader().map { loader in
-          return Workspace.create(
-            forRootPackage: AbsolutePath(location.path),
-            manifestLoader: loader
-          )
-        }
+    /// Returns the package graph.
+    public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
+      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
+        return try Workspace.loadGraph(
+          packagePath: AbsolutePath(location.path),
+          swiftCompiler: AbsolutePath(compiler.path),
+          diagnostics: diagnostics
+        )
       }
+    }
+  #endif
 
-      /// Returns the package graph.
-      public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
-        return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-          return try Workspace.loadGraph(
-            packagePath: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            diagnostics: diagnostics
-          )
-        }
-      }
-    #endif
-
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Checks for uncommitted changes or additions.
     ///
     /// - Returns: The report provided by Git. (An empty string if there are no changes.)
     public func uncommittedChanges()
-      -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+      -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>>
+    {
       return Git.uncommittedChanges(in: self)
     }
 
     /// Returns the list of files ignored by source control.
     public func ignoredFiles()
-      -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+      -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>>
+    {
       return Git.ignoredFiles(in: self)
     }
 
@@ -183,5 +184,5 @@
     ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
       return Git.tag(version: releaseVersion, in: self)
     }
-    #endif
-  }
+  #endif
+}

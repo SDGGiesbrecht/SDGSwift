@@ -12,46 +12,46 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SDGText
-  import SDGLocalization
+import SDGText
+import SDGLocalization
 
-  import SDGSwift
+import SDGSwift
+
+// #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import Workspace
+#endif
+
+extension SwiftCompiler {
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    import Workspace
-  #endif
+    /// An error encountered while loading a Swift package.
+    public enum PackageLoadingError: PresentableError {
 
-  extension SwiftCompiler {
+      // MARK: - Cases
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      /// An error encountered while loading a Swift package.
-      public enum PackageLoadingError: PresentableError {
+      /// Swift could not be located.
+      case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
-        // MARK: - Cases
+      /// The package manager encountered an error.
+      case packageManagerError(Swift.Error?, [Diagnostic])
 
-        /// Swift could not be located.
-        case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
+      // MARK: - PresentableError
 
-        /// The package manager encountered an error.
-        case packageManagerError(Swift.Error?, [Diagnostic])
-
-        // MARK: - PresentableError
-
-        public func presentableDescription() -> StrictString {
-          switch self {
-          case .swiftLocationError(let error):
-            return error.presentableDescription()
-          case .packageManagerError(let error, let diagnostics):
-            var lines: [String] = []
-            if let error = error {
-              lines.append(error.localizedDescription)
-            }
-            lines += diagnostics.map({ $0.localizedDescription })
-            return StrictString(lines.joined(separator: "\n"))
+      public func presentableDescription() -> StrictString {
+        switch self {
+        case .swiftLocationError(let error):
+          return error.presentableDescription()
+        case .packageManagerError(let error, let diagnostics):
+          var lines: [String] = []
+          if let error = error {
+            lines.append(error.localizedDescription)
           }
+          lines += diagnostics.map({ $0.localizedDescription })
+          return StrictString(lines.joined(separator: "\n"))
         }
       }
-    #endif
-  }
+    }
+  #endif
+}

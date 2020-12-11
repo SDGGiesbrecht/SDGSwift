@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 /// A context provided by the configuration loader.
 public protocol Context: Codable {}

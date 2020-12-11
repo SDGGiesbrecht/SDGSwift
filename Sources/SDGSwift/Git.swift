@@ -12,28 +12,28 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
-  import SDGControlFlow
-  import SDGMathematics
-  import SDGCollections
-  import SDGText
-  import SDGExternalProcess
-  import SDGVersioning
+import SDGControlFlow
+import SDGMathematics
+import SDGCollections
+import SDGText
+import SDGExternalProcess
+import SDGVersioning
 
-  /// Git.
-  public enum Git: VersionedExternalProcess {
+/// Git.
+public enum Git: VersionedExternalProcess {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    public static let _currentMajor = Version(2)
-    private static var currentMajor: Version {
-      return _currentMajor
-    }
+  public static let _currentMajor = Version(2)
+  private static var currentMajor: Version {
+    return _currentMajor
+  }
 
-    // MARK: - Usage
+  // MARK: - Usage
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Creates a local repository by cloning the remote package.
     ///
     /// - Parameters:
@@ -144,18 +144,18 @@
         return output.truncated(before: "\u{9}")
       }
     }
-    #endif
+  #endif
 
-    // MARK: - VersionedExternalProcess
+  // MARK: - VersionedExternalProcess
 
-    public static let englishName: StrictString = "Git"
-    public static var deutscherNameInDativ: StrictString = "Git"
+  public static let englishName: StrictString = "Git"
+  public static var deutscherNameInDativ: StrictString = "Git"
 
-    public static var commandName: String = "git"
+  public static var commandName: String = "git"
 
-    public static let searchCommands: [[String]] = [
-      ["which", "git"]
-    ]
+  public static let searchCommands: [[String]] = [
+    ["which", "git"]
+  ]
 
-    public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
-  }
+  public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
+}

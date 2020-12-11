@@ -12,22 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
-  import SDGLogic
-  import SDGCollections
-  import SDGText
-  import SDGVersioning
+import SDGLogic
+import SDGCollections
+import SDGText
+import SDGVersioning
 
-  import SDGSwift
+import SDGSwift
 
-  extension Git {
+extension Git {
 
-    private static var currentMajor: Version {
-      return _currentMajor
-    }
+  private static var currentMajor: Version {
+    return _currentMajor
+  }
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Initializes a repository with Git.
     ///
     /// - Parameters:
@@ -181,5 +181,5 @@
         return result
       }
     }
-    #endif
-  }
+  #endif
+}

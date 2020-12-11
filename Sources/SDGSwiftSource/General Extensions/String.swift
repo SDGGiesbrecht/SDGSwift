@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 
@@ -24,7 +24,7 @@ extension String {
   ) {  // @exempt(from: tests)
     #if DEBUG
       if first ≠ "_" {
-          print("Unidentified token: \(self) (\(file), \(function))")
+        print("Unidentified token: \(self) (\(file), \(function))")
       }
     #endif
   }

@@ -12,45 +12,45 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SDGText
-  import SDGLocalization
+import SDGText
+import SDGLocalization
 
-  import SDGSwiftLocalizations
+import SDGSwiftLocalizations
 
-  extension SwiftCompiler {
+extension SwiftCompiler {
 
-    /// An error encountered while checking test coverage.
-    public enum CoverageReportingError: PresentableError {
+  /// An error encountered while checking test coverage.
+  public enum CoverageReportingError: PresentableError {
 
-      // MARK: - Cases
+    // MARK: - Cases
 
-      /// Swift encountered an error.
-      case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
+    /// Swift encountered an error.
+    case swiftError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
-      /// Foundation encountered an error.
-      case foundationError(Swift.Error)
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
 
-      /// The test coverage report could not be parsed.
-      case corruptTestCoverageReport
+    /// The test coverage report could not be parsed.
+    case corruptTestCoverageReport
 
-      // MARK: - PresentableError
+    // MARK: - PresentableError
 
-      public func presentableDescription() -> StrictString {
-        switch self {
-        case .swiftError(let error):
-          return error.presentableDescription()
-        case .foundationError(let error):
-          return StrictString(error.localizedDescription)
-        case .corruptTestCoverageReport:
-          return UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "The test coverage report could not be parsed."
-            case .deutschDeutschland:
-              return "Die Testabdeckungsergebnisse konnten nicht zerteilt werden."
-            }
-          }).resolved()
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .swiftError(let error):
+        return error.presentableDescription()
+      case .foundationError(let error):
+        return StrictString(error.localizedDescription)
+      case .corruptTestCoverageReport:
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "The test coverage report could not be parsed."
+          case .deutschDeutschland:
+            return "Die Testabdeckungsergebnisse konnten nicht zerteilt werden."
+          }
+        }).resolved()
       }
     }
   }
+}

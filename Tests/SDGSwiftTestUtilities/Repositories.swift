@@ -12,41 +12,41 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
-  import XCTest
+import Foundation
+import XCTest
 
-  import SDGText
-  import SDGExternalProcess
+import SDGText
+import SDGExternalProcess
 
-  import SDGSwift
-  import SDGSwiftPackageManager
+import SDGSwift
+import SDGSwiftPackageManager
 
-  public let thisRepository: PackageRepository = {
-    var root = URL(fileURLWithPath: #filePath)
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
-    #if os(Windows)
-      // Fix WSL paths if cross‐compiled.
-      var directory = root.path
-      if directory.hasPrefix("/mnt/") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        root = URL(fileURLWithPath: directory)
-      }
-    #endif
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+public let thisRepository: PackageRepository = {
+  var root = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+  #if os(Windows)
+    // Fix WSL paths if cross‐compiled.
+    var directory = root.path
+    if directory.hasPrefix("/mnt/") {
+      directory.removeFirst(5)
+      let driveLetter = directory.removeFirst()
+      directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+      root = URL(fileURLWithPath: directory)
+    }
+  #endif
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
       root = URL(fileURLWithPath: overridden)
     }
-    #endif
-    return PackageRepository(at: root)
-  }()
-  public let mocksDirectory = thisRepository.location
-    .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
+  #endif
+  return PackageRepository(at: root)
+}()
+public let mocksDirectory = thisRepository.location
+  .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
 #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
   private func withMock(

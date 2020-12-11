@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -366,34 +366,34 @@ extension Configuration {
     }
   #endif
 
-    internal static func reportForNoConfigurationFound() -> UserFacing<
-      StrictString, InterfaceLocalization
-    > {
-      return UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "No configuration found. Using defaults..."
-        case .deutschDeutschland:
-          return "Keine Konfiguration gefunden. Standardeinstellungen werden verwendet ..."
-        }
-      })
-    }
+  internal static func reportForNoConfigurationFound() -> UserFacing<
+    StrictString, InterfaceLocalization
+  > {
+    return UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "No configuration found. Using defaults..."
+      case .deutschDeutschland:
+        return "Keine Konfiguration gefunden. Standardeinstellungen werden verwendet ..."
+      }
+    })
+  }
 
-    internal static func reportForLoading(
-      file: URL
-    ) -> UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing<StrictString, InterfaceLocalization>({ localization in
-        let file = StrictString(file.lastPathComponent)
-        switch localization {
-        case .englishUnitedKingdom:
-          return "Loading ‘\(file)’..."
-        case .englishUnitedStates, .englishCanada:
-          return "Loading “\(file)”..."
-        case .deutschDeutschland:
-          return "„\(file)“ wird geladen ..."
-        }
-      })
-    }
+  internal static func reportForLoading(
+    file: URL
+  ) -> UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing<StrictString, InterfaceLocalization>({ localization in
+      let file = StrictString(file.lastPathComponent)
+      switch localization {
+      case .englishUnitedKingdom:
+        return "Loading ‘\(file)’..."
+      case .englishUnitedStates, .englishCanada:
+        return "Loading “\(file)”..."
+      case .deutschDeutschland:
+        return "„\(file)“ wird geladen ..."
+      }
+    })
+  }
 
   private static var mockQueue: [Configuration] = []
   /// Queues a mock configuration.
