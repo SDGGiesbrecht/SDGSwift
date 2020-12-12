@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGMathematics
 import SDGCollections
 import SDGText
@@ -208,6 +209,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       #endif
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+      XCTAssertTrue(
+        SwiftCompiler.warningsOccurred(during: ".../File.swift:1:1: warning: Something went wrong.")
+      )
+      XCTAssertTrue(
+        ¬SwiftCompiler.warningsOccurred(
+          during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
+        )
+      )
 
       try withMock(named: "Tool") { mock in
         #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
