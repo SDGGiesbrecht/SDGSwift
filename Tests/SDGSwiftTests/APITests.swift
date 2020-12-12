@@ -59,9 +59,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     // #workaround(Swift 5.3.1, Segmentation fault.)
     #if !os(Windows)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      #if os(tvOS) || os(iOS) || os(watchOS)
+        _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      #else
         XCTAssertNotNil(
           try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         )
+      #endif
       #endif
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let url = directory.appendingPathComponent("no such URL")
