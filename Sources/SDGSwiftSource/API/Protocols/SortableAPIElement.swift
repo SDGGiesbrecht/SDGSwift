@@ -13,7 +13,7 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   /// An API element type whose instances can be sorted.
   public protocol SortableAPIElement: APIElementProtocol, Comparable {}
 

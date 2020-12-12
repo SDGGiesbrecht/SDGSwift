@@ -78,13 +78,15 @@ public let mocksDirectory = thisRepository.location
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
-        _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
-        _ = try Shell.default.run(
-          command: ["git", "commit", "\u{2D}m", "Initialized."],
-          in: mock.location
-        ).get()
-        _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+          _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
+          _ = try Shell.default.run(
+            command: ["git", "commit", "\u{2D}m", "Initialized."],
+            in: mock.location
+          ).get()
+          _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+        #endif
       #endif
       return mock
     }
@@ -115,7 +117,7 @@ public let mocksDirectory = thisRepository.location
   }
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     public func withDefaultMockRepository(
       file: StaticString = #filePath,
       line: UInt = #line,

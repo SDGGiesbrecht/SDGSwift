@@ -85,7 +85,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   // MARK: - Location
 
   // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the lower bound of the node.
     ///
     /// - Parameters:

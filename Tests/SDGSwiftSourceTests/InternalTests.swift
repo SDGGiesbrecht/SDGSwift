@@ -15,7 +15,7 @@
 import SDGLocalization
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import SwiftSyntax
 #endif
 
@@ -33,14 +33,14 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testEmptySyntax() {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
     #endif
   }
 
   func testExtendedSyntaxContext() {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let contextSource = ""
       let context = ExtendedSyntaxContext._token(
         SyntaxFactory.makeToken(.comma),
@@ -68,7 +68,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
     for localization in InterfaceLocalization.allCases {
       LocalizationSetting(orderOfPrecedence: [localization.code]).do {
         // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-        #if !(os(Windows) || os(Android))
+        #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
           _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
           _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
         #endif
@@ -78,7 +78,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testStringLiteral() {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let literal = "\u{22}...\u{22}"
       let kind = TokenKind.stringLiteral(literal).normalized()
       if case .stringLiteral(let normalized) = kind {
@@ -91,7 +91,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testTokenNormalization() {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let tokens: [TokenKind] = [
         .stringSegment("\u{C0}"),
         .dollarIdentifier("$0"),

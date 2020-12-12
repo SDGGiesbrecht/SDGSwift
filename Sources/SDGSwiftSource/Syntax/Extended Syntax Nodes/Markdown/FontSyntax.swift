@@ -13,7 +13,7 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   /// A section of documentation text with font modifications.
   ///
   /// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.

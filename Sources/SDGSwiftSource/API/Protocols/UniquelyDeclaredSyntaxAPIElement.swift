@@ -13,7 +13,7 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   internal protocol _UniquelyDeclaredSyntaxAPIElement: _UniquelyDeclaredAPIElement
   where Declaration: APIDeclaration, Name == Declaration.Name {}
 

@@ -24,23 +24,25 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       for (file, escaped) in [
         ("Validate (macOS).command", "Validate\u{5C} (macOS).command"),
         ("Prüfen (Linux).sh".decomposedStringWithCanonicalMapping, "Pr*fen\u{5C} (Linux).sh"),
         ("Prüfen (Linux).sh".precomposedStringWithCanonicalMapping, "Pr*fen\u{5C} (Linux).sh"),
       ] {
-        try withDefaultMockRepository { repository in
-          try escaped.save(to: repository.location.appendingPathComponent(".gitignore"))
-          try "".save(to: repository.location.appendingPathComponent(file))
-          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-            let ignored = try repository.ignoredFiles().get()
-            XCTAssert(
-              ignored.contains(where: { $0.lastPathComponent == file }),
-              "“\(file)” missing: \(ignored.map({ $0.path }))"
-            )
-          #endif
-        }
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          try withDefaultMockRepository { repository in
+            try escaped.save(to: repository.location.appendingPathComponent(".gitignore"))
+            try "".save(to: repository.location.appendingPathComponent(file))
+            #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+              let ignored = try repository.ignoredFiles().get()
+              XCTAssert(
+                ignored.contains(where: { $0.lastPathComponent == file }),
+                "“\(file)” missing: \(ignored.map({ $0.path }))"
+              )
+            #endif
+          }
+        #endif
       }
     #endif
   }

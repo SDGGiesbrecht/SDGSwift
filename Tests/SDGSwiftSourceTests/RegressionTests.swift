@@ -13,7 +13,7 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import SwiftSyntax
 #endif
 
@@ -32,7 +32,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
         "///",
@@ -49,7 +49,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...&#x2D;...",
         "public func function() {}",
@@ -67,7 +67,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
         "///",
@@ -92,7 +92,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
       let highlighted = declaration.syntaxHighlightedHTML(
         inline: false,

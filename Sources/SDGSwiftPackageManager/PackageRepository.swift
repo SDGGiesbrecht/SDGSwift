@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGVersioning
 
 // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import PackageModel
   import Build
   import Workspace
@@ -34,7 +34,7 @@ extension PackageRepository {
   // MARK: - Initialization
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Creates a new package by initializing it at the specified URL.
     ///
     /// - Parameters:
@@ -89,7 +89,7 @@ extension PackageRepository {
   // MARK: - Properties
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, _ in
@@ -136,53 +136,55 @@ extension PackageRepository {
     }
   #endif
 
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
-    /// Checks for uncommitted changes or additions.
-    ///
-    /// - Returns: The report provided by Git. (An empty string if there are no changes.)
-    public func uncommittedChanges()
-      -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>>
-    {
-      return Git.uncommittedChanges(in: self)
-    }
+  #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+      /// Checks for uncommitted changes or additions.
+      ///
+      /// - Returns: The report provided by Git. (An empty string if there are no changes.)
+      public func uncommittedChanges()
+        -> Swift.Result<String, VersionedExternalProcessExecutionError<SDGSwift.Git>>
+      {
+        return Git.uncommittedChanges(in: self)
+      }
 
-    /// Returns the list of files ignored by source control.
-    public func ignoredFiles()
-      -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>>
-    {
-      return Git.ignoredFiles(in: self)
-    }
+      /// Returns the list of files ignored by source control.
+      public func ignoredFiles()
+        -> Swift.Result<[Foundation.URL], VersionedExternalProcessExecutionError<SDGSwift.Git>>
+      {
+        return Git.ignoredFiles(in: self)
+      }
 
-    // MARK: - Workflow
+      // MARK: - Workflow
 
-    /// Checks out a branch.
-    ///
-    /// - Parameters:
-    ///     - branch: The branch to check out.
-    public func checkout(
-      _ branch: String
-    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
-      return Git.checkout(branch, in: self)
-    }
+      /// Checks out a branch.
+      ///
+      /// - Parameters:
+      ///     - branch: The branch to check out.
+      public func checkout(
+        _ branch: String
+      ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+        return Git.checkout(branch, in: self)
+      }
 
-    /// Commits existing changes.
-    ///
-    /// - Parameters:
-    ///     - description: A description for the commit.
-    public func commitChanges(
-      description: StrictString
-    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
-      return Git.commitChanges(in: self, description: description)
-    }
+      /// Commits existing changes.
+      ///
+      /// - Parameters:
+      ///     - description: A description for the commit.
+      public func commitChanges(
+        description: StrictString
+      ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+        return Git.commitChanges(in: self, description: description)
+      }
 
-    /// Tags a version.
-    ///
-    /// - Parameters:
-    ///     - releaseVersion: The semantic version.
-    public func tag(
-      version releaseVersion: SDGVersioning.Version
-    ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
-      return Git.tag(version: releaseVersion, in: self)
-    }
+      /// Tags a version.
+      ///
+      /// - Parameters:
+      ///     - releaseVersion: The semantic version.
+      public func tag(
+        version releaseVersion: SDGVersioning.Version
+      ) -> Swift.Result<Void, VersionedExternalProcessExecutionError<SDGSwift.Git>> {
+        return Git.tag(version: releaseVersion, in: self)
+      }
+    #endif
   #endif
 }
