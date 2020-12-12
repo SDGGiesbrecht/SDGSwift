@@ -421,6 +421,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   }
 }
 
+if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
@@ -434,6 +444,13 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
       })
     })
   }
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 12.2, Test targets don’t work on watchOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.isTest })
+  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 
 // Windows Tests (Generated automatically by Workspace.)
