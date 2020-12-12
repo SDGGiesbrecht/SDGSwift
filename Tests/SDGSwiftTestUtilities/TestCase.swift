@@ -12,18 +12,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
+import Foundation
 
-  import SDGVersioning
+import SDGVersioning
 
-  import SDGSwift
+import SDGSwift
 
-  import SDGXCTestUtilities
+import SDGXCTestUtilities
 
-  open class TestCase: SDGXCTestUtilities.TestCase {
+open class TestCase: SDGXCTestUtilities.TestCase {
 
-    private static let configureGit: Void = {
+  private static let configureGit: Void = {
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks ProcessInfo.)
       if ProcessInfo.isInGitHubAction {
         // @exempt(from: tests)
         // #workaround(Swift 5.3.1, Segmentation fault.)
@@ -38,10 +38,10 @@
           ).get()
         #endif
       }
-    }()
-    open override func setUp() {
-      super.setUp()
-      TestCase.configureGit
-    }
+    #endif
+  }()
+  open override func setUp() {
+    super.setUp()
+    TestCase.configureGit
   }
-#endif
+}

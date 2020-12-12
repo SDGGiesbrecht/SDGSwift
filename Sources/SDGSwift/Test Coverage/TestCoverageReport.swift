@@ -12,24 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web lacks Foundation.)
-#if !os(WASI)
-  /// A test coverage report.
-  public struct TestCoverageReport {
+/// A test coverage report.
+public struct TestCoverageReport {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates a test coverage report.
-    ///
-    /// - Parameters:
-    ///     - files: The files in the package.
-    public init(files: [FileTestCoverage]) {
-      self.files = files
-    }
-
-    // MARK: - Properties
-
-    /// The files in the package.
-    public let files: [FileTestCoverage]
+  /// Creates a test coverage report.
+  ///
+  /// - Parameters:
+  ///     - files: The files in the package.
+  public init(files: [FileTestCoverage]) {
+    self.files = files
   }
-#endif
+
+  // MARK: - Properties
+
+  /// The files in the package.
+  public let files: [FileTestCoverage]
+}

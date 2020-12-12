@@ -85,7 +85,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(6, 0, 0)
+      from: Version(6, 2, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -418,10 +418,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
         return "\(dependency)".contains(impossible)
       })
     })
-  }
-  for target in package.targets {
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    target.exclude.append("Resources.swift")
   }
 }
 

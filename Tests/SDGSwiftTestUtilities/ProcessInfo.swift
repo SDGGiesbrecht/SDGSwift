@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
+import Foundation
 
-  import SDGLogic
+import SDGLogic
 
+#if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks ProcessInfo.)
   extension ProcessInfo {
 
     internal static let isInGitHubAction =

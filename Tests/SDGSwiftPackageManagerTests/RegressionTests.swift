@@ -23,7 +23,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesPreserveSpecialCharacters() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       for (file, escaped) in [
         ("Validate (macOS).command", "Validate\u{5C} (macOS).command"),

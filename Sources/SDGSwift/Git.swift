@@ -12,28 +12,28 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
+import Foundation
 
-  import SDGControlFlow
-  import SDGMathematics
-  import SDGCollections
-  import SDGText
-  import SDGExternalProcess
-  import SDGVersioning
+import SDGControlFlow
+import SDGMathematics
+import SDGCollections
+import SDGText
+import SDGExternalProcess
+import SDGVersioning
 
-  /// Git.
-  public enum Git: VersionedExternalProcess {
+/// Git.
+public enum Git: VersionedExternalProcess {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    public static let _currentMajor = Version(2)
-    private static var currentMajor: Version {
-      return _currentMajor
-    }
+  public static let _currentMajor = Version(2)
+  private static var currentMajor: Version {
+    return _currentMajor
+  }
 
-    // MARK: - Usage
+  // MARK: - Usage
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Creates a local repository by cloning the remote package.
     ///
     /// - Parameters:
@@ -98,9 +98,9 @@
     ///
     /// - Parameters:
     ///     - package: The package.
-    public static func versions(of package: Package) -> Result<
-      Set<Version>, VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func versions(
+      of package: Package
+    ) -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
       let version = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -129,9 +129,9 @@
     ///
     /// - Parameters:
     ///     - package: The package.
-    public static func latestCommitIdentifier(in package: Package) -> Result<
-      String, VersionedExternalProcessExecutionError<Git>
-    > {
+    public static func latestCommitIdentifier(
+      in package: Package
+    ) -> Result<String, VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 0, 0)..<currentMajor.compatibleVersions.upperBound
       return runCustomSubcommand(
         [
@@ -144,18 +144,18 @@
         return output.truncated(before: "\u{9}")
       }
     }
+  #endif
 
-    // MARK: - VersionedExternalProcess
+  // MARK: - VersionedExternalProcess
 
-    public static let englishName: StrictString = "Git"
-    public static var deutscherNameInDativ: StrictString = "Git"
+  public static let englishName: StrictString = "Git"
+  public static var deutscherNameInDativ: StrictString = "Git"
 
-    public static var commandName: String = "git"
+  public static var commandName: String = "git"
 
-    public static let searchCommands: [[String]] = [
-      ["which", "git"]
-    ]
+  public static let searchCommands: [[String]] = [
+    ["which", "git"]
+  ]
 
-    public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
-  }
-#endif
+  public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
+}

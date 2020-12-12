@@ -12,49 +12,47 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import SDGText
-  import SDGLocalization
+import SDGText
+import SDGLocalization
 
-  import SDGSwift
+import SDGSwift
 
-  import SDGSwiftLocalizations
+import SDGSwiftLocalizations
 
-  extension Xcode {
+extension Xcode {
 
-    /// An error encountered while loading the Xcode scheme.
-    public enum SchemeError: PresentableError {
+  /// An error encountered while loading the Xcode scheme.
+  public enum SchemeError: PresentableError {
 
-      // MARK: - Cases
+    // MARK: - Cases
 
-      /// Xcode encountered an error.
-      case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
+    /// Xcode encountered an error.
+    case xcodeError(VersionedExternalProcessExecutionError<Xcode>)
 
-      /// Foundation encountered an error.
-      case foundationError(Swift.Error)
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
 
-      /// The Xcode project has no package scheme.
-      case noPackageScheme
+    /// The Xcode project has no package scheme.
+    case noPackageScheme
 
-      // MARK: - PresentableError
+    // MARK: - PresentableError
 
-      public func presentableDescription() -> StrictString {
-        switch self {
-        case .xcodeError(let error):
-          return error.presentableDescription()
-        case .foundationError(let error):
-          return StrictString(error.localizedDescription)
-        case .noPackageScheme:
-          return UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "The Xcode project has no package scheme."
-            case .deutschDeutschland:
-              return "Das Xcode‐Projekt hat kein Paketenschema."
-            }
-          }).resolved()
-        }
+    public func presentableDescription() -> StrictString {
+      switch self {
+      case .xcodeError(let error):
+        return error.presentableDescription()
+      case .foundationError(let error):
+        return StrictString(error.localizedDescription)
+      case .noPackageScheme:
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "The Xcode project has no package scheme."
+          case .deutschDeutschland:
+            return "Das Xcode‐Projekt hat kein Paketenschema."
+          }
+        }).resolved()
       }
     }
   }
-#endif
+}

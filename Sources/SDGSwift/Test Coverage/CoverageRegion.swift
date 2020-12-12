@@ -52,118 +52,114 @@ public struct CoverageRegion<Index> where Index: Comparable {
   }
 }
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  private let charactersIrrelevantToCoverage =
-    CharacterSet.whitespacesAndNewlines ∪ [
-      "{", "}", "(", ")",
-    ]
-#endif
+private let charactersIrrelevantToCoverage =
+  CharacterSet.whitespacesAndNewlines ∪ [
+    "{", "}", "(", ")",
+  ]
 extension CoverageRegion where Index == String.ScalarView.Index {
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-    public static func _normalize(
-      regions: inout [CoverageRegion],
-      source: String,
-      ignoreCoveredRegions: Bool
-    ) {
+  public static func _normalize(
+    regions: inout [CoverageRegion],
+    source: String,
+    ignoreCoveredRegions: Bool
+  ) {
 
-      // Combine to one coherent list.
-      regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
-        if ignoreCoveredRegions ∧ next.count ≠ 0 {
-          return  // Drop
-        }
-
-        guard var last = regions.last else {
-          // First one; just append.
-          regions.append(next)
-          return
-        }
-        if last.region.upperBound > next.region.lowerBound {  // @exempt(from: tests)
-          // @exempt(from: tests) False coverage result in Xocde 9.3.
-
-          // Fix overlap.
-          regions.removeLast()
-          let replacement = CoverageRegion(
-            region: last.region.lowerBound..<next.region.lowerBound,
-            count: last.count
-          )
-          regions.append(replacement)
-        }
-
-        last = regions.last!
-        if last.region.upperBound == next.region.lowerBound
-          ∧ last.count == next.count  // @exempt(from: tests) Unreachable on Linux?
-        {  // @exempt(from: tests)
-          // Join contiguous regions.
-          regions.removeLast()
-          let replacement = CoverageRegion(
-            region: last.region.lowerBound..<next.region.upperBound,
-            count: last.count
-          )
-          regions.append(replacement)
-        } else {
-          // Unrelated to anything else, so just append.
-          regions.append(next)
-        }
+    // Combine to one coherent list.
+    regions = regions.reduce(into: [] as [CoverageRegion]) { regions, next in
+      if ignoreCoveredRegions ∧ next.count ≠ 0 {
+        return  // Drop
       }
 
-      // Trim function signatures.
-      regions = regions.map { region in
-        var start = region.region.lowerBound
-        let end = region.region.upperBound
-        if source.scalars[start..<end].hasPrefix("func".scalars),
-          let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
-            .upperBound
-        {
-          // @exempt(from: tests) Does not occur on Linux.
-          start = implementationStart
-        }
-        return CoverageRegion(region: start..<end, count: region.count)
+      guard var last = regions.last else {
+        // First one; just append.
+        regions.append(next)
+        return
+      }
+      if last.region.upperBound > next.region.lowerBound {  // @exempt(from: tests)
+        // @exempt(from: tests) False coverage result in Xocde 9.3.
+
+        // Fix overlap.
+        regions.removeLast()
+        let replacement = CoverageRegion(
+          region: last.region.lowerBound..<next.region.lowerBound,
+          count: last.count
+        )
+        regions.append(replacement)
       }
 
-      // Unify “else”.
-      regions = regions.compactMap { region in
-        var start = region.region.lowerBound
-        let end = region.region.upperBound
-        if source.scalars[start..<end].isMatch(for: " else ".scalars) {
-          // @exempt(from: tests) Does not occur on Linux.
-          return nil
-        }
-        if source.scalars[start..<end].hasPrefix(" else".scalars),
-          let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
-            .upperBound
-        {
-          start = implementationStart
-        }
-        return CoverageRegion(region: start..<end, count: region.count)
-      }
-
-      // Remove false positives
-      regions = regions.filter { region in
-
-        if ¬source.scalars[region.region].contains(where: { $0 ∉ charactersIrrelevantToCoverage }) {
-          // Region has no effect.
-          return false
-        }
-
-        // Otherwise keep.
-        return true
-      }
-
-      // Trim irrelevant characters.
-      regions = regions.map { region in
-        var start = region.region.lowerBound
-        while source.scalars[start] ∈ charactersIrrelevantToCoverage {
-          start = source.scalars.index(after: start)
-        }
-        var end = region.region.upperBound
-        var before = source.index(before: end)
-        while source.scalars[before] ∈ charactersIrrelevantToCoverage {
-          end = before
-          before = source.index(before: end)
-        }
-        return CoverageRegion(region: start..<end, count: region.count)
+      last = regions.last!
+      if last.region.upperBound == next.region.lowerBound
+        ∧ last.count == next.count  // @exempt(from: tests) Unreachable on Linux?
+      {  // @exempt(from: tests)
+        // Join contiguous regions.
+        regions.removeLast()
+        let replacement = CoverageRegion(
+          region: last.region.lowerBound..<next.region.upperBound,
+          count: last.count
+        )
+        regions.append(replacement)
+      } else {
+        // Unrelated to anything else, so just append.
+        regions.append(next)
       }
     }
-  #endif
+
+    // Trim function signatures.
+    regions = regions.map { region in
+      var start = region.region.lowerBound
+      let end = region.region.upperBound
+      if source.scalars[start..<end].hasPrefix("func".scalars),
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
+        // @exempt(from: tests) Does not occur on Linux.
+        start = implementationStart
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+
+    // Unify “else”.
+    regions = regions.compactMap { region in
+      var start = region.region.lowerBound
+      let end = region.region.upperBound
+      if source.scalars[start..<end].isMatch(for: " else ".scalars) {
+        // @exempt(from: tests) Does not occur on Linux.
+        return nil
+      }
+      if source.scalars[start..<end].hasPrefix(" else".scalars),
+        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound
+      {
+        start = implementationStart
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+
+    // Remove false positives
+    regions = regions.filter { region in
+
+      if ¬source.scalars[region.region].contains(where: { $0 ∉ charactersIrrelevantToCoverage }) {
+        // Region has no effect.
+        return false
+      }
+
+      // Otherwise keep.
+      return true
+    }
+
+    // Trim irrelevant characters.
+    regions = regions.map { region in
+      var start = region.region.lowerBound
+      while source.scalars[start] ∈ charactersIrrelevantToCoverage {
+        start = source.scalars.index(after: start)
+      }
+      var end = region.region.upperBound
+      var before = source.index(before: end)
+      while source.scalars[before] ∈ charactersIrrelevantToCoverage {
+        end = before
+        before = source.index(before: end)
+      }
+      return CoverageRegion(region: start..<end, count: region.count)
+    }
+  }
 }

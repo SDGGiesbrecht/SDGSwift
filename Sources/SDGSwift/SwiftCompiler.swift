@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
-#endif
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -39,7 +37,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   // MARK: - Usage
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -90,7 +88,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// The directory to which the products are built.
     ///
     /// - Parameters:
@@ -234,7 +232,9 @@ public enum SwiftCompiler: VersionedExternalProcess {
         versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
       ).map { URL(fileURLWithPath: $0) }
     }
+  #endif
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:

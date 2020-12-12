@@ -91,7 +91,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -293,7 +293,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { package in
         _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
@@ -316,7 +316,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
     #endif
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -397,7 +397,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.xcodeError(
@@ -414,7 +414,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(Android))
       testCustomStringConvertibleConformance(
         of: Xcode.CoverageReportingError.corruptTestCoverageReport,

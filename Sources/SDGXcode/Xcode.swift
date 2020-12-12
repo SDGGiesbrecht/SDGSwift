@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-  import Foundation
-#endif
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -35,19 +33,17 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - Locating
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-    private static func coverageTool<Constraints>(
-      versionConstraints: Constraints
-    ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
-    where Constraints: RangeFamily, Constraints.Bound == Version {
-      return location(versionConstraints: versionConstraints)
-        .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
-          return ExternalProcess(
-            at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
-          )
-        }
-    }
-  #endif
+  private static func coverageTool<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+    return location(versionConstraints: versionConstraints)
+      .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
+        return ExternalProcess(
+          at: xcodebuild.deletingLastPathComponent().appendingPathComponent("xccov")
+        )
+      }
+  }
 
   // MARK: - Usage
 
@@ -128,32 +124,28 @@ public enum Xcode: VersionedExternalProcess {
     if output.hasPrefix("$ ") {
       return output
     }
-    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-      if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
-        return nil
-      }
-    #endif
+    if output.isEmpty ∨ ¬output.scalars.contains(where: { $0 ∉ CharacterSet.whitespaces }) {
+      return nil
+    }
     for ignored in otherIgnored {
       if output.contains(ignored) {
         return nil
       }
     }
 
-    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-      // Log style entry.
-      let logComponents: [String] = output.components(separatedBy: " ")
-      if logComponents.count ≥ 4,
-        logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
-        logComponents[1].scalars.allSatisfy({
-          // @exempt(from: tests) False coverage result.
-          $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
-        }),
-        let process = logComponents[2].prefix(upTo: "[")?.contents
-      {
+    // Log style entry.
+    let logComponents: [String] = output.components(separatedBy: " ")
+    if logComponents.count ≥ 4,
+      logComponents[0].scalars.allSatisfy({ $0 ∈ CharacterSet.decimalDigits ∪ ["\u{2D}"] }),
+      logComponents[1].scalars.allSatisfy({
         // @exempt(from: tests) False coverage result.
-        return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
-      }
-    #endif
+        $0 ∈ CharacterSet.decimalDigits ∪ [":", ".", "+", "\u{2D}"]
+      }),
+      let process = logComponents[2].prefix(upTo: "[")?.contents
+    {
+      // @exempt(from: tests) False coverage result.
+      return ([String(process) + ":"] + logComponents[3...]).joined(separator: " ")
+    }
 
     // Command style entry.
     var indentation = ""
@@ -193,7 +185,7 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Builds the package.
     ///
     /// - Parameters:
@@ -257,13 +249,13 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Foundation.)
-    private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
-      return project.location.appendingPathComponent(
-        ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
-      )
-    }
+  private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
+    return project.location.appendingPathComponent(
+      ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
+    )
+  }
 
+  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
     /// Tests the package.
     ///
     /// - Parameters:
@@ -335,8 +327,8 @@ public enum Xcode: VersionedExternalProcess {
       ).mapError { .xcodeError($0) }  // @exempt(from: tests)
     }
 
-    // #workaround(Swift 5.3, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       /// Returns the code coverage report for the package.
       ///
       /// - Parameters:
