@@ -30,11 +30,6 @@ configuration.documentation.repositoryURL = URL(
   string: "https://github.com/SDGGiesbrecht/SDGSwift"
 )!
 
-// #workaround(SDGCornerstone 6.0.0, Until ExternalProcess is available.)
-configuration.supportedPlatforms.remove(.iOS)
-configuration.supportedPlatforms.remove(.watchOS)
-configuration.supportedPlatforms.remove(.tvOS)
-
 configuration.documentation.localizations = ["🇨🇦EN"]
 
 configuration._applySDGOverrides()
