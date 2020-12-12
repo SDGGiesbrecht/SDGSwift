@@ -73,7 +73,9 @@ extension Configuration {
       /// let type = SampleConfiguration.self  // Import it first if necessary.
       ///
       /// // Assuming the above file is called “SampleConfigurationFile.swift”...
-      /// let name = UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" })
+      /// let name = UserFacing<StrictString, APILocalization>(
+      ///   { _ in "SampleConfigurationFile" }
+      /// )
       ///
       /// // Change this to actually point at a directory containing the above file.
       /// let configuredDirectory: URL = wherever
