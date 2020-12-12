@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGLocalization
@@ -175,6 +176,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       }
     #endif
+  }
+
+  func testStringScalarOffset() {
+    let string = "string"
+    let offsets = string.offsets(of: string.scalars.bounds)
+    let bounds = string.indices(of: offsets)
+    XCTAssertEqual(bounds, string.scalars.bounds)
+    let start = offsets.lowerBound
+    XCTAssertEqual(start + 1 − 1, start)
+    XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)
   }
 
   func testSwiftCompiler() throws {

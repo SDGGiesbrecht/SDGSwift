@@ -140,18 +140,14 @@ public struct PackageRepository: TransparentWrapper {
       ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
         return SwiftCompiler.test(self, reportProgress: reportProgress)
       }
-    #endif
-  #endif
 
-  public func _directoriesIgnoredForTestCoverage() -> [Foundation.URL] {
-    return [
-      ".build",
-      "Packages",
-    ].map { location.appendingPathComponent($0) }
-  }
+      public func _directoriesIgnoredForTestCoverage() -> [Foundation.URL] {
+        return [
+          ".build",
+          "Packages",
+        ].map { location.appendingPathComponent($0) }
+      }
 
-  #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
       /// Returns the code coverage report for the package.
       ///
       /// - Parameters:

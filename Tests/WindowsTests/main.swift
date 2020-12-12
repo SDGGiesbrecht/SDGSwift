@@ -127,6 +127,7 @@ extension SDGSwiftTests.APITests {
       ("testPackage", testPackage),
       ("testPackageError", testPackageError),
       ("testPackageRepository", testPackageRepository),
+      ("testStringScalarOffset", testStringScalarOffset),
       ("testSwiftCompiler", testSwiftCompiler),
       ("testSwiftCompilerError", testSwiftCompilerError),
       ("testVersion", testVersion),

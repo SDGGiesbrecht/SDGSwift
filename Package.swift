@@ -283,6 +283,7 @@ let package = Package(
         "SDGSwiftLocalizations",
         "SDGSwift",
         "SDGSwiftTestUtilities",
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),

@@ -17,12 +17,12 @@ import SDGVersioning
 
 extension SwiftCompiler {
 
-  private static var currentMajor: Version {
-    return _currentMajor
-  }
-
   #if !(os(tvOS) || os(iOS) || os(watchOS))
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+      private static var currentMajor: Version {
+        return _currentMajor
+      }
+
       /// Generates or refreshes the package’s Xcode project.
       ///
       /// - Parameters:

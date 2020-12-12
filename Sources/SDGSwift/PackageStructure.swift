@@ -160,15 +160,11 @@ public struct Package: TransparentWrapper {
             }
           }
       }
-    #endif
-  #endif
 
-  private func developmentCache(for cache: URL) -> URL {
-    return cache.appendingPathComponent("Development")
-  }
+      private func developmentCache(for cache: URL) -> URL {
+        return cache.appendingPathComponent("Development")
+      }
 
-  #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
       private func cacheDirectory(
         in cache: URL,
         for version: Build

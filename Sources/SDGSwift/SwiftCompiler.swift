@@ -31,14 +31,14 @@ public enum SwiftCompiler: VersionedExternalProcess {
   // MARK: - Static Properties
 
   public static let _currentMajor = Version(5)
-  private static var currentMajor: Version {
-    return _currentMajor
-  }
-
-  // MARK: - Usage
-
   #if !(os(tvOS) || os(iOS) || os(watchOS))
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+      private static var currentMajor: Version {
+        return _currentMajor
+      }
+
+      // MARK: - Usage
+
       /// Builds the package.
       ///
       /// - Parameters:
