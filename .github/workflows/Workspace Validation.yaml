@@ -445,21 +445,21 @@ jobs:
       run: |
         set -x
         chmod -R a+rwx .
-  - tvOS:
+  tvOS:
     name: tvOS
     runs-on: macos-10.15
     steps:
     - name: tvOS
       run: |
         set -x
-  - iOS:
+  iOS:
     name: iOS
     runs-on: macos-10.15
     steps:
     - name: iOS
       run: |
         set -x
-  - watchOS:
+  watchOS:
     name: watchOS
     runs-on: macos-10.15
     steps:
