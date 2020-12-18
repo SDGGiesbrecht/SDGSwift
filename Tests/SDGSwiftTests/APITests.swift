@@ -251,23 +251,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.swiftError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Corrupt Test Coverage Report",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: SwiftCompiler.CoverageReportingError.swiftError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Corrupt Test Coverage Report",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: Package.BuildError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
       localizations: InterfaceLocalization.self,
