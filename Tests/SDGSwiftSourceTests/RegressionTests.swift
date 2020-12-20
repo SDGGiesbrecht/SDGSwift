@@ -28,6 +28,35 @@ import SDGSwiftTestUtilities
 
 class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
+  func testCodeBlockWithCombiningCharacters() throws {
+    // Untracked.
+
+    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    #if !(os(Windows) || os(Android))
+      let source = [
+        "/// ...",
+        "///",
+        "/// ```swift",
+        "/// let ä = ö".decomposedStringWithCompatibilityMapping,
+        "/// ...",
+        "public func function() {}",
+      ].joined(separator: "\n")
+      let parsed = try SyntaxParser.parse(source: source)
+      let documentation: SymbolDocumentation = parsed.api().first!.documentation.first!
+      XCTAssertEqual(
+        documentation.documentationComment.text,
+        [
+          "...",
+          "",
+          "```swift",
+          "let ä = ö".decomposedStringWithCompatibilityMapping,
+          "...",
+          "public func function() {}",
+        ].joined(separator: "\n")
+        )
+    #endif
+  }
+
   func testContinuedCallout() throws {
     // Untracked.
 
