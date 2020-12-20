@@ -57,7 +57,7 @@ extension String {
   ///   - indices: The indices.
   public func offsets(of indices: Range<String.ScalarView.Index>) -> Range<ScalarOffset> {
     let lower = offset(of: indices.lowerBound)
-    let length = distance(from: indices.lowerBound, to: indices.upperBound)
+    let length = scalars.distance(from: indices.lowerBound, to: indices.upperBound)
     let upper = lower + length
     return lower..<upper
   }
