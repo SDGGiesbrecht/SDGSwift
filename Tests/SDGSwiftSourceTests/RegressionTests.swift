@@ -38,7 +38,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "///",
         "/// ```swift",
         "/// let ä = ö".decomposedStringWithCompatibilityMapping,
-        "/// ...",
+        "/// ```",
         "public func function() {}",
       ].joined(separator: "\n")
       let parsed = try SyntaxParser.parse(source: source)
@@ -50,8 +50,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           "",
           "```swift",
           "let ä = ö".decomposedStringWithCompatibilityMapping,
-          "...",
-          "public func function() {}",
+          "```",
         ].joined(separator: "\n")
         )
     #endif
