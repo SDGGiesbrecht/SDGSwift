@@ -432,10 +432,10 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 
-//if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-// #workaround(xcodebuild -version 12.2, Tool targets don’t work on iOS.) @exempt(from: unicode)
-package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
-//}
+if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
