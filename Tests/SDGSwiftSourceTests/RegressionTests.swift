@@ -52,7 +52,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           "let ä = ö".decomposedStringWithCompatibilityMapping,
           "```",
         ].joined(separator: "\n")
-        )
+      )
     #endif
   }
 

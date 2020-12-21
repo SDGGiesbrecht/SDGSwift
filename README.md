@@ -54,7 +54,7 @@ let package = Package(
     .package(
       name: "SDGSwift",
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(3, 0, 3)
+      from: Version(4, 0, 1)
     ),
   ],
   targets: [
