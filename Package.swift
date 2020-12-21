@@ -421,6 +421,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
+
+  // #workaround(Temporary.)
+  package.targets.removeAll(where: { $0.type == .test })
+  package.targets.append(.testTarget(name: "WebTests"))
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {

@@ -109,6 +109,7 @@ extension SDGSwiftSourceTests.InternalTests {
 extension SDGSwiftSourceTests.RegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
+      ("testCodeBlockWithCombiningCharacters", testCodeBlockWithCombiningCharacters),
       ("testContinuedCallout", testContinuedCallout),
       ("testMarkdownEntity", testMarkdownEntity),
       ("testMarkdownQuotation", testMarkdownQuotation),
