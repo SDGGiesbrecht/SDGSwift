@@ -198,66 +198,66 @@ public struct Package: TransparentWrapper {
         reportProgress: (_ progressReport: String) -> Void = { _ in }
       ) -> Result<String, ExecutionError> {
 
-        return FileManager.default.withTemporaryDirectory(appropriateFor: nil) {
-          temporaryDirectory in
-          let cacheRoot = cacheDirectory ?? temporaryDirectory  // @exempt(from: tests)
-          switch self.cacheDirectory(in: cacheRoot, for: build) {
-          case .failure(let error):
-            return .failure(.gitError(error))
-          case .success(let cache):
-            if ¬FileManager.default.fileExists(atPath: cache.path) {
+        return FileManager.default
+          .withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+            let cacheRoot = cacheDirectory ?? temporaryDirectory  // @exempt(from: tests)
+            switch self.cacheDirectory(in: cacheRoot, for: build) {
+            case .failure(let error):
+              return .failure(.gitError(error))
+            case .success(let cache):
+              if ¬FileManager.default.fileExists(atPath: cache.path) {
 
-              switch build {
-              case .development:
-                // Clean up older builds.
-                try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
-              case .version:
-                break
-              }
-
-              switch self.build(build, to: cache, reportProgress: reportProgress) {
-              case .failure(let error):
-                return .failure(.buildError(error))
-              case .success:
-                break
-              }
-            }
-
-            let cacheContents: [URL]
-            do {
-              cacheContents = try FileManager.default.contentsOfDirectory(
-                at: cache,
-                includingPropertiesForKeys: nil,
-                options: []
-              )
-            } catch {
-              return .failure(.foundationError(error))
-            }
-            for executable in cacheContents
-            where StrictString(executable.lastPathComponent) ∈ executableNames {
-
-              #if os(Linux)
-                // The move from the temporary directory to the cache may lose permissions.
-                if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
-                  // @exempt(from: tests)
-                  _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get()
+                switch build {
+                case .development:
+                  // Clean up older builds.
+                  try? FileManager.default.removeItem(at: developmentCache(for: cacheRoot))
+                case .version:
+                  break
                 }
-              #endif
 
-              reportProgress("")
-              reportProgress(
-                "$ " + executable.lastPathComponent + " " + arguments.joined(separator: " ")
-              )
-              return ExternalProcess(at: executable).run(
-                arguments,
-                reportProgress: reportProgress
-              ).mapError { error in
-                return .executionError(error)
+                switch self.build(build, to: cache, reportProgress: reportProgress) {
+                case .failure(let error):
+                  return .failure(.buildError(error))
+                case .success:
+                  break
+                }
               }
+
+              let cacheContents: [URL]
+              do {
+                cacheContents = try FileManager.default.contentsOfDirectory(
+                  at: cache,
+                  includingPropertiesForKeys: nil,
+                  options: []
+                )
+              } catch {
+                return .failure(.foundationError(error))
+              }
+              for executable in cacheContents
+              where StrictString(executable.lastPathComponent) ∈ executableNames {
+
+                #if os(Linux)
+                  // The move from the temporary directory to the cache may lose permissions.
+                  if ¬FileManager.default.isExecutableFile(atPath: executable.path) {
+                    // @exempt(from: tests)
+                    _ = try? Shell.default.run(command: ["chmod", "+x", executable.path]).get()
+                  }
+                #endif
+
+                reportProgress("")
+                reportProgress(
+                  "$ " + executable.lastPathComponent + " " + arguments.joined(separator: " ")
+                )
+                return ExternalProcess(at: executable).run(
+                  arguments,
+                  reportProgress: reportProgress
+                ).mapError { error in
+                  return .executionError(error)
+                }
+              }
+              return .failure(.noSuchExecutable(requested: executableNames))
             }
-            return .failure(.noSuchExecutable(requested: executableNames))
           }
-        }
       }
     #endif
   #endif
