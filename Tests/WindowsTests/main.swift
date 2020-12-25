@@ -122,6 +122,7 @@ extension SDGSwiftTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testBuild", testBuild),
+      ("testCoverageRegion", testCoverageRegion),
       ("testGit", testGit),
       ("testGitError", testGitError),
       ("testLocalizations", testLocalizations),

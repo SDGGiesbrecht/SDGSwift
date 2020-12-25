@@ -57,6 +57,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
   }
 
+  func testCoverageRegion() {
+    let string = "string"
+    let region = CoverageRegion(region: string.bounds, count: 0)
+    _ = region.convert(using: { $0 })
+    var regions = [region]
+    CoverageRegion._normalize(regions: &regions, source: string, ignoreCoveredRegions: false)
+    _ = FileTestCoverage(file: URL(fileURLWithPath: "/some/path"), regions: regions)
+  }
+
   func testGit() {
     // #workaround(Swift 5.3.1, Segmentation fault.)
     #if !os(Windows)

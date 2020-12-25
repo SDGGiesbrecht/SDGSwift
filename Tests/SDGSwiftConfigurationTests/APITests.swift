@@ -36,7 +36,11 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if os(tvOS) || os(iOS) || os(watchOS)
+      let mock = SampleConfiguration()
+      mock.option = "Mock"
+      Configuration.queue(mock: mock)
+    #else
       // #workaround(Swift 5.3.1, Segmentation fault.)
       #if !os(Windows)
         try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {

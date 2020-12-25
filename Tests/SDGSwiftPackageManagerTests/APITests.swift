@@ -54,31 +54,28 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
+    testCustomStringConvertibleConformance(
+      of: PackageRepository.InitializationError.gitError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Git Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: PackageRepository.InitializationError.packageManagerError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Package Manager",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Foundation",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      testCustomStringConvertibleConformance(
-        of: PackageRepository.InitializationError.gitError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Git Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: PackageRepository.InitializationError.packageManagerError(StandInError()),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Package Manager",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Foundation",
-        overwriteSpecificationInsteadOfFailing: false
-      )
       testCustomStringConvertibleConformance(
         of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
         localizations: InterfaceLocalization.self,

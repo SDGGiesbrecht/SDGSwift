@@ -79,7 +79,7 @@ extension VersionedExternalProcess {
     return cached(in: &self[versionConstraints]) {
 
       let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
-        #if os(tvOS) || os(iOS) || os(watchOS)
+        #if os(tvOS) || os(iOS) || os(watchOS)  // @exempt(from: tests) Unreachable.
           return nil
         #else
           #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
@@ -118,7 +118,7 @@ extension VersionedExternalProcess {
         commandName: commandName,
         validate: validate
       ) {
-        return .success(found)
+        return .success(found)  // @exempt(from: tests) Unreachable on tvOS.
       } else {
         return .failure(
           .unavailable(
@@ -141,7 +141,9 @@ extension VersionedExternalProcess {
     versionConstraints: Constraints
   ) -> Result<URL, VersionedExternalProcessLocationError<Self>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
-    return tool(versionConstraints: versionConstraints).map { $0.executable }
+    return tool(versionConstraints: versionConstraints).map { process in
+      return process.executable  // @exempt(from: tests) Unreachable on tvOS.
+    }
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
