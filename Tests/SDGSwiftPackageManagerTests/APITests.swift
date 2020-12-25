@@ -70,6 +70,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Package Manager",
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
+    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       testCustomStringConvertibleConformance(
         of: SwiftCompiler.CoverageReportingError.foundationError(StandInError()),
         localizations: InterfaceLocalization.self,
