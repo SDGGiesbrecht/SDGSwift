@@ -63,7 +63,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     _ = region.convert(using: { $0 })
     var regions = [region]
     CoverageRegion._normalize(regions: &regions, source: string, ignoreCoveredRegions: false)
-    _ = FileTestCoverage(file: URL(fileURLWithPath: "/some/path"), regions: regions)
+    let convertedRegions = regions.map { $0.convert(using: { string.offset(of: $0) }) }
+    _ = FileTestCoverage(file: URL(fileURLWithPath: "/some/path"), regions: convertedRegions)
   }
 
   func testGit() {
