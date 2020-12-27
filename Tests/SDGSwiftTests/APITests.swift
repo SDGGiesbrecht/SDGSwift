@@ -65,6 +65,47 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     CoverageRegion._normalize(regions: &regions, source: string, ignoreCoveredRegions: false)
     let convertedRegions = regions.map { $0.convert(using: { string.offset(of: $0) }) }
     _ = FileTestCoverage(file: URL(fileURLWithPath: "/some/path"), regions: convertedRegions)
+
+    var uncovered = [CoverageRegion(region: string.bounds, count: 1)]
+    CoverageRegion._normalize(regions: &uncovered, source: string, ignoreCoveredRegions: true)
+
+    let ifElse = [
+      "if true {",  // 10
+      "  exit(0)",  // 10
+      "} else {",  // 9
+      "  exit(1)",  // 10
+      "}",  // 1
+    ].joined(separator: "\n")
+    var ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 22
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 39),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 39
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 28
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
   }
 
   func testGit() {
