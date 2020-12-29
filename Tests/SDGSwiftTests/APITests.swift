@@ -106,6 +106,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
     ]
     CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 21
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+  }
+
+  func testFileTestCoverage() {
+    _ = FileTestCoverage(file: URL(fileURLWithPath: #filePath), regions: [])
   }
 
   func testGit() {
