@@ -106,6 +106,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     }
+    XCTAssertNotNil(Callout("Returns"))
+    XCTAssertNil(Callout("no‐such‐callout"))
+    XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
   }
 
   func testCodeFragmentSyntax() throws {

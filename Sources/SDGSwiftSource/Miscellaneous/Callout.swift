@@ -101,8 +101,12 @@ public enum Callout: String, CaseIterable {
 
   // MARK: - Initialization
 
-  internal init?(_ string: String) {
-    if let exists = Callout.lowercasedMapping[string.lowercased()] {
+  /// Creates a callout from a callout identifier.
+  ///
+  /// - Parameters:
+  ///   - identifier: The callout identifier.
+  public init?(_ identifier: String) {
+    if let exists = Callout.lowercasedMapping[identifier.lowercased()] {
       self = exists
     } else {
       return nil
