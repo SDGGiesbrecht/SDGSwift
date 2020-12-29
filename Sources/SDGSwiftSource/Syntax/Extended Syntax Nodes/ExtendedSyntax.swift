@@ -31,7 +31,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   private var _offset: Int?
   private var positionOffset: Int {
-    get {
+    get {  // @exempt(from: tests)  Unreachable from tvOS.
       return _offset!
       // The unwrap can only fail if the top‐level node forgot to call determinePositions().
     }
@@ -39,7 +39,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
       _offset = newValue
     }
   }
-  private var endPositionOffset: Int {
+  private var endPositionOffset: Int {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax {
       return positionOffset + token.text.scalars.count
     } else {
@@ -66,7 +66,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   public internal(set) weak var parent: ExtendedSyntax?
   /// The index of the node in its parent.
   public internal(set) var indexInParent: Int = 0
-  internal func setTreeRelationships() {
+  internal func setTreeRelationships() {  // @exempt(from: tests)  Unreachable from tvOS.
     for index in children.indices {
       let child = children[index]
       child.parent = self
@@ -76,7 +76,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   }
 
   /// The node’s source text.
-  public var text: String {
+  public var text: String {  // @exempt(from: tests)  Unreachable from tvOS.
     var result = ""
     write(to: &result)
     return result

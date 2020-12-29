@@ -1,5 +1,5 @@
 /*
- CommentSyntax.swift
+ CommentContentSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -20,11 +20,7 @@ public final class CommentContentSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  /// Creates comment content, parsing headings and URLs.
-  ///
-  /// - Parameters:
-  ///   - source: The source of the comment.
-  public init(source: String) {
+  internal init(source: String) {
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {

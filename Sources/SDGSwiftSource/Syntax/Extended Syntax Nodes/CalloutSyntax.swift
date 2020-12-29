@@ -17,17 +17,7 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
   // MARK: - Initialization
 
-  /// Creates a callout.
-  ///
-  /// - Parameters:
-  ///   - bullet: The bullet.
-  ///   - indent: The indent after the bullet.
-  ///   - name: The callout name.
-  ///   - space: The space before the parameter name.
-  ///   - parameterName: The parameter name.
-  ///   - colon: The colon after the name.
-  ///   - contents: The contents of the callout.
-  public required init(
+  internal required init(
     bullet: ExtendedTokenSyntax,
     indent: ExtendedTokenSyntax,
     name: ExtendedTokenSyntax,

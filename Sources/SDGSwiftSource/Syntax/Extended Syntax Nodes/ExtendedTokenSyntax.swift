@@ -23,12 +23,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  /// Creates an extended token.
-  ///
-  /// - Parameters:
-  ///   - text: The text of the token.
-  ///   - kind: The kind of the token.
-  public init(text: String, kind: ExtendedTokenKind) {
+  internal init(text: String, kind: ExtendedTokenKind) {
     self._text = text
     self.kind = kind
     super.init(children: [])

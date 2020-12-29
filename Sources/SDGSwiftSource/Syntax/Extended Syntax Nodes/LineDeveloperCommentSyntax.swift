@@ -25,9 +25,11 @@
       return ExtendedTokenSyntax(text: "//", kind: .lineCommentDelimiter)
     }
 
-    internal override class func parse(contents: String, siblings: Trivia, index: Trivia.Index)
-      -> ExtendedSyntax
-    {
+    internal override class func parse(
+      contents: String,
+      siblings: Trivia,
+      index: Trivia.Index
+    ) -> ExtendedSyntax {
       return CommentContentSyntax(source: contents)
     }
 

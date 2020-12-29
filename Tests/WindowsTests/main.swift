@@ -76,7 +76,6 @@ extension SDGSwiftSourceTests.APITests {
     testCase([
       ("testAPIParsing", testAPIParsing),
       ("testCallout", testCallout),
-      ("testCalloutSyntax", testCalloutSyntax),
       ("testCodeFragmentSyntax", testCodeFragmentSyntax),
       ("testCoreLibraries", testCoreLibraries),
       ("testCSS", testCSS),
