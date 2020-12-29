@@ -112,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCalloutSyntax() {
-    _ = CalloutSyntax(
+    let callout = CalloutSyntax(
       bullet: ExtendedTokenSyntax(text: "\u{22}", kind: .bullet),
       indent: ExtendedTokenSyntax(text: " ", kind: .whitespace),
       name: ExtendedTokenSyntax(text: "Parameter", kind: .callout),
@@ -121,6 +121,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       colon: ExtendedTokenSyntax(text: ":", kind: .colon),
       contents: []
     )
+    _ = callout.renderedHTML(localization: "und")
   }
 
   func testCodeFragmentSyntax() throws {
