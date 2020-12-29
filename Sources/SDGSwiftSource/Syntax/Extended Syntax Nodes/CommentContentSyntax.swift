@@ -20,7 +20,11 @@ public final class CommentContentSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  internal init(source: String) {
+  /// Creates comment content, parsing headings and URLs.
+  ///
+  /// - Parameters:
+  ///   - source: The source of the comment.
+  public init(source: String) {
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {

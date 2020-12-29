@@ -293,6 +293,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testCommentContentSyntax() {
+    _ = CommentContentSyntax(source: "MARK: - Heading")
+    _ = CommentContentSyntax(source: "This is a link: http://example.com")
+  }
+
   func testCoreLibraries() throws {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
