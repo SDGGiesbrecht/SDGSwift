@@ -124,6 +124,7 @@ extension SDGSwiftTests.APITests {
     testCase([
       ("testBuild", testBuild),
       ("testCoverageRegion", testCoverageRegion),
+      ("testTestCoverageReport", testTestCoverageReport),
       ("testFileTestCoverage", testFileTestCoverage),
       ("testGit", testGit),
       ("testGitError", testGitError),
