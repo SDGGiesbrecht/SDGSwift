@@ -95,7 +95,7 @@ extension VersionedExternalProcess {
       }
 
       func validate(_ process: ExternalProcess) -> Bool {
-        #if os(tvOS) || os(iOS) || os(watchOS)
+        #if os(tvOS) || os(iOS) || os(watchOS)  // @exempt(from: tests) Unreachable?
           return false  // Cannot ensure version matches.
         #else
           #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)

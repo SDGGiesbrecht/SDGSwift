@@ -32,9 +32,10 @@ extension SwiftCompiler {
   internal static func swiftCLocation()
     -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
   {
-    return location(versionConstraints: compatibleVersions).map { swift in
-      return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
-    }
+    return location(versionConstraints: compatibleVersions)
+      .map { swift in  // @exempt(from: tests) Unreachable on tvOS.
+        return swift.deletingLastPathComponent().appendingPathComponent("swiftc")
+      }
   }
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
