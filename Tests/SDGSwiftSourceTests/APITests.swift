@@ -111,6 +111,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
   }
 
+  func testCalloutSyntax() {
+    _ = CalloutSyntax(
+      bullet: ExtendedTokenSyntax(text: "\u{22}", kind: .bullet),
+      indent: ExtendedTokenSyntax(text: " ", kind: .whitespace),
+      name: ExtendedTokenSyntax(text: "Parameter", kind: .callout),
+      space: ExtendedTokenSyntax(text: " ", kind: .whitespace),
+      parameterName: ExtendedTokenSyntax(text: "a", kind: .parameter),
+      colon: ExtendedTokenSyntax(text: ":", kind: .colon),
+      contents: []
+    )
+  }
+
   func testCodeFragmentSyntax() throws {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))

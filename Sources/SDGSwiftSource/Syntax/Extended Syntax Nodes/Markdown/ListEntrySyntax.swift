@@ -49,8 +49,9 @@
         self.indent = space
         precedingChildren.append(space)
       } else {
-        bullet = nil  // @exempt(from: tests) Unreachable with valid syntax.
-        indent = nil
+        // @exempt(from: tests) Unreachable with valid syntax.
+        bullet = ExtendedTokenSyntax(text: "", kind: .bullet)
+        indent = ExtendedTokenSyntax(text: "", kind: .whitespace)
       }
 
       super.init(node: node, in: documentation, precedingChildren: precedingChildren)
@@ -135,21 +136,17 @@
     }
 
     /// The bullet.
-    public let bullet: ExtendedTokenSyntax?
+    public let bullet: ExtendedTokenSyntax
 
     /// The indent after the bullet.
-    public let indent: ExtendedTokenSyntax?
+    public let indent: ExtendedTokenSyntax
 
     /// The list entry contents.
     public internal(set) var contents: [ExtendedSyntax] = [] {
       didSet {
         var newChildren: [ExtendedSyntax] = []
-        if let bullet = self.bullet {
-          newChildren.append(bullet)
-        }
-        if let indent = self.indent {
-          newChildren.append(indent)
-        }
+        newChildren.append(bullet)
+        newChildren.append(indent)
         newChildren.append(contentsOf: contents)
         children = newChildren
       }

@@ -17,12 +17,22 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
   // MARK: - Initialization
 
-  internal required init(
-    bullet: ExtendedTokenSyntax?,
-    indent: ExtendedTokenSyntax?,
+  /// Creates a callout.
+  ///
+  /// - Parameters:
+  ///   - bullet: The bullet.
+  ///   - indent: The indent after the bullet.
+  ///   - name: The callout name.
+  ///   - space: The space before the parameter name.
+  ///   - parameterName: The parameter name.
+  ///   - colon: The colon after the name.
+  ///   - contents: The contents of the callout.
+  public required init(
+    bullet: ExtendedTokenSyntax,
+    indent: ExtendedTokenSyntax,
     name: ExtendedTokenSyntax,
-    space: ExtendedTokenSyntax?,
-    parameterName: ExtendedTokenSyntax?,
+    space: ExtendedTokenSyntax? = nil,
+    parameterName: ExtendedTokenSyntax? = nil,
     colon: ExtendedTokenSyntax,
     contents: [ExtendedSyntax]
   ) {
@@ -36,12 +46,8 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
     self.contents = contents
 
     var children: [ExtendedSyntax] = []
-    if let theBullet = bullet {
-      children.append(theBullet)
-    }
-    if let theIndent = indent {
-      children.append(theIndent)
-    }
+    children.append(bullet)
+    children.append(indent)
     children.append(name)
     if let theSpace = space {
       children.append(theSpace)
@@ -58,10 +64,10 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
   // MARK: - Properties
 
   /// The bullet.
-  public let bullet: ExtendedTokenSyntax?
+  public let bullet: ExtendedTokenSyntax
 
   /// The indent after the bullet.
-  public let indent: ExtendedTokenSyntax?
+  public let indent: ExtendedTokenSyntax
 
   /// The callout name.
   public let name: ExtendedTokenSyntax

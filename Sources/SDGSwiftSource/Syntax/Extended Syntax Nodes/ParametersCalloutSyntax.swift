@@ -18,8 +18,8 @@
   public final class ParametersCalloutSyntax: CalloutSyntax {
 
     internal required init(
-      bullet: ExtendedTokenSyntax?,
-      indent: ExtendedTokenSyntax?,
+      bullet: ExtendedTokenSyntax,
+      indent: ExtendedTokenSyntax,
       name: ExtendedTokenSyntax,
       space: ExtendedTokenSyntax?,
       parameterName: ExtendedTokenSyntax?,
