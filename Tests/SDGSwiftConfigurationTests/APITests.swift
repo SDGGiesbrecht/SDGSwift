@@ -305,4 +305,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     #endif
   }
+
+  func testSampleConfiguration() {
+    let configuration = SampleConfiguration()
+    testCodableConformance(of: configuration, uniqueTestName: "Default")
+  }
 }
