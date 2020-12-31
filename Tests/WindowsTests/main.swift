@@ -27,6 +27,7 @@ extension SDGSwiftConfigurationTests.APITests {
       ("testConfiguration", testConfiguration),
       ("testConfigurationError", testConfigurationError),
       ("testLegacyConfiguration", testLegacyConfiguration),
+      ("testSampleConfiguration", testSampleConfiguration),
     ])
   ]
 }
