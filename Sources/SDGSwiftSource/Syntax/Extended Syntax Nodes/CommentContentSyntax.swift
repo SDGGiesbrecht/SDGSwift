@@ -20,7 +20,7 @@ public final class CommentContentSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  internal init(source: String) {
+  internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {

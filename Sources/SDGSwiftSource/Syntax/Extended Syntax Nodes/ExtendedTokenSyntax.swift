@@ -23,7 +23,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  internal init(text: String, kind: ExtendedTokenKind) {
+  internal init(text: String, kind: ExtendedTokenKind) {  // @exempt(from: tests)  Unreachable from tvOS.
     self._text = text
     self.kind = kind
     super.init(children: [])
@@ -40,7 +40,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
   /// Returns the next token.
-  public func previousToken() -> ExtendedTokenSyntax? {
+  public func previousToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
     func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
       var result: ExtendedSyntax?
       for sibling in relationship.parent.children
@@ -62,7 +62,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
   /// Returns the next token.
-  public func nextToken() -> ExtendedTokenSyntax? {
+  public func nextToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
     func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
       for sibling in relationship.parent.children
       where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
@@ -87,7 +87,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
     localization: String,
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     switch kind {
     case .quotationMark, .string, .whitespace, .newlines, .lineCommentDelimiter,
       .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL,
@@ -110,7 +110,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
     }
   }
 
-  internal func syntaxHighlightingClass() -> String? {
+  internal func syntaxHighlightingClass() -> String? {  // @exempt(from: tests)  Unreachable from tvOS.
     switch kind {
 
     case .quotationMark:
@@ -145,7 +145,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
   internal override func nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     if kind == .commentURL ∨ kind == .linkURL {
       return
         "<a href=\u{22}\(HTML.escapeTextForAttribute(text))\u{22} class=\u{22}url\u{22}>\(text)</a>"
@@ -161,7 +161,9 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // MARK: - TextOutputStreamable
 
-  public override func write<Target>(to target: inout Target) where Target: TextOutputStream {
+  public override func write<Target>(
+    to target: inout Target
+  ) where Target: TextOutputStream {  // @exempt(from: tests)  Unreachable from tvOS.
     _text.write(to: &target)
   }
 }

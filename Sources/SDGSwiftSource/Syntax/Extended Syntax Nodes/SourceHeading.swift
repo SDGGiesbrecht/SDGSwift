@@ -15,7 +15,7 @@
 /// A heading in source code.
 public final class SourceHeadingSyntax: ExtendedSyntax {
 
-  internal init(mark: String, heading: String) {
+  internal init(mark: String, heading: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
     self.mark = markSyntax
 

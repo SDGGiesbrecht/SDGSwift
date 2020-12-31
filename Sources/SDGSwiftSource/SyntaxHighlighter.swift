@@ -23,7 +23,10 @@ public enum SyntaxHighlighter {
     return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
   }
 
-  internal static func frame(highlightedSyntax: String, inline: Bool) -> String {
+  internal static func frame(
+    highlightedSyntax: String,
+    inline: Bool
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     var result = "<code class=\u{22}swift"
     if ¬inline {
       result += " blockquote"

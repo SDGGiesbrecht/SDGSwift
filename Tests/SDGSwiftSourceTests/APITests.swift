@@ -335,6 +335,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testExtendedTokenKind() {
+    XCTAssertEqual(ExtendedTokenKind.string.textFreedom, .arbitrary)
+    XCTAssertEqual(ExtendedTokenKind.quotationMark.textFreedom, .invariable)
+  }
+
   func testExtension() {
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))

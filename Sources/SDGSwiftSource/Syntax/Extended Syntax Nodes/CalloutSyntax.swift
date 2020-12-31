@@ -25,7 +25,7 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
     parameterName: ExtendedTokenSyntax? = nil,
     colon: ExtendedTokenSyntax,
     contents: [ExtendedSyntax]
-  ) {
+  ) {  // @exempt(from: tests)  Unreachable from tvOS.
 
     self.bullet = bullet
     self.indent = indent
@@ -76,11 +76,11 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
   // MARK: - ExtendedSyntax
 
-  internal override var renderedHTMLAttributes: [String: String] {
+  internal override var renderedHTMLAttributes: [String: String] {  // @exempt(from: tests)  Unreachable from tvOS.
     return ["class": "callout \(name.text.lowercased())"]
   }
 
-  internal override var renderedHtmlElement: String? {
+  internal override var renderedHtmlElement: String? {  // @exempt(from: tests)  Unreachable from tvOS.
     return "div"
   }
 }

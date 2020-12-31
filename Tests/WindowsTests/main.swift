@@ -79,6 +79,7 @@ extension SDGSwiftSourceTests.APITests {
       ("testCodeFragmentSyntax", testCodeFragmentSyntax),
       ("testCoreLibraries", testCoreLibraries),
       ("testCSS", testCSS),
+      ("testExtendedTokenKind", testExtendedTokenKind),
       ("testExtension", testExtension),
       ("testFunctionalSyntaxScanner", testFunctionalSyntaxScanner),
       ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
