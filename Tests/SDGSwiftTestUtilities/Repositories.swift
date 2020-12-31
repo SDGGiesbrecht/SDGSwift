@@ -40,6 +40,7 @@ public let thisRepository: PackageRepository = {
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
+      // @exempt(from: tests)
       root = URL(fileURLWithPath: overridden)
     }
   #endif
@@ -96,7 +97,7 @@ public let mocksDirectory = thisRepository.location
     let mock: URL
     if let specific = name {
       mock = try setUpMock(named: specific).location
-    } else {
+    } else {  // @exempt(from: tests) Unreachable on tvOS.
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       mock = temporaryDirectory.appendingPathComponent("Mock")
       mocks.append(mock)
