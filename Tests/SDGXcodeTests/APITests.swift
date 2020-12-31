@@ -407,46 +407,40 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.xcodeError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Xcode Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.xcodeError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Xcode Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: Xcode.SchemeError.noPackageScheme,
       localizations: InterfaceLocalization.self,
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.corruptTestCoverageReport,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Corrupt Test Coverage",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.foundationError(StandInError()),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Foundation",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.xcodeError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Xcode Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.corruptTestCoverageReport,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Corrupt Test Coverage",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.foundationError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Foundation",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.xcodeError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Xcode Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: VersionedExternalProcessExecutionError<Xcode>.executionError(
         .foundationError(StandInError())

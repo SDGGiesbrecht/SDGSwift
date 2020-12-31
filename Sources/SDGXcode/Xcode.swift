@@ -36,7 +36,10 @@ public enum Xcode: VersionedExternalProcess {
   private static func coverageTool<Constraints>(
     versionConstraints: Constraints
   ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Xcode>>
-  where Constraints: RangeFamily, Constraints.Bound == Version {
+  where
+    Constraints: RangeFamily,
+    Constraints.Bound == Version
+  {  // @exempt(from: tests) Unreachable on tvOS.
     return location(versionConstraints: versionConstraints)
       .map { xcodebuild in  // @exempt(from: tests) Unreachable on Linux.
         return ExternalProcess(
@@ -119,8 +122,9 @@ public enum Xcode: VersionedExternalProcess {
   ///
   /// - Parameters:
   ///     - output: The Xcode output to abbreviate.
-  public static func abbreviate(output: String) -> String? {
-    // @exempt(from: tests) Meaningless on Linux.
+  public static func abbreviate(
+    output: String
+  ) -> String? {  // @exempt(from: tests) Meaningless on Linux.
     if output.hasPrefix("$ ") {
       return output
     }
@@ -232,7 +236,7 @@ public enum Xcode: VersionedExternalProcess {
         continue
       }
       if line.contains("/SourcePackages/".scalars) {  // @exempt(from: tests)
-        // Xcode‐managed SwiftPM dependency. Meaningless on Linux.
+        // @exempt(from: tests) Xcode‐managed SwiftPM dependency. Meaningless on Linux.
         continue
       }
       if line.contains("directory not found for option".scalars) {
@@ -251,7 +255,10 @@ public enum Xcode: VersionedExternalProcess {
     return false
   }
 
-  private static func resultBundle(for project: PackageRepository, on sdk: SDK) -> URL {
+  private static func resultBundle(
+    for project: PackageRepository,
+    on sdk: SDK
+  ) -> URL {  // @exempt(from: tests) Unreachable on tvOS.
     return project.location.appendingPathComponent(
       ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
     )
