@@ -23,7 +23,10 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  internal init(text: String, kind: ExtendedTokenKind) {  // @exempt(from: tests)  Unreachable from tvOS.
+  internal init(
+    text: String,
+    kind: ExtendedTokenKind
+  ) {  // @exempt(from: tests)  Unreachable from tvOS.
     self._text = text
     self.kind = kind
     super.init(children: [])
@@ -40,7 +43,9 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
   /// Returns the next token.
-  public func previousToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
+  public
+    func previousToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     func previousSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
       var result: ExtendedSyntax?
       for sibling in relationship.parent.children
@@ -62,7 +67,9 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
 
   // #documentation(SDGSwiftSource.TokenSyntax.nextToken())
   /// Returns the next token.
-  public func nextToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
+  public
+    func nextToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     func nextSibling(of relationship: (parent: ExtendedSyntax, index: Int)) -> ExtendedSyntax? {
       for sibling in relationship.parent.children
       where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
@@ -110,7 +117,9 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
     }
   }
 
-  internal func syntaxHighlightingClass() -> String? {  // @exempt(from: tests)  Unreachable from tvOS.
+  internal
+    func syntaxHighlightingClass() -> String?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     switch kind {
 
     case .quotationMark:

@@ -135,7 +135,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.ancestors())
   /// All the node’s ancestors in order from its immediate parent to the root node.
-  public func ancestors() -> AnySequence<ExtendedSyntax> {  // @exempt(from: tests)  Unreachable from tvOS.
+  public
+    func ancestors() -> AnySequence<ExtendedSyntax>
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let parent = self.parent {
       return AnySequence(sequence(first: parent, next: { $0.parent }))
     } else {
@@ -143,7 +145,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     }
   }
 
-  private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {  // @exempt(from: tests)  Unreachable from tvOS.
+  private
+    var parentRelationship: (parent: ExtendedSyntax, index: Int)?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     guard let parent = self.parent else {
       return nil
     }
@@ -162,7 +166,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.firstToken())
   /// Return the first token of the node.
-  public func firstToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
+  public
+    func firstToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax,
       ¬token.text.isEmpty
     {
@@ -173,7 +179,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.firstToken())
   /// Return the first token of the node.
-  public func lastToken() -> ExtendedTokenSyntax? {  // @exempt(from: tests)  Unreachable from tvOS.
+  public
+    func lastToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax,
       ¬token.text.isEmpty
     {
@@ -188,7 +196,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     return nil
   }
 
-  internal var renderedHTMLAttributes: [String: String] {  // @exempt(from: tests)  Unreachable from tvOS.
+  internal
+    var renderedHTMLAttributes: [String: String]
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return [:]
   }
 

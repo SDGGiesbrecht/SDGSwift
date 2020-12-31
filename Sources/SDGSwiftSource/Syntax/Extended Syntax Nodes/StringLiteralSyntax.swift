@@ -19,7 +19,9 @@ public final class StringLiteralSyntax: ExtendedSyntax {
 
   // MARK: - Class Properties
 
-  private static var quotationMark: ExtendedTokenSyntax {  // @exempt(from: tests)  Unreachable from tvOS.
+  private static
+    var quotationMark: ExtendedTokenSyntax
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return ExtendedTokenSyntax(text: "\u{22}", kind: .quotationMark)
   }
 
