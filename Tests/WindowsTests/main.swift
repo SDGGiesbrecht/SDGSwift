@@ -159,6 +159,7 @@ extension SDGXcodeTests.APITests {
       ("testXcode", testXcode),
       ("testXcodeCoverage", testXcodeCoverage),
       ("testXcodeError", testXcodeError),
+      ("testXcodeSDK", testXcodeSDK),
     ])
   ]
 }

@@ -51,7 +51,7 @@ extension Xcode {
       }
     }
 
-    internal var cacheDirectoryName: String {
+    internal var cacheDirectoryName: String {  // @exempt(from: tests)
       // Many of these cannot be reached from continuous integration.
       switch self {
       case .macOS:

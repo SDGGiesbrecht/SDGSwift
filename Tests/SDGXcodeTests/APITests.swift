@@ -462,4 +462,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
   }
+
+  func testXcodeSDK() {
+    for sdk in [
+      .macOS, .tvOS(simulator: false), .tvOS(simulator: true), .iOS(simulator: false),
+      .iOS(simulator: true), .watchOS,
+    ] as [Xcode.SDK] {
+      _ = sdk.commandLineName
+    }
+  }
 }
