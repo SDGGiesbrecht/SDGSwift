@@ -36,6 +36,7 @@ configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
+configuration.testing.exemptPaths.insert("Sources/SampleConfiguration")
 configuration.documentation.api.ignoredDependencies = [
 
   // cmark
