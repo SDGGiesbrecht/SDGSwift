@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,7 +13,9 @@
  */
 
 import Foundation
-import XCTest
+#if !os(watchOS)
+  import XCTest
+#endif
 
 import SDGText
 import SDGExternalProcess
