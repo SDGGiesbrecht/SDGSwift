@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,13 +13,13 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   /// A grouped “Paramaters” callout.
   public final class ParametersCalloutSyntax: CalloutSyntax {
 
     internal required init(
-      bullet: ExtendedTokenSyntax?,
-      indent: ExtendedTokenSyntax?,
+      bullet: ExtendedTokenSyntax,
+      indent: ExtendedTokenSyntax,
       name: ExtendedTokenSyntax,
       space: ExtendedTokenSyntax?,
       parameterName: ExtendedTokenSyntax?,

@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -20,7 +20,7 @@ import SDGMathematics
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
 public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinality)
 
-  internal init(children: [ExtendedSyntax]) {
+  internal init(children: [ExtendedSyntax]) {  // @exempt(from: tests)  Unreachable from tvOS.
     self.children = children
   }
 
@@ -31,7 +31,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   private var _offset: Int?
   private var positionOffset: Int {
-    get {
+    get {  // @exempt(from: tests)  Unreachable from tvOS.
       return _offset!
       // The unwrap can only fail if the top‐level node forgot to call determinePositions().
     }
@@ -39,7 +39,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
       _offset = newValue
     }
   }
-  private var endPositionOffset: Int {
+  private var endPositionOffset: Int {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax {
       return positionOffset + token.text.scalars.count
     } else {
@@ -66,7 +66,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   public internal(set) weak var parent: ExtendedSyntax?
   /// The index of the node in its parent.
   public internal(set) var indexInParent: Int = 0
-  internal func setTreeRelationships() {
+  internal func setTreeRelationships() {  // @exempt(from: tests)  Unreachable from tvOS.
     for index in children.indices {
       let child = children[index]
       child.parent = self
@@ -76,7 +76,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   }
 
   /// The node’s source text.
-  public var text: String {
+  public var text: String {  // @exempt(from: tests)  Unreachable from tvOS.
     var result = ""
     write(to: &result)
     return result
@@ -85,7 +85,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   // MARK: - Location
 
   // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the lower bound of the node.
     ///
     /// - Parameters:
@@ -135,7 +135,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.ancestors())
   /// All the node’s ancestors in order from its immediate parent to the root node.
-  public func ancestors() -> AnySequence<ExtendedSyntax> {
+  public
+    func ancestors() -> AnySequence<ExtendedSyntax>
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let parent = self.parent {
       return AnySequence(sequence(first: parent, next: { $0.parent }))
     } else {
@@ -143,7 +145,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     }
   }
 
-  private var parentRelationship: (parent: ExtendedSyntax, index: Int)? {
+  private
+    var parentRelationship: (parent: ExtendedSyntax, index: Int)?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     guard let parent = self.parent else {
       return nil
     }
@@ -162,7 +166,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.firstToken())
   /// Return the first token of the node.
-  public func firstToken() -> ExtendedTokenSyntax? {
+  public
+    func firstToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax,
       ¬token.text.isEmpty
     {
@@ -173,7 +179,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // #documentation(SDGSwiftSource.Syntax.firstToken())
   /// Return the first token of the node.
-  public func lastToken() -> ExtendedTokenSyntax? {
+  public
+    func lastToken() -> ExtendedTokenSyntax?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     if let token = self as? ExtendedTokenSyntax,
       ¬token.text.isEmpty
     {
@@ -184,11 +192,13 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // MARK: - Rendering
 
-  internal var renderedHtmlElement: String? {
+  internal var renderedHtmlElement: String? {  // @exempt(from: tests)  Unreachable from tvOS.
     return nil
   }
 
-  internal var renderedHTMLAttributes: [String: String] {
+  internal
+    var renderedHTMLAttributes: [String: String]
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return [:]
   }
 
@@ -204,7 +214,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     localization: String,
     internalIdentifiers: Set<String> = [],
     symbolLinks: [String: String] = [:]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     var result = ""
     if let element = renderedHtmlElement {
       result.append(contentsOf: "<" + element)
@@ -246,7 +256,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     inline: Bool,
     internalIdentifiers: Set<String> = [],
     symbolLinks: [String: String] = [:]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     return SyntaxHighlighter.frame(
       highlightedSyntax: nestedSyntaxHighlightedHTML(
         internalIdentifiers: internalIdentifiers,
@@ -259,7 +269,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   internal func nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     return children.map({
       $0.nestedSyntaxHighlightedHTML(
         internalIdentifiers: internalIdentifiers,
@@ -270,7 +280,9 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // MARK: - TextOutputStreamable
 
-  public func write<Target>(to target: inout Target) where Target: TextOutputStream {
+  public func write<Target>(
+    to target: inout Target
+  ) where Target: TextOutputStream {  // @exempt(from: tests)  Unreachable from tvOS.
     for child in children {
       child.write(to: &target)
     }

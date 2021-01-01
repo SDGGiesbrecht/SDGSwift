@@ -1,10 +1,10 @@
 /*
- CommentSyntax.swift
+ CommentContentSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -20,7 +20,7 @@ public final class CommentContentSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  internal init(source: String) {
+  internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {

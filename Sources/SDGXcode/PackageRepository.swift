@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -36,54 +36,56 @@ extension PackageRepository {
     }
   #endif
 
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
-    /// Returns the main package scheme.
-    public func scheme() -> Result<String, Xcode.SchemeError> {
-      return Xcode.scheme(for: self)
-    }
+  #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+      /// Returns the main package scheme.
+      public func scheme() -> Result<String, Xcode.SchemeError> {
+        return Xcode.scheme(for: self)
+      }
 
-    // MARK: - Workflow
+      // MARK: - Workflow
 
-    /// Generates or refreshes the package’s Xcode project.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func generateXcodeProject(
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
-    ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-      return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
-    }
+      /// Generates or refreshes the package’s Xcode project.
+      ///
+      /// - Parameters:
+      ///     - reportProgress: Optional. A closure to execute for each line of output.
+      ///     - progressReport: A line of output.
+      @discardableResult public func generateXcodeProject(
+        reportProgress: (_ progressReport: String) -> Void = { _ in }
+      ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+        return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
+      }
 
-    /// Builds the package.
-    ///
-    /// - Parameters:
-    ///     - sdk: The SDK to build for.
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func build(
-      for sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-    ) -> Result<String, Xcode.SchemeError> {
-      return Xcode.build(self, for: sdk, reportProgress: reportProgress)
-    }
+      /// Builds the package.
+      ///
+      /// - Parameters:
+      ///     - sdk: The SDK to build for.
+      ///     - reportProgress: Optional. A closure to execute for each line of output.
+      ///     - progressReport: A line of output.
+      @discardableResult public func build(
+        for sdk: Xcode.SDK,
+        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+      ) -> Result<String, Xcode.SchemeError> {
+        return Xcode.build(self, for: sdk, reportProgress: reportProgress)
+      }
 
-    /// Tests the package.
-    ///
-    /// - Parameters:
-    ///     - sdk: The SDK to run tests on.
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func test(
-      on sdk: Xcode.SDK,
-      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-    ) -> Result<String, Xcode.SchemeError> {
-      return Xcode.test(self, on: sdk, reportProgress: reportProgress)
-    }
+      /// Tests the package.
+      ///
+      /// - Parameters:
+      ///     - sdk: The SDK to run tests on.
+      ///     - reportProgress: Optional. A closure to execute for each line of output.
+      ///     - progressReport: A line of output.
+      @discardableResult public func test(
+        on sdk: Xcode.SDK,
+        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+      ) -> Result<String, Xcode.SchemeError> {
+        return Xcode.test(self, on: sdk, reportProgress: reportProgress)
+      }
+    #endif
   #endif
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:

@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -18,14 +18,14 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
   // MARK: - Initialization
 
   internal required init(
-    bullet: ExtendedTokenSyntax?,
-    indent: ExtendedTokenSyntax?,
+    bullet: ExtendedTokenSyntax,
+    indent: ExtendedTokenSyntax,
     name: ExtendedTokenSyntax,
-    space: ExtendedTokenSyntax?,
-    parameterName: ExtendedTokenSyntax?,
+    space: ExtendedTokenSyntax? = nil,
+    parameterName: ExtendedTokenSyntax? = nil,
     colon: ExtendedTokenSyntax,
     contents: [ExtendedSyntax]
-  ) {
+  ) {  // @exempt(from: tests)  Unreachable from tvOS.
 
     self.bullet = bullet
     self.indent = indent
@@ -36,12 +36,8 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
     self.contents = contents
 
     var children: [ExtendedSyntax] = []
-    if let theBullet = bullet {
-      children.append(theBullet)
-    }
-    if let theIndent = indent {
-      children.append(theIndent)
-    }
+    children.append(bullet)
+    children.append(indent)
     children.append(name)
     if let theSpace = space {
       children.append(theSpace)
@@ -58,10 +54,10 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
   // MARK: - Properties
 
   /// The bullet.
-  public let bullet: ExtendedTokenSyntax?
+  public let bullet: ExtendedTokenSyntax
 
   /// The indent after the bullet.
-  public let indent: ExtendedTokenSyntax?
+  public let indent: ExtendedTokenSyntax
 
   /// The callout name.
   public let name: ExtendedTokenSyntax
@@ -80,11 +76,15 @@ public class CalloutSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
 
   // MARK: - ExtendedSyntax
 
-  internal override var renderedHTMLAttributes: [String: String] {
+  internal override
+    var renderedHTMLAttributes: [String: String]
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return ["class": "callout \(name.text.lowercased())"]
   }
 
-  internal override var renderedHtmlElement: String? {
+  internal override
+    var renderedHtmlElement: String?
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return "div"
   }
 }

@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,7 +13,9 @@
  */
 
 import Foundation
-import XCTest
+#if !os(watchOS)
+  import XCTest
+#endif
 
 import SDGText
 import SDGExternalProcess
@@ -40,6 +42,7 @@ public let thisRepository: PackageRepository = {
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
+      // @exempt(from: tests)
       root = URL(fileURLWithPath: overridden)
     }
   #endif
@@ -78,13 +81,15 @@ public let mocksDirectory = thisRepository.location
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
-        _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
-        _ = try Shell.default.run(
-          command: ["git", "commit", "\u{2D}m", "Initialized."],
-          in: mock.location
-        ).get()
-        _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+          _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
+          _ = try Shell.default.run(
+            command: ["git", "commit", "\u{2D}m", "Initialized."],
+            in: mock.location
+          ).get()
+          _ = try Shell.default.run(command: ["git", "tag", "1.0.0"], in: mock.location).get()
+        #endif
       #endif
       return mock
     }
@@ -95,6 +100,7 @@ public let mocksDirectory = thisRepository.location
     if let specific = name {
       mock = try setUpMock(named: specific).location
     } else {
+      // @exempt(from: tests) Unreachable on tvOS.
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       mock = temporaryDirectory.appendingPathComponent("Mock")
       mocks.append(mock)
@@ -115,7 +121,7 @@ public let mocksDirectory = thisRepository.location
   }
 
   // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(Android))
+  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     public func withDefaultMockRepository(
       file: StaticString = #filePath,
       line: UInt = #line,

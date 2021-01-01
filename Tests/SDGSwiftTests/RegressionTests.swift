@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -33,14 +33,18 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
       try withMock(named: "Warnings") { package in
         #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-          let build = try package.build().get()
-          XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            let build = try package.build().get()
+            XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+          #endif
         #endif
       }
       try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
         #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-          let build = try package.build().get()
-          XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            let build = try package.build().get()
+            XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+          #endif
         #endif
       }
     #endif
@@ -52,39 +56,41 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator has no Swift.)
-            XCTAssertEqual(
-              try Package(url: mock.location).execute(
-                .development,
-                of: ["tool"],
-                with: [],
-                cacheDirectory: moved
-              ).get(),
-              "Hello, world!"
-            )
-            XCTAssertEqual(
-              try Package(url: mock.location).execute(
-                .version(Version(1, 0, 0)),
-                of: ["tool"],
-                with: [],
-                cacheDirectory: moved
-              ).get(),
-              "Hello, world!"
-            )
+            #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator has no Swift.)
+              XCTAssertEqual(
+                try Package(url: mock.location).execute(
+                  .development,
+                  of: ["tool"],
+                  with: [],
+                  cacheDirectory: moved
+                ).get(),
+                "Hello, world!"
+              )
+              XCTAssertEqual(
+                try Package(url: mock.location).execute(
+                  .version(Version(1, 0, 0)),
+                  of: ["tool"],
+                  with: [],
+                  cacheDirectory: moved
+                ).get(),
+                "Hello, world!"
+              )
+            #endif
+
+            switch Package(url: mock.location).execute(
+              .version(Version(1, 0, 0)),
+              of: ["tool"],
+              with: ["fail"],
+              cacheDirectory: moved
+            ) {
+            case .success:
+              XCTFail("Should have failed.")
+            case .failure:
+              break
+            }
           #endif
-
-          switch Package(url: mock.location).execute(
-            .version(Version(1, 0, 0)),
-            of: ["tool"],
-            with: ["fail"],
-            cacheDirectory: moved
-          ) {
-          case .success:
-            XCTFail("Should have failed.")
-          case .failure:
-            break
-          }
         }
       }
     #endif
@@ -96,9 +102,11 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // #workaround(Swift 5.3.1, Segmentation fault.)
     #if !os(Windows)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        let ignored = try thisRepository.ignoredFiles().get()
-        let expected = thisRepository.location.appendingPathComponent(".build").path
-        XCTAssert(ignored.contains(where: { $0.path == expected }))
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          let ignored = try thisRepository.ignoredFiles().get()
+          let expected = thisRepository.location.appendingPathComponent(".build").path
+          XCTAssert(ignored.contains(where: { $0.path == expected }))
+        #endif
       #endif
     #endif
   }

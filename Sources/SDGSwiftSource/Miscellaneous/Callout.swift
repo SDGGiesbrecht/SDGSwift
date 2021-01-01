@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -101,8 +101,12 @@ public enum Callout: String, CaseIterable {
 
   // MARK: - Initialization
 
-  internal init?(_ string: String) {
-    if let exists = Callout.lowercasedMapping[string.lowercased()] {
+  /// Creates a callout from a callout identifier.
+  ///
+  /// - Parameters:
+  ///   - identifier: The callout identifier.
+  public init?(_ identifier: String) {
+    if let exists = Callout.lowercasedMapping[identifier.lowercased()] {
       self = exists
     } else {
       return nil

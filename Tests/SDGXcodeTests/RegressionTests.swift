@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -21,7 +21,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(Linux) || os(Android))
+    #if !(os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withMock(named: "MultipleSchemes") { package in
         let scheme = try package.scheme().get()
         XCTAssertEqual(scheme, "SomePackage\u{2D}Package")

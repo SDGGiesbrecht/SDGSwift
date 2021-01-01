@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -25,19 +25,21 @@ import SDGSwiftTestUtilities
 class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
+    #if !(os(tvOS) || os(iOS) || os(watchOS))
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        #if !os(Windows)
-          // #workaround(workspace version 0.35.2, GitHub workflow host lacks SwiftPM.)
-          // @example(readMe🇨🇦EN)
-          let package = Package(
-            url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
-          )
-          try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
-        // @endExample
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+          #if !os(Windows)
+            // #workaround(workspace version 0.35.2, GitHub workflow host lacks SwiftPM.)
+            // @example(readMe🇨🇦EN)
+            let package = Package(
+              url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
+            )
+            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+          // @endExample
+          #endif
         #endif
-      #endif
-    }
+      }
+    #endif
   }
 }

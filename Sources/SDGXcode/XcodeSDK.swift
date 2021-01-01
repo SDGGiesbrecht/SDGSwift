@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -51,7 +51,7 @@ extension Xcode {
       }
     }
 
-    internal var cacheDirectoryName: String {
+    internal var cacheDirectoryName: String {  // @exempt(from: tests)
       // Many of these cannot be reached from continuous integration.
       switch self {
       case .macOS:

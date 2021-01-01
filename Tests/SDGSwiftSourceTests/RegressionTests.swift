@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2019–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2019–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -13,7 +13,7 @@
  */
 
 // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import SwiftSyntax
 #endif
 
@@ -32,7 +32,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
         "///",
@@ -60,7 +60,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
         "///",
@@ -77,7 +77,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...&#x2D;...",
         "public func function() {}",
@@ -95,7 +95,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
         "///",
@@ -120,7 +120,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
       let highlighted = declaration.syntaxHighlightedHTML(
         inline: false,

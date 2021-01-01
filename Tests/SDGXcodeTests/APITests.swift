@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -41,14 +41,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
           #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
             if withGeneratedProject {
-              _ = try package.generateXcodeProject().get()
+              #if !(os(tvOS) || os(iOS) || os(watchOS))
+                _ = try package.generateXcodeProject().get()
+              #endif
             }
             #if !(os(Windows) || os(Linux))
-              let build = try package.build(for: .macOS).get()
-              XCTAssertFalse(
-                Xcode.warningsOccurred(during: build),
-                "Warning triggered in:\n\(build)"
-              )
+              #if !(os(tvOS) || os(iOS) || os(watchOS))
+                let build = try package.build(for: .macOS).get()
+                XCTAssertFalse(
+                  Xcode.warningsOccurred(during: build),
+                  "Warning triggered in:\n\(build)"
+                )
+              #endif
             #endif
           #endif
         }
@@ -62,7 +66,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let url = directory.appendingPathComponent("no such URL")
         let package = PackageRepository(at: url)
-        _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
+        #endif
       }
     #endif
   }
@@ -79,20 +85,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         versionConstraints: Version(Int.min)...Version(Int.max)
       ).get()
     #else
-      _ = try Xcode.runCustomSubcommand(
-        ["\u{2D}version"],
-        versionConstraints: Version(Int.min)...Version(Int.max)
-      ).get()
+      #if !(os(tvOS) || os(iOS) || os(watchOS))
+        _ = try Xcode.runCustomSubcommand(
+          ["\u{2D}version"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ).get()
+      #endif
     #endif
     let xcodeLocation = try? Xcode.location(
       versionConstraints: Version(Int.min)...Version(Int.max)
     ).get()
-    #if !(os(Windows) || os(Linux) || os(Android))
+    #if !(os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       XCTAssertNotNil(xcodeLocation)
     #endif
 
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
           if withGeneratedProject {
@@ -294,7 +302,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { package in
         _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
         _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
@@ -310,14 +318,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         versionConstraints: Version(0)..<Version(100)
       ).get()
     #else
-      _ = try Xcode.runCustomCoverageSubcommand(
-        ["help"],
-        versionConstraints: Version(0)..<Version(100)
-      ).get()
+      #if !(os(tvOS) || os(iOS) || os(watchOS))
+        _ = try Xcode.runCustomCoverageSubcommand(
+          ["help"],
+          versionConstraints: Version(0)..<Version(100)
+        ).get()
+      #endif
     #endif
 
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
 
@@ -397,46 +407,40 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.xcodeError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Xcode Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.xcodeError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Xcode Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: Xcode.SchemeError.noPackageScheme,
       localizations: InterfaceLocalization.self,
       uniqueTestName: "No Package Scheme",
       overwriteSpecificationInsteadOfFailing: false
     )
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.corruptTestCoverageReport,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Corrupt Test Coverage",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.foundationError(StandInError()),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Foundation",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: Xcode.CoverageReportingError.xcodeError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Xcode Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.corruptTestCoverageReport,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Corrupt Test Coverage",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.foundationError(StandInError()),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Foundation",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: Xcode.CoverageReportingError.xcodeError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Xcode Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: VersionedExternalProcessExecutionError<Xcode>.executionError(
         .foundationError(StandInError())
@@ -457,5 +461,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uniqueTestName: "Foundation",
       overwriteSpecificationInsteadOfFailing: false
     )
+  }
+
+  func testXcodeSDK() {
+    for sdk in [
+      .macOS, .tvOS(simulator: false), .tvOS(simulator: true), .iOS(simulator: false),
+      .iOS(simulator: true), .watchOS,
+    ] as [Xcode.SDK] {
+      _ = sdk.commandLineName
+    }
   }
 }

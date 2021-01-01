@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -30,17 +30,13 @@ configuration.documentation.repositoryURL = URL(
   string: "https://github.com/SDGGiesbrecht/SDGSwift"
 )!
 
-// #workaround(SDGCornerstone 6.0.0, Until ExternalProcess is available.)
-configuration.supportedPlatforms.remove(.iOS)
-configuration.supportedPlatforms.remove(.watchOS)
-configuration.supportedPlatforms.remove(.tvOS)
-
 configuration.documentation.localizations = ["🇨🇦EN"]
 
 configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
+configuration.testing.exemptPaths.insert("Sources/SampleConfiguration")
 configuration.documentation.api.ignoredDependencies = [
 
   // cmark

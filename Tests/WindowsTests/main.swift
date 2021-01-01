@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2020–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -79,6 +79,7 @@ extension SDGSwiftSourceTests.APITests {
       ("testCodeFragmentSyntax", testCodeFragmentSyntax),
       ("testCoreLibraries", testCoreLibraries),
       ("testCSS", testCSS),
+      ("testExtendedTokenKind", testExtendedTokenKind),
       ("testExtension", testExtension),
       ("testFunctionalSyntaxScanner", testFunctionalSyntaxScanner),
       ("testLineDeveloperCommentSyntax", testLineDeveloperCommentSyntax),
@@ -122,12 +123,16 @@ extension SDGSwiftTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testBuild", testBuild),
+      ("testCoverageRegion", testCoverageRegion),
+      ("testTestCoverageReport", testTestCoverageReport),
+      ("testFileTestCoverage", testFileTestCoverage),
       ("testGit", testGit),
       ("testGitError", testGitError),
       ("testLocalizations", testLocalizations),
       ("testPackage", testPackage),
       ("testPackageError", testPackageError),
       ("testPackageRepository", testPackageRepository),
+      ("testStringScalarOffset", testStringScalarOffset),
       ("testSwiftCompiler", testSwiftCompiler),
       ("testSwiftCompilerError", testSwiftCompilerError),
       ("testVersion", testVersion),
@@ -154,6 +159,7 @@ extension SDGXcodeTests.APITests {
       ("testXcode", testXcode),
       ("testXcodeCoverage", testXcodeCoverage),
       ("testXcodeError", testXcodeError),
+      ("testXcodeSDK", testXcodeSDK),
     ])
   ]
 }

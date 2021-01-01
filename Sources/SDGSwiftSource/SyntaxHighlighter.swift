@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -23,7 +23,10 @@ public enum SyntaxHighlighter {
     return StrictString(Resources.syntaxHighlighting).dropping(through: "*/\n\n")
   }
 
-  internal static func frame(highlightedSyntax: String, inline: Bool) -> String {
+  internal static func frame(
+    highlightedSyntax: String,
+    inline: Bool
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     var result = "<code class=\u{22}swift"
     if ¬inline {
       result += " blockquote"

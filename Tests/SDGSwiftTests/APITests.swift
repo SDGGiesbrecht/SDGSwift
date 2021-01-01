@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGLocalization
@@ -55,17 +57,92 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
   }
 
+  func testCoverageRegion() {
+    let string = "string"
+    let region = CoverageRegion(region: string.bounds, count: 0)
+    _ = region.convert(using: { $0 })
+    var regions = [region]
+    CoverageRegion._normalize(regions: &regions, source: string, ignoreCoveredRegions: false)
+    let convertedRegions = regions.map { $0.convert(using: { string.offset(of: $0) }) }
+    _ = FileTestCoverage(file: URL(fileURLWithPath: "/some/path"), regions: convertedRegions)
+
+    var uncovered = [CoverageRegion(region: string.bounds, count: 1)]
+    CoverageRegion._normalize(regions: &uncovered, source: string, ignoreCoveredRegions: true)
+
+    let ifElse = [
+      "if true {",  // 10
+      "  exit(0)",  // 10
+      "} else {",  // 9
+      "  exit(1)",  // 10
+      "}",  // 1
+    ].joined(separator: "\n")
+    var ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 22
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 39),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 39
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 28
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+    ifElseRegions = [
+      CoverageRegion(
+        region: ifElse.scalars.index(
+          ifElse.scalars.startIndex,
+          offsetBy: 21
+        )..<ifElse.scalars.index(ifElse.scalars.startIndex, offsetBy: 40),
+        count: 0
+      )
+    ]
+    CoverageRegion._normalize(regions: &ifElseRegions, source: ifElse, ignoreCoveredRegions: true)
+  }
+
+  func testTestCoverageReport() {
+    _ = TestCoverageReport(files: [])
+  }
+
+  func testFileTestCoverage() {
+    _ = FileTestCoverage(file: URL(fileURLWithPath: #filePath), regions: [])
+  }
+
   func testGit() {
     // #workaround(Swift 5.3.1, Segmentation fault.)
     #if !os(Windows)
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        XCTAssertNotNil(
-          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-        )
+        #if os(tvOS) || os(iOS) || os(watchOS)
+          _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        #else
+          XCTAssertNotNil(
+            try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+          )
+        #endif
       #endif
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let url = directory.appendingPathComponent("no such URL")
-        _ = try? Git.clone(Package(url: url), to: url).get()
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try? Git.clone(Package(url: url), to: url).get()
+        #endif
       }
     #endif
   }
@@ -81,22 +158,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Git Unavailable",
         overwriteSpecificationInsteadOfFailing: false
       )
-      switch Git.runCustomSubcommand(
-        ["fail"],
-        versionConstraints: Version(Int.min)...Version(Int.max)
-      ) {
-      case .success:
-        XCTFail()
-      case .failure(let error):
-        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-          testCustomStringConvertibleConformance(
-            of: error,
-            localizations: InterfaceLocalization.self,
-            uniqueTestName: "Git Execution",
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
-      }
+      #if !(os(tvOS) || os(iOS) || os(watchOS))
+        switch Git.runCustomSubcommand(
+          ["fail"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ) {
+        case .success:
+          XCTFail()
+        case .failure(let error):
+          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+            testCustomStringConvertibleConformance(
+              of: error,
+              localizations: InterfaceLocalization.self,
+              uniqueTestName: "Git Execution",
+              overwriteSpecificationInsteadOfFailing: false
+            )
+          #endif
+        }
+      #endif
     #endif
   }
 
@@ -114,12 +193,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
       #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
-        XCTAssert(
-          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-            .versions()
-            .get() ∋ Version(0, 1, 0),
-          "Failed to detect available versions."
-        )
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          XCTAssert(
+            try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+              .versions()
+              .get() ∋ Version(0, 1, 0),
+            "Failed to detect available versions."
+          )
+        #endif
       #endif
     #endif
   }
@@ -152,7 +233,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
 
       // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(Android))
+      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
         try withDefaultMockRepository { mock in
           _ = try mock.tag(version: Version(10, 0, 0)).get()
         }
@@ -160,42 +241,69 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let url = directory.appendingPathComponent("no such URL")
-        _ = try? PackageRepository.clone(Package(url: url), to: url).get()
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try? PackageRepository.clone(Package(url: url), to: url).get()
+        #endif
       }
     #endif
   }
 
+  func testStringScalarOffset() {
+    let string = "string"
+    let offsets = string.offsets(of: string.scalars.bounds)
+    let bounds = string.indices(of: offsets)
+    XCTAssertEqual(bounds, string.scalars.bounds)
+    let start = offsets.lowerBound
+    XCTAssertEqual(start + 1 − 1, start)
+    XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)
+  }
+
   func testSwiftCompiler() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
-        _ = try SwiftCompiler.runCustomSubcommand(
-          ["\u{2D}\u{2D}version"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ).get()
-      #endif
+      #if !(os(tvOS) || os(iOS) || os(watchOS))
+        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
+          _ = try SwiftCompiler.runCustomSubcommand(
+            ["\u{2D}\u{2D}version"],
+            versionConstraints: Version(Int.min)...Version(Int.max)
+          ).get()
+        #endif
 
-      // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(Android))
-        try withDefaultMockRepository { mock in
-          _ = try mock.resolve().get()
-          _ = try mock.build(releaseConfiguration: true).get()
-          _ = try mock.test().get()
-        }
+        // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+        #if !(os(Windows) || os(Android))
+          try withDefaultMockRepository { mock in
+            _ = try mock.resolve().get()
+            _ = try mock.build(releaseConfiguration: true).get()
+            _ = try mock.test().get()
+          }
+        #endif
       #endif
       XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+      XCTAssertTrue(
+        SwiftCompiler.warningsOccurred(during: ".../File.swift:1:1: warning: Something went wrong.")
+      )
+      XCTAssertTrue(
+        ¬SwiftCompiler.warningsOccurred(
+          during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
+        )
+      )
 
       try withMock(named: "Tool") { mock in
         #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
           #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
-            _ = try mock.build(releaseConfiguration: true).get()
-            XCTAssertEqual(try mock.run("Tool", releaseConfiguration: true).get(), "Hello, world!")
+            #if !(os(tvOS) || os(iOS) || os(watchOS))
+              _ = try mock.build(releaseConfiguration: true).get()
+              XCTAssertEqual(
+                try mock.run("Tool", releaseConfiguration: true).get(),
+                "Hello, world!"
+              )
+            #endif
           #endif
         #endif
       }
     #endif
 
     // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
         _ = try? SwiftCompiler.run("no such target", from: package).get()
@@ -212,23 +320,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return "[...]"
       }
     }
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(Android))
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.swiftError(
-          .locationError(.unavailable(versionConstraints: "..."))
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Corrupt Test Coverage Report",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: SwiftCompiler.CoverageReportingError.swiftError(
+        .locationError(.unavailable(versionConstraints: "..."))
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: SwiftCompiler.CoverageReportingError.corruptTestCoverageReport,
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Corrupt Test Coverage Report",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
       of: Package.BuildError.gitError(.locationError(.unavailable(versionConstraints: "..."))),
       localizations: InterfaceLocalization.self,

@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -19,13 +19,15 @@ public final class StringLiteralSyntax: ExtendedSyntax {
 
   // MARK: - Class Properties
 
-  private static var quotationMark: ExtendedTokenSyntax {
+  private static
+    var quotationMark: ExtendedTokenSyntax
+  {  // @exempt(from: tests)  Unreachable from tvOS.
     return ExtendedTokenSyntax(text: "\u{22}", kind: .quotationMark)
   }
 
   // MARK: - Initialization
 
-  internal init(source: String) {
+  internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     let openingQuotationMark = StringLiteralSyntax.quotationMark
     let closingQuotationMark = StringLiteralSyntax.quotationMark
 
@@ -59,7 +61,7 @@ public final class StringLiteralSyntax: ExtendedSyntax {
   internal override func nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String]
-  ) -> String {
+  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
     var source = super.nestedSyntaxHighlightedHTML(
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks

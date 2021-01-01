@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -15,7 +15,7 @@
 /// A heading in source code.
 public final class SourceHeadingSyntax: ExtendedSyntax {
 
-  internal init(mark: String, heading: String) {
+  internal init(mark: String, heading: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     let markSyntax = ExtendedTokenSyntax(text: mark, kind: .mark)
     self.mark = markSyntax
 
