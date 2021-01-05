@@ -30,9 +30,9 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDependencyWarnings() throws {
     // Untracked.
 
-    #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
+    #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
       try withMock(named: "Warnings") { package in
-        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
           #if !(os(tvOS) || os(iOS) || os(watchOS))
             let build = try package.build().get()
             XCTAssert(SwiftCompiler.warningsOccurred(during: build))
@@ -40,7 +40,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         #endif
       }
       try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
           #if !(os(tvOS) || os(iOS) || os(watchOS))
             let build = try package.build().get()
             XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
@@ -53,12 +53,12 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
+    #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
         try withMockDynamicLinkedExecutable { mock in
           #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-            #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator has no Swift.)
+            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator has no Swift.)
               XCTAssertEqual(
                 try Package(url: mock.location).execute(
                   .development,
@@ -99,9 +99,9 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         #if !(os(tvOS) || os(iOS) || os(watchOS))
           let ignored = try thisRepository.ignoredFiles().get()
           let expected = thisRepository.location.appendingPathComponent(".build").path

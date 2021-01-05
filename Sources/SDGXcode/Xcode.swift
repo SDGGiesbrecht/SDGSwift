@@ -190,7 +190,7 @@ public enum Xcode: VersionedExternalProcess {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Builds the package.
       ///
       /// - Parameters:
@@ -265,7 +265,7 @@ public enum Xcode: VersionedExternalProcess {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Tests the package.
       ///
       /// - Parameters:
@@ -337,7 +337,7 @@ public enum Xcode: VersionedExternalProcess {
         ).mapError { .xcodeError($0) }  // @exempt(from: tests)
       }
 
-      // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
       #if !(os(Windows) || os(WASI) || os(Android))
         /// Returns the code coverage report for the package.
         ///

@@ -41,7 +41,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       mock.option = "Mock"
       Configuration.queue(mock: mock)
     #else
-      // #workaround(Swift 5.3.1, Segmentation fault.)
+      // #workaround(Swift 5.3.2, Segmentation fault.)
       #if !os(Windows)
         try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
           FileManager.default.delete(.cache)
@@ -53,8 +53,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
           let wherever = specifications.appendingPathComponent("Configured")
-          #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
-            #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
@@ -285,9 +285,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testLegacyConfiguration() throws {
     #if !(os(tvOS) || os(iOS) || os(watchOS))
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
+      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         try withLegacyMode {
-          #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
+          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
             _ = try SampleConfiguration.load(
               configuration: SampleConfiguration.self,
               named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),

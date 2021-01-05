@@ -20,7 +20,7 @@ extension PackageRepository {
 
   // MARK: - Properties
 
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+  #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
     /// Returns the package’s Xcode project.
     public func xcodeProject() throws -> URL? {
       let files = try FileManager.default.contentsOfDirectory(
@@ -37,7 +37,7 @@ extension PackageRepository {
   #endif
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Returns the main package scheme.
       public func scheme() -> Result<String, Xcode.SchemeError> {
         return Xcode.scheme(for: self)
@@ -84,7 +84,7 @@ extension PackageRepository {
     #endif
   #endif
 
-  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the code coverage report for the package.
     ///

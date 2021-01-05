@@ -148,8 +148,8 @@ let package = Package(
         .product(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
-          // #workaround(SwiftPM 0.50300.0, Does not support Andriod yet.)
+          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
       ]
@@ -383,12 +383,12 @@ let package = Package(
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
-  // #workaround(Swift 5.3, There is no way to set deployment targets on a per‐target basis.)
+  // #workaround(Swift 5.3.2, There is no way to set deployment targets on a per‐target basis.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",
@@ -404,9 +404,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.3, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
-    // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
+    // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -428,16 +428,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 12.3, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 12.3, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
     "SwiftPM",
     "SwiftSyntax",
@@ -452,9 +452,9 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 12.2, Test targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 12.3, Test targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.isTest })
-  // #workaround(xcodebuild -version 12.2, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 12.3, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 

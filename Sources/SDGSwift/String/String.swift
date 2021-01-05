@@ -63,7 +63,7 @@ extension String {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       public func _toIndex(line: Int, column: Int = 1) -> String.ScalarView.Index {
         let lines = self.lines
         let scalars = self.scalars

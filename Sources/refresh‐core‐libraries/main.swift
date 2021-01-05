@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
 #if os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
   fatalError("SwiftSyntax is unavailable.")
 #else
@@ -102,7 +102,7 @@
               if source.lastPathComponent == "Array.swift"
                 ∨ source.lastPathComponent == "String.swift"
               {
-                // #workaround(cmark 0.0.50200, Indexing bug leads to infinite loop?)
+                // #workaround(cmark 0.50302.0, Indexing bug leads to infinite loop?)
                 normalized.replaceMatches(
                   for: "///".scalars
                     + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))

@@ -38,7 +38,7 @@ public let thisRepository: PackageRepository = {
       root = URL(fileURLWithPath: directory)
     }
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+  #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
@@ -51,7 +51,7 @@ public let thisRepository: PackageRepository = {
 public let mocksDirectory = thisRepository.location
   .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
-#if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+#if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
   private func withMock(
     named name: String? = nil,
     dependentOn dependencies: [String] = [],
@@ -80,7 +80,7 @@ public let mocksDirectory = thisRepository.location
       try? FileManager.default.removeItem(at: mock.location)
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         #if !(os(tvOS) || os(iOS) || os(watchOS))
           _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
           _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
@@ -120,7 +120,7 @@ public let mocksDirectory = thisRepository.location
     }
   }
 
-  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     public func withDefaultMockRepository(
       file: StaticString = #filePath,

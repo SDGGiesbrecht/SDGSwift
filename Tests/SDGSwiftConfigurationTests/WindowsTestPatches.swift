@@ -16,7 +16,7 @@
 
   import SDGText
 
-  // #workaround(SDGCornerstone 6.0.0, Encounters segmentation fault.)
+  // #workaround(Swift 5.3.2, Encounters segmentation fault.)
   func testCodableConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,

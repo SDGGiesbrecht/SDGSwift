@@ -30,7 +30,7 @@ public struct PackageRepository: TransparentWrapper {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Creates a local repository by cloning a remote package.
       ///
       /// - Parameters:
@@ -71,7 +71,7 @@ public struct PackageRepository: TransparentWrapper {
   public let location: URL
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// The directory to which products are built.
       ///
       /// - Parameters:

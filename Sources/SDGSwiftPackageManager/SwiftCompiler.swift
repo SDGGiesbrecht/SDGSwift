@@ -16,7 +16,7 @@ import Foundation
 
 import SDGVersioning
 
-// #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+// #workaround(Swift 5.3.2, SwiftPM won’t compile.)
 #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import Workspace
 #endif
@@ -38,7 +38,7 @@ extension SwiftCompiler {
     }
   }
 
-  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     internal static func withDiagnostics<T>(
       _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T

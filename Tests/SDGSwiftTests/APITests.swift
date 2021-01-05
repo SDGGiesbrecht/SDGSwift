@@ -127,9 +127,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         #if os(tvOS) || os(iOS) || os(watchOS)
           _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
         #else
@@ -148,7 +148,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       testCustomStringConvertibleConformance(
         of: VersionedExternalProcessExecutionError<Git>.locationError(
@@ -166,7 +166,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         case .success:
           XCTFail()
         case .failure(let error):
-          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
             testCustomStringConvertibleConformance(
               of: error,
               localizations: InterfaceLocalization.self,
@@ -184,7 +184,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       testCustomStringConvertibleConformance(
         of: Package(url: URL(string: "https://domain.tld/Package")!),
@@ -192,7 +192,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Mock Package",
         overwriteSpecificationInsteadOfFailing: false
       )
-      #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         #if !(os(tvOS) || os(iOS) || os(watchOS))
           XCTAssert(
             try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
@@ -215,7 +215,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       #if os(Windows)  // Paths differ.
         _ = String(
@@ -232,7 +232,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       #endif
 
-      // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
       #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
         try withDefaultMockRepository { mock in
           _ = try mock.tag(version: Version(10, 0, 0)).get()
@@ -259,16 +259,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
+    #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
       #if !(os(tvOS) || os(iOS) || os(watchOS))
-        #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
           _ = try SwiftCompiler.runCustomSubcommand(
             ["\u{2D}\u{2D}version"],
             versionConstraints: Version(Int.min)...Version(Int.max)
           ).get()
         #endif
 
-        // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+        // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
         #if !(os(Windows) || os(Android))
           try withDefaultMockRepository { mock in
             _ = try mock.resolve().get()
@@ -288,8 +288,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
 
       try withMock(named: "Tool") { mock in
-        #if !os(Windows)  // #workaround(Swift 5.3, SwiftPM is unavailable.)
-          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
+        #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
             #if !(os(tvOS) || os(iOS) || os(watchOS))
               _ = try mock.build(releaseConfiguration: true).get()
               XCTAssertEqual(
@@ -302,7 +302,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       }
     #endif
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
@@ -401,7 +401,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       testCustomStringConvertibleConformance(
         of: Version(1, 2, 3),
@@ -425,7 +425,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersionedExternalProcess() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       do {
         // Fresh

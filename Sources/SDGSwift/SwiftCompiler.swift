@@ -32,7 +32,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   public static let _currentMajor = Version(5)
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       private static var currentMajor: Version {
         return _currentMajor
       }
@@ -91,7 +91,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// The directory to which the products are built.
       ///
       /// - Parameters:
@@ -237,7 +237,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
       }
     #endif
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
       /// Returns the code coverage report for the package.
       ///
       /// - Parameters:

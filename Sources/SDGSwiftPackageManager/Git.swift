@@ -24,7 +24,7 @@ import SDGSwift
 extension Git {
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       private static var currentMajor: Version {
         return _currentMajor
       }

@@ -24,10 +24,10 @@ import SDGXCTestUtilities
   open class TestCase: SDGXCTestUtilities.TestCase {
 
     private static let configureGit: Void = {
-      #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks ProcessInfo.)
+      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks ProcessInfo.)
         if ProcessInfo.isInGitHubAction {
           // @exempt(from: tests)
-          // #workaround(Swift 5.3.1, Segmentation fault.)
+          // #workaround(Swift 5.3.2, Segmentation fault.)
           #if !os(Windows)
             #if !(os(tvOS) || os(iOS) || os(watchOS))
               _ = try? Git.runCustomSubcommand(
