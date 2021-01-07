@@ -40,7 +40,7 @@ public struct Package: TransparentWrapper {
   public let url: URL
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Retrieves the list of available versions.
       public func versions() -> Result<Set<Version>, VersionedExternalProcessExecutionError<Git>> {
         return Git.versions(of: self)
@@ -58,7 +58,7 @@ public struct Package: TransparentWrapper {
   // MARK: - Workflow
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
       /// Retrieves the package, builds it, and copies its products to the specified destination.
       ///
       /// - Parameters:
@@ -180,7 +180,7 @@ public struct Package: TransparentWrapper {
       }
     #endif
 
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
       /// Retrieves, builds and runs a command line tool defined by a Swift package.
       ///
       /// - Parameters:

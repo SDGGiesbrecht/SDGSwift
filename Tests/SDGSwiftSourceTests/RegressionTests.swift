@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+// #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
 #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import SwiftSyntax
 #endif
@@ -31,7 +31,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testCodeBlockWithCombiningCharacters() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
@@ -59,7 +59,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testContinuedCallout() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
@@ -76,7 +76,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownEntity() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...&#x2D;...",
@@ -94,7 +94,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownQuotation() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let source = [
         "/// ...",
@@ -119,7 +119,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testPackageDeclaration() {
     // Untracked.
 
-    // #workaround(Swift 5.3.1, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
       let highlighted = declaration.syntaxHighlightedHTML(

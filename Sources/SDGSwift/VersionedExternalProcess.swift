@@ -82,7 +82,7 @@ extension VersionedExternalProcess {
         #if os(tvOS) || os(iOS) || os(watchOS)  // @exempt(from: tests) Unreachable.
           return nil
         #else
-          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+          #if os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
             return nil
           #else
             guard let output = try? Shell.default.run(command: command).get() else {
@@ -98,7 +98,7 @@ extension VersionedExternalProcess {
         #if os(tvOS) || os(iOS) || os(watchOS)  // @exempt(from: tests) Unreachable?
           return false  // Cannot ensure version matches.
         #else
-          #if os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+          #if os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
             return false  // Cannot ensure version matches.
           #else
             // Make sure version is compatible.
@@ -147,7 +147,7 @@ extension VersionedExternalProcess {
   }
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Runs a custom subcommand.
       ///
       /// - Parameters:

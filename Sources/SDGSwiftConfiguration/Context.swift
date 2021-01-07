@@ -19,7 +19,7 @@ public protocol Context: Codable {}
 
 extension Context {
 
-  #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks ProcessInfo.)
+  #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks ProcessInfo.)
     /// Returns the context provided by the configuration loader.
     public static func accept() -> Self? {  // @exempt(from: tests) Requires 0.1.10
 

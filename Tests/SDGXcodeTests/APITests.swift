@@ -36,10 +36,10 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3, No package manager on Windows yet.)
+    #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
       for withGeneratedProject in [false, true] {
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.35.2, Emulator lacks Swift.)
+          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
             if withGeneratedProject {
               #if !(os(tvOS) || os(iOS) || os(watchOS))
                 _ = try package.generateXcodeProject().get()
@@ -61,7 +61,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let url = directory.appendingPathComponent("no such URL")
@@ -99,7 +99,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(xcodeLocation)
     #endif
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {
@@ -124,7 +124,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .tvOS(simulator: true),
           ]
           if ¬withGeneratedProject {
-            // #workaround(xcodebuild -version 12.1, watchOS cannot handle test targets.) @exempt(from: unicode)
+            // #workaround(xcodebuild -version 12.3, watchOS cannot handle test targets.) @exempt(from: unicode)
             sdks.removeAll(where: { $0 == .watchOS })
           }
           for sdk in sdks {
@@ -301,7 +301,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { package in
         _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
@@ -326,7 +326,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     #endif
 
-    // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
     #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withDefaultMockRepository { mock in
         for withGeneratedProject in [false, true] {

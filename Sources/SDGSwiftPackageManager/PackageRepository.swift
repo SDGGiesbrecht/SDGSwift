@@ -18,7 +18,7 @@ import SDGText
 import SDGLocalization
 import SDGVersioning
 
-// #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+// #workaround(Swift 5.3.2, SwiftPM won’t compile.)
 #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
   import PackageModel
   import Build
@@ -33,7 +33,7 @@ extension PackageRepository {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Creates a new package by initializing it at the specified URL.
     ///
@@ -88,7 +88,7 @@ extension PackageRepository {
 
   // MARK: - Properties
 
-  // #workaround(Swift 5.3.1, SwiftPM won’t compile.)
+  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
   #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
@@ -107,7 +107,7 @@ extension PackageRepository {
         return try PackageBuilder.loadPackage(
           packagePath: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
-          // #workaround(swift-package-manager 0.7.0, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
+          // #workaround(Swift 5.3.2, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
           xcTestMinimumDeploymentTargets: [:],
           diagnostics: diagnostics
         )
@@ -137,7 +137,7 @@ extension PackageRepository {
   #endif
 
   #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks Process.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       /// Checks for uncommitted changes or additions.
       ///
       /// - Returns: The report provided by Git. (An empty string if there are no changes.)
