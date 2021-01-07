@@ -30,82 +30,88 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDependencyWarnings() throws {
     // Untracked.
 
-    #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
-      try withMock(named: "Warnings") { package in
-        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            let build = try package.build().get()
-            XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+        try withMock(named: "Warnings") { package in
+          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+            #if !(os(tvOS) || os(iOS) || os(watchOS))
+              let build = try package.build().get()
+              XCTAssert(SwiftCompiler.warningsOccurred(during: build))
+            #endif
           #endif
-        #endif
-      }
-      try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            let build = try package.build().get()
-            XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+        }
+        try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
+          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+            #if !(os(tvOS) || os(iOS) || os(watchOS))
+              let build = try package.build().get()
+              XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
+            #endif
           #endif
-        #endif
-      }
+        }
+      #endif
     #endif
   }
 
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-        try withMockDynamicLinkedExecutable { mock in
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+          try withMockDynamicLinkedExecutable { mock in
+            #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator has no Swift.)
-              XCTAssertEqual(
-                try Package(url: mock.location).execute(
-                  .development,
-                  of: ["tool"],
-                  with: [],
-                  cacheDirectory: moved
-                ).get(),
-                "Hello, world!"
-              )
-              XCTAssertEqual(
-                try Package(url: mock.location).execute(
-                  .version(Version(1, 0, 0)),
-                  of: ["tool"],
-                  with: [],
-                  cacheDirectory: moved
-                ).get(),
-                "Hello, world!"
-              )
+              #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator has no Swift.)
+                XCTAssertEqual(
+                  try Package(url: mock.location).execute(
+                    .development,
+                    of: ["tool"],
+                    with: [],
+                    cacheDirectory: moved
+                  ).get(),
+                  "Hello, world!"
+                )
+                XCTAssertEqual(
+                  try Package(url: mock.location).execute(
+                    .version(Version(1, 0, 0)),
+                    of: ["tool"],
+                    with: [],
+                    cacheDirectory: moved
+                  ).get(),
+                  "Hello, world!"
+                )
+              #endif
+
+              switch Package(url: mock.location).execute(
+                .version(Version(1, 0, 0)),
+                of: ["tool"],
+                with: ["fail"],
+                cacheDirectory: moved
+              ) {
+              case .success:
+                XCTFail("Should have failed.")
+              case .failure:
+                break
+              }
             #endif
-
-            switch Package(url: mock.location).execute(
-              .version(Version(1, 0, 0)),
-              of: ["tool"],
-              with: ["fail"],
-              cacheDirectory: moved
-            ) {
-            case .success:
-              XCTFail("Should have failed.")
-            case .failure:
-              break
-            }
-          #endif
+          }
         }
-      }
+      #endif
     #endif
   }
 
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          let ignored = try thisRepository.ignoredFiles().get()
-          let expected = thisRepository.location.appendingPathComponent(".build").path
-          XCTAssert(ignored.contains(where: { $0.path == expected }))
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+      // #workaround(Swift 5.3.2, Segmentation fault.)
+      #if !os(Windows)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            let ignored = try thisRepository.ignoredFiles().get()
+            let expected = thisRepository.location.appendingPathComponent(".build").path
+            XCTAssert(ignored.contains(where: { $0.path == expected }))
+          #endif
         #endif
       #endif
     #endif

@@ -127,23 +127,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-        #if os(tvOS) || os(iOS) || os(watchOS)
-          _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-        #else
-          XCTAssertNotNil(
-            try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-          )
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+      // #workaround(Swift 5.3.2, Segmentation fault.)
+      #if !os(Windows)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+          #if os(tvOS) || os(iOS) || os(watchOS)
+            _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+          #else
+            XCTAssertNotNil(
+              try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+            )
+          #endif
         #endif
+        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+          let url = directory.appendingPathComponent("no such URL")
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            _ = try? Git.clone(Package(url: url), to: url).get()
+          #endif
+        }
       #endif
-      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-        let url = directory.appendingPathComponent("no such URL")
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          _ = try? Git.clone(Package(url: url), to: url).get()
-        #endif
-      }
     #endif
   }
 
@@ -192,14 +194,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Mock Package",
         overwriteSpecificationInsteadOfFailing: false
       )
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          XCTAssert(
-            try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-              .versions()
-              .get() ∋ Version(0, 1, 0),
-            "Failed to detect available versions."
-          )
+      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            XCTAssert(
+              try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+                .versions()
+                .get() ∋ Version(0, 1, 0),
+              "Failed to detect available versions."
+            )
+          #endif
         #endif
       #endif
     #endif
@@ -239,12 +243,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       #endif
 
-      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-        let url = directory.appendingPathComponent("no such URL")
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          _ = try? PackageRepository.clone(Package(url: url), to: url).get()
-        #endif
-      }
+      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+          let url = directory.appendingPathComponent("no such URL")
+          #if !(os(tvOS) || os(iOS) || os(watchOS))
+            _ = try? PackageRepository.clone(Package(url: url), to: url).get()
+          #endif
+        }
+      #endif
     #endif
   }
 
@@ -259,58 +265,62 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-      #if !(os(tvOS) || os(iOS) || os(watchOS))
-        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-          _ = try SwiftCompiler.runCustomSubcommand(
-            ["\u{2D}\u{2D}version"],
-            versionConstraints: Version(Int.min)...Version(Int.max)
-          ).get()
-        #endif
-
-        // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-        #if !(os(Windows) || os(Android))
-          try withDefaultMockRepository { mock in
-            _ = try mock.resolve().get()
-            _ = try mock.build(releaseConfiguration: true).get()
-            _ = try mock.test().get()
-          }
-        #endif
-      #endif
-      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-      XCTAssertTrue(
-        SwiftCompiler.warningsOccurred(during: ".../File.swift:1:1: warning: Something went wrong.")
-      )
-      XCTAssertTrue(
-        ¬SwiftCompiler.warningsOccurred(
-          during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
-        )
-      )
-
-      try withMock(named: "Tool") { mock in
-        #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+      #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
           #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
+            _ = try SwiftCompiler.runCustomSubcommand(
+              ["\u{2D}\u{2D}version"],
+              versionConstraints: Version(Int.min)...Version(Int.max)
+            ).get()
+          #endif
+
+          // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
+          #if !(os(Windows) || os(Android))
+            try withDefaultMockRepository { mock in
+              _ = try mock.resolve().get()
               _ = try mock.build(releaseConfiguration: true).get()
-              XCTAssertEqual(
-                try mock.run("Tool", releaseConfiguration: true).get(),
-                "Hello, world!"
-              )
-            #endif
+              _ = try mock.test().get()
+            }
           #endif
         #endif
-      }
-    #endif
+        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+        XCTAssertTrue(
+          SwiftCompiler.warningsOccurred(
+            during: ".../File.swift:1:1: warning: Something went wrong."
+          )
+        )
+        XCTAssertTrue(
+          ¬SwiftCompiler.warningsOccurred(
+            during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
+          )
+        )
 
-    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-      try withDefaultMockRepository { package in
-        _ = try? SwiftCompiler.build(package).get()
-        _ = try? SwiftCompiler.run("no such target", from: package).get()
-        _ = try SwiftCompiler.test(package).get()
-        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
-        _ = try? SwiftCompiler.resolve(package).get()
-      }
+        try withMock(named: "Tool") { mock in
+          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+              #if !(os(tvOS) || os(iOS) || os(watchOS))
+                _ = try mock.build(releaseConfiguration: true).get()
+                XCTAssertEqual(
+                  try mock.run("Tool", releaseConfiguration: true).get(),
+                  "Hello, world!"
+                )
+              #endif
+            #endif
+          #endif
+        }
+      #endif
+
+      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
+      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+        try withDefaultMockRepository { package in
+          _ = try? SwiftCompiler.build(package).get()
+          _ = try? SwiftCompiler.run("no such target", from: package).get()
+          _ = try SwiftCompiler.test(package).get()
+          _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+          _ = try? SwiftCompiler.resolve(package).get()
+        }
+      #endif
     #endif
   }
 
