@@ -160,23 +160,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Git Unavailable",
         overwriteSpecificationInsteadOfFailing: false
       )
-      #if !(os(tvOS) || os(iOS) || os(watchOS))
-        switch Git.runCustomSubcommand(
-          ["fail"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ) {
-        case .success:
-          XCTFail()
-        case .failure(let error):
-          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
-            testCustomStringConvertibleConformance(
-              of: error,
-              localizations: InterfaceLocalization.self,
-              uniqueTestName: "Git Execution",
-              overwriteSpecificationInsteadOfFailing: false
-            )
-          #endif
-        }
+      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          switch Git.runCustomSubcommand(
+            ["fail"],
+            versionConstraints: Version(Int.min)...Version(Int.max)
+          ) {
+          case .success:
+            XCTFail()
+          case .failure(let error):
+            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+              testCustomStringConvertibleConformance(
+                of: error,
+                localizations: InterfaceLocalization.self,
+                uniqueTestName: "Git Execution",
+                overwriteSpecificationInsteadOfFailing: false
+              )
+            #endif
+          }
+        #endif
       #endif
     #endif
   }
