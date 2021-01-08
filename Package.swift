@@ -430,7 +430,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       "SDGSwiftPackageManagerTests",
       "SDGSwiftSourceTests",
       "SDGSwiftTests",
-      // "SDGXcodeTests"
+      "SDGXcodeTests"
     ].contains($0.name)
   })
 }
