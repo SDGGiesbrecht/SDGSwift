@@ -426,7 +426,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   package.targets.removeAll(where: {
     [
       "SDGSwiftConfigurationTests",
-      // "SDGSwiftDocumentationExampleTests",
+      "SDGSwiftDocumentationExampleTests",
       "SDGSwiftPackageManagerTests",
       "SDGSwiftSourceTests",
       // "SDGSwiftTests",
