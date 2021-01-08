@@ -230,12 +230,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         )
       #else
-        testCustomStringConvertibleConformance(
-          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Mock",
-          overwriteSpecificationInsteadOfFailing: false
-        )
+        #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks URL(fileURLWithPath:).)
+          testCustomStringConvertibleConformance(
+            of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Mock",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
       #endif
 
       // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
