@@ -421,6 +421,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
+
+  // #warning(Temporary.)
+  package.targets.removeAll(where: { [
+    "SDGSwiftConfigurationTests",
+    // "SDGSwiftDocumentationExampleTests",
+    "SDGSwiftPackageManagerTests",
+    "SDGSwiftSourceTests",
+    // "SDGSwiftTests",
+    // "SDGXcodeTests"
+  ].contains($0.name) })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
