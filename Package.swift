@@ -424,7 +424,13 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
   let sourceTests = package.targets.first(where: { $0.name == "SDGSwiftSourceTests" })
   sourceTests?.exclude = [
-    "Helpers",
+    "Helpers/APIElement.swift",
+    "Helpers/DocumentationSyntax.swift",
+    "Helpers/ExtensionAPI.swift",
+    "Helpers/FunctionCallExprSyntax.swift",
+    "Helpers/Highlighter.swift",
+    "Helpers/HTML.swift",
+    "Helpers/TextFreedomHighlighter.swift",
     "APITests.swift",
     "InternalTests.swift",
     "RegressionTests.swift",
