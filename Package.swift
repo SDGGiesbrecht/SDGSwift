@@ -426,7 +426,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let sourceTests = package.targets.first(where: { $0.name == "SDGSwiftSourceTests" })
   let impossibleTestDependencies = [
     "SDGSwiftSource",
-    "SwiftSyntax"
+    // "SwiftSyntax"
   ]
   sourceTests?.dependencies.removeAll(where: { dependency in
     impossibleTestDependencies.contains(where: { impossible in
