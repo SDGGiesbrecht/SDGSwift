@@ -422,12 +422,14 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   }
 
-  // #warning(Temporary.)
-  package.targets.removeAll(where: {
-    [
-      // "SDGSwiftSourceTests"
-    ].contains($0.name)
-  })
+  let sourceTests = package.targets.first(where: { $0.name == "SDGSwiftSourceTests" })
+  sourceTests?.exclude = [
+    "Helpers",
+    "APITests.swift",
+    "InternalTests.swift",
+    // "RegressionTests.swift",
+    "Repository.swift",
+  ]
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
