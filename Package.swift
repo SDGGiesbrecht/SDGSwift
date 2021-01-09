@@ -428,7 +428,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "APITests.swift",
     "InternalTests.swift",
     "RegressionTests.swift",
-    "Repository.swift",
+    // "Repository.swift",
   ]
 }
 
