@@ -425,7 +425,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #workaround(Swift 5.3.2, Otherwise unable to instantiate module.)
   let source = package.targets.first(where: { $0.name == "SDGSwiftSource" })
   let impossibleSourceDependencies = [
-    "SDGWeb"
+    "SDGHTML"
   ]
   source?.dependencies.removeAll(where: { dependency in
     impossibleSourceDependencies.contains(where: { impossible in
