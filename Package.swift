@@ -432,7 +432,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       "\(dependency)".contains(impossible)
     })
   })
-  source?.exclude = [
+  /*source?.exclude = [
     "API",
     "CMark",
     "General Extensions",
@@ -441,7 +441,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "Syntax",
     "SyntaxHighlighter.swift",
     "SyntaxParser.swift"
-  ]
+  ]*/
   let sourceTests = package.targets.first(where: { $0.name == "SDGSwiftSourceTests" })
   let impossibleTestDependencies = [
     "α"// "SDGSwiftSource",

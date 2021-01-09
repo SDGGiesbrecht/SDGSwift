@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-#if os(WASI)  // #workaround(SDGWeb 5.4.1, Module is broken on web.)
+#if os(WASI)  // #workaround(SDGWeb 5.4.1, Otherwise unable to instantiate module.)
   private struct HTML {
     fileprivate static func escapeTextForCharacterData<S>(_ string: S) -> S {
       return string
