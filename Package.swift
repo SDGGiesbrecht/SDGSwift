@@ -424,7 +424,25 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
   // #workaround(Swift 5.3.2, Otherwise unable to instantiate module.)
   let sourceTests = package.targets.first(where: { $0.name == "SDGSwiftSourceTests" })
-  sourceTests?.dependencies.removeAll()
+  let impossibleTestDependencies = [
+    "SDGSwift\u{22}",
+    "SDGSwiftLocalizations",
+    "SDGSwiftSource",
+    "SDGSwiftTestUtilities",
+    "SDGLogic",
+    "SDGMathematics",
+    "SDGCollections",
+    "SDGLogicTestUtilities",
+    "SDGPersistenceTestUtilities",
+    "SDGLocalizationTestUtilities",
+    "SDGXCTestUtilities",
+    "SwiftSyntax"
+  ]
+  sourceTests?.dependencies.removeAll(where: { dependency in
+    impossibleTestDependencies.contains(where: { impossible in
+      "\(dependency)".contains(impossible)
+    })
+  })
   sourceTests?.exclude = [
     // "Helpers/APIElement.swift",
     "Helpers/DocumentationSyntax.swift",
