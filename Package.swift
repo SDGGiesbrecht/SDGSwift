@@ -434,16 +434,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   })
   sourceTests?.exclude = [
-    "Helpers/DocumentationSyntax.swift",
-    "Helpers/ExtensionAPI.swift",
-    "Helpers/FunctionCallExprSyntax.swift",
-    "Helpers/Highlighter.swift",
-    "Helpers/HTML.swift",
-    "Helpers/TextFreedomHighlighter.swift",
+    // "Helpers/DocumentationSyntax.swift",
+    // "Helpers/ExtensionAPI.swift",
+    // "Helpers/FunctionCallExprSyntax.swift",
+    // "Helpers/Highlighter.swift",
+    // "Helpers/HTML.swift",
+    // "Helpers/TextFreedomHighlighter.swift",
     "APITests.swift",
     "InternalTests.swift",
     "RegressionTests.swift",
-    "Repository.swift",
+    // "Repository.swift",
   ]
 }
 
