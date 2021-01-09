@@ -25,7 +25,7 @@ import SDGSwiftTestUtilities
 class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
-    #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if !(os(WASI) || os(tvOS) || os(iOS) || os(watchOS))
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
 
         #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)

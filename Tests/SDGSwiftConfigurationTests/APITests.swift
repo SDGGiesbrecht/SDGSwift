@@ -36,7 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if os(tvOS) || os(iOS) || os(watchOS)
+    #if os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
       let mock = SampleConfiguration()
       mock.option = "Mock"
       Configuration.queue(mock: mock)
@@ -284,7 +284,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLegacyConfiguration() throws {
-    #if !(os(tvOS) || os(iOS) || os(watchOS))
+    #if !(os(WASI) || os(tvOS) || os(iOS) || os(watchOS))
       #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
         try withLegacyMode {
           #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)

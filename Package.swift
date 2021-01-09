@@ -422,9 +422,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   }
 
-  // #workaround(Temporary.)
-  package.targets.removeAll(where: { $0.type == .test })
-  package.targets.append(.testTarget(name: "WebTests"))
+  // #workaround(Swift 5.3.2, Otherwise unable to instantiate module.)
+  let sdgSwiftSource = package.targets.first(where: { $0.name == "SDGSwiftSource" })
+  sdgSwiftSource?.dependencies.removeAll(where: { "\($0)".contains("SDGHTML") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
