@@ -14,7 +14,18 @@
 
 import SDGLogic
 
-import enum SDGHTML.HTML
+#if os(WASI)  // #workaround(SDGWeb 5.4.1, Module is broken on web.)
+  private struct HTML {
+    fileprivate static func escapeTextForCharacterData<S>(_ string: S) -> S {
+      return string
+    }
+    fileprivate static func escapeTextForAttribute<S>(_ string: S) -> S {
+      return string
+    }
+  }
+#else
+  import enum SDGHTML.HTML
+#endif
 
 /// A syntax node representing a single token.
 ///
