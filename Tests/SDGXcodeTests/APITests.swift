@@ -100,7 +100,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let xcodeLocation = try? Xcode.location(
         versionConstraints: Version(Int.min)...Version(Int.max)
       ).get()
-      #if !(os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
+        _ = xcodeLocation  // Not expected to exist.
+      #else
         XCTAssertNotNil(xcodeLocation)
       #endif
 
