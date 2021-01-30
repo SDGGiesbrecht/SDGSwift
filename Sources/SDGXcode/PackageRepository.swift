@@ -60,6 +60,7 @@ extension PackageRepository {
       ///
       /// - Parameters:
       ///     - sdk: The SDK to build for.
+      ///     - allArchitectures: Optional. Pass `true` to build for all architectures.     
       ///     - reportProgress: Optional. A closure to execute for each line of output.
       ///     - progressReport: A line of output.
       @discardableResult public func build(
