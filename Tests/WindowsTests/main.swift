@@ -157,6 +157,7 @@ extension SDGXcodeTests.APITests {
       ("testDependencyWarnings", testDependencyWarnings),
       ("testSwiftCompiler", testSwiftCompiler),
       ("testXcode", testXcode),
+      ("testXcodeAllArchitectures", testXcodeAllArchitectures),
       ("testXcodeCoverage", testXcodeCoverage),
       ("testXcodeError", testXcodeError),
       ("testXcodeSDK", testXcodeSDK),

@@ -319,6 +319,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testXcodeAllArchitectures() throws {
+    #if os(macOS)
+      try withMock(named: "MultipleArchitectures") { package in
+        #if !arch(arm64)  // Other architectures should succeed.
+          _ = try package.build(for: .macOS).get()
+        #endif
+        switch package.build(for: .macOS, allArchitectures: true) {
+        case .success(let output):
+          XCTFail("Should have failed to build.\n\(output)")
+        case .failure(let error):
+          XCTAssert(
+            error.presentableDescription().contains("Float80".scalars),
+            "Wrong error:\n\(error.presentableDescription())"
+          )
+        }
+      }
+    #endif
+  }
+
   func testXcodeCoverage() throws {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       #if os(Windows) || os(Linux) || os(Android)
