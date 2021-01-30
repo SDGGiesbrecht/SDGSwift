@@ -196,11 +196,13 @@ public enum Xcode: VersionedExternalProcess {
       /// - Parameters:
       ///     - package: The package to build.
       ///     - sdk: The SDK to build for.
+      ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
       ///     - reportProgress: Optional. A closure to execute for each line of output.
       ///     - progressReport: A line of output.
       @discardableResult public static func build(
         _ package: PackageRepository,
         for sdk: SDK,
+        allArchitectures: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<String, SchemeError> {
 
@@ -209,11 +211,14 @@ public enum Xcode: VersionedExternalProcess {
           return .failure(error)
         case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
           let earliestVersion = Version(8, 0, 0)
-          let command = [
+          var command = [
             "build",
             "\u{2D}sdk", sdk.commandLineName,
             "\u{2D}scheme", scheme,
           ]
+          if allArchitectures {
+            command.append("ONLY_ACTIVE_ARCH=NO")
+          }
           return runCustomSubcommand(
             command,
             in: package.location,
