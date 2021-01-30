@@ -64,9 +64,15 @@ extension PackageRepository {
       ///     - progressReport: A line of output.
       @discardableResult public func build(
         for sdk: Xcode.SDK,
+        allArchitectures: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<String, Xcode.SchemeError> {
-        return Xcode.build(self, for: sdk, reportProgress: reportProgress)
+        return Xcode.build(
+          self,
+          for: sdk,
+          allArchitectures: allArchitectures,
+          reportProgress: reportProgress
+        )
       }
 
       /// Tests the package.
