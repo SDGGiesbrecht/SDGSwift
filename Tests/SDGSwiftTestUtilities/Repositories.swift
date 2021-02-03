@@ -80,7 +80,7 @@ public let mocksDirectory = thisRepository.location
       try? FileManager.default.removeItem(at: mock.location)
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
         #if !(os(tvOS) || os(iOS) || os(watchOS))
           _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
           _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
