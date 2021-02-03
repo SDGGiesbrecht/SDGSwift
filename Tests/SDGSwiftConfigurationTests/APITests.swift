@@ -54,7 +54,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
           let wherever = specifications.appendingPathComponent("Configured")
           #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-            #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
@@ -285,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testLegacyConfiguration() throws {
     #if !(os(WASI) || os(tvOS) || os(iOS) || os(watchOS))
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
         try withLegacyMode {
           #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
             _ = try SampleConfiguration.load(

@@ -33,7 +33,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         try withMock(named: "Warnings") { package in
-          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+          #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
             #if !(os(tvOS) || os(iOS) || os(watchOS))
               let build = try package.build().get()
               XCTAssert(SwiftCompiler.warningsOccurred(during: build))
@@ -41,7 +41,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           #endif
         }
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+          #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
             #if !(os(tvOS) || os(iOS) || os(watchOS))
               let build = try package.build().get()
               XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
@@ -61,7 +61,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           try withMockDynamicLinkedExecutable { mock in
             #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-              #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator has no Swift.)
+              #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator has no Swift.)
                 XCTAssertEqual(
                   try Package(url: mock.location).execute(
                     .development,
@@ -106,7 +106,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       // #workaround(Swift 5.3.2, Segmentation fault.)
       #if !os(Windows)
-        #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+        #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
           #if !(os(tvOS) || os(iOS) || os(watchOS))
             let ignored = try thisRepository.ignoredFiles().get()
             let expected = thisRepository.location.appendingPathComponent(".build").path

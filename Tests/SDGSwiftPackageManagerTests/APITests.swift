@@ -114,7 +114,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFileDetection() {
     // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
-      #if !os(Android)  // #workaround(workspace version 0.36.0, Emulator lacks Git.)
+      #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
         #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
           #if !(os(tvOS) || os(iOS) || os(watchOS))
             XCTAssert(
