@@ -18,6 +18,17 @@ import SDGSwiftTestUtilities
 
 class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
+  func testDependencyCustomSchemesNotSelected() throws {
+    // Untracked.
+
+    #if !(os(Windows) || os(WASI) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      try withMock(named: "WithCustomScheme") { package in
+        let scheme = try package.scheme().get()
+        XCTAssertEqual(scheme, "WithCustomScheme\u{2D}Package")
+      }
+    #endif
+  }
+
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
