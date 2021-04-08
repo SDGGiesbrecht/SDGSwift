@@ -14,6 +14,8 @@
 
 import XCTest
 
+import SDGCollections
+
 import SDGSwiftTestUtilities
 
 class RegressionTests: SDGSwiftTestUtilities.TestCase {
@@ -24,7 +26,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !(os(Windows) || os(WASI) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
       try withMock(named: "WithCustomScheme") { package in
         let scheme = try package.scheme().get()
-        XCTAssertEqual(scheme, "WithCustomScheme\u{2D}Package")
+        XCTAssert(scheme ∈ Set(["WithCustomScheme\u{2D}Package", "WithCustomScheme"]))
       }
     #endif
   }
