@@ -20,7 +20,7 @@ import SDGSwiftTestUtilities
 
 class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
-  func testDependencyCustomSchemesNotSelected() throws {
+  func testCustomSchemesNotSelected() throws {
     // Untracked.
 
     #if !(os(Windows) || os(WASI) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
