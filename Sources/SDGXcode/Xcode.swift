@@ -585,11 +585,13 @@ public enum Xcode: VersionedExternalProcess {
           let workspaceData = jsonDictionary["workspace"]
             ?? jsonDictionary["project"],  // @exempt(from: tests)
           let workspaceDictionary = workspaceData as? [String: Any],
+          let nameData = workspaceDictionary["name"],
+          let name = nameData as? String,
           let schemesData = workspaceDictionary["schemes"],
           let schemeList = schemesData as? [String],
           let packageScheme =
-            schemeList
-            .first(where: { $0.hasSuffix("\u{2D}Package") })  // @exempt(from: tests)
+            schemeList.first(where: { $0.hasSuffix("\u{2D}Package") })  // @exempt(from: tests)
+            ?? schemeList.first(where: { $0 == name })  // @exempt(from: tests)
             ?? schemeList.first  // @exempt(from: tests)
         {  // @exempt(from: tests)
           return .success(packageScheme)

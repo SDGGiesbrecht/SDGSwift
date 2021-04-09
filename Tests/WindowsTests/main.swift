@@ -168,10 +168,11 @@ extension SDGXcodeTests.APITests {
 extension SDGXcodeTests.RegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
+      ("testCustomSchemesNotSelected", testCustomSchemesNotSelected),
       (
         "testSchemeDetectionWithMutlipleLibrariesAndTool",
         testSchemeDetectionWithMutlipleLibrariesAndTool
-      )
+      ),
     ])
   ]
 }
