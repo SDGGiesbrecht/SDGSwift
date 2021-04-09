@@ -40,20 +40,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         for withGeneratedProject in [false, true] {
           try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
+            #if !PLATFORM_LACKS_GIT
               if withGeneratedProject {
-                #if !(os(tvOS) || os(iOS) || os(watchOS))
-                  _ = try package.generateXcodeProject().get()
-                #endif
+                _ = try package.generateXcodeProject().get()
               }
               #if !(os(Windows) || os(Linux))
-                #if !(os(tvOS) || os(iOS) || os(watchOS))
-                  let build = try package.build(for: .macOS).get()
-                  XCTAssertFalse(
-                    Xcode.warningsOccurred(during: build),
-                    "Warning triggered in:\n\(build)"
-                  )
-                #endif
+                let build = try package.build(for: .macOS).get()
+                XCTAssertFalse(
+                  Xcode.warningsOccurred(during: build),
+                  "Warning triggered in:\n\(build)"
+                )
               #endif
             #endif
           }

@@ -33,19 +33,15 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         try withMock(named: "Warnings") { package in
-          #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
-              let build = try package.build().get()
-              XCTAssert(SwiftCompiler.warningsOccurred(during: build))
-            #endif
+          #if !PLATFORM_LACKS_GIT
+            let build = try package.build().get()
+            XCTAssert(SwiftCompiler.warningsOccurred(during: build))
           #endif
         }
         try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
-          #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
-              let build = try package.build().get()
-              XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
-            #endif
+          #if !PLATFORM_LACKS_GIT
+            let build = try package.build().get()
+            XCTAssertFalse(SwiftCompiler.warningsOccurred(during: build))
           #endif
         }
       #endif
@@ -106,12 +102,10 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       // #workaround(Swift 5.3.2, Segmentation fault.)
       #if !os(Windows)
-        #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            let ignored = try thisRepository.ignoredFiles().get()
-            let expected = thisRepository.location.appendingPathComponent(".build").path
-            XCTAssert(ignored.contains(where: { $0.path == expected }))
-          #endif
+        #if !PLATFORM_LACKS_GIT
+          let ignored = try thisRepository.ignoredFiles().get()
+          let expected = thisRepository.location.appendingPathComponent(".build").path
+          XCTAssert(ignored.contains(where: { $0.path == expected }))
         #endif
       #endif
     #endif
