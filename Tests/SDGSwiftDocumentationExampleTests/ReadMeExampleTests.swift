@@ -25,19 +25,16 @@ import SDGSwiftTestUtilities
 class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
 
   func testReadMe() throws {
-    #if !(os(WASI) || os(tvOS) || os(iOS) || os(watchOS))
+    #if !PLATFORM_LACKS_GIT
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
-
-        #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-          #if !os(Windows)
-            // #workaround(workspace version 0.36.1, GitHub workflow host lacks SwiftPM.)
-            // @example(readMe🇨🇦EN)
-            let package = Package(
-              url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
-            )
-            try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
-          // @endExample
-          #endif
+        #if !os(Windows)
+          // #workaround(workspace version 0.36.1, GitHub workflow host lacks SwiftPM.)
+          // @example(readMe🇨🇦EN)
+          let package = Package(
+            url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
+          )
+          try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+        // @endExample
         #endif
       }
     #endif

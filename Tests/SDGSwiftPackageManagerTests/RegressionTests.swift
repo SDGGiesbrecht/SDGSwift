@@ -30,17 +30,15 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         ("Prüfen (Linux).sh".decomposedStringWithCanonicalMapping, "Pr*fen\u{5C} (Linux).sh"),
         ("Prüfen (Linux).sh".precomposedStringWithCanonicalMapping, "Pr*fen\u{5C} (Linux).sh"),
       ] {
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
+        #if !PLATFORM_LACKS_GIT
           try withDefaultMockRepository { repository in
             try escaped.save(to: repository.location.appendingPathComponent(".gitignore"))
             try "".save(to: repository.location.appendingPathComponent(file))
-            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-              let ignored = try repository.ignoredFiles().get()
-              XCTAssert(
-                ignored.contains(where: { $0.lastPathComponent == file }),
-                "“\(file)” missing: \(ignored.map({ $0.path }))"
-              )
-            #endif
+            let ignored = try repository.ignoredFiles().get()
+            XCTAssert(
+              ignored.contains(where: { $0.lastPathComponent == file }),
+              "“\(file)” missing: \(ignored.map({ $0.path }))"
+            )
           }
         #endif
       }

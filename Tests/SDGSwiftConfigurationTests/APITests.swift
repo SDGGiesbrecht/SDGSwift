@@ -54,7 +54,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
           let wherever = specifications.appendingPathComponent("Configured")
           #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
+            #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
@@ -284,25 +284,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLegacyConfiguration() throws {
-    #if !(os(WASI) || os(tvOS) || os(iOS) || os(watchOS))
-      #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-        try withLegacyMode {
-          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-            _ = try SampleConfiguration.load(
-              configuration: SampleConfiguration.self,
-              named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
-              from: testSpecificationDirectory()
-                .appendingPathComponent("Configuration")
-                .appendingPathComponent("Legacy"),
-              linkingAgainst: "SampleConfiguration",
-              in: "SDGSwift",
-              from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
-              at: Version(0, 20, 0),
-              minimumMacOSVersion: Version(10, 12)
-            ).get()
-          #endif
-        }
-      #endif
+    #if !PLATFORM_LACKS_GIT
+      try withLegacyMode {
+        #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+          _ = try SampleConfiguration.load(
+            configuration: SampleConfiguration.self,
+            named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
+            from: testSpecificationDirectory()
+              .appendingPathComponent("Configuration")
+              .appendingPathComponent("Legacy"),
+            linkingAgainst: "SampleConfiguration",
+            in: "SDGSwift",
+            from: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!,
+            at: Version(0, 20, 0),
+            minimumMacOSVersion: Version(10, 12)
+          ).get()
+        #endif
+      }
     #endif
   }
 }
