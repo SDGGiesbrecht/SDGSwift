@@ -592,6 +592,7 @@ public enum Xcode: VersionedExternalProcess {
           let packageScheme =
             schemeList.first(where: { $0 == "\(name)\u{2D}Package" })  // @exempt(from: tests)
             ?? schemeList.first(where: { $0 == name })  // @exempt(from: tests)
+            ?? schemeList.first  // @exempt(from: tests)
         {  // @exempt(from: tests)
           return .success(packageScheme)
         }
