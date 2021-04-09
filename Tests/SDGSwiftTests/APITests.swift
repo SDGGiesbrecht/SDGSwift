@@ -127,23 +127,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
-        #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-          #if os(tvOS) || os(iOS) || os(watchOS)
-            _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-          #else
-            XCTAssertNotNil(
-              try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-            )
-          #endif
-        #endif
+    // #workaround(Swift 5.3.2, Segmentation fault.)
+    #if !os(Windows)
+      #if PLATFORM_LACKS_GIT
+        _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      #else
+        XCTAssertNotNil(
+          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+        )
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            _ = try? Git.clone(Package(url: url), to: url).get()
-          #endif
+          _ = try? Git.clone(Package(url: url), to: url).get()
         }
       #endif
     #endif
@@ -160,25 +154,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Git Unavailable",
         overwriteSpecificationInsteadOfFailing: false
       )
-      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          switch Git.runCustomSubcommand(
-            ["fail"],
-            versionConstraints: Version(Int.min)...Version(Int.max)
-          ) {
-          case .success:
-            XCTFail()
-          case .failure(let error):
-            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-              testCustomStringConvertibleConformance(
-                of: error,
-                localizations: InterfaceLocalization.self,
-                uniqueTestName: "Git Execution",
-                overwriteSpecificationInsteadOfFailing: false
-              )
-            #endif
-          }
-        #endif
+      #if !PLATFORM_LACKS_GIT
+        switch Git.runCustomSubcommand(
+          ["fail"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ) {
+        case .success:
+          XCTFail()
+        case .failure(let error):
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Git Execution",
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        }
       #endif
     #endif
   }
@@ -196,17 +186,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Mock Package",
         overwriteSpecificationInsteadOfFailing: false
       )
-      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-        #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            XCTAssert(
-              try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-                .versions()
-                .get() ∋ Version(0, 1, 0),
-              "Failed to detect available versions."
-            )
-          #endif
-        #endif
+      #if !PLATFORM_LACKS_GIT
+        XCTAssert(
+          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+            .versions()
+            .get() ∋ Version(0, 1, 0),
+          "Failed to detect available versions."
+        )
       #endif
     #endif
   }
@@ -271,13 +257,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSwiftCompiler() throws {
     #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
       #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
-          #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-            _ = try SwiftCompiler.runCustomSubcommand(
-              ["\u{2D}\u{2D}version"],
-              versionConstraints: Version(Int.min)...Version(Int.max)
-            ).get()
-          #endif
+        #if !PLATFORM_LACKS_GIT
+          _ = try SwiftCompiler.runCustomSubcommand(
+            ["\u{2D}\u{2D}version"],
+            versionConstraints: Version(Int.min)...Version(Int.max)
+          ).get()
 
           // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
           #if !(os(Windows) || os(Android))
@@ -301,17 +285,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
 
         try withMock(named: "Tool") { mock in
-          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-            #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator lacks Git.)
-              #if !(os(tvOS) || os(iOS) || os(watchOS))
-                _ = try mock.build(releaseConfiguration: true).get()
-                XCTAssertEqual(
-                  try mock.run("Tool", releaseConfiguration: true).get(),
-                  "Hello, world!"
-                )
-              #endif
-            #endif
-          #endif
+          _ = try mock.build(releaseConfiguration: true).get()
+          XCTAssertEqual(
+            try mock.run("Tool", releaseConfiguration: true).get(),
+            "Hello, world!"
+          )
         }
       #endif
 
