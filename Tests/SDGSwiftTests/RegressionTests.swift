@@ -57,7 +57,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           try withMockDynamicLinkedExecutable { mock in
             #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-              #if !os(Android)  // #workaround(workspace version 0.36.1, Emulator has no Swift.)
+              #if !os(Android)  // #workaround(workspace version 0.36.3, Emulator has no Swift.)
                 XCTAssertEqual(
                   try Package(url: mock.location).execute(
                     .development,

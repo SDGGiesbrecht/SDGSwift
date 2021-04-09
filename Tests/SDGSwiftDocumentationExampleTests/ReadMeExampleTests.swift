@@ -28,7 +28,8 @@ class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_LACKS_GIT
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
         #if !os(Windows)
-          // #workaround(workspace version 0.36.1, GitHub workflow host lacks SwiftPM.)
+          // #workaround(workspace version 0.36.3, GitHub workflow host lacks SwiftPM.)
+
           // @example(readMe🇨🇦EN)
           let package = Package(
             url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
