@@ -285,11 +285,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
 
         try withMock(named: "Tool") { mock in
-          _ = try mock.build(releaseConfiguration: true).get()
-          XCTAssertEqual(
-            try mock.run("Tool", releaseConfiguration: true).get(),
-            "Hello, world!"
-          )
+          #if !PLATFORM_LACKS_GIT
+            _ = try mock.build(releaseConfiguration: true).get()
+            XCTAssertEqual(
+              try mock.run("Tool", releaseConfiguration: true).get(),
+              "Hello, world!"
+            )
+          #endif
         }
       #endif
 
