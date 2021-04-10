@@ -41,6 +41,15 @@ let package = Package(
 try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
 ```
 
+Some platforms lack certain features. The compilation conditions which appear throughout the documentation are defined as follows:
+
+```swift
+.define(
+  "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+  .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+),
+```
+
 ## Importing
 
 SDGSwift provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
