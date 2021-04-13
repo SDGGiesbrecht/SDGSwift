@@ -36,7 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         for withGeneratedProject in [false, true] {
           try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
@@ -59,7 +59,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       // #workaround(Swift 5.3.2, Segmentation fault.)
       #if !os(Windows)
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
@@ -74,7 +74,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcode() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       let noProject = PackageRepository(
         at: thisRepository.location.appendingPathComponent("Sources")
       )
@@ -335,20 +335,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcodeCoverage() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if os(Windows) || os(Linux) || os(Android)
         _ = try? Xcode.runCustomCoverageSubcommand(
           ["help"],
           versionConstraints: Version(0)..<Version(100)
         ).get()
       #else
-        #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            _ = try Xcode.runCustomCoverageSubcommand(
-              ["help"],
-              versionConstraints: Version(0)..<Version(100)
-            ).get()
-          #endif
+        #if !(os(tvOS) || os(iOS) || os(watchOS))
+          _ = try Xcode.runCustomCoverageSubcommand(
+            ["help"],
+            versionConstraints: Version(0)..<Version(100)
+          ).get()
         #endif
       #endif
 

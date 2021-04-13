@@ -38,7 +38,7 @@ public let thisRepository: PackageRepository = {
       root = URL(fileURLWithPath: directory)
     }
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
@@ -51,7 +51,7 @@ public let thisRepository: PackageRepository = {
 public let mocksDirectory = thisRepository.location
   .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
-#if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+#if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   private func withMock(
     named name: String? = nil,
     dependentOn dependencies: [String] = [],

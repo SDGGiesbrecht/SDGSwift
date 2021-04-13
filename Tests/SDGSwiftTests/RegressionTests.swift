@@ -30,7 +30,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDependencyWarnings() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         try withMock(named: "Warnings") { package in
           #if !PLATFORM_LACKS_GIT
@@ -51,7 +51,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
           try withMockDynamicLinkedExecutable { mock in
@@ -99,7 +99,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
       // #workaround(Swift 5.3.2, Segmentation fault.)
       #if !os(Windows)
         #if !PLATFORM_LACKS_GIT

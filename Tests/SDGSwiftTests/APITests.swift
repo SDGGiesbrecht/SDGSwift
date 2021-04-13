@@ -233,7 +233,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       #endif
 
-      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
           #if !(os(tvOS) || os(iOS) || os(watchOS))
@@ -255,35 +255,35 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-        #if !PLATFORM_LACKS_GIT
-          _ = try SwiftCompiler.runCustomSubcommand(
-            ["\u{2D}\u{2D}version"],
-            versionConstraints: Version(Int.min)...Version(Int.max)
-          ).get()
+    #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+      #if !PLATFORM_LACKS_GIT
+        _ = try SwiftCompiler.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(Int.min)...Version(Int.max)
+        ).get()
 
-          // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-          #if !(os(Windows) || os(Android))
-            try withDefaultMockRepository { mock in
-              _ = try mock.resolve().get()
-              _ = try mock.build(releaseConfiguration: true).get()
-              _ = try mock.test().get()
-            }
-          #endif
+        // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
+        #if !(os(Windows) || os(Android))
+          try withDefaultMockRepository { mock in
+            _ = try mock.resolve().get()
+            _ = try mock.build(releaseConfiguration: true).get()
+            _ = try mock.test().get()
+          }
         #endif
-        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-        XCTAssertTrue(
-          SwiftCompiler.warningsOccurred(
-            during: ".../File.swift:1:1: warning: Something went wrong."
-          )
+      #endif
+      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+      XCTAssertTrue(
+        SwiftCompiler.warningsOccurred(
+          during: ".../File.swift:1:1: warning: Something went wrong."
         )
-        XCTAssertTrue(
-          ¬SwiftCompiler.warningsOccurred(
-            during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
-          )
+      )
+      XCTAssertTrue(
+        ¬SwiftCompiler.warningsOccurred(
+          during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
         )
+      )
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try withMock(named: "Tool") { mock in
           #if !PLATFORM_LACKS_GIT
             _ = try mock.build(releaseConfiguration: true).get()
@@ -294,17 +294,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           #endif
         }
       #endif
+    #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-        try withDefaultMockRepository { package in
-          _ = try? SwiftCompiler.build(package).get()
-          _ = try? SwiftCompiler.run("no such target", from: package).get()
-          _ = try SwiftCompiler.test(package).get()
-          _ = try SwiftCompiler.codeCoverageReport(for: package).get()
-          _ = try? SwiftCompiler.resolve(package).get()
-        }
-      #endif
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      try withDefaultMockRepository { package in
+        _ = try? SwiftCompiler.build(package).get()
+        _ = try? SwiftCompiler.run("no such target", from: package).get()
+        _ = try SwiftCompiler.test(package).get()
+        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+        _ = try? SwiftCompiler.resolve(package).get()
+      }
     #endif
   }
 

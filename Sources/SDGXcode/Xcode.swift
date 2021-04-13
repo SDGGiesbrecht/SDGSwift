@@ -189,45 +189,43 @@ public enum Xcode: VersionedExternalProcess {
     return output
   }
 
-  #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      /// Builds the package.
-      ///
-      /// - Parameters:
-      ///     - package: The package to build.
-      ///     - sdk: The SDK to build for.
-      ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
-      ///     - reportProgress: Optional. A closure to execute for each line of output.
-      ///     - progressReport: A line of output.
-      @discardableResult public static func build(
-        _ package: PackageRepository,
-        for sdk: SDK,
-        allArchitectures: Bool = false,
-        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-      ) -> Result<String, SchemeError> {
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+    /// Builds the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to build.
+    ///     - sdk: The SDK to build for.
+    ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    @discardableResult public static func build(
+      _ package: PackageRepository,
+      for sdk: SDK,
+      allArchitectures: Bool = false,
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+    ) -> Result<String, SchemeError> {
 
-        switch scheme(for: package) {
-        case .failure(let error):
-          return .failure(error)
-        case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
-          let earliestVersion = Version(8, 0, 0)
-          var command = [
-            "build",
-            "\u{2D}sdk", sdk.commandLineName,
-            "\u{2D}scheme", scheme,
-          ]
-          if allArchitectures {
-            command.append("ONLY_ACTIVE_ARCH=NO")
-          }
-          return runCustomSubcommand(
-            command,
-            in: package.location,
-            versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
-            reportProgress: reportProgress
-          ).mapError { .xcodeError($0) }  // @exempt(from: tests)
+      switch scheme(for: package) {
+      case .failure(let error):
+        return .failure(error)
+      case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
+        let earliestVersion = Version(8, 0, 0)
+        var command = [
+          "build",
+          "\u{2D}sdk", sdk.commandLineName,
+          "\u{2D}scheme", scheme,
+        ]
+        if allArchitectures {
+          command.append("ONLY_ACTIVE_ARCH=NO")
         }
+        return runCustomSubcommand(
+          command,
+          in: package.location,
+          versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
+          reportProgress: reportProgress
+        ).mapError { .xcodeError($0) }  // @exempt(from: tests)
       }
-    #endif
+    }
   #endif
 
   /// Returns whether the log contains warnings.
@@ -269,375 +267,372 @@ public enum Xcode: VersionedExternalProcess {
     )
   }
 
-  #if !(os(tvOS) || os(iOS) || os(watchOS))
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      /// Tests the package.
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+    /// Tests the package.
+    ///
+    /// - Parameters:
+    ///     - package: The package to test.
+    ///     - sdk: The SDK to run tests on.
+    ///     - reportProgress: Optional. A closure to execute for each line of output.
+    ///     - progressReport: A line of output.
+    @discardableResult public static func test(
+      _ package: PackageRepository,
+      on sdk: SDK,
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+    ) -> Result<String, SchemeError> {
+
+      var earliestVersion = Version(8, 0, 0)
+      var command = ["test"]
+
+      switch sdk {
+      case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
+
+        earliestVersion.increase(to: Version(11, 0, 0))
+        var iphoneVersion = "11"
+
+        let iPhone12Available = Version(12, 1)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ Version(12, 1)
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: iPhone12Available)
+          iphoneVersion = "12"
+        }
+
+        command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
+      case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
+        earliestVersion.increase(to: Version(9, 0, 0))
+        command += ["\u{2D}destination", "name=Apple TV 4K"]
+      default:
+        command += ["\u{2D}sdk", sdk.commandLineName]
+      }
+
+      switch scheme(for: package) {
+      case .failure(let error):
+        return .failure(error)
+      case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
+        command += ["\u{2D}scheme", scheme]
+      }
+
+      command += ["\u{2D}enableCodeCoverage", "YES"]
+
+      let resultBundlesAvailable = Version(11, 0, 0)
+      if let resolved = version(
+        forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+      ),
+        resolved ≥ resultBundlesAvailable
+      {
+        // @exempt(from: tests)
+        earliestVersion.increase(to: resultBundlesAvailable)
+        let resultURL = resultBundle(for: package, on: sdk)
+        command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
+        try? FileManager.default.removeItem(at: resultURL)
+      }
+
+      return runCustomSubcommand(
+        command,
+        in: package.location,
+        versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress
+      ).mapError { .xcodeError($0) }  // @exempt(from: tests)
+    }
+
+    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))
+      /// Returns the code coverage report for the package.
       ///
       /// - Parameters:
       ///     - package: The package to test.
       ///     - sdk: The SDK to run tests on.
+      ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
       ///     - reportProgress: Optional. A closure to execute for each line of output.
       ///     - progressReport: A line of output.
-      @discardableResult public static func test(
-        _ package: PackageRepository,
-        on sdk: SDK,
-        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-      ) -> Result<String, SchemeError> {
-
-        var earliestVersion = Version(8, 0, 0)
-        var command = ["test"]
-
-        switch sdk {
-        case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
-
-          earliestVersion.increase(to: Version(11, 0, 0))
-          var iphoneVersion = "11"
-
-          let iPhone12Available = Version(12, 1)
-          if let resolved = version(
-            forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-          ),
-            resolved ≥ Version(12, 1)
-          {
-            // @exempt(from: tests) Unreachable on Linux.
-            earliestVersion.increase(to: iPhone12Available)
-            iphoneVersion = "12"
-          }
-
-          command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
-        case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
-          earliestVersion.increase(to: Version(9, 0, 0))
-          command += ["\u{2D}destination", "name=Apple TV 4K"]
-        default:
-          command += ["\u{2D}sdk", sdk.commandLineName]
-        }
-
-        switch scheme(for: package) {
-        case .failure(let error):
-          return .failure(error)
-        case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
-          command += ["\u{2D}scheme", scheme]
-        }
-
-        command += ["\u{2D}enableCodeCoverage", "YES"]
-
-        let resultBundlesAvailable = Version(11, 0, 0)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ resultBundlesAvailable
-        {
-          // @exempt(from: tests)
-          earliestVersion.increase(to: resultBundlesAvailable)
-          let resultURL = resultBundle(for: package, on: sdk)
-          command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
-          try? FileManager.default.removeItem(at: resultURL)
-        }
-
-        return runCustomSubcommand(
-          command,
-          in: package.location,
-          versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound,
-          reportProgress: reportProgress
-        ).mapError { .xcodeError($0) }  // @exempt(from: tests)
-      }
-
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(Android))
-        /// Returns the code coverage report for the package.
-        ///
-        /// - Parameters:
-        ///     - package: The package to test.
-        ///     - sdk: The SDK to run tests on.
-        ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
-        ///     - reportProgress: Optional. A closure to execute for each line of output.
-        ///     - progressReport: A line of output.
-        ///
-        /// - Returns: The report, or `nil` if there is no code coverage information.
-        public static func codeCoverageReport(
-          for package: PackageRepository,
-          on sdk: SDK,
-          ignoreCoveredRegions: Bool = false,
-          reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-        ) -> Result<TestCoverageReport?, CoverageReportingError> {
-
-          let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
-
-          let resultBundle = self.resultBundle(for: package, on: sdk)
-
-          let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
-          let fileURLs: [URL]
-          switch runCustomCoverageSubcommand(
-            [
-              "view",
-              "\u{2D}\u{2D}file\u{2D}list",
-              "\u{2D}\u{2D}archive", resultBundle.path,
-            ],
-            versionConstraints: compatibleVersions
-          ) {
-          case .failure(let error):
-            return .failure(.xcodeError(error))
-          case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
-            fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
-              .filter({ file in  // @exempt(from: tests) Unreachable on Linux.
-                if file.pathExtension ≠ "swift" {
-                  // @exempt(from: tests)
-                  // The report is unlikely to be readable.
-                  return false
-                }
-                if file.pathComponents.contains("DerivedData")
-                  ∨ ignoredDirectories.contains(where: { file.is(in: $0) })
-                {
-                  // @exempt(from: tests)
-                  // Belongs to a dependency.
-                  return false
-                }
-                return true
-              }).sorted()
-          }
-
-          var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
-          for fileURL in fileURLs {
-            // @exempt(from: tests) Unreachable on Linux.
-            let fileResult = purgingAutoreleased { () -> Result<Void, CoverageReportingError> in
-
-              reportProgress(
-                String(
-                  UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    let relativePath = fileURL.path(relativeTo: package.location)
-                    switch localization {
-                    case .englishUnitedKingdom:
-                      return "Parsing report for ‘\(relativePath)’..."
-                    case .englishUnitedStates, .englishCanada:
-                      return "Parsing report for “\(relativePath)”..."
-                    case .deutschDeutschland:
-                      return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
-                    }
-                  }).resolved()
-                )
-              )
-
-              var report: String
-              switch runCustomCoverageSubcommand(
-                [
-                  "view",
-                  "\u{2D}\u{2D}file", fileURL.path,
-                  "\u{2D}\u{2D}archive", resultBundle.path,
-                ],
-                versionConstraints: compatibleVersions
-              ) {
-              case .failure(let error):
-                return .failure(.xcodeError(error))
-              case .success(let output):
-                report = output
-              }
-              if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
-                report.removeSubrange(..<match.range.upperBound)
-              }
-
-              let source: String
-              do {
-                source = try String(from: fileURL)
-              } catch {
-                return .failure(.foundationError(error))
-              }
-              func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
-                let digitsOnly = string.replacingOccurrences(of: " ", with: "")
-                if let integer = Int(digitsOnly) {
-                  return integer
-                }
-                if ¬digitsOnly.scalars.contains(where: {  // @exempt(from: tests)
-                  $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-                }) {
-                  // It is an integer; it is just to large.
-                  return Int.max
-                }
-                return nil
-              }
-
-              var regions: [CoverageRegion<String.ScalarView.Index>] = []
-              while ¬report.isEmpty {
-                let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
-                var line = String(report[lineRange])
-                report.removeSubrange(lineRange)
-                if line.contains("*") {
-                  continue
-                }
-
-                while line.hasSuffix("\n") {
-                  line.removeLast()
-                }
-
-                let base: String
-                let hasSubranges: Bool
-                if line.hasSuffix("[") {
-                  base = String(line.dropLast())
-                  hasSubranges = true
-                } else {
-                  base = line
-                  hasSubranges = false
-                }
-                let components = base.components(separatedBy: ":") as [String]
-                guard let lineString = components.first,
-                  let lineNumber = toIntegerIgnoringWhitespace(lineString),
-                  let columnString = components.last,
-                  let count = toIntegerIgnoringWhitespace(columnString)
-                else {
-                  // @exempt(from: tests)
-                  return .failure(.corruptTestCoverageReport)
-                }
-                regions.append(
-                  CoverageRegion(
-                    region: source._toIndex(
-                      line: lineNumber
-                    )..<source._toIndex(line: lineNumber + 1),
-                    count: count
-                  )
-                )
-
-                if hasSubranges {
-                  guard let subrange = report.prefix(through: "]\n")?.range else {
-                    // @exempt(from: tests)
-                    return .failure(.corruptTestCoverageReport)
-                  }
-                  var substring = String(report[subrange])
-                  report.removeSubrange(subrange)
-                  while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")")
-                  {
-                    let regionString = nested.contents.contents
-                    substring.removeSubrange(nested.container.range)
-
-                    let components = regionString.components(separatedBy: ",") as [String]
-                    guard components.count == 3,
-                      let start = toIntegerIgnoringWhitespace(components[0]),
-                      let length = toIntegerIgnoringWhitespace(components[1]),
-                      let count = toIntegerIgnoringWhitespace(components[2])
-                    else {
-                      // @exempt(from: tests)
-                      return .failure(.corruptTestCoverageReport)
-                    }
-                    regions.append(
-                      CoverageRegion(
-                        region: source._toIndex(
-                          line: lineNumber,
-                          column: start
-                        )..<source._toIndex(line: lineNumber, column: start + length),
-                        count: count
-                      )
-                    )
-                  }
-                }
-              }
-
-              CoverageRegion._normalize(
-                regions: &regions,
-                source: source,
-                ignoreCoveredRegions: ignoreCoveredRegions
-              )
-
-              let stabilized = regions.map { region in
-                return region.convert { index in
-                  return source.offset(of: index)
-                }
-              }
-              files.append(FileTestCoverage(file: fileURL, regions: stabilized))
-
-              return .success(())
-            }
-
-            switch fileResult {
-            case .failure(let error):
-              return .failure(error)
-            case .success:
-              break
-            }
-          }
-          return .success(TestCoverageReport(files: files))
-        }
-      #endif
-
-      /// Returns the main package scheme.
       ///
-      /// - Parameters:
-      ///     - package: The package.
-      public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
+      /// - Returns: The report, or `nil` if there is no code coverage information.
+      public static func codeCoverageReport(
+        for package: PackageRepository,
+        on sdk: SDK,
+        ignoreCoveredRegions: Bool = false,
+        reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+      ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
-        let information: String
-        switch runCustomSubcommand(
-          ["\u{2D}list", "\u{2D}json"],
-          in: package.location,
-          versionConstraints: Version(8, 0, 0)..<currentMajor.compatibleVersions.upperBound
+        let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
+
+        let resultBundle = self.resultBundle(for: package, on: sdk)
+
+        let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
+        let fileURLs: [URL]
+        switch runCustomCoverageSubcommand(
+          [
+            "view",
+            "\u{2D}\u{2D}file\u{2D}list",
+            "\u{2D}\u{2D}archive", resultBundle.path,
+          ],
+          versionConstraints: compatibleVersions
         ) {
         case .failure(let error):
           return .failure(.xcodeError(error))
         case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
-          information = output
+          fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
+            .filter({ file in  // @exempt(from: tests) Unreachable on Linux.
+              if file.pathExtension ≠ "swift" {
+                // @exempt(from: tests)
+                // The report is unlikely to be readable.
+                return false
+              }
+              if file.pathComponents.contains("DerivedData")
+                ∨ ignoredDirectories.contains(where: { file.is(in: $0) })
+              {
+                // @exempt(from: tests)
+                // Belongs to a dependency.
+                return false
+              }
+              return true
+            }).sorted()
         }
 
-        let json: Any
-        do {
-          json = try JSONSerialization.jsonObject(with: information.file)
-        } catch {  // @exempt(from: tests)
-          return .failure(.foundationError(error))
-        }
+        var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
+        for fileURL in fileURLs {
+          // @exempt(from: tests) Unreachable on Linux.
+          let fileResult = purgingAutoreleased { () -> Result<Void, CoverageReportingError> in
 
-        if let jsonDictionary = json as? [String: Any],
-          let workspaceData = jsonDictionary["workspace"]
-            ?? jsonDictionary["project"],  // @exempt(from: tests)
-          let workspaceDictionary = workspaceData as? [String: Any],
-          let nameData = workspaceDictionary["name"],
-          let name = nameData as? String,
-          let schemesData = workspaceDictionary["schemes"],
-          let schemeList = schemesData as? [String],
-          let packageScheme =
-            schemeList.first(where: { $0.hasSuffix("\u{2D}Package") })  // @exempt(from: tests)
-            ?? schemeList.first(where: { $0 == name })  // @exempt(from: tests)
-            ?? schemeList.first  // @exempt(from: tests)
-        {  // @exempt(from: tests)
-          return .success(packageScheme)
-        }
+            reportProgress(
+              String(
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                  let relativePath = fileURL.path(relativeTo: package.location)
+                  switch localization {
+                  case .englishUnitedKingdom:
+                    return "Parsing report for ‘\(relativePath)’..."
+                  case .englishUnitedStates, .englishCanada:
+                    return "Parsing report for “\(relativePath)”..."
+                  case .deutschDeutschland:
+                    return "Ergebnisse zu „\(relativePath)“ werden zerteilt ..."
+                  }
+                }).resolved()
+              )
+            )
 
-        return .failure(.noPackageScheme)
-      }
+            var report: String
+            switch runCustomCoverageSubcommand(
+              [
+                "view",
+                "\u{2D}\u{2D}file", fileURL.path,
+                "\u{2D}\u{2D}archive", resultBundle.path,
+              ],
+              versionConstraints: compatibleVersions
+            ) {
+            case .failure(let error):
+              return .failure(.xcodeError(error))
+            case .success(let output):
+              report = output
+            }
+            if let match = report.firstMatch(for: "IDEResultKitSerializationConverter\n") {
+              report.removeSubrange(..<match.range.upperBound)
+            }
 
-      /// Runs a custom subcommand of xccov.
-      ///
-      /// - Parameters:
-      ///   - arguments: The arguments (leave “xccov” off the beginning).
-      ///   - workingDirectory: Optional. A different working directory.
-      ///   - environment: Optional. A different set of environment variables.
-      ///   - versionConstraints: The acceptable range of versions.
-      ///   - reportProgress: Optional. A closure to execute for each line of output.
-      ///   - progressReport: A line of output.
-      @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
-        _ arguments: [String],
-        in workingDirectory: URL? = nil,
-        with environment: [String: String]? = nil,
-        versionConstraints: Constraints,
-        reportProgress: (_ progressReport: String) -> Void = { _ in }
-      ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
-      where Constraints: RangeFamily, Constraints.Bound == Version {
+            let source: String
+            do {
+              source = try String(from: fileURL)
+            } catch {
+              return .failure(.foundationError(error))
+            }
+            func toIntegerIgnoringWhitespace(_ string: String) -> Int? {
+              let digitsOnly = string.replacingOccurrences(of: " ", with: "")
+              if let integer = Int(digitsOnly) {
+                return integer
+              }
+              if ¬digitsOnly.scalars.contains(where: {  // @exempt(from: tests)
+                $0 ∉ Set<UnicodeScalar>(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+              }) {
+                // It is an integer; it is just to large.
+                return Int.max
+              }
+              return nil
+            }
 
-        reportProgress("$ xccov " + arguments.joined(separator: " "))
+            var regions: [CoverageRegion<String.ScalarView.Index>] = []
+            while ¬report.isEmpty {
+              let lineRange = report.prefix(through: "\n")?.range ?? report.bounds
+              var line = String(report[lineRange])
+              report.removeSubrange(lineRange)
+              if line.contains("*") {
+                continue
+              }
 
-        switch coverageTool(versionConstraints: versionConstraints) {
-        case .failure(let error):
-          return .failure(.locationError(error))
-        case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
-          switch coverage.run(
-            arguments,
-            in: workingDirectory,
-            with: environment,
-            reportProgress: reportProgress
-          ) {
+              while line.hasSuffix("\n") {
+                line.removeLast()
+              }
+
+              let base: String
+              let hasSubranges: Bool
+              if line.hasSuffix("[") {
+                base = String(line.dropLast())
+                hasSubranges = true
+              } else {
+                base = line
+                hasSubranges = false
+              }
+              let components = base.components(separatedBy: ":") as [String]
+              guard let lineString = components.first,
+                let lineNumber = toIntegerIgnoringWhitespace(lineString),
+                let columnString = components.last,
+                let count = toIntegerIgnoringWhitespace(columnString)
+              else {
+                // @exempt(from: tests)
+                return .failure(.corruptTestCoverageReport)
+              }
+              regions.append(
+                CoverageRegion(
+                  region: source._toIndex(
+                    line: lineNumber
+                  )..<source._toIndex(line: lineNumber + 1),
+                  count: count
+                )
+              )
+
+              if hasSubranges {
+                guard let subrange = report.prefix(through: "]\n")?.range else {
+                  // @exempt(from: tests)
+                  return .failure(.corruptTestCoverageReport)
+                }
+                var substring = String(report[subrange])
+                report.removeSubrange(subrange)
+                while let nested = substring.firstNestingLevel(startingWith: "(", endingWith: ")") {
+                  let regionString = nested.contents.contents
+                  substring.removeSubrange(nested.container.range)
+
+                  let components = regionString.components(separatedBy: ",") as [String]
+                  guard components.count == 3,
+                    let start = toIntegerIgnoringWhitespace(components[0]),
+                    let length = toIntegerIgnoringWhitespace(components[1]),
+                    let count = toIntegerIgnoringWhitespace(components[2])
+                  else {
+                    // @exempt(from: tests)
+                    return .failure(.corruptTestCoverageReport)
+                  }
+                  regions.append(
+                    CoverageRegion(
+                      region: source._toIndex(
+                        line: lineNumber,
+                        column: start
+                      )..<source._toIndex(line: lineNumber, column: start + length),
+                      count: count
+                    )
+                  )
+                }
+              }
+            }
+
+            CoverageRegion._normalize(
+              regions: &regions,
+              source: source,
+              ignoreCoveredRegions: ignoreCoveredRegions
+            )
+
+            let stabilized = regions.map { region in
+              return region.convert { index in
+                return source.offset(of: index)
+              }
+            }
+            files.append(FileTestCoverage(file: fileURL, regions: stabilized))
+
+            return .success(())
+          }
+
+          switch fileResult {
           case .failure(let error):
-            return .failure(.executionError(error))
-          case .success(let output):
-            return .success(output)
+            return .failure(error)
+          case .success:
+            break
           }
         }
+        return .success(TestCoverageReport(files: files))
       }
     #endif
+
+    /// Returns the main package scheme.
+    ///
+    /// - Parameters:
+    ///     - package: The package.
+    public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
+
+      let information: String
+      switch runCustomSubcommand(
+        ["\u{2D}list", "\u{2D}json"],
+        in: package.location,
+        versionConstraints: Version(8, 0, 0)..<currentMajor.compatibleVersions.upperBound
+      ) {
+      case .failure(let error):
+        return .failure(.xcodeError(error))
+      case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
+        information = output
+      }
+
+      let json: Any
+      do {
+        json = try JSONSerialization.jsonObject(with: information.file)
+      } catch {  // @exempt(from: tests)
+        return .failure(.foundationError(error))
+      }
+
+      if let jsonDictionary = json as? [String: Any],
+        let workspaceData = jsonDictionary["workspace"]
+          ?? jsonDictionary["project"],  // @exempt(from: tests)
+        let workspaceDictionary = workspaceData as? [String: Any],
+        let nameData = workspaceDictionary["name"],
+        let name = nameData as? String,
+        let schemesData = workspaceDictionary["schemes"],
+        let schemeList = schemesData as? [String],
+        let packageScheme =
+          schemeList.first(where: { $0.hasSuffix("\u{2D}Package") })  // @exempt(from: tests)
+          ?? schemeList.first(where: { $0 == name })  // @exempt(from: tests)
+          ?? schemeList.first  // @exempt(from: tests)
+      {  // @exempt(from: tests)
+        return .success(packageScheme)
+      }
+
+      return .failure(.noPackageScheme)
+    }
+
+    /// Runs a custom subcommand of xccov.
+    ///
+    /// - Parameters:
+    ///   - arguments: The arguments (leave “xccov” off the beginning).
+    ///   - workingDirectory: Optional. A different working directory.
+    ///   - environment: Optional. A different set of environment variables.
+    ///   - versionConstraints: The acceptable range of versions.
+    ///   - reportProgress: Optional. A closure to execute for each line of output.
+    ///   - progressReport: A line of output.
+    @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
+      _ arguments: [String],
+      in workingDirectory: URL? = nil,
+      with environment: [String: String]? = nil,
+      versionConstraints: Constraints,
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
+    ) -> Result<String, VersionedExternalProcessExecutionError<Xcode>>
+    where Constraints: RangeFamily, Constraints.Bound == Version {
+
+      reportProgress("$ xccov " + arguments.joined(separator: " "))
+
+      switch coverageTool(versionConstraints: versionConstraints) {
+      case .failure(let error):
+        return .failure(.locationError(error))
+      case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
+        switch coverage.run(
+          arguments,
+          in: workingDirectory,
+          with: environment,
+          reportProgress: reportProgress
+        ) {
+        case .failure(let error):
+          return .failure(.executionError(error))
+        case .success(let output):
+          return .success(output)
+        }
+      }
+    }
   #endif
 
   // MARK: - VersionedExternalProcess
