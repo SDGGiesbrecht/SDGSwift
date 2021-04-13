@@ -89,8 +89,7 @@ extension PackageRepository {
     }
   #endif
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:

@@ -31,7 +31,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withMock(named: "Warnings") { package in
           #if !PLATFORM_LACKS_GIT
             let build = try package.build().get()
@@ -52,7 +52,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
           try withMockDynamicLinkedExecutable { mock in
             #if !(os(tvOS) || os(iOS) || os(watchOS))

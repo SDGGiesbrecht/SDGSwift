@@ -18,8 +18,7 @@ import SDGText
 import SDGLocalization
 import SDGVersioning
 
-// #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
   import Build
   import Workspace
@@ -33,8 +32,7 @@ extension PackageRepository {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     /// Creates a new package by initializing it at the specified URL.
     ///
     /// - Parameters:
@@ -88,8 +86,7 @@ extension PackageRepository {
 
   // MARK: - Properties
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, _ in

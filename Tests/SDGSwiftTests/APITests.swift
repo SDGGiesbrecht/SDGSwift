@@ -226,8 +226,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           _ = try mock.tag(version: Version(10, 0, 0)).get()
         }
@@ -262,8 +261,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           versionConstraints: Version(Int.min)...Version(Int.max)
         ).get()
 
-        // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-        #if !(os(Windows) || os(Android))
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           try withDefaultMockRepository { mock in
             _ = try mock.resolve().get()
             _ = try mock.build(releaseConfiguration: true).get()
@@ -296,8 +294,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     #endif
 
-    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
         _ = try? SwiftCompiler.run("no such target", from: package).get()

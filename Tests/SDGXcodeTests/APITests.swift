@@ -37,7 +37,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         for withGeneratedProject in [false, true] {
           try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             #if !PLATFORM_LACKS_GIT
@@ -102,8 +102,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = xcodeLocation  // Not expected to exist.
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           for withGeneratedProject in [false, true] {
             if withGeneratedProject {
@@ -304,8 +303,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
       XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { package in
           _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
           _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
@@ -350,8 +348,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           for withGeneratedProject in [false, true] {
 

@@ -23,8 +23,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesPreserveSpecialCharacters() throws {
     // Untracked.
 
-    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       for (file, escaped) in [
         ("Validate (macOS).command", "Validate\u{5C} (macOS).command"),
         ("Prüfen (Linux).sh".decomposedStringWithCanonicalMapping, "Pr*fen\u{5C} (Linux).sh"),

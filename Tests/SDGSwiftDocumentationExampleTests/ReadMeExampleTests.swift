@@ -27,8 +27,7 @@ class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
   func testReadMe() throws {
     #if !PLATFORM_LACKS_GIT
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
-        #if !os(Windows)
-          // #workaround(workspace version 0.36.3, GitHub workflow host lacks SwiftPM.)
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
 
           // @example(readMe🇨🇦EN)
           let package = Package(

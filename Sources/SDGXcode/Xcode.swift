@@ -339,8 +339,7 @@ public enum Xcode: VersionedExternalProcess {
       ).mapError { .xcodeError($0) }  // @exempt(from: tests)
     }
 
-    // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       /// Returns the code coverage report for the package.
       ///
       /// - Parameters:

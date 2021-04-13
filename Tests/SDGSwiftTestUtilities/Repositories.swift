@@ -118,8 +118,7 @@ public let mocksDirectory = thisRepository.location
     }
   }
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     public func withDefaultMockRepository(
       file: StaticString = #filePath,
       line: UInt = #line,
