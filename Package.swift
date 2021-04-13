@@ -409,7 +409,7 @@ for target in package.targets {
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
   }
 }
 
