@@ -60,8 +60,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSwiftCompiler() {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
           let package = PackageRepository(at: url)
@@ -113,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             }
             let mockScheme = try? mock.scheme().get()
-            #if !os(Linux)
+            #if os(macOS)
               XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
 
@@ -189,7 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
-              #if !os(Linux)
+              #if os(macOS)
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -286,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
-              #if !os(Linux)
+              #if os(macOS)
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -385,7 +384,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   on: .macOS,
                   ignoreCoveredRegions: true
                 ).get()
-                #if !os(Linux)
+                #if os(macOS)
                   guard let coverageReport = possibleReport else {
                     XCTFail("No test coverage report found.")
                     return

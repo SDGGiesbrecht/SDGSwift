@@ -46,7 +46,10 @@ import PackageDescription
 /// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-/// .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])),
+/// .define(
+///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+/// ),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -422,12 +425,15 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(workspace version 0.36.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
+    .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
+    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
   }
 }
 

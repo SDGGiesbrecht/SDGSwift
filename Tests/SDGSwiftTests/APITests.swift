@@ -127,8 +127,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       #if PLATFORM_LACKS_GIT
         _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
       #else
@@ -144,8 +143,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: VersionedExternalProcessExecutionError<Git>.locationError(
           .unavailable(versionConstraints: "...")
@@ -178,8 +176,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: Package(url: URL(string: "https://domain.tld/Package")!),
         localizations: InterfaceLocalization.self,
@@ -207,8 +204,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       #if os(Windows)  // Paths differ.
         _ = String(
           describing: PackageRepository(
@@ -216,7 +212,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         )
       #else
-        #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks URL(fileURLWithPath:).)
+        #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
           testCustomStringConvertibleConformance(
             of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
             localizations: InterfaceLocalization.self,
@@ -392,8 +388,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: Version(1, 2, 3),
         localizations: InterfaceLocalization.self,
@@ -416,8 +411,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersionedExternalProcess() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       do {
         // Fresh
         _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()

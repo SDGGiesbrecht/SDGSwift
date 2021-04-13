@@ -57,7 +57,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
           try withMockDynamicLinkedExecutable { mock in
             #if !(os(tvOS) || os(iOS) || os(watchOS))
 
-              #if !os(Android)  // #workaround(workspace version 0.36.3, Emulator has no Swift.)
+              #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
                 XCTAssertEqual(
                   try Package(url: mock.location).execute(
                     .development,
@@ -100,8 +100,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         #if !PLATFORM_LACKS_GIT
           let ignored = try thisRepository.ignoredFiles().get()
           let expected = thisRepository.location.appendingPathComponent(".build").path

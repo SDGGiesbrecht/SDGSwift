@@ -109,8 +109,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       #if !PLATFORM_LACKS_GIT
         XCTAssert(
           try thisRepository.ignoredFiles().get()

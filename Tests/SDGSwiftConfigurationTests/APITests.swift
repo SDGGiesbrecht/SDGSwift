@@ -41,8 +41,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       mock.option = "Mock"
       Configuration.queue(mock: mock)
     #else
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
           FileManager.default.delete(.cache)
           defer { FileManager.default.delete(.cache) }
