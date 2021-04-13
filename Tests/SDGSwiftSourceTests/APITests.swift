@@ -16,8 +16,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-// #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 
@@ -37,8 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       for packageName in ["PackageToDocument", "PackageToDocument2"] {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
         let parsed = try PackageAPI(
@@ -112,8 +110,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCodeFragmentSyntax() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
       let syntax = try SyntaxParser.parse(source: source)
       let highlighted = syntax.syntaxHighlightedHTML(
@@ -281,8 +278,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCoreLibraries() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let syntax = try SyntaxParser.parse(
         URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
           .deletingLastPathComponent().appendingPathComponent(
@@ -315,8 +311,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let highlighted = SyntaxFactory.makeVariableDecl(
         attributes: nil,
         modifiers: nil,
@@ -341,16 +336,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testExtension() {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
       XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
     #endif
   }
 
   func testFunctionalSyntaxScanner() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let source = [
         "/// ```swift",
         "/// print(\u{22}Hello, world!\u{22})",
@@ -401,8 +394,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLineDeveloperCommentSyntax() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let syntax = try SyntaxParser.parse(source: "/\u{2F} Comment.")
       struct Scanner: SyntaxScanner {}
       try Scanner().scan(syntax)
@@ -421,8 +413,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLineDocumentationCommentSyntax() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let syntax = try SyntaxParser.parse(source: "//\u{2F} Documentation.")
       class DocumentationScanner: SyntaxScanner {
         func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
@@ -437,8 +428,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocations() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let source = "/\u{2F} ...\nlet x = 0 \n"
       let syntax = try SyntaxParser.parse(source: source)
       var statementsFound = false
@@ -466,8 +456,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       try withDefaultMockRepository { package in
         _ = try? PackageAPI(package: package.packageGraph().get())
       }
@@ -475,16 +464,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageDocumentation() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let package = try thisRepository.package().get()
       XCTAssertNotNil(try PackageAPI.documentation(for: package))
     #endif
   }
 
   func testParsing() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
       where url.lastPathComponent ≠ ".DS_Store" {
         let sourceFile = try SyntaxParser.parseAndRetry(url)
@@ -654,8 +641,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenSyntax() {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let missing = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
       let declaration = SyntaxFactory.makeInitializerDecl(
         attributes: nil,
@@ -688,8 +674,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTree() throws {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let source = "/\u{2F} ...\nlet x = 0 \n"
       let syntax = try SyntaxParser.parse(source: source)
       XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
@@ -771,8 +756,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTriviaPiece() {
-    // #workaround(Swift 5.3.2, SwiftSyntax won’t compile.)
-    #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertTrue(TriviaPiece.newlines(1).isNewline)
       XCTAssertFalse(TriviaPiece.spaces(1).isNewline)
     #endif

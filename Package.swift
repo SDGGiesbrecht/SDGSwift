@@ -16,7 +16,7 @@
 
 import PackageDescription
 
-// #example(1, readMe🇨🇦EN)
+// #example(1, readMe🇨🇦EN) #example(2, conditions)
 /// SDGSwift enables use of the Swift compiler as a package dependency.
 ///
 /// > [השֹּׁלֵחַ אִמְרָתוֹ אָרֶץ עַד־מְהֵרָה יָרוּץ דְּבָרוֹ׃](https://www.biblegateway.com/passage/?search=Psalm+147:15&version=WLC;NIV)
@@ -38,6 +38,15 @@ import PackageDescription
 ///   url: URL(string: "https://github.com/apple/example\u{2D}package\u{2D}dealer")!
 /// )
 /// try package.build(.version(Version(2, 0, 0)), to: temporaryDirectory).get()
+/// ```
+///
+/// Some platforms lack certain features. The compilation conditions which appear throughout the documentation are defined as follows:
+///
+/// ```swift
+/// .define(
+///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+/// ),
 /// ```
 let package = Package(
   name: "SDGSwift",
@@ -385,10 +394,23 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
+    // #workaround(Swift 5.3.3, SwiftSyntax won’t compile.)
+    // @example(conditions)
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
+    // @endExample
+
     // Internal‐only:
     // #workaround(workspace version 0.36.3, Android emulator lacks Git.)
-    .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS]))
+    .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
+
+  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+    // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
+  }
 }
 
 import Foundation
