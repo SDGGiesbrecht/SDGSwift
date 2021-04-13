@@ -255,7 +255,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       #if !PLATFORM_LACKS_GIT
         _ = try SwiftCompiler.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],

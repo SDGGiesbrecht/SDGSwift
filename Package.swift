@@ -46,6 +46,7 @@ import PackageDescription
 /// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+/// .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -400,11 +401,13 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
     // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.3.3, SwiftPM does not compile.)
     // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -418,6 +421,7 @@ for target in package.targets {
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
   }
 }
