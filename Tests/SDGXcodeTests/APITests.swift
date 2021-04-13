@@ -80,14 +80,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
       XCTAssertNil(try noProject.xcodeProject())
 
-      #if os(Windows) || os(Linux) || os(Android)
-        _ = try? Xcode.runCustomSubcommand(
-          ["\u{2D}version"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ).get()
-      #else
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        #if os(macOS)
           _ = try Xcode.runCustomSubcommand(
+            ["\u{2D}version"],
+            versionConstraints: Version(Int.min)...Version(Int.max)
+          ).get()
+        #else
+          _ = try? Xcode.runCustomSubcommand(
             ["\u{2D}version"],
             versionConstraints: Version(Int.min)...Version(Int.max)
           ).get()
@@ -96,10 +96,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let xcodeLocation = try? Xcode.location(
         versionConstraints: Version(Int.min)...Version(Int.max)
       ).get()
-      #if os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
-        _ = xcodeLocation  // Not expected to exist.
-      #else
+      #if os(macOS)
         XCTAssertNotNil(xcodeLocation)
+      #else
+        _ = xcodeLocation  // Not expected to exist.
       #endif
 
       // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
@@ -159,10 +159,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if os(Linux)
-                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
-              #else
+              #if os(macOS)
                 _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              #else
+                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
               #endif
 
               // Variable Xcode location and version:
@@ -245,10 +245,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if os(Linux)
-                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
-              #else
+              #if os(macOS)
                 _ = try mock.test(on: sdk, reportProgress: processLog).get()
+              #else
+                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
               #endif
 
               // Remove dates & times:
@@ -336,14 +336,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testXcodeCoverage() throws {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      #if os(Windows) || os(Linux) || os(Android)
-        _ = try? Xcode.runCustomCoverageSubcommand(
-          ["help"],
-          versionConstraints: Version(0)..<Version(100)
-        ).get()
-      #else
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        #if os(macOS)
           _ = try Xcode.runCustomCoverageSubcommand(
+            ["help"],
+            versionConstraints: Version(0)..<Version(100)
+          ).get()
+        #else
+          _ = try? Xcode.runCustomCoverageSubcommand(
             ["help"],
             versionConstraints: Version(0)..<Version(100)
           ).get()
@@ -377,10 +377,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if withGeneratedProject {
               _ = try mock.generateXcodeProject().get()
             }
-            #if os(Linux)
-              _ = try? mock.test(on: .macOS).get()
-            #else
+            #if os(macOS)
               _ = try mock.test(on: .macOS).get()
+            #else
+              _ = try? mock.test(on: .macOS).get()
             #endif
             for localization in InterfaceLocalization.allCases {
               LocalizationSetting(orderOfPrecedence: [localization.code]).do {

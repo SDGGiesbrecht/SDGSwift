@@ -36,7 +36,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
+    #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
       Configuration.queue(mock: mock)
