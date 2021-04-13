@@ -16,7 +16,7 @@ import Foundation
 
 import SDGLogic
 
-#if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks ProcessInfo.)
+#if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
   extension ProcessInfo {
 
     internal static let isInGitHubAction =

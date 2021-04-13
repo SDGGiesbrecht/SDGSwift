@@ -394,8 +394,10 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.3.3, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     // @example(conditions)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])

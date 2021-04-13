@@ -24,7 +24,7 @@ import SDGXCTestUtilities
   open class TestCase: SDGXCTestUtilities.TestCase {
 
     private static let configureGit: Void = {
-      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks ProcessInfo.)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if ProcessInfo.isInGitHubAction {
           // @exempt(from: tests)
           // #workaround(Swift 5.3.2, Segmentation fault.)
