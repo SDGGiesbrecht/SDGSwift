@@ -29,6 +29,9 @@ import SDGXCTestUtilities
           // @exempt(from: tests)
           #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
             #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+              #warning("Debugging...")
+              print("Configuring Git...")
+
               _ = try? Git.runCustomSubcommand(
                 ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
                 versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
