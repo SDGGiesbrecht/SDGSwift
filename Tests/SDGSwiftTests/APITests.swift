@@ -184,6 +184,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
       #if !PLATFORM_LACKS_GIT
+        #warning("Debugging macOS...")
+        print("Here.")
+
         XCTAssert(
           try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
             .versions()
