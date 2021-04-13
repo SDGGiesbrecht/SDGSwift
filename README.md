@@ -47,7 +47,10 @@ Some platforms lack certain features. The compilation conditions which appear th
 .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
 .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])),
+.define(
+  "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+  .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+),
 .define(
   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])

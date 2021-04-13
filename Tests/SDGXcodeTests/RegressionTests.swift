@@ -23,7 +23,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testCustomSchemesNotSelected() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(WASI) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if PLATFOM_HAS_XCODE
       try withMock(named: "WithCustomScheme") { package in
         let scheme = try package.scheme().get()
         XCTAssert(scheme ∈ Set(["WithCustomScheme\u{2D}Package", "WithCustomScheme"]))
@@ -34,7 +34,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testSchemeDetectionWithMutlipleLibrariesAndTool() throws {
     // Untracked.
 
-    #if !(os(Windows) || os(WASI) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+    #if PLATFOM_HAS_XCODE
       try withMock(named: "MultipleSchemes") { package in
         let scheme = try package.scheme().get()
         XCTAssertEqual(scheme, "SomePackage\u{2D}Package")

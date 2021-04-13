@@ -13,7 +13,7 @@
  */
 
 import Foundation
-#if !os(watchOS)
+#if !PLATFORM_LACKS_XC_TEST
   import XCTest
 #endif
 
@@ -61,7 +61,7 @@ public let mocksDirectory = thisRepository.location
   ) throws {
 
     let temporaryDirectory: URL
-    #if os(macOS)
+    #if PLATFOM_HAS_XCODE
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
     #else

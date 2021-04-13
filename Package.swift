@@ -421,10 +421,12 @@ for target in package.targets {
     // @endExample
 
     // Internal‐only:
+    .define("PLATFOM_HAS_XCODE", .when(platforms: [.macOS])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.URL.init(fileURLWithPath:).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(workspace version 0.36.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    .define("PLATFORM_LACKS_XC_TEST", .when(platforms: [.watchOS])),
     // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
     .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])

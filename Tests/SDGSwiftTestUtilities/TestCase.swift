@@ -20,7 +20,7 @@ import SDGSwift
 
 import SDGXCTestUtilities
 
-#if !os(watchOS)
+#if !PLATFORM_LACKS_XC_TEST
   open class TestCase: SDGXCTestUtilities.TestCase {
 
     private static let configureGit: Void = {
@@ -28,7 +28,7 @@ import SDGXCTestUtilities
         if ProcessInfo.isInGitHubAction {
           // @exempt(from: tests)
           #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try? Git.runCustomSubcommand(
                 ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
                 versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)

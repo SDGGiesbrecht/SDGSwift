@@ -55,7 +55,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
           try withMockDynamicLinkedExecutable { mock in
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
 
               #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
                 XCTAssertEqual(

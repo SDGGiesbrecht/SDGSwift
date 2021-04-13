@@ -231,7 +231,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try? PackageRepository.clone(Package(url: url), to: url).get()
           #endif
         }
