@@ -65,7 +65,7 @@ public let mocksDirectory = thisRepository.location
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
     #else
-      if #available(iOS 10, *) {
+      if #available(tvOS 10, iOS 10, *) {
         temporaryDirectory = FileManager.default.temporaryDirectory
       } else {
         temporaryDirectory = URL(fileURLWithPath: "/tmp")
