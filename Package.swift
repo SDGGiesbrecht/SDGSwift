@@ -428,8 +428,8 @@ for target in package.targets {
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     .define("PLATFORM_LACKS_XC_TEST", .when(platforms: [.watchOS])),
     // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
-    // #warning(Temporarily disabled.)
-    //.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
+    // #workaround(Swift 5.3.3, Ends up being applied to Linux too.)
+    //.define(“PLATFORM_SUFFERS_SEGMENTATION_FAULTS”, .when(platforms: [.windows])),
   ])
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {

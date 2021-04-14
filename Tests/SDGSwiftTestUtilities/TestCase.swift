@@ -25,18 +25,10 @@ import SDGXCTestUtilities
 
     private static let configureGit: Void = {
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-      #warning("Debugging...")
-      print("!PLATFORM_LACKS_FOUNDATION_PROCESS_INFO")
         if ProcessInfo.isInGitHubAction {
           // @exempt(from: tests)
           #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-          #warning("Debugging...")
-          print("!PLATFORM_SUFFERS_SEGMENTATION_FAULTS")
             #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              #warning("Debugging...")
-              print("!PLATFORM_LACKS_FOUNDATION_PROCESS")
-              print("Configuring Git...")
-
               _ = try? Git.runCustomSubcommand(
                 ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
                 versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)

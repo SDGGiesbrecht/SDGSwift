@@ -68,6 +68,7 @@ public let mocksDirectory = thisRepository.location
       if #available(tvOS 10, iOS 10, watchOS 3, *) {
         temporaryDirectory = FileManager.default.temporaryDirectory
       } else {
+        // @exempt(from: tests)
         temporaryDirectory = URL(fileURLWithPath: "/tmp")
       }
     #endif
