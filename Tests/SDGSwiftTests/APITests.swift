@@ -251,46 +251,39 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSwiftCompiler() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      #if !PLATFORM_LACKS_GIT
-        _ = try SwiftCompiler.runCustomSubcommand(
-          ["\u{2D}\u{2D}version"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ).get()
+      _ = try SwiftCompiler.runCustomSubcommand(
+        ["\u{2D}\u{2D}version"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ).get()
 
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          try withDefaultMockRepository { mock in
-            _ = try mock.resolve().get()
-            _ = try mock.build(releaseConfiguration: true).get()
-            _ = try mock.test().get()
-          }
-        #endif
-      #endif
-      XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-      XCTAssertTrue(
-        SwiftCompiler.warningsOccurred(
-          during: ".../File.swift:1:1: warning: Something went wrong."
-        )
-      )
-      XCTAssertTrue(
-        ¬SwiftCompiler.warningsOccurred(
-          during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
-        )
-      )
-
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        try withMock(named: "Tool") { mock in
-          #if !PLATFORM_LACKS_GIT
-            _ = try mock.build(releaseConfiguration: true).get()
-            XCTAssertEqual(
-              try mock.run("Tool", releaseConfiguration: true).get(),
-              "Hello, world!"
-            )
-          #endif
-        }
-      #endif
+      try withDefaultMockRepository { mock in
+        _ = try mock.resolve().get()
+        _ = try mock.build(releaseConfiguration: true).get()
+        _ = try mock.test().get()
+      }
     #endif
 
+    XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+    XCTAssertTrue(
+      SwiftCompiler.warningsOccurred(
+        during: ".../File.swift:1:1: warning: Something went wrong."
+      )
+    )
+    XCTAssertTrue(
+      ¬SwiftCompiler.warningsOccurred(
+        during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
+      )
+    )
+
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      try withMock(named: "Tool") { mock in
+        _ = try mock.build(releaseConfiguration: true).get()
+        XCTAssertEqual(
+          try mock.run("Tool", releaseConfiguration: true).get(),
+          "Hello, world!"
+        )
+      }
+
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
         _ = try? SwiftCompiler.run("no such target", from: package).get()
