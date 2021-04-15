@@ -421,7 +421,7 @@ for target in package.targets {
     // @endExample
 
     // Internal‐only:
-    .define("PLATFOM_HAS_XCODE", .when(platforms: [.macOS])),
+    .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.URL.init(fileURLWithPath:).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(workspace version 0.36.3, Android emulator lacks Git.)

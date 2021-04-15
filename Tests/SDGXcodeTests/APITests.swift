@@ -44,7 +44,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               if withGeneratedProject {
                 _ = try package.generateXcodeProject().get()
               }
-              #if PLATFOM_HAS_XCODE
+              #if PLATFORM_HAS_XCODE
                 let build = try package.build(for: .macOS).get()
                 XCTAssertFalse(
                   Xcode.warningsOccurred(during: build),
@@ -80,7 +80,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNil(try noProject.xcodeProject())
 
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-        #if PLATFOM_HAS_XCODE
+        #if PLATFORM_HAS_XCODE
           _ = try Xcode.runCustomSubcommand(
             ["\u{2D}version"],
             versionConstraints: Version(Int.min)...Version(Int.max)
@@ -95,7 +95,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let xcodeLocation = try? Xcode.location(
         versionConstraints: Version(Int.min)...Version(Int.max)
       ).get()
-      #if PLATFOM_HAS_XCODE
+      #if PLATFORM_HAS_XCODE
         XCTAssertNotNil(xcodeLocation)
       #else
         _ = xcodeLocation  // Not expected to exist.
@@ -112,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             }
             let mockScheme = try? mock.scheme().get()
-            #if PLATFOM_HAS_XCODE
+            #if PLATFORM_HAS_XCODE
               XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
 
@@ -157,7 +157,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if PLATFOM_HAS_XCODE
+              #if PLATFORM_HAS_XCODE
                 _ = try mock.build(for: sdk, reportProgress: processLog).get()
               #else
                 _ = try? mock.build(for: sdk, reportProgress: processLog).get()
@@ -188,7 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
-              #if PLATFOM_HAS_XCODE
+              #if PLATFORM_HAS_XCODE
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -243,7 +243,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if PLATFOM_HAS_XCODE
+              #if PLATFORM_HAS_XCODE
                 _ = try mock.test(on: sdk, reportProgress: processLog).get()
               #else
                 _ = try? mock.test(on: sdk, reportProgress: processLog).get()
@@ -285,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
-              #if PLATFOM_HAS_XCODE
+              #if PLATFORM_HAS_XCODE
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -313,7 +313,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcodeAllArchitectures() throws {
-    #if PLATFOM_HAS_XCODE
+    #if PLATFORM_HAS_XCODE
       try withMock(named: "MultipleArchitectures") { package in
         #if !arch(arm64)  // Other architectures should succeed.
           _ = try package.build(for: .macOS).get()
@@ -334,7 +334,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testXcodeCoverage() throws {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-        #if PLATFOM_HAS_XCODE
+        #if PLATFORM_HAS_XCODE
           _ = try Xcode.runCustomCoverageSubcommand(
             ["help"],
             versionConstraints: Version(0)..<Version(100)
@@ -373,7 +373,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if withGeneratedProject {
               _ = try mock.generateXcodeProject().get()
             }
-            #if PLATFOM_HAS_XCODE
+            #if PLATFORM_HAS_XCODE
               _ = try mock.test(on: .macOS).get()
             #else
               _ = try? mock.test(on: .macOS).get()
@@ -384,7 +384,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   on: .macOS,
                   ignoreCoveredRegions: true
                 ).get()
-                #if PLATFOM_HAS_XCODE
+                #if PLATFORM_HAS_XCODE
                   guard let coverageReport = possibleReport else {
                     XCTFail("No test coverage report found.")
                     return

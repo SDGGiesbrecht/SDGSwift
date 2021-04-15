@@ -61,7 +61,7 @@ public let mocksDirectory = thisRepository.location
   ) throws {
 
     let temporaryDirectory: URL
-    #if PLATFOM_HAS_XCODE
+    #if PLATFORM_HAS_XCODE
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
     #else

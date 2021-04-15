@@ -275,15 +275,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
     )
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try withMock(named: "Tool") { mock in
-        _ = try mock.build(releaseConfiguration: true).get()
-        XCTAssertEqual(
-          try mock.run("Tool", releaseConfiguration: true).get(),
-          "Hello, world!"
-        )
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          _ = try mock.build(releaseConfiguration: true).get()
+          XCTAssertEqual(
+            try mock.run("Tool", releaseConfiguration: true).get(),
+            "Hello, world!"
+          )
+        #endif
       }
+    #endif
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
         _ = try? SwiftCompiler.build(package).get()
         _ = try? SwiftCompiler.run("no such target", from: package).get()
