@@ -52,47 +52,45 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
     // Untracked.
 
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
-          try withMockDynamicLinkedExecutable { mock in
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
+        try withMockDynamicLinkedExecutable { mock in
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
 
-              #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-                XCTAssertEqual(
-                  try Package(url: mock.location).execute(
-                    .development,
-                    of: ["tool"],
-                    with: [],
-                    cacheDirectory: moved
-                  ).get(),
-                  "Hello, world!"
-                )
-                XCTAssertEqual(
-                  try Package(url: mock.location).execute(
-                    .version(Version(1, 0, 0)),
-                    of: ["tool"],
-                    with: [],
-                    cacheDirectory: moved
-                  ).get(),
-                  "Hello, world!"
-                )
-              #endif
-
-              switch Package(url: mock.location).execute(
-                .version(Version(1, 0, 0)),
-                of: ["tool"],
-                with: ["fail"],
-                cacheDirectory: moved
-              ) {
-              case .success:
-                XCTFail("Should have failed.")
-              case .failure:
-                break
-              }
+            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+              XCTAssertEqual(
+                try Package(url: mock.location).execute(
+                  .development,
+                  of: ["tool"],
+                  with: [],
+                  cacheDirectory: moved
+                ).get(),
+                "Hello, world!"
+              )
+              XCTAssertEqual(
+                try Package(url: mock.location).execute(
+                  .version(Version(1, 0, 0)),
+                  of: ["tool"],
+                  with: [],
+                  cacheDirectory: moved
+                ).get(),
+                "Hello, world!"
+              )
             #endif
-          }
+
+            switch Package(url: mock.location).execute(
+              .version(Version(1, 0, 0)),
+              of: ["tool"],
+              with: ["fail"],
+              cacheDirectory: moved
+            ) {
+            case .success:
+              XCTFail("Should have failed.")
+            case .failure:
+              break
+            }
+          #endif
         }
-      #endif
+      }
     #endif
   }
 
