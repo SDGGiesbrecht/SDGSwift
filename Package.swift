@@ -43,6 +43,13 @@ import PackageDescription
 /// Some platforms lack certain features. The compilation conditions which appear throughout the documentation are defined as follows:
 ///
 /// ```swift
+/// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+/// .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
+/// .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+/// .define(
+///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+/// ),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -394,8 +401,19 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.3.3, SwiftSyntax won’t compile.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.3.3, SwiftPM does not compile.)
+    // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     // @example(conditions)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -403,13 +421,22 @@ for target in package.targets {
     // @endExample
 
     // Internal‐only:
+    .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
+    // #workaround(Swift 5.3.3, Web lacks Foundation.URL.init(fileURLWithPath:).)
+    .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(workspace version 0.36.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    .define("PLATFORM_LACKS_XC_TEST", .when(platforms: [.watchOS])),
+    // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
+    // #workaround(Swift 5.3.3, Ends up being applied to Linux too.)
+    //.define(“PLATFORM_SUFFERS_SEGMENTATION_FAULTS”, .when(platforms: [.windows])),
   ])
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
+    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
   }
 }
 

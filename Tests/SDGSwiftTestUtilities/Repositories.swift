@@ -13,7 +13,7 @@
  */
 
 import Foundation
-#if !os(watchOS)
+#if !PLATFORM_LACKS_XC_TEST
   import XCTest
 #endif
 
@@ -38,7 +38,7 @@ public let thisRepository: PackageRepository = {
       root = URL(fileURLWithPath: directory)
     }
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
     if let overridden = ProcessInfo.processInfo
       .environment["SWIFTPM_PACKAGE_ROOT"]
     {  // @exempt(from: tests)
@@ -51,7 +51,7 @@ public let thisRepository: PackageRepository = {
 public let mocksDirectory = thisRepository.location
   .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
 
-#if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+#if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   private func withMock(
     named name: String? = nil,
     dependentOn dependencies: [String] = [],
@@ -61,11 +61,16 @@ public let mocksDirectory = thisRepository.location
   ) throws {
 
     let temporaryDirectory: URL
-    #if os(Windows) || os(Android)
-      temporaryDirectory = FileManager.default.temporaryDirectory
-    #else
+    #if PLATFORM_HAS_XCODE
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
+    #else
+      if #available(tvOS 10, iOS 10, watchOS 3, *) {
+        temporaryDirectory = FileManager.default.temporaryDirectory
+      } else {
+        // @exempt(from: tests)
+        temporaryDirectory = URL(fileURLWithPath: "/tmp")
+      }
     #endif
 
     var mocks: [URL] = []
@@ -80,7 +85,7 @@ public let mocksDirectory = thisRepository.location
       try? FileManager.default.removeItem(at: mock.location)
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
-      #if !PLATFORM_LACKS_GIT
+      #if !PLATFORM_LACKS_GIT && !os(Windows)
         _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
         _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
         _ = try Shell.default.run(
@@ -118,8 +123,7 @@ public let mocksDirectory = thisRepository.location
     }
   }
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     public func withDefaultMockRepository(
       file: StaticString = #filePath,
       line: UInt = #line,

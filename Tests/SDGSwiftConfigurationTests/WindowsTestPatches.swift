@@ -12,11 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if os(Windows)
+#if PLATFORM_SUFFERS_SEGMENTATION_FAULTS
 
   import SDGText
 
-  // #workaround(Swift 5.3.2, Encounters segmentation fault.)
   func testCodableConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,

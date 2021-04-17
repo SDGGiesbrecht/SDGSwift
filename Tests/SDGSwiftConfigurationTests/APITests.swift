@@ -36,13 +36,12 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
+    #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
       Configuration.queue(mock: mock)
     #else
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         try LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
           FileManager.default.delete(.cache)
           defer { FileManager.default.delete(.cache) }
@@ -53,7 +52,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
           let wherever = specifications.appendingPathComponent("Configured")
-          #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
             #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.
@@ -286,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testLegacyConfiguration() throws {
     #if !PLATFORM_LACKS_GIT
       try withLegacyMode {
-        #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
             named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),

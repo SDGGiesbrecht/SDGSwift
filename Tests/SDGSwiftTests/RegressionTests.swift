@@ -30,8 +30,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDependencyWarnings() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withMock(named: "Warnings") { package in
           #if !PLATFORM_LACKS_GIT
             let build = try package.build().get()
@@ -51,13 +51,13 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testDynamicLinking() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { moved in
           try withMockDynamicLinkedExecutable { mock in
-            #if !(os(tvOS) || os(iOS) || os(watchOS))
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
 
-              #if !os(Android)  // #workaround(workspace version 0.36.3, Emulator has no Swift.)
+              #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
                 XCTAssertEqual(
                   try Package(url: mock.location).execute(
                     .development,
@@ -99,9 +99,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testIgnoredFilesCheckIsStable() throws {
     // Untracked.
 
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         #if !PLATFORM_LACKS_GIT
           let ignored = try thisRepository.ignoredFiles().get()
           let expected = thisRepository.location.appendingPathComponent(".build").path

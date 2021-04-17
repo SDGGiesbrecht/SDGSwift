@@ -36,15 +36,15 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, No package manager on Windows yet.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         for withGeneratedProject in [false, true] {
           try withMock(named: "DependentOnWarnings", dependentOn: ["Warnings"]) { package in
             #if !PLATFORM_LACKS_GIT
               if withGeneratedProject {
                 _ = try package.generateXcodeProject().get()
               }
-              #if !(os(Windows) || os(Linux))
+              #if PLATFORM_HAS_XCODE
                 let build = try package.build(for: .macOS).get()
                 XCTAssertFalse(
                   Xcode.warningsOccurred(during: build),
@@ -59,13 +59,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      // #workaround(Swift 5.3.2, Segmentation fault.)
-      #if !os(Windows)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
           let package = PackageRepository(at: url)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try? SwiftCompiler.generateXcodeProject(for: package).get()
           #endif
         }
@@ -74,20 +73,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcode() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       let noProject = PackageRepository(
         at: thisRepository.location.appendingPathComponent("Sources")
       )
       XCTAssertNil(try noProject.xcodeProject())
 
-      #if os(Windows) || os(Linux) || os(Android)
-        _ = try? Xcode.runCustomSubcommand(
-          ["\u{2D}version"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ).get()
-      #else
-        #if !(os(tvOS) || os(iOS) || os(watchOS))
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        #if PLATFORM_HAS_XCODE
           _ = try Xcode.runCustomSubcommand(
+            ["\u{2D}version"],
+            versionConstraints: Version(Int.min)...Version(Int.max)
+          ).get()
+        #else
+          _ = try? Xcode.runCustomSubcommand(
             ["\u{2D}version"],
             versionConstraints: Version(Int.min)...Version(Int.max)
           ).get()
@@ -96,14 +95,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let xcodeLocation = try? Xcode.location(
         versionConstraints: Version(Int.min)...Version(Int.max)
       ).get()
-      #if os(Windows) || os(Linux) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
-        _ = xcodeLocation  // Not expected to exist.
-      #else
+      #if PLATFORM_HAS_XCODE
         XCTAssertNotNil(xcodeLocation)
+      #else
+        _ = xcodeLocation  // Not expected to exist.
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           for withGeneratedProject in [false, true] {
             if withGeneratedProject {
@@ -114,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               XCTAssertNotNil(try mock.xcodeProject(), "Failed to locate Xcode project.")
             }
             let mockScheme = try? mock.scheme().get()
-            #if !os(Linux)
+            #if PLATFORM_HAS_XCODE
               XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
 
@@ -159,10 +157,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if os(Linux)
-                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
-              #else
+              #if PLATFORM_HAS_XCODE
                 _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              #else
+                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
               #endif
 
               // Variable Xcode location and version:
@@ -190,7 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
-              #if !os(Linux)
+              #if PLATFORM_HAS_XCODE
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -245,10 +243,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   log.insert(abbreviated)
                 }
               }
-              #if os(Linux)
-                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
-              #else
+              #if PLATFORM_HAS_XCODE
                 _ = try mock.test(on: sdk, reportProgress: processLog).get()
+              #else
+                _ = try? mock.test(on: sdk, reportProgress: processLog).get()
               #endif
 
               // Remove dates & times:
@@ -287,7 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("        \u{22}") })
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
-              #if !os(Linux)
+              #if PLATFORM_HAS_XCODE
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
@@ -304,8 +302,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
       XCTAssert(¬Xcode.warningsOccurred(during: ""))
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { package in
           _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
           _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
@@ -316,7 +313,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcodeAllArchitectures() throws {
-    #if os(macOS)
+    #if PLATFORM_HAS_XCODE
       try withMock(named: "MultipleArchitectures") { package in
         #if !arch(arm64)  // Other architectures should succeed.
           _ = try package.build(for: .macOS).get()
@@ -335,25 +332,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testXcodeCoverage() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if os(Windows) || os(Linux) || os(Android)
-        _ = try? Xcode.runCustomCoverageSubcommand(
-          ["help"],
-          versionConstraints: Version(0)..<Version(100)
-        ).get()
-      #else
-        #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
-            _ = try Xcode.runCustomCoverageSubcommand(
-              ["help"],
-              versionConstraints: Version(0)..<Version(100)
-            ).get()
-          #endif
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        #if PLATFORM_HAS_XCODE
+          _ = try Xcode.runCustomCoverageSubcommand(
+            ["help"],
+            versionConstraints: Version(0)..<Version(100)
+          ).get()
+        #else
+          _ = try? Xcode.runCustomCoverageSubcommand(
+            ["help"],
+            versionConstraints: Version(0)..<Version(100)
+          ).get()
         #endif
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           for withGeneratedProject in [false, true] {
 
@@ -379,10 +373,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if withGeneratedProject {
               _ = try mock.generateXcodeProject().get()
             }
-            #if os(Linux)
-              _ = try? mock.test(on: .macOS).get()
-            #else
+            #if PLATFORM_HAS_XCODE
               _ = try mock.test(on: .macOS).get()
+            #else
+              _ = try? mock.test(on: .macOS).get()
             #endif
             for localization in InterfaceLocalization.allCases {
               LocalizationSetting(orderOfPrecedence: [localization.code]).do {
@@ -390,7 +384,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   on: .macOS,
                   ignoreCoveredRegions: true
                 ).get()
-                #if !os(Linux)
+                #if PLATFORM_HAS_XCODE
                   guard let coverageReport = possibleReport else {
                     XCTFail("No test coverage report found.")
                     return

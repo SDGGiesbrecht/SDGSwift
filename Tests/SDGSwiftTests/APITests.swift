@@ -127,8 +127,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       #if PLATFORM_LACKS_GIT
         _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
       #else
@@ -144,8 +143,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGitError() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: VersionedExternalProcessExecutionError<Git>.locationError(
           .unavailable(versionConstraints: "...")
@@ -178,8 +176,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: Package(url: URL(string: "https://domain.tld/Package")!),
         localizations: InterfaceLocalization.self,
@@ -207,8 +204,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       #if os(Windows)  // Paths differ.
         _ = String(
           describing: PackageRepository(
@@ -216,7 +212,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         )
       #else
-        #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks URL(fileURLWithPath:).)
+        #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
           testCustomStringConvertibleConformance(
             of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
             localizations: InterfaceLocalization.self,
@@ -226,17 +222,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       #endif
 
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { mock in
           _ = try mock.tag(version: Version(10, 0, 0)).get()
         }
       #endif
 
-      #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks FileManager.)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
           let url = directory.appendingPathComponent("no such URL")
-          #if !(os(tvOS) || os(iOS) || os(watchOS))
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try? PackageRepository.clone(Package(url: url), to: url).get()
           #endif
         }
@@ -255,56 +250,51 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSwiftCompiler() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.2, Web lacks Process.)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, SwiftPM is unavailable.)
-        #if !PLATFORM_LACKS_GIT
-          _ = try SwiftCompiler.runCustomSubcommand(
-            ["\u{2D}\u{2D}version"],
-            versionConstraints: Version(Int.min)...Version(Int.max)
-          ).get()
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      _ = try SwiftCompiler.runCustomSubcommand(
+        ["\u{2D}\u{2D}version"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ).get()
 
-          // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-          #if !(os(Windows) || os(Android))
-            try withDefaultMockRepository { mock in
-              _ = try mock.resolve().get()
-              _ = try mock.build(releaseConfiguration: true).get()
-              _ = try mock.test().get()
-            }
-          #endif
+      try withDefaultMockRepository { mock in
+        _ = try mock.resolve().get()
+        _ = try mock.build(releaseConfiguration: true).get()
+        _ = try mock.test().get()
+      }
+    #endif
+
+    XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
+    XCTAssertTrue(
+      SwiftCompiler.warningsOccurred(
+        during: ".../File.swift:1:1: warning: Something went wrong."
+      )
+    )
+    XCTAssertTrue(
+      ¬SwiftCompiler.warningsOccurred(
+        during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
+      )
+    )
+
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      try withMock(named: "Tool") { mock in
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          _ = try mock.build(releaseConfiguration: true).get()
+          XCTAssertEqual(
+            try mock.run("Tool", releaseConfiguration: true).get(),
+            "Hello, world!"
+          )
         #endif
-        XCTAssertFalse(SwiftCompiler.warningsOccurred(during: ""))
-        XCTAssertTrue(
-          SwiftCompiler.warningsOccurred(
-            during: ".../File.swift:1:1: warning: Something went wrong."
-          )
-        )
-        XCTAssertTrue(
-          ¬SwiftCompiler.warningsOccurred(
-            during: ".../.build/.../File.swift:1:1: warning: Something went wrong."
-          )
-        )
+      }
+    #endif
 
-        try withMock(named: "Tool") { mock in
-          #if !PLATFORM_LACKS_GIT
-            _ = try mock.build(releaseConfiguration: true).get()
-            XCTAssertEqual(
-              try mock.run("Tool", releaseConfiguration: true).get(),
-              "Hello, world!"
-            )
-          #endif
-        }
-      #endif
-
-      // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-      #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
-        try withDefaultMockRepository { package in
-          _ = try? SwiftCompiler.build(package).get()
-          _ = try? SwiftCompiler.run("no such target", from: package).get()
-          _ = try SwiftCompiler.test(package).get()
-          _ = try SwiftCompiler.codeCoverageReport(for: package).get()
-          _ = try? SwiftCompiler.resolve(package).get()
-        }
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      try withDefaultMockRepository { package in
+        _ = try? SwiftCompiler.build(package).get()
+        _ = try? SwiftCompiler.run("no such target", from: package).get()
+        _ = try SwiftCompiler.test(package).get()
+        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+        _ = try? SwiftCompiler.resolve(package).get()
+      }
     #endif
   }
 
@@ -395,8 +385,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       testCustomStringConvertibleConformance(
         of: Version(1, 2, 3),
         localizations: InterfaceLocalization.self,
@@ -419,8 +408,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersionedExternalProcess() {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       do {
         // Fresh
         _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()

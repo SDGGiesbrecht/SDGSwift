@@ -16,8 +16,7 @@ import Foundation
 
 import SDGVersioning
 
-// #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-#if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import Workspace
 #endif
 
@@ -38,8 +37,7 @@ extension SwiftCompiler {
     }
   }
 
-  // #workaround(Swift 5.3.2, SwiftPM won’t compile.)
-  #if !(os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static func withDiagnostics<T>(
       _ closure: (_ compiler: Foundation.URL, _ diagnostics: DiagnosticsEngine) throws -> T
     ) -> Swift.Result<T, PackageLoadingError> {
