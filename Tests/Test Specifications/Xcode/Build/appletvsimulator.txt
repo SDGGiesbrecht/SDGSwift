@@ -4,6 +4,7 @@ CodeSign [...]/Mock.framework
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CreateBuildDirectory [...]/Debug-appletvsimulator
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock.swiftdoc
@@ -16,12 +17,13 @@ MergeSwiftModule normal x86_64
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 ProcessInfoPlistFile [...]/Mock_Info.plist
-Signing Identity:     "-"
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

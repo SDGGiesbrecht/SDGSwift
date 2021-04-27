@@ -3,6 +3,7 @@ $ xcodebuild build -sdk macosx -scheme Mock-Package
 CodeSign [...]/A
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CreateBuildDirectory [...]/Debug
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock-Swift.h
@@ -17,7 +18,6 @@ MkDir [...]/Mock.framework
 MkDir [...]/Resources
 MkDir [...]/Versions
 ProcessInfoPlistFile [...]/Mock_Info.plist
-Signing Identity:     "-"
 SymLink [...]/Current A
 SymLink [...]/Headers
 SymLink [...]/Mock
@@ -27,6 +27,8 @@ Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
