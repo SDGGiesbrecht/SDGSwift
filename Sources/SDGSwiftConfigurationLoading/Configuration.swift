@@ -344,14 +344,14 @@ extension Configuration {
         case .success(let output):
           json = output
         }
-        if json.scalars.hasPrefix(
+        /*if json.scalars.hasPrefix(
           "[".scalars
             + RepetitionPattern(ConditionalPattern({ $0.isASCII ∧ $0.properties.numericType == .decimal }))
             + "/".scalars
         ) {
           // Remove build plan log in Swift 5.4.
           json.drop(upTo: "!\n[")
-        }
+        }*/
         if json.first ≠ "[" {
           json.drop(upTo: "\n[")  // @exempt(from: tests)
           // Only reachable when new Swift releases flag new errors in old configurations.
@@ -364,6 +364,8 @@ extension Configuration {
       do {
         decoded = try JSONDecoder().decode([C?].self, from: jsonData)
       } catch {
+        #warning("Debugging.")
+        print(String(data: jsonData, encoding: .utf8))
         return .failure(.foundationError(error))
       }
       guard let registry = decoded.first else {
