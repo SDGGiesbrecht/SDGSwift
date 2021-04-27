@@ -4,7 +4,6 @@ $ xcodebuild build -sdk iphonesimulator -scheme Mock
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal i386 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler

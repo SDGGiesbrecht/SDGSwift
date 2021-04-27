@@ -3,7 +3,6 @@ $ xcodebuild build -sdk macosx -scheme Mock
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug
