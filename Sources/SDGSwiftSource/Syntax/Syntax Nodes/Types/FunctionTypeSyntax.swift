@@ -22,6 +22,7 @@
         leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
         arguments: arguments.normalized(),
         rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil(),
+        asyncKeyword: asyncKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
         throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
           leadingTrivia: .spaces(1)
         ),

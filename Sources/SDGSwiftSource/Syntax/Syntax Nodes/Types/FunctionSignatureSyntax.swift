@@ -24,6 +24,7 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
+        asyncKeyword: asyncKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
         throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
           leadingTrivia: .spaces(1)
         ),
@@ -36,6 +37,7 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
+        asyncKeyword: nil,
         throwsOrRethrowsKeyword: nil,
         output: nil
       )
@@ -46,14 +48,15 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.forName(labelBehaviour: labelBehaviour),
+        asyncKeyword: nil,
         throwsOrRethrowsKeyword: nil,
         output: nil
       )
     }
 
-    internal func identifierList(labelBehaviour: FunctionParameterSyntax.LabelBehaviour) -> Set<
-      String
-    > {
+    internal func identifierList(
+      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
+    ) -> Set<String> {
       return input.identifierList(labelBehaviour: labelBehaviour)
     }
   }

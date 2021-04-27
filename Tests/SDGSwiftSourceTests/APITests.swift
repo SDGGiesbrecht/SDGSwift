@@ -706,6 +706,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             parameterList: SyntaxFactory.makeFunctionParameterList([]),
             rightParen: SyntaxFactory.makeToken(.rightParen)
           ),
+          asyncKeyword: nil,
           throwsOrRethrowsKeyword: SyntaxFactory.makeToken(.throwsKeyword, presence: .missing),
           output: nil
         ),
