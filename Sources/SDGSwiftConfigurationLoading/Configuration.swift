@@ -365,7 +365,7 @@ extension Configuration {
         decoded = try JSONDecoder().decode([C?].self, from: jsonData)
       } catch {
         #warning("Debugging.")
-        print(String(data: jsonData, encoding: .utf8))
+        print(String(data: gjsonData, encoding: .utf8))
         return .failure(.foundationError(error))
       }
       guard let registry = decoded.first else {
