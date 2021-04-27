@@ -21,11 +21,11 @@
       },
       {
         "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
-          "revision": "47bd06ebeff8146ecd0020809e186218b46f465f",
-          "version": "0.4.2"
+          "revision": "9564d61b08a5335ae0a36f789a7d71493eacadfc",
+          "version": "0.3.2"
         }
       },
       {
@@ -56,12 +56,21 @@
         }
       },
       {
-        "package": "llbuild",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild.git",
+        "package": "swift-driver",
+        "repositoryURL": "https://github.com/apple/swift-driver.git",
         "state": {
-          "branch": null,
-          "revision": "ef2e9ba657fd0a4e6e25fff05051b328bf27aeaf",
-          "version": "0.50302.0"
+          "branch": "release/5.4",
+          "revision": "93e8b927225a62b963ebe13ab11e04192fa8a67b",
+          "version": null
+        }
+      },
+      {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
+        "state": {
+          "branch": "release/5.4",
+          "revision": "eb56a00ed9dfd62c2ce4ec86183ff0bc0afda997",
+          "version": null
         }
       },
       {
@@ -75,11 +84,11 @@
       },
       {
         "package": "SwiftPM",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
         "state": {
-          "branch": null,
-          "revision": "86462d782b5c4546ad1dfeb8e6fc3ca05d6ccd61",
-          "version": "0.50302.0"
+          "branch": "release/5.4",
+          "revision": "7cd58d6cc1945b14db1346792b39af609ce17fe9",
+          "version": null
         }
       },
       {
@@ -102,11 +111,20 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
+        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
+        "state": {
+          "branch": "release/5.4",
+          "revision": "e95add83fc1042a0a0e260d342f9fc5608df9a84",
+          "version": null
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "8c3dfd42a36d0416345143eae4567d9314c12246",
-          "version": "0.50302.0"
+          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
+          "version": "4.0.6"
         }
       }
     ]

@@ -62,7 +62,7 @@ extension SwiftCompiler {
       -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
     {
       return withDiagnostics { compiler, _ in
-        return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+        return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path), swiftCompilerFlags: [])
       }
     }
 

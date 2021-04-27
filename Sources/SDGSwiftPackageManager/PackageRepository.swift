@@ -93,6 +93,7 @@ extension PackageRepository {
         return try ManifestLoader.loadManifest(
           packagePath: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
+          swiftCompilerFlags: [],
           packageKind: .root
         )
       }
@@ -104,6 +105,7 @@ extension PackageRepository {
         return try PackageBuilder.loadPackage(
           packagePath: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
+          swiftCompilerFlags: [],
           // #workaround(Swift 5.3.2, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
           xcTestMinimumDeploymentTargets: [:],
           diagnostics: diagnostics
@@ -127,6 +129,7 @@ extension PackageRepository {
         return try Workspace.loadGraph(
           packagePath: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
+          swiftCompilerFlags: [],
           diagnostics: diagnostics
         )
       }
