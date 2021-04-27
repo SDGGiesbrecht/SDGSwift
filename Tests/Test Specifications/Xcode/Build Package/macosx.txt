@@ -6,7 +6,9 @@ CompileSwift [...]/MockTests.swift
 CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
+CreateBuildDirectory [...]/Debug
 CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.modulemap
@@ -23,7 +25,7 @@ MergeSwiftModule normal x86_64
 MkDir [...]/Contents
 MkDir [...]/MacOS
 MkDir [...]/MockTests.xctest
-ProcessInfoPlistFile [...]/empty.plist
+ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
 Touch [...]/MockTests.xctest
@@ -34,7 +36,9 @@ WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-WriteAuxiliaryFile [...]/empty.plist
+WriteAuxiliaryFile [...]/empty-MockTests.plist
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

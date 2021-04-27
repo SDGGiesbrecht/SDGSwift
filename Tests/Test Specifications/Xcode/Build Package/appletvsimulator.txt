@@ -8,7 +8,9 @@ CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
+CreateBuildDirectory [...]/Debug-appletvsimulator
 CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
@@ -24,10 +26,9 @@ Ld [...]/MockTests normal x86_64
 MergeSwiftModule normal arm64
 MergeSwiftModule normal x86_64
 MkDir [...]/MockTests.xctest
-ProcessInfoPlistFile [...]/empty.plist
+ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
-Signing Identity:     "-"
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
@@ -37,7 +38,9 @@ WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-WriteAuxiliaryFile [...]/empty.plist
+WriteAuxiliaryFile [...]/empty-MockTests.plist
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

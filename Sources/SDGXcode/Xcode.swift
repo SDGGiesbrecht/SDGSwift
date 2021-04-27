@@ -109,10 +109,13 @@ public enum Xcode: VersionedExternalProcess {
     "Beginning test session",
     "Build settings from command line:",
     "device_map.plist",
+    "IDEPackageSupportUseBuiltinSCM",
     "IDETestOperationsObserverDebug",
     "/Logs/",
     "Probing signature of",
     "replacing existing signature",
+    "    Signing Identity:",
+    "User defaults from command line:",
     "Writing diagnostic log for test session to:",
     ".xcresult",
   ]
