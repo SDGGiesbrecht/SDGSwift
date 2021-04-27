@@ -43,11 +43,11 @@ jobs:
         set -x
         sudo rm -rf /usr/lib/clang/10.0.0
         curl --location \
-          'https://swift.org/builds/swift-5.4.0-release/ubuntu2004/swift-5.4.0-RELEASE/swift-5.4.0-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.4.0-RELEASE-ubuntu20.04.tar.gz'
-        tar --extract --file /tmp/swift-5.4.0-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+          'https://swift.org/builds/swift-5.4-release/ubuntu2004/swift-5.4-RELEASE/swift-5.4-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.4.0-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.4-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
