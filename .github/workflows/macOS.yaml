@@ -37,4 +37,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TARGETING_MACOS=true
         swift test
