@@ -73,6 +73,7 @@ public enum Xcode: VersionedExternalProcess {
     "mkdir",
     "swift",
     "swiftc",
+    "swift\u{2D}frontend"
     "touch",
     "xcodebuild",
     "write\u{2D}file",
