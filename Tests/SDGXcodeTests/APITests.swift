@@ -225,6 +225,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
 
               var log = Set<String>()  // Xcode’s order is not deterministic.
+              var fullLog = String()
               let processLog: (String) -> Void = { outputLine in
                 if let abbreviated = Xcode.abbreviate(output: outputLine) {
                   XCTAssert(
@@ -241,6 +242,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                     "Output is too long: " + abbreviated
                   )
                   log.insert(abbreviated)
+                  fullLog.append("\n\(abbreviated)")
                 }
               }
               #if PLATFORM_HAS_XCODE
@@ -286,7 +288,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               #if PLATFORM_HAS_XCODE
-                XCTFail("Debugging: (Not a real failure.)\n\(filtered.joined(separator: "\n"))\n[End]")
+                XCTFail("Debugging: (Not a real failure.)\n\(fullLog)\n[End]")
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
