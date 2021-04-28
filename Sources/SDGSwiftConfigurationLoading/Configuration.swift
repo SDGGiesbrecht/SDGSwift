@@ -342,21 +342,29 @@ extension Configuration {
         case .failure(let error):
           return .failure(.swiftError(error))
         case .success(let output):
-          #warning("Debugging...")
-          print("[Start]")
-          print(output)
-          print("[End]")
           json = output
         }
+        #warning("Debugging...")
+        print("[Start 1]")
+        print(json)
+        print("[End 1]")
         if json.first ≠ "[" {
           json.drop(upTo: "\n[")  // @exempt(from: tests)
           // Only reachable when new Swift releases flag new errors in old configurations.
         }
+        #warning("Debugging...")
+        print("[Start 2]")
+        print(json)
+        print("[End 2]")
         if json.hasPrefix("[1/") {
           // Remove build log as of Swift 5.4.
           json.drop(upTo: "!\n[")  // @exempt(from: tests)
           json.removeFirst()
         }
+        #warning("Debugging...")
+        print("[Start 3]")
+        print(json)
+        print("[End 3]")
 
         jsonData = json.file
       }
