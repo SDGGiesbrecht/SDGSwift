@@ -342,6 +342,10 @@ extension Configuration {
         case .failure(let error):
           return .failure(.swiftError(error))
         case .success(let output):
+          #warning("Debugging...")
+          print("[Start]")
+          print(output)
+          print("[End]")
           json = output
         }
         if json.first ≠ "[" {
