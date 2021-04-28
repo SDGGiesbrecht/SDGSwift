@@ -36,9 +36,6 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #warning("Debugging")
-    XCTFail("Debugging...")
-    do {
     #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
@@ -251,11 +248,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       #endif
     #endif
-    } catch {
-      print(error)
-      debugPrint(error)
-      dump(error)
-    }
   }
 
   func testConfigurationError() {
@@ -294,6 +286,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_LACKS_GIT
       try withLegacyMode {
         #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          XCTFail("Debugging...")
+          do {
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
             named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
@@ -306,6 +300,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             at: Version(0, 20, 0),
             minimumMacOSVersion: Version(10, 12)
           ).get()
+          } catch {
+            print(error)
+            debugPrint(error)
+            dump(error)
+            throw error
+          }
         #endif
       }
     #endif

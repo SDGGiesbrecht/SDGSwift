@@ -20,11 +20,12 @@ Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
 Ld [...]/Mock normal
 Ld [...]/MockTests normal
-Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MergeSwiftModule normal x_
+Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
+Object:   <IDETestRunSpecificationBuilder>
 Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
@@ -54,4 +55,5 @@ note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/IDEFrameworks/IDEFrameworks-/IDEFoundation/Testing/IDETestRunSpecificationBuilder.m:
 }
