@@ -36,6 +36,9 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
+    #warning("Debugging")
+    XCTFail("Debugging...")
+    do {
     #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
@@ -248,6 +251,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       #endif
     #endif
+    } catch {
+      print(error)
+      debugPrint(error)
+      dump(error)
+    }
   }
 
   func testConfigurationError() {
