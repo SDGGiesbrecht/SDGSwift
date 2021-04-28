@@ -288,7 +288,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               #if PLATFORM_HAS_XCODE
-                XCTFail("Debugging: (Not a real failure.)\n\(fullLog)\n[End]")
                 compare(
                   filtered.sorted().joined(separator: "\n"),
                   against: testSpecificationDirectory()
