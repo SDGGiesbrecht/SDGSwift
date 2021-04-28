@@ -4,7 +4,6 @@ $ xcodebuild test -destination name=iPhone  -scheme Mock -enableCodeCoverage YES
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Ditto [...]/Mock-Swift.h
@@ -17,12 +16,11 @@ Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
+Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MergeSwiftModule normal x_
 MkDir [...]/MockTests.xctest
-ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
-Signing Identity:     "-"
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -34,7 +32,6 @@ Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.modulemap
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
@@ -42,8 +39,10 @@ WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-WriteAuxiliaryFile [...]/empty.plist
+WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

@@ -1,12 +1,13 @@
     "keychain-access-groups" =     (
     );
+    Entitlements:
+    {
 $ xcodebuild test -destination name=Apple TV K -scheme Mock-Package -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/Mock.framework
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Ditto [...]/Mock-Swift.h
@@ -17,17 +18,17 @@ Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
-Entitlements:
 Ld [...]/Mock normal
 Ld [...]/MockTests normal
+Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MergeSwiftModule normal x_
 MkDir [...]/Headers
 MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
 ProcessProductPackaging [...]/MockTests.xctest-Simulated.xcent
-Signing Identity:     "-"
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -40,7 +41,6 @@ Test session results, code coverage, and logs:
 Testing started
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Entitlements-Simulated.plist
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
@@ -49,8 +49,9 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 Writing result bundle at path:
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-{
 }

@@ -4,7 +4,6 @@ $ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -resultBundle
 ** TEST SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Ditto [...]/Mock-Swift.h
@@ -19,9 +18,12 @@ Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
 MergeSwiftModule normal x_
+Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MkDir [...]/Contents
 MkDir [...]/MacOS
 MkDir [...]/MockTests.xctest
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+ProcessInfoPlistFile [...]/empty-MockTests.plist
 ProcessInfoPlistFile [...]/empty.plist
 Resolve Package Graph
 Resolved source packages:
@@ -36,7 +38,6 @@ Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.modulemap
 WriteAuxiliaryFile [...]/Mock.o.LinkFileList
@@ -44,8 +45,10 @@ WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
-WriteAuxiliaryFile [...]/empty.plist
+WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
-note: Planning build
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/IDEFrameworks/IDEFrameworks-/IDEFoundation/Testing/IDETestRunSpecificationBuilder.m:
