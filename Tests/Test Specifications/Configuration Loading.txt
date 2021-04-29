@@ -49,7 +49,9 @@ Resolving [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] 
+[[...]/[...]] [[...]/[...]] 
+* Build Completed!
+
 Cached
 Loading “SampleConfigurationFile.swift”...
 
@@ -94,5 +96,6 @@ Resolving [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] 
+[[...]/[...]] [[...]/[...]] 
+* Build Completed!
 Mock
