@@ -165,6 +165,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 reportProgress: { print($0, to: &log) }
               ).get()
               XCTAssertEqual(loadedMock.option, "Mock")
+              #warning("Debugging...")
+              print("[Start]")
+              print(log)
+              print("[End]")
 
               func abbreviate(logEntry: String) {
                 let pattern =
