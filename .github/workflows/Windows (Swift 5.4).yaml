@@ -15,8 +15,8 @@ name: Windows
 on: [push, pull_request]
 
 jobs:
-  Windows:
-    name: Windows
+  Windows_5_4:
+    name: Windows (Swift 5.4)
     runs-on: windows-2019
     steps:
     - name: Check out

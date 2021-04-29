@@ -1,4 +1,4 @@
-# watchOS.yaml
+# tvOS.yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,13 +10,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: watchOS
+name: tvOS
 
 on: [push, pull_request]
 
 jobs:
-  watchOS:
-    name: watchOS
+  tvOS_5_4:
+    name: tvOS (Swift 5.4)
     runs-on: macos-11.0
     steps:
     - name: Check out
@@ -37,5 +37,5 @@ jobs:
       shell: bash
       run: |
         set -x
-        export TARGETING_WATCHOS=true
-        xcodebuild build -sdk watchos -scheme SDGSwift-Package
+        export TARGETING_TVOS=true
+        xcodebuild test -destination 'name=Apple TV 4K' -scheme SDGSwift-Package

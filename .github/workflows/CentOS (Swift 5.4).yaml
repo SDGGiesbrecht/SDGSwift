@@ -15,8 +15,8 @@ name: CentOS
 on: [push, pull_request]
 
 jobs:
-  CentOS:
-    name: CentOS
+  CentOS_5_4:
+    name: CentOS (Swift 5.4)
     runs-on: ubuntu-20.04
     container: swift:5.4.0-centos8
     steps:

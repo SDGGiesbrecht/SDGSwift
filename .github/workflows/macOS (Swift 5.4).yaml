@@ -1,4 +1,4 @@
-# Amazon Linux.yaml
+# macOS.yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,43 +10,32 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Amazon Linux
+name: macOS
 
 on: [push, pull_request]
 
 jobs:
-  Amazon_Linux:
-    name: Amazon Linux
-    runs-on: ubuntu-20.04
-    container: swift:5.4.0-amazonlinux2
+  macOS_5_4:
+    name: macOS (Swift 5.4)
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Install SwiftPM dependencies
+    - name: Set Xcode up
       shell: bash
       run: |
         set -x
-        yum install --assumeyes \
-          ncurses-devel \
-          sqlite-devel
-    - name: Install Workspace dependencies
-      shell: bash
-      run: |
-        set -x
-        yum install --assumeyes \
-          curl
+        sudo xcode-select -switch /Applications/Xcode_12.5.app
+        xcodebuild -version
+        swift --version
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift test --enable-test-discovery
-    - name: Grant permission to cache
-      shell: bash
-      run: |
-        set -x
-        chmod -R a+rwx .
+        export TARGETING_MACOS=true
+        swift test

@@ -1,4 +1,4 @@
-# Ubuntu.yaml
+# Amazon Linux.yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,42 +10,36 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Ubuntu
+name: Amazon Linux
 
 on: [push, pull_request]
 
 jobs:
-  Ubuntu:
-    name: Ubuntu
+  Amazon_Linux_5_4:
+    name: Amazon Linux (Swift 5.4)
     runs-on: ubuntu-20.04
-    container: swift:5.4.0-focal
+    container: swift:5.4.0-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
-        apt-get update --assume-yes
-        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
-        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-          install --assume-yes \
-            libncurses-dev \
-            libsqlite3-dev
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
     - name: Install Workspace dependencies
       shell: bash
       run: |
         set -x
-        apt-get update --assume-yes
-        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
-        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-          install --assume-yes \
-            curl
+        yum install --assumeyes \
+          curl
     - name: Validate
       shell: bash
       run: |
