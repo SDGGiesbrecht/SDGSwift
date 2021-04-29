@@ -5,7 +5,6 @@ CodeSign [...]/A
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwift [...]/XCTestManifests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Ditto [...]/Mock-Swift.h
@@ -19,6 +18,7 @@ Ditto [...]/MockTests.swiftsourceinfo
 Ld [...]/Mock normal
 Ld [...]/MockTests normal
 MergeSwiftModule normal x_
+Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MkDir [...]/A
 MkDir [...]/Contents
 MkDir [...]/Headers
@@ -27,9 +27,10 @@ MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
 MkDir [...]/Resources
 MkDir [...]/Versions
+Object:   <IDETestRunSpecificationBuilder>
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 ProcessInfoPlistFile [...]/MockTests_Info.plist
 ProcessInfoPlistFile [...]/Mock_Info.plist
-Signing Identity:     "-"
 SymLink [...]/Current A
 SymLink [...]/Headers
 SymLink [...]/Mock
@@ -47,7 +48,6 @@ Test session results, code coverage, and logs:
 Testing started
 Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
-User defaults from command line:
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
@@ -55,6 +55,9 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 Writing result bundle at path:
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
+xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/IDEFrameworks/IDEFrameworks-/IDEFoundation/Testing/IDETestRunSpecificationBuilder.m:

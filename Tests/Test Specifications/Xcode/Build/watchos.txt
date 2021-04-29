@@ -3,6 +3,7 @@ $ xcodebuild build -sdk watchos -scheme Mock-Package
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64_32 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler
+CreateBuildDirectory [...]/Debug-watchos
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock.swiftdoc
@@ -20,6 +21,8 @@ Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

@@ -26,7 +26,7 @@ extension SwiftCompiler {
 
   // MARK: - Properties
 
-  private static let compatibleVersions = SDGVersioning.Version(5, 3, 0)...Version(5, 3, 3)
+  private static let compatibleVersions = SDGVersioning.Version(5, 4, 0)...Version(5, 4, 0)
 
   internal static func swiftCLocation()
     -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
@@ -62,7 +62,7 @@ extension SwiftCompiler {
       -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
     {
       return withDiagnostics { compiler, _ in
-        return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path))
+        return try UserManifestResources(swiftCompiler: AbsolutePath(compiler.path), swiftCompilerFlags: [])
       }
     }
 

@@ -101,18 +101,18 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 0, 0)
+      from: Version(7, 2, 2)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 50302, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       name: "cmark",

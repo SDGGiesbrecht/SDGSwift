@@ -2,6 +2,7 @@ $ xcodebuild build -sdk appletvos -scheme Mock-Package
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CreateBuildDirectory [...]/Debug-appletvos
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock-Swift.h
@@ -17,6 +18,8 @@ Touch [...]/Mock.framework
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
 WriteAuxiliaryFile [...]/Mock.LinkFileList
 WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Analyzing workspace
+note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build

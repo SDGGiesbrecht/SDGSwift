@@ -280,7 +280,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           _ = try mock.build(releaseConfiguration: true).get()
           XCTAssertEqual(
-            try mock.run("Tool", releaseConfiguration: true).get(),
+            String(try mock.run("Tool", releaseConfiguration: true).get().lines.last!.line),
             "Hello, world!"
           )
         #endif
