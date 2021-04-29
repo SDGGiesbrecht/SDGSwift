@@ -350,6 +350,7 @@ extension Configuration {
         print("[End 1]")
         if json.first ≠ "[" {
           json.drop(upTo: "\n[")  // @exempt(from: tests)
+          json.removeFirst()
           // Only reachable when new Swift releases flag new errors in old configurations.
         }
         #warning("Debugging...")
