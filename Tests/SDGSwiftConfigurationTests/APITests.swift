@@ -165,10 +165,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 reportProgress: { print($0, to: &log) }
               ).get()
               XCTAssertEqual(loadedMock.option, "Mock")
-              #warning("Debugging...")
-              print("[Start]")
-              print(log)
-              print("[End]")
 
               func abbreviate(logEntry: String) {
                 let pattern =
@@ -225,6 +221,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
+              // #workaround(Swift 5.3.4, Investigate why the cached build log includes SwiftSyntax.)
               compare(
                 log,
                 against: testSpecificationDirectory().appendingPathComponent(

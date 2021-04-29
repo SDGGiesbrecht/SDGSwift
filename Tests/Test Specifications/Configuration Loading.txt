@@ -54,7 +54,42 @@ Resolving [...]
 
 Cached
 Loading “SampleConfigurationFile.swift”...
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
+[[...]/[...]] Merging module SwiftSyntax
+[[...]/[...]] Archiving libSwiftSyntax.a
+[[...]/[...]] Archiving libSwiftSyntax.a
 
+* Build Completed!
 None
 No configuration found. Using defaults...
 
@@ -97,5 +132,6 @@ Resolving [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
 [[...]/[...]] [[...]/[...]] 
+
 * Build Completed!
 Mock
