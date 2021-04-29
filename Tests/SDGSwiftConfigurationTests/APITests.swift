@@ -52,7 +52,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           let specifications = testSpecificationDirectory().appendingPathComponent("Configuration")
 
           let wherever = specifications.appendingPathComponent("Configured")
-          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+            // Silence warnings.
+            _ = wherever
+            func nothing() throws {}
+            try nothing()
+          #else
             #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.
@@ -289,7 +294,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testLegacyConfiguration() throws {
     #if !PLATFORM_LACKS_GIT
       try withLegacyMode {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          // Silence warnings.
+          func nothing() throws {}
+          try nothing()
+        #else
           _ = try SampleConfiguration.load(
             configuration: SampleConfiguration.self,
             named: UserFacing<StrictString, APILocalization>({ _ in "SampleConfigurationFile" }),
