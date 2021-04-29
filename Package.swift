@@ -110,6 +110,10 @@ let package = Package(
       .exact(Version(0, 50400, 0))
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core",
+      .upToNextMinor(from: Version(0, 2, 0))
+    ),
+    .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
       .exact(Version(0, 50400, 0))
