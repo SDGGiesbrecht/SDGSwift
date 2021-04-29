@@ -172,7 +172,10 @@ let package = Package(
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
-        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
+        .product(
+          name: "SwiftToolsSupport\u{2D}auto",
+          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
+        ),
       ]
     ),
 
