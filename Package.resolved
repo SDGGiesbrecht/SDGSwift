@@ -110,15 +110,6 @@
         }
       },
       {
-        "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/apple/swift-tools-support-core",
-        "state": {
-          "branch": null,
-          "revision": "2954e55faee5bfee928e844bb09e97fcfa8d24af",
-          "version": "0.2.0"
-        }
-      },
-      {
         "package": "Yams",
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
