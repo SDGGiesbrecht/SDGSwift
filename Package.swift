@@ -470,6 +470,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -516,6 +517,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   let impossibleDependencies: [String] = [
     "SwiftPM",
     "SwiftSyntax",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
