@@ -110,6 +110,10 @@ let package = Package(
       .exact(Version(0, 50400, 0))
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core",
+      .upToNextMinor(from: Version(0, 2, 0))
+    ),
+    .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
       .exact(Version(0, 50400, 0))
@@ -164,6 +168,13 @@ let package = Package(
         .product(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
+          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux])
+        ),
+        .product(
+          name: "SwiftToolsSupport\u{2D}auto",
+          package: "swift\u{2D}tools\u{2D}support\u{2D}core",
           // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
@@ -438,6 +449,14 @@ for target in package.targets {
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
     swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
   }
+
+  // #workaround(Swift 5.3.4, SwiftPM and SwiftSyntax are now incompatible with Swift 5.3.)
+  #if compiler(<5.4)
+    if target.type == .test {
+      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
+      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
+    }
+  #endif
 }
 
 import Foundation
@@ -451,6 +470,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -465,6 +485,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
     // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
   ]
@@ -496,6 +517,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   let impossibleDependencies: [String] = [
     "SwiftPM",
     "SwiftSyntax",
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

@@ -27,7 +27,11 @@ class ReadMeExampleTests: SDGSwiftTestUtilities.TestCase {
   func testReadMe() throws {
     #if !PLATFORM_LACKS_GIT
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporaryDirectory in
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          // Silence warnings.
+          func nothing() throws {}
+          try nothing()
+        #else
 
           // @example(readMe🇨🇦EN)
           let package = Package(

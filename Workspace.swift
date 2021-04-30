@@ -109,3 +109,8 @@ configuration.documentation.api.ignoredDependencies = [
 
 // #workaround(workspace version 0.36.3, Rule has false positives.)
 configuration.proofreading.swiftFormatConfiguration?.rules["UseLetInEveryBoundCaseVariable"] = false
+
+// #workaround(Swift 5.3.4, SwiftPM and SwiftSyntax are now incompatible with Swift 5.3.)
+#if compiler(<5.4)
+  configuration.testing.enforceCoverage = false
+#endif

@@ -22,6 +22,7 @@ import SDGVersioning
   import PackageModel
   import Build
   import Workspace
+  import TSCBasic
 #endif
 
 import SDGSwift
@@ -90,26 +91,32 @@ extension PackageRepository {
     /// Returns the package manifest.
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, _ in
-        return try ManifestLoader.loadManifest(
-          packagePath: AbsolutePath(location.path),
-          swiftCompiler: AbsolutePath(compiler.path),
-          swiftCompilerFlags: [],
-          packageKind: .root
-        )
+        return try tsc_await { completion in
+          ManifestLoader.loadManifest(
+            packagePath: AbsolutePath(location.path),
+            swiftCompiler: AbsolutePath(compiler.path),
+            swiftCompilerFlags: [],
+            packageKind: .root,
+            on: .global(),
+            completion: completion
+          )
+        }
       }
     }
 
     /// Returns the package structure.
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try PackageBuilder.loadPackage(
-          packagePath: AbsolutePath(location.path),
-          swiftCompiler: AbsolutePath(compiler.path),
-          swiftCompilerFlags: [],
-          // #workaround(Swift 5.3.2, Will eventually have a default value.) @exempt(from: tests) @exempt(from: unicode)
-          xcTestMinimumDeploymentTargets: [:],
-          diagnostics: diagnostics
-        )
+        return try tsc_await { completion in
+          PackageBuilder.loadPackage(
+            packagePath: AbsolutePath(location.path),
+            swiftCompiler: AbsolutePath(compiler.path),
+            swiftCompilerFlags: [],
+            diagnostics: diagnostics,
+            on: .global(),
+            completion: completion
+          )
+        }
       }
     }
 
