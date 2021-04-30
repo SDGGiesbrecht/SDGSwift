@@ -89,19 +89,19 @@ jobs:
     - name: Upload tests
       uses: actions/upload-artifact@v1
       with:
-        name: tests
+        name: tests_5_4
         path: .build/x86_64-unknown-linux-android/debug
   Android_II_5_4:
     name: Android II (Swift 5.4)
     runs-on: macos-11.0
-    needs: Android
+    needs: Android_5_4
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Download tests
       uses: actions/download-artifact@v1
       with:
-        name: tests
+        name: tests_5_4
         path: .build/x86_64-unknown-linux-android/debug
     - name: Prepare script
       shell: bash
