@@ -111,7 +111,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core",
-      .upToNextMinor(from: Version(0, 2, 2))
+      .upToNextMinor(from: Version(0, 2, 0))
     ),
     .package(
       name: "SwiftSyntax",
