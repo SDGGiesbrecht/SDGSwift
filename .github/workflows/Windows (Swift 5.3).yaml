@@ -10,13 +10,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Windows
+name: Windows (Swift 5.3)
 
 on: [push, pull_request]
 
 jobs:
-  Windows:
-    name: Windows
+  Windows_Swift_5_3:
+    name: Windows (Swift 5.3)
     runs-on: windows-2019
     steps:
     - name: Check out

@@ -1,4 +1,4 @@
-# watchOS (Swift 5.4).yaml
+# Web.yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,32 +10,26 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: watchOS
+name: Web (Swift 5.3)
 
 on: [push, pull_request]
 
 jobs:
-  watchOS_5_4:
-    name: watchOS (Swift 5.4)
-    runs-on: macos-11.0
+  Web_Swift_5_3:
+    name: Web (Swift 5.3)
+    runs-on: ubuntu-20.04
+    container: ghcr.io/swiftwasm/carton:0.9.1
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Set Xcode up
+    - name: Test
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.5.app
-        xcodebuild -version
-        swift --version
-    - name: Validate
-      shell: bash
-      run: |
-        set -x
-        export TARGETING_WATCHOS=true
-        xcodebuild build -sdk watchos -scheme SDGSwift-Package
+        export TARGETING_WEB=true
+        carton test
