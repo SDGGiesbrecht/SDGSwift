@@ -561,7 +561,7 @@ public enum Xcode: VersionedExternalProcess {
     ///     - package: The package.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
 
-      let information: String
+      var information: String
       switch runCustomSubcommand(
         ["\u{2D}list", "\u{2D}json"],
         in: package.location,
@@ -572,6 +572,9 @@ public enum Xcode: VersionedExternalProcess {
       case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
         information = output
       }
+
+      // Drop any logs.
+      information.drop(upTo: "{")
 
       let json: Any
       do {
