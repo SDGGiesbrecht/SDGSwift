@@ -37,4 +37,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TARGETING_WATCHOS=true
         xcodebuild build -sdk watchos -scheme SDGSwift-Package
