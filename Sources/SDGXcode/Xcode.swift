@@ -119,7 +119,7 @@ public enum Xcode: VersionedExternalProcess {
     "    Signing Identity:",
     "User defaults from command line:",
     "Writing diagnostic log for test session to:",
-    "xcodebuild: [",
+    "xcodebuild[",
     ".xcresult",
     "XCTHTestRunner",
     "XCTTestIdentifier",
