@@ -384,13 +384,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               _ = try? mock.test(on: .macOS).get()
             #endif
             for localization in InterfaceLocalization.allCases {
-              LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                let possibleReport = try? mock.codeCoverageReport(
+              try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                let possibleReport = mock.codeCoverageReport(
                   on: .macOS,
                   ignoreCoveredRegions: true
-                ).get()
+                )
                 #if PLATFORM_HAS_XCODE
-                  guard let coverageReport = possibleReport else {
+                  let extractedReport = try possibleReport.get()
+                  guard let coverageReport = extractedReport else {
                     XCTFail("No test coverage report found.")
                     return
                   }
