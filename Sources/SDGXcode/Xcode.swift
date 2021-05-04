@@ -382,6 +382,9 @@ public enum Xcode: VersionedExternalProcess {
         let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
 
         let resultBundle = self.resultBundle(for: package, on: sdk)
+        #warning("Debugging")
+        print(resultBundle)
+        print(try? FileManager.default.contents(ofDirectory: resultBundle.deletingLastPathComponent()))
 
         let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
         let fileURLs: [URL]
@@ -394,6 +397,9 @@ public enum Xcode: VersionedExternalProcess {
           versionConstraints: compatibleVersions
         ) {
         case .failure(let error):
+          #warning("Debugging")
+          print("Error:")
+          print(error)
           return .failure(.xcodeError(error))
         case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
           fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
@@ -413,6 +419,9 @@ public enum Xcode: VersionedExternalProcess {
               return true
             }).sorted()
         }
+        #warning("Debugging")
+        print("URLs:")
+        print(fileURLs)
 
         var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
         for fileURL in fileURLs {
