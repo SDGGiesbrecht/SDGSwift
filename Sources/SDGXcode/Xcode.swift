@@ -112,12 +112,16 @@ public enum Xcode: VersionedExternalProcess {
     "IDEPackageSupportUseBuiltinSCM",
     "IDETestOperationsObserverDebug",
     "/Logs/",
+    "MTLIOAccelDevice",
     "Probing signature of",
     "replacing existing signature",
+    "set currentTestRunOperation",
     "    Signing Identity:",
     "User defaults from command line:",
     "Writing diagnostic log for test session to:",
     ".xcresult",
+    "XCTHTestRunner",
+    "XCTTestIdentifier",
   ]
 
   /// Abbreviates Xcode output to make it more readable.
