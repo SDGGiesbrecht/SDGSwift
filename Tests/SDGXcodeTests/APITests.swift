@@ -340,10 +340,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS
         #if PLATFORM_HAS_XCODE
+          #warning("Debugging.")
+          print("Before help")
           _ = try Xcode.runCustomCoverageSubcommand(
             ["help"],
             versionConstraints: Version(0)..<Version(100)
           ).get()
+          #warning("Debugging.")
+          print("After help")
         #else
           _ = try? Xcode.runCustomCoverageSubcommand(
             ["help"],
