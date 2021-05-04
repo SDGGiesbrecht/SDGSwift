@@ -52,4 +52,3 @@ note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/IDEFrameworks/IDEFrameworks-/IDEFoundation/Testing/IDETestRunSpecificationBuilder.m:
