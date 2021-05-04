@@ -378,6 +378,8 @@ public enum Xcode: VersionedExternalProcess {
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<TestCoverageReport?, CoverageReportingError> {
+        #warning("Debugging")
+        print(#function)
 
         let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
 

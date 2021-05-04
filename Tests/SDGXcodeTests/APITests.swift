@@ -385,6 +385,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             #endif
             for localization in InterfaceLocalization.allCases {
               try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                #warning("Debugging.")
+                print(localization)
+
                 let possibleReport = mock.codeCoverageReport(
                   on: .macOS,
                   ignoreCoveredRegions: true
