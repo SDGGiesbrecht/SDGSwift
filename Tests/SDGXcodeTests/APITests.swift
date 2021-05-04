@@ -396,6 +396,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   on: .macOS,
                   ignoreCoveredRegions: true
                 )
+                #warning("Debugging.")
+                print("After fetching report.")
                 #if PLATFORM_HAS_XCODE
                   let extractedReport = try possibleReport.get()
                   guard let coverageReport = extractedReport else {

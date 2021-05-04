@@ -387,6 +387,7 @@ public enum Xcode: VersionedExternalProcess {
         #warning("Debugging")
         print(resultBundle)
         print(try? FileManager.default.contents(ofDirectory: resultBundle.deletingLastPathComponent()))
+        print(try? FileManager.default.contents(ofDirectory: resultBundle))
 
         let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
         let fileURLs: [URL]
@@ -650,9 +651,13 @@ public enum Xcode: VersionedExternalProcess {
     where Constraints: RangeFamily, Constraints.Bound == Version {
 
       reportProgress("$ xccov " + arguments.joined(separator: " "))
+      #warning("Debugging...")
+      print("$ xccov " + arguments.joined(separator: " "))
 
       switch coverageTool(versionConstraints: versionConstraints) {
       case .failure(let error):
+        #warning("Debugging...")
+        print("Error finding xccov:", error)
         return .failure(.locationError(error))
       case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
         switch coverage.run(
@@ -662,6 +667,8 @@ public enum Xcode: VersionedExternalProcess {
           reportProgress: reportProgress
         ) {
         case .failure(let error):
+          #warning("Debugging...")
+          print("Error running xccov:", error)
           return .failure(.executionError(error))
         case .success(let output):
           return .success(output)
