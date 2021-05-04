@@ -298,7 +298,7 @@ public enum Xcode: VersionedExternalProcess {
         if let resolved = version(
           forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
         ),
-          resolved ≥ Version(12, 1)
+          resolved ≥ iPhone12Available
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: iPhone12Available)
@@ -308,7 +308,20 @@ public enum Xcode: VersionedExternalProcess {
         command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
       case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
         earliestVersion.increase(to: Version(9, 0, 0))
-        command += ["\u{2D}destination", "name=Apple TV 4K"]
+
+        var tv4K = "Apple TV 4K"
+        let parenthesesNeeded = Version(12, 5)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ parenthesesNeeded
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: parenthesesNeeded)
+          tv4K.append(contentsOf: " (2nd generation)")
+        }
+
+        command += ["\u{2D}destination", "name=\(tv4K)"]
       default:
         command += ["\u{2D}sdk", sdk.commandLineName]
       }
