@@ -653,6 +653,7 @@ public enum Xcode: VersionedExternalProcess {
       reportProgress("$ xccov " + arguments.joined(separator: " "))
       #warning("Debugging...")
       print("$ xccov " + arguments.joined(separator: " "))
+      print("Environment:", ProcessInfo.processInfo.environment)
 
       switch coverageTool(versionConstraints: versionConstraints) {
       case .failure(let error):
