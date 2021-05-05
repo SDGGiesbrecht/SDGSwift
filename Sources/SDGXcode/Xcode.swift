@@ -669,6 +669,7 @@ public enum Xcode: VersionedExternalProcess {
         case .failure(let error):
           #warning("Debugging...")
           print("Error running xccov:", error)
+          print("Environment:", ProcessInfo.processInfo.environment)
           return .failure(.executionError(error))
         case .success(let output):
           return .success(output)
