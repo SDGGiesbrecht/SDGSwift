@@ -159,7 +159,15 @@ extension VersionedExternalProcess {
 
       var environment = environment ?? ProcessInfo.processInfo.environment
       // Causes issues when run from within Xcode.
+      environment["LLVM_PROFILE_FILE"] = nil
+      environment["__LLVM_PROFILE_RT_INIT_ONCE"] = nil
+      environment["RUN_DESTINATION_DEVICE_NAME"] = nil
+      environment["RUN_DESTINATION_DEVICE_PLATFORM_IDENTIFIER"] = nil
+      environment["RUN_DESTINATION_DEVICE_UDID"] = nil
       environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] = nil
+      environment["XCTestBundlePath"] = nil
+      environment["XCTestConfigurationFilePath"] = nil
+      environment["XCTestSessionIdentifier"] = nil
 
       reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
       switch tool(versionConstraints: versionConstraints) {
