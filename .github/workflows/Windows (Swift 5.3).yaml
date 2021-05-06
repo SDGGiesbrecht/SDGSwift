@@ -1,4 +1,4 @@
-# Windows (Swift 5.4).yaml
+# Windows (Swift 5.3).yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,13 +10,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Windows
+name: Windows (Swift 5.3)
 
 on: [push, pull_request]
 
 jobs:
-  Windows_5_4:
-    name: Windows (Swift 5.4)
+  Windows_Swift_5_3:
+    name: Windows (Swift 5.3)
     runs-on: windows-2019
     steps:
     - name: Check out
@@ -46,9 +46,9 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://swift.org/builds/swift-5.4-release/windows10/swift-5.4-RELEASE/swift-5.4-RELEASE-windows10.exe' \
-          --output '/tmp/swift-5.4-RELEASE-windows10.exe'
-        /tmp/swift-5.4-RELEASE-windows10.exe //passive
+          'https://swift.org/builds/swift-5.3.3-release/windows10/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-windows10.exe' \
+          --output '/tmp/swift-5.3.3-RELEASE-windows10.exe'
+        /tmp/swift-5.3.3-RELEASE-windows10.exe //passive
         rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFURLSessionInterface
         rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFXMLInterface
         rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CoreFoundation
@@ -115,14 +115,14 @@ jobs:
           mkdir -p /tmp
         ubuntu2004 run \
           curl --location \
-            'https://swift.org/builds/swift-5.4-release/ubuntu2004/swift-5.4-RELEASE/swift-5.4-RELEASE-ubuntu20.04.tar.gz' \
-            --output '/tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz'
+            'https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz' \
+            --output '/tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz'
         ubuntu2004 run \
-          tar --extract --force-local --file /tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+          tar --extract --force-local --file /tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         ubuntu2004 run \
           mkdir -p /
         ubuntu2004 run \
-          cp -R /tmp/swift-5.4-RELEASE-ubuntu20.04/usr //
+          cp -R /tmp/swift-5.3.3-RELEASE-ubuntu20.04/usr //
         ubuntu2004 run \
           swift --version
     - name: Build

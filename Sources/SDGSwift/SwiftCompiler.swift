@@ -162,12 +162,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
 
-      var environment = ProcessInfo.processInfo.environment
-      // These cause issues when run from within Xcode.
-      environment["XCTestConfigurationFilePath"] = nil
-      environment["XCTestBundlePath"] = nil
-      environment["XCTestSessionIdentifier"] = nil
-
       var earliest = Version(3, 0, 0)
       var arguments = [
         "test"
@@ -195,7 +189,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
       return runCustomSubcommand(
         arguments,
         in: package.location,
-        with: environment,
         versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
         reportProgress: reportProgress
       )

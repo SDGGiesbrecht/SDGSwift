@@ -286,6 +286,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               filtered = filtered.filter({ ¬$0.contains("Using new build system") })
               filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
               filtered = filtered.filter({ ¬$0.contains("XCTHTestRunSpecification") })
+              filtered = filtered.filter({ $0 ≠ "(" })
+              filtered = filtered.filter({ $0 ≠ ")" })
+              filtered = filtered.filter({ $0 ≠ "{" })
+              filtered = filtered.filter({ $0 ≠ "}" })
               #if PLATFORM_HAS_XCODE
                 compare(
                   filtered.sorted().joined(separator: "\n"),
@@ -380,13 +384,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               _ = try? mock.test(on: .macOS).get()
             #endif
             for localization in InterfaceLocalization.allCases {
-              LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                let possibleReport = try? mock.codeCoverageReport(
+              try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+
+                let possibleReport = mock.codeCoverageReport(
                   on: .macOS,
                   ignoreCoveredRegions: true
-                ).get()
+                )
                 #if PLATFORM_HAS_XCODE
-                  guard let coverageReport = possibleReport else {
+                  let extractedReport = try possibleReport.get()
+                  guard let coverageReport = extractedReport else {
                     XCTFail("No test coverage report found.")
                     return
                   }

@@ -1,4 +1,4 @@
-# watchOS (Swift 5.4).yaml
+# iOS (Swift 5.3).yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,13 +10,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: watchOS
+name: iOS (Swift 5.3)
 
 on: [push, pull_request]
 
 jobs:
-  watchOS_5_4:
-    name: watchOS (Swift 5.4)
+  iOS_Swift_5_3:
+    name: iOS (Swift 5.3)
     runs-on: macos-11.0
     steps:
     - name: Check out
@@ -30,12 +30,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.5.app
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
         xcodebuild -version
         swift --version
     - name: Validate
       shell: bash
       run: |
         set -x
-        export TARGETING_WATCHOS=true
-        xcodebuild build -sdk watchos -scheme SDGSwift-Package
+        export TARGETING_IOS=true
+        xcodebuild test -destination "name=iPhone 12" -scheme SDGSwift-Package

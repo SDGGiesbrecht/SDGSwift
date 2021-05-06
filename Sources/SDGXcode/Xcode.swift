@@ -112,12 +112,17 @@ public enum Xcode: VersionedExternalProcess {
     "IDEPackageSupportUseBuiltinSCM",
     "IDETestOperationsObserverDebug",
     "/Logs/",
+    "MTLIOAccelDevice",
     "Probing signature of",
     "replacing existing signature",
+    "set currentTestRunOperation",
     "    Signing Identity:",
     "User defaults from command line:",
     "Writing diagnostic log for test session to:",
+    "xcodebuild[",
     ".xcresult",
+    "XCTHTestRunner",
+    "XCTTestIdentifier",
   ]
 
   /// Abbreviates Xcode output to make it more readable.
@@ -298,7 +303,7 @@ public enum Xcode: VersionedExternalProcess {
         if let resolved = version(
           forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
         ),
-          resolved ≥ Version(12, 1)
+          resolved ≥ iPhone12Available
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: iPhone12Available)
@@ -308,7 +313,20 @@ public enum Xcode: VersionedExternalProcess {
         command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
       case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
         earliestVersion.increase(to: Version(9, 0, 0))
-        command += ["\u{2D}destination", "name=Apple TV 4K"]
+
+        var tv4K = "Apple TV 4K"
+        let parenthesesNeeded = Version(12, 5)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ parenthesesNeeded
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: parenthesesNeeded)
+          tv4K.append(contentsOf: " (2nd generation)")
+        }
+
+        command += ["\u{2D}destination", "name=\(tv4K)"]
       default:
         command += ["\u{2D}sdk", sdk.commandLineName]
       }
@@ -561,7 +579,7 @@ public enum Xcode: VersionedExternalProcess {
     ///     - package: The package.
     public static func scheme(for package: PackageRepository) -> Result<String, SchemeError> {
 
-      let information: String
+      var information: String
       switch runCustomSubcommand(
         ["\u{2D}list", "\u{2D}json"],
         in: package.location,
@@ -572,6 +590,9 @@ public enum Xcode: VersionedExternalProcess {
       case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
         information = output
       }
+
+      // Drop any logs.
+      information.drop(upTo: "{")
 
       let json: Any
       do {

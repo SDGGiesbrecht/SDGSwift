@@ -1,4 +1,4 @@
-# Amazon Linux (Swift 5.4).yaml
+# Amazon Linux (Swift 5.3).yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,15 +10,15 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Amazon Linux
+name: Amazon Linux (Swift 5.3)
 
 on: [push, pull_request]
 
 jobs:
-  Amazon_Linux_5_4:
-    name: Amazon Linux (Swift 5.4)
+  Amazon_Linux_Swift_5_3:
+    name: Amazon Linux (Swift 5.3)
     runs-on: ubuntu-20.04
-    container: swift:5.4.0-amazonlinux2
+    container: swift:5.3.3-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1

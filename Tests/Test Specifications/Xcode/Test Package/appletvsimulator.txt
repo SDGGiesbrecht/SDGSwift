@@ -1,5 +1,5 @@
   Mock: /tmp/Mock
-$ xcodebuild test -destination name=Apple TV K -scheme Mock -enableCodeCoverage YES -resultBundlePath
+$ xcodebuild test -destination name=Apple TV K (nd generation) -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
@@ -49,4 +49,3 @@ note: Build preparation complete
 note: Building targets in parallel
 note: Constructing build description
 note: Planning build
-xcodebuild: [MT] DVTAssertions: Warning in /Library/Caches/com.apple.xbs/Sources/IDEFrameworks/IDEFrameworks-/IDEFoundation/Testing/IDETestRunSpecificationBuilder.m:
