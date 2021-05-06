@@ -502,6 +502,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     swiftSettings.append(contentsOf: [
       .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
     ])
+
+    // #workaround(Swift 5.4.0, Unable to build from Windows.)
+    package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
   }
 #endif
 
