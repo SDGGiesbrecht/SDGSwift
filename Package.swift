@@ -484,7 +484,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 #if os(Windows)
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
-    "swift\u{2D}syntax"
+    "SwiftSyntax"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
