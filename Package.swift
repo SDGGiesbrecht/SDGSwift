@@ -101,7 +101,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 2)
+      from: Version(7, 2, 3)
     ),
     .package(
       name: "SwiftPM",
@@ -480,6 +480,33 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 }
+
+#if os(Windows)
+  let impossibleDependencies: [String] = [
+    // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
+    "SwiftSyntax"
+  ]
+  package.dependencies.removeAll(where: { dependency in
+    return impossibleDependencies.contains(where: { impossible in
+      return (dependency.name ?? dependency.url).contains(impossible)
+    })
+  })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+    var swiftSettings = target.swiftSettings ?? []
+    defer { target.swiftSettings = swiftSettings }
+    swiftSettings.append(contentsOf: [
+      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
+    ])
+
+    // #workaround(Swift 5.4.0, Unable to build from Windows.)
+    package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
+  }
+#endif
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
