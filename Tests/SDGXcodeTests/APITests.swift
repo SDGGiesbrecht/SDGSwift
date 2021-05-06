@@ -340,14 +340,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS
         #if PLATFORM_HAS_XCODE
-          #warning("Debugging.")
-          print("Before help")
           _ = try Xcode.runCustomCoverageSubcommand(
             ["help"],
             versionConstraints: Version(0)..<Version(100)
           ).get()
-          #warning("Debugging.")
-          print("After help")
         #else
           _ = try? Xcode.runCustomCoverageSubcommand(
             ["help"],
@@ -389,15 +385,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             #endif
             for localization in InterfaceLocalization.allCases {
               try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                #warning("Debugging.")
-                print(localization)
 
                 let possibleReport = mock.codeCoverageReport(
                   on: .macOS,
                   ignoreCoveredRegions: true
                 )
-                #warning("Debugging.")
-                print("After fetching report.")
                 #if PLATFORM_HAS_XCODE
                   let extractedReport = try possibleReport.get()
                   guard let coverageReport = extractedReport else {

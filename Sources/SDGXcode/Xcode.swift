@@ -378,16 +378,10 @@ public enum Xcode: VersionedExternalProcess {
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<TestCoverageReport?, CoverageReportingError> {
-        #warning("Debugging")
-        print(#function)
 
         let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
 
         let resultBundle = self.resultBundle(for: package, on: sdk)
-        #warning("Debugging")
-        print(resultBundle)
-        print(try? FileManager.default.contents(ofDirectory: resultBundle.deletingLastPathComponent()))
-        print(try? FileManager.default.contents(ofDirectory: resultBundle))
 
         let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
         let fileURLs: [URL]
@@ -400,9 +394,6 @@ public enum Xcode: VersionedExternalProcess {
           versionConstraints: compatibleVersions
         ) {
         case .failure(let error):
-          #warning("Debugging")
-          print("Error:")
-          print(error)
           return .failure(.xcodeError(error))
         case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
           fileURLs = output.lines.map({ URL(fileURLWithPath: String($0.line)) })
@@ -422,9 +413,6 @@ public enum Xcode: VersionedExternalProcess {
               return true
             }).sorted()
         }
-        #warning("Debugging")
-        print("URLs:")
-        print(fileURLs)
 
         var files: [FileTestCoverage] = []  // @exempt(from: tests) Unreachable on Linux.
         for fileURL in fileURLs {
@@ -651,14 +639,9 @@ public enum Xcode: VersionedExternalProcess {
     where Constraints: RangeFamily, Constraints.Bound == Version {
 
       reportProgress("$ xccov " + arguments.joined(separator: " "))
-      #warning("Debugging...")
-      print("$ xccov " + arguments.joined(separator: " "))
-      print("Environment:", ProcessInfo.processInfo.environment)
 
       switch coverageTool(versionConstraints: versionConstraints) {
       case .failure(let error):
-        #warning("Debugging...")
-        print("Error finding xccov:", error)
         return .failure(.locationError(error))
       case .success(let coverage):  // @exempt(from: tests) Unreachable on Linux.
         switch coverage.run(
@@ -668,9 +651,6 @@ public enum Xcode: VersionedExternalProcess {
           reportProgress: reportProgress
         ) {
         case .failure(let error):
-          #warning("Debugging...")
-          print("Error running xccov:", error)
-          print("Environment:", ProcessInfo.processInfo.environment)
           return .failure(.executionError(error))
         case .success(let output):
           return .success(output)
