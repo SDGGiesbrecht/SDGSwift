@@ -183,7 +183,17 @@ public enum SwiftCompiler: VersionedExternalProcess {
         resolved ≥ testDiscoveryAvailable
       {
         earliest.increase(to: testDiscoveryAvailable)
-        arguments.append("\u{2D}\u{2D}enable\u{2D}test\u{2D}discovery")
+
+        let testDiscoveryAutomatic = Version(5, 4, 0)
+        if let resolved = version(
+          forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ testDiscoveryAutomatic
+        {
+          earliest.increase(to: testDiscoveryAutomatic)
+        } else {
+          arguments.append("\u{2D}\u{2D}enable\u{2D}test\u{2D}discovery")
+        }
       }
 
       return runCustomSubcommand(
