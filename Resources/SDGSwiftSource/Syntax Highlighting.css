@@ -33,54 +33,60 @@
     border-color:  #D6D6D6;
 }
 .swift {
-    color: #000000;
+    color: #262626;
 }
 
 .swift .keyword {
-    color: #AA0D91;
+    color: #AD3DA4;
 }
 
 .swift .punctuation {
-    color: #000000;
+    color: #262626;
 }
 
 .swift .external.identifier {
-    color: #5C2699;
+    color: #804FB8;
 }
 .swift .internal.identifier {
-    color: #3F6E74;
+    color: #3E8087;
 }
 
 .swift .number {
-    color: #1C00CF;
+    color: #2C3CD8;
 }
 
 .swift .string {
-    color: #C41A16;
+    color: #D1302B;
 }
 .swift .string‐punctuation {
-    color: #62270B;
+    color: #7B2B28;
 }
 
 .swift .compilation‐condition {
-    color: #643820;
+    color: #78492A;
 }
 
 .swift .comment {
-    color: #007400;
+    color: #707F8C;
 }
 .swift .comment‐punctuation {
-    color: #003A00;
+    color: #4B5259;
+}
+.swift .comment‐keyword {
+    color: #5C6874;
 }
 .swift .source‐heading {
-    color: #4A5560;
+    color: #5C6874;
+}
+.swift .source‐heading {
+    color: #5C6874;
 }
 .swift .url {
-    color: #0E0EFF;
+    color: #2046F6;
 }
 
 .swift .code {
-    color: #000000;
+    color: #262626;
 }
 
 /* Font */
@@ -92,11 +98,11 @@
 }
 
 .swift {
-    font-family: "SF Mono", Menlo, monospace, "SF Pro Icons";
+    font-family: "SF Mono", "SF Mono", Menlo, monospace, "SF Pro Icons";
 }
 
 .swift .text, .swift .source‐heading {
-    font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "Helvetica Neue", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     letter-spacing: 0;
 }
 
