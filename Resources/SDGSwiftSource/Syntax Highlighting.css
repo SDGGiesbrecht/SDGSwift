@@ -85,10 +85,14 @@
 
 /* Font */
 
+.swift.blockquote {
+  font-size: 88.235%;
+  line-height: 1.66667;
+  letter-spacing: -0.027em;
+}
+
 .swift {
     font-family: "SF Mono", Menlo, monospace, "SF Pro Icons";
-    letter-spacing: -0.027em;
-    line-height: 1.26667;
 }
 
 .swift .text, .swift .source‐heading {
