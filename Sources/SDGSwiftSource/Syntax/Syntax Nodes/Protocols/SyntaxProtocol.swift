@@ -274,6 +274,8 @@
           genericParameterClause = initializer.genericParameterClause
         case let variable as VariableDeclSyntax:
           variableBindings = variable.identifierList()
+        case let `case` as EnumCaseDeclSyntax:
+          variableBindings = `case`.identifierList()
         case let `subscript` as SubscriptDeclSyntax:
           parameterClause = `subscript`.indices
           genericParameterClause = `subscript`.genericParameterClause
