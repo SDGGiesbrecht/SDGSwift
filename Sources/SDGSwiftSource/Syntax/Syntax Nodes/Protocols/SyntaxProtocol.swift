@@ -269,6 +269,9 @@
         case let alias as TypealiasDeclSyntax:
           identifier = alias.identifier
           genericParameterClause = alias.genericParameterClause
+        case let associated as AssociatedtypeDeclSyntax:
+          identifier = associated.identifier
+          genericParameterClause = associated.genericParameterClause
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
           genericParameterClause = initializer.genericParameterClause
@@ -283,6 +286,10 @@
           identifier = function.identifier
           parameterClause = function.signature.input
           genericParameterClause = function.genericParameterClause
+        case let `operator` as OperatorDeclSyntax:
+          identifier = `operator`.identifier
+        case let precedence as PrecedenceGroupDeclSyntax:
+          identifier = precedence.identifier
         default:
           break
         }
@@ -293,7 +300,9 @@
           identifiers ∪= bindings
         }
         if let clause = parameterClause {
-          let parameters = clause.parameterList.lazy.map({ $0.internalName?.text }).compactMap({ $0 })
+          let parameters = clause.parameterList.lazy.map({ $0.internalName?.text }).compactMap({
+            $0
+          })
           identifiers ∪= Set(parameters)
         }
         if let clause = genericParameterClause {
