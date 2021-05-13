@@ -254,9 +254,15 @@
         var parameterClause: ParameterClauseSyntax?
         var genericParameterClause: GenericParameterClauseSyntax?
         switch existential {
+        case let structure as StructDeclSyntax:
+          identifier = structure.identifier
+          genericParameterClause = structure.genericParameterClause
         case let `class` as ClassDeclSyntax:
           identifier = `class`.identifier
           genericParameterClause = `class`.genericParameterClause
+        case let enumeration as EnumDeclSyntax:
+          identifier = enumeration.identifier
+          genericParameterClause = enumeration.genericParameterClause
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
           genericParameterClause = initializer.genericParameterClause
