@@ -249,22 +249,39 @@
         return result
       default:
         var identifiers = internalIdentifiers
+
+        var identifier: TokenSyntax?
         var parameterClause: ParameterClauseSyntax?
+        var genericParameterClause: GenericParameterClauseSyntax?
         switch existential {
+        case let `class` as ClassDeclSyntax:
+          identifier = `class`.identifier
+          genericParameterClause = `class`.genericParameterClause
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
+          genericParameterClause = initializer.genericParameterClause
         case let `subscript` as SubscriptDeclSyntax:
           parameterClause = `subscript`.indices
+          genericParameterClause = `subscript`.genericParameterClause
         case let function as FunctionDeclSyntax:
+          identifier = function.identifier
           parameterClause = function.signature.input
+          genericParameterClause = function.genericParameterClause
         default:
           break
         }
-
+        if let identifier = identifier {
+          identifiers.insert(identifier.text)
+        }
         if let clause = parameterClause {
           let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
           identifiers ∪= Set(parameters)
         }
+        if let clause = genericParameterClause {
+          let parameters = clause.genericParameterList.map({ $0.name.text })
+          identifiers ∪= Set(parameters)
+        }
+
         var result = children.map({
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
