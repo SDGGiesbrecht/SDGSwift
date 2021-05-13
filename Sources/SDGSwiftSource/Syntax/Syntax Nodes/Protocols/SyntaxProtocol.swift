@@ -251,6 +251,7 @@
         var identifiers = internalIdentifiers
 
         var identifier: TokenSyntax?
+        var variableBindings: Set<String>?
         var parameterClause: ParameterClauseSyntax?
         var genericParameterClause: GenericParameterClauseSyntax?
         switch existential {
@@ -263,9 +264,16 @@
         case let enumeration as EnumDeclSyntax:
           identifier = enumeration.identifier
           genericParameterClause = enumeration.genericParameterClause
+        case let `protocol` as ProtocolDeclSyntax:
+          identifier = `protocol`.identifier
+        case let alias as TypealiasDeclSyntax:
+          identifier = alias.identifier
+          genericParameterClause = alias.genericParameterClause
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
           genericParameterClause = initializer.genericParameterClause
+        case let variable as VariableDeclSyntax:
+          variableBindings = variable.identifierList()
         case let `subscript` as SubscriptDeclSyntax:
           parameterClause = `subscript`.indices
           genericParameterClause = `subscript`.genericParameterClause
@@ -279,12 +287,15 @@
         if let identifier = identifier {
           identifiers.insert(identifier.text)
         }
+        if let bindings = variableBindings {
+          identifiers ∪= bindings
+        }
         if let clause = parameterClause {
-          let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
+          let parameters = clause.parameterList.lazy.map({ $0.internalName?.text }).compactMap({ $0 })
           identifiers ∪= Set(parameters)
         }
         if let clause = genericParameterClause {
-          let parameters = clause.genericParameterList.map({ $0.name.text })
+          let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
           identifiers ∪= Set(parameters)
         }
 
