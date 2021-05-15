@@ -249,22 +249,67 @@
         return result
       default:
         var identifiers = internalIdentifiers
+
+        var identifier: TokenSyntax?
+        var variableBindings: Set<String>?
         var parameterClause: ParameterClauseSyntax?
+        var genericParameterClause: GenericParameterClauseSyntax?
         switch existential {
+        case let structure as StructDeclSyntax:
+          identifier = structure.identifier
+          genericParameterClause = structure.genericParameterClause
+        case let `class` as ClassDeclSyntax:
+          identifier = `class`.identifier
+          genericParameterClause = `class`.genericParameterClause
+        case let enumeration as EnumDeclSyntax:
+          identifier = enumeration.identifier
+          genericParameterClause = enumeration.genericParameterClause
+        case let `protocol` as ProtocolDeclSyntax:
+          identifier = `protocol`.identifier
+        case let alias as TypealiasDeclSyntax:
+          identifier = alias.identifier
+          genericParameterClause = alias.genericParameterClause
+        case let associated as AssociatedtypeDeclSyntax:
+          identifier = associated.identifier
+          genericParameterClause = associated.genericParameterClause
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
+          genericParameterClause = initializer.genericParameterClause
+        case let variable as VariableDeclSyntax:
+          variableBindings = variable.identifierList()
+        case let `case` as EnumCaseDeclSyntax:
+          variableBindings = `case`.identifierList()
         case let `subscript` as SubscriptDeclSyntax:
           parameterClause = `subscript`.indices
+          genericParameterClause = `subscript`.genericParameterClause
         case let function as FunctionDeclSyntax:
+          identifier = function.identifier
           parameterClause = function.signature.input
+          genericParameterClause = function.genericParameterClause
+        case let `operator` as OperatorDeclSyntax:
+          identifier = `operator`.identifier
+        case let precedence as PrecedenceGroupDeclSyntax:
+          identifier = precedence.identifier
         default:
           break
         }
-
+        if let identifier = identifier {
+          identifiers.insert(identifier.text)
+        }
+        if let bindings = variableBindings {
+          identifiers ∪= bindings
+        }
         if let clause = parameterClause {
-          let parameters = clause.parameterList.map({ $0.internalName?.text }).compactMap({ $0 })
+          let parameters = clause.parameterList.lazy.map({ $0.internalName?.text }).compactMap({
+            $0
+          })
           identifiers ∪= Set(parameters)
         }
+        if let clause = genericParameterClause {
+          let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
+          identifiers ∪= Set(parameters)
+        }
+
         var result = children.map({
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
