@@ -254,6 +254,12 @@
           return "keyword"
         }
 
+        if let parameter = parent?.as(FunctionParameterSyntax.self),
+          parameter.firstName == self
+        {
+          return "internal identifier"
+        }
+
         if name ∈ internalIdentifiers {
           return "internal identifier"
         } else {
