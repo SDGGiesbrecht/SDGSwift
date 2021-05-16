@@ -83,16 +83,8 @@
             // Import statement.
             return .invariable
           }
-          var previousAncestor: Syntax = Syntax(self)
-          for ancestor in ancestors() {
-            defer { previousAncestor = ancestor }
-            if let ifConfigurationClause = ancestor.as(IfConfigClauseSyntax.self),
-              let condition = Syntax(ifConfigurationClause.condition),
-              condition == previousAncestor
-            {
-              // #if condition
-              return .invariable
-            }
+          if isInIfConfigurationCondition() {
+            return .invariable
           }
 
           if parent.isProtocol(DeclSyntaxProtocol.self) == true {
@@ -139,6 +131,20 @@
         .rawStringDelimiter, .poundFileIDKeyword:
         return .invariable
       }
+    }
+
+    private func isInIfConfigurationCondition() -> Bool {
+      var previousAncestor: Syntax = Syntax(self)
+      for ancestor in ancestors() {
+        defer { previousAncestor = ancestor }
+        if let ifConfigurationClause = ancestor.as(IfConfigClauseSyntax.self),
+          let condition = Syntax(ifConfigurationClause.condition),
+          condition == previousAncestor
+        {
+          return true
+        }
+      }
+      return false
     }
 
     // MARK: - Syntax Tree
@@ -238,6 +244,11 @@
       case .identifier(let name), .unspacedBinaryOperator(let name),
         .spacedBinaryOperator(let name),
         .prefixOperator(let name), .postfixOperator(let name):
+
+        if isInIfConfigurationCondition() {
+          return "compilation‐condition"
+        }
+
         if name == "get" ∨ name == "set" {
           return "keyword"
         }
