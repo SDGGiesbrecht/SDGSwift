@@ -1,30 +1,47 @@
-$ xcodebuild build -sdk watchsimulator -scheme Mock-Package
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk watchsimulator -scheme Mock
 ** BUILD SUCCEEDED **
-CodeSign [...]/Mock.framework
+CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal i386 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-watchsimulator
 CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
-Ld [...]/Mock normal arm64
-Ld [...]/Mock normal i386
-Ld [...]/Mock normal x86_64
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ditto [...]/MockTests.swiftsourceinfo
+Ld [...]/Mock.o normal arm64
+Ld [...]/Mock.o normal i386
+Ld [...]/Mock.o normal x86_64
+Ld [...]/MockTests normal arm64
+Ld [...]/MockTests normal i386
+Ld [...]/MockTests normal x86_64
 MergeSwiftModule normal arm64
 MergeSwiftModule normal i386
 MergeSwiftModule normal x86_64
-MkDir [...]/Headers
-MkDir [...]/Mock.framework
-ProcessInfoPlistFile [...]/Mock_Info.plist
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty-MockTests.plist
+Resolve Package Graph
+Resolved source packages:
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
-Touch [...]/Mock.framework
+Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
-WriteAuxiliaryFile [...]/Mock.LinkFileList
-WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/Mock.modulemap
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Analyzing workspace
 note: Build preparation complete
 note: Building targets in parallel

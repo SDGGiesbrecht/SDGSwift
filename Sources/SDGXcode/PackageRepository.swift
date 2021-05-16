@@ -20,22 +20,6 @@ extension PackageRepository {
 
   // MARK: - Properties
 
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-    /// Returns the package’s Xcode project.
-    public func xcodeProject() throws -> URL? {
-      let files = try FileManager.default.contentsOfDirectory(
-        at: location,
-        includingPropertiesForKeys: [],
-        options: []
-      )
-
-      for file in files where file.pathExtension == "xcodeproj" {
-        return file
-      }
-      return nil
-    }
-  #endif
-
   #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     /// Returns the main package scheme.
     public func scheme() -> Result<String, Xcode.SchemeError> {
@@ -43,17 +27,6 @@ extension PackageRepository {
     }
 
     // MARK: - Workflow
-
-    /// Generates or refreshes the package’s Xcode project.
-    ///
-    /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
-    @discardableResult public func generateXcodeProject(
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
-    ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
-      return SwiftCompiler.generateXcodeProject(for: self, reportProgress: reportProgress)
-    }
 
     /// Builds the package.
     ///

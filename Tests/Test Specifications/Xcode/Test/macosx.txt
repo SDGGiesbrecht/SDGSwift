@@ -1,41 +1,32 @@
     SDKROOT = macosx.
-$ xcodebuild test -sdk macosx -scheme Mock-Package -enableCodeCoverage YES -resultBundlePath
+  Mock: /tmp/Mock
+$ xcodebuild test -sdk macosx -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
-CodeSign [...]/A
-CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
 Ditto [...]/Mock-Swift.h
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
-Ditto [...]/MockTests-Swift.h
 Ditto [...]/MockTests.swiftdoc
 Ditto [...]/MockTests.swiftmodule
 Ditto [...]/MockTests.swiftsourceinfo
-Ld [...]/Mock normal
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
 MergeSwiftModule normal x_
 Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
-MkDir [...]/A
 MkDir [...]/Contents
-MkDir [...]/Headers
 MkDir [...]/MacOS
-MkDir [...]/Mock.framework
 MkDir [...]/MockTests.xctest
-MkDir [...]/Resources
-MkDir [...]/Versions
 Object:   <IDETestRunSpecificationBuilder>
 Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-ProcessInfoPlistFile [...]/MockTests_Info.plist
-ProcessInfoPlistFile [...]/Mock_Info.plist
-SymLink [...]/Current A
-SymLink [...]/Headers
-SymLink [...]/Mock
-SymLink [...]/Modules
-SymLink [...]/Resources
+ProcessInfoPlistFile [...]/empty-MockTests.plist
+Resolve Package Graph
+Resolved source packages:
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -46,14 +37,15 @@ Test Suite 'MockTests.xctest' passed at -- ::..
 Test Suite 'MockTests.xctest' started at -- ::.
 Test session results, code coverage, and logs:
 Testing started
-Touch [...]/Mock.framework
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
-WriteAuxiliaryFile [...]/Mock.LinkFileList
-WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/Mock.modulemap
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
 note: Analyzing workspace
 note: Build preparation complete
