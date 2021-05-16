@@ -39,8 +39,6 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
-ld: warning: dylib (/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks/XCTest.framework/XCTest) was built for newer watchOS version (7.0) than being linked (2.0)
-ld: warning: dylib (/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib) was built for newer watchOS version (7.0) than being linked (2.0)
 note: Analyzing workspace
 note: Build preparation complete
 note: Building targets in parallel

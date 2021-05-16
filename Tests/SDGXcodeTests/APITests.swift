@@ -165,6 +165,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 ¬$0.contains("ld: warning: directory not found for option \u{27}\u{2d}F")
                   ∧ ¬$0.contains("SDKROOT =") ∧ $0 ≠ "ld: warning: "
               })
+              filtered = filtered.filter({ ¬$0.contains("XCTest.framework/XCTest") })
+              filtered = filtered.filter({ ¬$0.contains("libXCTestSwiftSupport.dylib") })
               // Inconsistent path:
               filtered = filtered.map({ $0.truncated(after: "\u{2D}resultBundlePath") })
               // Depend on external code signing settings:
