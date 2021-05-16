@@ -124,7 +124,6 @@ extension SDGSwiftTests.APITests {
     testCase([
       ("testBuild", testBuild),
       ("testCoverageRegion", testCoverageRegion),
-      ("testTestCoverageReport", testTestCoverageReport),
       ("testFileTestCoverage", testFileTestCoverage),
       ("testGit", testGit),
       ("testGitError", testGitError),
@@ -135,6 +134,7 @@ extension SDGSwiftTests.APITests {
       ("testStringScalarOffset", testStringScalarOffset),
       ("testSwiftCompiler", testSwiftCompiler),
       ("testSwiftCompilerError", testSwiftCompilerError),
+      ("testTestCoverageReport", testTestCoverageReport),
       ("testVersion", testVersion),
       ("testVersionedExternalProcess", testVersionedExternalProcess),
     ])

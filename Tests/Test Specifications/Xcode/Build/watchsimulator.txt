@@ -1,0 +1,32 @@
+$ xcodebuild build -sdk watchsimulator -scheme Mock-Package
+** BUILD SUCCEEDED **
+CodeSign [...]/Mock.framework
+CompileSwift [...]/Mock.swift
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal i386 com.apple.xcode.tools.swift.compiler
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CreateBuildDirectory [...]/Debug-watchsimulator
+CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/Products
+Ditto [...]/Mock.swiftdoc
+Ditto [...]/Mock.swiftmodule
+Ditto [...]/Mock.swiftsourceinfo
+Ld [...]/Mock normal arm64
+Ld [...]/Mock normal i386
+Ld [...]/Mock normal x86_64
+MergeSwiftModule normal arm64
+MergeSwiftModule normal i386
+MergeSwiftModule normal x86_64
+MkDir [...]/Headers
+MkDir [...]/Mock.framework
+ProcessInfoPlistFile [...]/Mock_Info.plist
+SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
+Touch [...]/Mock.framework
+WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
+note: Analyzing workspace
+note: Build preparation complete
+note: Building targets in parallel
+note: Constructing build description
+note: Planning build

@@ -20,33 +20,37 @@ extension Xcode {
     /// macOS.
     case macOS
 
+    /// tvOS.
+    case tvOS(simulator: Bool)
+
     /// iOS.
     case iOS(simulator: Bool)
 
     /// watchOS.
-    case watchOS
-
-    /// tvOS.
-    case tvOS(simulator: Bool)
+    case watchOS(simulator: Bool)
 
     /// The name used by the command line interface.
     public var commandLineName: String {
       switch self {
       case .macOS:
         return "macosx"
+      case .tvOS(let simulator):
+        if simulator {
+          return "appletvsimulator"
+        } else {
+          return "appletvos"
+        }
       case .iOS(let simulator):
         if simulator {
           return "iphonesimulator"
         } else {
           return "iphoneos"
         }
-      case .watchOS:
-        return "watchos"
-      case .tvOS(let simulator):
+      case .watchOS(let simulator):
         if simulator {
-          return "appletvsimulator"
+          return "watchsimulator"
         } else {
-          return "appletvos"
+          return "watchos"
         }
       }
     }
@@ -56,16 +60,20 @@ extension Xcode {
       switch self {
       case .macOS:
         return "macOS"
+      case .tvOS(let simulator):  // @exempt(from: tests)
+        var result = "tvOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
       case .iOS(let simulator):  // @exempt(from: tests)
         var result = "iOS"
         if simulator {
           result += " Simulator"
         }
         return result
-      case .watchOS:  // @exempt(from: tests)
-        return "watchOS"
-      case .tvOS(let simulator):  // @exempt(from: tests)
-        var result = "tvOS"
+      case .watchOS(let simulator):  // @exempt(from: tests)
+        var result = "watchOS"
         if simulator {
           result += " Simulator"
         }
