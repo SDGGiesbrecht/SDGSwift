@@ -116,18 +116,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
             #endif
 
-            var sdks: [Xcode.SDK] = [
+            let sdks: [Xcode.SDK] = [
               .macOS,
-              .iOS(simulator: false),
-              .iOS(simulator: true),
-              .watchOS,
               .tvOS(simulator: false),
               .tvOS(simulator: true),
+              .iOS(simulator: false),
+              .iOS(simulator: true),
+              .watchOS(simulator: false),
+              .watchOS(simulator: true),
             ]
-            if ¬withGeneratedProject {
-              // #workaround(xcodebuild -version 12.4, watchOS cannot handle test targets.) @exempt(from: unicode)
-              sdks.removeAll(where: { $0 == .watchOS })
-            }
             for sdk in sdks {
               print("Testing build for \(sdk.commandLineName)...")
 
@@ -200,15 +197,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               #endif
             }
 
-            var testSDKs: [Xcode.SDK] = [
-              .macOS
+            let testSDKs: [Xcode.SDK] = [
+              .macOS,
+              .tvOS(simulator: true),
+              .iOS(simulator: true),
+              .watchOS(simulator: true),
             ]
-            if ProcessInfo.processInfo.environment["TRAVIS"] == nil {  // Unavailable in CI.
-              testSDKs.append(contentsOf: [
-                .iOS(simulator: true),
-                .tvOS(simulator: true),
-              ])
-            }
             for sdk in testSDKs {
               print("Testing testing on \(sdk.commandLineName)...")
 
@@ -500,7 +494,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testXcodeSDK() {
     for sdk in [
       .macOS, .tvOS(simulator: false), .tvOS(simulator: true), .iOS(simulator: false),
-      .iOS(simulator: true), .watchOS,
+      .iOS(simulator: true), .watchOS(simulator: false), .watchOS(simulator: true),
     ] as [Xcode.SDK] {
       _ = sdk.commandLineName
     }

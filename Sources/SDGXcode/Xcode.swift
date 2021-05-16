@@ -294,6 +294,22 @@ public enum Xcode: VersionedExternalProcess {
       var command = ["test"]
 
       switch sdk {
+      case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
+        earliestVersion.increase(to: Version(9, 0, 0))
+
+        var tv4K = "Apple TV 4K"
+        let parenthesesNeeded = Version(12, 5)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ parenthesesNeeded
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: parenthesesNeeded)
+          tv4K.append(contentsOf: " (2nd generation)")
+        }
+
+        command += ["\u{2D}destination", "name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
 
         earliestVersion.increase(to: Version(11, 0, 0))
@@ -311,22 +327,9 @@ public enum Xcode: VersionedExternalProcess {
         }
 
         command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
-      case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
-        earliestVersion.increase(to: Version(9, 0, 0))
-
-        var tv4K = "Apple TV 4K"
-        let parenthesesNeeded = Version(12, 5)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ parenthesesNeeded
-        {
-          // @exempt(from: tests) Unreachable on Linux.
-          earliestVersion.increase(to: parenthesesNeeded)
-          tv4K.append(contentsOf: " (2nd generation)")
-        }
-
-        command += ["\u{2D}destination", "name=\(tv4K)"]
+      case .watchOS(simulator: true):
+        earliestVersion.increase(to: Version(12, 5, 0))
+        command += ["\u{2D}destination", "name=Apple Watch Series 6 \u{2D} 40mm"]
       default:
         command += ["\u{2D}sdk", sdk.commandLineName]
       }
