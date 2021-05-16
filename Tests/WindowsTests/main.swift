@@ -155,7 +155,6 @@ extension SDGXcodeTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDependencyWarnings", testDependencyWarnings),
-      ("testSwiftCompiler", testSwiftCompiler),
       ("testXcode", testXcode),
       ("testXcodeAllArchitectures", testXcodeAllArchitectures),
       ("testXcodeCoverage", testXcodeCoverage),
