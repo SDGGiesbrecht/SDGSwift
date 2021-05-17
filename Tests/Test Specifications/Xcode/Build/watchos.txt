@@ -1,26 +1,44 @@
-$ xcodebuild build -sdk watchos -scheme Mock-Package
+  Mock: /tmp/Mock
+$ xcodebuild build -sdk watchos -scheme Mock
 ** BUILD SUCCEEDED **
 CompileSwift [...]/Mock.swift
+CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal arm64_32 com.apple.xcode.tools.swift.compiler
 CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler
+CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-watchos
 CreateBuildDirectory [...]/Intermediates.noindex
+CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
+Ditto [...]/Mock.modulemap
 Ditto [...]/Mock.swiftdoc
 Ditto [...]/Mock.swiftmodule
 Ditto [...]/Mock.swiftsourceinfo
-Ld [...]/Mock normal arm64_32
-Ld [...]/Mock normal armv7k
+Ditto [...]/MockTests.swiftdoc
+Ditto [...]/MockTests.swiftmodule
+Ditto [...]/MockTests.swiftsourceinfo
+GenerateDSYMFile [...]/MockTests
+Ignoring --strip-bitcode because --sign was not passed
+Ld [...]/Mock.o normal arm64_32
+Ld [...]/Mock.o normal armv7k
+Ld [...]/MockTests normal arm64_32
+Ld [...]/MockTests normal armv7k
 MergeSwiftModule normal arm64_32
 MergeSwiftModule normal armv7k
-MkDir [...]/Headers
-MkDir [...]/Mock.framework
-ProcessInfoPlistFile [...]/Mock_Info.plist
+MkDir [...]/MockTests.xctest
+ProcessInfoPlistFile [...]/empty-MockTests.plist
+Resolve Package Graph
+Resolved source packages:
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
-Touch [...]/Mock.framework
+Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
-WriteAuxiliaryFile [...]/Mock.LinkFileList
-WriteAuxiliaryFile [...]/Mock.SwiftFileList
+WriteAuxiliaryFile [...]/Mock.modulemap
+WriteAuxiliaryFile [...]/Mock.o.LinkFileList
+WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
+WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
+WriteAuxiliaryFile [...]/MockTests.LinkFileList
+WriteAuxiliaryFile [...]/MockTests.SwiftFileList
+WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Analyzing workspace
 note: Build preparation complete
 note: Building targets in parallel

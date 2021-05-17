@@ -30,12 +30,9 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   // MARK: - Static Properties
 
-  public static let _currentMajor = Version(5)
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-    private static var currentMajor: Version {
-      return _currentMajor
-    }
+  private static let currentMajor = Version(5)
 
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     // MARK: - Usage
 
     /// Builds the package.
