@@ -20,7 +20,6 @@ import SDGVersioning
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
-  import Build
   import Workspace
   import TSCBasic
 #endif
