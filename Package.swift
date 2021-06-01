@@ -166,6 +166,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(
+          // #workaround(SwiftPM 0.50400.0, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
