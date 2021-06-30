@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<!--
+
+ -->
+
+<html dir="ltr" lang="en-CA">
+ <head>
+  <meta charset="utf&#x002D;8">
+  <title>lowerBound(in:)</title>
+  <link rel="stylesheet" href="../../../../CSS/Root.css">
+  <link rel="stylesheet" href="../../../../CSS/Swift.css">
+  <link rel="stylesheet" href="../../../../CSS/Site.css">
+  <script src="../../../../JavaScript/Site.js"></script>
+ </head>
+ <body>
+  <header class="navigation‐bar">
+   <nav class="navigation‐bar">
+    <div class="navigation‐path" dir="ltr">
+
+<a href="../../../../🇨🇦EN/SDGSwift.html">SDGSwift</a>
+<a href="../../../../🇨🇦EN/Extensions/Trivia.html">Trivia</a>
+<span>lowerBound(in:)</span>
+
+    </div>
+    <div>
+     <span class="swift blockquote"><span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><a href="https://github.com/SDGGiesbrecht/SDGSwift"><span class="text">https://github.com/SDGGiesbrecht/SDGSwift</span></a><span class="punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">from</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><span class="text">7.0.1</span><span class="punctuation">"</span></span><span class="punctuation">)</span></span>
+    </div>
+   </nav>
+  </header>
+  <div class="content‐container">
+   <header class="index">
+    <nav class="index">
+
+<div id="Package‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Package</a>
+<a href="../../../../🇨🇦EN/SDGSwift.html">
+SDGSwift
+</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇨🇦EN/Importing.html">Importing</a>
+</div>
+<div id="library‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Library Products</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGSwift.html">
+SDGSwift
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGSwiftConfiguration.html">
+SDGSwiftConfiguration
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGSwiftConfigurationLoading.html">
+SDGSwiftConfigurationLoading
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGSwiftPackageManager.html">
+SDGSwiftPackageManager
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGSwiftSource.html">
+SDGSwiftSource
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SDGXcode.html">
+SDGXcode
+</a>
+<a href="../../../../🇨🇦EN/Libraries/SampleConfiguration.html">
+SampleConfiguration
+</a>
+</div>
+<div id="target‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Modules</a>
+<a href="../../../../🇨🇦EN/Modules/SDGSwift.html">
+SDGSwift
+</a>
+<a href="../../../../🇨🇦EN/Modules/SDGSwiftConfiguration.html">
+SDGSwiftConfiguration
+</a>
+<a href="../../../../🇨🇦EN/Modules/SDGSwiftConfigurationLoading.html">
+SDGSwiftConfigurationLoading
+</a>
+<a href="../../../../🇨🇦EN/Modules/SDGSwiftPackageManager.html">
+SDGSwiftPackageManager
+</a>
+<a href="../../../../🇨🇦EN/Modules/SDGSwiftSource.html">
+SDGSwiftSource
+</a>
+<a href="../../../../🇨🇦EN/Modules/SDGXcode.html">
+SDGXcode
+</a>
+<a href="../../../../🇨🇦EN/Modules/SampleConfiguration.html">
+SampleConfiguration
+</a>
+</div>
+<div id="struct‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Types</a>
+<a href="../../../../🇨🇦EN/Types/APIElement.html">
+APIElement
+</a>
+<a href="../../../../🇨🇦EN/Types/BlockCommentSyntax.html">
+BlockCommentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/BlockDeveloperCommentSyntax.html">
+BlockDeveloperCommentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/BlockDocumentationSyntax.html">
+BlockDocumentationSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/Build.html">
+Build
+</a>
+<a href="../../../../🇨🇦EN/Types/Callout.html">
+Callout
+</a>
+<a href="../../../../🇨🇦EN/Types/CalloutSyntax.html">
+CalloutSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/CaseAPI.html">
+CaseAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/CodeBlockSyntax.html">
+CodeBlockSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/CodeFragmentSyntax.html">
+CodeFragmentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/CommentContentSyntax.html">
+CommentContentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/Configuration.html">
+Configuration
+</a>
+<a href="../../../../🇨🇦EN/Types/ConformanceAPI.html">
+ConformanceAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/ConformanceReference.html">
+ConformanceReference
+</a>
+<a href="../../../../🇨🇦EN/Types/CoverageRegion%3cIndex%3e.html">
+CoverageRegion&#x003C;Index&#x003E;
+</a>
+<a href="../../../../🇨🇦EN/Types/DocumentationSyntax.html">
+DocumentationSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ExtendedSyntax.html">
+ExtendedSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ExtendedSyntaxContext.html">
+ExtendedSyntaxContext
+</a>
+<a href="../../../../🇨🇦EN/Types/ExtendedTokenKind.html">
+ExtendedTokenKind
+</a>
+<a href="../../../../🇨🇦EN/Types/ExtendedTokenSyntax.html">
+ExtendedTokenSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ExtensionAPI.html">
+ExtensionAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/FileTestCoverage.html">
+FileTestCoverage
+</a>
+<a href="../../../../🇨🇦EN/Types/FontSyntax.html">
+FontSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/FragmentSyntax.html">
+FragmentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/FunctionAPI.html">
+FunctionAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/FunctionalSyntaxScanner.html">
+FunctionalSyntaxScanner
+</a>
+<a href="../../../../🇨🇦EN/Types/Git.html">
+Git
+</a>
+<a href="../../../../🇨🇦EN/Types/HeadingSyntax.html">
+HeadingSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ImageSyntax.html">
+ImageSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/InitializerAPI.html">
+InitializerAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/InlineCodeSyntax.html">
+InlineCodeSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/LibraryAPI.html">
+LibraryAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/LineCommentSyntax.html">
+LineCommentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/LineDeveloperCommentSyntax.html">
+LineDeveloperCommentSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/LineDocumentationSyntax.html">
+LineDocumentationSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/LineSeparatorSyntax.html">
+LineSeparatorSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/LinkSyntax.html">
+LinkSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ListEntrySyntax.html">
+ListEntrySyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ListSyntax.html">
+ListSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/MarkdownSyntax.html">
+MarkdownSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ModuleAPI.html">
+ModuleAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/OperatorAPI.html">
+OperatorAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/Package.html">
+Package
+</a>
+<a href="../../../../🇨🇦EN/Types/PackageAPI.html">
+PackageAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/PackageRepository.html">
+PackageRepository
+</a>
+<a href="../../../../🇨🇦EN/Types/ParagraphSyntax.html">
+ParagraphSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/ParameterDocumentation.html">
+ParameterDocumentation
+</a>
+<a href="../../../../🇨🇦EN/Types/ParametersCalloutSyntax.html">
+ParametersCalloutSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/PrecedenceAPI.html">
+PrecedenceAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/ProtocolAPI.html">
+ProtocolAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/QuotationSyntax.html">
+QuotationSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/SampleConfiguration.html">
+SampleConfiguration
+</a>
+<a href="../../../../🇨🇦EN/Types/SampleContext.html">
+SampleContext
+</a>
+<a href="../../../../🇨🇦EN/Types/SourceHeadingSyntax.html">
+SourceHeadingSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/StringLiteralSyntax.html">
+StringLiteralSyntax
+</a>
+<a href="../../../../🇨🇦EN/Types/SubscriptAPI.html">
+SubscriptAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/SwiftCompiler.html">
+SwiftCompiler
+</a>
+<a href="../../../../🇨🇦EN/Types/SymbolDocumentation.html">
+SymbolDocumentation
+</a>
+<a href="../../../../🇨🇦EN/Types/SyntaxContext.html">
+SyntaxContext
+</a>
+<a href="../../../../🇨🇦EN/Types/SyntaxFragment.html">
+SyntaxFragment
+</a>
+<a href="../../../../🇨🇦EN/Types/SyntaxHighlighter.html">
+SyntaxHighlighter
+</a>
+<a href="../../../../🇨🇦EN/Types/TestCoverageReport.html">
+TestCoverageReport
+</a>
+<a href="../../../../🇨🇦EN/Types/TextFreedom.html">
+TextFreedom
+</a>
+<a href="../../../../🇨🇦EN/Types/TriviaContext.html">
+TriviaContext
+</a>
+<a href="../../../../🇨🇦EN/Types/TriviaPieceContext.html">
+TriviaPieceContext
+</a>
+<a href="../../../../🇨🇦EN/Types/TypeAPI.html">
+TypeAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/VariableAPI.html">
+VariableAPI
+</a>
+<a href="../../../../🇨🇦EN/Types/VersionedExternalProcessExecutionError%3cProcess%3e.html">
+VersionedExternalProcessExecutionError&#x003C;Process&#x003E;
+</a>
+<a href="../../../../🇨🇦EN/Types/VersionedExternalProcessLocationError%3cProcess%3e.html">
+VersionedExternalProcessLocationError&#x003C;Process&#x003E;
+</a>
+<a href="../../../../🇨🇦EN/Types/Xcode.html">
+Xcode
+</a>
+</div>
+<div id="extension‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Extensions</a>
+<a href="../../../../🇨🇦EN/Extensions/AssociatedtypeDeclSyntax.html">
+AssociatedtypeDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/ClassDeclSyntax.html">
+ClassDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/EnumCaseDeclSyntax.html">
+EnumCaseDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/EnumCaseElementSyntax.html">
+EnumCaseElementSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/EnumDeclSyntax.html">
+EnumDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/ExtensionDeclSyntax.html">
+ExtensionDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/FunctionDeclSyntax.html">
+FunctionDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/GenericRequirementListSyntax.html">
+GenericRequirementListSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/GenericWhereClauseSyntax.html">
+GenericWhereClauseSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/IdentifierPatternSyntax.html">
+IdentifierPatternSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/InitializerDeclSyntax.html">
+InitializerDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/OperatorDeclSyntax.html">
+OperatorDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/Optional.html">
+Optional
+</a>
+<a href="../../../../🇨🇦EN/Extensions/PrecedenceGroupDeclSyntax.html">
+PrecedenceGroupDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/ProtocolDeclSyntax.html">
+ProtocolDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/String.html">
+String
+</a>
+<a href="../../../../🇨🇦EN/Extensions/StructDeclSyntax.html">
+StructDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/SubscriptDeclSyntax.html">
+SubscriptDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/SyntaxFactory.html">
+SyntaxFactory
+</a>
+<a href="../../../../🇨🇦EN/Extensions/SyntaxParser.html">
+SyntaxParser
+</a>
+<a href="../../../../🇨🇦EN/Extensions/SyntaxProtocol.html">
+SyntaxProtocol
+</a>
+<a href="../../../../🇨🇦EN/Extensions/TokenSyntax.html">
+TokenSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/Trivia.html">
+Trivia
+</a>
+<a href="../../../../🇨🇦EN/Extensions/TriviaPiece.html">
+TriviaPiece
+</a>
+<a href="../../../../🇨🇦EN/Extensions/TypealiasDeclSyntax.html">
+TypealiasDeclSyntax
+</a>
+<a href="../../../../🇨🇦EN/Extensions/VariableDeclSyntax.html">
+VariableDeclSyntax
+</a>
+</div>
+<div id="protocol‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Protocols</a>
+<a href="../../../../🇨🇦EN/Protocols/APIElementProtocol.html">
+APIElementProtocol
+</a>
+<a href="../../../../🇨🇦EN/Protocols/Constrained.html">
+Constrained
+</a>
+<a href="../../../../🇨🇦EN/Protocols/Context.html">
+Context
+</a>
+<a href="../../../../🇨🇦EN/Protocols/DeclaredAPIElement.html">
+DeclaredAPIElement
+</a>
+<a href="../../../../🇨🇦EN/Protocols/Member.html">
+Member
+</a>
+<a href="../../../../🇨🇦EN/Protocols/SortableAPIElement.html">
+SortableAPIElement
+</a>
+<a href="../../../../🇨🇦EN/Protocols/SyntaxScanner.html">
+SyntaxScanner
+</a>
+<a href="../../../../🇨🇦EN/Protocols/VersionedExternalProcess.html">
+VersionedExternalProcess
+</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇨🇦EN/Related%20Projects.html">Related Projects</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇨🇦EN/About.html">About</a>
+</div>
+
+    </nav>
+   </header>
+   <main>
+
+<div class="import‐header">
+<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../../../🇨🇦EN/Modules/SDGSwiftSource.html"><span class="internal identifier TokenSyntax identifier">SDGSwiftSource</span></a></span></span></span></code>
+<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">SDGSwiftSource</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">SDGSwift</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
+</div>
+
+    <div class="main‐text‐column">
+     <div class="title">
+      <div class="symbol‐type">Instance Method</div>
+      <code class="swift"><span class="UnknownSyntax"><span class="compilation‐condition TokenSyntax poundIfKeyword">#if</span> <span class="external identifier TokenSyntax prefixOperator">!</span><span class="external identifier TokenSyntax identifier">PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX</span></span></code>
+      <h1>lowerBound(in:)</h1>
+      
+     </div>
+
+<div class="description">
+<p>Returns the lower bound of the trivia.</p>
+</div>
+<section class="declaration">
+<h2>Declaration</h2>
+<code class="swift blockquote"><span class="FunctionDeclSyntax"><span class="ModifierListSyntax"></span><span class="keyword TokenSyntax funcKeyword">func</span> <span class="internal identifier TokenSyntax identifier">lowerBound</span><span class="FunctionSignatureSyntax"><span class="ParameterClauseSyntax"><span class="punctuation TokenSyntax leftParen">(</span><span class="FunctionParameterListSyntax"><span class="FunctionParameterSyntax"><span class="internal identifier TokenSyntax identifier">in</span> <a href="../../../../🇨🇦EN/Types/SampleContext/Type%20Properties/context.html"><span class="internal identifier TokenSyntax identifier">context</span></a><span class="punctuation TokenSyntax colon">:</span> <span class="SimpleTypeIdentifierSyntax"><a href="../../../../🇨🇦EN/Types/TriviaContext.html"><span class="internal identifier TokenSyntax identifier">TriviaContext</span></a></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span><span class="ReturnClauseSyntax"> <span class="punctuation TokenSyntax arrow">-&#x003E;</span> <span class="MemberTypeIdentifierSyntax"><span class="SimpleTypeIdentifierSyntax"><a href="../../../../🇨🇦EN/Extensions/String.html"><span class="external identifier TokenSyntax identifier">String</span></a></span><span class="punctuation TokenSyntax period">.</span><a href="../../../../🇨🇦EN/Extensions/String/Types/ScalarOffset.html"><span class="internal identifier TokenSyntax identifier">ScalarOffset</span></a></span></span></span></span></code>
+</section>
+
+<section>
+<h2>Parameters</h2>
+<dl><dt><code class="swift"><span class="internal identifier">context</span></code></dt>
+<dd><p>The trivia’s context.</p></dd></dl>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+   </main>
+   <header class="platforms">
+<span>
+macOS
+</span>
+<span>
+Windows
+</span>
+<span>
+Web
+</span>
+<span>
+CentOS
+</span>
+<span>
+Ubuntu
+</span>
+<span>
+tvOS
+</span>
+<span>
+iOS
+</span>
+<span>
+Android
+</span>
+<span>
+Amazon Linux
+</span>
+<span>
+watchOS
+</span>
+   </header>
+  </div>
+  <footer dir="ltr">
+   <span>
+Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors. All rights reserved.
+</span>
+   <span dir="ltr" lang="en-CA">Generated with <a href="https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html">Workspace</a>. <span lang="la-IT">Soli Deo gloria.</span></span>
+  </footer>
+  <script>contractIndex("extension‐index");</script>
+ </body>
+</html>
