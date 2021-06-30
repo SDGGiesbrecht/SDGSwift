@@ -26,7 +26,7 @@ extension SwiftCompiler {
 
   // MARK: - Properties
 
-  private static let compatibleVersions = SDGVersioning.Version(5, 4, 0)...Version(5, 4, 0)
+  private static let compatibleVersions = SDGVersioning.Version(5, 4, 0)...Version(5, 4, 2)
 
   internal static func swiftCLocation()
     -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>

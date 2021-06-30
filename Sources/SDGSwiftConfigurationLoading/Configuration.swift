@@ -349,7 +349,7 @@ extension Configuration {
           json.removeFirst()
           // Only reachable when new Swift releases flag new errors in old configurations.
         }
-        if json.hasPrefix("[1/") {
+        if json.hasPrefix("[1/") ∨ json.hasPrefix("[0/") {
           // Remove build log as of Swift 5.4.
           json.drop(upTo: "!\n[")  // @exempt(from: tests)
           json.removeFirst()
