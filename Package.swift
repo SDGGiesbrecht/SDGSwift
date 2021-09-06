@@ -451,14 +451,6 @@ for target in package.targets {
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
     swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
   }
-
-  // #workaround(Swift 5.3.4, SwiftPM and SwiftSyntax are now incompatible with Swift 5.3.)
-  #if compiler(<5.4)
-    if target.type == .test {
-      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
-      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-    }
-  #endif
 }
 
 import Foundation
