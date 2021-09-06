@@ -25,7 +25,7 @@ import SDGXCTestUtilities
 #if PLATFORM_LACKS_SDG_CORNERSTONE_TEST_CASE
   public typealias Base = XCTestCase
 #else
-  public typealias Base = SDGXCTestUtilities.TestCas
+  public typealias Base = SDGXCTestUtilities.TestCase
 #endif
 open class TestCase: Base {
 
