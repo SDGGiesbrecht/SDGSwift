@@ -18,33 +18,38 @@ import SDGVersioning
 
 import SDGSwift
 
+import XCTest
+
 import SDGXCTestUtilities
 
-#if !PLATFORM_LACKS_XC_TEST
-  open class TestCase: SDGXCTestUtilities.TestCase {
-
-    private static let configureGit: Void = {
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-        if ProcessInfo.isInGitHubAction {
-          // @exempt(from: tests)
-          #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              _ = try? Git.runCustomSubcommand(
-                ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-                versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-              ).get()
-              _ = try? Git.runCustomSubcommand(
-                ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-                versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-              ).get()
-            #endif
-          #endif
-        }
-      #endif
-    }()
-    open override func setUp() {
-      super.setUp()
-      TestCase.configureGit
-    }
-  }
+#if PLATFORM_LACKS_SDG_CORNERSTONE_TEST_CASE
+  public typealias Base = XCTestCase
+#else
+  public typealias Base = SDGXCTestUtilities.TestCas
 #endif
+open class TestCase: Base {
+
+  private static let configureGit: Void = {
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      if ProcessInfo.isInGitHubAction {
+        // @exempt(from: tests)
+        #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+            _ = try? Git.runCustomSubcommand(
+              ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+              versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+            ).get()
+            _ = try? Git.runCustomSubcommand(
+              ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+              versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+            ).get()
+          #endif
+        #endif
+      }
+    #endif
+  }()
+  open override func setUp() {
+    super.setUp()
+    TestCase.configureGit
+  }
+}
