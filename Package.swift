@@ -443,13 +443,6 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
     .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
-
-  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-    // #warning(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
-    /*swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))*/
-  }
 }
 
 import Foundation
