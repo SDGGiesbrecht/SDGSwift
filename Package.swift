@@ -459,24 +459,6 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
 }
 
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #warning(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
-  /*
-  let impossibleDependencies = [
-    //"SwiftPM",
-    "SwiftSyntax",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
-    })
-  }
-  */
-}
-
 #if os(Windows)
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
