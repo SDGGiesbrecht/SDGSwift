@@ -169,16 +169,16 @@ let package = Package(
           // #workaround(SwiftPM 0.50400.0, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #warning(SwiftPM 0.50302.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .windows, .wasi, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #warning(SwiftPM 0.50302.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .windows, .wasi, .linux])
         ),
       ]
     ),
@@ -203,7 +203,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -282,7 +282,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -354,7 +354,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -446,10 +446,10 @@ for target in package.targets {
   ])
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-    // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
+    // #warning(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    /*swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
+    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))*/
   }
 }
 
@@ -459,7 +459,7 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
 }
 
-#if os(Windows)
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
     "SwiftSyntax"
@@ -481,10 +481,10 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
       .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
     ])
 
-    // #workaround(Swift 5.4.0, Unable to build from Windows.)
+    // #workaround(Swift 5.4.2, Unable to build from Windows.)
     package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
   }
-#endif
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
