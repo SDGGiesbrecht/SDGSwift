@@ -460,9 +460,10 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
+  // #warning(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
+  /*
   let impossibleDependencies = [
-    "SwiftPM",
+    //"SwiftPM",
     "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
@@ -473,6 +474,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
       })
     })
   }
+  */
 }
 
 #if os(Windows)
