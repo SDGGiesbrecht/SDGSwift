@@ -169,9 +169,9 @@ let package = Package(
           // #workaround(SwiftPM 0.50400.0, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #warning(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .windows, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
