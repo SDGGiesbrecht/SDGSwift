@@ -278,12 +278,13 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(
+        // #warning(Debugging...)
+        /*.product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
-        ),
+        ),*/
       ]
     ),
 
