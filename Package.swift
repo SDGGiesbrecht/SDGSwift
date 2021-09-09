@@ -169,14 +169,14 @@ let package = Package(
           // #workaround(SwiftPM 0.50400.0, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
@@ -203,7 +203,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -282,7 +282,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -354,7 +354,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
           // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -441,16 +441,8 @@ for target in package.targets {
     // #workaround(SDGCornerstone 7.2.4, Web lacks TestCase.)
     .define("PLATFORM_LACKS_SDG_CORNERSTONE_TEST_CASE", .when(platforms: [.watchOS])),
     // #workaround(Swift 5.3.3, Windows suffers unexplained segmentation faults.)
-    // #workaround(Swift 5.3.3, Ends up being applied to Linux too.)
-    //.define(“PLATFORM_SUFFERS_SEGMENTATION_FAULTS”, .when(platforms: [.windows])),
+    .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
-
-  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-    // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-    swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
-  }
 }
 
 import Foundation
@@ -460,22 +452,6 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
-  let impossibleDependencies = [
-    "SwiftPM",
-    "SwiftSyntax",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
-    })
-  }
-}
-
-#if os(Windows)
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
     "SwiftSyntax"
@@ -497,10 +473,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
       .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
     ])
 
-    // #workaround(Swift 5.4.0, Unable to build from Windows.)
+    // #workaround(Swift 5.4.2, Unable to build from Windows.)
     package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
   }
-#endif
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
