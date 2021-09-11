@@ -349,12 +349,13 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(
+        // #warning(Debugging...)
+        /*.product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
-        ),
+        ),*/
       ]
     ),
     .testTarget(
