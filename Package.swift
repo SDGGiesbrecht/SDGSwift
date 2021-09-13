@@ -200,13 +200,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        // #warning(Debugging...)
-        /*.product(
+        .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
-        ),*/
+        ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
@@ -278,13 +277,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        // #warning(Debugging...)
-        /*.product(
+        .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
-        ),*/
+        ),
       ]
     ),
 
@@ -349,13 +347,12 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        // #warning(Debugging...)
-        /*.product(
+        .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
-        ),*/
+        ),
       ]
     ),
     .testTarget(
@@ -414,7 +411,7 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
     // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    // #workaround(Swift 5.3.3, SwiftSyntax does not compile on Windows.)
+    // #workaround(Swift 5.4.2, SwiftSyntax does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -477,7 +474,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.4.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
@@ -508,6 +505,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
     "SwiftPM",
+    "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
