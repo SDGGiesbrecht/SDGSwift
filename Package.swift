@@ -170,15 +170,13 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
-          // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
           // #workaround(SwiftPM 0.50302.0, Does not support Windows yet.)
-          // #workaround(SwiftPM 0.50302.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
@@ -416,8 +414,8 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
     // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
-    // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
+    // #workaround(Swift 5.4.2, SwiftPM does not compile for Windows.)
+    // #workaround(Swift 5.4.2, SwiftSyntax does not compile for Windwos.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -450,14 +448,6 @@ for target in package.targets {
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
     swiftSettings.append(.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS"))
   }
-
-  // #workaround(Swift 5.3.4, SwiftPM and SwiftSyntax are now incompatible with Swift 5.3.)
-  #if compiler(<5.4)
-    if target.type == .test {
-      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
-      swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-    }
-  #endif
 }
 
 import Foundation
@@ -467,11 +457,9 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [
-    "SwiftPM",
-    "SwiftSyntax",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
+    // #workaround(Swift 5.4.2, Manifest fails to compile on Windows.)
+    "SwiftSyntax"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -511,11 +499,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.4.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
-    // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
-    "SwiftSyntax",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
@@ -541,9 +527,8 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.4.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
-    "SwiftPM",
     "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
