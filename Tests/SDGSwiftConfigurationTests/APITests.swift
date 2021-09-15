@@ -226,7 +226,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-              // #workaround(Swift 5.3.4, Investigate why the cached build log includes SwiftSyntax.)
               compare(
                 log,
                 against: testSpecificationDirectory().appendingPathComponent(
