@@ -91,13 +91,14 @@ extension PackageRepository {
     /// Returns the package manifest.
     @available(macOS 10.15, *)
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, _ in
+      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
         return try tsc_await { completion in
-          ManifestLoader.loadManifest(
-            packagePath: AbsolutePath(location.path),
+          ManifestLoader.loadRootManifest(
+            at: AbsolutePath(location.path),
             swiftCompiler: AbsolutePath(compiler.path),
             swiftCompilerFlags: [],
-            packageKind: .root,
+            identityResolver: DefaultIdentityResolver(),
+            diagnostics: diagnostics,
             on: .global(),
             completion: completion
           )
@@ -141,6 +142,7 @@ extension PackageRepository {
           packagePath: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
           swiftCompilerFlags: [],
+          identityResolver: <#IdentityResolver#>,
           diagnostics: diagnostics
         )
       }
