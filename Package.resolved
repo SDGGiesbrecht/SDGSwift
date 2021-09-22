@@ -57,11 +57,11 @@
       },
       {
         "package": "swift-crypto",
-        "repositoryURL": "https://github.com/apple/swift-crypto.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "3bea268b223651c4ab7b7b9ad62ef9b2d4143eb6",
-          "version": "1.1.6"
+          "revision": "c52a081f4b12d772872daf78e18b9c9c493b1ab3",
+          "version": "0.10106.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
         "state": {
           "branch": null,
-          "revision": "a24068e6eb325fe1cf831ba50e2e9415805ffd94",
-          "version": "0.50500.0"
+          "revision": "6b1ad6f6fa574239fb7a8fcaa100ae1fe6516aaf",
+          "version": "0.50500.1"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "87fea79a2d166d04d379c819b0b5f45daa0c479d",
-          "version": "0.50500.0"
+          "revision": "dae60383644b19defc4228b187ad19f46f384423",
+          "version": "0.50500.1"
         }
       },
       {
