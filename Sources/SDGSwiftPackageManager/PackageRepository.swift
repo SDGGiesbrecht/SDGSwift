@@ -111,10 +111,11 @@ extension PackageRepository {
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
         return try tsc_await { completion in
-          PackageBuilder.loadPackage(
-            packagePath: AbsolutePath(location.path),
+          PackageBuilder.loadRootPackage(
+            at: AbsolutePath(location.path),
             swiftCompiler: AbsolutePath(compiler.path),
             swiftCompilerFlags: [],
+            identityResolver: DefaultIdentityResolver(),
             diagnostics: diagnostics,
             on: .global(),
             completion: completion
@@ -138,11 +139,11 @@ extension PackageRepository {
     @available(macOS 10.15, *)
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try Workspace.loadGraph(
-          packagePath: AbsolutePath(location.path),
+        return try Workspace.loadRootGraph(
+          at: AbsolutePath(location.path),
           swiftCompiler: AbsolutePath(compiler.path),
           swiftCompilerFlags: [],
-          identityResolver: <#IdentityResolver#>,
+          identityResolver: DefaultIdentityResolver(),
           diagnostics: diagnostics
         )
       }
