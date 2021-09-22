@@ -39,6 +39,7 @@ extension PackageRepository {
     ///     - location: The location at which to initialize the new package.
     ///     - name: A name for the package.
     ///     - type: The type of package.
+    @available(macOS 10.15, *)
     public static func initializePackage(
       at location: Foundation.URL,
       named name: StrictString,
@@ -88,6 +89,7 @@ extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     /// Returns the package manifest.
+    @available(macOS 10.15, *)
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, _ in
         return try tsc_await { completion in
@@ -104,6 +106,7 @@ extension PackageRepository {
     }
 
     /// Returns the package structure.
+    @available(macOS 10.15, *)
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
         return try tsc_await { completion in
@@ -120,6 +123,7 @@ extension PackageRepository {
     }
 
     /// Returns the package workspace.
+    @available(macOS 10.15, *)
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.manifestLoader().map { loader in
         return Workspace.create(
@@ -130,6 +134,7 @@ extension PackageRepository {
     }
 
     /// Returns the package graph.
+    @available(macOS 10.15, *)
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
       return SwiftCompiler.withDiagnostics { compiler, diagnostics in
         return try Workspace.loadGraph(

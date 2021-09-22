@@ -58,6 +58,7 @@ extension SwiftCompiler {
       }
     }
 
+    @available(macOS 10.15, *)
     private static func manifestResourceProvider()
       -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
     {
@@ -69,6 +70,7 @@ extension SwiftCompiler {
       }
     }
 
+    @available(macOS 10.15, *)
     internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
       return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }
