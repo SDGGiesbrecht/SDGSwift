@@ -33,6 +33,7 @@
     /// - Parameters:
     ///     - module: The module target.
     ///     - manifest: The syntax of the package manifest.
+    @available(macOS 10.15, *)
     public convenience init<Syntax>(
       module: PackageModel.Target,
       manifest: Syntax?
