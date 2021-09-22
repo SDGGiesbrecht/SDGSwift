@@ -148,7 +148,9 @@
 
       let documentation = PackageAPI.documentation(for: package, from: manifest)
 
-      let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.manifestName)
+      let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(
+        name: package.manifestName
+      )
       self.init(documentation: documentation, declaration: declaration)
 
       for product in package.products where ¬product.name.hasPrefix("_") {
