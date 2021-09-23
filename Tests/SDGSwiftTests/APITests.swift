@@ -236,7 +236,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testStringScalarOffset() {
+    // #warning(Debugging.)
+    print(#function)
     let string = "string"
+    // #warning(Debugging.)
+    print(string)
     let offsets = string.offsets(of: string.scalars.bounds)
     // #warning(Debugging.)
     print(offsets)

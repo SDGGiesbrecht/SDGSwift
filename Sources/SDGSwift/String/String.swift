@@ -57,6 +57,7 @@ extension String {
   ///   - indices: The indices.
   public func offsets(of indices: Range<String.ScalarView.Index>) -> Range<ScalarOffset> {
     // #warning(Debugging.)
+    print(#function)
     print(self)
     print(indices)
     let lower = offset(of: indices.lowerBound)
