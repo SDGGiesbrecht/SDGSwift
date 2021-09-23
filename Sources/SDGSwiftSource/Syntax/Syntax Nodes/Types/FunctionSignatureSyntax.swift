@@ -24,7 +24,9 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-        asyncOrReasyncKeyword: asyncOrReasyncKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
+        asyncOrReasyncKeyword: asyncOrReasyncKeyword?.generallyNormalized(
+          leadingTrivia: .spaces(1)
+        ),
         throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
           leadingTrivia: .spaces(1)
         ),
