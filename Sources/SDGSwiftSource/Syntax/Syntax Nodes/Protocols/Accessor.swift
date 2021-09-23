@@ -76,6 +76,8 @@
           modifier: nil,
           accessorKind: SyntaxFactory.makeToken(.contextualKeyword("get")),
           parameter: nil,
+          asyncKeyword: nil,  // #workaround(Not supported yet.)
+          throwsKeyword: nil,  // #workaround(Not supported yet.)
           body: nil
         )
       ]
@@ -89,6 +91,8 @@
               leadingTrivia: .spaces(1)
             ),
             parameter: nil,
+            asyncKeyword: nil,
+            throwsKeyword: nil,
             body: nil
           )
         )
