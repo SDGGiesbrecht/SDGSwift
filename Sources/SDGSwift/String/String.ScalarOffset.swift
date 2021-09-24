@@ -48,11 +48,11 @@ extension String {
     }
 
     // #workaround(Swift 5.5, These are redundant overloads, but dodge segmentation faults caused by the compiler.)
-    public static func − (precedingValue: String.ScalarOffset, followingValue: Int) -> String.ScalarOffset {
-      return nonmutatingVariant(of: −=, on: precedingValue, with: followingValue)
-    }
     public static func −= (precedingValue: inout String.ScalarOffset, followingValue: Int) {
       precedingValue += −followingValue
+    }
+    public static func − (precedingValue: String.ScalarOffset, followingValue: Int) -> String.ScalarOffset {
+      return nonmutatingVariant(of: −=, on: precedingValue, with: followingValue)
     }
   }
 }
