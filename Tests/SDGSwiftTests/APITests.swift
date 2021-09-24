@@ -242,9 +242,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(bounds, string.scalars.bounds)
     let start = offsets.lowerBound
     // #warning(Debugging.)
-    let plus: String.ScalarOffset = start + 1
-    let minus: String.ScalarOffset = plus − 1
-    let equals: Bool = minus == start
+    let plus: String.ScalarOffset = start + 1 // ✓
+    let minus: String.ScalarOffset = plus − 1 // ✗
+    let equals: Bool = minus == start // ?
     /*XCTAssertEqual(start + 1 − 1, start)
     XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)*/
   }
