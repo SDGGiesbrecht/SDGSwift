@@ -243,6 +243,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     let start = offsets.lowerBound
     // #warning(Debugging.)
     let plus: String.ScalarOffset = start + 1
+    let minus: String.ScalarOffset = plus − 1
     /*XCTAssertEqual(start + 1 − 1, start)
     XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)*/
   }
