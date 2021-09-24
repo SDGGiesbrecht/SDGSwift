@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGMathematics
 
 extension String {
@@ -44,6 +45,11 @@ extension String {
       followingValue: String.ScalarOffset
     ) -> Int {
       precedingValue.offset − followingValue.offset
+    }
+
+    // #workaround(Swift 5.5, Redundant overload, but dodges a segmentation fault caused by the compiler.)
+    public static func − (precedingValue: String.ScalarOffset, followingValue: Int) -> String.ScalarOffset {
+      return nonmutatingVariant(of: +=, on: precedingValue, with: followingValue)
     }
   }
 }
