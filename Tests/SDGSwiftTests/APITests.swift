@@ -247,12 +247,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     let bounds = string.indices(of: offsets)
     // #warning(Debugging.)
     print(bounds)
-    // #warning(Debugging.)
-    /*XCTAssertEqual(bounds, string.scalars.bounds)
+    XCTAssertEqual(bounds, string.scalars.bounds)
     let start = offsets.lowerBound
     // #warning(Debugging.)
     print(start)
-    XCTAssertEqual(start + 1 − 1, start)
+    // #warning(Debugging.)
+    /*XCTAssertEqual(start + 1 − 1, start)
     XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)*/
   }
 
