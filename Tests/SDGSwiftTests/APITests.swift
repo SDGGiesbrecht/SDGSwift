@@ -251,9 +251,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     let start = offsets.lowerBound
     // #warning(Debugging.)
     print(start)
+    XCTAssertEqual(start + 1 − 1, start)
     // #warning(Debugging.)
-    /*XCTAssertEqual(start + 1 − 1, start)
-    XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)*/
+    /*XCTAssertEqual(offsets.upperBound − offsets.lowerBound, 6)*/
   }
 
   func testSwiftCompiler() throws {
