@@ -29,7 +29,7 @@ import SDGSwift
 /// Xcode.
 public enum Xcode: VersionedExternalProcess {
 
-  private static let currentMajor = Version(12)
+  private static let currentMajor = Version(13)
 
   // MARK: - Locating
 
