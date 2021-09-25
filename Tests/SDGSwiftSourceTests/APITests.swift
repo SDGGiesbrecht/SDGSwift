@@ -439,7 +439,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if syntax.is(CodeBlockItemListSyntax.self) {
           statementsFound = true
           // #warning(Debugging.)
-          /*XCTAssertEqual(
+          XCTAssertEqual(
             source.indices(of: syntax.triviaRange(in: context)),
             source.startIndex..<source.index(source.endIndex, offsetBy: −1)
           )
@@ -449,7 +449,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               source.startIndex,
               offsetBy: 7
             )..<source.index(source.endIndex, offsetBy: −2)
-          )*/
+          )
           return false
         }
         return true
