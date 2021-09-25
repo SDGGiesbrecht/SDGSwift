@@ -436,7 +436,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         // #warning(Debugging.)
         print(syntax)
         print(context)
-        /*if syntax.is(CodeBlockItemListSyntax.self) {
+        if syntax.is(CodeBlockItemListSyntax.self) {
           statementsFound = true
           XCTAssertEqual(
             source.indices(of: syntax.triviaRange(in: context)),
@@ -450,7 +450,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )..<source.index(source.endIndex, offsetBy: −2)
           )
           return false
-        }*/
+        }
         return true
       })
       try scanner.scan(syntax)
