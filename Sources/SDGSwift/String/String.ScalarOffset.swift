@@ -51,8 +51,5 @@ extension String {
     public static func −= (precedingValue: inout String.ScalarOffset, followingValue: Int) {
       precedingValue += -followingValue  // @exempt(from: unicode)
     }
-    public static func − (precedingValue: String.ScalarOffset, followingValue: Int) -> String.ScalarOffset {
-      return nonmutatingVariant(of: −=, on: precedingValue, with: followingValue)
-    }
   }
 }
