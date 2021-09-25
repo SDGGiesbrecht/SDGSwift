@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
 // #workaround(Swift 5.5, This overload is redundant, but dodges a segmentation fault caused by the compiler.)
 extension Int {
   static prefix func − (operand: Int) -> Int {
