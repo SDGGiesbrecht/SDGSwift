@@ -50,7 +50,7 @@ extension String {
     // #workaround(Swift 5.5, These are redundant overloads, but dodge segmentation faults caused by the compiler.)
     public static func −= (precedingValue: inout String.ScalarOffset, followingValue: Int) {
       // #warning(Debugging...)
-      let minus = −followingValue
+      let minus = -followingValue  // @exempt(from: unicode)
       //precedingValue += −followingValue
     }
     public static func − (precedingValue: String.ScalarOffset, followingValue: Int) -> String.ScalarOffset {
