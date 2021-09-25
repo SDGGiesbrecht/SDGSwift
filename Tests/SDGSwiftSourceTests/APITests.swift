@@ -433,12 +433,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let syntax = try SyntaxParser.parse(source: source)
       var statementsFound = false
       let scanner = FunctionalSyntaxScanner(checkSyntax: { syntax, context in
-        // #warning(Debugging.)
-        print(syntax)
-        print(context)
         if syntax.is(CodeBlockItemListSyntax.self) {
           statementsFound = true
-          // #warning(Debugging.)
           XCTAssertEqual(
             source.indices(of: syntax.triviaRange(in: context)),
             source.startIndex..<source.index(source.endIndex, offsetBy: −1)
