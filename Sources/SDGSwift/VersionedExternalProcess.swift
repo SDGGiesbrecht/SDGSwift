@@ -76,6 +76,8 @@ extension VersionedExternalProcess {
   ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
     // #warning(Debugging...)
+    print(#function)
+    // #warning(Debugging...)
     print(self)
 
     return cached(in: &self[versionConstraints]) {
@@ -173,6 +175,10 @@ extension VersionedExternalProcess {
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
     where Constraints: RangeFamily, Constraints.Bound == Version {
+      // #warning(Debugging...)
+      print(#function)
+      // #warning(Debugging...)
+      print(arguments)
 
       var environment = environment ?? ProcessInfo.processInfo.environment
       // Causes issues when run from within Xcode.
@@ -189,8 +195,12 @@ extension VersionedExternalProcess {
       reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
       switch tool(versionConstraints: versionConstraints) {
       case .failure(let error):
+        // #warning(Debugging...)
+        print(error)
         return .failure(.locationError(error))
       case .success(let git):
+        // #warning(Debugging...)
+        print(git)
         switch git.run(
           arguments,
           in: workingDirectory,
@@ -198,8 +208,12 @@ extension VersionedExternalProcess {
           reportProgress: reportProgress
         ) {
         case .failure(let error):
+          // #warning(Debugging...)
+          print(error)
           return .failure(.executionError(error))
         case .success(let output):
+          // #warning(Debugging...)
+          print(output)
           return .success(output)
         }
       }
@@ -211,7 +225,11 @@ extension VersionedExternalProcess {
     ///   - constraints: The version constraints.
     public static func version<Constraints>(forConstraints constraints: Constraints) -> Version?
     where Constraints: RangeFamily, Constraints.Bound == Version {
+      // #warning(Debugging...)
+      print(#function)
       let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
+      // #warning(Debugging...)
+      print(runCustomSubcommand(versionQuery, versionConstraints: constraints))
       return output.flatMap { output in
         return Version(firstIn: output)
       }
