@@ -75,22 +75,32 @@ extension VersionedExternalProcess {
     versionConstraints: Constraints
   ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
+    // #warning(Debugging...)
+    print(self)
 
     return cached(in: &self[versionConstraints]) {
+      // #warning(Debugging...)
+      print(searchCommands)
 
       let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
+        // #warning(Debugging...)
+        print(command)
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable.
           return nil
         #else
           guard let output = try? Shell.default.run(command: command).get() else {
             return nil
           }
+        // #warning(Debugging...)
+        print(output)
           // @exempt(from: tests) Unreachable on CentOS.
           return URL(fileURLWithPath: output)
         #endif
       }
 
       func validate(_ process: ExternalProcess) -> Bool {
+        // #warning(Debugging...)
+        print(process)
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable?
           return false  // Cannot ensure version matches.
         #else
@@ -98,9 +108,16 @@ extension VersionedExternalProcess {
           guard let output = try? process.run(versionQuery).get(),
             let version = Version(firstIn: output)
           else {
+            // #warning(Debugging...)
+            print(process.run(versionQuery))
+            if let output = try? process.run(versionQuery).get() {
+              print(Version(firstIn: output))
+            }
             return false  // @exempt(from: test)
             // Would require corrupt tools to be present during tests.
           }
+        // #warning(Debugging...)
+        print(output)
           return versionConstraints.contains(version)
         #endif
       }
