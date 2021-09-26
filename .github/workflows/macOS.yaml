@@ -33,9 +33,6 @@ jobs:
         sudo xcode-select -switch /Applications/Xcode_13.0.app
         xcodebuild -version
         swift --version
-        which swift
-        xcrun --find xcodebuild
-        xcrun --find swift
     - name: Validate
       shell: bash
       run: |

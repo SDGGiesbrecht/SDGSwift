@@ -75,34 +75,22 @@ extension VersionedExternalProcess {
     versionConstraints: Constraints
   ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<Self>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
-    // #warning(Debugging...)
-    print(#function)
-    // #warning(Debugging...)
-    print(self)
 
     return cached(in: &self[versionConstraints]) {
-      // #warning(Debugging...)
-      print(searchCommands)
 
       let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
-        // #warning(Debugging...)
-        print(command)
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable.
           return nil
         #else
           guard let output = try? Shell.default.run(command: command).get() else {
             return nil
           }
-        // #warning(Debugging...)
-        print(output)
           // @exempt(from: tests) Unreachable on CentOS.
           return URL(fileURLWithPath: output)
         #endif
       }
 
       func validate(_ process: ExternalProcess) -> Bool {
-        // #warning(Debugging...)
-        print(process)
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable?
           return false  // Cannot ensure version matches.
         #else
@@ -110,16 +98,9 @@ extension VersionedExternalProcess {
           guard let output = try? process.run(versionQuery).get(),
             let version = Version(firstIn: output)
           else {
-            // #warning(Debugging...)
-            print(process.run(versionQuery))
-            if let output = try? process.run(versionQuery).get() {
-              print(Version(firstIn: output))
-            }
             return false  // @exempt(from: test)
             // Would require corrupt tools to be present during tests.
           }
-        // #warning(Debugging...)
-        print(output)
           return versionConstraints.contains(version)
         #endif
       }
@@ -175,10 +156,6 @@ extension VersionedExternalProcess {
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
     where Constraints: RangeFamily, Constraints.Bound == Version {
-      // #warning(Debugging...)
-      print(#function)
-      // #warning(Debugging...)
-      print(arguments)
 
       var environment = environment ?? ProcessInfo.processInfo.environment
       // Causes issues when run from within Xcode.
@@ -195,12 +172,8 @@ extension VersionedExternalProcess {
       reportProgress("$ \(commandName) " + arguments.joined(separator: " "))
       switch tool(versionConstraints: versionConstraints) {
       case .failure(let error):
-        // #warning(Debugging...)
-        print(error)
         return .failure(.locationError(error))
       case .success(let git):
-        // #warning(Debugging...)
-        print(git)
         switch git.run(
           arguments,
           in: workingDirectory,
@@ -208,12 +181,8 @@ extension VersionedExternalProcess {
           reportProgress: reportProgress
         ) {
         case .failure(let error):
-          // #warning(Debugging...)
-          print(error)
           return .failure(.executionError(error))
         case .success(let output):
-          // #warning(Debugging...)
-          print(output)
           return .success(output)
         }
       }
@@ -225,11 +194,7 @@ extension VersionedExternalProcess {
     ///   - constraints: The version constraints.
     public static func version<Constraints>(forConstraints constraints: Constraints) -> Version?
     where Constraints: RangeFamily, Constraints.Bound == Version {
-      // #warning(Debugging...)
-      print(#function)
       let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
-      // #warning(Debugging...)
-      print(runCustomSubcommand(versionQuery, versionConstraints: constraints))
       return output.flatMap { output in
         return Version(firstIn: output)
       }
