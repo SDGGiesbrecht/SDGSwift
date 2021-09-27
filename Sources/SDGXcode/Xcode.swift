@@ -218,15 +218,26 @@ public enum Xcode: VersionedExternalProcess {
       case .failure(let error):
         return .failure(error)
       case .success(let scheme):  // @exempt(from: tests) Unreachable on Linux.
-        let earliestVersion = Version(8, 0, 0)
-        var command = [
-          "build",
-          "\u{2D}sdk", sdk.commandLineName,
-          "\u{2D}scheme", scheme,
-        ]
+        var earliestVersion = Version(8, 0, 0)
+        var command = ["build"]
+
+        let destinationNeeded = Version(13)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ destinationNeeded
+        {
+          earliestVersion.increase(to: destinationNeeded)
+          command += ["\u{2D}destination", "name=\(sdk.buildDestinationName)"]
+        } else {
+          command += ["\u{2D}sdk", sdk.commandLineName]
+        }
+
+        command += ["\u{2D}scheme", scheme]
         if allArchitectures {
           command.append("ONLY_ACTIVE_ARCH=NO")
         }
+
         return runCustomSubcommand(
           command,
           in: package.location,
