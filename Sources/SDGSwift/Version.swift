@@ -24,7 +24,7 @@ extension Version {
   internal init?(inVersionQueryOutput versionQueryOutput: String, of tool: String) {
     var output = versionQueryOutput
     if tool == "swift" {
-      if output.hasPrefix("swift-driver") {
+      if output.hasPrefix("swift\u{2D}driver") {
         output.drop(upTo: "Apple Swift version")
       }
     }
