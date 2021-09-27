@@ -345,7 +345,20 @@ public enum Xcode: VersionedExternalProcess {
         earliestVersion.increase(to: Version(12, 5, 0))
         command += ["\u{2D}destination", "name=Apple Watch Series 6 \u{2D} 40mm"]
       default:
-        command += ["\u{2D}sdk", platform.commandLineSDKName]
+        let deviceNeeded = Version(13)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ deviceNeeded
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: deviceNeeded)
+          command += [
+            "\u{2D}destination", "platform=\(platform.commandLineBuildDestinationPlatformName)",
+          ]
+        } else {
+          command += ["\u{2D}sdk", platform.commandLineSDKName]
+        }
       }
 
       switch scheme(for: package) {
