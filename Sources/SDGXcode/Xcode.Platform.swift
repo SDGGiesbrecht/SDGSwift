@@ -14,8 +14,8 @@
 
 extension Xcode {
 
-  /// An Xcode SDK.
-  public enum SDK: Equatable {
+  /// A target platform supported by Xcode.
+  public enum Platform: Equatable {
 
     /// macOS.
     case macOS
@@ -29,8 +29,10 @@ extension Xcode {
     /// watchOS.
     case watchOS(simulator: Bool)
 
-    /// The name used by the command line interface.
-    public var commandLineName: String {
+    /// The SDK name used by the command line interface.
+    ///
+    /// This is the argument for the `sdk` flag.
+    public var commandLineSDKName: String {
       switch self {
       case .macOS:
         return "macosx"
@@ -55,32 +57,33 @@ extension Xcode {
       }
     }
 
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      internal var buildDestinationPlatform: String {
-        switch self {
-        case .macOS:
-          return "macOS"
-        case .tvOS(let simulator):  // @exempt(from: tests)
-          var result = "tvOS"
-          if simulator {
-            result += " Simulator"
-          }
-          return result
-        case .iOS(let simulator):  // @exempt(from: tests)
-          var result = "iOS"
-          if simulator {
-            result += " Simulator"
-          }
-          return result
-        case .watchOS(let simulator):  // @exempt(from: tests)
-          var result = "watchOS"
-          if simulator {
-            result += " Simulator"
-          }
-          return result
+    /// The platform name used by the command line interface.
+    ///
+    /// This is the value of the `platform` key for the `destination` flag (without the `generic/` prefix).
+    public var commandLineBuildDestinationPlatformName: String {
+      switch self {
+      case .macOS:
+        return "macOS"
+      case .tvOS(let simulator):  // @exempt(from: tests)
+        var result = "tvOS"
+        if simulator {
+          result += " Simulator"
         }
+        return result
+      case .iOS(let simulator):  // @exempt(from: tests)
+        var result = "iOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
+      case .watchOS(let simulator):  // @exempt(from: tests)
+        var result = "watchOS"
+        if simulator {
+          result += " Simulator"
+        }
+        return result
       }
-    #endif
+    }
 
     internal var cacheDirectoryName: String {  // @exempt(from: tests)
       // Many of these cannot be reached from continuous integration.

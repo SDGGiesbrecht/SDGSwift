@@ -203,13 +203,13 @@ public enum Xcode: VersionedExternalProcess {
     ///
     /// - Parameters:
     ///     - package: The package to build.
-    ///     - sdk: The SDK to build for.
+    ///     - platform: The platform to build for.
     ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func build(
       _ package: PackageRepository,
-      for sdk: SDK,
+      for platform: Platform,
       allArchitectures: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
@@ -228,9 +228,12 @@ public enum Xcode: VersionedExternalProcess {
           resolved ≥ destinationNeeded
         {
           earliestVersion.increase(to: destinationNeeded)
-          command += ["\u{2D}destination", "generic/platform=\(sdk.buildDestinationPlatform)"]
+          command += [
+            "\u{2D}destination",
+            "generic/platform=\(platform.commandLineBuildDestinationPlatformName)",
+          ]
         } else {
-          command += ["\u{2D}sdk", sdk.commandLineName]
+          command += ["\u{2D}sdk", platform.commandLineSDKName]
         }
 
         command += ["\u{2D}scheme", scheme]
@@ -280,10 +283,10 @@ public enum Xcode: VersionedExternalProcess {
 
   private static func resultBundle(
     for project: PackageRepository,
-    on sdk: SDK
+    on platform: Platform
   ) -> URL {  // @exempt(from: tests) Unreachable on tvOS.
     return project.location.appendingPathComponent(
-      ".swiftpm/SDGSwift/Xcode Results/\(sdk.cacheDirectoryName).xcresult"
+      ".swiftpm/SDGSwift/Xcode Results/\(platform.cacheDirectoryName).xcresult"
     )
   }
 
@@ -292,19 +295,19 @@ public enum Xcode: VersionedExternalProcess {
     ///
     /// - Parameters:
     ///     - package: The package to test.
-    ///     - sdk: The SDK to run tests on.
+    ///     - platform: The platform to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
-      on sdk: SDK,
+      on platform: Platform,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
 
       var earliestVersion = Version(8, 0, 0)
       var command = ["test"]
 
-      switch sdk {
+      switch platform {
       case .tvOS(simulator: true):  // @exempt(from: tests) Tested separately.
         earliestVersion.increase(to: Version(9, 0, 0))
 
@@ -342,7 +345,7 @@ public enum Xcode: VersionedExternalProcess {
         earliestVersion.increase(to: Version(12, 5, 0))
         command += ["\u{2D}destination", "name=Apple Watch Series 6 \u{2D} 40mm"]
       default:
-        command += ["\u{2D}sdk", sdk.commandLineName]
+        command += ["\u{2D}sdk", platform.commandLineSDKName]
       }
 
       switch scheme(for: package) {
@@ -362,7 +365,7 @@ public enum Xcode: VersionedExternalProcess {
       {
         // @exempt(from: tests)
         earliestVersion.increase(to: resultBundlesAvailable)
-        let resultURL = resultBundle(for: package, on: sdk)
+        let resultURL = resultBundle(for: package, on: platform)
         command.append(contentsOf: ["\u{2D}resultBundlePath", resultURL.path])
         try? FileManager.default.removeItem(at: resultURL)
       }
@@ -380,7 +383,7 @@ public enum Xcode: VersionedExternalProcess {
       ///
       /// - Parameters:
       ///     - package: The package to test.
-      ///     - sdk: The SDK to run tests on.
+      ///     - platform: The platform to run tests on.
       ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
       ///     - reportProgress: Optional. A closure to execute for each line of output.
       ///     - progressReport: A line of output.
@@ -388,14 +391,14 @@ public enum Xcode: VersionedExternalProcess {
       /// - Returns: The report, or `nil` if there is no code coverage information.
       public static func codeCoverageReport(
         for package: PackageRepository,
-        on sdk: SDK,
+        on platform: Platform,
         ignoreCoveredRegions: Bool = false,
         reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
       ) -> Result<TestCoverageReport?, CoverageReportingError> {
 
         let ignoredDirectories: [URL] = package._directoriesIgnoredForTestCoverage()
 
-        let resultBundle = self.resultBundle(for: package, on: sdk)
+        let resultBundle = self.resultBundle(for: package, on: platform)
 
         let compatibleVersions = Version(11, 0, 0)..<currentMajor.compatibleVersions.upperBound
         let fileURLs: [URL]

@@ -84,7 +84,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
           #endif
 
-          let sdks: [Xcode.SDK] = [
+          let sdks: [Xcode.Platform] = [
             .macOS,
             .tvOS(simulator: false),
             .tvOS(simulator: true),
@@ -94,7 +94,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .watchOS(simulator: true),
           ]
           for sdk in sdks {
-            print("Testing build for \(sdk.commandLineName)...")
+            print("Testing build for \(sdk.commandLineBuildDestinationPlatformName)...")
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
@@ -161,20 +161,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 against: testSpecificationDirectory()
                   .appendingPathComponent("Xcode")
                   .appendingPathComponent("Build")
-                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
                 overwriteSpecificationInsteadOfFailing: false
               )
             #endif
           }
 
-          let testSDKs: [Xcode.SDK] = [
+          let testSDKs: [Xcode.Platform] = [
             .macOS,
             .tvOS(simulator: true),
             .iOS(simulator: true),
             .watchOS(simulator: true),
           ]
           for sdk in testSDKs {
-            print("Testing testing on \(sdk.commandLineName)...")
+            print("Testing testing on \(sdk.commandLineBuildDestinationPlatformName)...")
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
@@ -260,7 +260,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 against: testSpecificationDirectory()
                   .appendingPathComponent("Xcode")
                   .appendingPathComponent("Test")
-                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
                 overwriteSpecificationInsteadOfFailing: false
               )
             #endif
@@ -458,8 +458,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for sdk in [
       .macOS, .tvOS(simulator: false), .tvOS(simulator: true), .iOS(simulator: false),
       .iOS(simulator: true), .watchOS(simulator: false), .watchOS(simulator: true),
-    ] as [Xcode.SDK] {
-      _ = sdk.commandLineName
+    ] as [Xcode.Platform] {
+      _ = sdk.commandLineSDKName
+      _ = sdk.commandLineBuildDestinationPlatformName
     }
   }
 }

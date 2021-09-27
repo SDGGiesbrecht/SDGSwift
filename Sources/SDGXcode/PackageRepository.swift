@@ -31,18 +31,18 @@ extension PackageRepository {
     /// Builds the package.
     ///
     /// - Parameters:
-    ///     - sdk: The SDK to build for.
+    ///     - platform: The platform to build for.
     ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func build(
-      for sdk: Xcode.SDK,
+      for platform: Xcode.Platform,
       allArchitectures: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, Xcode.SchemeError> {
       return Xcode.build(
         self,
-        for: sdk,
+        for: platform,
         allArchitectures: allArchitectures,
         reportProgress: reportProgress
       )
@@ -51,14 +51,14 @@ extension PackageRepository {
     /// Tests the package.
     ///
     /// - Parameters:
-    ///     - sdk: The SDK to run tests on.
+    ///     - platform: The platform to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func test(
-      on sdk: Xcode.SDK,
+      on platform: Xcode.Platform,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, Xcode.SchemeError> {
-      return Xcode.test(self, on: sdk, reportProgress: reportProgress)
+      return Xcode.test(self, on: platform, reportProgress: reportProgress)
     }
   #endif
 
@@ -66,20 +66,20 @@ extension PackageRepository {
     /// Returns the code coverage report for the package.
     ///
     /// - Parameters:
-    ///     - sdk: The SDK to run tests on.
+    ///     - platform: The platform to run tests on.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(
-      on sdk: Xcode.SDK,
+      on platform: Xcode.Platform,
       ignoreCoveredRegions: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<TestCoverageReport?, Xcode.CoverageReportingError> {
       return Xcode.codeCoverageReport(
         for: self,
-        on: sdk,
+        on: platform,
         ignoreCoveredRegions: ignoreCoveredRegions,
         reportProgress: reportProgress
       )
