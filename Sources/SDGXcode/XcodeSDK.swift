@@ -56,16 +56,28 @@ extension Xcode {
     }
 
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      internal var buildDestinationName: String {
+      internal var buildDestinationPlatform: String {
         switch self {
         case .macOS:
-          return "Any Mac"
-        case .tvOS(let simulator):
-          return simulator ? "Any tvOS Simulator Device" : "Any tvOS Device"
-        case .iOS(let simulator):
-          return simulator ? "Any iOS Simulator Device" : "Any iOS Device"
-        case .watchOS(let simulator):
-          return simulator ? "Any watchOS Simulator Device" : "Any watchOS Device"
+          return "macOS"
+        case .tvOS(let simulator):  // @exempt(from: tests)
+          var result = "tvOS"
+          if simulator {
+            result += " Simulator"
+          }
+          return result
+        case .iOS(let simulator):  // @exempt(from: tests)
+          var result = "iOS"
+          if simulator {
+            result += " Simulator"
+          }
+          return result
+        case .watchOS(let simulator):  // @exempt(from: tests)
+          var result = "watchOS"
+          if simulator {
+            result += " Simulator"
+          }
+          return result
         }
       }
     #endif

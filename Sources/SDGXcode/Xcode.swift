@@ -228,7 +228,7 @@ public enum Xcode: VersionedExternalProcess {
           resolved ≥ destinationNeeded
         {
           earliestVersion.increase(to: destinationNeeded)
-          command += ["\u{2D}destination", "name=\(sdk.buildDestinationName)"]
+          command += ["\u{2D}destination", "generic/platform=\(sdk.buildDestinationPlatform)"]
         } else {
           command += ["\u{2D}sdk", sdk.commandLineName]
         }
