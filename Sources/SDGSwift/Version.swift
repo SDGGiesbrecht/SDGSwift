@@ -21,13 +21,15 @@ import SDGVersioning
 
 extension Version {
 
-  internal init?(inVersionQueryOutput versionQueryOutput: String, of tool: String) {
-    var output = versionQueryOutput
-    if tool == "swift" {
-      if output.hasPrefix("swift\u{2D}driver") {
-        output.drop(upTo: "Apple Swift version")
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+    internal init?(inVersionQueryOutput versionQueryOutput: String, of tool: String) {
+      var output = versionQueryOutput
+      if tool == "swift" {
+        if output.hasPrefix("swift\u{2D}driver") {
+          output.drop(upTo: "Apple Swift version")
+        }
       }
+      self.init(firstIn: output)
     }
-    self.init(firstIn: output)
-  }
+  #endif
 }

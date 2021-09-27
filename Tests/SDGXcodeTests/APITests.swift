@@ -283,9 +283,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testXcodeAllArchitectures() throws {
     #if PLATFORM_HAS_XCODE
       try withMock(named: "MultipleArchitectures") { package in
-        #if !arch(arm64)  // Other architectures should succeed.
-          _ = try package.build(for: .macOS).get()
-        #endif
+
+        // Beginning in Xcode 13, basic builds are multi‐architecture, so failure is now expected even without explicitly requesting all architectures.
+        _ = try? package.build(for: .macOS).get()
+
         switch package.build(for: .macOS, allArchitectures: true) {
         case .success(let output):
           XCTFail("Should have failed to build.\n\(output)")
