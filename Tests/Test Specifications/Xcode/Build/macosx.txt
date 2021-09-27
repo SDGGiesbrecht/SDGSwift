@@ -23,6 +23,18 @@ MergeSwiftModule normal x86_64
 MkDir [...]/Contents
 MkDir [...]/MacOS
 MkDir [...]/MockTests.xctest
+PBXCp [...]/arm64-apple-macos.swiftdoc
+PBXCp [...]/arm64-apple-macos.swiftmodule
+PBXCp [...]/arm64-apple-macos.swiftsourceinfo
+PBXCp [...]/arm64.swiftdoc
+PBXCp [...]/arm64.swiftmodule
+PBXCp [...]/arm64.swiftsourceinfo
+PBXCp [...]/x86_64-apple-macos.swiftdoc
+PBXCp [...]/x86_64-apple-macos.swiftmodule
+PBXCp [...]/x86_64-apple-macos.swiftsourceinfo
+PBXCp [...]/x86_64.swiftdoc
+PBXCp [...]/x86_64.swiftmodule
+PBXCp [...]/x86_64.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -38,6 +50,6 @@ WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Build preparation complete
 note: Building targets in parallel
-note: Constructing build description
+note: Planning
 { platform:macOS, name:Any Mac }
 { platform:macOS, variant:Mac Catalyst, name:Any Mac }

@@ -1,26 +1,24 @@
   Mock: /tmp/Mock
 $ xcodebuild test -destination name=Apple TV K (nd generation) -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
+Analyze workspace
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Ditto [...]/Mock-Swift.h
 Ditto [...]/Mock.modulemap
-Ditto [...]/Mock.swiftdoc
-Ditto [...]/Mock.swiftmodule
-Ditto [...]/Mock.swiftsourceinfo
-Ditto [...]/MockTests.swiftdoc
-Ditto [...]/MockTests.swiftmodule
-Ditto [...]/MockTests.swiftsourceinfo
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
 MergeSwiftModule normal x_
-Method:   +testRunSpecificationsForTestingSpecifiers:scheme:buildables:withBuildParameters:additionalEnvironmentVariables:additionalCommandLineArguments:testRerunPolicy:includeClangProfileParameters:shouldDebugAppExtensions:error:
 MkDir [...]/MockTests.xctest
-Object:   <IDETestRunSpecificationBuilder>
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+PBXCp [...]/Mock-Swift.h
+PBXCp [...]/x_-apple-tvos-simulator.swiftdoc
+PBXCp [...]/x_-apple-tvos-simulator.swiftmodule
+PBXCp [...]/x_-apple-tvos-simulator.swiftsourceinfo
+PBXCp [...]/x_.swiftdoc
+PBXCp [...]/x_.swiftmodule
+PBXCp [...]/x_.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -36,16 +34,14 @@ Test session results, code coverage, and logs:
 Testing started
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
 WriteAuxiliaryFile [...]/Mock.modulemap
-WriteAuxiliaryFile [...]/Mock.o.LinkFileList
-WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
-note: Analyzing workspace
 note: Build preparation complete
 note: Building targets in parallel
-note: Constructing build description
-note: Planning build
+note: Planning
