@@ -55,18 +55,20 @@ extension Xcode {
       }
     }
 
-    internal var buildDestinationName: String {
-      switch self {
-      case .macOS:
-        return "Any Mac"
-      case .tvOS(let simulator):
-        return simulator ? "Any tvOS Simulator Device" : "Any tvOS Device"
-      case .iOS(let simulator):
-        return simulator ? "Any iOS Simulator Device" : "Any iOS Device"
-      case .watchOS(let simulator):
-        return simulator ? "Any watchOS Simulator Device" : "Any watchOS Device"
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+      internal var buildDestinationName: String {
+        switch self {
+        case .macOS:
+          return "Any Mac"
+        case .tvOS(let simulator):
+          return simulator ? "Any tvOS Simulator Device" : "Any tvOS Device"
+        case .iOS(let simulator):
+          return simulator ? "Any iOS Simulator Device" : "Any iOS Device"
+        case .watchOS(let simulator):
+          return simulator ? "Any watchOS Simulator Device" : "Any watchOS Device"
+        }
       }
-    }
+    #endif
 
     internal var cacheDirectoryName: String {  // @exempt(from: tests)
       // Many of these cannot be reached from continuous integration.
