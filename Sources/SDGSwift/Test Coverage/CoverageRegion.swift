@@ -138,7 +138,9 @@ extension CoverageRegion where Index == String.ScalarView.Index {
         print(source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
           .upperBound)
       }
-      if source.scalars[start..<end].hasPrefix(" else".scalars),
+      if source.scalars[start..<end].hasPrefix(" else".scalars)
+         ∨ source.scalars[start..<end].hasPrefix("else".scalars)
+         ∨ source.scalars.drop(while: { $0 == " " }).hasPrefix("} else".scalars),
         let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
           .upperBound
       {
