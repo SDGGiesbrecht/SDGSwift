@@ -134,15 +134,6 @@ extension CoverageRegion where Index == String.ScalarView.Index {
       {
         start = implementationStart
       }
-      // #warning(Debugging...)
-      if source.scalars[start..<end].contains("else".scalars) {
-        print("“\(String(String.UnicodeScalarView(source.scalars[start..<end])))”")
-        print("source.scalars[start..<end].hasPrefix(“ else”.scalars)")
-        print(source.scalars[start..<end].hasPrefix(" else".scalars))
-        print("source.scalars[start..<end].firstMatch(for: “{”.scalars)?.range.upperBound")
-        print(source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
-          .upperBound)
-      }
       return CoverageRegion(region: start..<end, count: region.count)
     }
 
