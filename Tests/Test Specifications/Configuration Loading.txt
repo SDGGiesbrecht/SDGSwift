@@ -33,7 +33,7 @@ Fetching [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] * Build Completed!
+[[...]/[...]] [[...]/[...]] Build complete!
 
 Cached
 Loading “SampleConfigurationFile.swift”...
@@ -79,7 +79,7 @@ Loading “SampleConfigurationFile.swift”...
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module SwiftSyntax
-[[...]/[...]] Build Completed!
+[[...]/[...]] Build complete!
 
 None
 No configuration found. Using defaults...
@@ -104,6 +104,6 @@ Fetching [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] Build Completed!
+[[...]/[...]] [[...]/[...]] Build complete!
 
 Mock

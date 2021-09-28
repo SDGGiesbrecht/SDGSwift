@@ -192,7 +192,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               abbreviate(logEntry: "Completed resolution in")
               abbreviate(logEntry: "Cloning")
               abbreviate(logEntry: "Resolving")
-              abbreviate(logEntry: "Computing")
               log.lines.removeAll(where: { line in
                 return line.line.contains("Starting resolution using".scalars)
               })
@@ -214,8 +213,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               remove(logEntry: "Fetched")
               remove(logEntry: "Computing version for")
               remove(logEntry: "Computed")
-              remove(logEntry: "Creating working copy of")
+              remove(logEntry: "Creating working copy for")
               remove(logEntry: "Working copy of")
+              remove(logEntry: "Computing")
 
               let fractionPatternStart =
                 "[".scalars
