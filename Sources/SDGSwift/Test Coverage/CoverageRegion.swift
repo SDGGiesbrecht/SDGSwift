@@ -124,11 +124,19 @@ extension CoverageRegion where Index == String.ScalarView.Index {
       let end = region.region.upperBound
       // #warning(Debugging...)
       if source.scalars[start..<end].contains("else".scalars) {
-        print(String(String.UnicodeScalarView(source.scalars[start..<end])))
+        print("“\(String(String.UnicodeScalarView(source.scalars[start..<end])))”")
       }
       if source.scalars[start..<end].isMatch(for: " else ".scalars) {
         // @exempt(from: tests) Does not occur on Linux.
         return nil
+      }
+      // #warning(Debugging...)
+      if source.scalars[start..<end].contains("else".scalars) {
+        print("source.scalars[start..<end].hasPrefix(“ else”.scalars)")
+        print(source.scalars[start..<end].hasPrefix(" else".scalars))
+        print("source.scalars[start..<end].firstMatch(for: “{”.scalars)?.range.upperBound")
+        print(source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
+          .upperBound)
       }
       if source.scalars[start..<end].hasPrefix(" else".scalars),
         let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
