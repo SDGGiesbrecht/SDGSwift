@@ -35,7 +35,7 @@ PBXCp [...]/armv7k-apple-watchos.swiftmodule
 PBXCp [...]/armv7k-apple-watchos.swiftsourceinfo
 PBXCp [...]/armv7k.swiftdoc
 PBXCp [...]/armv7k.swiftmodule
-
+PBXCp [...]/armv7k.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:

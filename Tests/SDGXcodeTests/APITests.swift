@@ -256,6 +256,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ $0 ≠ ")" })
             filtered = filtered.filter({ $0 ≠ "{" })
             filtered = filtered.filter({ $0 ≠ "}" })
+            // Inconsistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),
