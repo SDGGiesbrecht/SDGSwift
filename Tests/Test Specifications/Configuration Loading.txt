@@ -8,24 +8,8 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
+[[...]] Compiling [...]
+[[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
@@ -49,8 +33,7 @@ Resolving [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] 
-* Build Completed!
+[[...]/[...]] [[...]/[...]] * Build Completed!
 
 Cached
 Loading “SampleConfigurationFile.swift”...
@@ -96,10 +79,7 @@ Loading “SampleConfigurationFile.swift”...
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module SwiftSyntax
-[[...]/[...]] Archiving libSwiftSyntax.a
-[[...]/[...]] Archiving libSwiftSyntax.a
-
-* Build Completed!
+[[...]/[...]] Build Completed!
 
 None
 No configuration found. Using defaults...
@@ -115,24 +95,6 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
-Cloning [...]
-Resolving [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
@@ -142,7 +104,6 @@ Resolving [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] 
-* Build Completed!
+[[...]/[...]] [[...]/[...]] Build Completed!
 
 Mock

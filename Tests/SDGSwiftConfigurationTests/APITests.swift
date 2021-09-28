@@ -192,6 +192,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               abbreviate(logEntry: "Completed resolution in")
               abbreviate(logEntry: "Cloning")
               abbreviate(logEntry: "Resolving")
+              abbreviate(logEntry: "Computing")
               log.lines.removeAll(where: { line in
                 return line.line.contains("Starting resolution using".scalars)
               })
@@ -210,6 +211,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               remove(logEntry: "Linking")
               remove(logEntry: "warning: invalid duplicate target dependency declaration")
               remove(logEntry: "\u{27}llbuild\u{27}")
+              remove(logEntry: "Fetched")
+              remove(logEntry: "Computing version for")
+              remove(logEntry: "Computed")
+              remove(logEntry: "Creating working copy of")
+              remove(logEntry: "Working copy of")
 
               let fractionPatternStart =
                 "[".scalars
