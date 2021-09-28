@@ -58,10 +58,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             func nothing() throws {}
             try nothing()
           #else
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-              // #workaround(No compatible release yet to point test at.)
-              return
-            #endif
             #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.
@@ -71,7 +67,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               let packageName = "SDGSwift"
               let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
               let minimumMacOSVersion = Version(10, 13)
-              let version = Version(0, 20, 0)
+              let version = Version(8, 0, 0)
               let type = SampleConfiguration.self  // Import it first if necessary.
 
               // Assuming the above file is called “SampleConfigurationFile.swift”...
