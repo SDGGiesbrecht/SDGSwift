@@ -53,6 +53,7 @@
 
     // MARK: - Initialization
 
+    @available(macOS 10.15, *)
     internal convenience init<Syntax>(
       product: Product,
       manifest: Syntax,

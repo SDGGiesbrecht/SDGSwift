@@ -58,6 +58,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             func nothing() throws {}
             try nothing()
           #else
+            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+              // #workaround(No compatible release yet to point test at.)
+              return
+            #endif
             #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.

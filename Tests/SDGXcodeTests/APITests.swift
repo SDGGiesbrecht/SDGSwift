@@ -84,7 +84,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
           #endif
 
-          let sdks: [Xcode.SDK] = [
+          let sdks: [Xcode.Platform] = [
             .macOS,
             .tvOS(simulator: false),
             .tvOS(simulator: true),
@@ -94,7 +94,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .watchOS(simulator: true),
           ]
           for sdk in sdks {
-            print("Testing build for \(sdk.commandLineName)...")
+            print("Testing build for \(sdk.commandLineBuildDestinationPlatformName)...")
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
@@ -155,26 +155,28 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.contains("Using new build system") })
             filtered = filtered.filter({ ¬$0.contains("unable to get a dev_t") })
             filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
+            // Inconsistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),
                 against: testSpecificationDirectory()
                   .appendingPathComponent("Xcode")
                   .appendingPathComponent("Build")
-                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
                 overwriteSpecificationInsteadOfFailing: false
               )
             #endif
           }
 
-          let testSDKs: [Xcode.SDK] = [
+          let testSDKs: [Xcode.Platform] = [
             .macOS,
             .tvOS(simulator: true),
             .iOS(simulator: true),
             .watchOS(simulator: true),
           ]
           for sdk in testSDKs {
-            print("Testing testing on \(sdk.commandLineName)...")
+            print("Testing testing on \(sdk.commandLineBuildDestinationPlatformName)...")
 
             let derived = URL(fileURLWithPath: NSHomeDirectory())
               .appendingPathComponent("Library/Developer/Xcode/DerivedData")
@@ -254,13 +256,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ $0 ≠ ")" })
             filtered = filtered.filter({ $0 ≠ "{" })
             filtered = filtered.filter({ $0 ≠ "}" })
+            // Inconsistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),
                 against: testSpecificationDirectory()
                   .appendingPathComponent("Xcode")
                   .appendingPathComponent("Test")
-                  .appendingPathComponent(sdk.commandLineName + ".txt"),
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
                 overwriteSpecificationInsteadOfFailing: false
               )
             #endif
@@ -283,9 +287,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testXcodeAllArchitectures() throws {
     #if PLATFORM_HAS_XCODE
       try withMock(named: "MultipleArchitectures") { package in
-        #if !arch(arm64)  // Other architectures should succeed.
-          _ = try package.build(for: .macOS).get()
-        #endif
+
+        // Beginning in Xcode 13, basic builds are multi‐architecture, so failure is now expected even without explicitly requesting all architectures.
+        _ = try? package.build(for: .macOS).get()
+
         switch package.build(for: .macOS, allArchitectures: true) {
         case .success(let output):
           XCTFail("Should have failed to build.\n\(output)")
@@ -458,8 +463,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for sdk in [
       .macOS, .tvOS(simulator: false), .tvOS(simulator: true), .iOS(simulator: false),
       .iOS(simulator: true), .watchOS(simulator: false), .watchOS(simulator: true),
-    ] as [Xcode.SDK] {
-      _ = sdk.commandLineName
+    ] as [Xcode.Platform] {
+      _ = sdk.commandLineSDKName
+      _ = sdk.commandLineBuildDestinationPlatformName
     }
   }
 }

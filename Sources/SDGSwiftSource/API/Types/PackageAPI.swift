@@ -60,6 +60,7 @@
     ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
     ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
     ///     - progressReport: A line of text reporting a progress milestone.
+    @available(macOS 10.15, *)
     public convenience init(
       package: PackageGraph,
       ignoredDependencies: Set<String> = [],
@@ -85,7 +86,7 @@
 
       let declaredDependencies = package.reachableTargets.filter({ module in
         switch module.type {
-        case .executable, .systemModule, .test, .binary:
+        case .executable, .systemModule, .test, .binary, .plugin:
           return false
         case .library:
           return ¬root.targets.contains(module.underlyingTarget)
@@ -109,6 +110,7 @@
       )
     }
 
+    @available(macOS 10.15, *)
     private static func documentation(
       for package: PackageModel.Package,
       from manifest: SourceFileSyntax
@@ -116,7 +118,7 @@
       let search =
         "Package(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-        + "name: \u{22}\(package.name)\u{22}".scalars
+        + "name: \u{22}\(package.manifestName)\u{22}".scalars
       let node = manifest.smallestSubnode(containing: search)
       let manifestDeclaration = node?.ancestors().first(where: { $0.is(VariableDeclSyntax.self) })
       return manifestDeclaration?.documentation ?? []  // @exempt(from: tests)
@@ -126,6 +128,7 @@
     ///
     /// - Parameters:
     ///     - package: The package, already loaded by the `SwiftPM` package.
+    @available(macOS 10.15, *)
     public static func documentation(
       for package: PackageModel.Package
     ) throws -> [SymbolDocumentation] {
@@ -134,6 +137,7 @@
       return documentation(for: package, from: manifest)
     }
 
+    @available(macOS 10.15, *)
     internal convenience init(
       package: PackageModel.Package,
       reportProgress: (String) -> Void
@@ -144,7 +148,9 @@
 
       let documentation = PackageAPI.documentation(for: package, from: manifest)
 
-      let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(name: package.name)
+      let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(
+        name: package.manifestName
+      )
       self.init(documentation: documentation, declaration: declaration)
 
       for product in package.products where ¬product.name.hasPrefix("_") {
@@ -155,7 +161,7 @@
               try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress)
             )
           )
-        case .executable, .test:
+        case .executable, .test, .plugin:
           continue
         }
       }

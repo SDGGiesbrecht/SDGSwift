@@ -96,7 +96,7 @@ extension VersionedExternalProcess {
         #else
           // Make sure version is compatible.
           guard let output = try? process.run(versionQuery).get(),
-            let version = Version(firstIn: output)
+            let version = Version(inVersionQueryOutput: output, of: commandName)
           else {
             return false  // @exempt(from: test)
             // Would require corrupt tools to be present during tests.
@@ -196,7 +196,7 @@ extension VersionedExternalProcess {
     where Constraints: RangeFamily, Constraints.Bound == Version {
       let output = try? runCustomSubcommand(versionQuery, versionConstraints: constraints).get()
       return output.flatMap { output in
-        return Version(firstIn: output)
+        return Version(inVersionQueryOutput: output, of: commandName)
       }
     }
   #endif

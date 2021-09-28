@@ -1,6 +1,7 @@
   Mock: /tmp/Mock
-$ xcodebuild build -sdk iphoneos -scheme Mock
+$ xcodebuild build -destination generic/platform=iOS -scheme Mock
 ** BUILD SUCCEEDED **
+Analyze workspace
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
@@ -11,12 +12,6 @@ CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
 Ditto [...]/Mock.modulemap
-Ditto [...]/Mock.swiftdoc
-Ditto [...]/Mock.swiftmodule
-Ditto [...]/Mock.swiftsourceinfo
-Ditto [...]/MockTests.swiftdoc
-Ditto [...]/MockTests.swiftmodule
-Ditto [...]/MockTests.swiftsourceinfo
 GenerateDSYMFile [...]/MockTests
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal arm64
@@ -26,21 +21,34 @@ Ld [...]/MockTests normal armv7
 MergeSwiftModule normal arm64
 MergeSwiftModule normal armv7
 MkDir [...]/MockTests.xctest
+PBXCp [...]/arm.swiftdoc
+PBXCp [...]/arm.swiftmodule
+PBXCp [...]/arm.swiftsourceinfo
+PBXCp [...]/arm64-apple-ios.swiftdoc
+PBXCp [...]/arm64-apple-ios.swiftmodule
+PBXCp [...]/arm64-apple-ios.swiftsourceinfo
+PBXCp [...]/arm64.swiftdoc
+PBXCp [...]/arm64.swiftmodule
+PBXCp [...]/arm64.swiftsourceinfo
+PBXCp [...]/armv7-apple-ios.swiftdoc
+PBXCp [...]/armv7-apple-ios.swiftmodule
+PBXCp [...]/armv7-apple-ios.swiftsourceinfo
+PBXCp [...]/armv7.swiftdoc
+PBXCp [...]/armv7.swiftmodule
+PBXCp [...]/armv7.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
+WriteAuxiliaryFile [...]/Mock.LinkFileList
+WriteAuxiliaryFile [...]/Mock.SwiftFileList
 WriteAuxiliaryFile [...]/Mock.modulemap
-WriteAuxiliaryFile [...]/Mock.o.LinkFileList
-WriteAuxiliaryFile [...]/Mock.o.SwiftFileList
 WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
-note: Analyzing workspace
 note: Build preparation complete
 note: Building targets in parallel
-note: Constructing build description
-note: Planning build
+note: Planning

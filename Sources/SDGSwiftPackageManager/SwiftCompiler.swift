@@ -26,7 +26,7 @@ extension SwiftCompiler {
 
   // MARK: - Properties
 
-  private static let compatibleVersions = SDGVersioning.Version(5, 4, 0)...Version(5, 4, 2)
+  private static let compatibleVersions = SDGVersioning.Version(5, 5, 0)...Version(5, 5, 0)
 
   internal static func swiftCLocation()
     -> Swift.Result<Foundation.URL, VersionedExternalProcessLocationError<SwiftCompiler>>
@@ -58,6 +58,7 @@ extension SwiftCompiler {
       }
     }
 
+    @available(macOS 10.15, *)
     private static func manifestResourceProvider()
       -> Swift.Result<ManifestResourceProvider, PackageLoadingError>
     {
@@ -69,6 +70,7 @@ extension SwiftCompiler {
       }
     }
 
+    @available(macOS 10.15, *)
     internal static func manifestLoader() -> Swift.Result<ManifestLoader, PackageLoadingError> {
       return manifestResourceProvider().map { ManifestLoader(manifestResources: $0) }
     }

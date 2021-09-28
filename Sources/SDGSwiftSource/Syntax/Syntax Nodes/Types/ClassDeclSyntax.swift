@@ -35,7 +35,7 @@
         SyntaxFactory.makeClassDecl(
           attributes: attributes?.normalizedForAPIDeclaration(),
           modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-          classKeyword: classKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          classOrActorKeyword: classOrActorKeyword.generallyNormalizedAndMissingInsteadOfNil(
             trailingTrivia: .spaces(1)
           ),
           identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
@@ -52,7 +52,7 @@
       return SyntaxFactory.makeClassDecl(
         attributes: nil,
         modifiers: nil,
-        classKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
+        classOrActorKeyword: SyntaxFactory.makeToken(.classKeyword, presence: .missing),
         identifier: identifier,
         genericParameterClause: genericParameterClause,
         inheritanceClause: nil,

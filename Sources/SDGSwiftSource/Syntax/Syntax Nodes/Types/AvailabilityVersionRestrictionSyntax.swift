@@ -20,7 +20,7 @@
     internal func normalized() -> AvailabilityVersionRestrictionSyntax {
       return SyntaxFactory.makeAvailabilityVersionRestriction(
         platform: platform.generallyNormalizedAndMissingInsteadOfNil(trailingTrivia: .spaces(1)),
-        version: version.normalized()
+        version: version?.normalized()
       )
     }
   }

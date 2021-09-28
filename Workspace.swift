@@ -106,3 +106,6 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
+
+// #workaround(Impossible to support building from both 5.4 and 5.5 at once.)
+configuration.continuousIntegration.manage = false

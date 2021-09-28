@@ -124,6 +124,7 @@ public let mocksDirectory = thisRepository.location
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    @available(macOS 10.15, *)
     public func withDefaultMockRepository(
       file: StaticString = #filePath,
       line: UInt = #line,

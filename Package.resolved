@@ -56,12 +56,21 @@
         }
       },
       {
+        "package": "swift-crypto",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto.git",
+        "state": {
+          "branch": null,
+          "revision": "c52a081f4b12d772872daf78e18b9c9c493b1ab3",
+          "version": "0.10106.0"
+        }
+      },
+      {
         "package": "swift-driver",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
         "state": {
           "branch": null,
-          "revision": "6a3ed677d86b5085f601a1784f3d4f9f61067611",
-          "version": "0.50400.0"
+          "revision": "6b1ad6f6fa574239fb7a8fcaa100ae1fe6516aaf",
+          "version": "0.50500.1"
         }
       },
       {
@@ -69,8 +78,8 @@
         "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
           "branch": null,
-          "revision": "53d12bc6e70e4ae6c0dec634fd48ec0cfff17f2d",
-          "version": "0.4.0"
+          "revision": "5cd4df550b31301508a77064e3dfaa5c5628780e",
+          "version": "0.5.0"
         }
       },
       {
@@ -87,8 +96,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "79af12348d55c730ff2d74ef2b68db914fdc07d4",
-          "version": "0.50400.0"
+          "revision": "dae60383644b19defc4228b187ad19f46f384423",
+          "version": "0.50500.1"
         }
       },
       {
@@ -96,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "2fff9fc25cdc059379b6bd309377cfab45d8520c",
-          "version": "0.50400.0"
+          "revision": "75e60475d9d8fd5bbc16a12e0eaa2cb01b0c322e",
+          "version": "0.50500.0"
         }
       },
       {
@@ -111,11 +120,11 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/apple/swift-tools-support-core",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
         "state": {
           "branch": null,
-          "revision": "2954e55faee5bfee928e844bb09e97fcfa8d24af",
-          "version": "0.2.0"
+          "revision": "1b21e2ce36891ed4f458421a83b5d9e886acd4cd",
+          "version": "0.50500.0"
         }
       },
       {

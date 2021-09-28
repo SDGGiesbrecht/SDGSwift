@@ -146,14 +146,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       XCTAssert(
         try thisRepository.packageGraph().get().packages
-          .contains(where: { $0.name == "SDGCornerstone" })
+          .contains(where: { $0.manifestName == "SDGCornerstone" })
       )
     #endif
   }
 
   func testPackageLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssert(try thisRepository.package().get().name == "SDGSwift")
+      XCTAssert(try thisRepository.package().get().manifestName == "SDGSwift")
     #endif
   }
 

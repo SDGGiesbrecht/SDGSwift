@@ -24,7 +24,9 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-        asyncKeyword: asyncKeyword?.generallyNormalized(leadingTrivia: .spaces(1)),
+        asyncOrReasyncKeyword: asyncOrReasyncKeyword?.generallyNormalized(
+          leadingTrivia: .spaces(1)
+        ),
         throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
           leadingTrivia: .spaces(1)
         ),
@@ -37,7 +39,7 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
-        asyncKeyword: nil,
+        asyncOrReasyncKeyword: nil,
         throwsOrRethrowsKeyword: nil,
         output: nil
       )
@@ -48,7 +50,7 @@
     {
       return SyntaxFactory.makeFunctionSignature(
         input: input.forName(labelBehaviour: labelBehaviour),
-        asyncKeyword: nil,
+        asyncOrReasyncKeyword: nil,
         throwsOrRethrowsKeyword: nil,
         output: nil
       )
