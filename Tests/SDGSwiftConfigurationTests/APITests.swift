@@ -62,7 +62,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
-              // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
+              // https://github.com/SDGGiesbrecht/SDGSwift/tree/8.0.0/Sources/SampleConfiguration
               let product = "SampleConfiguration"
               let packageName = "SDGSwift"
               let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
