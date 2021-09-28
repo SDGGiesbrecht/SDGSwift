@@ -8,7 +8,11 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
-[[...]] Compiling [...]
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Fetching [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
@@ -30,9 +34,11 @@ Fetching [...]
 [[...]/[...]] Merging module SDGSwiftConfiguration
 [[...]] Compiling [...]
 [[...]] Compiling [...]
+[[...]] Compiling [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
+[[...]/[...]] Archiving libSwiftSyntax.a
 [[...]/[...]] [[...]/[...]] Build complete!
 
 Cached
@@ -86,6 +92,11 @@ No configuration found. Using defaults...
 
 Empty
 Loading “SampleConfigurationFile.swift”...
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Fetching [...]
+Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
