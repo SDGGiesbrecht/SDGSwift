@@ -31,14 +31,13 @@ Fetching [...]
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module SDGControlFlow
-[[...]/[...]] Merging module SDGSwiftConfiguration
 [[...]] Compiling [...]
+[[...]/[...]] Merging module SDGSwiftConfiguration
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module SampleConfiguration
 [[...]] Compiling [...]
 [[...]/[...]] Merging module configure
-[[...]/[...]] Archiving libSwiftSyntax.a
 [[...]/[...]] [[...]/[...]] Build complete!
 
 Cached
@@ -85,6 +84,7 @@ Loading “SampleConfigurationFile.swift”...
 [[...]] Compiling [...]
 [[...]] Compiling [...]
 [[...]/[...]] Merging module SwiftSyntax
+[[...]/[...]] Archiving libSwiftSyntax.a
 [[...]/[...]] Build complete!
 
 None
