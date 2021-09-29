@@ -232,8 +232,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-            #warning("Debugging...")
-            print(log)
               compare(
                 log,
                 against: testSpecificationDirectory().appendingPathComponent(
