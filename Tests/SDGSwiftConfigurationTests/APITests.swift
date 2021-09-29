@@ -206,7 +206,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + "] Compiling ".scalars
                 + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
                 + "\n".scalars
-              log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
+              log.scalars.replaceMatches(for: pattern, with: "".scalars)
               remove(logEntry: "Linking")
               remove(logEntry: "warning: invalid duplicate target dependency declaration")
               remove(logEntry: "\u{27}llbuild\u{27}")
