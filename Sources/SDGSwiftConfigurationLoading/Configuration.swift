@@ -46,7 +46,7 @@ extension Configuration {
     ///  import [module] // [package name], [url], [version], [product]
     ///  */
     /// import SDGControlFlow
-    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 7.2.4, SDGControlFlow
     ///
     /// // Initialize the configuration with its defaults.
     /// let configuration = SampleConfiguration()
@@ -63,12 +63,12 @@ extension Configuration {
     /// ```swift
     /// // These refer to a real, working sample product.
     /// // See its source for more details:
-    /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
+    /// // https://github.com/SDGGiesbrecht/SDGSwift/tree/8.0.0/Sources/SampleConfiguration
     /// let product = "SampleConfiguration"
     /// let packageName = "SDGSwift"
     /// let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
     /// let minimumMacOSVersion = Version(10, 13)
-    /// let version = Version(0, 20, 0)
+    /// let version = Version(8, 0, 0)
     /// let type = SampleConfiguration.self  // Import it first if necessary.
     ///
     /// // Assuming the above file is called “SampleConfigurationFile.swift”...

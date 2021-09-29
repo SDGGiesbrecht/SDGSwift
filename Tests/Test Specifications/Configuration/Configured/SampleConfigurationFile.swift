@@ -21,7 +21,7 @@ import SampleConfiguration
  import [module] // [package name], [url], [version], [product]
  */
 import SDGControlFlow
-// SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 4.6.0, SDGControlFlow
+// SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 7.2.4, SDGControlFlow
 
 // Initialize the configuration with its defaults.
 let configuration = SampleConfiguration()

@@ -58,20 +58,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             func nothing() throws {}
             try nothing()
           #else
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-              // #workaround(No compatible release yet to point test at.)
-              return
-            #endif
             #if !PLATFORM_LACKS_GIT
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
-              // https://github.com/SDGGiesbrecht/SDGSwift/tree/0.20.0/Sources/SampleConfiguration
+              // https://github.com/SDGGiesbrecht/SDGSwift/tree/8.0.0/Sources/SampleConfiguration
               let product = "SampleConfiguration"
               let packageName = "SDGSwift"
               let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
               let minimumMacOSVersion = Version(10, 13)
-              let version = Version(0, 20, 0)
+              let version = Version(8, 0, 0)
               let type = SampleConfiguration.self  // Import it first if necessary.
 
               // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -210,10 +206,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + "] Compiling ".scalars
                 + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
                 + "\n".scalars
-              log.scalars.replaceMatches(for: pattern, with: "[[...]] Compiling [...]\n".scalars)
+              log.scalars.replaceMatches(for: pattern, with: "".scalars)
               remove(logEntry: "Linking")
               remove(logEntry: "warning: invalid duplicate target dependency declaration")
               remove(logEntry: "\u{27}llbuild\u{27}")
+              remove(logEntry: "Fetched")
+              remove(logEntry: "Computing version for")
+              remove(logEntry: "Computed")
+              remove(logEntry: "Creating working copy for")
+              remove(logEntry: "Working copy of")
+              remove(logEntry: "Computing")
 
               let fractionPatternStart =
                 "[".scalars
