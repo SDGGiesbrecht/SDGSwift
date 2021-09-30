@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
-          "revision": "986d191f94cec88f6350056da59c2e59e83d1229",
-          "version": "0.4.3"
+          "revision": "d2930e8fcf9c33162b9fcc1d522bc975e2d4179b",
+          "version": "1.0.1"
         }
       },
       {
@@ -42,17 +42,8 @@
         "repositoryURL": "https://github.com/apple/swift-collections",
         "state": {
           "branch": null,
-          "revision": "2d719d75a2065f213e58a5164384a3d2fcf9b59a",
-          "version": "0.0.2"
-        }
-      },
-      {
-        "package": "swift-collections-benchmark",
-        "repositoryURL": "https://github.com/apple/swift-collections-benchmark",
-        "state": {
-          "branch": null,
-          "revision": "665cbb154a55f45bcedd2ab4faf17b1b7ac06de3",
-          "version": "0.0.2"
+          "revision": "9d8719c8bebdc79740b6969c912ac706eb721d7a",
+          "version": "0.0.7"
         }
       },
       {
@@ -69,8 +60,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
         "state": {
           "branch": null,
-          "revision": "6b1ad6f6fa574239fb7a8fcaa100ae1fe6516aaf",
-          "version": "0.50500.1"
+          "revision": "8d6a841ca8a3e115aa616e872f92911592c38675",
+          "version": "0.50500.2"
         }
       },
       {
@@ -96,8 +87,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "dae60383644b19defc4228b187ad19f46f384423",
-          "version": "0.50500.1"
+          "revision": "9f049ba4ec8a83a4f5358bae270d4dd2fe564e64",
+          "version": "0.50500.2"
         }
       },
       {
@@ -107,15 +98,6 @@
           "branch": null,
           "revision": "75e60475d9d8fd5bbc16a12e0eaa2cb01b0c322e",
           "version": "0.50500.0"
-        }
-      },
-      {
-        "package": "swift-system",
-        "repositoryURL": "https://github.com/apple/swift-system",
-        "state": {
-          "branch": null,
-          "revision": "8ffa04c0a0592e6f4f9c30926dedd8fa1c5371f9",
-          "version": "0.0.1"
         }
       },
       {
