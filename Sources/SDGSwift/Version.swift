@@ -26,6 +26,7 @@ extension Version {
       var output = versionQueryOutput
       if tool == "swift" {
         if output.hasPrefix("swift\u{2D}driver") {
+          // @exempt(from: tests) Does not occur on all platforms.
           output.drop(upTo: "Apple Swift version")
         }
       }
