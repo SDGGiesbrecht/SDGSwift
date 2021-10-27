@@ -236,7 +236,7 @@ public enum Xcode: VersionedExternalProcess {
             "\u{2D}destination",
             "generic/platform=\(platform.commandLineBuildDestinationPlatformName)",
           ]
-        } else {
+        } else {  // @exempt(from: tests)
           command += ["\u{2D}sdk", platform.commandLineSDKName]
         }
 
@@ -360,7 +360,7 @@ public enum Xcode: VersionedExternalProcess {
           command += [
             "\u{2D}destination", "platform=\(platform.commandLineBuildDestinationPlatformName)",
           ]
-        } else {
+        } else {  // @exempt(from: tests)
           command += ["\u{2D}sdk", platform.commandLineSDKName]
         }
       }
