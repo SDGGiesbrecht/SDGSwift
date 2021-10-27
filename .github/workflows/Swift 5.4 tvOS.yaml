@@ -49,35 +49,9 @@ jobs:
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.37.5 "" workspace
             .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.37.5
         fi
-    - name: Refresh
-      shell: bash
-      run: |
-        set -x
-        if workspace version > /dev/null 2>&1 ; then
-            echo "Using system install of Workspace..."
-            workspace refresh •language '🇨🇦EN' •use‐version 0.37.5
-        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Using repository cache of Workspace..."
-            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.37.5
-        else
-            echo "No cached build detected; fetching Workspace..."
-            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.37.5 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.37.5
-        fi
     - name: Validate
       shell: bash
       run: |
         set -x
-        if workspace version > /dev/null 2>&1 ; then
-            echo "Using system install of Workspace..."
-            workspace validate •job tvos •language '🇨🇦EN' •use‐version 0.37.5
-        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Using repository cache of Workspace..."
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇨🇦EN' •use‐version 0.37.5
-        else
-            echo "No cached build detected; fetching Workspace..."
-            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.37.5 "" workspace
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇨🇦EN' •use‐version 0.37.5
-        fi
+        export TARGETING_TVOS=true
+        xcodebuild test -destination 'name=Apple TV 4K (2nd generation)' -scheme SDGCornerstone-Package
