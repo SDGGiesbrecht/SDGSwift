@@ -54,4 +54,4 @@ jobs:
       run: |
         set -x
         export TARGETING_TVOS=true
-        xcodebuild test -destination 'name=Apple TV 4K (2nd generation)' -scheme SDGCornerstone-Package
+        xcodebuild test -destination 'name=Apple TV 4K (2nd generation)' -scheme SDGSwift-Package
