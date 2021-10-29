@@ -22,12 +22,7 @@ import XCTest
 
 import SDGXCTestUtilities
 
-#if PLATFORM_LACKS_SDG_CORNERSTONE_TEST_CASE
-  public typealias Base = XCTestCase
-#else
-  public typealias Base = SDGXCTestUtilities.TestCase
-#endif
-open class TestCase: Base {
+open class TestCase: SDGXCTestUtilities.TestCase {
 
   private static let configureGit: Void = {
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
