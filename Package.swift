@@ -166,7 +166,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(
-          // #workaround(SwiftPM 0.50400.0, Reduce to SwiftPMDataModel‐auto once available.)
+          // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
@@ -405,9 +405,9 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.4.2, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.4.2, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.4.2, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.5.1, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.5.1, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.5.1, Web lacks Foundation.ProcessInfo.)
     // #workaround(Swift 5.4.2, SwiftPM does not compile on Windows.)
     // #workaround(Swift 5.4.2, SwiftSyntax does not compile on Windows.)
     // @example(conditions)
@@ -426,17 +426,17 @@ for target in package.targets {
 
     // Internal‐only:
     .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
-    // #workaround(Swift 5.4.2, Web lacks Foundation.URL.init(fileURLWithPath:).)
+    // #workaround(Swift 5.5.1, Web lacks Foundation.URL.init(fileURLWithPath:).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(SDGCornerstone 7.2.4, Windows suffers unexplained segmentation faults.)
+    // #workaround(SDGCornerstone 8.0.1, Windows suffers unexplained segmentation faults.)
     .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
 }
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
-  // #workaround(Swift 5.4.2, There is no way to set deployment targets on a per‐target basis.)
+  // #workaround(Swift 5.5.1, There is no way to set deployment targets on a per‐target basis.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
 }
 
@@ -488,11 +488,11 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
@@ -512,6 +512,6 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
