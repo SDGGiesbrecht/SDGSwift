@@ -201,7 +201,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "cmark"),
@@ -278,7 +278,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -348,7 +348,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50400.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -441,30 +441,20 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  let impossibleDependencies: [String] = [
-    // #warning(SwiftSyntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
-    //"SwiftSyntax"
+  // #warning(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
+  /*let impossibleDependencies: [String] = [
+    "SwiftSyntax"
   ]
-  package.dependencies.removeAll(where: { dependency in
-    return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
-    })
-  })
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       return impossibleDependencies.contains(where: { impossible in
         return "\(dependency)".contains(impossible)
       })
     })
-    var swiftSettings = target.swiftSettings ?? []
-    defer { target.swiftSettings = swiftSettings }
-    swiftSettings.append(contentsOf: [
-      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
-    ])
+  }*/
 
-    // #workaround(Swift 5.4.2, Unable to build from Windows.)
-    package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
-  }
+  // #workaround(Swift 5.5.1, Unable to build from Windows.)
+  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
