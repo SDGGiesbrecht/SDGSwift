@@ -441,8 +441,8 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #warning(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
-  /*let impossibleDependencies: [String] = [
+  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
+  let impossibleDependencies: [String] = [
     "SwiftSyntax"
   ]
   for target in package.targets {
@@ -451,7 +451,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
         return "\(dependency)".contains(impossible)
       })
     })
-  }*/
+  }
 
   // #workaround(Swift 5.5.1, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
