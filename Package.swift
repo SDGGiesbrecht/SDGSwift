@@ -442,8 +442,8 @@ if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
-    "SwiftSyntax"
+    // #warning(SwiftSyntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
+    //"SwiftSyntax"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
