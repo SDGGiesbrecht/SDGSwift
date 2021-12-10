@@ -408,8 +408,8 @@ for target in package.targets {
     // #workaround(Swift 5.5.1, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.5.1, Web lacks Foundation.Process.)
     // #workaround(Swift 5.5.1, Web lacks Foundation.ProcessInfo.)
-    // #workaround(Swift 5.4.2, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.4.2, SwiftSyntax does not compile on Windows.)
+    // #workaround(Swift 5.5.1, SwiftPM does not compile on Windows.)
+    // #workaround(Swift 5.5.1, SwiftSyntax does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
