@@ -405,11 +405,11 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.5.1, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.5.1, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.5.1, Web lacks Foundation.ProcessInfo.)
-    // #workaround(Swift 5.5.1, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.5.1, SwiftSyntax does not compile on Windows.)
+    // #workaround(Swift 5.5.2, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.5.2, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.5.2, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.5.2, SwiftPM does not compile on Windows.)
+    // #workaround(Swift 5.5.2, SwiftSyntax does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -426,7 +426,7 @@ for target in package.targets {
 
     // Internal‐only:
     .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
-    // #workaround(Swift 5.5.1, Web lacks Foundation.URL.init(fileURLWithPath:).)
+    // #workaround(Swift 5.5.2, Web lacks Foundation.URL.init(fileURLWithPath:).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SDGCornerstone 8.0.1, Windows suffers unexplained segmentation faults.)
@@ -436,12 +436,12 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
-  // #workaround(Swift 5.5.1, There is no way to set deployment targets on a per‐target basis.)
+  // #workaround(Swift 5.5.2, There is no way to set deployment targets on a per‐target basis.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
     "SwiftSyntax"
   ]
@@ -453,13 +453,13 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #workaround(Swift 5.5.1, Unable to build from Windows.)
+  // #workaround(Swift 5.5.2, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.5.1, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
@@ -478,16 +478,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
     "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
@@ -502,6 +502,6 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
