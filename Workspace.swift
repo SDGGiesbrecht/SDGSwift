@@ -106,3 +106,5 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
+
+configuration.supportedPlatforms.remove(.centOS)
