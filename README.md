@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-macOS • Windows • Web • CentOS • Ubuntu • tvOS • iOS • Android • Amazon Linux • watchOS
+macOS • Windows • Web • Ubuntu • tvOS • iOS • Android • Amazon Linux • watchOS
 
 [Documentation](https://sdggiesbrecht.github.io/SDGSwift/%F0%9F%87%A8%F0%9F%87%A6EN)
 

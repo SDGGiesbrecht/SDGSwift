@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -106,3 +106,5 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
+
+configuration.supportedPlatforms.remove(.centOS)
