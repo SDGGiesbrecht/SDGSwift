@@ -107,11 +107,11 @@ let package = Package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 50500, 2))
+      .exact(Version(0, 50503, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}tools\u{2D}support\u{2D}core",
-      .upToNextMinor(from: Version(0, 50500, 0))
+      .upToNextMinor(from: Version(0, 50503, 0))
     ),
     .package(
       name: "SwiftSyntax",
@@ -166,8 +166,7 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(
-          // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
-          name: "SwiftPM\u{2D}auto",
+          name: "SwiftPMDataModel\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
