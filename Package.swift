@@ -173,7 +173,8 @@ let package = Package(
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          condition: .when(platforms: [.macOS, .windows, .linux])
+          // #workaround(swift-tools-support-core 0.50503.0, Does not support Windows yet.) @exempt(from: unicode)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
