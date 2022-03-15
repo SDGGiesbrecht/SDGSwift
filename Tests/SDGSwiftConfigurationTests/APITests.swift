@@ -36,6 +36,10 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
+    if SwiftCompiler.version(forConstraints: Version(3, 0, 0)...Version(5, 6)) == Version(5, 6) {
+      // #workaround(Skipping test on Swift 5.6 for now because there is no valid version to point at.)
+      return
+    }
     #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
