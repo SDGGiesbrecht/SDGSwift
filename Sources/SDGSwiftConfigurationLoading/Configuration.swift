@@ -356,7 +356,7 @@ extension Configuration {
             json.drop(upTo: "!\n[")
           } else {
             // Format changed in Swift 5.6.
-            json.drop(upTo: "!\n(")
+            json.drop(upTo: "! (")
             json.drop(upTo: ")\n[")
           }
           if ¬json.isEmpty {
