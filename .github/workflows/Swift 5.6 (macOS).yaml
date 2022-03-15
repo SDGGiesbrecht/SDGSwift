@@ -30,6 +30,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        ls /Applications
         sudo xcode-select -switch /Applications/Xcode_13.3.app
         xcodebuild -version
         swift --version
