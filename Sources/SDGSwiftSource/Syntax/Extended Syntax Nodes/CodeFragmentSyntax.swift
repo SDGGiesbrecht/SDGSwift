@@ -18,6 +18,7 @@
   import SDGCollections
 
   import SwiftSyntax
+  import SwiftSyntaxParser
   import enum SDGHTML.HTML
 
   /// A fragment of code used in documentation.

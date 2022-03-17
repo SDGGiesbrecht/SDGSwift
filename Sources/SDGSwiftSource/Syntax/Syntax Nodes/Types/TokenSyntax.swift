@@ -104,7 +104,7 @@
           return .invariable
         }
         return .aliasable
-      case .stringSegment, .integerLiteral, .floatingLiteral, .stringLiteral:
+      case .stringSegment, .integerLiteral, .floatingLiteral, .stringLiteral, .regexLiteral:
         return .arbitrary
       case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
         .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword,
@@ -128,7 +128,7 @@
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote,
         .dollarIdentifier, .contextualKeyword, .unknown, .pound, .backtick, .poundAssertKeyword,
         .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis, .singleQuote,
-        .rawStringDelimiter, .poundFileIDKeyword:
+        .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
         return .invariable
       }
     }
@@ -228,7 +228,7 @@
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,
-        .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword:
+        .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword, .poundUnavailableKeyword:
         return "keyword"
 
       case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound,
@@ -286,7 +286,7 @@
       case .stringSegment:
         return "text"
 
-      case .stringLiteral:  // @exempt(from: tests) Disected elsewhere.
+      case .stringLiteral, .regexLiteral:  // @exempt(from: tests) Disected elsewhere.
         return nil
       }
     }

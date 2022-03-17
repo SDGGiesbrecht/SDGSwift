@@ -19,6 +19,7 @@
   import SDGCollections
 
   import SwiftSyntax
+  import SwiftSyntaxParser
   import PackageModel
 
   import SDGSwiftPackageManager

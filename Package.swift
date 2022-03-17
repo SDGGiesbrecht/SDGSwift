@@ -203,6 +203,12 @@ let package = Package(
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
         .product(name: "cmark", package: "cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
@@ -346,6 +352,12 @@ let package = Package(
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])

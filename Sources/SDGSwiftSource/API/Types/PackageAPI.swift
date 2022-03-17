@@ -21,6 +21,7 @@
   import SDGLocalization
 
   import SwiftSyntax
+  import SwiftSyntaxParser
   import PackageModel
   import PackageGraph
 
