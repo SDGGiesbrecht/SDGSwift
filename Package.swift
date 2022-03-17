@@ -107,11 +107,11 @@ let package = Package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 50503, 0))
+      .exact(Version(0, 50600, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}tools\u{2D}support\u{2D}core",
-      .upToNextMinor(from: Version(0, 50503, 0))
+      .upToNextMinor(from: Version(0, 50600, 0))
     ),
     .package(
       name: "SwiftSyntax",
