@@ -84,6 +84,7 @@ public enum Xcode: VersionedExternalProcess {
     "CompileC",
     "CompileSwift",
     "CompileSwiftSources",
+    "Copy",
     "Copying",
     "CopySwiftLibs",
     "CreateBuildDirectory",
