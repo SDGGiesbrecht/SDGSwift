@@ -88,20 +88,31 @@ extension PackageRepository {
   // MARK: - Properties
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    private var path: AbsolutePath {
+      return AbsolutePath(location.path)
+    }
+
+    internal func observabilitySystem() -> ObservabilitySystem {
+      #warning("What should the closure do?")
+      return ObservabilitySystem({ print("\($0): \($1)") })
+    }
+
     /// Returns the package manifest.
-    @available(macOS 10.15, *)
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try tsc_await { completion in
-          ManifestLoader.loadRootManifest(
-            at: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            swiftCompilerFlags: [],
-            identityResolver: DefaultIdentityResolver(),
-            diagnostics: diagnostics,
-            on: .global(),
-            completion: completion
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try tsc_await { completion in
+              workspace.loadRootManifest(
+                at: path,
+                observabilityScope: observabilitySystem().topScope,
+                completion: completion
+              )
+            }
           )
+        } catch {
+          #warning("Dropping diagnostics.")
+          return .failure(.packageManagerError(error, []))
         }
       }
     }
@@ -125,11 +136,10 @@ extension PackageRepository {
     }
 
     /// Returns the package workspace.
-    @available(macOS 10.15, *)
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
       #warning("Does PackageLoadingError still make sense?")
       do {
-        return .success(try Workspace(forRootPackage: AbsolutePath(location.path)))
+        return .success(try Workspace(forRootPackage: path))
       } catch {
         return .failure(.packageManagerError(error, []))
       }

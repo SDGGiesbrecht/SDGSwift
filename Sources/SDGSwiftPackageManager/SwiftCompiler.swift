@@ -18,6 +18,7 @@ import SDGVersioning
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import Workspace
+  import TSCBasic
 #endif
 
 import SDGSwift
