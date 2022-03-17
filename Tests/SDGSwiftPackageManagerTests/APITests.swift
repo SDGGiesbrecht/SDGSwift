@@ -88,24 +88,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "No Swift",
         overwriteSpecificationInsteadOfFailing: false
       )
-
-      let invalidPackage = URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .appendingPathComponent("Mock Projects")
-        .appendingPathComponent("Invalid")
-      switch PackageRepository(at: invalidPackage).packageGraph() {
-      case .success(let graph):
-        print(graph.allTargets.map({ $0.name }))
-        XCTFail("Should not have succeeded.")
-      case .failure(let error):
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Diagnostics",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      }
     #endif
   }
 
