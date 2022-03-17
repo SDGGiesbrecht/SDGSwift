@@ -93,9 +93,8 @@ extension PackageRepository {
       return AbsolutePath(location.path)
     }
 
-    internal func observabilitySystem() -> ObservabilitySystem {
-      #warning("What should the closure do?")
-      return ObservabilitySystem({ print("\($0): \($1)") })
+    private func observabilitySystem() -> ObservabilitySystem {
+      return ObservabilitySystem({ _, _ in })
     }
 
     /// Returns the package manifest.
@@ -112,8 +111,7 @@ extension PackageRepository {
             }
           )
         } catch {
-          #warning("Dropping diagnostics.")
-          return .failure(.packageManagerError(error, []))
+          return .failure(.packageManagerError(error))
         }
       }
     }
@@ -132,19 +130,17 @@ extension PackageRepository {
             }
           )
         } catch {
-          #warning("Dropping diagnostics.")
-          return .failure(.packageManagerError(error, []))
+          return .failure(.packageManagerError(error))
         }
       }
     }
 
     /// Returns the package workspace.
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
-      #warning("Does PackageLoadingError still make sense?")
       do {
         return .success(try Workspace(forRootPackage: path))
       } catch {
-        return .failure(.packageManagerError(error, []))
+        return .failure(.packageManagerError(error))
       }
     }
 
@@ -160,8 +156,7 @@ extension PackageRepository {
             )
           )
         } catch {
-          #warning("Dropping diagnostics.")
-          return .failure(.packageManagerError(error, []))
+          return .failure(.packageManagerError(error))
         }
       }
     }

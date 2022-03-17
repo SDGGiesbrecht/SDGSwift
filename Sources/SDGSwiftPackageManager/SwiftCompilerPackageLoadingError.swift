@@ -33,7 +33,7 @@ extension SwiftCompiler {
       case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
 
       /// The package manager encountered an error.
-      case packageManagerError(Swift.Error?, [Diagnostic])
+      case packageManagerError(Swift.Error?)
 
       // MARK: - PresentableError
 
@@ -41,12 +41,11 @@ extension SwiftCompiler {
         switch self {
         case .swiftLocationError(let error):
           return error.presentableDescription()
-        case .packageManagerError(let error, let diagnostics):
+        case .packageManagerError(let error):
           var lines: [String] = []
           if let error = error {
             lines.append(error.localizedDescription)
           }
-          lines += diagnostics.map({ $0.localizedDescription })
           return StrictString(lines.joined(separator: "\n"))
         }
       }

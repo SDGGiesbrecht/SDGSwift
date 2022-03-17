@@ -75,7 +75,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       testCustomStringConvertibleConformance(
-        of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
+        of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError()),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Package Manager",
         overwriteSpecificationInsteadOfFailing: false
