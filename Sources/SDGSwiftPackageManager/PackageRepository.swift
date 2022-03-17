@@ -20,6 +20,7 @@ import SDGVersioning
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
+  import PackageGraph
   import Workspace
   import TSCBasic
 #endif
@@ -150,14 +151,18 @@ extension PackageRepository {
     /// Returns the package graph.
     @available(macOS 10.15, *)
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try Workspace.loadRootGraph(
-          at: AbsolutePath(location.path),
-          swiftCompiler: AbsolutePath(compiler.path),
-          swiftCompilerFlags: [],
-          identityResolver: DefaultIdentityResolver(),
-          diagnostics: diagnostics
-        )
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try workspace.loadPackageGraph(
+              rootPath: path,
+              observabilityScope: observabilitySystem().topScope
+            )
+          )
+        } catch {
+          #warning("Dropping diagnostics.")
+          return .failure(.packageManagerError(error, []))
+        }
       }
     }
   #endif
