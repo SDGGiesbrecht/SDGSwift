@@ -127,11 +127,11 @@ extension PackageRepository {
     /// Returns the package workspace.
     @available(macOS 10.15, *)
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.manifestLoader().map { loader in
-        return Workspace.create(
-          forRootPackage: AbsolutePath(location.path),
-          manifestLoader: loader
-        )
+      #warning("Does PackageLoadingError still make sense?")
+      do {
+        return .success(try Workspace(forRootPackage: AbsolutePath(location.path)))
+      } catch {
+        return .failure(.packageManagerError(error, []))
       }
     }
 
