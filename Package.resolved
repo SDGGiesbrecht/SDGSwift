@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "e936b5516f2a31f25fda31c63d7a9a3ee64b2e95",
-          "version": "0.50600.0"
+          "revision": "2105b7697de6ea09bcd231ae471db68fec59d0b8",
+          "version": "0.50600.1"
         }
       },
       {
