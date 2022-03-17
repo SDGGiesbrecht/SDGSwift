@@ -157,6 +157,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
             // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
+            // Differ between 5.5 and 5.6
+            filtered = filtered.filter({ ¬$0.hasPrefix("Copy ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("Ditto ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("EmitSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("MergeSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),
@@ -258,6 +265,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ $0 ≠ "}" })
             // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
+            // Differ between 5.5 and 5.6
+            filtered = filtered.filter({ ¬$0.hasPrefix("Copy ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("Ditto ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("EmitSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("MergeSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),

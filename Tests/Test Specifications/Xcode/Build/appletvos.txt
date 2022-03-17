@@ -10,20 +10,11 @@ CreateBuildDirectory [...]/Debug-appletvos
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
-Ditto [...]/Mock.modulemap
 GenerateDSYMFile [...]/MockTests
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
-MergeSwiftModule normal arm64
 MkDir [...]/MockTests.xctest
-PBXCp [...]/Mock-Swift.h
-PBXCp [...]/arm64-apple-tvos.swiftdoc
-PBXCp [...]/arm64-apple-tvos.swiftmodule
-PBXCp [...]/arm64-apple-tvos.swiftsourceinfo
-PBXCp [...]/arm64.swiftdoc
-PBXCp [...]/arm64.swiftmodule
-PBXCp [...]/arm64.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -37,5 +28,4 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Build preparation complete
-note: Building targets in parallel
 note: Planning

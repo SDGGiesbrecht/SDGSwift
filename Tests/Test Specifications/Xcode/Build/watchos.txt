@@ -11,31 +11,13 @@ CreateBuildDirectory [...]/Debug-watchos
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
-Ditto [...]/Mock.modulemap
 GenerateDSYMFile [...]/MockTests
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal arm64_32
 Ld [...]/Mock.o normal armv7k
 Ld [...]/MockTests normal arm64_32
 Ld [...]/MockTests normal armv7k
-MergeSwiftModule normal arm64_32
-MergeSwiftModule normal armv7k
 MkDir [...]/MockTests.xctest
-PBXCp [...]/arm.swiftdoc
-PBXCp [...]/arm.swiftmodule
-PBXCp [...]/arm.swiftsourceinfo
-PBXCp [...]/arm64_32-apple-watchos.swiftdoc
-PBXCp [...]/arm64_32-apple-watchos.swiftmodule
-PBXCp [...]/arm64_32-apple-watchos.swiftsourceinfo
-PBXCp [...]/arm64_32.swiftdoc
-PBXCp [...]/arm64_32.swiftmodule
-PBXCp [...]/arm64_32.swiftsourceinfo
-PBXCp [...]/armv7k-apple-watchos.swiftdoc
-PBXCp [...]/armv7k-apple-watchos.swiftmodule
-PBXCp [...]/armv7k-apple-watchos.swiftsourceinfo
-PBXCp [...]/armv7k.swiftdoc
-PBXCp [...]/armv7k.swiftmodule
-PBXCp [...]/armv7k.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -50,5 +32,4 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Build preparation complete
-note: Building targets in parallel
 note: Planning
