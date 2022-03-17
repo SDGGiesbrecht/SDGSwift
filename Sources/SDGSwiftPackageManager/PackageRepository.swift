@@ -118,19 +118,21 @@ extension PackageRepository {
     }
 
     /// Returns the package structure.
-    @available(macOS 10.15, *)
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try tsc_await { completion in
-          PackageBuilder.loadRootPackage(
-            at: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            swiftCompilerFlags: [],
-            identityResolver: DefaultIdentityResolver(),
-            diagnostics: diagnostics,
-            on: .global(),
-            completion: completion
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try tsc_await { completion in
+              workspace.loadRootPackage(
+                at: path,
+                observabilityScope: observabilitySystem().topScope,
+                completion: completion
+              )
+            }
           )
+        } catch {
+          #warning("Dropping diagnostics.")
+          return .failure(.packageManagerError(error, []))
         }
       }
     }
