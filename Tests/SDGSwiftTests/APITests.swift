@@ -31,6 +31,13 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
+// #workaround(CI runs with old toolchains.)
+#if compiler(>=5.6)
+  var swift5_6 = true
+#else
+  var swift5_6 = false
+#endif
+
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBuild() {
@@ -253,9 +260,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
 
       try withDefaultMockRepository { mock in
-        _ = try mock.resolve().get()
-        _ = try mock.build(releaseConfiguration: true).get()
-        _ = try mock.test().get()
+        if swift5_6 {
+          _ = try mock.resolve().get()
+          _ = try mock.build(releaseConfiguration: true).get()
+          _ = try mock.test().get()
+        }
       }
     #endif
 
