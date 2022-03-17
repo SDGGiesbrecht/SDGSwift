@@ -22,6 +22,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+  import PackageModel
   import Workspace
 #endif
 
@@ -138,7 +139,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testManifestLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssert(try thisRepository.manifest().get().name == "SDGSwift")
+      XCTAssert(try thisRepository.manifest().get().displayName == "SDGSwift")
     #endif
   }
 
@@ -146,14 +147,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       XCTAssert(
         try thisRepository.packageGraph().get().packages
-          .contains(where: { $0.manifestName == "SDGCornerstone" })
+          .contains(where: { $0.manifest.displayName == "SDGCornerstone" })
       )
     #endif
   }
 
   func testPackageLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssert(try thisRepository.package().get().manifestName == "SDGSwift")
+      XCTAssert(try thisRepository.package().get().manifest.displayName == "SDGSwift")
     #endif
   }
 
@@ -216,9 +217,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testWorkspaceLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssertEqual(
-        try thisRepository.packageWorkspace().get().resolvedFile.basename,
-        "Package.resolved"
+      XCTAssert(
+        try thisRepository.packageWorkspace().get().pinsStore.load().pins
+          .contains(where: { pin in
+            return pin.packageRef.identity
+            == PackageIdentity(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+          })
       )
     #endif
   }
