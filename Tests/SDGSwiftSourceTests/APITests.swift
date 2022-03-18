@@ -226,7 +226,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               token.kind == .commentText
             {
               foundComment = true
-              XCTAssertEqual(moreSource[moreSource.indices(of: token.range(in: context))], "Comment.")
+              XCTAssertEqual(
+                moreSource[moreSource.indices(of: token.range(in: context))],
+                "Comment."
+              )
             }
             return true
           }).scan(moreSyntax)
@@ -385,7 +388,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           checkExtendedSyntax: { syntax, _ in
             scanned.insert(syntax.text)
             if let codeDelimiter = syntax as? ExtendedTokenSyntax,
-               codeDelimiter.kind == .codeDelimiter
+              codeDelimiter.kind == .codeDelimiter
             {
               foundCodeDelimiter = true
               XCTAssert(codeDelimiter.parent is SDGSwiftSource.CodeBlockSyntax)
@@ -619,7 +622,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                     $0.name.source().hasPrefix("withSeparateParameters")
                   })!,
                 ]
-                _ = method.documentation.last!.documentationComment.renderedHTML(localization: "zxx")
+                _ = method.documentation.last!.documentationComment
+                  .renderedHTML(localization: "zxx")
 
                 for localization in InterfaceLocalization.allCases {
                   let rendered = methods.map({
@@ -627,7 +631,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                       localization: localization.code
                     )
                   }).joined(separator: "\n")
-                  
+
                   let specification = testSpecificationDirectory().appendingPathComponent(
                     "Source/After/Rendered Documentation/\(localization.icon!).html"
                   )
@@ -766,7 +770,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         try FunctionalSyntaxScanner(
           checkExtendedSyntax: { syntax, _ in
             if let token = syntax as? ExtendedTokenSyntax,
-               token.kind == .quotationMark
+              token.kind == .quotationMark
             {
               foundQuotationMark = true
               XCTAssert(token.ancestors().contains(where: { $0.text == "\u{22}new\u{22}" }))
@@ -777,7 +781,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               XCTAssertEqual(literal.firstToken()?.text, "\u{22}")
               XCTAssertEqual(literal.lastToken()?.text, "\u{22}")
             } else if let token = syntax as? ExtendedTokenSyntax,
-                      token.kind == .string
+              token.kind == .string
             {
               foundString = true
               XCTAssertEqual(token.nextToken()?.text, "\u{22}")

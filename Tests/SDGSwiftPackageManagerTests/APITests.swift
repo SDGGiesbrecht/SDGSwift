@@ -212,7 +212,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         try thisRepository.packageWorkspace().get().pinsStore.load().pins
           .contains(where: { pin in
             return pin.packageRef.identity
-            == PackageIdentity(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+              == PackageIdentity(
+                url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!
+              )
           })
       )
     #endif

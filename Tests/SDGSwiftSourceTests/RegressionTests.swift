@@ -84,7 +84,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "public func function() {}",
       ].joined(separator: "\n")
       if swift5_6 {
-      let parsed = try SyntaxParser.parse(source: source)
+        let parsed = try SyntaxParser.parse(source: source)
         XCTAssertEqual(parsed.source(), source)
         let documentation = parsed.api().first?.documentation
         let comment = documentation?.last?.documentationComment

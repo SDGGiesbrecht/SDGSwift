@@ -228,7 +228,8 @@
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,
-        .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword, .poundUnavailableKeyword:
+        .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword,
+        .poundUnavailableKeyword:
         return "keyword"
 
       case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound,
