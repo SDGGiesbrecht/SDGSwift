@@ -176,7 +176,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             if swift5_6 {
               _ = try mock.test().get()
-              guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
+              guard
+                let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
               else {
                 XCTFail("No test coverage report found.")
                 return
