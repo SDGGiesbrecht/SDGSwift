@@ -496,7 +496,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testPackageDocumentation() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let package = try thisRepository.package().get()
-      XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      if swift5_6 {
+        XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      }
     #endif
   }
 

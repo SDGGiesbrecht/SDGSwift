@@ -294,11 +294,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
-        _ = try? SwiftCompiler.build(package).get()
-        _ = try? SwiftCompiler.run("no such target", from: package).get()
-        _ = try SwiftCompiler.test(package).get()
-        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
-        _ = try? SwiftCompiler.resolve(package).get()
+        if swift5_6 {
+          _ = try? SwiftCompiler.build(package).get()
+          _ = try? SwiftCompiler.run("no such target", from: package).get()
+          _ = try SwiftCompiler.test(package).get()
+          _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+          _ = try? SwiftCompiler.resolve(package).get()
+        }
       }
     #endif
   }
