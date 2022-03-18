@@ -115,8 +115,8 @@ let package = Package(
     ),
     .package(
       name: "SwiftSyntax",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}syntax",
-      .exact(Version(0, 0, 506000))
+      url: "https://github.com/apple/swift\u{2D}syntax",
+      .exact(Version(0, 50600, 1))
     ),
     .package(
       name: "cmark",
