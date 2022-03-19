@@ -495,7 +495,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
   let impossibleDependencies: [String] = [
-    "SwiftSyntaxParser",
+    "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -510,7 +510,7 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
   let impossibleDependencies: [String] = [
-    "SwiftSyntaxParser",
+    "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -541,7 +541,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
   let impossibleDependencies: [String] = [
-    "SwiftSyntaxParser",
+    "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
