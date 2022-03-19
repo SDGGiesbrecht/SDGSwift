@@ -493,7 +493,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntaxParser"
   ]
@@ -507,8 +507,9 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
+
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntaxParser"
   ]
@@ -524,7 +525,7 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
