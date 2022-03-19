@@ -18,6 +18,7 @@
   import SDGPersistence
 
   import SwiftSyntax
+  import SwiftSyntaxParser
 
   extension SyntaxParser {
 

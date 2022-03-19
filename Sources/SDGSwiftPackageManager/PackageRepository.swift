@@ -20,6 +20,7 @@ import SDGVersioning
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
+  import PackageGraph
   import Workspace
   import TSCBasic
 #endif
@@ -88,64 +89,75 @@ extension PackageRepository {
   // MARK: - Properties
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    private var path: AbsolutePath {
+      return AbsolutePath(location.path)
+    }
+
+    private func observabilitySystem() -> ObservabilitySystem {
+      return ObservabilitySystem({ _, _ in })
+    }
+
     /// Returns the package manifest.
-    @available(macOS 10.15, *)
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try tsc_await { completion in
-          ManifestLoader.loadRootManifest(
-            at: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            swiftCompilerFlags: [],
-            identityResolver: DefaultIdentityResolver(),
-            diagnostics: diagnostics,
-            on: .global(),
-            completion: completion
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try tsc_await { completion in
+              workspace.loadRootManifest(
+                at: path,
+                observabilityScope: observabilitySystem().topScope,
+                completion: completion
+              )
+            }
           )
+        } catch {
+          return .failure(.packageManagerError(error))
         }
       }
     }
 
     /// Returns the package structure.
-    @available(macOS 10.15, *)
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try tsc_await { completion in
-          PackageBuilder.loadRootPackage(
-            at: AbsolutePath(location.path),
-            swiftCompiler: AbsolutePath(compiler.path),
-            swiftCompilerFlags: [],
-            identityResolver: DefaultIdentityResolver(),
-            diagnostics: diagnostics,
-            on: .global(),
-            completion: completion
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try tsc_await { completion in
+              workspace.loadRootPackage(
+                at: path,
+                observabilityScope: observabilitySystem().topScope,
+                completion: completion
+              )
+            }
           )
+        } catch {
+          return .failure(.packageManagerError(error))
         }
       }
     }
 
     /// Returns the package workspace.
-    @available(macOS 10.15, *)
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.manifestLoader().map { loader in
-        return Workspace.create(
-          forRootPackage: AbsolutePath(location.path),
-          manifestLoader: loader
-        )
+      do {
+        return .success(try Workspace(forRootPackage: path))
+      } catch {
+        return .failure(.packageManagerError(error))
       }
     }
 
     /// Returns the package graph.
     @available(macOS 10.15, *)
     public func packageGraph() -> Swift.Result<PackageGraph, SwiftCompiler.PackageLoadingError> {
-      return SwiftCompiler.withDiagnostics { compiler, diagnostics in
-        return try Workspace.loadRootGraph(
-          at: AbsolutePath(location.path),
-          swiftCompiler: AbsolutePath(compiler.path),
-          swiftCompilerFlags: [],
-          identityResolver: DefaultIdentityResolver(),
-          diagnostics: diagnostics
-        )
+      return packageWorkspace().flatMap { workspace in
+        do {
+          return .success(
+            try workspace.loadPackageGraph(
+              rootPath: path,
+              observabilityScope: observabilitySystem().topScope
+            )
+          )
+        } catch {
+          return .failure(.packageManagerError(error))
+        }
       }
     }
   #endif

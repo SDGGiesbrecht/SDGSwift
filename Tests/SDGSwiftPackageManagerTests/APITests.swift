@@ -22,6 +22,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+  import PackageModel
   import Workspace
 #endif
 
@@ -34,6 +35,13 @@ import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
+
+// #workaround(CI runs with old toolchains.)
+#if compiler(>=5.6)
+  var swift5_6 = true
+#else
+  var swift5_6 = false
+#endif
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
@@ -74,7 +82,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       testCustomStringConvertibleConformance(
-        of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError(), []),
+        of: SwiftCompiler.PackageLoadingError.packageManagerError(StandInError()),
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Package Manager",
         overwriteSpecificationInsteadOfFailing: false
@@ -87,24 +95,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "No Swift",
         overwriteSpecificationInsteadOfFailing: false
       )
-
-      let invalidPackage = URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .appendingPathComponent("Mock Projects")
-        .appendingPathComponent("Invalid")
-      switch PackageRepository(at: invalidPackage).packageGraph() {
-      case .success(let graph):
-        print(graph.allTargets.map({ $0.name }))
-        XCTFail("Should not have succeeded.")
-      case .failure(let error):
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Diagnostics",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      }
     #endif
   }
 
@@ -138,7 +128,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testManifestLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssert(try thisRepository.manifest().get().name == "SDGSwift")
+      XCTAssert(try thisRepository.manifest().get().displayName == "SDGSwift")
     #endif
   }
 
@@ -146,14 +136,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       XCTAssert(
         try thisRepository.packageGraph().get().packages
-          .contains(where: { $0.manifestName == "SDGCornerstone" })
+          .contains(where: { $0.manifest.displayName == "SDGCornerstone" })
       )
     #endif
   }
 
   func testPackageLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssert(try thisRepository.package().get().manifestName == "SDGSwift")
+      XCTAssert(try thisRepository.package().get().manifest.displayName == "SDGSwift")
     #endif
   }
 
@@ -184,30 +174,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if localization == InterfaceLocalization.allCases.first {
               XCTAssertNil(try? mock.codeCoverageReport().get())  // Not generated yet.
             }
-            _ = try mock.test().get()
-            guard let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
-            else {
-              XCTFail("No test coverage report found.")
-              return
+            if swift5_6 {
+              _ = try mock.test().get()
+              guard
+                let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
+              else {
+                XCTFail("No test coverage report found.")
+                return
+              }
+              guard
+                let file = coverageReport.files.first(where: {
+                  $0.file.lastPathComponent == "Mock.swift"
+                })
+              else {
+                XCTFail("File missing from coverage report.")
+                return
+              }
+              var specification = try String(from: sourceURL)
+              for range in file.regions.reversed() {
+                specification.insert("!", at: specification.index(of: range.region.upperBound))
+                specification.insert("¡", at: specification.index(of: range.region.lowerBound))
+              }
+              compare(
+                specification,
+                against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"),
+                overwriteSpecificationInsteadOfFailing: false
+              )
             }
-            guard
-              let file = coverageReport.files.first(where: {
-                $0.file.lastPathComponent == "Mock.swift"
-              })
-            else {
-              XCTFail("File missing from coverage report.")
-              return
-            }
-            var specification = try String(from: sourceURL)
-            for range in file.regions.reversed() {
-              specification.insert("!", at: specification.index(of: range.region.upperBound))
-              specification.insert("¡", at: specification.index(of: range.region.lowerBound))
-            }
-            compare(
-              specification,
-              against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"),
-              overwriteSpecificationInsteadOfFailing: false
-            )
           }
         }
       }
@@ -216,9 +209,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testWorkspaceLoading() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      XCTAssertEqual(
-        try thisRepository.packageWorkspace().get().resolvedFile.basename,
-        "Package.resolved"
+      XCTAssert(
+        try thisRepository.packageWorkspace().get().pinsStore.load().pins
+          .contains(where: { pin in
+            return pin.packageRef.identity
+              == PackageIdentity(
+                url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!
+              )
+          })
       )
     #endif
   }

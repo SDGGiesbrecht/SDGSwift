@@ -344,6 +344,7 @@ extension Configuration {
         case .success(let output):
           json = output
         }
+        // #workaround(Need a better way to get output without build log.)
         if json.first ≠ "[" {
           json.drop(upTo: "\n[")  // @exempt(from: tests)
           json.removeFirst()
@@ -351,8 +352,16 @@ extension Configuration {
         }
         if json.hasPrefix("[1/") ∨ json.hasPrefix("[0/") {
           // Remove build log as of Swift 5.4.
-          json.drop(upTo: "!\n[")  // @exempt(from: tests)
-          json.removeFirst()
+          if json.contains("!\n[") {  // @exempt(from: tests)
+            json.drop(upTo: "!\n[")
+          } else {
+            // Format changed in Swift 5.6.
+            json.drop(upTo: "! (")
+            json.drop(upTo: ")\n[")
+          }
+          if ¬json.isEmpty {
+            json.removeFirst()
+          }
         }
 
         jsonData = json.file

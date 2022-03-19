@@ -7,21 +7,12 @@ CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
 CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
 CopySwiftLibs [...]/MockTests.xctest
-Ditto [...]/Mock.modulemap
 Ignoring --strip-bitcode because --sign was not passed
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
-MergeSwiftModule normal x_
 MkDir [...]/Contents
 MkDir [...]/MacOS
 MkDir [...]/MockTests.xctest
-PBXCp [...]/Mock-Swift.h
-PBXCp [...]/x_-apple-macos.swiftdoc
-PBXCp [...]/x_-apple-macos.swiftmodule
-PBXCp [...]/x_-apple-macos.swiftsourceinfo
-PBXCp [...]/x_.swiftdoc
-PBXCp [...]/x_.swiftmodule
-PBXCp [...]/x_.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -46,5 +37,4 @@ WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
 note: Build preparation complete
-note: Building targets in parallel
 note: Planning

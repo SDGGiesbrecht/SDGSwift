@@ -21,6 +21,7 @@
   import SDGLocalization
 
   import SwiftSyntax
+  import SwiftSyntaxParser
   import PackageModel
   import PackageGraph
 
@@ -86,7 +87,7 @@
 
       let declaredDependencies = package.reachableTargets.filter({ module in
         switch module.type {
-        case .executable, .systemModule, .test, .binary, .plugin:
+        case .executable, .systemModule, .test, .binary, .plugin, .snippet:
           return false
         case .library:
           return ¬root.targets.contains(module.underlyingTarget)
@@ -118,7 +119,7 @@
       let search =
         "Package(".scalars
         + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-        + "name: \u{22}\(package.manifestName)\u{22}".scalars
+        + "name: \u{22}\(package.manifest.displayName)\u{22}".scalars
       let node = manifest.smallestSubnode(containing: search)
       let manifestDeclaration = node?.ancestors().first(where: { $0.is(VariableDeclSyntax.self) })
       return manifestDeclaration?.documentation ?? []  // @exempt(from: tests)
@@ -149,7 +150,7 @@
       let documentation = PackageAPI.documentation(for: package, from: manifest)
 
       let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(
-        name: package.manifestName
+        name: package.manifest.displayName
       )
       self.init(documentation: documentation, declaration: declaration)
 
@@ -161,7 +162,7 @@
               try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress)
             )
           )
-        case .executable, .test, .plugin:
+        case .executable, .test, .plugin, .snippet:
           continue
         }
       }

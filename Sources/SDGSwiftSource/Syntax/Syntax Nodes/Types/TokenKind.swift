@@ -40,7 +40,7 @@
         .rightAngle, .prefixAmpersand, .postfixQuestionMark, .infixQuestionMark, .exclamationMark,
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote, .pound,
         .backtick, .poundAssertKeyword, .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis,
-        .singleQuote, .rawStringDelimiter, .poundFileIDKeyword:
+        .singleQuote, .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
         return self
       case .stringSegment(let text):
         return .stringSegment(text.decomposedStringWithCanonicalMapping)
@@ -62,6 +62,8 @@
         return .floatingLiteral(text.decomposedStringWithCanonicalMapping)
       case .stringLiteral(let text):
         return .stringLiteral(text.decomposedStringWithCanonicalMapping)
+      case .regexLiteral(let text):
+        return .regexLiteral(text.decomposedStringWithCanonicalMapping)
       case .contextualKeyword(let text):
         return .contextualKeyword(text.decomposedStringWithCanonicalMapping)
       case .unknown(let text):
@@ -94,7 +96,7 @@
         .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword,
         .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier,
         .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield,
-        .poundFileIDKeyword:
+        .poundFileIDKeyword, .poundUnavailableKeyword, .regexLiteral:
         return false
       case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
         .prefixOperator:

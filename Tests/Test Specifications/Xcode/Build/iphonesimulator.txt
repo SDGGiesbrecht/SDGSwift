@@ -13,35 +13,13 @@ CreateBuildDirectory [...]/Debug-iphonesimulator
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
-Ditto [...]/Mock.modulemap
 Ld [...]/Mock.o normal arm64
 Ld [...]/Mock.o normal i386
 Ld [...]/Mock.o normal x86_64
 Ld [...]/MockTests normal arm64
 Ld [...]/MockTests normal i386
 Ld [...]/MockTests normal x86_64
-MergeSwiftModule normal arm64
-MergeSwiftModule normal i386
-MergeSwiftModule normal x86_64
 MkDir [...]/MockTests.xctest
-PBXCp [...]/arm64-apple-ios-simulator.swiftdoc
-PBXCp [...]/arm64-apple-ios-simulator.swiftmodule
-PBXCp [...]/arm64-apple-ios-simulator.swiftsourceinfo
-PBXCp [...]/arm64.swiftdoc
-PBXCp [...]/arm64.swiftmodule
-PBXCp [...]/arm64.swiftsourceinfo
-PBXCp [...]/i386-apple-ios-simulator.swiftdoc
-PBXCp [...]/i386-apple-ios-simulator.swiftmodule
-PBXCp [...]/i386-apple-ios-simulator.swiftsourceinfo
-PBXCp [...]/i386.swiftdoc
-PBXCp [...]/i386.swiftmodule
-PBXCp [...]/i386.swiftsourceinfo
-PBXCp [...]/x86_64-apple-ios-simulator.swiftdoc
-PBXCp [...]/x86_64-apple-ios-simulator.swiftmodule
-PBXCp [...]/x86_64-apple-ios-simulator.swiftsourceinfo
-PBXCp [...]/x86_64.swiftdoc
-PBXCp [...]/x86_64.swiftmodule
-PBXCp [...]/x86_64.swiftsourceinfo
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
@@ -56,5 +34,4 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 note: Build preparation complete
-note: Building targets in parallel
 note: Planning

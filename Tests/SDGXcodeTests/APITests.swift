@@ -33,6 +33,13 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
+// #workaround(CI runs with old toolchains.)
+#if compiler(>=5.6)
+  var swift5_6 = true
+#else
+  var swift5_6 = false
+#endif
+
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDependencyWarnings() throws {
@@ -81,7 +88,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         try withDefaultMockRepository { mock in
           let mockScheme = try? mock.scheme().get()
           #if PLATFORM_HAS_XCODE
-            XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
+            if swift5_6 {
+              XCTAssertNotNil(mockScheme, "Failed to locate Xcode scheme.")
+            }
           #endif
 
           let sdks: [Xcode.Platform] = [
@@ -123,7 +132,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
             }
             #if PLATFORM_HAS_XCODE
-              _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              if swift5_6 {
+                _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              }
             #else
               _ = try? mock.build(for: sdk, reportProgress: processLog).get()
             #endif
@@ -157,15 +168,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.contains("CreateUniversalBinary") })
             // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
+            // Differ between 5.5 and 5.6
+            filtered = filtered.filter({ ¬$0.hasPrefix("Copy ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("Ditto ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("EmitSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("MergeSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              compare(
-                filtered.sorted().joined(separator: "\n"),
-                against: testSpecificationDirectory()
-                  .appendingPathComponent("Xcode")
-                  .appendingPathComponent("Build")
-                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+              if swift5_6 {
+                compare(
+                  filtered.sorted().joined(separator: "\n"),
+                  against: testSpecificationDirectory()
+                    .appendingPathComponent("Xcode")
+                    .appendingPathComponent("Build")
+                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              }
             #endif
           }
 
@@ -210,7 +230,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
             }
             #if PLATFORM_HAS_XCODE
-              _ = try mock.test(on: sdk, reportProgress: processLog).get()
+              if swift5_6 {
+                _ = try mock.test(on: sdk, reportProgress: processLog).get()
+              }
             #else
               _ = try? mock.test(on: sdk, reportProgress: processLog).get()
             #endif
@@ -258,15 +280,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ $0 ≠ "}" })
             // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("{ platform:macOS, arch:") })
+            // Differ between 5.5 and 5.6
+            filtered = filtered.filter({ ¬$0.hasPrefix("Copy ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("Ditto ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("EmitSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("MergeSwiftModule ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
+            filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              compare(
-                filtered.sorted().joined(separator: "\n"),
-                against: testSpecificationDirectory()
-                  .appendingPathComponent("Xcode")
-                  .appendingPathComponent("Test")
-                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+              if swift5_6 {
+                compare(
+                  filtered.sorted().joined(separator: "\n"),
+                  against: testSpecificationDirectory()
+                    .appendingPathComponent("Xcode")
+                    .appendingPathComponent("Test")
+                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              }
             #endif
           }
         }
@@ -276,9 +307,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try withDefaultMockRepository { package in
-          _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
-          _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
-          _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
+          if swift5_6 {
+            _ = try? Xcode.build(package, for: .iOS(simulator: false)).get()
+            _ = try? Xcode.test(package, on: .iOS(simulator: true)).get()
+            _ = try? Xcode.codeCoverageReport(for: package, on: .iOS(simulator: true)).get()
+          }
         }
       #endif
     #endif
@@ -342,7 +375,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
 
           #if PLATFORM_HAS_XCODE
-            _ = try mock.test(on: .macOS).get()
+            if swift5_6 {
+              _ = try mock.test(on: .macOS).get()
+            }
           #else
             _ = try? mock.test(on: .macOS).get()
           #endif
@@ -354,40 +389,42 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 ignoreCoveredRegions: true
               )
               #if PLATFORM_HAS_XCODE
-                let extractedReport = try possibleReport.get()
-                guard let coverageReport = extractedReport else {
-                  XCTFail("No test coverage report found.")
-                  return
-                }
-                guard
-                  let file = coverageReport.files.first(where: {
-                    $0.file.lastPathComponent == "Mock.swift"
-                  })
-                else {
-                  XCTFail("File missing from coverage report.")
-                  return
-                }
-                do {
-                  var specification = try String(from: sourceURL)
-                  for range in file.regions.reversed() {
-                    specification.insert(
-                      "!",
-                      at: specification.index(of: range.region.upperBound)
-                    )
-                    specification.insert(
-                      "¡",
-                      at: specification.index(of: range.region.lowerBound)
-                    )
+                if swift5_6 {
+                  let extractedReport = try possibleReport.get()
+                  guard let coverageReport = extractedReport else {
+                    XCTFail("No test coverage report found.")
+                    return
                   }
-                  compare(
-                    specification,
-                    against: testSpecificationDirectory().appendingPathComponent(
-                      "Coverage.txt"
-                    ),
-                    overwriteSpecificationInsteadOfFailing: false
-                  )
-                } catch {
-                  XCTFail("Failed to load source.")
+                  guard
+                    let file = coverageReport.files.first(where: {
+                      $0.file.lastPathComponent == "Mock.swift"
+                    })
+                  else {
+                    XCTFail("File missing from coverage report.")
+                    return
+                  }
+                  do {
+                    var specification = try String(from: sourceURL)
+                    for range in file.regions.reversed() {
+                      specification.insert(
+                        "!",
+                        at: specification.index(of: range.region.upperBound)
+                      )
+                      specification.insert(
+                        "¡",
+                        at: specification.index(of: range.region.lowerBound)
+                      )
+                    }
+                    compare(
+                      specification,
+                      against: testSpecificationDirectory().appendingPathComponent(
+                        "Coverage.txt"
+                      ),
+                      overwriteSpecificationInsteadOfFailing: false
+                    )
+                  } catch {
+                    XCTFail("Failed to load source.")
+                  }
                 }
               #endif
             }

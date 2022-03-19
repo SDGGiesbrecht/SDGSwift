@@ -107,16 +107,16 @@ let package = Package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 50503, 0))
+      .exact(Version(0, 50600, 3))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}tools\u{2D}support\u{2D}core",
-      .upToNextMinor(from: Version(0, 50503, 0))
+      .upToNextMinor(from: Version(0, 50600, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50500, 0))
+      .exact(Version(0, 50600, 1))
     ),
     .package(
       name: "cmark",
@@ -199,6 +199,12 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
@@ -350,6 +356,12 @@ let package = Package(
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
       ]
     ),
     .testTarget(
@@ -464,7 +476,11 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
+      var name = dependency.name
+      if name == nil {
+        name = dependency.url
+      }
+      return (name ?? "").contains(impossible)
     })
   })
   for target in package.targets {
@@ -477,16 +493,39 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
+
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
@@ -501,6 +540,17 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
