@@ -493,10 +493,32 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
@@ -517,6 +539,17 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
