@@ -33,6 +33,12 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
+#if compiler(>=5.6)
+  var swift5_6 = true
+#else
+  var swift5_6 = false
+#endif
+
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
@@ -232,20 +238,27 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-              log.lines.removeAll(where: { line in
-                return line.line.contains("SQLITE_OPEN_FILEPROTECTION_".scalars)
-              })
-              log.lines.removeAll(where: { line in
-                return line.line.contains("[logging] misuse at line".scalars)
-              })
-
-              compare(
-                log,
-                against: testSpecificationDirectory().appendingPathComponent(
-                  "Configuration Loading.txt"
-                ),
-                overwriteSpecificationInsteadOfFailing: false
+              var lines = log.lines.map { String(String.UnicodeScalarView($0.line)) }
+              lines.removeAll(where: { $0.contains("SQLITE_OPEN_FILEPROTECTION_") })
+              lines.removeAll(where: { $0.contains("[logging] misuse at line") })
+              log = lines.joined(separator: "\n")
+              let digits = ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits })
+              let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars
+              let durationPattern = durationPatternOne + RepetitionPattern(digits) + "s)".scalars
+              log.scalars.replaceMatches(
+                for: durationPattern,
+                with: "([duration]s)".scalars
               )
+
+              if swift5_6 {
+                compare(
+                  log,
+                  against: testSpecificationDirectory().appendingPathComponent(
+                    "Configuration Loading.txt"
+                  ),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              }
             #endif
           #endif
 
