@@ -252,7 +252,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
               if swift5_6 {
                 // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
-                #if !Linux
+                #if !os(Linux)
                   compare(
                     log,
                     against: testSpecificationDirectory().appendingPathComponent(
