@@ -36,12 +36,6 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      if SwiftCompiler.version(forConstraints: Version(3, 0, 0)...Version(5, 6)) == Version(5, 6) {
-        // #workaround(Skipping test on Swift 5.6 for now because there is no valid version to point at.)
-        return
-      }
-    #endif
     #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
@@ -68,12 +62,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
-              // https://github.com/SDGGiesbrecht/SDGSwift/tree/8.0.0/Sources/SampleConfiguration
+              // https://github.com/SDGGiesbrecht/SDGSwift/tree/9.0.0/Sources/SampleConfiguration
               let product = "SampleConfiguration"
               let packageName = "SDGSwift"
               let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
               let minimumMacOSVersion = Version(10, 13)
-              let version = Version(8, 0, 0)
+              let version = Version(9, 0, 0)
               let type = SampleConfiguration.self  // Import it first if necessary.
 
               // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -237,6 +231,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
+
+              log.lines.removeAll(where: { line in
+                return line.line.contains("SQLITE_OPEN_FILEPROTECTION_".scalars)
+              })
+              log.lines.removeAll(where: { line in
+                return line.line.contains("[logging] misuse at line".scalars)
+              })
 
               compare(
                 log,
