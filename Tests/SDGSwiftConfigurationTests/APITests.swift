@@ -33,15 +33,15 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
+#if compiler(>=5.6)
+  var swift5_6 = true
+#else
+  var swift5_6 = false
+#endif
+
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      if SwiftCompiler.version(forConstraints: Version(3, 0, 0)...Version(5, 6)) == Version(5, 6) {
-        // #workaround(Skipping test on Swift 5.6 for now because there is no valid version to point at.)
-        return
-      }
-    #endif
     #if PLATFORM_LACKS_FOUNDATION_PROCESS
       let mock = SampleConfiguration()
       mock.option = "Mock"
@@ -68,12 +68,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // @example(configurationLoading)
               // These refer to a real, working sample product.
               // See its source for more details:
-              // https://github.com/SDGGiesbrecht/SDGSwift/tree/8.0.0/Sources/SampleConfiguration
+              // https://github.com/SDGGiesbrecht/SDGSwift/tree/9.0.0/Sources/SampleConfiguration
               let product = "SampleConfiguration"
               let packageName = "SDGSwift"
               let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
               let minimumMacOSVersion = Version(10, 13)
-              let version = Version(8, 0, 0)
+              let version = Version(9, 0, 0)
               let type = SampleConfiguration.self  // Import it first if necessary.
 
               // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -238,13 +238,30 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 + " for debugging\n".scalars
               log.scalars.replaceMatches(for: astPattern, with: "".scalars)
 
-              compare(
-                log,
-                against: testSpecificationDirectory().appendingPathComponent(
-                  "Configuration Loading.txt"
-                ),
-                overwriteSpecificationInsteadOfFailing: false
+              var lines = log.lines.map { String(String.UnicodeScalarView($0.line)) }
+              lines.removeAll(where: { $0.contains("SQLITE_OPEN_FILEPROTECTION_") })
+              lines.removeAll(where: { $0.contains("[logging] misuse at line") })
+              log = lines.joined(separator: "\n")
+              let digits = ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits })
+              let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars
+              let durationPattern = durationPatternOne + RepetitionPattern(digits) + "s)".scalars
+              log.scalars.replaceMatches(
+                for: durationPattern,
+                with: "([duration]s)".scalars
               )
+
+              if swift5_6 {
+                // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
+                #if !os(Linux)
+                  compare(
+                    log,
+                    against: testSpecificationDirectory().appendingPathComponent(
+                      "Configuration Loading.txt"
+                    ),
+                    overwriteSpecificationInsteadOfFailing: false
+                  )
+                #endif
+              }
             #endif
           #endif
 

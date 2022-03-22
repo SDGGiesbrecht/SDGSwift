@@ -13,17 +13,23 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
-[[...]/[...]] Merging module SDGControlFlow
-[[...]/[...]] Merging module SDGSwiftConfiguration
-[[...]/[...]] Merging module SampleConfiguration
-[[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] Build complete!
+[[...]/[...]] Downloading binary artifacts
+Building for debugging...
+[[...]/[...]] Emitting module SDGControlFlow
+[[...]/[...]] Emitting module SDGSwiftConfiguration
+[[...]/[...]] Emitting module SampleConfiguration
+[[...]/[...]] Emitting module configure
+[[...]/[...]] Build complete! ([duration]s)
 
 Cached
 Loading “SampleConfigurationFile.swift”...
-[[...]/[...]] Merging module SwiftSyntax
+Building for debugging...
+[[...]/[...]] Copying lib_InternalSwiftSyntaxParser.dylib
+[[...]/[...]] Emitting module SwiftSyntax
 [[...]/[...]] Archiving libSwiftSyntax.a
-[[...]/[...]] Build complete!
+[[...]/[...]] Emitting module SwiftSyntaxParser
+[[...]/[...]] Archiving libSwiftSyntaxParser.a
+Build complete! ([duration]s)
 
 None
 No configuration found. Using defaults...
@@ -44,9 +50,11 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 Fetching [...]
-[[...]/[...]] Merging module SDGSwiftConfiguration
-[[...]/[...]] Merging module SampleConfiguration
-[[...]/[...]] Merging module configure
-[[...]/[...]] [[...]/[...]] Build complete!
+[[...]/[...]] Downloading binary artifacts
+Building for debugging...
+[[...]/[...]] Emitting module SDGSwiftConfiguration
+[[...]/[...]] Emitting module SampleConfiguration
+[[...]/[...]] Emitting module configure
+[[...]/[...]] Build complete! ([duration]s)
 
 Mock
