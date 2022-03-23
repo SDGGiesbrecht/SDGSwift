@@ -106,3 +106,8 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
+
+// #workaround(Unable to run all tests with Swift 5.5.)
+#if os(Linux) && compiler(<5.6)
+  configuration.testing.enforceCoverage = false
+#endif
