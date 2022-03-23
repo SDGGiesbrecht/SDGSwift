@@ -1,4 +1,4 @@
-# Swift 5.6 (Ubuntu).yaml
+# Ubuntu.yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,15 +10,15 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Swift 5.6 (Ubuntu)
+name: Swift 5.5 (Ubuntu)
 
 on: [push, pull_request]
 
 jobs:
   Ubuntu:
-    name: Swift 5.6 (Ubuntu)
+    name: Swift 5.5 (Ubuntu)
     runs-on: ubuntu-20.04
-    container: swift:5.6.0-focal
+    container: swift:5.5.1-focal
     steps:
     - name: Check out
       uses: actions/checkout@v2
