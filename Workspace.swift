@@ -106,8 +106,3 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
-
-configuration.supportedPlatforms.remove(.centOS)
-
-// #workaround(Disabled while stradling versions.)
-configuration.testing.enforceCoverage = false
