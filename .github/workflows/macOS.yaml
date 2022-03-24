@@ -73,6 +73,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TOOLCHAINS=org.swift.560202203081a
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
             workspace validate •job macos •language '🇨🇦EN' •use‐version 0.39.0
