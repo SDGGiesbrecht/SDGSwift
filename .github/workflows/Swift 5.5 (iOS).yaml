@@ -69,4 +69,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TARGETING_IOS=true
         xcodebuild test -destination 'name=iPhone 12' -scheme SDGSwift-Package
