@@ -176,8 +176,11 @@ extension VersionedExternalProcess {
       switch tool(versionConstraints: versionConstraints) {
       case .failure(let error):
         return .failure(.locationError(error))
-      case .success(let git):
-        switch git.run(
+      case .success(let tool):
+        #warning("Debugging...")
+        print("$ \(commandName) " + arguments.joined(separator: " "))
+        print(tool.executable.path)
+        switch tool.run(
           arguments,
           in: workingDirectory,
           with: environment,
