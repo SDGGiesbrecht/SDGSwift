@@ -37,12 +37,6 @@ jobs:
       uses: fwal/setup-swift@v1.14.0
       with:
         swift-version: '5.6'
-    - name: Inspect toolchain
-      shell: bash
-      run: |
-        set -x
-        xcrun swift --version
-        ls /Library/Developer/Toolchains
     - name: Install Workspace
       shell: bash
       run: |

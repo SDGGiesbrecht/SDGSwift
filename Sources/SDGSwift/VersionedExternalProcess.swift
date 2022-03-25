@@ -177,9 +177,6 @@ extension VersionedExternalProcess {
       case .failure(let error):
         return .failure(.locationError(error))
       case .success(let tool):
-        #warning("Debugging...")
-        print("$ \(commandName) " + arguments.joined(separator: " "))
-        print(tool.executable.path)
         switch tool.run(
           arguments,
           in: workingDirectory,
