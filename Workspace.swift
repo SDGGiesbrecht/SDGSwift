@@ -107,7 +107,7 @@ configuration.documentation.api.ignoredDependencies = [
   "SwiftSyntax",
 ]
 
-// #workaround(Unable to run all tests with Swift 5.5.)
-#if os(Linux) && compiler(<5.6)
+// #workaround(workspace version 0.39.0, Toolchain mismatch prevents loading of result bundle.)
+#if os(macOS)
   configuration.testing.enforceCoverage = false
 #endif
