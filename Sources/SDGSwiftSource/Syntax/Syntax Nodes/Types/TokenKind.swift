@@ -62,7 +62,7 @@
         return .floatingLiteral(text.decomposedStringWithCanonicalMapping)
       case .stringLiteral(let text):
         return .stringLiteral(text.decomposedStringWithCanonicalMapping)
-      case .regexLiteral(let text):
+      case .regexLiteral(let text):  // @exempt(from: tests) Reachability unknown.
         return .regexLiteral(text.decomposedStringWithCanonicalMapping)
       case .contextualKeyword(let text):
         return .contextualKeyword(text.decomposedStringWithCanonicalMapping)

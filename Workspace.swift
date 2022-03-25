@@ -107,7 +107,7 @@ configuration.documentation.api.ignoredDependencies = [
   "SwiftSyntax",
 ]
 
-configuration.supportedPlatforms.remove(.centOS)
-
-// #workaround(Disabled while stradling versions.)
-configuration.testing.enforceCoverage = false
+// #workaround(workspace version 0.39.0, Toolchain mismatch prevents loading of result bundle.)
+#if os(macOS)
+  configuration.testing.enforceCoverage = false
+#endif

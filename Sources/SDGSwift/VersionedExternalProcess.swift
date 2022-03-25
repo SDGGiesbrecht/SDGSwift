@@ -176,8 +176,8 @@ extension VersionedExternalProcess {
       switch tool(versionConstraints: versionConstraints) {
       case .failure(let error):
         return .failure(.locationError(error))
-      case .success(let git):
-        switch git.run(
+      case .success(let tool):
+        switch tool.run(
           arguments,
           in: workingDirectory,
           with: environment,

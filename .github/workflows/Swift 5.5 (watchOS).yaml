@@ -1,4 +1,4 @@
-# Windows.yaml
+# Swift 5.5 (watchOS).yaml
 #
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
@@ -10,30 +10,32 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Windows
+name: Swift 5.5 (watchOS)
 
 on: [push, pull_request]
 
 jobs:
-  Windows:
-    name: Windows
-    runs-on: windows-2019
+  watchOS:
+    name: Swift 5.5 (watchOS)
+    runs-on: macos-11
     steps:
     - name: Check out
       uses: actions/checkout@v2
     - name: Cache Workspace
       uses: actions/cache@v2
       with:
-        key: Windows‐${{ hashFiles('.github/workflows/**') }}
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Install Swift
-      uses: compnerd/gha-setup-swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1
-      with:
-        branch: swift-5.6-release
-        tag: 5.6-RELEASE
-    - name: Test
-      shell: cmd
+    - name: Set Xcode up
+      shell: bash
       run: |
-        echo on
-        set TARGETING_WINDOWS=true
-        swift test
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_13.1.app
+        xcodebuild -version
+        swift --version
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WATCHOS=true
+        xcodebuild test -destination 'name=Apple Watch Series 6 - 40mm' -scheme SDGSwift-Package
