@@ -86,7 +86,7 @@ extension VersionedExternalProcess {
             return nil
           }
           // @exempt(from: tests) Unreachable on CentOS.
-          return URL(fileURLWithPath: output)
+          return URL(parsingOutput: output)
         #endif
       }
 

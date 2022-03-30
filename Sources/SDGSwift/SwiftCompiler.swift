@@ -111,7 +111,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
         in: package.location,
         versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
         reportProgress: reportProgress
-      ).map { URL(fileURLWithPath: $0) }
+      ).map { URL(parsingOutput: $0) }
     }
 
     /// Runs a target in place.
@@ -230,7 +230,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
         ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"],
         in: package.location,
         versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
-      ).map { URL(fileURLWithPath: $0) }
+      ).map { URL(parsingOutput: $0) }
     }
 
     /// Returns the code coverage report for the package.
