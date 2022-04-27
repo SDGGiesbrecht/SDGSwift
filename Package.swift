@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 
 /*
  Package.swift
@@ -104,24 +104,21 @@ let package = Package(
       from: Version(9, 0, 0)
     ),
     .package(
-      name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      .exact(Version(0, 50600, 3))
+      exact: Version(0, 50600, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}tools\u{2D}support\u{2D}core",
       .upToNextMinor(from: Version(0, 50600, 0))
     ),
     .package(
-      name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50600, 1))
+      exact: Version(0, 50600, 1)
     ),
     .package(
-      name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      .exact(Version(0, 50302, 0))
+      exact: Version(0, 50302, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -167,7 +164,7 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
-          package: "SwiftPM",
+          package: "swift\u{2D}package\u{2D}manager",
           // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
@@ -199,17 +196,17 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntaxParser",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
-        .product(name: "cmark", package: "cmark"),
+        .product(name: "cmark", package: "swift\u{2D}cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
     ),
@@ -282,7 +279,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
@@ -352,13 +349,13 @@ let package = Package(
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntaxParser",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
@@ -471,16 +468,17 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM",
+    "swift\u{2D}package\u{2D}manager",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      var name = dependency.name
-      if name == nil {
-        name = dependency.url
+      switch dependency.kind {
+      case .sourceControl(name: _, let location, requirement: _):
+        return (location).contains(impossible)
+      default:
+        return false
       }
-      return (name ?? "").contains(impossible)
     })
   })
   for target in package.targets {
