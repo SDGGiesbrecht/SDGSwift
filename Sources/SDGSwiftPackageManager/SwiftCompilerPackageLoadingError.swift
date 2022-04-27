@@ -29,9 +29,6 @@ extension SwiftCompiler {
 
       // MARK: - Cases
 
-      /// Swift could not be located.
-      case swiftLocationError(VersionedExternalProcessLocationError<SwiftCompiler>)
-
       /// The package manager encountered an error.
       case packageManagerError(Swift.Error?)
 
@@ -39,8 +36,6 @@ extension SwiftCompiler {
 
       public func presentableDescription() -> StrictString {
         switch self {
-        case .swiftLocationError(let error):
-          return error.presentableDescription()
         case .packageManagerError(let error):
           var lines: [String] = []
           if let error = error {
