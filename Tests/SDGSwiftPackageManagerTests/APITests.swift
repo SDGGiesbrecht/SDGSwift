@@ -36,13 +36,6 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(CI runs with old toolchains.)
-#if compiler(>=5.6)
-  var swift5_6 = true
-#else
-  var swift5_6 = false
-#endif
-
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testChangeDetection() throws {
@@ -166,33 +159,31 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if localization == InterfaceLocalization.allCases.first {
               XCTAssertNil(try? mock.codeCoverageReport().get())  // Not generated yet.
             }
-            if swift5_6 {
-              _ = try mock.test().get()
-              guard
-                let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
-              else {
-                XCTFail("No test coverage report found.")
-                return
-              }
-              guard
-                let file = coverageReport.files.first(where: {
-                  $0.file.lastPathComponent == "Mock.swift"
-                })
-              else {
-                XCTFail("File missing from coverage report.")
-                return
-              }
-              var specification = try String(from: sourceURL)
-              for range in file.regions.reversed() {
-                specification.insert("!", at: specification.index(of: range.region.upperBound))
-                specification.insert("¡", at: specification.index(of: range.region.lowerBound))
-              }
-              compare(
-                specification,
-                against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+            _ = try mock.test().get()
+            guard
+              let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
+            else {
+              XCTFail("No test coverage report found.")
+              return
             }
+            guard
+              let file = coverageReport.files.first(where: {
+                $0.file.lastPathComponent == "Mock.swift"
+              })
+            else {
+              XCTFail("File missing from coverage report.")
+              return
+            }
+            var specification = try String(from: sourceURL)
+            for range in file.regions.reversed() {
+              specification.insert("!", at: specification.index(of: range.region.upperBound))
+              specification.insert("¡", at: specification.index(of: range.region.lowerBound))
+            }
+            compare(
+              specification,
+              against: testSpecificationDirectory().appendingPathComponent("Coverage.txt"),
+              overwriteSpecificationInsteadOfFailing: false
+            )
           }
         }
       }
