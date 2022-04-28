@@ -443,10 +443,6 @@ for target in package.targets {
 }
 
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_MACOS"] == "true" {
-  // #workaround(Swift 5.5.2, There is no way to set deployment targets on a per‐target basis.)
-  package.targets.removeAll(where: { $0.name.hasPrefix("refresh‐") })
-}
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Windows.)
