@@ -87,14 +87,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         uniqueTestName: "Package Manager",
         overwriteSpecificationInsteadOfFailing: false
       )
-      testCustomStringConvertibleConformance(
-        of: SwiftCompiler.PackageLoadingError.swiftLocationError(
-          .unavailable(versionConstraints: "[...]")
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "No Swift",
-        overwriteSpecificationInsteadOfFailing: false
-      )
     #endif
   }
 
