@@ -88,7 +88,8 @@ extension String {
   internal func lastLine() -> String {
     if let last = self.lines.last {
       return String(String.UnicodeScalarView(last.line))
-    } else {  // @exempt(from: tests) Unreachable.
+    } else {
+      // @exempt(from: tests) Unreachable.
       return ""
     }
   }

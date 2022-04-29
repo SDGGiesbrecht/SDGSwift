@@ -23,4 +23,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   func testString() {
     XCTAssertEqual("".lastLine(), "")
   }
+
+  func testURL() {
+    XCTAssertEqual(URL(parsingOutput: "/some/path"), URL(fileURLWithPath: "/some/path"))
+  }
 }
