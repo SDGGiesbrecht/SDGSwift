@@ -92,7 +92,8 @@ extension VersionedExternalProcess {
 
       func validate(
         _ process: ExternalProcess
-      ) -> Bool {  // @exempt(from: tests) Unreachable?
+      ) -> Bool {
+        // @exempt(from: tests) Unreachable?
         #if PLATFORM_LACKS_FOUNDATION_PROCESS
           return false  // Cannot ensure version matches.
         #else
@@ -136,7 +137,8 @@ extension VersionedExternalProcess {
   ) -> Result<URL, VersionedExternalProcessLocationError<Self>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
     return tool(versionConstraints: versionConstraints)
-      .map { process in  // @exempt(from: tests) Unreachable on tvOS.
+      .map { process in
+        // @exempt(from: tests) Unreachable on tvOS.
         return process.executable
       }
   }

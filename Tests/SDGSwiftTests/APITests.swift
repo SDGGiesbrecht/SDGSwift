@@ -31,13 +31,6 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-// #workaround(CI runs with old toolchains.)
-#if compiler(>=5.6)
-  var swift5_6 = true
-#else
-  var swift5_6 = false
-#endif
-
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBuild() {
@@ -260,11 +253,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).get()
 
       try withDefaultMockRepository { mock in
-        if swift5_6 {
-          _ = try mock.resolve().get()
-          _ = try mock.build(releaseConfiguration: true).get()
-          _ = try mock.test().get()
-        }
+        _ = try mock.resolve().get()
+        _ = try mock.build(releaseConfiguration: true).get()
+        _ = try mock.test().get()
       }
     #endif
 
@@ -294,13 +285,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
-        if swift5_6 {
-          _ = try? SwiftCompiler.build(package).get()
-          _ = try? SwiftCompiler.run("no such target", from: package).get()
-          _ = try SwiftCompiler.test(package).get()
-          _ = try SwiftCompiler.codeCoverageReport(for: package).get()
-          _ = try? SwiftCompiler.resolve(package).get()
-        }
+        _ = try? SwiftCompiler.build(package).get()
+        _ = try? SwiftCompiler.run("no such target", from: package).get()
+        _ = try SwiftCompiler.test(package).get()
+        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+        _ = try? SwiftCompiler.resolve(package).get()
       }
     #endif
   }

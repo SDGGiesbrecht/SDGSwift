@@ -40,20 +40,18 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// ```",
         "public func function() {}",
       ].joined(separator: "\n")
-      if swift5_6 {
-        let parsed = try SyntaxParser.parse(source: source)
-        let documentation: SymbolDocumentation = parsed.api().first!.documentation.first!
-        XCTAssertEqual(
-          documentation.documentationComment.text,
-          [
-            "...",
-            "",
-            "```swift",
-            "let ä = ö".decomposedStringWithCompatibilityMapping,
-            "```",
-          ].joined(separator: "\n")
-        )
-      }
+      let parsed = try SyntaxParser.parse(source: source)
+      let documentation: SymbolDocumentation = parsed.api().first!.documentation.first!
+      XCTAssertEqual(
+        documentation.documentationComment.text,
+        [
+          "...",
+          "",
+          "```swift",
+          "let ä = ö".decomposedStringWithCompatibilityMapping,
+          "```",
+        ].joined(separator: "\n")
+      )
     #endif
   }
 
@@ -68,10 +66,8 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// ...",
         "public func function() {}",
       ].joined(separator: "\n")
-      if swift5_6 {
-        let parsed = try SyntaxParser.parse(source: source)
-        _ = parsed.api()
-      }
+      let parsed = try SyntaxParser.parse(source: source)
+      _ = parsed.api()
     #endif
   }
 
@@ -83,14 +79,12 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// ...&#x2D;...",
         "public func function() {}",
       ].joined(separator: "\n")
-      if swift5_6 {
-        let parsed = try SyntaxParser.parse(source: source)
-        XCTAssertEqual(parsed.source(), source)
-        let documentation = parsed.api().first?.documentation
-        let comment = documentation?.last?.documentationComment
-        XCTAssertEqual(comment?.text, "...&#x2D;...")
-        XCTAssertEqual(comment?.renderedHTML(localization: "en"), "<p>...&#x2D;...</p>")
-      }
+      let parsed = try SyntaxParser.parse(source: source)
+      XCTAssertEqual(parsed.source(), source)
+      let documentation = parsed.api().first?.documentation
+      let comment = documentation?.last?.documentationComment
+      XCTAssertEqual(comment?.text, "...&#x2D;...")
+      XCTAssertEqual(comment?.renderedHTML(localization: "en"), "<p>...&#x2D;...</p>")
     #endif
   }
 
@@ -108,15 +102,13 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// > Line 3",
         "public func function() {}",
       ].joined(separator: "\n")
-      if swift5_6 {
-        let parsed = try SyntaxParser.parse(source: source)
-        XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)
-        let documentation = parsed.api().first?.documentation
-        XCTAssertEqual(
-          documentation?.last?.documentationComment.text,
-          "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3"
-        )
-      }
+      let parsed = try SyntaxParser.parse(source: source)
+      XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)
+      let documentation = parsed.api().first?.documentation
+      XCTAssertEqual(
+        documentation?.last?.documentationComment.text,
+        "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3"
+      )
     #endif
   }
 
