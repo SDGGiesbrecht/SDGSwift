@@ -283,7 +283,8 @@ let package = Package(
           // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
-      ]
+      ],
+      path: "Sources/refresh_core_libraries"
     ),
 
     // Tests
@@ -445,25 +446,33 @@ for target in package.targets {
 import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
-    "SwiftSyntax"
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
+    "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, package: _, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return name == impossible
+        })
+      default:
+        return false
+      }
     })
   }
 
-  // #workaround(Swift 5.5.2, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name.hasPrefix("refresh") })
+  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
+  for target in package.targets {
+    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.6, Web toolchain rejects manifest due to dynamic library.)
     "swift\u{2D}package\u{2D}manager",
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
@@ -479,72 +488,100 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   })
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(name: _, let package, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return package == impossible
+        })
+      default:
+        return false
+      }
     })
   }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, package: _, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return name == impossible
+        })
+      default:
+        return false
+      }
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, package: _, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return name == impossible
+        })
+      default:
+        return false
+      }
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.) @exempt(from: unicode)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Android.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
-    "SwiftSyntax",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
+    "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, package: _, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return name == impossible
+        })
+      default:
+        return false
+      }
     })
   }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SwiftSyntaxParser"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, package: _, condition: _):
+        return impossibleDependencies.contains(where: { impossible in
+          return name == impossible
+        })
+      default:
+        return false
+      }
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
