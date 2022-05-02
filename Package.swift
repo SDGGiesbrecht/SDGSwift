@@ -486,7 +486,8 @@ for target in package.targets {
     switch dependency {
     case .productItem(let name, let package, condition: _):
       if let package = package,
-         impossibleDependencyPackages.contains(package) {
+        impossibleDependencyPackages.contains(package)
+      {
         return true
       } else {
         return impossibleDependencyProducts.contains(name)
