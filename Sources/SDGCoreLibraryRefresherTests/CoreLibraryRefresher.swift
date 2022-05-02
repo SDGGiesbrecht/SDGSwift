@@ -1,5 +1,5 @@
 /*
- main.swift
+ CoreLibraryRefresher.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,26 +12,30 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGControlFlow
+import SDGLogic
+import SDGCollections
+import SDGText
+import SDGPersistence
+import SDGExternalProcess
+import SDGVersioning
+
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+
+import SDGSwift
+import SDGSwiftPackageManager
+import SDGSwiftSource
+
+enum CoreLibraryRefresher {
+  
+  static func main() throws {
 #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   fatalError("SwiftSyntax is unavailable.")
 #else
-  import Foundation
-
-  import SDGControlFlow
-  import SDGLogic
-  import SDGCollections
-  import SDGText
-  import SDGPersistence
-  import SDGExternalProcess
-  import SDGVersioning
-
-  import SwiftSyntax
-
-  import SDGSwift
-  import SDGSwiftPackageManager
-  import SDGSwiftSource
-
-  do {
     ProcessInfo.applicationIdentifier = "ca.solideogloria.SDGSwift.refresh‐core‐libraries"
 
     let currentVersion = SwiftCompiler.version(forConstraints: Version(Int.min)...Version(Int.max))!
@@ -125,7 +129,6 @@
           try interface.joined(separator: "\n").save(to: resource)
         }
     }
-  } catch {
-    fatalError("\(error)")
+    #endif
   }
-#endif
+}
