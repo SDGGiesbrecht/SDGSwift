@@ -267,7 +267,7 @@ let package = Package(
     ),
 
     .testTarget(
-      // #workaround(xcodebuild -version 13.3.1, Should be executable, but for interference with tvOS etc.) @exempt(from: Unicode)
+      // #workaround(xcodebuild -version 13.3.1, Should be executable, but for interference with tvOS etc.) @exempt(from: unicode)
       name: "SDGCoreLibraryRefresherTests",
       dependencies: [
         "SDGSwiftPackageManager",
