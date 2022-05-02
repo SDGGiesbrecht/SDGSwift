@@ -17,7 +17,7 @@ import XCTest
 final class SDGCoreLibraryRefresherTests: XCTestCase {
   
   // Fix the spelling of “test” and run the test to refresh the core library information.
-  func testCoreLibraryRefresher() throws {
+  func tesCoreLibraryRefresher() throws {
     try CoreLibraryRefresher.main()
   }
 }

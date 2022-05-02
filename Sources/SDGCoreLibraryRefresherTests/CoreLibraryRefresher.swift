@@ -42,7 +42,7 @@ enum CoreLibraryRefresher {
     let branchName = "swift\u{2D}\(currentVersion.string(droppingEmptyPatch: true))\u{2D}RELEASE"
     let modules: [String: (url: String, path: String)] = [
       "Swift": ("swift", "stdlib/public/core"),
-      "Foundation": ("swift\u{2D}corelibs\u{2D}foundation", "Foundation"),
+      "Foundation": ("swift\u{2D}corelibs\u{2D}foundation", "Sources/Foundation"),
       "Dispatch": ("swift\u{2D}corelibs\u{2D}libdispatch", "src/swift"),
       "XCTest": ("swift\u{2D}corelibs\u{2D}xctest", "Sources/XCTest/Public"),
     ]
