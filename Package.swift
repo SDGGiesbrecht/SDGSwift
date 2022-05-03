@@ -165,13 +165,13 @@ let package = Package(
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50600.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -197,13 +197,12 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "swift\u{2D}cmark"),
@@ -281,8 +280,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
       ],
       path: "Sources/SDGCoreLibraryRefresherTests"
@@ -352,13 +350,12 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50500.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
