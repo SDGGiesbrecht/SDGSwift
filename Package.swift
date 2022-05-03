@@ -171,7 +171,7 @@ let package = Package(
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(SwiftPM 0.50600.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -412,10 +412,10 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.5.2, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.5.2, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.5.2, Web lacks Foundation.ProcessInfo.)
-    // #workaround(Swift 5.5.2, SwiftPM does not compile on Windows.)
+    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.6, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.6, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.6, SwiftPM does not compile on Windows.)
     // #workaround(Swift 5.5.2, SwiftSyntax does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
@@ -433,7 +433,7 @@ for target in package.targets {
 
     // Internal‐only:
     .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
-    // #workaround(Swift 5.5.2, Web lacks Foundation.URL.init(fileURLWithPath:).)
+    // #workaround(Swift 5.6, Web lacks Foundation.URL.init(fileURLWithPath:).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SDGCornerstone 8.0.1, Windows suffers unexplained segmentation faults.)
