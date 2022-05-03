@@ -197,7 +197,6 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #warning(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
@@ -281,7 +280,6 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #warning(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .windows, .linux])
         ),
       ],
@@ -352,7 +350,6 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
-          // #warning(SwiftSyntax 0.50500.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
