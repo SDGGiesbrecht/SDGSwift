@@ -52,6 +52,10 @@ import PackageDescription
 /// ),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+///   .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
+/// ),
+/// .define(
+///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
 /// ),
 /// ```
