@@ -416,7 +416,7 @@ for target in package.targets {
     // #workaround(Swift 5.6, Web lacks Foundation.Process.)
     // #workaround(Swift 5.6, Web lacks Foundation.ProcessInfo.)
     // #workaround(Swift 5.6, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.5.2, SwiftSyntax does not compile on Windows.)
+    // #workaround(Swift 5.6, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -427,6 +427,10 @@ for target in package.targets {
     ),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+      .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     // @endExample
