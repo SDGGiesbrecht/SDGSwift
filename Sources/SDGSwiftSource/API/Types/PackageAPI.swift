@@ -21,9 +21,13 @@
   import SDGLocalization
 
   import SwiftSyntax
-  import SwiftSyntaxParser
-  import PackageModel
-  import PackageGraph
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    import SwiftSyntaxParser
+  #endif
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+    import PackageGraph
+  #endif
 
   import SDGSwift
   import SDGSwiftPackageManager

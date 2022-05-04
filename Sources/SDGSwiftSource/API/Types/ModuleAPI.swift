@@ -19,8 +19,12 @@
   import SDGCollections
 
   import SwiftSyntax
-  import SwiftSyntaxParser
-  import PackageModel
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    import SwiftSyntaxParser
+  #endif
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+  #endif
 
   import SDGSwiftPackageManager
 

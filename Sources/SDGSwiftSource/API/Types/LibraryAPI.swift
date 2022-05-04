@@ -22,7 +22,9 @@
   import SDGLocalization
 
   import SwiftSyntax
-  import PackageModel
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+  #endif
 
   import SDGSwift
   import SDGSwiftPackageManager
