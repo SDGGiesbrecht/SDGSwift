@@ -19,7 +19,7 @@
 
   extension PrecedenceGroupAttributeListSyntax {
 
-    internal enum PrecedenceAttributeGroup: OrderedEnumeration {
+    internal enum PrecedenceAttributeGroup: Comparable, OrderedEnumeration {
       case before
       case after
       case associativity

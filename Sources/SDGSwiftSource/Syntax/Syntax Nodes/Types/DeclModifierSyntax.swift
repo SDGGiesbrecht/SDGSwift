@@ -70,7 +70,7 @@
       }
     }
 
-    private enum Group: OrderedEnumeration {
+    private enum Group: Comparable, OrderedEnumeration {
       case unknown
       case accessControl
       case requirement

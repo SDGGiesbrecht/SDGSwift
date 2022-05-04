@@ -474,7 +474,7 @@
 
     // MARK: - Comparable
 
-    private enum Group: OrderedEnumeration {
+    private enum Group: Comparable, OrderedEnumeration {
       case package
       case library
       case module

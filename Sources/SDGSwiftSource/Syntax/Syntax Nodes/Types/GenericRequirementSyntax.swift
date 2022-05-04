@@ -35,7 +35,7 @@
       )
     }
 
-    private enum Group: OrderedEnumeration {
+    private enum Group: Comparable, OrderedEnumeration {
       case conformance
       case sameType
       case unknown
