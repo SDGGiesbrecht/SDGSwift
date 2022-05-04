@@ -70,7 +70,8 @@
       }
     }
 
-    private enum Group: Comparable, OrderedEnumeration {
+    // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
+    private enum Group: Int, Comparable, OrderedEnumeration {
       case unknown
       case accessControl
       case requirement
