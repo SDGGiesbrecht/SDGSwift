@@ -18,7 +18,9 @@
   import SDGPersistence
 
   import SwiftSyntax
-  import SwiftSyntaxParser
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    import SwiftSyntaxParser
+  #endif
 
   extension SyntaxParser {
 
