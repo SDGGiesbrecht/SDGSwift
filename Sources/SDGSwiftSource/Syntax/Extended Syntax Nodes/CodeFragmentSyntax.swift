@@ -211,37 +211,39 @@
       return source
     }
 
-    internal override func nestedSyntaxHighlightedHTML(
-      internalIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> String {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      internal override func nestedSyntaxHighlightedHTML(
+        internalIdentifiers: Set<String>,
+        symbolLinks: [String: String]
+      ) -> String {
 
-      if context == self.source.text,  // Not part of something bigger.
-        symbolLinks[context] ≠ nil
-      {
-        return unknownSyntaxHighlightedHTML(
-          internalIdentifiers: internalIdentifiers,
-          symbolLinks: symbolLinks
-        )
-      }
+        if context == self.source.text,  // Not part of something bigger.
+          symbolLinks[context] ≠ nil
+        {
+          return unknownSyntaxHighlightedHTML(
+            internalIdentifiers: internalIdentifiers,
+            symbolLinks: symbolLinks
+          )
+        }
 
-      if let syntax = try? self.syntax(),
-        syntax.map({ $0.source() }).joined() == text
-      {
-        return String(
-          syntax.map({
-            $0.nestedSyntaxHighlightedHTML(
-              internalIdentifiers: internalIdentifiers,
-              symbolLinks: symbolLinks
-            )
-          }).joined()
-        )
-      } else {
-        return unknownSyntaxHighlightedHTML(
-          internalIdentifiers: internalIdentifiers,
-          symbolLinks: symbolLinks
-        )
+        if let syntax = try? self.syntax(),
+          syntax.map({ $0.source() }).joined() == text
+        {
+          return String(
+            syntax.map({
+              $0.nestedSyntaxHighlightedHTML(
+                internalIdentifiers: internalIdentifiers,
+                symbolLinks: symbolLinks
+              )
+            }).joined()
+          )
+        } else {
+          return unknownSyntaxHighlightedHTML(
+            internalIdentifiers: internalIdentifiers,
+            symbolLinks: symbolLinks
+          )
+        }
       }
-    }
+    #endif
   }
 #endif
