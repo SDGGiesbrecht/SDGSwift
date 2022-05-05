@@ -50,22 +50,24 @@
 
     internal let range: Range<String.ScalarOffset>
 
-    /// The syntax of the source code contained in this token.
-    public func syntax() throws -> [SyntaxFragment]? {
-      if isSwift == true {
-        let parsed = try SyntaxParser.parse(source: context)
-        return syntax(of: Syntax(parsed))
-      } else if isSwift == false {
-        return nil
-      } else {
-        if let parsed = try? SyntaxParser.parse(source: context) {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      /// The syntax of the source code contained in this token.
+      public func syntax() throws -> [SyntaxFragment]? {
+        if isSwift == true {
+          let parsed = try SyntaxParser.parse(source: context)
           return syntax(of: Syntax(parsed))
-        } else {  // @exempt(from: tests)
-          // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
+        } else if isSwift == false {
           return nil
+        } else {
+          if let parsed = try? SyntaxParser.parse(source: context) {
+            return syntax(of: Syntax(parsed))
+          } else {  // @exempt(from: tests)
+            // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
+            return nil
+          }
         }
       }
-    }
+    #endif
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
       let context = self.context
