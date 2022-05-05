@@ -466,17 +466,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
-        _ = try? PackageAPI(package: package.packageGraph().get())
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+          _ = try? PackageAPI(package: package.packageGraph().get())
+        #endif
       }
     #endif
   }
 
   func testPackageDocumentation() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       let package = try thisRepository.package().get()
-      XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+        XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      #endif
     #endif
   }
 
