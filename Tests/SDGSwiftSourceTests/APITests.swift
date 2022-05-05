@@ -39,7 +39,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for packageName in ["PackageToDocument", "PackageToDocument2"] {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
         let parsed = try PackageAPI(
