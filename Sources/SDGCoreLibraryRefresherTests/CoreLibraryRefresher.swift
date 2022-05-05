@@ -33,7 +33,7 @@ import SDGSwiftSource
 enum CoreLibraryRefresher {
 
   static func main() throws {
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       fatalError("SwiftSyntax is unavailable.")
     #else
       ProcessInfo.applicationIdentifier = "ca.solideogloria.SDGSwift.refresh‐core‐libraries"
