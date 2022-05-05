@@ -58,125 +58,129 @@
 
     // MARK: - Initialization
 
-    /// Creates a package API instance by parsing the specified package’s sources.
-    ///
-    /// - Parameters:
-    ///     - package: The package, already loaded by the `SwiftPM` package.
-    ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
-    ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
-    ///     - progressReport: A line of text reporting a progress milestone.
-    @available(macOS 10.15, *)
-    public convenience init(
-      package: PackageGraph,
-      ignoredDependencies: Set<String> = [],
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
-    ) throws {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      /// Creates a package API instance by parsing the specified package’s sources.
+      ///
+      /// - Parameters:
+      ///     - package: The package, already loaded by the `SwiftPM` package.
+      ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
+      ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
+      ///     - progressReport: A line of text reporting a progress milestone.
+      @available(macOS 10.15, *)
+      public convenience init(
+        package: PackageGraph,
+        ignoredDependencies: Set<String> = [],
+        reportProgress: (_ progressReport: String) -> Void = { _ in }
+      ) throws {
 
-      let root = package.rootPackages.first!.underlyingPackage
-      try self.init(package: root, reportProgress: reportProgress)
+        let root = package.rootPackages.first!.underlyingPackage
+        try self.init(package: root, reportProgress: reportProgress)
 
-      var dependencyModules: [ModuleAPI] = []
+        var dependencyModules: [ModuleAPI] = []
 
-      for (name, source) in [
-        ("Swift", Resources.CoreLibraries.swift),
-        ("Foundation", Resources.CoreLibraries.foundation),
-        ("Dispatch", Resources.CoreLibraries.dispatch),
-        ("XCTest", Resources.CoreLibraries.xctest),
-      ] where name ∉ ignoredDependencies {
-        reportProgress(
-          String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved())
-        )
-        dependencyModules.append(try ModuleAPI(source: source))
-      }
-
-      let declaredDependencies = package.reachableTargets.filter({ module in
-        switch module.type {
-        case .executable, .systemModule, .test, .binary, .plugin, .snippet:
-          return false
-        case .library:
-          return ¬root.targets.contains(module.underlyingTarget)
+        for (name, source) in [
+          ("Swift", Resources.CoreLibraries.swift),
+          ("Foundation", Resources.CoreLibraries.foundation),
+          ("Dispatch", Resources.CoreLibraries.dispatch),
+          ("XCTest", Resources.CoreLibraries.xctest),
+        ] where name ∉ ignoredDependencies {
+          reportProgress(
+            String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved())
+          )
+          dependencyModules.append(try ModuleAPI(source: source))
         }
-      })
-      for module in declaredDependencies.sorted(by: { $0.name < $1.name })
-      where module.name ∉ ignoredDependencies {
-        reportProgress(
-          String(PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved())
-        )
-        dependencyModules.append(
-          try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none)
-        )
-      }
 
-      for module in dependencyModules {
-        self.dependencies.append(module)
-      }
-      APIElement.resolveConformances(
-        elements: [.package(self)] + dependencyModules.lazy.map({ APIElement.module($0) })
-      )
-    }
-
-    @available(macOS 10.15, *)
-    private static func documentation(
-      for package: PackageModel.Package,
-      from manifest: SourceFileSyntax
-    ) -> [SymbolDocumentation] {
-      let search =
-        "Package(".scalars
-        + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-        + "name: \u{22}\(package.manifest.displayName)\u{22}".scalars
-      let node = manifest.smallestSubnode(containing: search)
-      let manifestDeclaration = node?.ancestors().first(where: { $0.is(VariableDeclSyntax.self) })
-      return manifestDeclaration?.documentation ?? []  // @exempt(from: tests)
-    }
-
-    /// Returns the documentation of the package declaration.
-    ///
-    /// - Parameters:
-    ///     - package: The package, already loaded by the `SwiftPM` package.
-    @available(macOS 10.15, *)
-    public static func documentation(
-      for package: PackageModel.Package
-    ) throws -> [SymbolDocumentation] {
-      let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
-      let manifest = try SyntaxParser.parseAndRetry(manifestURL)
-      return documentation(for: package, from: manifest)
-    }
-
-    @available(macOS 10.15, *)
-    internal convenience init(
-      package: PackageModel.Package,
-      reportProgress: (String) -> Void
-    ) throws {
-
-      let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
-      let manifest = try SyntaxParser.parseAndRetry(manifestURL)
-
-      let documentation = PackageAPI.documentation(for: package, from: manifest)
-
-      let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(
-        name: package.manifest.displayName
-      )
-      self.init(documentation: documentation, declaration: declaration)
-
-      for product in package.products where ¬product.name.hasPrefix("_") {
-        switch product.type {
-        case .library:
-          children.append(
-            .library(
-              try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress)
+        let declaredDependencies = package.reachableTargets.filter({ module in
+          switch module.type {
+          case .executable, .systemModule, .test, .binary, .plugin, .snippet:
+            return false
+          case .library:
+            return ¬root.targets.contains(module.underlyingTarget)
+          }
+        })
+        for module in declaredDependencies.sorted(by: { $0.name < $1.name })
+        where module.name ∉ ignoredDependencies {
+          reportProgress(
+            String(
+              PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved()
             )
           )
-        case .executable, .test, .plugin, .snippet:
-          continue
+          dependencyModules.append(
+            try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none)
+          )
         }
+
+        for module in dependencyModules {
+          self.dependencies.append(module)
+        }
+        APIElement.resolveConformances(
+          elements: [.package(self)] + dependencyModules.lazy.map({ APIElement.module($0) })
+        )
       }
 
-      for library in libraries {
-        for module in library.modules where ¬modules.contains(module) {
-          children.append(.module(module))
+      @available(macOS 10.15, *)
+      private static func documentation(
+        for package: PackageModel.Package,
+        from manifest: SourceFileSyntax
+      ) -> [SymbolDocumentation] {
+        let search =
+          "Package(".scalars
+          + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+          + "name: \u{22}\(package.manifest.displayName)\u{22}".scalars
+        let node = manifest.smallestSubnode(containing: search)
+        let manifestDeclaration = node?.ancestors().first(where: { $0.is(VariableDeclSyntax.self) })
+        return manifestDeclaration?.documentation ?? []  // @exempt(from: tests)
+      }
+
+      /// Returns the documentation of the package declaration.
+      ///
+      /// - Parameters:
+      ///     - package: The package, already loaded by the `SwiftPM` package.
+      @available(macOS 10.15, *)
+      public static func documentation(
+        for package: PackageModel.Package
+      ) throws -> [SymbolDocumentation] {
+        let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
+        let manifest = try SyntaxParser.parseAndRetry(manifestURL)
+        return documentation(for: package, from: manifest)
+      }
+
+      @available(macOS 10.15, *)
+      internal convenience init(
+        package: PackageModel.Package,
+        reportProgress: (String) -> Void
+      ) throws {
+
+        let manifestURL = URL(fileURLWithPath: package.manifest.path.pathString)
+        let manifest = try SyntaxParser.parseAndRetry(manifestURL)
+
+        let documentation = PackageAPI.documentation(for: package, from: manifest)
+
+        let declaration = FunctionCallExprSyntax.normalizedPackageDeclaration(
+          name: package.manifest.displayName
+        )
+        self.init(documentation: documentation, declaration: declaration)
+
+        for product in package.products where ¬product.name.hasPrefix("_") {
+          switch product.type {
+          case .library:
+            children.append(
+              .library(
+                try LibraryAPI(product: product, manifest: manifest, reportProgress: reportProgress)
+              )
+            )
+          case .executable, .test, .plugin, .snippet:
+            continue
+          }
+        }
+
+        for library in libraries {
+          for module in library.modules where ¬modules.contains(module) {
+            children.append(.module(module))
+          }
         }
       }
-    }
+    #endif
 
     internal init(
       documentation: [SymbolDocumentation],
