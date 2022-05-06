@@ -35,7 +35,8 @@
       )
     }
 
-    private enum Group: OrderedEnumeration {
+    // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
+    private enum Group: Int, Comparable, OrderedEnumeration {
       case conformance
       case sameType
       case unknown

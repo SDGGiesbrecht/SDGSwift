@@ -19,7 +19,8 @@
 
   extension PrecedenceGroupAttributeListSyntax {
 
-    internal enum PrecedenceAttributeGroup: OrderedEnumeration {
+    // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
+    internal enum PrecedenceAttributeGroup: Int, Comparable, OrderedEnumeration {
       case before
       case after
       case associativity

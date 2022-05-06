@@ -125,111 +125,117 @@
 
     // MARK: - Scanning
 
-    // @documentation(SDGSwiftSource.SyntaxScanner.scan)
-    /// Scans the node and its children.
-    ///
-    /// - Parameters:
-    ///     - node: The node to scan.
-    public func scan(_ node: SourceFileSyntax) throws {
-      let nodeSource = node.source()
-      try scan(
-        Syntax(node),
-        context: SyntaxContext(
-          fragmentContext: nodeSource,
-          fragmentOffset: nodeSource.offset(of: nodeSource.scalars.startIndex),
-          parentContext: nil
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      // @documentation(SDGSwiftSource.SyntaxScanner.scan)
+      /// Scans the node and its children.
+      ///
+      /// - Parameters:
+      ///     - node: The node to scan.
+      public func scan(_ node: SourceFileSyntax) throws {
+        let nodeSource = node.source()
+        try scan(
+          Syntax(node),
+          context: SyntaxContext(
+            fragmentContext: nodeSource,
+            fragmentOffset: nodeSource.offset(of: nodeSource.scalars.startIndex),
+            parentContext: nil
+          )
         )
-      )
-    }
-    private func scan(_ node: Syntax, context: SyntaxContext) throws {
-      if let token = node.as(TokenSyntax.self) {
-        let leadingTriviaContext = TriviaContext(token: token, tokenContext: context, leading: true)
-        try scan(token.leadingTrivia, context: leadingTriviaContext)
-        if shouldExtend(token),
-          let extended = token.extended
+      }
+      private func scan(_ node: Syntax, context: SyntaxContext) throws {
+        if let token = node.as(TokenSyntax.self) {
+          let leadingTriviaContext = TriviaContext(
+            token: token,
+            tokenContext: context,
+            leading: true
+          )
+          try scan(token.leadingTrivia, context: leadingTriviaContext)
+          if shouldExtend(token),
+            let extended = token.extended
+          {
+            let newContext = ExtendedSyntaxContext._token(token, context: context)
+            if visit(extended, context: newContext) {
+              for child in extended.children {
+                try scan(child, context: newContext)
+              }
+            }
+          } else {
+            _ = visit(Syntax(token), context: context)
+          }
+          let trailingTriviaContext = TriviaContext(
+            token: token,
+            tokenContext: context,
+            leading: false
+          )
+          try scan(token.trailingTrivia, context: trailingTriviaContext)
+        } else {
+          if visit(node, context: context) {
+            for child in node.children {
+              try scan(child, context: context)
+            }
+          }
+        }
+      }
+
+      private func scan(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) throws {
+        if let code = node as? CodeFragmentSyntax,
+          shouldExtend(code),
+          let children = try code.syntax()
         {
-          let newContext = ExtendedSyntaxContext._token(token, context: context)
-          if visit(extended, context: newContext) {
-            for child in extended.children {
-              try scan(child, context: newContext)
+          var offset = 0
+          for child in children {
+            switch child {
+            case .syntax(let node):
+              let newContext = SyntaxContext(
+                fragmentContext: code.context,
+                fragmentOffset: code.range.lowerBound,
+                parentContext: (code, context)
+              )
+              try scan(node, context: newContext)
+              offset += node.source().scalars.count
+            case .extendedSyntax(let node):
+              try scan(node, context: ._fragment(code, context: context, offset: offset))
+              offset += node.text.scalars.count
+            case .trivia(let node, let siblings, let index):
+              try scan(
+                node,
+                siblings: siblings,
+                index: index,
+                context: ._fragment(code, context: context, offset: offset)
+              )
+              offset += node.text.scalars.count
             }
           }
         } else {
-          _ = visit(Syntax(token), context: context)
-        }
-        let trailingTriviaContext = TriviaContext(
-          token: token,
-          tokenContext: context,
-          leading: false
-        )
-        try scan(token.trailingTrivia, context: trailingTriviaContext)
-      } else {
-        if visit(node, context: context) {
-          for child in node.children {
-            try scan(child, context: context)
+          if visit(node, context: context) {
+            for child in node.children {
+              try scan(child, context: context)
+            }
           }
         }
       }
-    }
 
-    private func scan(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) throws {
-      if let code = node as? CodeFragmentSyntax,
-        shouldExtend(code),
-        let children = try code.syntax()
-      {
-        var offset = 0
-        for child in children {
-          switch child {
-          case .syntax(let node):
-            let newContext = SyntaxContext(
-              fragmentContext: code.context,
-              fragmentOffset: code.range.lowerBound,
-              parentContext: (code, context)
-            )
-            try scan(node, context: newContext)
-            offset += node.source().scalars.count
-          case .extendedSyntax(let node):
-            try scan(node, context: ._fragment(code, context: context, offset: offset))
-            offset += node.text.scalars.count
-          case .trivia(let node, let siblings, let index):
-            try scan(
-              node,
-              siblings: siblings,
-              index: index,
-              context: ._fragment(code, context: context, offset: offset)
-            )
-            offset += node.text.scalars.count
-          }
-        }
-      } else {
-        if visit(node, context: context) {
-          for child in node.children {
-            try scan(child, context: context)
+      private func scan(_ trivia: Trivia, context: TriviaContext) throws {
+        if visit(trivia, context: context) {
+          for index in trivia.indices {
+            let newContext = TriviaPieceContext._trivia(trivia, index: index, parent: context)
+            let piece = trivia[index]
+            try scan(piece, siblings: trivia, index: index, context: newContext)
           }
         }
       }
-    }
 
-    private func scan(_ trivia: Trivia, context: TriviaContext) throws {
-      if visit(trivia, context: context) {
-        for index in trivia.indices {
-          let newContext = TriviaPieceContext._trivia(trivia, index: index, parent: context)
-          let piece = trivia[index]
-          try scan(piece, siblings: trivia, index: index, context: newContext)
+      private func scan(
+        _ piece: TriviaPiece,
+        siblings: Trivia,
+        index: Trivia.Index,
+        context: TriviaPieceContext
+      ) throws {
+        if visit(piece, context: context) {
+          let newContext = ExtendedSyntaxContext._trivia(piece, context: context)
+          try scan(piece.syntax(siblings: siblings, index: index), context: newContext)
         }
       }
-    }
-
-    private func scan(
-      _ piece: TriviaPiece,
-      siblings: Trivia,
-      index: Trivia.Index,
-      context: TriviaPieceContext
-    ) throws {
-      if visit(piece, context: context) {
-        let newContext = ExtendedSyntaxContext._trivia(piece, context: context)
-        try scan(piece.syntax(siblings: siblings, index: index), context: newContext)
-      }
-    }
+    #endif
   }
 #endif

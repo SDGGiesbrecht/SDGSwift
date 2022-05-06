@@ -18,6 +18,8 @@ import SDGCollections
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
 
@@ -37,7 +39,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAPIParsing() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for packageName in ["PackageToDocument", "PackageToDocument2"] {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
         let parsed = try PackageAPI(
@@ -111,7 +113,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCodeFragmentSyntax() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
 
       let syntax = try SyntaxParser.parse(source: source)
@@ -284,7 +286,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testCoreLibraries() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
 
       let syntax = try SyntaxParser.parse(
         URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
@@ -350,7 +352,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testFunctionalSyntaxScanner() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
         "/// ```swift",
         "/// print(\u{22}Hello, world!\u{22})",
@@ -402,7 +404,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLineDeveloperCommentSyntax() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let syntax = try SyntaxParser.parse(source: "/\u{2F} Comment.")
       struct Scanner: SyntaxScanner {}
       try Scanner().scan(syntax)
@@ -421,7 +423,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLineDocumentationCommentSyntax() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let syntax = try SyntaxParser.parse(source: "//\u{2F} Documentation.")
       class DocumentationScanner: SyntaxScanner {
         func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
@@ -436,7 +438,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLocations() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = "/\u{2F} ...\nlet x = 0 \n"
       let syntax = try SyntaxParser.parse(source: source)
       var statementsFound = false
@@ -464,22 +466,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       try withDefaultMockRepository { package in
-        _ = try? PackageAPI(package: package.packageGraph().get())
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+          _ = try? PackageAPI(package: package.packageGraph().get())
+        #endif
       }
     #endif
   }
 
   func testPackageDocumentation() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       let package = try thisRepository.package().get()
-      XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+        XCTAssertNotNil(try PackageAPI.documentation(for: package))
+      #endif
     #endif
   }
 
   func testParsing() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
       where url.lastPathComponent ≠ ".DS_Store" {
         let sourceFile = try SyntaxParser.parseAndRetry(url)
@@ -683,7 +689,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTree() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = "/\u{2F} ...\nlet x = 0 \n"
       let syntax = try SyntaxParser.parse(source: source)
       XCTAssertNil(syntax.ancestors().first(where: { _ in true }))

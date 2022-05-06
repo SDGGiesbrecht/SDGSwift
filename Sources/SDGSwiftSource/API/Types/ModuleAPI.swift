@@ -19,8 +19,12 @@
   import SDGCollections
 
   import SwiftSyntax
-  import SwiftSyntaxParser
-  import PackageModel
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    import SwiftSyntaxParser
+  #endif
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+  #endif
 
   import SDGSwiftPackageManager
 
@@ -29,55 +33,59 @@
     _UniquelyDeclaredManifestAPIElement
   {
 
-    /// Creates a module API instance by parsing the specified target’s sources.
-    ///
-    /// - Parameters:
-    ///     - module: The module target.
-    ///     - manifest: The syntax of the package manifest.
-    @available(macOS 10.15, *)
-    public convenience init<Syntax>(
-      module: PackageModel.Target,
-      manifest: Syntax?
-    ) throws where Syntax: SyntaxProtocol {
-      let search =
-        ".target(".scalars
-        + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-        + "name: \u{22}\(module.name)\u{22}".scalars
-      let manifestDeclaration = manifest?.smallestSubnode(containing: search)?.parent
-      try self.init(
-        documentation: manifestDeclaration?.documentation ?? [],
-        declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name),
-        sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) })
-      )
-    }
-
-    /// Creates a module API instance by parsing the specified source files.
-    ///
-    /// - Parameters:
-    ///     - documentation: The documentation for the module.
-    ///     - declaration: The module’s declaration from the package manifest.
-    /// 	- sources: The source files.
-    public convenience init(
-      documentation: [SymbolDocumentation],
-      declaration: FunctionCallExprSyntax,
-      sources: [URL]
-    ) throws {
-
-      self.init(documentation: documentation, declaration: declaration)
-      var api: [APIElement] = []
-      for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
-        try purgingAutoreleased {
-          let source = try SyntaxParser.parseAndRetry(sourceFile)
-          api.append(contentsOf: source.api())
-        }
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      /// Creates a module API instance by parsing the specified target’s sources.
+      ///
+      /// - Parameters:
+      ///     - module: The module target.
+      ///     - manifest: The syntax of the package manifest.
+      @available(macOS 10.15, *)
+      public convenience init<Syntax>(
+        module: PackageModel.Target,
+        manifest: Syntax?
+      ) throws where Syntax: SyntaxProtocol {
+        let search =
+          ".target(".scalars
+          + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+          + "name: \u{22}\(module.name)\u{22}".scalars
+        let manifestDeclaration = manifest?.smallestSubnode(containing: search)?.parent
+        try self.init(
+          documentation: manifestDeclaration?.documentation ?? [],
+          declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name),
+          sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) })
+        )
       }
-      apply(parsedElements: api)
-    }
-    internal convenience init(source: String) throws {
-      self.init(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr())
-      let syntax = try SyntaxParser.parse(source: source)
-      apply(parsedElements: syntax.api())
-    }
+    #endif
+
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      /// Creates a module API instance by parsing the specified source files.
+      ///
+      /// - Parameters:
+      ///     - documentation: The documentation for the module.
+      ///     - declaration: The module’s declaration from the package manifest.
+      /// 	- sources: The source files.
+      public convenience init(
+        documentation: [SymbolDocumentation],
+        declaration: FunctionCallExprSyntax,
+        sources: [URL]
+      ) throws {
+
+        self.init(documentation: documentation, declaration: declaration)
+        var api: [APIElement] = []
+        for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
+          try purgingAutoreleased {
+            let source = try SyntaxParser.parseAndRetry(sourceFile)
+            api.append(contentsOf: source.api())
+          }
+        }
+        apply(parsedElements: api)
+      }
+      internal convenience init(source: String) throws {
+        self.init(documentation: [], declaration: SyntaxFactory.makeBlankFunctionCallExpr())
+        let syntax = try SyntaxParser.parse(source: source)
+        apply(parsedElements: syntax.api())
+      }
+    #endif
     private func apply(parsedElements: [APIElement]) {
       children.append(contentsOf: APIElement.merge(elements: parsedElements))
     }

@@ -14,6 +14,8 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
 
@@ -31,7 +33,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testCodeBlockWithCombiningCharacters() throws {
     // Untracked.
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
         "/// ...",
         "///",
@@ -58,7 +60,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testContinuedCallout() throws {
     // Untracked.
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
         "/// ...",
         "///",
@@ -74,7 +76,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownEntity() throws {
     // Untracked.
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
         "/// ...&#x2D;...",
         "public func function() {}",
@@ -91,7 +93,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   func testMarkdownQuotation() throws {
     // Untracked.
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
         "/// ...",
         "///",

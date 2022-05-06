@@ -22,7 +22,9 @@
   import SDGLocalization
 
   import SwiftSyntax
-  import PackageModel
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+  #endif
 
   import SDGSwift
   import SDGSwiftPackageManager
@@ -53,29 +55,31 @@
 
     // MARK: - Initialization
 
-    @available(macOS 10.15, *)
-    internal convenience init<Syntax>(
-      product: Product,
-      manifest: Syntax,
-      reportProgress: (String) -> Void
-    ) throws where Syntax: SyntaxProtocol {
-      let search =
-        ".library(".scalars
-        + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-        + "name: \u{22}\(product.name)\u{22}".scalars
-      let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent
-      self.init(
-        documentation: manifestDeclaration?.documentation ?? [],  // @exempt(from: tests)
-        declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
-      )
-
-      for module in product.targets where ¬module.name.hasPrefix("_") {
-        reportProgress(
-          String(LibraryAPI.reportForParsing(module: StrictString(module.name)).resolved())
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      @available(macOS 10.15, *)
+      internal convenience init<Syntax>(
+        product: Product,
+        manifest: Syntax,
+        reportProgress: (String) -> Void
+      ) throws where Syntax: SyntaxProtocol {
+        let search =
+          ".library(".scalars
+          + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+          + "name: \u{22}\(product.name)\u{22}".scalars
+        let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent
+        self.init(
+          documentation: manifestDeclaration?.documentation ?? [],  // @exempt(from: tests)
+          declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
         )
-        children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
+
+        for module in product.targets where ¬module.name.hasPrefix("_") {
+          reportProgress(
+            String(LibraryAPI.reportForParsing(module: StrictString(module.name)).resolved())
+          )
+          children.append(.module(try ModuleAPI(module: module, manifest: manifest)))
+        }
       }
-    }
+    #endif
 
     internal init(
       documentation: [SymbolDocumentation],

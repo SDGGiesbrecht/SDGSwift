@@ -18,7 +18,10 @@
   import SDGCollections
 
   import SwiftSyntax
-  import SwiftSyntaxParser
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    import SwiftSyntaxParser
+  #endif
+
   import enum SDGHTML.HTML
 
   /// A fragment of code used in documentation.
@@ -47,22 +50,24 @@
 
     internal let range: Range<String.ScalarOffset>
 
-    /// The syntax of the source code contained in this token.
-    public func syntax() throws -> [SyntaxFragment]? {
-      if isSwift == true {
-        let parsed = try SyntaxParser.parse(source: context)
-        return syntax(of: Syntax(parsed))
-      } else if isSwift == false {
-        return nil
-      } else {
-        if let parsed = try? SyntaxParser.parse(source: context) {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      /// The syntax of the source code contained in this token.
+      public func syntax() throws -> [SyntaxFragment]? {
+        if isSwift == true {
+          let parsed = try SyntaxParser.parse(source: context)
           return syntax(of: Syntax(parsed))
-        } else {  // @exempt(from: tests)
-          // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
+        } else if isSwift == false {
           return nil
+        } else {
+          if let parsed = try? SyntaxParser.parse(source: context) {
+            return syntax(of: Syntax(parsed))
+          } else {  // @exempt(from: tests)
+            // @exempt(from: tests) Reachability unknown. (SwiftSyntax no longer throws on invalid syntax.)
+            return nil
+          }
         }
       }
-    }
+    #endif
 
     private func syntax(of node: Syntax) -> [SyntaxFragment] {
       let context = self.context
@@ -206,37 +211,39 @@
       return source
     }
 
-    internal override func nestedSyntaxHighlightedHTML(
-      internalIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> String {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      internal override func nestedSyntaxHighlightedHTML(
+        internalIdentifiers: Set<String>,
+        symbolLinks: [String: String]
+      ) -> String {
 
-      if context == self.source.text,  // Not part of something bigger.
-        symbolLinks[context] ≠ nil
-      {
-        return unknownSyntaxHighlightedHTML(
-          internalIdentifiers: internalIdentifiers,
-          symbolLinks: symbolLinks
-        )
-      }
+        if context == self.source.text,  // Not part of something bigger.
+          symbolLinks[context] ≠ nil
+        {
+          return unknownSyntaxHighlightedHTML(
+            internalIdentifiers: internalIdentifiers,
+            symbolLinks: symbolLinks
+          )
+        }
 
-      if let syntax = try? self.syntax(),
-        syntax.map({ $0.source() }).joined() == text
-      {
-        return String(
-          syntax.map({
-            $0.nestedSyntaxHighlightedHTML(
-              internalIdentifiers: internalIdentifiers,
-              symbolLinks: symbolLinks
-            )
-          }).joined()
-        )
-      } else {
-        return unknownSyntaxHighlightedHTML(
-          internalIdentifiers: internalIdentifiers,
-          symbolLinks: symbolLinks
-        )
+        if let syntax = try? self.syntax(),
+          syntax.map({ $0.source() }).joined() == text
+        {
+          return String(
+            syntax.map({
+              $0.nestedSyntaxHighlightedHTML(
+                internalIdentifiers: internalIdentifiers,
+                symbolLinks: symbolLinks
+              )
+            }).joined()
+          )
+        } else {
+          return unknownSyntaxHighlightedHTML(
+            internalIdentifiers: internalIdentifiers,
+            symbolLinks: symbolLinks
+          )
+        }
       }
-    }
+    #endif
   }
 #endif
