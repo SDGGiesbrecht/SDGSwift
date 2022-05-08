@@ -85,8 +85,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testIgnoredFileDetection() {
     #if !PLATFORM_LACKS_GIT
-    #warning("Debugging...")
-    print(thisRepository.ignoredFiles())
       XCTAssert(
         try thisRepository.ignoredFiles().get()
           .contains(where: { $0.lastPathComponent == ".build" })

@@ -78,13 +78,6 @@ extension VersionedExternalProcess {
 
     return cached(in: &self[versionConstraints]) {
 
-      // #warning(Swift 5.6, Shell misbehaves on Windows; this is only a partial workaround so that CI works.)
-      #if os(Windows)
-      var searchLocations: [URL] = []
-      if Self.self == Git.self {
-        searchLocations.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
-      }
-      #else
       let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable.
           return nil
@@ -96,7 +89,6 @@ extension VersionedExternalProcess {
           return URL(parsingOutput: output)
         #endif
       }
-      #endif
 
       func validate(
         _ process: ExternalProcess
@@ -123,6 +115,22 @@ extension VersionedExternalProcess {
       ) {
         return .success(found)  // @exempt(from: tests) Unreachable on tvOS.
       } else {
+
+        // #workaround(Swift 5.6, Shell misbehaves on Windows; this tries hard‐coded paths as a fallback.)
+        #if os(Windows)
+          var hardCoded: [URL] = []
+          if Self.self == Git.self {
+            searchLocations.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
+          }
+          if let found = ExternalProcess(
+            searching: hardCoded,
+            commandName: commandName,
+            validate: validate
+          ) {
+            return .success(found)
+          }
+        #endif
+
         return .failure(
           .unavailable(
             versionConstraints: versionConstraints.inInequalityNotation({
