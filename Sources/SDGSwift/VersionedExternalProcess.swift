@@ -78,7 +78,7 @@ extension VersionedExternalProcess {
 
     return cached(in: &self[versionConstraints]) {
 
-      let searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
+      var searchLocations = searchCommands.lazy.reversed().lazy.compactMap { (command) -> URL? in
         #if PLATFORM_LACKS_FOUNDATION_PROCESS  // @exempt(from: tests) Unreachable.
           return nil
         #else
@@ -89,6 +89,12 @@ extension VersionedExternalProcess {
           return URL(parsingOutput: output)
         #endif
       }
+      // #warning(Swift 5.6, Shell misbehaves on Windows; this allows CI to work.)
+      #if os(Windows)
+        if Self.self == Git.self {
+          searchLocations.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
+        }
+      #endif
 
       func validate(
         _ process: ExternalProcess
