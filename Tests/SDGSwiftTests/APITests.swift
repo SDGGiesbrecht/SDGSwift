@@ -123,47 +123,43 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testGit() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      #if PLATFORM_LACKS_GIT
-        _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-      #else
-        XCTAssertNotNil(
-          try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
-        )
-        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-          let url = directory.appendingPathComponent("no such URL")
-          _ = try? Git.clone(Package(url: url), to: url).get()
-        }
-      #endif
+    #if PLATFORM_LACKS_GIT
+      _ = try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+    #else
+      XCTAssertNotNil(
+        try? Git.location(versionConstraints: Version(Int.min)...Version(Int.max)).get()
+      )
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        _ = try? Git.clone(Package(url: url), to: url).get()
+      }
     #endif
   }
 
   func testGitError() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      testCustomStringConvertibleConformance(
-        of: VersionedExternalProcessExecutionError<Git>.locationError(
-          .unavailable(versionConstraints: "...")
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Git Unavailable",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      #if !PLATFORM_LACKS_GIT
-        switch Git.runCustomSubcommand(
-          ["fail"],
-          versionConstraints: Version(Int.min)...Version(Int.max)
-        ) {
-        case .success:
-          XCTFail()
-        case .failure(let error):
-          testCustomStringConvertibleConformance(
-            of: error,
-            localizations: InterfaceLocalization.self,
-            uniqueTestName: "Git Execution",
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        }
-      #endif
+    testCustomStringConvertibleConformance(
+      of: VersionedExternalProcessExecutionError<Git>.locationError(
+        .unavailable(versionConstraints: "...")
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Git Unavailable",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    #if !PLATFORM_LACKS_GIT
+      switch Git.runCustomSubcommand(
+        ["fail"],
+        versionConstraints: Version(Int.min)...Version(Int.max)
+      ) {
+      case .success:
+        XCTFail()
+      case .failure(let error):
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Git Execution",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      }
     #endif
   }
 
@@ -172,21 +168,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackage() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      testCustomStringConvertibleConformance(
-        of: Package(url: URL(string: "https://domain.tld/Package")!),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Mock Package",
-        overwriteSpecificationInsteadOfFailing: false
+    testCustomStringConvertibleConformance(
+      of: Package(url: URL(string: "https://domain.tld/Package")!),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Mock Package",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    #if !PLATFORM_LACKS_GIT
+      XCTAssert(
+        try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+          .versions()
+          .get() ∋ Version(0, 1, 0),
+        "Failed to detect available versions."
       )
-      #if !PLATFORM_LACKS_GIT
-        XCTAssert(
-          try Package(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-            .versions()
-            .get() ∋ Version(0, 1, 0),
-          "Failed to detect available versions."
-        )
-      #endif
     #endif
   }
 
@@ -200,38 +194,36 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() throws {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      #if os(Windows)  // Paths differ.
-        _ = String(
-          describing: PackageRepository(
-            at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
-          )
+    #if os(Windows)  // Paths differ.
+      _ = String(
+        describing: PackageRepository(
+          at: URL(fileURLWithPath: "D:\u{5C}path\u{5C}to\u{5C}Mock Package")
         )
-      #else
-        #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
-          testCustomStringConvertibleConformance(
-            of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-            localizations: InterfaceLocalization.self,
-            uniqueTestName: "Mock",
-            overwriteSpecificationInsteadOfFailing: false
-          )
+      )
+    #else
+      #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+        testCustomStringConvertibleConformance(
+          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Mock",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
+    #endif
+
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      try withDefaultMockRepository { mock in
+        _ = try mock.tag(version: Version(10, 0, 0)).get()
+      }
+    #endif
+
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let url = directory.appendingPathComponent("no such URL")
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+          _ = try? PackageRepository.clone(Package(url: url), to: url).get()
         #endif
-      #endif
-
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        try withDefaultMockRepository { mock in
-          _ = try mock.tag(version: Version(10, 0, 0)).get()
-        }
-      #endif
-
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-          let url = directory.appendingPathComponent("no such URL")
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-            _ = try? PackageRepository.clone(Package(url: url), to: url).get()
-          #endif
-        }
-      #endif
+      }
     #endif
   }
 
@@ -385,40 +377,36 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testVersion() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      testCustomStringConvertibleConformance(
-        of: Version(1, 2, 3),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "1.2.3",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+    testCustomStringConvertibleConformance(
+      of: Version(1, 2, 3),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "1.2.3",
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
-      XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
-      XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
-      XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
-      XCTAssertNil(Version(String("Blah blah blah...")))
-      XCTAssertNil(Version(firstIn: "Blah blah blah..."))
-      XCTAssertNil(Version(String("1.0.0.0")))
-      XCTAssertNil(Version(String("1.0.A")))
-      XCTAssertNil(Version(String("1.A")))
-      XCTAssertNil(Version(String("A")))
-      XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
-      XCTAssertEqual(Version(1, 0, 0), "1.0.0")
-    #endif
+    XCTAssertEqual(Version(firstIn: "1.0.0"), Version(1, 0, 0))
+    XCTAssertEqual(Version(firstIn: "1.0"), Version(1, 0, 0))
+    XCTAssertEqual(Version(firstIn: "1"), Version(1, 0, 0))
+    XCTAssertNil(Version(String("Blah blah blah...")))
+    XCTAssertNil(Version(firstIn: "Blah blah blah..."))
+    XCTAssertNil(Version(String("1.0.0.0")))
+    XCTAssertNil(Version(String("1.0.A")))
+    XCTAssertNil(Version(String("1.A")))
+    XCTAssertNil(Version(String("A")))
+    XCTAssertEqual(Version(0, 1, 0).compatibleVersions.upperBound, Version(0, 2, 0))
+    XCTAssertEqual(Version(1, 0, 0), "1.0.0")
   }
 
   func testVersionedExternalProcess() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      do {
-        // Fresh
-        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-        XCTFail("Failed to throw.")
-      } catch {}
-      do {
-        // Cached
-        _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
-        XCTFail("Failed to throw.")
-      } catch {}
-    #endif
+    do {
+      // Fresh
+      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+      XCTFail("Failed to throw.")
+    } catch {}
+    do {
+      // Cached
+      _ = try SwiftCompiler.location(versionConstraints: Version(0).compatibleVersions).get()
+      XCTFail("Failed to throw.")
+    } catch {}
   }
 }

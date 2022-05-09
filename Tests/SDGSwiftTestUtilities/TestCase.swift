@@ -28,17 +28,15 @@ open class TestCase: SDGXCTestUtilities.TestCase {
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       if ProcessInfo.isInGitHubAction {
         // @exempt(from: tests)
-        #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-            _ = try? Git.runCustomSubcommand(
-              ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-              versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-            ).get()
-            _ = try? Git.runCustomSubcommand(
-              ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-              versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-            ).get()
-          #endif
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
         #endif
       }
     #endif
