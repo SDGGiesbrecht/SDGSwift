@@ -115,6 +115,22 @@ extension VersionedExternalProcess {
       ) {
         return .success(found)  // @exempt(from: tests) Unreachable on tvOS.
       } else {
+
+        // #workaround(Swift 5.6, Shell misbehaves on Windows; this tries hard‐coded paths as a fallback.)
+        #if os(Windows)
+          var hardCoded: [URL] = []
+          if Self.self == Git.self {
+            hardCoded.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
+          }
+          if let found = ExternalProcess(
+            searching: hardCoded,
+            commandName: commandName,
+            validate: validate
+          ) {
+            return .success(found)
+          }
+        #endif
+
         return .failure(
           .unavailable(
             versionConstraints: versionConstraints.inInequalityNotation({

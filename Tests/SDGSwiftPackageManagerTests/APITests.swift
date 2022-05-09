@@ -84,13 +84,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testIgnoredFileDetection() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
-      #if !PLATFORM_LACKS_GIT
-        XCTAssert(
-          try thisRepository.ignoredFiles().get()
-            .contains(where: { $0.lastPathComponent == ".build" })
-        )
-      #endif
+    #if !PLATFORM_LACKS_GIT
+      XCTAssert(
+        try thisRepository.ignoredFiles().get()
+          .contains(where: { $0.lastPathComponent == ".build" })
+      )
     #endif
   }
 
