@@ -120,7 +120,7 @@ extension VersionedExternalProcess {
         #if os(Windows)
           var hardCoded: [URL] = []
           if Self.self == Git.self {
-            searchLocations.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
+            hardCoded.append(URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
           }
           if let found = ExternalProcess(
             searching: hardCoded,
