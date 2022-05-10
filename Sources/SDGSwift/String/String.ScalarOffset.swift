@@ -45,10 +45,5 @@ extension String {
     ) -> Int {
       precedingValue.offset − followingValue.offset
     }
-
-    // #workaround(Swift 5.5.2, This is a redundant overload, but it dodges segmentation faults caused by the compiler.)
-    public static func −= (precedingValue: inout String.ScalarOffset, followingValue: Int) {
-      precedingValue += -followingValue  // @exempt(from: unicode)
-    }
   }
 }
