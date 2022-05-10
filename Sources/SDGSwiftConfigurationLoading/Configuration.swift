@@ -344,7 +344,7 @@ extension Configuration {
         case .success(let output):
           json = output
         }
-        // #workaround(Need a better way to get output without build log.)
+        // #workaround(SDGCornerstone 9.0.0, Need a better way to get output without build log.)
         if json.first ≠ "[" {
           json.drop(upTo: "\n[")  // @exempt(from: tests)
           json.removeFirst()
