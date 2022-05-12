@@ -220,6 +220,32 @@ public enum SwiftCompiler: VersionedExternalProcess {
       )
     }
 
+    /// Exports the symbol graphs and returns the URL of the directory containing the symbol graph files.
+    ///
+    /// - Parameters:
+    ///     - package: The package whose symbol graph should be exported.
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
+    public static func exportSymbolGraph(
+      _ package: PackageRepository,
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
+    ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+      let earliest = Version(5, 3, 0)
+      return runCustomSubcommand(
+        ["package", "dump\u{2D}symbol\u{2D}graph"],
+        in: package.location,
+        versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound,
+        reportProgress: reportProgress
+      ).map { output in
+        let start =
+          output.scalars.lastMatch(for: "Files written to ".scalars)?.range.upperBound
+          ?? output.lines.indices.last?.samePosition(in: output.scalars)
+          ?? output.scalars.startIndex
+        let path = output.scalars[start...]
+        return URL(fileURLWithPath: String(String.UnicodeScalarView(path)))
+      }
+    }
+
     // MARK: - Test Coverage
 
     private static func codeCoverageDataFile(

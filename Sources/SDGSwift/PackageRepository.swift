@@ -174,6 +174,17 @@ public struct PackageRepository: TransparentWrapper {
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.resolve(self, reportProgress: reportProgress)
     }
+
+    /// Exports the symbol graph and returns the URL of the exported files.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
+    public func exportSymbolGraph(
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
+    ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+      return SwiftCompiler.exportSymbolGraph(self, reportProgress: reportProgress)
+    }
   #endif
 
   // MARK: - TransparentWrapper
