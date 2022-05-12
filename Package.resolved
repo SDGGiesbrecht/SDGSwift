@@ -1,124 +1,122 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "SDGCornerstone",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
-        "state": {
-          "branch": null,
-          "revision": "5ab7d7449d9c9bea201bbe536b8d51fb1ebc4106",
-          "version": "9.0.0"
-        }
-      },
-      {
-        "package": "SDGWeb",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
-        "state": {
-          "branch": null,
-          "revision": "c21b18dea008fa1d91a259b14a004a1cb77df602",
-          "version": "6.0.0"
-        }
-      },
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
-        "state": {
-          "branch": null,
-          "revision": "d2930e8fcf9c33162b9fcc1d522bc975e2d4179b",
-          "version": "1.0.1"
-        }
-      },
-      {
-        "package": "cmark",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
-        "state": {
-          "branch": null,
-          "revision": "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
-          "version": "0.50302.0"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections",
-        "state": {
-          "branch": null,
-          "revision": "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
-          "version": "1.0.1"
-        }
-      },
-      {
-        "package": "swift-crypto",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto",
-        "state": {
-          "branch": null,
-          "revision": "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
-          "version": "0.10107.0"
-        }
-      },
-      {
-        "package": "swift-driver",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver",
-        "state": {
-          "branch": null,
-          "revision": "5864885ffd1e732cc1c186f4241686b190aa5cbf",
-          "version": "0.50600.2"
-        }
-      },
-      {
-        "package": "llbuild",
-        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
-        "state": {
-          "branch": null,
-          "revision": "5cd4df550b31301508a77064e3dfaa5c5628780e",
-          "version": "0.5.0"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics",
-        "state": {
-          "branch": null,
-          "revision": "0a23770641f65a4de61daf5425a37ae32a3fd00d",
-          "version": "1.0.1"
-        }
-      },
-      {
-        "package": "SwiftPM",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
-        "state": {
-          "branch": null,
-          "revision": "62cbf6cd5aed417fd485b8a0a4990f8b452f4e09",
-          "version": "0.50600.3"
-        }
-      },
-      {
-        "package": "SwiftSyntax",
-        "repositoryURL": "https://github.com/apple/swift-syntax",
-        "state": {
-          "branch": null,
-          "revision": "0b6c22b97f8e9320bca62e82cdbee601cf37ad3f",
-          "version": "0.50600.1"
-        }
-      },
-      {
-        "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
-        "state": {
-          "branch": null,
-          "revision": "107e570e3565920174d5a25bc3a0340b32d16042",
-          "version": "0.50600.0"
-        }
-      },
-      {
-        "package": "Yams",
-        "repositoryURL": "https://github.com/jpsim/Yams.git",
-        "state": {
-          "branch": null,
-          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
-          "version": "4.0.6"
-        }
+  "pins" : [
+    {
+      "identity" : "sdgcornerstone",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGCornerstone",
+      "state" : {
+        "revision" : "5ab7d7449d9c9bea201bbe536b8d51fb1ebc4106",
+        "version" : "9.0.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "sdgweb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGWeb",
+      "state" : {
+        "revision" : "c21b18dea008fa1d91a259b14a004a1cb77df602",
+        "version" : "6.0.0"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "d2930e8fcf9c33162b9fcc1d522bc975e2d4179b",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
+      "state" : {
+        "revision" : "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
+        "version" : "0.50302.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-crypto",
+      "state" : {
+        "revision" : "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
+        "version" : "0.10107.0"
+      }
+    },
+    {
+      "identity" : "swift-driver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-driver",
+      "state" : {
+        "revision" : "5864885ffd1e732cc1c186f4241686b190aa5cbf",
+        "version" : "0.50600.2"
+      }
+    },
+    {
+      "identity" : "swift-llbuild",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-llbuild.git",
+      "state" : {
+        "revision" : "5cd4df550b31301508a77064e3dfaa5c5628780e",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics",
+      "state" : {
+        "revision" : "0a23770641f65a4de61daf5425a37ae32a3fd00d",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-package-manager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-package-manager",
+      "state" : {
+        "revision" : "62cbf6cd5aed417fd485b8a0a4990f8b452f4e09",
+        "version" : "0.50600.3"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax",
+      "state" : {
+        "revision" : "0b6c22b97f8e9320bca62e82cdbee601cf37ad3f",
+        "version" : "0.50600.1"
+      }
+    },
+    {
+      "identity" : "swift-tools-support-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+      "state" : {
+        "revision" : "107e570e3565920174d5a25bc3a0340b32d16042",
+        "version" : "0.50600.0"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
+        "version" : "4.0.6"
+      }
+    }
+  ],
+  "version" : 2
 }
