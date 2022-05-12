@@ -228,7 +228,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - progressReport: A line of output.
     public static func exportSymbolGraph(
       _ package: PackageRepository,
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       let earliest = Version(5, 3, 0)
       return runCustomSubcommand(
@@ -239,7 +239,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
       ).map { output in
         let start =
           output.scalars.lastMatch(for: "Files written to ".scalars)?.range.upperBound
-          ?? output.lines.indices.last?.samePosition(in: output.scalars)
+          ?? output.lines.indices.last?.samePosition(in: output.scalars)  // @exempt(from: tests)
           ?? output.scalars.startIndex
         let path = output.scalars[start...]
         return URL(fileURLWithPath: String(String.UnicodeScalarView(path)))
