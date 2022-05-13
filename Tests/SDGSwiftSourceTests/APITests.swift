@@ -659,7 +659,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraphExport() throws {
     for packageName in APITests.documentationTestPackages {
       let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        _ = try? package.exportSymbolGraph().get()
+      #else
         let directory = try package.exportSymbolGraph().get()
         defer { try? FileManager.default.removeItem(at: directory) }
         XCTAssert(
