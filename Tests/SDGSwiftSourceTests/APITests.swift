@@ -660,7 +660,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for packageName in APITests.documentationTestPackages {
       let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
       #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        _ = try? package.exportSymbolGraph().get()
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+          _ = try? package.exportSymbolGraph().get()
+        #endif
       #else
         let directory = try package.exportSymbolGraph().get()
         defer { try? FileManager.default.removeItem(at: directory) }
