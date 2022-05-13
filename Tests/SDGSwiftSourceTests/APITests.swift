@@ -659,12 +659,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraphExport() throws {
     for packageName in APITests.documentationTestPackages {
       let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
-      let directory = try package.exportSymbolGraph().get()
-      defer { try? FileManager.default.removeItem(at: directory) }
-      XCTAssert(
-        try FileManager.default.contents(ofDirectory: directory)
-          .contains(where: { $0.lastPathComponent.hasSuffix(".symbols.json") })
-      )
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        let directory = try package.exportSymbolGraph().get()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        XCTAssert(
+          try FileManager.default.contents(ofDirectory: directory)
+            .contains(where: { $0.lastPathComponent.hasSuffix(".symbols.json") })
+        )
+      #endif
     }
   }
 
