@@ -38,9 +38,10 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  static let documentationTestPackages = ["PackageToDocument", "PackageToDocument2"]
   func testAPIParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-      for packageName in ["PackageToDocument", "PackageToDocument2"] {
+      for packageName in APITests.documentationTestPackages {
         let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
         let parsed = try PackageAPI(
           package: package.packageGraph().get(),
@@ -653,6 +654,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       }
     #endif
+  }
+
+  func testSymbolGraphExport() throws {
+    for packageName in APITests.documentationTestPackages {
+      let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+          _ = try? package.exportSymbolGraph().get()
+        #endif
+      #else
+        let directory = try package.exportSymbolGraph().get()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        XCTAssert(
+          try FileManager.default.contents(ofDirectory: directory)
+            .contains(where: { $0.lastPathComponent.hasSuffix(".symbols.json") })
+        )
+      #endif
+    }
   }
 
   func testTokenSyntax() {
