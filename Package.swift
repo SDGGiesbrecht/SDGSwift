@@ -120,10 +120,9 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}syntax",
       exact: Version(0, 50600, 1)
     ),
-    // #workaround(Branch.)
     .package(
-      url: "https://github.com/apple/swift\u{2D}docc\u{2D}symbolkit",
-      branch: "release/5.6"
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
+      exact: Version(0, 50600, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
