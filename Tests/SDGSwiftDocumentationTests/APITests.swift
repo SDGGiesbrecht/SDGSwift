@@ -28,7 +28,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraphLoading() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
-      _ = package.symbolGraphs()
+      _ = try package.symbolGraphs().get()
     }
   }
 }
