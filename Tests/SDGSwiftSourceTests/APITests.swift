@@ -38,11 +38,11 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  static let documentationTestPackages = ["PackageToDocument", "PackageToDocument2"]
   func testAPIParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-      for packageName in APITests.documentationTestPackages {
-        let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
+      for packageURL in documentationTestPackages {
+        let packageName = packageURL.lastPathComponent
+        let package = PackageRepository(at: packageURL)
         let parsed = try PackageAPI(
           package: package.packageGraph().get(),
           reportProgress: { print($0) }
@@ -657,8 +657,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSymbolGraphExport() throws {
-    for packageName in APITests.documentationTestPackages {
-      let package = PackageRepository(at: mocksDirectory.appendingPathComponent(packageName))
+    for packageURL in documentationTestPackages {
+      let package = PackageRepository(at: packageURL)
       #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         #if !PLATFORM_LACKS_FOUNDATION_PROCESS
           _ = try? package.exportSymbolGraph().get()

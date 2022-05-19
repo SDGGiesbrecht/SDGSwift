@@ -50,6 +50,9 @@ public let thisRepository: PackageRepository = {
 }()
 public let mocksDirectory = thisRepository.location
   .appendingPathComponent("Tests").appendingPathComponent("Mock Projects")
+public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2"].map { name in
+  return mocksDirectory.appendingPathComponent(name)
+}
 
 #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   private func withMock(
