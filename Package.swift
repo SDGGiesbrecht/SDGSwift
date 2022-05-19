@@ -387,8 +387,12 @@ let package = Package(
       dependencies: [
         "SDGSwift",
         "SDGSwiftDocumentation",
+        "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
