@@ -28,7 +28,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraphLoading() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
-      _ = try package.symbolGraphs().get()
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        _ = try? package.symbolGraphs().get()
+      #else
+        _ = try package.symbolGraphs().get()
+      #endif
     }
   }
 }

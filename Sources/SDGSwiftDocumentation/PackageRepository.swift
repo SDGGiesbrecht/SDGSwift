@@ -19,27 +19,29 @@ import Foundation
 
 extension PackageRepository {
 
-  /// Exports and loads the package’s symbol graphs.
-  ///
-  /// - Parameters:
-  ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-  ///     - progressReport: A line of output.
-  public func symbolGraphs(
-    reportProgress: (_ progressReport: String) -> Void = { _ in }
-  ) -> Result<[SymbolGraph], SymbolGraph.LoadingError> {
-    switch exportSymbolGraph(reportProgress: reportProgress) {
-    case .failure(let error):
-      return .failure(.exportError(error))
-    case .success(let exports):
-      do {
-        return .success(
-          try FileManager.default.contents(ofDirectory: exports).map({ file in
-            return try SymbolGraph(from: file)
-          })
-        )
-      } catch {
-        return .failure(.loadingError(error))
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+    /// Exports and loads the package’s symbol graphs.
+    ///
+    /// - Parameters:
+    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///     - progressReport: A line of output.
+    public func symbolGraphs(
+      reportProgress: (_ progressReport: String) -> Void = { _ in }
+    ) -> Result<[SymbolGraph], SymbolGraph.LoadingError> {
+      switch exportSymbolGraph(reportProgress: reportProgress) {
+      case .failure(let error):
+        return .failure(.exportError(error))
+      case .success(let exports):
+        do {
+          return .success(
+            try FileManager.default.contents(ofDirectory: exports).map({ file in
+              return try SymbolGraph(from: file)
+            })
+          )
+        } catch {
+          return .failure(.loadingError(error))
+        }
       }
     }
-  }
+  #endif
 }
