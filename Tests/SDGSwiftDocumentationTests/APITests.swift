@@ -58,7 +58,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         #endif
       #else
         let graphs = try package.symbolGraphs().get()
-        _ = graphs.map { $0.file }
       #endif
     }
   }
