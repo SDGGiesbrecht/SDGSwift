@@ -21,8 +21,9 @@ extension SymbolGraph: FileConvertible {
 
   // MARK: - FileConvertible
 
-  public init(file: Data, origin: URL?) throws {
-    // @exempt(from: tests) Nothing to load on tvOS.
+  public init(
+    file: Data, origin: URL?
+  ) throws {  // @exempt(from: tests) Nothing to load on tvOS.
     self = try JSONDecoder().decode(Self.self, from: file)
   }
 
