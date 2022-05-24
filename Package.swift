@@ -121,6 +121,10 @@ let package = Package(
       exact: Version(0, 50600, 1)
     ),
     .package(
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
+      exact: Version(0, 50600, 0)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       exact: Version(0, 50302, 0)
     ),
@@ -211,6 +215,20 @@ let package = Package(
         ),
         .product(name: "cmark", package: "swift\u{2D}cmark"),
         .product(name: "SDGHTML", package: "SDGWeb"),
+      ]
+    ),
+
+    // #workaround(Not exposed yet; still incomplete.)
+    /// Utilities for working with Swift documentation.
+    ///
+    /// This module is built on DocC and provides utilities such as API parsing.
+    .target(
+      name: "SDGSwiftDocumentation",
+      dependencies: [
+        "SDGSwift",
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
       ]
     ),
 
@@ -362,6 +380,20 @@ let package = Package(
           // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
+      ]
+    ),
+    .testTarget(
+      name: "SDGSwiftDocumentationTests",
+      dependencies: [
+        "SDGSwift",
+        "SDGSwiftDocumentation",
+        "SDGSwiftLocalizations",
+        "SDGSwiftTestUtilities",
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(
