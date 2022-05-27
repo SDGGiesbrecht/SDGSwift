@@ -71,6 +71,12 @@ extension PackageRepository {
           }
         }
 
+        for library in api.libraries {
+          for module in library.modules where ¬api.modules.contains(module) {
+            api._children.append(.module(module))
+          }
+        }
+
         return api
       }
     #endif

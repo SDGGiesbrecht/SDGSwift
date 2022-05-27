@@ -71,7 +71,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if name == "PackageToDocument" {
           summary.append(
             contentsOf: [
-              " PrimaryModule • .target(name: \u{22}PrimaryModule\u{22})",
               "  AnotherSublass • class AnotherSublass",
               "   UnknownSuperclass",
               "  CollectionType • struct CollectionType",
@@ -120,7 +119,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         } else if name == "PackageToDocument2" {
           summary.append(
             contentsOf: [
-              " PrimaryModule • .target(name: \u{22}PrimaryModule\u{22})",
               "  (Bool)",
               "   extensionProperty • var extensionProperty: Bool { get }",
             ]
