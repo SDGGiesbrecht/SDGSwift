@@ -38,6 +38,11 @@
 
     // MARK: - Static Methods
 
+    public static func _reportForParsing(
+      module: StrictString
+    ) -> UserFacing<StrictString, InterfaceLocalization> {
+      return reportForParsing(module: module)
+    }
     internal static func reportForParsing(
       module: StrictString
     ) -> UserFacing<StrictString, InterfaceLocalization> {

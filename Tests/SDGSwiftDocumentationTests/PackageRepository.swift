@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGLogic
+import SDGText
 
 import SDGSwift
 import SDGSwiftSource
@@ -48,9 +49,21 @@ extension PackageRepository {
         for product in package.products where ¬product.name.hasPrefix("_") {
           switch product.type {
           case .library:
+            let library = LibraryAPI(_productSkippingModules: product, manifest: manifest)
+            for module in product.targets where ¬module.name.hasPrefix("_") {
+              reportProgress(
+                String(LibraryAPI._reportForParsing(module: StrictString(module.name)).resolved())
+              )
+              let moduleAPI = try ModuleAPI(
+                _module: module,
+                manifest: manifest,
+                skippingSources: true
+              )
+              library._children.append(.module(moduleAPI))
+            }
             api._children.append(
               .library(
-                LibraryAPI(_productSkippingModules: product, manifest: manifest)
+                library
               )
             )
           case .executable, .test, .plugin, .snippet:
