@@ -386,14 +386,21 @@ let package = Package(
       name: "SDGSwiftDocumentationTests",
       dependencies: [
         "SDGSwift",
+        "SDGSwiftSource",
         "SDGSwiftDocumentation",
         "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(
+          name: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
       ]
     ),
     .testTarget(
