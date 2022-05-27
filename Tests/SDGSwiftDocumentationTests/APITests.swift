@@ -59,13 +59,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           _ = try? package.symbolGraphs().get()
         #endif
       #else
-        let name = try package.manifest().get().displayName
-        let graphs = try package.symbolGraphs().get()
-        let parsed = PackageAPI(name: name, symbolGraphs: graphs)
+        let api = try package.api()
+        let name = api.name.text
 
-        var summary = parsed.summary()
+        var summary = api.summary()
         let specification = testSpecificationDirectory().appendingPathComponent(
-          "API/\(parsed.name).txt"
+          "API/\(api.name).txt"
         )
 
         // #workaround(Working on reducing difference.)
