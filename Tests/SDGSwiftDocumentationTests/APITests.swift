@@ -71,7 +71,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if name == "PackageToDocument" {
           summary.append(
             contentsOf: [
-              " PrimaryProduct • .library(name: \u{22}PrimaryProduct\u{22})",
               "  PrimaryModule",
               " PrimaryModule • .target(name: \u{22}PrimaryModule\u{22})",
               "  AnotherSublass • class AnotherSublass",
@@ -122,7 +121,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         } else if name == "PackageToDocument2" {
           summary.append(
             contentsOf: [
-              " PrimaryProduct • .library(name: \u{22}PrimaryProduct\u{22})",
               "  PrimaryModule",
               " PrimaryModule • .target(name: \u{22}PrimaryModule\u{22})",
               "  (Bool)",

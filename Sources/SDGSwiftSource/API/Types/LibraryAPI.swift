@@ -56,12 +56,16 @@
     // MARK: - Initialization
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      @available(macOS 10.15, *)
-      internal convenience init<Syntax>(
-        product: Product,
-        manifest: Syntax,
-        reportProgress: (String) -> Void
-      ) throws where Syntax: SyntaxProtocol {
+      public convenience init<Syntax>(
+        _productSkippingModules product: Product,
+        manifest: Syntax
+      ) where Syntax: SyntaxProtocol {
+        self.init(productSkippingModules: product, manifest: manifest)
+      }
+      private convenience init<Syntax>(
+        productSkippingModules product: Product,
+        manifest: Syntax
+      ) where Syntax: SyntaxProtocol {
         let search =
           ".library(".scalars
           + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
@@ -71,6 +75,14 @@
           documentation: manifestDeclaration?.documentation ?? [],  // @exempt(from: tests)
           declaration: FunctionCallExprSyntax.normalizedLibraryDeclaration(name: product.name)
         )
+      }
+      @available(macOS 10.15, *)
+      internal convenience init<Syntax>(
+        product: Product,
+        manifest: Syntax,
+        reportProgress: (String) -> Void
+      ) throws where Syntax: SyntaxProtocol {
+        self.init(productSkippingModules: product, manifest: manifest)
 
         for module in product.targets where ¬module.name.hasPrefix("_") {
           reportProgress(

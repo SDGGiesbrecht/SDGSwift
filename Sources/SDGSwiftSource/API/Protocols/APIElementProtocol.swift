@@ -94,6 +94,14 @@
         storage.children = newValue
       }
     }
+    public var _children: [APIElement] {
+      get {
+        return children
+      }
+      set {
+        children = newValue
+      }
+    }
 
     // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
     /// Whether or not the element is a protocol requirement.
