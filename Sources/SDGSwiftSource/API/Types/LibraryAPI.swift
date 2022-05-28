@@ -38,6 +38,7 @@
 
     // MARK: - Static Methods
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
     public static func _reportForParsing(
       module: StrictString
     ) -> UserFacing<StrictString, InterfaceLocalization> {
@@ -61,6 +62,7 @@
     // MARK: - Initialization
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      // #workaround(Temporary for SDGSwiftDocumentationTests.)
       public convenience init<Syntax>(
         _productSkippingModules product: Product,
         manifest: Syntax

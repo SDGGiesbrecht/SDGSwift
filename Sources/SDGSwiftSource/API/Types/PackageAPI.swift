@@ -182,6 +182,7 @@
       }
     #endif
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
     public convenience init(
       _documentation documentation: [SymbolDocumentation],
       declaration: FunctionCallExprSyntax

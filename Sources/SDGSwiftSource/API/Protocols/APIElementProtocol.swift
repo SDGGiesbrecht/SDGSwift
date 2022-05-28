@@ -94,6 +94,7 @@
         storage.children = newValue
       }
     }
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
     public var _children: [APIElement] {
       get {
         return children

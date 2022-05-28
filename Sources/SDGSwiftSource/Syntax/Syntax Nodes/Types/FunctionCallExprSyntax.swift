@@ -19,6 +19,7 @@
 
   extension FunctionCallExprSyntax {
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
     public static func _normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
       return normalizedPackageDeclaration(name: name)
     }

@@ -46,6 +46,7 @@
       ) throws where Syntax: SyntaxProtocol {
         try self.init(module: module, manifest: manifest, skippingSources: false)
       }
+      // #workaround(Temporary for SDGSwiftDocumentationTests.)
       public convenience init<Syntax>(
         _module module: PackageModel.Target,
         manifest: Syntax?,
@@ -56,6 +57,7 @@
       private convenience init<Syntax>(
         module: PackageModel.Target,
         manifest: Syntax?,
+        // #workaround(Temporary for SDGSwiftDocumentationTests.)
         skippingSources: Bool
       ) throws where Syntax: SyntaxProtocol {
         let search =
