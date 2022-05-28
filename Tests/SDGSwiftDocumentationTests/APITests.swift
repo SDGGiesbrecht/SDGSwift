@@ -91,7 +91,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   staticMethod() • static func staticMethod()",
               "   init() • init()",
               "   property • var property: Bool { get }",
-              "   [_:] • subscript(`subscript`: Int) -> Bool { get }",
+              "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
               "   method() • func method()",
               "   Error",
               "  Subclass • class Subclass",
