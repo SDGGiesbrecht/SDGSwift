@@ -26,7 +26,7 @@ extension PackageRepository {
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     public func symbolGraphs(
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<[SymbolGraph], SymbolGraph.LoadingError> {
       switch exportSymbolGraph(reportProgress: reportProgress) {
       case .failure(let error):
