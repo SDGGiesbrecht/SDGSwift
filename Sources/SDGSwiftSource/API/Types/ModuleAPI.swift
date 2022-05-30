@@ -44,6 +44,22 @@
         module: PackageModel.Target,
         manifest: Syntax?
       ) throws where Syntax: SyntaxProtocol {
+        try self.init(module: module, manifest: manifest, skippingSources: false)
+      }
+      // #workaround(Temporary for SDGSwiftDocumentationTests.)
+      public convenience init<Syntax>(
+        _module module: PackageModel.Target,
+        manifest: Syntax?,
+        skippingSources: Bool
+      ) throws where Syntax: SyntaxProtocol {
+        try self.init(module: module, manifest: manifest, skippingSources: skippingSources)
+      }
+      private convenience init<Syntax>(
+        module: PackageModel.Target,
+        manifest: Syntax?,
+        // #workaround(Temporary for SDGSwiftDocumentationTests.)
+        skippingSources: Bool
+      ) throws where Syntax: SyntaxProtocol {
         let search =
           ".target(".scalars
           + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
@@ -52,7 +68,8 @@
         try self.init(
           documentation: manifestDeclaration?.documentation ?? [],
           declaration: FunctionCallExprSyntax.normalizedModuleDeclaration(name: module.name),
-          sources: module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) })
+          sources: skippingSources
+            ? [] : module.sources.paths.lazy.map({ URL(fileURLWithPath: $0.pathString) })
         )
       }
     #endif

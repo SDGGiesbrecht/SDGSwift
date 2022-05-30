@@ -19,6 +19,10 @@
 
   extension FunctionCallExprSyntax {
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
+    public static func _normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
+      return normalizedPackageDeclaration(name: name)
+    }
     internal static func normalizedPackageDeclaration(name: String) -> FunctionCallExprSyntax {
       return normalizedManifest(
         calledExpression: SyntaxFactory.makeIdentifierExpr(

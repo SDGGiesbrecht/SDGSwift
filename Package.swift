@@ -214,6 +214,12 @@ let package = Package(
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "swift\u{2D}cmark"),
+        .product(
+          name: "SwiftPMDataModel\u{2D}auto",
+          package: "swift\u{2D}package\u{2D}manager",
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ]
     ),
@@ -386,14 +392,28 @@ let package = Package(
       name: "SDGSwiftDocumentationTests",
       dependencies: [
         "SDGSwift",
+        "SDGSwiftSource",
         "SDGSwiftDocumentation",
         "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(
+          name: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "SwiftPMDataModel\u{2D}auto",
+          package: "swift\u{2D}package\u{2D}manager",
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
       ]
     ),
     .testTarget(

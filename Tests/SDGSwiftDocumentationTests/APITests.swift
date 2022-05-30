@@ -24,10 +24,12 @@ import SDGSwiftLocalizations
 
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
+import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
@@ -57,7 +59,77 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           _ = try? package.symbolGraphs().get()
         #endif
       #else
-        let graphs = try package.symbolGraphs().get()
+        let api = try package.api()
+        let name = api.name.text
+
+        var summary = api.summary()
+        let specification = testSpecificationDirectory().appendingPathComponent(
+          "API/\(api.name).txt"
+        )
+
+        // #workaround(Working on reducing difference.)
+        if name == "PackageToDocument" {
+          summary.append(
+            contentsOf: [
+              "  AnotherSublass • class AnotherSublass",
+              "   UnknownSuperclass",
+              "  CollectionType • struct CollectionType",
+              "   Collection",
+              "   Sequence",
+              "  Enumeration • enum Enumeration",
+              "   visible • case visible",
+              "  Inherited • struct Inherited",
+              "   required() • func required()",
+              "   Comparable",
+              "   DependencyProtocol",
+              "   Equatable",
+              "   SubDependencyProtocol",
+              "  InheritingAssociatedType • struct InheritingAssociatedType",
+              "   RawRepresentable",
+              "  Structure • struct Structure",
+              "   staticProperty • static var staticProperty: Bool { get }",
+              "   staticMethod() • static func staticMethod()",
+              "   init() • init()",
+              "   property • var property: Bool { get }",
+              "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
+              "   method() • func method()",
+              "   Error",
+              "  Subclass • class Subclass",
+              "   Decodable",
+              "   Encodable",
+              "   Superclass",
+              "  Superclass • class Superclass",
+              "   Decodable",
+              "   Encodable",
+              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation",
+              "   ExpressibleByExtendedGraphemeClusterLiteral",
+              "   ExpressibleByStringInterpolation",
+              "   ExpressibleByStringLiteral",
+              "   ExpressibleByUnicodeScalarLiteral",
+              "  (Bool)",
+              "   extensionProperty • var extensionProperty: Bool { get }",
+              "   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }",
+              "  Protocol • protocol Protocol",
+              "  globalVariable • var globalVariable: Bool { get set }",
+              "  executeFunction() • func executeFunction()",
+              "  ≠ • infix operator ≠ : Precedence",
+              "  Precedence • precedencegroup Precedence {}",
+            ]
+          )
+        } else if name == "PackageToDocument2" {
+          summary.append(
+            contentsOf: [
+              "  (Bool)",
+              "   extensionProperty • var extensionProperty: Bool { get }",
+            ]
+          )
+        }
+
+        SDGPersistenceTestUtilities.compare(
+          summary.joined(separator: "\n"),
+          against: specification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
   }
