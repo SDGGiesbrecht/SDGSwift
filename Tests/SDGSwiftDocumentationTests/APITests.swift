@@ -69,8 +69,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
         // #workaround(Working on reducing difference.)
         if name == "PackageToDocument" {
-          summary.append(
-            contentsOf: [
+          summary.replaceMatches(
+            for: [
+              "  AnotherSublass • class AnotherSublass"
+            ],
+            with: [
               "  AnotherSublass • class AnotherSublass",
               "   UnknownSuperclass",
               "  CollectionType • struct CollectionType",
@@ -94,10 +97,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
               "   method() • func method()",
               "   Error",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Subclass • class Subclass"
+            ],
+            with: [
               "  Subclass • class Subclass",
               "   Decodable",
               "   Encodable",
               "   Superclass",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Superclass • class Superclass"
+            ],
+            with: [
               "  Superclass • class Superclass",
               "   Decodable",
               "   Encodable",
