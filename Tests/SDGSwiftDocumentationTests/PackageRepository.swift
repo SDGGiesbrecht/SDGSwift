@@ -48,6 +48,8 @@ extension PackageRepository {
         )
         let api = PackageAPI(_documentation: documentation, declaration: declaration)
 
+        let graphs = try symbolGraphs(reportProgress: reportProgress).get()
+
         for product in package.products where ¬product.name.hasPrefix("_") {
           switch product.type {
           case .library:
@@ -61,6 +63,9 @@ extension PackageRepository {
                 manifest: manifest,
                 skippingSources: true
               )
+              for graph in graphs where graph.module.name == module.name {
+                moduleAPI.assimilate(symbolGraph: graph)
+              }
               library._children.append(.module(moduleAPI))
             }
             api._children.append(
