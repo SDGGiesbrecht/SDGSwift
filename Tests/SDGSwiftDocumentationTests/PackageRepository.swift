@@ -49,6 +49,9 @@ extension PackageRepository {
         let api = PackageAPI(_documentation: documentation, declaration: declaration)
 
         let graphs = try symbolGraphs(reportProgress: reportProgress).get()
+        for graph in graphs {
+          print(graph.module)
+        }
 
         for product in package.products where ¬product.name.hasPrefix("_") {
           switch product.type {

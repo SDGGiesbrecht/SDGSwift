@@ -34,6 +34,7 @@ extension PackageRepository {
       case .success(let exports):
         do {
           return .success(
+            // #workaround(These should be filtered somewhere so that internal or underscored modules are not included.)
             try FileManager.default.contents(ofDirectory: exports).map({ file in
               return try SymbolGraph(from: file)
             })
