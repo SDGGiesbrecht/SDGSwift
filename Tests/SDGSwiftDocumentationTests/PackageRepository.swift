@@ -64,7 +64,7 @@ extension PackageRepository {
                 skippingSources: true
               )
               for graph in graphs where graph.module.name == module.name {
-                moduleAPI.assimilate(symbolGraph: graph)
+                try moduleAPI.assimilate(symbolGraph: graph)
               }
               library._children.append(.module(moduleAPI))
             }

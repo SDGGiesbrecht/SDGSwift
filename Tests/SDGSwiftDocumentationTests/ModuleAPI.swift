@@ -12,17 +12,25 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGControlFlow
+
 import SDGSwiftSource
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
 #endif
 import SymbolKit
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension ModuleAPI {
 
-    func assimilate(symbolGraph: SymbolGraph) {
+    func assimilate(symbolGraph: SymbolGraph) throws {
+      var sourceCache: [URL: SourceFileSyntax] = [:]
       for (_, symbol) in symbolGraph.symbols {
 
         // #workaround(Not implemented yet.)
@@ -34,23 +42,18 @@ import SymbolKit
           // #workaround(Not implemented yet.)
           print("associatedtype: \(symbol.names.prose ?? symbol.names.title)")
         case .class:
-          let declaration = SyntaxFactory.makeClassDecl(
-            attributes: nil,
-            modifiers: nil,
-            classOrActorKeyword: SyntaxFactory.makeToken(.classKeyword),
-            identifier: SyntaxFactory.makeToken(
-              .identifier(symbol.names.subHeading!.dropFirst(2).map({ $0.spelling }).joined())
-            ),
-            genericParameterClause: nil,
-            inheritanceClause: nil,
-            genericWhereClause: nil,
-            members: SyntaxFactory.makeBlankMemberDeclBlock()
-          )
-          _children.append(
-            .type(
-              TypeAPI(_documentation: documentation, declaration: declaration, children: children)
+          #warning("Here.")
+          if let declaration = try declaration(
+            of: symbol,
+            as: ClassDeclSyntax.self,
+            cache: &sourceCache
+          ) {
+            _children.append(
+              .type(
+                TypeAPI(_documentation: documentation, declaration: declaration, children: children)
+              )
             )
-          )
+          }
         case .deinit:
           // #workaround(Not implemented yet.)
           print("deinit: \(symbol.names.prose ?? symbol.names.title)")
@@ -108,6 +111,34 @@ import SymbolKit
         }
         _children.sort()
       }
+    }
+
+    func declaration<SyntaxNode>(
+      of symbol: SymbolGraph.Symbol,
+      as expectedNode: SyntaxNode.Type,
+      cache: inout [URL: SourceFileSyntax]
+    ) throws -> SyntaxNode? where SyntaxNode: SyntaxProtocol {
+      guard let locationMixin = symbol.mixins[SymbolGraph.Symbol.Location.mixinKey],
+        let location = locationMixin as? SymbolGraph.Symbol.Location,
+        let url = URL(string: location.uri)
+      else {
+        return nil
+      }
+      let source = try cached(in: &cache[url]) {
+        return try SyntaxParser.parseAndRetry(url)
+      }
+      let symbolTargetLocation = location.position
+      let converter = SourceLocationConverter(file: url.path, tree: source)
+      let syntaxTargetLocation = SourceLocation(
+        line: symbolTargetLocation.line,
+        column: symbolTargetLocation.character,
+        offset: converter.position(
+          ofLine: symbolTargetLocation.line,
+          column: symbolTargetLocation.character
+        ).utf8Offset,
+        file: url.path
+      )
+      return Syntax(source).smallest(expectedNode, at: syntaxTargetLocation, converter: converter)
     }
   }
 #endif
