@@ -128,7 +128,11 @@ import SymbolKit
     }
 
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
-      return []
+      return graph.relationships.filter({ relationship in
+        return relationship.source == symbol.identifier.precise
+      }).compactMap({ relationship in
+        return graph.symbols[relationship.target]
+      })
     }
 
     func declaration<SyntaxNode>(
