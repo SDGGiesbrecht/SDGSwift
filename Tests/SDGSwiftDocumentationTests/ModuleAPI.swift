@@ -34,7 +34,6 @@ import SymbolKit
       for (_, symbol) in symbolGraph.symbols {
 
         // #workaround(Not implemented yet.)
-        let documentation: [SymbolDocumentation] = []
         let children: [APIElement] = []
 
         switch symbol.kind.identifier {
@@ -42,7 +41,6 @@ import SymbolKit
           // #workaround(Not implemented yet.)
           print("associatedtype: \(symbol.names.prose ?? symbol.names.title)")
         case .class:
-          #warning("Here.")
           if let declaration = try declaration(
             of: symbol,
             as: ClassDeclSyntax.self,
@@ -50,7 +48,7 @@ import SymbolKit
           ) {
             _children.append(
               .type(
-                TypeAPI(_documentation: documentation, declaration: declaration, children: children)
+                TypeAPI(_documentation: declaration._documentation, declaration: declaration, children: children)
               )
             )
           }
