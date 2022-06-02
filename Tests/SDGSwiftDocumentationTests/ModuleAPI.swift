@@ -129,7 +129,13 @@ import SymbolKit
 
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
-        return relationship.source == symbol.identifier.precise
+        switch relationship.kind {
+        // #workaround(These are filtered out for compatibility with the old method, and can be allowed through once DocC takes responsibility for all later steps.)
+        case .inheritsFrom:
+          return false
+        default:
+          return relationship.source == symbol.identifier.precise
+        }
       }).compactMap({ relationship in
         return graph.symbols[relationship.target]
       })
