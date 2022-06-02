@@ -27,14 +27,22 @@ import SDGSwiftSource
 import SymbolKit
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  extension ModuleAPI {
+  extension APIElementProtocol {
 
     func assimilate(symbolGraph: SymbolGraph) throws {
       var sourceCache: [URL: SourceFileSyntax] = [:]
-      for (_, symbol) in symbolGraph.symbols {
-
-        // #workaround(Not implemented yet.)
-        let children: [APIElement] = []
+      try assimilate(
+        symbols: symbolGraph.symbols.values,
+        from: symbolGraph,
+        sourceCache: &sourceCache
+      )
+    }
+    func assimilate<Symbols>(
+      symbols: Symbols,
+      from symbolGraph: SymbolGraph,
+      sourceCache: inout [URL: SourceFileSyntax]
+    ) throws where Symbols: Collection, Symbols.Element == SymbolGraph.Symbol {
+      for symbol in symbols {
 
         switch symbol.kind.identifier {
         case .associatedtype:
@@ -46,10 +54,18 @@ import SymbolKit
             as: ClassDeclSyntax.self,
             cache: &sourceCache
           ) {
+            let api = TypeAPI(
+              _documentation: declaration._documentation,
+              declaration: declaration,
+              children: []
+            )
+            try api.assimilate(
+              symbols: children(of: symbol, in: symbolGraph),
+              from: symbolGraph,
+              sourceCache: &sourceCache
+            )
             _children.append(
-              .type(
-                TypeAPI(_documentation: declaration._documentation, declaration: declaration, children: children)
-              )
+              .type(api)
             )
           }
         case .deinit:
@@ -111,6 +127,10 @@ import SymbolKit
       }
     }
 
+    func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
+      return []
+    }
+
     func declaration<SyntaxNode>(
       of symbol: SymbolGraph.Symbol,
       as expectedNode: SyntaxNode.Type,
@@ -121,7 +141,7 @@ import SymbolKit
       else {
         return nil
       }
-      let url = URL(fileURLWithPath: String(location.uri.dropFirst(7/* file:// */)))
+      let url = URL(fileURLWithPath: String(location.uri.dropFirst(7 /* file:// */)))
       let source = try cached(in: &cache[url]) {
         return try SyntaxParser.parseAndRetry(url)
       }
