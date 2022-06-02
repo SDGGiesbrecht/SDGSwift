@@ -119,11 +119,11 @@ import SymbolKit
       cache: inout [URL: SourceFileSyntax]
     ) throws -> SyntaxNode? where SyntaxNode: SyntaxProtocol {
       guard let locationMixin = symbol.mixins[SymbolGraph.Symbol.Location.mixinKey],
-        let location = locationMixin as? SymbolGraph.Symbol.Location,
-        let url = URL(string: location.uri)
+        let location = locationMixin as? SymbolGraph.Symbol.Location
       else {
         return nil
       }
+      let url = URL(fileURLWithPath: String(location.uri.dropFirst(7/* file:// */)))
       let source = try cached(in: &cache[url]) {
         return try SyntaxParser.parseAndRetry(url)
       }
