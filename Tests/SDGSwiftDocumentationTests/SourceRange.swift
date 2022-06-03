@@ -20,12 +20,14 @@ import SDGCollections
   import SwiftSyntax
 #endif
 
-extension SourceRange: SetDefinition {
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  extension SourceRange: SetDefinition {
 
-  public typealias Element = SourceLocation
+    public typealias Element = SourceLocation
 
-  public static func ∋ (precedingValue: SourceRange, followingValue: SourceLocation) -> Bool {
-    return precedingValue.start.offset ≤ followingValue.offset ∧ precedingValue.end.offset
-      > followingValue.offset
+    public static func ∋ (precedingValue: SourceRange, followingValue: SourceLocation) -> Bool {
+      return precedingValue.start.offset ≤ followingValue.offset ∧ precedingValue.end.offset
+        > followingValue.offset
+    }
   }
-}
+#endif
