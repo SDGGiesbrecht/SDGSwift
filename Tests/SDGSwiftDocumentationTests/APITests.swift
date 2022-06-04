@@ -76,19 +76,54 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             with: [
               "  AnotherSublass • class AnotherSublass",
               "   UnknownSuperclass",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  CollectionType • struct CollectionType"
+            ],
+            with: [
               "  CollectionType • struct CollectionType",
               "   Collection",
               "   Sequence",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Enumeration • enum Enumeration"
+            ],
+            with: [
               "  Enumeration • enum Enumeration",
               "   visible • case visible",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Inherited • struct Inherited"
+            ],
+            with: [
               "  Inherited • struct Inherited",
               "   required() • func required()",
               "   Comparable",
               "   DependencyProtocol",
               "   Equatable",
               "   SubDependencyProtocol",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  InheritingAssociatedType • struct InheritingAssociatedType"
+            ],
+            with: [
               "  InheritingAssociatedType • struct InheritingAssociatedType",
               "   RawRepresentable",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Structure • struct Structure"
+            ],
+            with: [
               "  Structure • struct Structure",
               "   staticProperty • static var staticProperty: Bool { get }",
               "   staticMethod() • static func staticMethod()",
@@ -118,6 +153,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "  Superclass • class Superclass",
               "   Decodable",
               "   Encodable",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation"
+            ],
+            with: [
               "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation",
               "   ExpressibleByExtendedGraphemeClusterLiteral",
               "   ExpressibleByStringInterpolation",
