@@ -345,6 +345,10 @@
       }
     }
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
+    public var _documentation: [SymbolDocumentation] {
+      return documentation
+    }
     internal var documentation: [SymbolDocumentation] {
       var result: [SymbolDocumentation] = []
       if let token = firstToken() {

@@ -396,7 +396,10 @@ let package = Package(
         "SDGSwiftDocumentation",
         "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
@@ -406,6 +409,12 @@ let package = Package(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "swift\u{2D}syntax",
+          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
