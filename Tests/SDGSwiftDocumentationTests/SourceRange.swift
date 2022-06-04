@@ -23,9 +23,12 @@ import SDGCollections
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SourceRange: SetDefinition {
 
-    public typealias Element = SourceLocation
+    public typealias Element = SourceLocation  // @exempt(from: accessControl)
 
-    public static func ∋ (precedingValue: SourceRange, followingValue: SourceLocation) -> Bool {
+    public static func ∋ (  // @exempt(from: accessControl)
+      precedingValue: SourceRange,
+      followingValue: SourceLocation
+    ) -> Bool {
       return precedingValue.start.offset ≤ followingValue.offset ∧ precedingValue.end.offset
         > followingValue.offset
     }
