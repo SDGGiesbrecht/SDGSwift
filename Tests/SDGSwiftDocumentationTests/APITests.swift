@@ -79,6 +79,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "  CollectionType • struct CollectionType",
               "   Collection",
               "   Sequence",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  Enumeration • enum Enumeration",
+            ],
+            with: [
               "  Enumeration • enum Enumeration",
               "   visible • case visible",
               "  Inherited • struct Inherited",

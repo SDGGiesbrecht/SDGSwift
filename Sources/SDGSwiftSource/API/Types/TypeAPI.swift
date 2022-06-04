@@ -36,6 +36,14 @@
     ) {
       self.init(documentation: documentation, declaration: declaration, children: children)
     }
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
+    public convenience init(
+      _documentation documentation: [SymbolDocumentation],
+      declaration: EnumDeclSyntax,
+      children: [APIElement]
+    ) {
+      self.init(documentation: documentation, declaration: declaration, children: children)
+    }
     internal init<T>(documentation: [SymbolDocumentation], declaration: T, children: [APIElement])
     where T: TypeDeclaration {
 

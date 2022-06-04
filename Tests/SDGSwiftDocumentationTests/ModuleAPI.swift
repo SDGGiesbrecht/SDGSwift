@@ -65,16 +65,29 @@ import SymbolKit
                 from: symbolGraph,
                 sourceCache: &sourceCache
               )
-              _children.append(
-                .type(api)
-              )
+              _children.append(.type(api))
             }
           case .deinit:
             // #workaround(Not implemented yet.)
             print("deinit: \(symbol.names.prose ?? symbol.names.title)")
           case .enum:
-            // #workaround(Not implemented yet.)
-            print("enum: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: EnumDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              let api = TypeAPI(
+                _documentation: declaration._documentation,
+                declaration: declaration,
+                children: []
+              )
+              try api.assimilate(
+                symbols: children(of: symbol, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
+              _children.append(.type(api))
+            }
           case .case:
             // #workaround(Not implemented yet.)
             print("case: \(symbol.names.prose ?? symbol.names.title)")
