@@ -80,7 +80,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  CollectionType • struct CollectionType",
+              "  CollectionType • struct CollectionType"
             ],
             with: [
               "  CollectionType • struct CollectionType",
@@ -90,7 +90,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Enumeration • enum Enumeration",
+              "  Enumeration • enum Enumeration"
             ],
             with: [
               "  Enumeration • enum Enumeration",
@@ -99,7 +99,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Inherited • struct Inherited",
+              "  Inherited • struct Inherited"
             ],
             with: [
               "  Inherited • struct Inherited",
@@ -112,7 +112,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  InheritingAssociatedType • struct InheritingAssociatedType",
+              "  InheritingAssociatedType • struct InheritingAssociatedType"
             ],
             with: [
               "  InheritingAssociatedType • struct InheritingAssociatedType",
@@ -121,7 +121,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Structure • struct Structure",
+              "  Structure • struct Structure"
             ],
             with: [
               "  Structure • struct Structure",
@@ -157,7 +157,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation",
+              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation"
             ],
             with: [
               "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation",
