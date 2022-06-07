@@ -103,8 +103,20 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("method: \(symbol.names.prose ?? symbol.names.title)")
           case .property:
-            // #workaround(Not implemented yet.)
-            print("property: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: VariableDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              _children.append(
+                .variable(
+                  VariableAPI(
+                    _documentation: declaration._documentation,
+                    declaration: declaration
+                  )
+                )
+              )
+            }
           case .protocol:
             if let declaration = try declaration(
               of: symbol,
@@ -218,12 +230,14 @@ import SymbolKit
         }
         let symbolTargetLocation = location.position
         let converter = SourceLocationConverter(file: url.path, tree: source)
+        let ordinalLine = symbolTargetLocation.line + 1
+        let ordinalColumn = symbolTargetLocation.character + 1
         let syntaxTargetLocation = SourceLocation(
-          line: symbolTargetLocation.line,
-          column: symbolTargetLocation.character,
+          line: ordinalLine,
+          column: ordinalColumn,
           offset: converter.position(
-            ofLine: symbolTargetLocation.line,
-            column: symbolTargetLocation.character
+            ofLine: ordinalLine,
+            column: ordinalColumn
           ).utf8Offset,
           file: url.path
         )
