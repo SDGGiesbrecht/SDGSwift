@@ -104,7 +104,7 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("method: \(symbol.names.prose ?? symbol.names.title)")
           case .property:
-            if ¬(self is ModuleAPI) {
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
               if let declaration = try declaration(
                 of: symbol,
                 as: VariableDeclSyntax.self,
@@ -205,14 +205,13 @@ import SymbolKit
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
         switch relationship.kind {
-        // #workaround(These are filtered out for compatibility with the old method, and can be allowed through once DocC takes responsibility for all later steps.)
-        case .inheritsFrom:
-          return false
+        case .memberOf:
+          return relationship.target == symbol.identifier.precise
         default:
-          return relationship.source == symbol.identifier.precise
+          return false
         }
       }).compactMap({ relationship in
-        return graph.symbols[relationship.target]
+        return graph.symbols[relationship.source]
       })
     }
 
