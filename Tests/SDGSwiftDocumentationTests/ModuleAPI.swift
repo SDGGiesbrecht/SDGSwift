@@ -127,8 +127,20 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("typealias: \(symbol.names.prose ?? symbol.names.title)")
           case .var:
-            // #workaround(Not implemented yet.)
-            print("var: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: VariableDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              _children.append(
+                .variable(
+                  VariableAPI(
+                    _documentation: declaration._documentation,
+                    declaration: declaration
+                  )
+                )
+              )
+            }
           case .module:
             // #workaround(Not implemented yet.)
             print("module: \(symbol.names.prose ?? symbol.names.title)")

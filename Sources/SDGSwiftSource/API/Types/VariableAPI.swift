@@ -22,6 +22,13 @@
 
     // MARK: - Initialization
 
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
+    public convenience init(
+      _documentation documentation: [SymbolDocumentation],
+      declaration: VariableDeclSyntax
+    ) {
+      self.init(documentation: documentation, declaration: declaration)
+    }
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: VariableDeclSyntax,

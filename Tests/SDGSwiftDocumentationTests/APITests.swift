@@ -127,7 +127,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   extensionProperty • var extensionProperty: Bool { get }",
               "   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }",
               "  Protocol • protocol Protocol",
-              "  globalVariable • var globalVariable: Bool { get set }",
             ]
           )
           summary.replaceMatches(
