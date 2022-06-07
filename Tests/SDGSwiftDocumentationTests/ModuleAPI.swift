@@ -126,8 +126,25 @@ import SymbolKit
               )
             }
           case .struct:
-            // #workaround(Not implemented yet.)
-            print("struct: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: StructDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              let api = TypeAPI(
+                _documentation: declaration._documentation,
+                declaration: declaration,
+                children: []
+              )
+              try api.assimilate(
+                symbols: children(of: symbol, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
+              _children.append(
+                .type(api)
+              )
+            }
           case .subscript:
             // #workaround(Not implemented yet.)
             print("subscript: \(symbol.names.prose ?? symbol.names.title)")
