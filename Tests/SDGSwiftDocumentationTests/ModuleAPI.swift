@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGControlFlow
+import SDGLogic
 
 import SDGSwiftSource
 
@@ -92,8 +93,20 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("case: \(symbol.names.prose ?? symbol.names.title)")
           case .func:
-            // #workaround(Not implemented yet.)
-            print("func: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: FunctionDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              _children.append(
+                .function(
+                  FunctionAPI(
+                    _documentation: declaration._documentation,
+                    declaration: declaration
+                  )
+                )
+              )
+            }
           case .operator:
             // #workaround(Not implemented yet.)
             print("operator: \(symbol.names.prose ?? symbol.names.title)")
@@ -104,11 +117,42 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("method: \(symbol.names.prose ?? symbol.names.title)")
           case .property:
-            // #workaround(Not implemented yet.)
-            print("property: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: VariableDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .variable(
+                    VariableAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .protocol:
-            // #workaround(Not implemented yet.)
-            print("protocol: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: ProtocolDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              let api = ProtocolAPI(
+                _documentation: declaration._documentation,
+                declaration: declaration,
+                children: []
+              )
+              try api.assimilate(
+                symbols: children(of: symbol, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
+              _children.append(
+                .protocol(api)
+              )
+            }
           case .struct:
             if let declaration = try declaration(
               of: symbol,
@@ -143,8 +187,20 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("typealias: \(symbol.names.prose ?? symbol.names.title)")
           case .var:
-            // #workaround(Not implemented yet.)
-            print("var: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: VariableDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              _children.append(
+                .variable(
+                  VariableAPI(
+                    _documentation: declaration._documentation,
+                    declaration: declaration
+                  )
+                )
+              )
+            }
           case .module:
             // #workaround(Not implemented yet.)
             print("module: \(symbol.names.prose ?? symbol.names.title)")
@@ -160,14 +216,13 @@ import SymbolKit
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
         switch relationship.kind {
-        // #workaround(These are filtered out for compatibility with the old method, and can be allowed through once DocC takes responsibility for all later steps.)
-        case .inheritsFrom:
-          return false
+        case .memberOf:
+          return relationship.target == symbol.identifier.precise
         default:
-          return relationship.source == symbol.identifier.precise
+          return false
         }
       }).compactMap({ relationship in
-        return graph.symbols[relationship.target]
+        return graph.symbols[relationship.source]
       })
     }
 
@@ -188,12 +243,14 @@ import SymbolKit
         }
         let symbolTargetLocation = location.position
         let converter = SourceLocationConverter(file: url.path, tree: source)
+        let ordinalLine = symbolTargetLocation.line + 1
+        let ordinalColumn = symbolTargetLocation.character + 1
         let syntaxTargetLocation = SourceLocation(
-          line: symbolTargetLocation.line,
-          column: symbolTargetLocation.character,
+          line: ordinalLine,
+          column: ordinalColumn,
           offset: converter.position(
-            ofLine: symbolTargetLocation.line,
-            column: symbolTargetLocation.character
+            ofLine: ordinalLine,
+            column: ordinalColumn
           ).utf8Offset,
           file: url.path
         )

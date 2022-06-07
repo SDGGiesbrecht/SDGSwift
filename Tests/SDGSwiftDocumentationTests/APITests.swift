@@ -128,6 +128,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   staticProperty • static var staticProperty: Bool { get }",
               "   staticMethod() • static func staticMethod()",
               "   init() • init()",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "   property • var property: Bool { get }"
+            ],
+            with: [
               "   property • var property: Bool { get }",
               "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
               "   method() • func method()",
@@ -168,13 +175,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "  (Bool)",
               "   extensionProperty • var extensionProperty: Bool { get }",
               "   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }",
-              "  Protocol • protocol Protocol",
-              "  globalVariable • var globalVariable: Bool { get set }",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  executeFunction() • func executeFunction()"
+            ],
+            with: [
               "  executeFunction() • func executeFunction()",
               "  ≠ • infix operator ≠ : Precedence",
               "  Precedence • precedencegroup Precedence {}",
             ]
           )
+          summary.removeAll(where: { line in
+            return [
+              // The legacy implementation filtered out conformance members.
+              "   endIndex • var endIndex: Int { get }",
+              "   startIndex • var startIndex: Int { get }",
+              "   rawValue • var rawValue: Int { get set }",
+            ].contains(line)
+          })
         } else if name == "PackageToDocument2" {
           summary.append(
             contentsOf: [
