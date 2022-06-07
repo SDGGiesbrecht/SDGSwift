@@ -121,6 +121,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   staticProperty • static var staticProperty: Bool { get }",
               "   staticMethod() • static func staticMethod()",
               "   init() • init()",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "   property • var property: Bool { get }",
+            ],
+            with: [
               "   property • var property: Bool { get }",
               "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
               "   method() • func method()",

@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGControlFlow
+import SDGLogic
 
 import SDGSwiftSource
 
@@ -103,19 +104,21 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("method: \(symbol.names.prose ?? symbol.names.title)")
           case .property:
-            if let declaration = try declaration(
-              of: symbol,
-              as: VariableDeclSyntax.self,
-              cache: &sourceCache
-            ) {
-              _children.append(
-                .variable(
-                  VariableAPI(
-                    _documentation: declaration._documentation,
-                    declaration: declaration
+            if ¬(self is ModuleAPI) {
+              if let declaration = try declaration(
+                of: symbol,
+                as: VariableDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .variable(
+                    VariableAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
                   )
                 )
-              )
+              }
             }
           case .protocol:
             if let declaration = try declaration(
