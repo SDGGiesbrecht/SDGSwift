@@ -106,8 +106,25 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("property: \(symbol.names.prose ?? symbol.names.title)")
           case .protocol:
-            // #workaround(Not implemented yet.)
-            print("protocol: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: ProtocolDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              let api = ProtocolAPI(
+                _documentation: declaration._documentation,
+                declaration: declaration,
+                children: []
+              )
+              try api.assimilate(
+                symbols: children(of: symbol, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
+              _children.append(
+                .protocol(api)
+              )
+            }
           case .struct:
             // #workaround(Not implemented yet.)
             print("struct: \(symbol.names.prose ?? symbol.names.title)")
