@@ -182,9 +182,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             ].contains(line)
           })
         } else if name == "PackageToDocument2" {
-          summary.prepend(
+          summary.append(
             contentsOf: [
               "  (Bool)",
+              "   extensionProperty • var extensionProperty: Bool { get }",
             ]
           )
         }
