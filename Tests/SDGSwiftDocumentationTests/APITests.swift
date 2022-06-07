@@ -180,14 +180,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "  Precedence • precedencegroup Precedence {}",
             ]
           )
-          summary.removeAll(where: { line in
-            return [
-              // Inheritances are skipped by legacy parsing.
-              "  endIndex • var endIndex: Int { get }",
-              "  rawValue • var rawValue: Int { get set }",
-              "  startIndex • var startIndex: Int { get }",
-            ].contains(line)
-          })
         } else if name == "PackageToDocument2" {
           summary.append(
             contentsOf: [
