@@ -125,7 +125,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "   property • var property: Bool { get }",
+              "   property • var property: Bool { get }"
             ],
             with: [
               "   property • var property: Bool { get }",
@@ -180,6 +180,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "  Precedence • precedencegroup Precedence {}",
             ]
           )
+          summary.removeAll(where: { line in
+            return [
+              // The legacy implementation filtered out conformance members.
+              "   endIndex • var endIndex: Int { get }",
+              "   startIndex • var startIndex: Int { get }",
+              "   rawValue • var rawValue: Int { get set }",
+            ].contains(line)
+          })
         } else if name == "PackageToDocument2" {
           summary.append(
             contentsOf: [
