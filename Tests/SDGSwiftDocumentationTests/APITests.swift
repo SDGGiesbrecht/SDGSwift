@@ -128,6 +128,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }",
               "  Protocol • protocol Protocol",
               "  globalVariable • var globalVariable: Bool { get set }",
+            ]
+          )
+          summary.replaceMatches(
+            for: [
+              "  executeFunction() • func executeFunction()"
+            ],
+            with: [
               "  executeFunction() • func executeFunction()",
               "  ≠ • infix operator ≠ : Precedence",
               "  Precedence • precedencegroup Precedence {}",

@@ -79,8 +79,20 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("case: \(symbol.names.prose ?? symbol.names.title)")
           case .func:
-            // #workaround(Not implemented yet.)
-            print("func: \(symbol.names.prose ?? symbol.names.title)")
+            if let declaration = try declaration(
+              of: symbol,
+              as: FunctionDeclSyntax.self,
+              cache: &sourceCache
+            ) {
+              _children.append(
+                .function(
+                  FunctionAPI(
+                    _documentation: declaration._documentation,
+                    declaration: declaration
+                  )
+                )
+              )
+            }
           case .operator:
             // #workaround(Not implemented yet.)
             print("operator: \(symbol.names.prose ?? symbol.names.title)")
