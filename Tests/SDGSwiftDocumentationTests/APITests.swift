@@ -71,25 +71,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if name == "PackageToDocument" {
           summary.replaceMatches(
             for: [
-              "  AnotherSublass • class AnotherSublass"
-            ],
-            with: [
-              "  AnotherSublass • class AnotherSublass",
-              "   UnknownSuperclass",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
-              "  CollectionType • struct CollectionType"
-            ],
-            with: [
-              "  CollectionType • struct CollectionType",
-              "   Collection",
-              "   Sequence",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "  Enumeration • enum Enumeration"
             ],
             with: [
@@ -104,19 +85,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             with: [
               "  Inherited • struct Inherited",
               "   required() • func required()",
-              "   Comparable",
-              "   DependencyProtocol",
-              "   Equatable",
-              "   SubDependencyProtocol",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
-              "  InheritingAssociatedType • struct InheritingAssociatedType"
-            ],
-            with: [
-              "  InheritingAssociatedType • struct InheritingAssociatedType",
-              "   RawRepresentable",
             ]
           )
           summary.replaceMatches(
@@ -138,7 +106,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   property • var property: Bool { get }",
               "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
               "   method() • func method()",
-              "   Error",
             ]
           )
           summary.replaceMatches(
@@ -154,23 +121,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Superclass • class Superclass"
+              "   ExpressibleByUnicodeScalarLiteral",
             ],
             with: [
-              "  Superclass • class Superclass",
-              "   Decodable",
-              "   Encodable",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
-              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation"
-            ],
-            with: [
-              "  TypeExpressibleByStringInterpolation • struct TypeExpressibleByStringInterpolation",
-              "   ExpressibleByExtendedGraphemeClusterLiteral",
-              "   ExpressibleByStringInterpolation",
-              "   ExpressibleByStringLiteral",
               "   ExpressibleByUnicodeScalarLiteral",
               "  (Bool)",
               "   extensionProperty • var extensionProperty: Bool { get }",
@@ -189,6 +142,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.removeAll(where: { line in
             return [
+              // The legacy implementation does not know about implicit synthesis.
+              "   Sendable",
               // The legacy implementation filtered out conformance members.
               "   endIndex • var endIndex: Int { get }",
               "   startIndex • var startIndex: Int { get }",
