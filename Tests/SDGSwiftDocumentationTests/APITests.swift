@@ -82,15 +82,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Inherited • struct Inherited"
-            ],
-            with: [
-              "  Inherited • struct Inherited",
-              "   required() • func required()",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "  Structure • struct Structure"
             ],
             with: [
@@ -107,7 +98,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             with: [
               "   property • var property: Bool { get }",
               "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
-              "   method() • func method()",
             ]
           )
           summary.replaceMatches(
@@ -145,9 +135,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // The legacy implementation does not know about implicit synthesis.
               "   Sendable",
               // The legacy implementation filtered out conformance members.
+              "   encode(to:) • func encode(to encoder: Encoder) throws",
               "   endIndex • var endIndex: Int { get }",
-              "   startIndex • var startIndex: Int { get }",
+              "   index(after:) • func index(after i: Int) -> Int",
+              "   inherited() • func inherited()",
+              "   methodOverride() • func methodOverride()",
+              "   provision() • func provision()",
               "   rawValue • var rawValue: Int { get set }",
+              "   requirement() • func requirement()",
+              "   startIndex • var startIndex: Int { get }",
             ].contains(line)
           })
         } else if name == "PackageToDocument2" {
