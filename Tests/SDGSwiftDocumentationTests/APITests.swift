@@ -117,12 +117,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             ],
             with: [
               "   Superclass",
-              "  Superclass • class Superclass"
+              "  Superclass • class Superclass",
             ]
           )
           summary.replaceMatches(
             for: [
-              "   ExpressibleByUnicodeScalarLiteral",
+              "   ExpressibleByUnicodeScalarLiteral"
             ],
             with: [
               "   ExpressibleByUnicodeScalarLiteral",

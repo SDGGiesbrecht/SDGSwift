@@ -219,11 +219,13 @@ import SymbolKit
 
     func assimilate(conformances: [String]) {
       for conformance in conformances {
-        _children.append(.conformance(ConformanceAPI(_type: SyntaxFactory.makeTypeIdentifier(conformance))))
+        _children.append(
+          .conformance(ConformanceAPI(_type: SyntaxFactory.makeTypeIdentifier(conformance)))
+        )
       }
       _children.sort()
     }
-    
+
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
         switch relationship.kind {
