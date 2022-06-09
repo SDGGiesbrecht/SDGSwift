@@ -66,6 +66,7 @@ import SymbolKit
                 from: symbolGraph,
                 sourceCache: &sourceCache
               )
+              api.assimilate(conformances: conformances(of: symbol, in: symbolGraph))
               _children.append(.type(api))
             }
           case .deinit:
@@ -87,6 +88,7 @@ import SymbolKit
                 from: symbolGraph,
                 sourceCache: &sourceCache
               )
+              api.assimilate(conformances: conformances(of: symbol, in: symbolGraph))
               _children.append(.type(api))
             }
           case .case:
@@ -149,6 +151,7 @@ import SymbolKit
                 from: symbolGraph,
                 sourceCache: &sourceCache
               )
+              api.assimilate(conformances: conformances(of: symbol, in: symbolGraph))
               _children.append(
                 .protocol(api)
               )
@@ -169,6 +172,7 @@ import SymbolKit
                 from: symbolGraph,
                 sourceCache: &sourceCache
               )
+              api.assimilate(conformances: conformances(of: symbol, in: symbolGraph))
               _children.append(.type(api))
             }
           case .subscript:
@@ -213,6 +217,15 @@ import SymbolKit
       }
     #endif
 
+    func assimilate(conformances: [String]) {
+      for conformance in conformances {
+        _children.append(
+          .conformance(ConformanceAPI(_type: SyntaxFactory.makeTypeIdentifier(conformance)))
+        )
+      }
+      _children.sort()
+    }
+
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
         switch relationship.kind {
@@ -223,6 +236,19 @@ import SymbolKit
         }
       }).compactMap({ relationship in
         return graph.symbols[relationship.source]
+      })
+    }
+
+    func conformances(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [String] {
+      return graph.relationships.filter({ relationship in
+        switch relationship.kind {
+        case .conformsTo, .inheritsFrom:
+          return relationship.source == symbol.identifier.precise
+        default:
+          return false
+        }
+      }).compactMap({ relationship in
+        return relationship.targetFallback.map { $0.dropping(through: ".") }
       })
     }
 
