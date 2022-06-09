@@ -92,8 +92,22 @@ import SymbolKit
               _children.append(.type(api))
             }
           case .case:
-            // #workaround(Not implemented yet.)
-            print("case: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: EnumCaseDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .case(
+                    CaseAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .func:
             if let declaration = try declaration(
               of: symbol,

@@ -71,14 +71,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         if name == "PackageToDocument" {
           summary.replaceMatches(
             for: [
-              "  Enumeration • enum Enumeration",
+              "   visible • case visible",
               // The legacy implementation does not know about implicit synthesis.
               "   Equatable",
               "   Hashable",
             ],
             with: [
-              "  Enumeration • enum Enumeration",
-              "   visible • case visible",
+              "   visible • case visible"
             ]
           )
           summary.replaceMatches(
