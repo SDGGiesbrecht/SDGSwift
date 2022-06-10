@@ -22,7 +22,7 @@
     _UniquelyDeclaredSyntaxAPIElement
   {
 
-    // MARK. - Initialization
+    // MARK: - Initialization
 
     // #workaround(Temporary for SDGSwiftDocumentationTests.)
     public convenience init(
