@@ -137,7 +137,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // The legacy implementation filtered out conformance members.
               "   encode(to:) • func encode(to encoder: Encoder) throws",
               "   endIndex • var endIndex: Int { get }",
-              "   index(after:) • func index(after i: Int) -> Int",
+              "   index(after:) • func index(after i: Int) \u{2D}> Int",
               "   inherited() • func inherited()",
               "   methodOverride() • func methodOverride()",
               "   provision() • func provision()",
