@@ -127,8 +127,22 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("operator: \(symbol.names.prose ?? symbol.names.title)")
           case .`init`:
-            // #workaround(Not implemented yet.)
-            print("init: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: InitializerDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .initializer(
+                    InitializerAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .method:
             if ¬(self is ModuleAPI) {  // Skip on global pass.
               if let declaration = try declaration(
@@ -207,11 +221,39 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("subscript: \(symbol.names.prose ?? symbol.names.title)")
           case .typeMethod:
-            // #workaround(Not implemented yet.)
-            print("typeMethod: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: FunctionDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .function(
+                    FunctionAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .typeProperty:
-            // #workaround(Not implemented yet.)
-            print("typeProperty: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: VariableDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .variable(
+                    VariableAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .typeSubscript:
             // #workaround(Not implemented yet.)
             print("typeSubscript: \(symbol.names.prose ?? symbol.names.title)")

@@ -82,17 +82,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Structure • struct Structure"
-            ],
-            with: [
-              "  Structure • struct Structure",
-              "   staticProperty • static var staticProperty: Bool { get }",
-              "   staticMethod() • static func staticMethod()",
-              "   init() • init()",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "   property • var property: Bool { get }"
             ],
             with: [
@@ -139,6 +128,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   endIndex • var endIndex: Int { get }",
               "   index(after:) • func index(after i: Int) \u{2D}> Int",
               "   inherited() • func inherited()",
+              "   init(from:) • required init(from decoder: Decoder) throws",
+              "   init(rawValue:) • init?(rawValue: Int)",
+              "   init(stringInterpolation:) • init(stringInterpolation: DefaultStringInterpolation)",
+              "   init(stringLiteral:) • init(stringLiteral: String)",
               "   methodOverride() • func methodOverride()",
               "   provision() • func provision()",
               "   rawValue • var rawValue: Int { get set }",
