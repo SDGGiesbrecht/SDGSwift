@@ -82,10 +82,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Structure • struct Structure"
+              "   staticProperty • static var staticProperty: Bool { get }",
             ],
             with: [
-              "  Structure • struct Structure",
               "   staticProperty • static var staticProperty: Bool { get }",
               "   staticMethod() • static func staticMethod()",
               "   init() • init()",
