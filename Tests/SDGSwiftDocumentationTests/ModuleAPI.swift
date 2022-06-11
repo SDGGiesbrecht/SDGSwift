@@ -207,8 +207,22 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("subscript: \(symbol.names.prose ?? symbol.names.title)")
           case .typeMethod:
-            // #workaround(Not implemented yet.)
-            print("typeMethod: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: FunctionDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .function(
+                    FunctionAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .typeProperty:
             if ¬(self is ModuleAPI) {  // Skip on global pass.
               if let declaration = try declaration(
