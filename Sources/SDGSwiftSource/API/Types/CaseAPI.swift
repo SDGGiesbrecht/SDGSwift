@@ -22,6 +22,16 @@
     _UniquelyDeclaredSyntaxAPIElement
   {
 
+    // MARK: - Initialization
+
+    // #workaround(Temporary for SDGSwiftDocumentationTests.)
+    public convenience init(
+      _documentation documentation: [SymbolDocumentation],
+      declaration: EnumCaseDeclSyntax
+    ) {
+      self.init(documentation: documentation, declaration: declaration)
+    }
+
     // MARK: - APIElementProtocol
 
     public var _storage: _APIElementStorage
