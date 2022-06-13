@@ -128,7 +128,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   rawValue • var rawValue: Int { get set }",
               "   requirement() • func requirement()",
               "   startIndex • var startIndex: Int { get }",
-              "   [_:] • subscript(position: Int) -> Int { get }",
+              "   [_:] • subscript(position: Int) \u{2D}> Int { get }",
             ].contains(line)
           })
         } else if name == "PackageToDocument2" {
