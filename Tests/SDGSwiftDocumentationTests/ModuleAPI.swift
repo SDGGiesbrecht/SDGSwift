@@ -218,8 +218,22 @@ import SymbolKit
               _children.append(.type(api))
             }
           case .subscript:
-            // #workaround(Not implemented yet.)
-            print("subscript: \(symbol.names.prose ?? symbol.names.title)")
+            if ¬(self is ModuleAPI) {  // Skip on global pass.
+              if let declaration = try declaration(
+                of: symbol,
+                as: SubscriptDeclSyntax.self,
+                cache: &sourceCache
+              ) {
+                _children.append(
+                  .subscript(
+                    SubscriptAPI(
+                      _documentation: declaration._documentation,
+                      declaration: declaration
+                    )
+                  )
+                )
+              }
+            }
           case .typeMethod:
             if ¬(self is ModuleAPI) {  // Skip on global pass.
               if let declaration = try declaration(

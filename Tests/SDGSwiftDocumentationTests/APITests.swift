@@ -82,15 +82,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "   property • var property: Bool { get }"
-            ],
-            with: [
-              "   property • var property: Bool { get }",
-              "   [_:] • subscript(`subscript`: Int) \u{2D}> Bool { get }",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "  Superclass • class Superclass"
             ],
             with: [
@@ -137,6 +128,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   rawValue • var rawValue: Int { get set }",
               "   requirement() • func requirement()",
               "   startIndex • var startIndex: Int { get }",
+              "   [_:] • subscript(position: Int) \u{2D}> Int { get }",
             ].contains(line)
           })
         } else if name == "PackageToDocument2" {
