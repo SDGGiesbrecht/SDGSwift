@@ -82,15 +82,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "  Superclass • class Superclass"
-            ],
-            with: [
-              "   Superclass",
-              "  Superclass • class Superclass",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "   ExpressibleByUnicodeScalarLiteral"
             ],
             with: [
