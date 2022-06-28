@@ -1,5 +1,5 @@
 /*
- ModuleAPI.swift
+ APIElementProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -44,6 +44,7 @@ import SymbolKit
         from symbolGraph: SymbolGraph,
         sourceCache: inout [URL: SourceFileSyntax]
       ) throws where Symbols: Collection, Symbols.Element == SymbolGraph.Symbol {
+        defer { _children.sort() }
         for symbol in symbols {
 
           switch symbol.kind.identifier {
@@ -296,7 +297,31 @@ import SymbolKit
             // #workaround(Not implemented yet.)
             print("unknown: \(symbol.names.prose ?? symbol.names.title)")
           }
-          _children.sort()
+        }
+        if self is ModuleAPI {
+          var extendedTypes: [String: Set<String>] = [:]
+          for relationship in symbolGraph.relationships {
+            switch relationship.kind {
+            case .memberOf:
+              if let fallback = relationship.targetFallback {
+                extendedTypes[relationship.target, default: []].insert(fallback)
+              }
+            default:
+              break
+            }
+          }
+          for (identifier, names) in extendedTypes {
+            if let name = names.sorted().first {
+              let syntax = SyntaxFactory.makeTypeIdentifier(name.dropping(through: "."))
+              let api = ExtensionAPI(_type: syntax, constraints: nil, children: [])
+              try api.assimilate(
+                symbols: children(of: identifier, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
+              _children.append(.extension(api))
+            }
+          }
         }
       }
     #endif
@@ -311,10 +336,13 @@ import SymbolKit
     }
 
     func children(of symbol: SymbolGraph.Symbol, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
+      return children(of: symbol.identifier.precise, in: graph)
+    }
+    func children(of symbolIdentifier: String, in graph: SymbolGraph) -> [SymbolGraph.Symbol] {
       return graph.relationships.filter({ relationship in
         switch relationship.kind {
         case .memberOf:
-          return relationship.target == symbol.identifier.precise
+          return relationship.target == symbolIdentifier
         default:
           return false
         }

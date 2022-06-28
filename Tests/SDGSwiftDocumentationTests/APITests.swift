@@ -82,17 +82,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           summary.replaceMatches(
             for: [
-              "   ExpressibleByUnicodeScalarLiteral"
-            ],
-            with: [
-              "   ExpressibleByUnicodeScalarLiteral",
-              "  (Bool)",
-              "   extensionProperty • var extensionProperty: Bool { get }",
-              "   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }",
-            ]
-          )
-          summary.replaceMatches(
-            for: [
               "  executeFunction() • func executeFunction()"
             ],
             with: [
@@ -122,13 +111,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "   [_:] • subscript(position: Int) \u{2D}> Int { get }",
             ].contains(line)
           })
-        } else if name == "PackageToDocument2" {
-          summary.append(
-            contentsOf: [
-              "  (Bool)",
-              "   extensionProperty • var extensionProperty: Bool { get }",
-            ]
-          )
         }
 
         SDGPersistenceTestUtilities.compare(
