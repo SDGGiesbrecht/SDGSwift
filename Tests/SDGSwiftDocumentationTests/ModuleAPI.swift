@@ -332,7 +332,9 @@ import SymbolKit
           return false
         }
       }).compactMap({ relationship in
-        return relationship.targetFallback.map { $0.dropping(through: ".") }
+        let names = graph.symbols[relationship.target]?.names
+        return names?.prose ?? names?.title
+          ?? relationship.targetFallback.map { $0.dropping(through: ".") }
       })
     }
 
