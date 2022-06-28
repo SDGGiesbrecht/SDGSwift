@@ -1,5 +1,5 @@
 /*
- ModuleAPI.swift
+ APIElementProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -314,7 +314,11 @@ import SymbolKit
             if let name = names.sorted().first {
               let syntax = SyntaxFactory.makeTypeIdentifier(name.dropping(through: "."))
               let api = ExtensionAPI(_type: syntax, constraints: nil, children: [])
-              try api.assimilate(symbols: children(of: identifier, in: symbolGraph), from: symbolGraph, sourceCache: &sourceCache)
+              try api.assimilate(
+                symbols: children(of: identifier, in: symbolGraph),
+                from: symbolGraph,
+                sourceCache: &sourceCache
+              )
               _children.append(.extension(api))
             }
           }
