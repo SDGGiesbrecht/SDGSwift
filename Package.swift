@@ -221,6 +221,13 @@ let package = Package(
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
+      ],
+      resources: [
+        .copy("Syntax Highlighting.css"),
+        .copy("Core Libraries/Swift.txt"),
+        .copy("Core Libraries/Foundation.txt"),
+        .copy("Core Libraries/Dispatch.txt"),
+        .copy("Core Libraries/XCTest.txt"),
       ]
     ),
 
@@ -273,6 +280,9 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+      ],
+      resources: [
+        .copy("Package.swift.txt")
       ]
     ),
 
