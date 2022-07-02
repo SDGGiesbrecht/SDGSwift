@@ -292,7 +292,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let syntax = try SyntaxParser.parse(
         URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
           .deletingLastPathComponent().appendingPathComponent(
-            "Resources/SDGSwiftSource/Core Libraries/Swift.txt"
+            "Sources/SDGSwiftSource/Core Libraries/Swift.txt"
           )
       )
       var foundLessThan = false
