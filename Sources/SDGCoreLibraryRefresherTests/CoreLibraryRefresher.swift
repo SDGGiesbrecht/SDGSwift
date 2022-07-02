@@ -51,7 +51,7 @@ enum CoreLibraryRefresher {
 
       let resources = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
         .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(
-          "Resources/SDGSwiftSource/Core Libraries"
+          "Sources/SDGSwiftSource/Core Libraries"
         )
 
       moduleEnumeration: for (name, module) in modules.sorted(by: { $0.0 < $1.0 }) {
