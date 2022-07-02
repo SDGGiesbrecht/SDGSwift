@@ -79,10 +79,10 @@
         var dependencyModules: [ModuleAPI] = []
 
         for (name, source) in [
-          ("Swift", Resources.CoreLibraries.swift),
-          ("Foundation", Resources.CoreLibraries.foundation),
-          ("Dispatch", Resources.CoreLibraries.dispatch),
-          ("XCTest", Resources.CoreLibraries.xctest),
+          ("Swift", Resources.swift),
+          ("Foundation", Resources.foundation),
+          ("Dispatch", Resources.dispatch),
+          ("XCTest", Resources.xctest),
         ] where name ∉ ignoredDependencies {
           reportProgress(
             String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved())
