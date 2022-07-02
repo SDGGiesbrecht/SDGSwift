@@ -35,4 +35,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       }
     }
   }
+
+  func testResources() {
+    _ = Resources.packageSwift
+  }
 }

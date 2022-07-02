@@ -72,6 +72,13 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
     }
   }
 
+  func testResources() {
+    _ = Resources.swift
+    _ = Resources.foundation
+    _ = Resources.dispatch
+    _ = Resources.xctest
+  }
+
   func testStringLiteral() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let literal = "\u{22}...\u{22}"
