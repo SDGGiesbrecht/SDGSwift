@@ -125,6 +125,7 @@ public struct Package: TransparentWrapper {
                 let filename = component.lastPathComponent
 
                 if filename ≠ "ModuleCache",
+                  filename ≠ "plugins",
                   ¬filename.hasSuffix(".a"),
                   ¬filename.hasSuffix(".build"),
                   ¬filename.hasSuffix(".dSYM"),
