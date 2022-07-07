@@ -16,7 +16,8 @@ import SymbolKit
 
 extension SymbolGraph.Symbol {
 
-  var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
+  /// The symbol’s declaration.
+  public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
     return names.subHeading
   }
 }

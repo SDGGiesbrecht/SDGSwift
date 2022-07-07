@@ -64,7 +64,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
         let declarations = symbolGraphs.flatMap({ graph in
           return graph.symbols.values.compactMap { symbol in
-            return symbol.names.subHeading?.map({ fragment in
+            return symbol.declaration?.map({ fragment in
               return fragment.spelling
             }).joined()
           }
