@@ -91,6 +91,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
         XCTAssertFalse(rootElement < rootElement)
         XCTAssertTrue(parsed == parsed)
+
+        let declarations = rootElement.flattenedTree()
+          .lazy.compactMap({ element in
+            element.declaration?.source()
+          }).sorted().joined(separator: "\n")
+        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
+          "Declarations/\(parsed.name).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          declarations,
+          against: declarationsSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       }
     #endif
   }
