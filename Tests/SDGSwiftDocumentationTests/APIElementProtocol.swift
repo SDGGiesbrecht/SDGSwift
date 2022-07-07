@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(This file is dead, remove it when refactoring is complete.)
+
 import Foundation
 
 import SDGControlFlow

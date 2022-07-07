@@ -54,68 +54,27 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraphLoading() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
+      let packageName = package.location.lastPathComponent
       #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         #if !PLATFORM_LACKS_FOUNDATION_PROCESS
           _ = try? package.symbolGraphs().get()
         #endif
       #else
-        let api = try package.api()
-        let name = api.name.text
+        let symbolGraphs = try package.symbolGraphs().get()
 
-        var summary = api.summary()
-        let specification = testSpecificationDirectory().appendingPathComponent(
-          "API/\(api.name).txt"
+        let declarations = symbolGraphs.flatMap({ graph in
+          return graph.symbols.values.compactMap { symbol in
+            return symbol.names.subHeading?.map({ fragment in
+              return fragment.spelling
+            }).joined()
+          }
+        }).sorted().joined(separator: "\n")
+        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/Declarations/\(packageName).txt"
         )
-
-        // #workaround(Working on reducing difference.)
-        if name == "PackageToDocument" {
-          summary.replaceMatches(
-            for: [
-              "   visible • case visible",
-              // The legacy implementation does not know about implicit synthesis.
-              "   Equatable",
-              "   Hashable",
-            ],
-            with: [
-              "   visible • case visible"
-            ]
-          )
-          summary.replaceMatches(
-            for: [
-              "  executeFunction() • func executeFunction()"
-            ],
-            with: [
-              "  executeFunction() • func executeFunction()",
-              "  ≠ • infix operator ≠ : Precedence",
-              "  Precedence • precedencegroup Precedence {}",
-            ]
-          )
-          summary.removeAll(where: { line in
-            return [
-              // The legacy implementation does not know about implicit synthesis.
-              "   Sendable",
-              // The legacy implementation filtered out conformance members.
-              "   encode(to:) • func encode(to encoder: Encoder) throws",
-              "   endIndex • var endIndex: Int { get }",
-              "   index(after:) • func index(after i: Int) \u{2D}> Int",
-              "   inherited() • func inherited()",
-              "   init(from:) • required init(from decoder: Decoder) throws",
-              "   init(rawValue:) • init?(rawValue: Int)",
-              "   init(stringInterpolation:) • init(stringInterpolation: DefaultStringInterpolation)",
-              "   init(stringLiteral:) • init(stringLiteral: String)",
-              "   methodOverride() • func methodOverride()",
-              "   provision() • func provision()",
-              "   rawValue • var rawValue: Int { get set }",
-              "   requirement() • func requirement()",
-              "   startIndex • var startIndex: Int { get }",
-              "   [_:] • subscript(position: Int) \u{2D}> Int { get }",
-            ].contains(line)
-          })
-        }
-
         SDGPersistenceTestUtilities.compare(
-          summary.joined(separator: "\n"),
-          against: specification,
+          declarations,
+          against: declarationsSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif
