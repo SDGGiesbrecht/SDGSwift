@@ -154,7 +154,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "static func \u{3C}= (Self, Self) \u{2D}> Bool",
               "static func == (Inherited, Inherited) \u{2D}> Bool",
               "static func > (Self, Self) \u{2D}> Bool",
-              "static func \u{3D}= (Self, Self) \u{2D}> Bool",
+              "static func \u{3E}= (Self, Self) \u{2D}> Bool",
               "static let staticProperty: Bool",
               "subscript((UnboundedRange_) \u{2D}> ()) \u{2D}> Self.SubSequence",
               "subscript(Int) \u{2D}> Bool",
