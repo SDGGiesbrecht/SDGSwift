@@ -254,4 +254,22 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     }
   }
+
+  func testSymbolGraphSymbol() {
+    let symbol = SymbolGraph.Symbol(
+      identifier: SymbolGraph.Symbol.Identifier(precise: "symbol", interfaceLanguage: "Swift"),
+      names: SymbolGraph.Symbol.Names(
+        title: "symbol",
+        navigator: nil,
+        subHeading: nil,
+        prose: nil
+      ),
+      pathComponents: ["path", "components"],
+      docComment: nil,
+      accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "public"),
+      kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .func, displayName: "function"),
+      mixins: [:]
+    )
+    _ = symbol.declaration
+  }
 }
