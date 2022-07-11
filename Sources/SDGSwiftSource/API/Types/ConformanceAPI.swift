@@ -22,10 +22,6 @@
 
     // MARK: - Initialization
 
-    // #workaround(Temporary for SDGSwiftDocumentationTests.)
-    public convenience init(_type type: TypeSyntax) {
-      self.init(type: type)
-    }
     internal init(type: TypeSyntax) {
       _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
     }

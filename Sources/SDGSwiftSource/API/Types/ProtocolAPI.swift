@@ -24,14 +24,6 @@
 
     // MARK: - Initialization
 
-    // #workaround(Temporary for SDGSwiftDocumentationTests.)
-    public convenience init(
-      _documentation documentation: [SymbolDocumentation],
-      declaration: ProtocolDeclSyntax,
-      children: [APIElement]
-    ) {
-      self.init(documentation: documentation, declaration: declaration, children: children)
-    }
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax,
