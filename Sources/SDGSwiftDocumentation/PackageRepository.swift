@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 import SDGCollections
 
@@ -19,27 +21,28 @@ import SDGSwift
 import SDGSwiftPackageManager
 
 import SymbolKit
-import Foundation
 
 extension PackageRepository {
 
-  private func publicModules() -> Result<Set<String>, SwiftCompiler.PackageLoadingError> {
-    return manifest().map { manifest in
-      return Set(
-        manifest.products
-          .lazy.filter({ ¬$0.name.hasPrefix("_") })
-          .flatMap({ (product) -> [String] in
-            switch product.type {
-            case .library:
-              return product.targets
-                .lazy.filter { ¬$0.hasPrefix("_") }
-            case .executable, .snippet, .plugin, .test:
-              return []
-            }
-          })
-      )
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    private func publicModules() -> Result<Set<String>, SwiftCompiler.PackageLoadingError> {
+      return manifest().map { manifest in
+        return Set(
+          manifest.products
+            .lazy.filter({ ¬$0.name.hasPrefix("_") })
+            .flatMap({ (product) -> [String] in
+              switch product.type {
+              case .library:
+                return product.targets
+                  .lazy.filter { ¬$0.hasPrefix("_") }
+              case .executable, .snippet, .plugin, .test:
+                return []
+              }
+            })
+        )
+      }
     }
-  }
+  #endif
 
   #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     /// Exports and loads the package’s symbol graphs.
