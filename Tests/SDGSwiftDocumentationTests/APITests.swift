@@ -45,6 +45,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
     testCustomStringConvertibleConformance(
+      of: SymbolGraph.LoadingError.packageLoadingError(.packageManagerError(Elipsis())),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Manifest Load",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
       of: SymbolGraph.LoadingError.loadingError(Elipsis()),
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Load",
