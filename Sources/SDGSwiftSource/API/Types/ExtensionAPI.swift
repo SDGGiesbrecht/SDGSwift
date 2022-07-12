@@ -24,14 +24,6 @@
 
     // MARK: - Initialization
 
-    // #workaround(Temporary for SDGSwiftDocumentationTests.)
-    public convenience init<Syntax>(
-      _type type: Syntax,
-      constraints: GenericWhereClauseSyntax?,
-      children: [APIElement]
-    ) where Syntax: TypeSyntaxProtocol {
-      self.init(type: type, constraints: constraints, children: children)
-    }
     internal init<Syntax>(
       type: Syntax,
       constraints: GenericWhereClauseSyntax?,

@@ -1,0 +1,52 @@
+.library(name: "PrimaryProduct")
+.target(name: "PrimaryModule")
+.target(name: "PrimaryModule")
+Package(name: "PackageToDocument")
+case visible
+case visible
+class AnotherSublass
+class AnotherSublass
+class Subclass
+class Subclass
+class Superclass
+class Superclass
+enum Enumeration
+enum Enumeration
+func executeFunction()
+func executeFunction()
+func method()
+func method()
+func required()
+func required()
+infix operator ≠ : Precedence
+infix operator ≠ : Precedence
+init()
+init()
+precedencegroup Precedence {}
+precedencegroup Precedence {}
+protocol Protocol
+protocol Protocol
+static func staticMethod()
+static func staticMethod()
+static var staticProperty: Bool { get }
+static var staticProperty: Bool { get }
+struct CollectionType
+struct CollectionType
+struct Inherited
+struct Inherited
+struct InheritingAssociatedType
+struct InheritingAssociatedType
+struct Structure
+struct Structure
+struct TypeExpressibleByStringInterpolation
+struct TypeExpressibleByStringInterpolation
+subscript(`subscript`: Int) -> Bool { get }
+subscript(`subscript`: Int) -> Bool { get }
+var extensionProperty: Bool { get }
+var extensionProperty: Bool { get }
+var globalVariable: Bool { get set }
+var globalVariable: Bool { get set }
+var property: Bool { get }
+var property: Bool { get }
+var propertyInASeparateExtension: Bool { get }
+var propertyInASeparateExtension: Bool { get }
