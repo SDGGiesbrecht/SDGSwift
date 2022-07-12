@@ -16,6 +16,7 @@ import SDGText
 import SDGLocalization
 
 import SDGSwift
+import SDGSwiftPackageManager
 
 import SymbolKit
 
@@ -26,6 +27,9 @@ extension SymbolGraph {
     /// The compiler failed to export symbol graphs.
     case exportError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
+    /// The package manifest could not be loaded.
+    case packageLoadingError(SwiftCompiler.PackageLoadingError)
+
     /// The symbol graphs could not be loaded.
     case loadingError(Swift.Error)
 
@@ -34,6 +38,8 @@ extension SymbolGraph {
     public func presentableDescription() -> StrictString {
       switch self {
       case .exportError(let error):
+        return error.presentableDescription()
+      case .packageLoadingError(let error):
         return error.presentableDescription()
       case .loadingError(let error):
         return StrictString(error.localizedDescription)
