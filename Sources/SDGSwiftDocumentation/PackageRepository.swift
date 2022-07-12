@@ -42,9 +42,7 @@ extension PackageRepository {
         )
       }
     }
-  #endif
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     /// Exports and loads the package’s symbol graphs.
     ///
     /// - Parameters:
