@@ -74,7 +74,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // #workaround(Removing stuff that does not match.)
           if packageName == "PackageToDocument" {
             return ¬[
-              "class UnknownSuperclass",
               "func allSatisfy((Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
               "func compactMap<ElementOfResult>((Self.Element) throws \u{2D}> ElementOfResult?) rethrows \u{2D}> [ElementOfResult]",
               "func contains(Self.Element) \u{2D}> Bool",
@@ -98,7 +97,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "func formIndex(after: inout Self.Index)",
               "func formIndex(inout Self.Index, offsetBy: Int)",
               "func formIndex(inout Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Bool",
-              "func hidden()",
               "func index(Self.Index, offsetBy: Int) \u{2D}> Self.Index",
               "func index(Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Self.Index?",
               "func index(after: Int) \u{2D}> Int",
