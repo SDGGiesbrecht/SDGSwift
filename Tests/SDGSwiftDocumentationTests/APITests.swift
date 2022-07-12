@@ -38,24 +38,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
     }
-    testCustomStringConvertibleConformance(
-      of: SymbolGraph.LoadingError.exportError(.executionError(.foundationError(Elipsis()))),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Export",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: SymbolGraph.LoadingError.packageLoadingError(.packageManagerError(Elipsis())),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Manifest Load",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: SymbolGraph.LoadingError.loadingError(Elipsis()),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Load",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.exportError(.executionError(.foundationError(Elipsis()))),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Export",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.packageLoadingError(.packageManagerError(Elipsis())),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Manifest Load",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.loadingError(Elipsis()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Load",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testSymbolGraph() throws {
