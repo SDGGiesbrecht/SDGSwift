@@ -64,11 +64,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
       let packageName = package.location.lastPathComponent
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-          _ = try? package.symbolGraphs().get()
-        #endif
-      #else
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         let symbolGraphs = try package.symbolGraphs().get()
 
         let declarations = symbolGraphs.flatMap({ graph in
