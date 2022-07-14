@@ -16,28 +16,37 @@ import SDGText
 import SDGLocalization
 
 import SDGSwift
+import SDGSwiftPackageManager
 
 import SymbolKit
 
 extension SymbolGraph {
-  /// An error encountered while loading symbol graphs.
-  public enum LoadingError: PresentableError {
 
-    /// The compiler failed to export symbol graphs.
-    case exportError(VersionedExternalProcessExecutionError<SwiftCompiler>)
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    /// An error encountered while loading symbol graphs.
+    public enum LoadingError: PresentableError {
 
-    /// The symbol graphs could not be loaded.
-    case loadingError(Swift.Error)
+      /// The compiler failed to export symbol graphs.
+      case exportError(VersionedExternalProcessExecutionError<SwiftCompiler>)
 
-    // MARK: - PresentableError
+      /// The package manifest could not be loaded.
+      case packageLoadingError(SwiftCompiler.PackageLoadingError)
 
-    public func presentableDescription() -> StrictString {
-      switch self {
-      case .exportError(let error):
-        return error.presentableDescription()
-      case .loadingError(let error):
-        return StrictString(error.localizedDescription)
+      /// The symbol graphs could not be loaded.
+      case loadingError(Swift.Error)
+
+      // MARK: - PresentableError
+
+      public func presentableDescription() -> StrictString {
+        switch self {
+        case .exportError(let error):
+          return error.presentableDescription()
+        case .packageLoadingError(let error):
+          return error.presentableDescription()
+        case .loadingError(let error):
+          return StrictString(error.localizedDescription)
+        }
       }
     }
-  }
+  #endif
 }

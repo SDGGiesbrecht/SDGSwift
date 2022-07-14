@@ -38,29 +38,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
     }
-    testCustomStringConvertibleConformance(
-      of: SymbolGraph.LoadingError.exportError(.executionError(.foundationError(Elipsis()))),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Export",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: SymbolGraph.LoadingError.loadingError(Elipsis()),
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Load",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.exportError(.executionError(.foundationError(Elipsis()))),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Export",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.packageLoadingError(.packageManagerError(Elipsis())),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Manifest Load",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: SymbolGraph.LoadingError.loadingError(Elipsis()),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Load",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testSymbolGraph() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
       let packageName = package.location.lastPathComponent
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-          _ = try? package.symbolGraphs().get()
-        #endif
-      #else
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         let symbolGraphs = try package.symbolGraphs().get()
 
         let declarations = symbolGraphs.flatMap({ graph in
@@ -74,7 +78,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // #workaround(Removing stuff that does not match.)
           if packageName == "PackageToDocument" {
             return ¬[
-              "class UnknownSuperclass",
               "func allSatisfy((Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
               "func compactMap<ElementOfResult>((Self.Element) throws \u{2D}> ElementOfResult?) rethrows \u{2D}> [ElementOfResult]",
               "func contains(Self.Element) \u{2D}> Bool",
@@ -98,7 +101,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               "func formIndex(after: inout Self.Index)",
               "func formIndex(inout Self.Index, offsetBy: Int)",
               "func formIndex(inout Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Bool",
-              "func hidden()",
               "func index(Self.Index, offsetBy: Int) \u{2D}> Self.Index",
               "func index(Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Self.Index?",
               "func index(after: Int) \u{2D}> Int",

@@ -239,6 +239,9 @@ let package = Package(
       name: "SDGSwiftDocumentation",
       dependencies: [
         "SDGSwift",
+        "SDGSwiftPackageManager",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
