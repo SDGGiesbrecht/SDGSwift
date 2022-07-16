@@ -2,5 +2,4 @@
 .target(name: "PrimaryModule")
 .target(name: "PrimaryModule")
 Package(name: "PackageToDocument2")
-var extensionProperty: Bool { get }
-var extensionProperty: Bool { get }
+var extensionProperty: Bool
