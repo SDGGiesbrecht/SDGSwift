@@ -92,7 +92,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertFalse(rootElement < rootElement)
         XCTAssertTrue(parsed == parsed)
 
-        let declarations = rootElement.flattenedTree()
+        let declarations =
+          (rootElement.flattenedTree()
           .lazy.compactMap({ element in
             element.declaration?.source()
           }).appending(
@@ -202,6 +203,40 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 return []
               }
             }()
+          )
+          // Legacy handled let vs var differently.
+          .sorted() as [String])
+          .replacingMatches(
+            for: ["var property: Bool { get }", "var property: Bool { get }"],
+            with: ["let property: Bool"]
+          )
+          .replacingMatches(
+            for: [
+              "static var staticProperty: Bool { get }", "static var staticProperty: Bool { get }",
+            ],
+            with: ["static let staticProperty: Bool"]
+          )
+          .replacingMatches(
+            for: [
+              "subscript(`subscript`: Int) -> Bool { get }",
+              "subscript(`subscript`: Int) -> Bool { get }",
+            ],
+            with: ["subscript(Int) -> Bool"]
+          )
+          .replacingMatches(
+            for: ["var extensionProperty: Bool { get }", "var extensionProperty: Bool { get }"],
+            with: ["var extensionProperty: Bool"]
+          )
+          .replacingMatches(
+            for: ["var globalVariable: Bool { get set }", "var globalVariable: Bool { get set }"],
+            with: ["var globalVariable: Bool"]
+          )
+          .replacingMatches(
+            for: [
+              "var propertyInASeparateExtension: Bool { get }",
+              "var propertyInASeparateExtension: Bool { get }",
+            ],
+            with: ["var propertyInASeparateExtension: Bool"]
           )
           .sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
