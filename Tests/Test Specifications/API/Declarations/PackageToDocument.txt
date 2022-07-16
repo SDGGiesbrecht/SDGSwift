@@ -90,6 +90,7 @@ init(stringInterpolation: DefaultStringInterpolation)
 init(stringLiteral: String)
 init(unicodeScalarLiteral: Self.ExtendedGraphemeClusterLiteralType)
 init?(rawValue: Int)
+let property: Bool
 precedencegroup Precedence {}
 precedencegroup Precedence {}
 protocol Protocol
@@ -108,8 +109,7 @@ static func > (Self, Self) -> Bool
 static func >= (Self, Self) -> Bool
 static func staticMethod()
 static func staticMethod()
-static var staticProperty: Bool { get }
-static var staticProperty: Bool { get }
+static let staticProperty: Bool
 struct CollectionType
 struct CollectionType
 struct Inherited
@@ -121,28 +121,22 @@ struct Structure
 struct TypeExpressibleByStringInterpolation
 struct TypeExpressibleByStringInterpolation
 subscript((UnboundedRange_) -> ()) -> Self.SubSequence
+subscript(Int) -> Bool
 subscript(Int) -> Int
 subscript(Range<Self.Index>) -> Slice<Self>
-subscript(`subscript`: Int) -> Bool { get }
-subscript(`subscript`: Int) -> Bool { get }
 subscript<R>(R) -> Self.SubSequence
 typealias Index
 typealias Indices
 typealias RawValue
 var count: Int
 var endIndex: Int
-var extensionProperty: Bool { get }
-var extensionProperty: Bool { get }
+var extensionProperty: Bool
 var first: Self.Element?
-var globalVariable: Bool { get set }
-var globalVariable: Bool { get set }
+var globalVariable: Bool
 var indices: DefaultIndices<Self>
 var isEmpty: Bool
 var lazy: LazySequence<Self>
-var property: Bool { get }
-var property: Bool { get }
-var propertyInASeparateExtension: Bool { get }
-var propertyInASeparateExtension: Bool { get }
+var propertyInASeparateExtension: Bool
 var rawValue: Int
 var startIndex: Int
 var underestimatedCount: Int

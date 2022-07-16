@@ -77,21 +77,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         .filter({ declaration in
           // #workaround(Removing stuff that does not match.)
           if packageName == "PackageToDocument" {
-            return ¬[
-              "let property: Bool",
-              "static let staticProperty: Bool",
-              "subscript(Int) \u{2D}> Bool",
-              "var extensionProperty: Bool",
-              "var globalVariable: Bool",
-              "var propertyInASeparateExtension: Bool",
-            ].contains(declaration)
+            return true
           } else {
             return ¬[
               "case visible",
               "class AnotherSublass",
               "class Subclass",
               "class Superclass",
-              "var extensionProperty: Bool",
             ].contains(declaration)
           }
         })
@@ -119,23 +111,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 "precedencegroup Precedence {}",
                 "protocol Protocol",
                 "static func staticMethod()",
-                "static var staticProperty: Bool { get }",
                 "struct CollectionType",
                 "struct Inherited",
                 "struct InheritingAssociatedType",
                 "struct Structure",
                 "struct TypeExpressibleByStringInterpolation",
-                "subscript(`subscript`: Int) \u{2D}> Bool { get }",
-                "subscript(`subscript`: Int) \u{2D}> Bool { get }",
-                "var extensionProperty: Bool { get }",
-                "var extensionProperty: Bool { get }",
-                "var globalVariable: Bool { get set }",
-                "var globalVariable: Bool { get set }",
-                "var property: Bool { get }",
-                "var property: Bool { get }",
-                "var propertyInASeparateExtension: Bool { get }",
-                "var propertyInASeparateExtension: Bool { get }",
-                "static var staticProperty: Bool { get }",
               ]
             } else {
               return [
@@ -143,8 +123,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
-                "var extensionProperty: Bool { get }",
-                "var extensionProperty: Bool { get }",
               ]
             }
           }()
