@@ -218,10 +218,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           .replacingMatches(
             for: [
-              "subscript(`subscript`: Int) -> Bool { get }",
-              "subscript(`subscript`: Int) -> Bool { get }",
+              "subscript(`subscript`: Int) \u{2D}> Bool { get }",
+              "subscript(`subscript`: Int) \u{2D}> Bool { get }",
             ],
-            with: ["subscript(Int) -> Bool"]
+            with: ["subscript(Int) \u{2D}> Bool"]
           )
           .replacingMatches(
             for: ["var extensionProperty: Bool { get }", "var extensionProperty: Bool { get }"],
