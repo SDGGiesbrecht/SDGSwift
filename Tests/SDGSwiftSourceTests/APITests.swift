@@ -93,8 +93,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertTrue(parsed == parsed)
 
         let declarations =
-          (rootElement.flattenedTree()
-          .lazy.compactMap({ element in
+          ([
+            [APIElement.package(parsed)],
+            parsed.libraries.map({ APIElement.library($0) }),
+            rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
+          ]
+          .lazy.joined()
+          .compactMap({ element in
             element.declaration?.source()
           }).appending(
             contentsOf: {
@@ -207,33 +212,31 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           // Legacy handled let vs var differently.
           .sorted() as [String])
           .replacingMatches(
-            for: ["var property: Bool { get }", "var property: Bool { get }"],
+            for: ["var property: Bool { get }"],
             with: ["let property: Bool"]
           )
           .replacingMatches(
             for: [
-              "static var staticProperty: Bool { get }", "static var staticProperty: Bool { get }",
+              "static var staticProperty: Bool { get }",
             ],
             with: ["static let staticProperty: Bool"]
           )
           .replacingMatches(
             for: [
               "subscript(`subscript`: Int) \u{2D}> Bool { get }",
-              "subscript(`subscript`: Int) \u{2D}> Bool { get }",
             ],
             with: ["subscript(Int) \u{2D}> Bool"]
           )
           .replacingMatches(
-            for: ["var extensionProperty: Bool { get }", "var extensionProperty: Bool { get }"],
+            for: ["var extensionProperty: Bool { get }"],
             with: ["var extensionProperty: Bool"]
           )
           .replacingMatches(
-            for: ["var globalVariable: Bool { get set }", "var globalVariable: Bool { get set }"],
+            for: ["var globalVariable: Bool { get set }"],
             with: ["var globalVariable: Bool"]
           )
           .replacingMatches(
             for: [
-              "var propertyInASeparateExtension: Bool { get }",
               "var propertyInASeparateExtension: Bool { get }",
             ],
             with: ["var propertyInASeparateExtension: Bool"]
