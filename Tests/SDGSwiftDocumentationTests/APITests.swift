@@ -74,19 +74,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }).joined()
           }
         })
-        .filter({ declaration in
-          // #workaround(Removing stuff that does not match.)
-          if packageName == "PackageToDocument" {
-            return true
-          } else {
-            return ¬[
-              "case visible",
-              "class AnotherSublass",
-              "class Subclass",
-              "class Superclass",
-            ].contains(declaration)
-          }
-        })
         .appending(
           contentsOf: {
             // #workaround(Filling in symbols not detected yet.)
