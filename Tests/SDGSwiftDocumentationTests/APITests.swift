@@ -83,7 +83,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 ".target(name: \u{22}PrimaryModule\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
                 "Package(name: \u{22}PackageToDocument\u{22})",
-                "case visible",
                 "class AnotherSublass",
                 "class Subclass",
                 "class Superclass",
