@@ -217,13 +217,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           .replacingMatches(
             for: [
-              "static var staticProperty: Bool { get }",
+              "static var staticProperty: Bool { get }"
             ],
             with: ["static let staticProperty: Bool"]
           )
           .replacingMatches(
             for: [
-              "subscript(`subscript`: Int) \u{2D}> Bool { get }",
+              "subscript(`subscript`: Int) \u{2D}> Bool { get }"
             ],
             with: ["subscript(Int) \u{2D}> Bool"]
           )
@@ -237,7 +237,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
           .replacingMatches(
             for: [
-              "var propertyInASeparateExtension: Bool { get }",
+              "var propertyInASeparateExtension: Bool { get }"
             ],
             with: ["var propertyInASeparateExtension: Bool"]
           )
