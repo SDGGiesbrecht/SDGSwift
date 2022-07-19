@@ -81,34 +81,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               return [
                 ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
-                ".target(name: \u{22}PrimaryModule\u{22})",
                 "Package(name: \u{22}PackageToDocument\u{22})",
-                "case visible",
-                "class AnotherSublass",
-                "class Subclass",
-                "class Superclass",
-                "enum Enumeration",
-                "func executeFunction()",
-                "func method()",
-                "func required()",
                 "infix operator ≠ : Precedence",
-                "infix operator ≠ : Precedence",
-                "init()",
                 "precedencegroup Precedence {}",
-                "precedencegroup Precedence {}",
-                "protocol Protocol",
-                "static func staticMethod()",
-                "struct CollectionType",
-                "struct Inherited",
-                "struct InheritingAssociatedType",
-                "struct Structure",
-                "struct TypeExpressibleByStringInterpolation",
               ]
             } else {
               return [
                 "Package(name: \u{22}PackageToDocument2\u{22})",
                 ".library(name: \u{22}PrimaryProduct\u{22})",
-                ".target(name: \u{22}PrimaryModule\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
               ]
             }

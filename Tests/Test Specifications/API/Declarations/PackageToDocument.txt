@@ -1,16 +1,10 @@
 .library(name: "PrimaryProduct")
 .target(name: "PrimaryModule")
-.target(name: "PrimaryModule")
 Package(name: "PackageToDocument")
 case visible
-case visible
-class AnotherSublass
 class AnotherSublass
 class Subclass
-class Subclass
 class Superclass
-class Superclass
-enum Enumeration
 enum Enumeration
 func allSatisfy((Self.Element) throws -> Bool) rethrows -> Bool
 func compactMap<ElementOfResult>((Self.Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult]
@@ -25,7 +19,6 @@ func elementsEqual<OtherSequence>(OtherSequence, by: (Self.Element, OtherSequenc
 func encode(to: Encoder) throws
 func encode(to: Encoder) throws
 func enumerated() -> EnumeratedSequence<Self>
-func executeFunction()
 func executeFunction()
 func filter((Self.Element) throws -> Bool) rethrows -> [Self.Element]
 func first(where: (Self.Element) throws -> Bool) rethrows -> Self.Element?
@@ -50,7 +43,6 @@ func map<T>((Self.Element) throws -> T) rethrows -> [T]
 func max() -> Self.Element?
 func max(by: (Self.Element, Self.Element) throws -> Bool) rethrows -> Self.Element?
 func method()
-func method()
 func methodOverride()
 func min() -> Self.Element?
 func min(by: (Self.Element, Self.Element) throws -> Bool) rethrows -> Self.Element?
@@ -63,7 +55,6 @@ func randomElement() -> Self.Element?
 func randomElement<T>(using: inout T) -> Self.Element?
 func reduce<Result>(Result, (Result, Self.Element) throws -> Result) rethrows -> Result
 func reduce<Result>(into: Result, (inout Result, Self.Element) throws -> ()) rethrows -> Result
-func required()
 func required()
 func requirement()
 func reversed() -> [Self.Element]
@@ -79,8 +70,6 @@ func suffix(Int) -> Self.SubSequence
 func suffix(from: Self.Index) -> Self.SubSequence
 func withContiguousStorageIfAvailable<R>((UnsafeBufferPointer<Self.Element>) throws -> R) rethrows -> R?
 infix operator ≠ : Precedence
-infix operator ≠ : Precedence
-init()
 init()
 init(extendedGraphemeClusterLiteral: Self.StringLiteralType)
 init(from: Decoder) throws
@@ -92,8 +81,6 @@ init(unicodeScalarLiteral: Self.ExtendedGraphemeClusterLiteralType)
 init?(rawValue: Int)
 let property: Bool
 precedencegroup Precedence {}
-precedencegroup Precedence {}
-protocol Protocol
 protocol Protocol
 static func != (Self, Self) -> Bool
 static func != (Self, Self) -> Bool
@@ -108,17 +95,11 @@ static func == (Inherited, Inherited) -> Bool
 static func > (Self, Self) -> Bool
 static func >= (Self, Self) -> Bool
 static func staticMethod()
-static func staticMethod()
 static let staticProperty: Bool
 struct CollectionType
-struct CollectionType
-struct Inherited
 struct Inherited
 struct InheritingAssociatedType
-struct InheritingAssociatedType
 struct Structure
-struct Structure
-struct TypeExpressibleByStringInterpolation
 struct TypeExpressibleByStringInterpolation
 subscript((UnboundedRange_) -> ()) -> Self.SubSequence
 subscript(Int) -> Bool
