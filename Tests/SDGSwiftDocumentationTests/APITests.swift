@@ -77,6 +77,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let package = PackageRepository(at: packageURL)
       let packageName = package.location.lastPathComponent
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        _ = package.symbolGraphs(filteringUnreachable: false)
         let api = try package.api().get()
 
         let declarations = api.libraries.map({ library in
