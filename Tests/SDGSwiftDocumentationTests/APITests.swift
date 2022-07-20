@@ -34,6 +34,18 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testLibraryAPI() {
+    let library = LibraryAPI(name: "MyLibrary")
+    _ = library.declaration
+  }
+
+  func testPackageAPI() {
+    _ = PackageAPI(
+      libraries: ["MyLibrary"],
+      symbolGraphs: []
+    )
+  }
+
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
@@ -65,21 +77,27 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let package = PackageRepository(at: packageURL)
       let packageName = package.location.lastPathComponent
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        let symbolGraphs = try package.symbolGraphs().get()
+        _ = package.symbolGraphs(filteringUnreachable: false)
+        let api = try package.api().get()
 
-        let declarations = symbolGraphs.flatMap({ graph in
-          return graph.symbols.values.compactMap { symbol in
-            return symbol.declaration?.map({ fragment in
-              return fragment.spelling
-            }).joined()
-          }
+        let declarations = api.libraries.map({ library in
+          return library.declaration
+        }).appending(
+          contentsOf: api.symbolGraphs.flatMap({ graph in
+            return graph.symbols.values.compactMap { symbol in
+              return symbol.declaration
+            }
+          })
+        ).map({ declaration in
+          return declaration.map({ fragment in
+            return fragment.spelling
+          }).joined()
         })
         .appending(
           contentsOf: {
             // #workaround(Filling in symbols not detected yet.)
             if packageName == "PackageToDocument" {
               return [
-                ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
                 "Package(name: \u{22}PackageToDocument\u{22})",
                 "infix operator ≠ : Precedence",
@@ -88,7 +106,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             } else {
               return [
                 "Package(name: \u{22}PackageToDocument2\u{22})",
-                ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
               ]
             }
