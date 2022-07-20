@@ -41,6 +41,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testPackageAPI() {
     _ = PackageAPI(
+      name: "MyPackage",
       libraries: ["MyLibrary"],
       symbolGraphs: []
     )
@@ -98,16 +99,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             // #workaround(Filling in symbols not detected yet.)
             if packageName == "PackageToDocument" {
               return [
-                ".target(name: \u{22}PrimaryModule\u{22})",
-                "Package(name: \u{22}PackageToDocument\u{22})",
                 "infix operator ≠ : Precedence",
                 "precedencegroup Precedence {}",
               ]
             } else {
-              return [
-                "Package(name: \u{22}PackageToDocument2\u{22})",
-                ".target(name: \u{22}PrimaryModule\u{22})",
-              ]
+              return []
             }
           }()
         )

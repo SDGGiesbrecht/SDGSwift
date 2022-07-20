@@ -104,7 +104,7 @@ extension PackageRepository {
           return .failure(error)
         case .success(let symbolGraphs):
           return .success(
-            PackageAPI(libraries: manifest.publicLibraryNames(), symbolGraphs: symbolGraphs)
+            PackageAPI(name: manifest.displayName, libraries: manifest.publicLibraryNames(), symbolGraphs: symbolGraphs)
           )
         }
       }
