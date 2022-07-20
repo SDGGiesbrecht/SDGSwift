@@ -65,14 +65,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let package = PackageRepository(at: packageURL)
       let packageName = package.location.lastPathComponent
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        let symbolGraphs = try package.symbolGraphs().get()
+        let api = try package.api().get()
 
-        let declarations = symbolGraphs.flatMap({ graph in
-          return graph.symbols.values.compactMap { symbol in
-            return symbol.declaration?.map({ fragment in
-              return fragment.spelling
-            }).joined()
-          }
+        let declarations = api.libraries.map({ library in
+          return library.declaration
+        }).appending(
+          contentsOf: api.symbolGraphs.flatMap({ graph in
+            return graph.symbols.values.compactMap { symbol in
+              return symbol.declaration
+            }
+          })
+        ).map({ declaration in
+          return declaration.map({ fragment in
+            return fragment.spelling
+          }).joined()
         })
         .appending(
           contentsOf: {

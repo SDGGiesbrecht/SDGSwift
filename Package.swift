@@ -245,6 +245,12 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(
+          name: "SwiftPMDataModel\u{2D}auto",
+          package: "swift\u{2D}package\u{2D}manager",
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
       ]
     ),
 
