@@ -85,7 +85,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             // #workaround(Filling in symbols not detected yet.)
             if packageName == "PackageToDocument" {
               return [
-                ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
                 "Package(name: \u{22}PackageToDocument\u{22})",
                 "infix operator ≠ : Precedence",
@@ -94,7 +93,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             } else {
               return [
                 "Package(name: \u{22}PackageToDocument2\u{22})",
-                ".library(name: \u{22}PrimaryProduct\u{22})",
                 ".target(name: \u{22}PrimaryModule\u{22})",
               ]
             }
