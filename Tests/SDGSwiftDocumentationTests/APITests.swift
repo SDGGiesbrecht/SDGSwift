@@ -34,6 +34,18 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testLibraryAPI() {
+    let library = LibraryAPI(name: "MyLibrary")
+    _ = library.declaration
+  }
+
+  func testPackageAPI() {
+    _ = PackageAPI(
+      libraries: ["MyLibrary"],
+      symbolGraphs: []
+    )
+  }
+
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }

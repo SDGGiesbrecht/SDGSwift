@@ -17,6 +17,14 @@ import SymbolKit
 /// The API of a library.
 public struct LibraryAPI {
 
+  /// Creates a library API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the library.
+  public init(name: String) {
+    self.name = name
+  }
+
   /// The name of the library.
   public var name: String
 
