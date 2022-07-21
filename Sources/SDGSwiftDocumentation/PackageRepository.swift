@@ -55,11 +55,13 @@ extension PackageRepository {
           })
           graphs = graphs.enumerated().sorted(by: { first, second in
             return (
-              reachable.firstIndex(of: first.element.module.name) ?? reachable.endIndex,
+              reachable.firstIndex(of: first.element.module.name)
+                ?? reachable.endIndex,  // @exempt(from: tests)
               first.offset
             )
               < (
-                reachable.firstIndex(of: second.element.module.name) ?? reachable.endIndex,
+                reachable.firstIndex(of: second.element.module.name)
+                  ?? reachable.endIndex,  // @exempt(from: tests)
                 second.offset
               )
           }).map { $0.element }
