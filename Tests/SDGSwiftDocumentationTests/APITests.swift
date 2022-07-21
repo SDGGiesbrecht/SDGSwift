@@ -88,14 +88,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         ).appending(contentsOf: api.modules().map({ $0.declaration }))
           .appending(
             contentsOf: api.symbolGraphs.flatMap({ graph in
-              return [
-                graph.module.declaration
-              ].appending(
-                contentsOf:
-                  graph.symbols.values.compactMap({ symbol in
-                    return symbol.declaration
-                  })
-              )
+              return graph.symbols.values.compactMap({ $0.declaration })
             })
           ).map({ declaration in
             return declaration.map({ fragment in

@@ -66,7 +66,7 @@ public struct PackageAPI {
     var existing: Set<String> = []
     return
       symbolGraphs
-      .compactMap({ $0.module })
+      .lazy.compactMap({ $0.module })
       .filter({ existing.insert($0.name).inserted })
   }
 
