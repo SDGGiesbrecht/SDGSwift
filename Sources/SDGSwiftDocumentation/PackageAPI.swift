@@ -61,6 +61,15 @@ public struct PackageAPI {
   /// The library products vended by the package.
   public var libraries: [LibraryAPI]
 
+  /// The modules vended in one or more library products.
+  public func modules() -> [SymbolGraph.Module] {
+    var existing: Set<String> = []
+    return
+      symbolGraphs
+      .compactMap({ $0.module })
+      .filter({ existing.insert($0.name).inserted })
+  }
+
   /// The package’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
 

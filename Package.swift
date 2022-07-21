@@ -108,6 +108,10 @@ let package = Package(
       from: Version(9, 0, 0)
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}collections",
+      from: Version(1, 0, 0)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
       exact: Version(0, 50600, 3)
@@ -244,6 +248,7 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "OrderedCollections", package: "swift\u{2D}collections"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",

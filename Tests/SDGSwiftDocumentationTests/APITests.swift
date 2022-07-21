@@ -84,37 +84,36 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let declarations = [
           api.declaration
         ].appending(
-          contentsOf: api.libraries.map({ library in
-            return library.declaration
-          })
-        ).appending(
-          contentsOf: api.symbolGraphs.flatMap({ graph in
-            return [
-              graph.module.declaration
-            ].appending(
-              contentsOf:
-                graph.symbols.values.compactMap({ symbol in
-                  return symbol.declaration
-                })
-            )
-          })
-        ).map({ declaration in
-          return declaration.map({ fragment in
-            return fragment.spelling
-          }).joined()
-        }).appending(
-          contentsOf: {
-            // #workaround(Filling in symbols not detected yet.)
-            if packageName == "PackageToDocument" {
+          contentsOf: api.libraries.map({ $0.declaration })
+        ).appending(contentsOf: api.modules().map({ $0.declaration }))
+          .appending(
+            contentsOf: api.symbolGraphs.flatMap({ graph in
               return [
-                "infix operator ≠ : Precedence",
-                "precedencegroup Precedence {}",
-              ]
-            } else {
-              return []
-            }
-          }()
-        ).sorted().joined(separator: "\n")
+                graph.module.declaration
+              ].appending(
+                contentsOf:
+                  graph.symbols.values.compactMap({ symbol in
+                    return symbol.declaration
+                  })
+              )
+            })
+          ).map({ declaration in
+            return declaration.map({ fragment in
+              return fragment.spelling
+            }).joined()
+          }).appending(
+            contentsOf: {
+              // #workaround(Filling in symbols not detected yet.)
+              if packageName == "PackageToDocument" {
+                return [
+                  "infix operator ≠ : Precedence",
+                  "precedencegroup Precedence {}",
+                ]
+              } else {
+                return []
+              }
+            }()
+          ).sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(packageName).txt"
         )

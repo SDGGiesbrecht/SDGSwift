@@ -40,7 +40,7 @@ extension PackageRepository {
       case .success(let exports):
         var graphs: [SymbolGraph]
         do {
-          graphs = try FileManager.default.contents(ofDirectory: exports).map({ file in
+          graphs = try FileManager.default.contents(ofDirectory: exports).sorted().map({ file in
             return try SymbolGraph(from: file)
           })
         } catch {
@@ -53,6 +53,16 @@ extension PackageRepository {
           graphs.removeAll(where: { graph in
             return graph.module.name ∉ reachable
           })
+          graphs = graphs.enumerated().sorted(by: { first, second in
+            return (
+              reachable.firstIndex(of: first.element.module.name) ?? reachable.endIndex,
+              first.offset
+            )
+              < (
+                reachable.firstIndex(of: second.element.module.name) ?? reachable.endIndex,
+                second.offset
+              )
+          }).map { $0.element }
         }
 
         return .success(graphs)

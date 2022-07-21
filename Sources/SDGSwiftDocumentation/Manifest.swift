@@ -14,6 +14,8 @@
 
 import SDGLogic
 
+import OrderedCollections
+
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
 
@@ -33,8 +35,8 @@ import SDGLogic
       }
     }
 
-    internal func publicModules() -> Set<String> {
-      return Set(
+    internal func publicModules() -> OrderedSet<String> {
+      return OrderedSet(
         products
           .lazy.filter({ ¬$0.name.hasPrefix("_") })
           .flatMap({ (product) -> [String] in
