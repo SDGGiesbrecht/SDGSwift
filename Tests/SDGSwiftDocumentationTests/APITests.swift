@@ -127,7 +127,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // #workaround(Filling in symbols not detected yet.)
               if packageName == "PackageToDocument" {
                 return [
-                  "infix operator ≠ : Precedence",
                   "precedencegroup Precedence {}",
                 ]
               } else {
