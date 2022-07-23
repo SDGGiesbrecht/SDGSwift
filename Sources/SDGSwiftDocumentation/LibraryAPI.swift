@@ -15,7 +15,7 @@
 import SymbolKit
 
 /// The API of a library.
-public struct LibraryAPI {
+public struct LibraryAPI: Declared {
 
   /// Creates a library API.
   ///
@@ -32,6 +32,8 @@ public struct LibraryAPI {
 
   /// The names of the modules included in the library.
   public var modules: [String]
+
+  // MARK: - Declared
 
   /// The library’s declaration.
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {

@@ -17,7 +17,7 @@ import SDGSwiftPackageManager
 import SymbolKit
 
 /// The API of a package.
-public struct PackageAPI {
+public struct PackageAPI: Declared {
 
   /// Creates a package API.
   ///
@@ -57,7 +57,8 @@ public struct PackageAPI {
     return modules.flatMap { $0.symbolGraphs }
   }
 
-  /// The package’s declaration.
+  // MARK: - Declared
+
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
     return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(

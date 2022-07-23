@@ -1,5 +1,5 @@
 /*
- SymbolGraph.Symbol.swift
+ Declared.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,12 +14,18 @@
 
 import SymbolKit
 
-extension SymbolGraph.Symbol: SymbolLike {
+/// An API element that has a declaration.
+public protocol Declared: SymbolLike {
+  
+  /// The symbol’s declaration.
+  var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] { get }
+}
+
+extension Declared {
 
   // MARK: - SymbolLike
 
-  /// The symbol’s declaration.
   public var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
-    return names.subHeading
+    return declaration
   }
 }

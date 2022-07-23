@@ -1,5 +1,5 @@
 /*
- SymbolGraph.Symbol.swift
+ SymbolLike.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,12 +14,9 @@
 
 import SymbolKit
 
-extension SymbolGraph.Symbol: SymbolLike {
+/// `SymbolGraph.Symbol` or a type that provides the same information, but represents something not supported by `SymbolKit`.
+public protocol SymbolLike {
 
-  // MARK: - SymbolLike
-
-  /// The symbol’s declaration.
-  public var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
-    return names.subHeading
-  }
+  /// The symbol’s declaration, if it has one.
+  var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? { get }
 }

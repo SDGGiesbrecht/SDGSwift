@@ -116,7 +116,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         ).appending(contentsOf: api.modules.map({ $0.declaration }))
           .appending(
             contentsOf: api.symbolGraphs().flatMap({ graph in
-              return graph.symbols.values.compactMap({ $0.declaration })
+              return graph.symbols.values.compactMap({ $0.possibleDeclaration })
             })
           ).map({ declaration in
             return declaration.map({ fragment in
@@ -162,6 +162,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .func, displayName: "function"),
       mixins: [:]
     )
-    _ = symbol.declaration
+    _ = symbol.possibleDeclaration
   }
 }
