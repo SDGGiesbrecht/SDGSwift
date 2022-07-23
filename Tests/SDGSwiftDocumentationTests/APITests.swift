@@ -34,17 +34,40 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testModule() {
+    let module = SymbolGraph.Module(
+      name: "MyModule",
+      platform: SymbolGraph.Platform(architecture: nil, vendor: nil, operatingSystem: nil, environment: nil)
+    )
+    _ = module.declaration
+  }
+
   func testLibraryAPI() {
     let library = LibraryAPI(name: "MyLibrary")
     _ = library.declaration
   }
 
   func testPackageAPI() {
-    _ = PackageAPI(
+    let package = PackageAPI(
       name: "MyPackage",
       libraries: ["MyLibrary"],
-      symbolGraphs: []
+      symbolGraphs: [
+        SymbolGraph(
+          metadata: SymbolGraph.Metadata(
+            formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
+            generator: "My Generator"
+          ),
+          module: SymbolGraph.Module(
+            name: "MyModule",
+            platform: SymbolGraph.Platform(architecture: nil, vendor: nil, operatingSystem: nil, environment: nil)
+          ),
+          symbols: [],
+          relationships: []
+        )
+      ]
     )
+    _ = package.modules()
+    _ = package.declaration
   }
 
   func testSymbolGraphError() {
