@@ -118,7 +118,7 @@ extension PackageRepository {
           return .success(
             PackageAPI(
               name: manifest.displayName,
-              libraries: manifest.publicLibraryNames(),
+              libraries: manifest.publicLibraries(),
               symbolGraphs: symbolGraphs
             )
           )

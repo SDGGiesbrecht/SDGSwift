@@ -23,24 +23,6 @@ public struct PackageAPI {
   ///
   /// - Parameters:
   ///   - name: The name of the package.
-  ///   - libraries: The library names.
-  ///   - symbolGraphs: The symbol graphs.
-  public init(
-    name: String,
-    libraries: [String],
-    symbolGraphs: [SymbolGraph]
-  ) {
-    self.init(
-      name: name,
-      libraries: libraries.map({ LibraryAPI(name: $0) }),
-      symbolGraphs: symbolGraphs
-    )
-  }
-
-  /// Creates a package API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the package.
   ///   - libraries: The libraries.
   ///   - symbolGraphs: The symbol graphs.
   public init(
@@ -50,7 +32,13 @@ public struct PackageAPI {
   ) {
     self.name = name
     self.libraries = libraries
-    self.symbolGraphs = symbolGraphs
+    var existing: Set<String> = []
+    self.modules = libraries
+      .lazy.flatMap({ $0.modules })
+      .filter({ existing.insert($0).inserted })
+      .map({ name in
+        return ModuleAPI(name: name, symbolGraphs: symbolGraphs.filter({ $0.module.name == name }))
+      })
   }
 
   // MARK: - Properties
@@ -62,16 +50,12 @@ public struct PackageAPI {
   public var libraries: [LibraryAPI]
 
   /// The modules vended in one or more library products.
-  public func modules() -> [SymbolGraph.Module] {
-    var existing: Set<String> = []
-    return
-      symbolGraphs
-      .lazy.compactMap({ $0.module })
-      .filter({ existing.insert($0.name).inserted })
-  }
+  public var modules: [ModuleAPI]
 
   /// The package’s symbol graphs.
-  public var symbolGraphs: [SymbolGraph]
+  public func symbolGraphs() -> [SymbolGraph] {
+    return modules.flatMap { $0.symbolGraphs }
+  }
 
   /// The package’s declaration.
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {

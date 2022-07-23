@@ -21,12 +21,17 @@ public struct LibraryAPI {
   ///
   /// - Parameters:
   ///   - name: The name of the library.
-  public init(name: String) {
+  ///   - modules: The names of the modules included in the library.
+  public init(name: String, modules: [String]) {
     self.name = name
+    self.modules = modules
   }
 
   /// The name of the library.
   public var name: String
+
+  /// The names of the modules included in the library.
+  public var modules: [String]
 
   /// The library’s declaration.
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
