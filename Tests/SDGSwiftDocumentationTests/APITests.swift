@@ -34,28 +34,23 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testModule() {
-    let module = SymbolGraph.Module(
+  func testModuleAPI() {
+    let module = ModuleAPI(
       name: "MyModule",
-      platform: SymbolGraph.Platform(
-        architecture: nil,
-        vendor: nil,
-        operatingSystem: nil,
-        environment: nil
-      )
+      symbolGraphs: []
     )
     _ = module.declaration
   }
 
   func testLibraryAPI() {
-    let library = LibraryAPI(name: "MyLibrary")
+    let library = LibraryAPI(name: "MyLibrary", modules: ["MyModule"])
     _ = library.declaration
   }
 
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
-      libraries: ["MyLibrary"],
+      libraries: [LibraryAPI(name: "MyLibrary", modules: ["MyModule"])],
       symbolGraphs: [
         SymbolGraph(
           metadata: SymbolGraph.Metadata(
@@ -76,7 +71,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       ]
     )
-    _ = package.modules()
+    _ = package.symbolGraphs()
     _ = package.declaration
   }
 
@@ -118,9 +113,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           api.declaration
         ].appending(
           contentsOf: api.libraries.map({ $0.declaration })
-        ).appending(contentsOf: api.modules().map({ $0.declaration }))
+        ).appending(contentsOf: api.modules.map({ $0.declaration }))
           .appending(
-            contentsOf: api.symbolGraphs.flatMap({ graph in
+            contentsOf: api.symbolGraphs().flatMap({ graph in
               return graph.symbols.values.compactMap({ $0.declaration })
             })
           ).map({ declaration in
