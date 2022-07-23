@@ -1,0 +1,64 @@
+/*
+ Module.swift
+
+ This source file is part of the SDGSwift open source project.
+ https://sdggiesbrecht.github.io/SDGSwift
+
+ Copyright ©2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+import SymbolKit
+
+extension SymbolGraph.Module {
+
+  /// The module’s declaration.
+  public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ".",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "target",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: "(",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .externalParameter,
+        spelling: "name",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ":",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: " ",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .stringLiteral,
+        spelling: "\u{22}\(name)\u{22}",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ")",
+        preciseIdentifier: nil
+      ),
+    ]
+  }
+}

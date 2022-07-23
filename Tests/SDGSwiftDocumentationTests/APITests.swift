@@ -34,16 +34,50 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testModule() {
+    let module = SymbolGraph.Module(
+      name: "MyModule",
+      platform: SymbolGraph.Platform(
+        architecture: nil,
+        vendor: nil,
+        operatingSystem: nil,
+        environment: nil
+      )
+    )
+    _ = module.declaration
+  }
+
   func testLibraryAPI() {
     let library = LibraryAPI(name: "MyLibrary")
     _ = library.declaration
   }
 
   func testPackageAPI() {
-    _ = PackageAPI(
+    let package = PackageAPI(
+      name: "MyPackage",
       libraries: ["MyLibrary"],
-      symbolGraphs: []
+      symbolGraphs: [
+        SymbolGraph(
+          metadata: SymbolGraph.Metadata(
+            formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
+            generator: "My Generator"
+          ),
+          module: SymbolGraph.Module(
+            name: "MyModule",
+            platform: SymbolGraph.Platform(
+              architecture: nil,
+              vendor: nil,
+              operatingSystem: nil,
+              environment: nil
+            )
+          ),
+          symbols: [],
+          relationships: []
+        )
+      ]
     )
+    _ = package.modules()
+    _ = package.declaration
   }
 
   func testSymbolGraphError() {
@@ -80,38 +114,32 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = package.symbolGraphs(filteringUnreachable: false)
         let api = try package.api().get()
 
-        let declarations = api.libraries.map({ library in
-          return library.declaration
-        }).appending(
-          contentsOf: api.symbolGraphs.flatMap({ graph in
-            return graph.symbols.values.compactMap { symbol in
-              return symbol.declaration
-            }
-          })
-        ).map({ declaration in
-          return declaration.map({ fragment in
-            return fragment.spelling
-          }).joined()
-        })
-        .appending(
-          contentsOf: {
-            // #workaround(Filling in symbols not detected yet.)
-            if packageName == "PackageToDocument" {
-              return [
-                ".target(name: \u{22}PrimaryModule\u{22})",
-                "Package(name: \u{22}PackageToDocument\u{22})",
-                "infix operator ≠ : Precedence",
-                "precedencegroup Precedence {}",
-              ]
-            } else {
-              return [
-                "Package(name: \u{22}PackageToDocument2\u{22})",
-                ".target(name: \u{22}PrimaryModule\u{22})",
-              ]
-            }
-          }()
-        )
-        .sorted().joined(separator: "\n")
+        let declarations = [
+          api.declaration
+        ].appending(
+          contentsOf: api.libraries.map({ $0.declaration })
+        ).appending(contentsOf: api.modules().map({ $0.declaration }))
+          .appending(
+            contentsOf: api.symbolGraphs.flatMap({ graph in
+              return graph.symbols.values.compactMap({ $0.declaration })
+            })
+          ).map({ declaration in
+            return declaration.map({ fragment in
+              return fragment.spelling
+            }).joined()
+          }).appending(
+            contentsOf: {
+              // #workaround(Filling in symbols not detected yet.)
+              if packageName == "PackageToDocument" {
+                return [
+                  "infix operator ≠ : Precedence",
+                  "precedencegroup Precedence {}",
+                ]
+              } else {
+                return []
+              }
+            }()
+          ).sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(packageName).txt"
         )
