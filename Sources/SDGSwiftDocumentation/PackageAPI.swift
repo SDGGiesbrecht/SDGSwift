@@ -34,7 +34,7 @@ public struct PackageAPI {
     self.libraries = libraries
     var existing: Set<String> = []
     self.modules = libraries
-      .lazy.flatMap({ $0.modules })
+      .flatMap({ $0.modules })
       .filter({ existing.insert($0).inserted })
       .map({ name in
         return ModuleAPI(name: name, symbolGraphs: symbolGraphs.filter({ $0.module.name == name }))
