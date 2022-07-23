@@ -37,7 +37,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testModule() {
     let module = SymbolGraph.Module(
       name: "MyModule",
-      platform: SymbolGraph.Platform(architecture: nil, vendor: nil, operatingSystem: nil, environment: nil)
+      platform: SymbolGraph.Platform(
+        architecture: nil,
+        vendor: nil,
+        operatingSystem: nil,
+        environment: nil
+      )
     )
     _ = module.declaration
   }
@@ -59,7 +64,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ),
           module: SymbolGraph.Module(
             name: "MyModule",
-            platform: SymbolGraph.Platform(architecture: nil, vendor: nil, operatingSystem: nil, environment: nil)
+            platform: SymbolGraph.Platform(
+              architecture: nil,
+              vendor: nil,
+              operatingSystem: nil,
+              environment: nil
+            )
           ),
           symbols: [],
           relationships: []
