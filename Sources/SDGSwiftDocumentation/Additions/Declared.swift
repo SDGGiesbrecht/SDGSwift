@@ -16,7 +16,7 @@ import SymbolKit
 
 /// An API element that has a declaration.
 public protocol Declared: SymbolLike {
-  
+
   /// The symbol’s declaration.
   var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] { get }
 }

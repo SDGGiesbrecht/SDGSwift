@@ -107,19 +107,20 @@ extension PackageRepository {
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<PackageAPI, SymbolGraph.LoadingError> {
-      switch manifest() {
+      switch package() {
       case .failure(let error):
         return .failure(.packageLoadingError(error))
-      case .success(let manifest):
+      case .success(let package):
         switch symbolGraphs(filteringUnreachable: true, reportProgress: reportProgress) {
         case .failure(let error):
           return .failure(error)
         case .success(let symbolGraphs):
           return .success(
             PackageAPI(
-              name: manifest.displayName,
-              libraries: manifest.publicLibraries(),
-              symbolGraphs: symbolGraphs
+              name: package.manifest.displayName,
+              libraries: package.manifest.publicLibraries(),
+              symbolGraphs: symbolGraphs,
+              moduleSources: package.publicModuleSources()
             )
           )
         }

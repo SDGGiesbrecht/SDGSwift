@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SymbolKit
 
 /// The API of a module.
@@ -21,7 +23,9 @@ public struct ModuleAPI: Declared {
   ///
   /// - Parameters:
   ///   - name: The name of the module.
-  public init(name: String, symbolGraphs: [SymbolGraph]) {
+  ///   - symbolGraphs: The module’s symbol graphs.
+  ///   - sources: The URL’s of the module’s sources.
+  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
     self.name = name
     self.symbolGraphs = symbolGraphs
   }

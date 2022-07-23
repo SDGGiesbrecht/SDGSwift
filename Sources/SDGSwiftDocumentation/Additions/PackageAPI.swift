@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftPackageManager
+import Foundation
 
 import SymbolKit
 
@@ -28,16 +28,22 @@ public struct PackageAPI: Declared {
   public init(
     name: String,
     libraries: [LibraryAPI],
-    symbolGraphs: [SymbolGraph]
+    symbolGraphs: [SymbolGraph],
+    moduleSources: [String: [URL]]
   ) {
     self.name = name
     self.libraries = libraries
     var existing: Set<String> = []
-    self.modules = libraries
+    self.modules =
+      libraries
       .flatMap({ $0.modules })
       .filter({ existing.insert($0).inserted })
       .map({ name in
-        return ModuleAPI(name: name, symbolGraphs: symbolGraphs.filter({ $0.module.name == name }))
+        return ModuleAPI(
+          name: name,
+          symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
+          sources: moduleSources[name] ?? []
+        )
       })
   }
 
