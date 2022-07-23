@@ -30,15 +30,16 @@ public struct ModuleAPI: Declared {
   ///   - name: The name of the module.
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
-  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) throws {
+  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
     self.name = name
     self.symbolGraphs = symbolGraphs
 
-    let operators: [Operator] = []
+    var operators: [Operator] = []
     for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
-      try purgingAutoreleased {
-        let source = try SyntaxParser.parse(sourceFile)
-        operators.append(contentsOf: source.operators())
+      purgingAutoreleased {
+        if let source = try? SyntaxParser.parse(sourceFile) {
+          operators.append(contentsOf: Syntax(source).operators())
+        }
       }
     }
     self.operators = operators.sorted()
