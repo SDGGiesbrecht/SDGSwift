@@ -14,6 +14,11 @@
 
 import Foundation
 
+import SDGControlFlow
+
+import SwiftSyntax
+import SwiftSyntaxParser
+
 import SymbolKit
 
 /// The API of a module.
@@ -25,9 +30,18 @@ public struct ModuleAPI: Declared {
   ///   - name: The name of the module.
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
-  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
+  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) throws {
     self.name = name
     self.symbolGraphs = symbolGraphs
+
+    let operators: [Operator] = []
+    for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
+      try purgingAutoreleased {
+        let source = try SyntaxParser.parse(sourceFile)
+        operators.append(contentsOf: source.operators())
+      }
+    }
+    self.operators = operators.sorted()
   }
 
   /// The name of the module.
@@ -35,6 +49,8 @@ public struct ModuleAPI: Declared {
 
   /// The module’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
+
+  public var operators: [Operator]
 
   // MARK: - Declared
 
