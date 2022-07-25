@@ -48,6 +48,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     _ = library.declaration
   }
 
+  func testOperator() {
+    _ = Operator(declaration: []) < Operator(declaration: [])
+  }
+
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
@@ -124,7 +128,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 contentsOf: module.symbolGraphs.flatMap({ graph in
                   return graph.symbols.values.compactMap({ $0.possibleDeclaration })
                 })
-              ).appending(contentsOf: module.operators.map({ $0.declaration }))
+              ).appending(contentsOf: module.operators.compactMap({ $0.possibleDeclaration }))
             }
           )
         ).map({ declaration in
