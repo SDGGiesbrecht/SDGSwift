@@ -37,7 +37,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testModuleAPI() {
     let module = ModuleAPI(
       name: "MyModule",
-      symbolGraphs: []
+      symbolGraphs: [],
+      sources: []
     )
     _ = module.declaration
   }
@@ -69,7 +70,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           symbols: [],
           relationships: []
         )
-      ]
+      ],
+      moduleSources: [:]
     )
     _ = package.symbolGraphs()
     _ = package.declaration
