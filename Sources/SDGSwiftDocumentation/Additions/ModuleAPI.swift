@@ -39,9 +39,11 @@ public struct ModuleAPI: Declared {
     var operators: [Operator] = []
     for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
       purgingAutoreleased {
-        if let source = try? SyntaxParser.parse(sourceFile) {
-          operators.append(contentsOf: Syntax(source).operators())
-        }
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+          if let source = try? SyntaxParser.parse(sourceFile) {
+            operators.append(contentsOf: Syntax(source).operators())
+          }
+        #endif
       }
     }
     self.operators = operators.sorted()

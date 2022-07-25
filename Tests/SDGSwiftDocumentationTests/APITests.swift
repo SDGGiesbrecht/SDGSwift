@@ -129,7 +129,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               // #workaround(Filling in symbols not detected yet.)
               if packageName == "PackageToDocument" {
                 return [
-                  "precedencegroup Precedence {}",
+                  "precedencegroup Precedence {}"
                 ]
               } else {
                 return []
