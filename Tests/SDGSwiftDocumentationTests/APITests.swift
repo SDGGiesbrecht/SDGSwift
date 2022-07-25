@@ -115,27 +115,34 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           api.declaration
         ].appending(
           contentsOf: api.libraries.map({ $0.declaration })
-        ).appending(contentsOf: api.modules.map({ $0.declaration }))
-          .appending(
-            contentsOf: api.symbolGraphs().flatMap({ graph in
-              return graph.symbols.values.compactMap({ $0.possibleDeclaration })
-            })
-          ).map({ declaration in
-            return declaration.map({ fragment in
-              return fragment.spelling
-            }).joined()
-          }).appending(
-            contentsOf: {
-              // #workaround(Filling in symbols not detected yet.)
-              if packageName == "PackageToDocument" {
-                return [
-                  "precedencegroup Precedence {}"
-                ]
-              } else {
-                return []
-              }
-            }()
-          ).sorted().joined(separator: "\n")
+        ).appending(
+          contentsOf: api.modules.flatMap(
+            { (module) -> [[SymbolGraph.Symbol.DeclarationFragments.Fragment]] in
+              return [
+                module.declaration
+              ].appending(
+                contentsOf: module.symbolGraphs.flatMap({ graph in
+                  return graph.symbols.values.compactMap({ $0.possibleDeclaration })
+                })
+              ).appending(contentsOf: module.operators.map({ $0.declaration }))
+            }
+          )
+        ).map({ declaration in
+          return declaration.map({ fragment in
+            return fragment.spelling
+          }).joined()
+        }).appending(
+          contentsOf: {
+            // #workaround(Filling in symbols not detected yet.)
+            if packageName == "PackageToDocument" {
+              return [
+                "precedencegroup Precedence {}"
+              ]
+            } else {
+              return []
+            }
+          }()
+        ).sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(packageName).txt"
         )
