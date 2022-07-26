@@ -38,18 +38,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     let module = ModuleAPI(
       name: "MyModule",
       symbolGraphs: [],
-      sources: []
+      sources: [
+        URL(fileURLWithPath: #filePath),
+        URL(fileURLWithPath: #filePath),
+      ]
     )
     _ = module.declaration
   }
 
   func testLibraryAPI() {
     let library = LibraryAPI(name: "MyLibrary", modules: ["MyModule"])
-    _ = library.declaration
+    _ = library.possibleDeclaration
   }
 
   func testOperator() {
-    _ = Operator(declaration: []) < Operator(declaration: [])
+    _ = Operator(declaration: [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "==",
+        preciseIdentifier: nil
+      )
+    ]) < Operator(declaration: [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "≠",
+        preciseIdentifier: nil
+      )
+    ])
   }
 
   func testPackageAPI() {
