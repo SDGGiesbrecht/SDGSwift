@@ -1,5 +1,5 @@
 /*
- PackageAPI.swift
+ ModuleAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,73 +12,66 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftPackageManager
+import Foundation
+
+import SDGControlFlow
+
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
+#endif
 
 import SymbolKit
 
-/// The API of a package.
-public struct PackageAPI {
+/// The API of a module.
+public struct ModuleAPI: Declared {
 
-  /// Creates a package API.
+  /// Creates a module API.
   ///
   /// - Parameters:
-  ///   - name: The name of the package.
-  ///   - libraries: The library names.
-  ///   - symbolGraphs: The symbol graphs.
-  public init(
-    name: String,
-    libraries: [String],
-    symbolGraphs: [SymbolGraph]
-  ) {
-    self.init(
-      name: name,
-      libraries: libraries.map({ LibraryAPI(name: $0) }),
-      symbolGraphs: symbolGraphs
-    )
-  }
-
-  /// Creates a package API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the package.
-  ///   - libraries: The libraries.
-  ///   - symbolGraphs: The symbol graphs.
-  public init(
-    name: String,
-    libraries: [LibraryAPI],
-    symbolGraphs: [SymbolGraph]
-  ) {
+  ///   - name: The name of the module.
+  ///   - symbolGraphs: The module’s symbol graphs.
+  ///   - sources: The URL’s of the module’s sources.
+  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
     self.name = name
-    self.libraries = libraries
     self.symbolGraphs = symbolGraphs
+
+    var operators: [Operator] = []
+    for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
+      purgingAutoreleased {
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+          if let source = try? SyntaxParser.parse(sourceFile) {
+            operators.append(contentsOf: Syntax(source).operators())
+          }
+        #endif
+      }
+    }
+    self.operators = operators.sorted()
   }
 
-  // MARK: - Properties
-
-  /// The name of the package.
+  /// The name of the module.
   public var name: String
 
-  /// The library products vended by the package.
-  public var libraries: [LibraryAPI]
-
-  /// The modules vended in one or more library products.
-  public func modules() -> [SymbolGraph.Module] {
-    var existing: Set<String> = []
-    return
-      symbolGraphs
-      .lazy.compactMap({ $0.module })
-      .filter({ existing.insert($0.name).inserted })
-  }
-
-  /// The package’s symbol graphs.
+  /// The module’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
 
-  /// The package’s declaration.
+  public var operators: [Operator]
+
+  // MARK: - Declared
+
+  /// The module’s declaration.
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
     return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .typeIdentifier,
-        spelling: "Package",
+        kind: .text,
+        spelling: ".",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "target",
         preciseIdentifier: nil
       ),
       SymbolGraph.Symbol.DeclarationFragments.Fragment(

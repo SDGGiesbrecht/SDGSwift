@@ -1,5 +1,5 @@
 /*
- LibraryAPI.swift
+ PackageAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,33 +12,64 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SymbolKit
 
-/// The API of a library.
-public struct LibraryAPI {
+/// The API of a package.
+public struct PackageAPI: Declared {
 
-  /// Creates a library API.
+  /// Creates a package API.
   ///
   /// - Parameters:
-  ///   - name: The name of the library.
-  public init(name: String) {
+  ///   - name: The name of the package.
+  ///   - libraries: The libraries.
+  ///   - symbolGraphs: The symbol graphs.
+  public init(
+    name: String,
+    libraries: [LibraryAPI],
+    symbolGraphs: [SymbolGraph],
+    moduleSources: [String: [URL]]
+  ) {
     self.name = name
+    self.libraries = libraries
+    var existing: Set<String> = []
+    self.modules =
+      libraries
+      .flatMap({ $0.modules })
+      .filter({ existing.insert($0).inserted })
+      .map({ name in
+        return ModuleAPI(
+          name: name,
+          symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
+          sources: moduleSources[name] ?? []
+        )
+      })
   }
 
-  /// The name of the library.
+  // MARK: - Properties
+
+  /// The name of the package.
   public var name: String
 
-  /// The library’s declaration.
+  /// The library products vended by the package.
+  public var libraries: [LibraryAPI]
+
+  /// The modules vended in one or more library products.
+  public var modules: [ModuleAPI]
+
+  /// The package’s symbol graphs.
+  public func symbolGraphs() -> [SymbolGraph] {
+    return modules.flatMap { $0.symbolGraphs }
+  }
+
+  // MARK: - Declared
+
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
     return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ".",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "library",
+        kind: .typeIdentifier,
+        spelling: "Package",
         preciseIdentifier: nil
       ),
       SymbolGraph.Symbol.DeclarationFragments.Fragment(

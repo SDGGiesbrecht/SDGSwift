@@ -1,5 +1,5 @@
 /*
- Module.swift
+ LibraryAPI.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,9 +14,28 @@
 
 import SymbolKit
 
-extension SymbolGraph.Module {
+/// The API of a library.
+public struct LibraryAPI: Declared {
 
-  /// The module’s declaration.
+  /// Creates a library API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the library.
+  ///   - modules: The names of the modules included in the library.
+  public init(name: String, modules: [String]) {
+    self.name = name
+    self.modules = modules
+  }
+
+  /// The name of the library.
+  public var name: String
+
+  /// The names of the modules included in the library.
+  public var modules: [String]
+
+  // MARK: - Declared
+
+  /// The library’s declaration.
   public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
     return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
@@ -26,7 +45,7 @@ extension SymbolGraph.Module {
       ),
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
         kind: .identifier,
-        spelling: "target",
+        spelling: "library",
         preciseIdentifier: nil
       ),
       SymbolGraph.Symbol.DeclarationFragments.Fragment(

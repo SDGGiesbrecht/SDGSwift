@@ -21,14 +21,17 @@ import OrderedCollections
 
   extension Manifest {
 
-    internal func publicLibraryNames() -> [String] {
+    internal func publicLibraries() -> [LibraryAPI] {
       return products.compactMap { product in
         if product.name.hasPrefix("_") {
           return nil
         }
         switch product.type {
         case .library:
-          return product.name
+          return LibraryAPI(
+            name: product.name,
+            modules: product.targets.filter({ ¬$0.hasPrefix("_") })
+          )
         default:
           return nil
         }

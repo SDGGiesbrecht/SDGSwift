@@ -34,28 +34,45 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testModule() {
-    let module = SymbolGraph.Module(
+  func testModuleAPI() {
+    let module = ModuleAPI(
       name: "MyModule",
-      platform: SymbolGraph.Platform(
-        architecture: nil,
-        vendor: nil,
-        operatingSystem: nil,
-        environment: nil
-      )
+      symbolGraphs: [],
+      sources: [
+        URL(fileURLWithPath: #filePath),
+        URL(fileURLWithPath: #filePath),
+      ]
     )
     _ = module.declaration
   }
 
   func testLibraryAPI() {
-    let library = LibraryAPI(name: "MyLibrary")
-    _ = library.declaration
+    let library = LibraryAPI(name: "MyLibrary", modules: ["MyModule"])
+    _ = library.possibleDeclaration
+  }
+
+  func testOperator() {
+    _ =
+      Operator(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "==",
+          preciseIdentifier: nil
+        )
+      ])
+      < Operator(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "≠",
+          preciseIdentifier: nil
+        )
+      ])
   }
 
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
-      libraries: ["MyLibrary"],
+      libraries: [LibraryAPI(name: "MyLibrary", modules: ["MyModule"])],
       symbolGraphs: [
         SymbolGraph(
           metadata: SymbolGraph.Metadata(
@@ -74,9 +91,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           symbols: [],
           relationships: []
         )
-      ]
+      ],
+      moduleSources: [:]
     )
-    _ = package.modules()
+    _ = package.symbolGraphs()
     _ = package.declaration
   }
 
@@ -118,28 +136,34 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           api.declaration
         ].appending(
           contentsOf: api.libraries.map({ $0.declaration })
-        ).appending(contentsOf: api.modules().map({ $0.declaration }))
-          .appending(
-            contentsOf: api.symbolGraphs.flatMap({ graph in
-              return graph.symbols.values.compactMap({ $0.declaration })
-            })
-          ).map({ declaration in
-            return declaration.map({ fragment in
-              return fragment.spelling
-            }).joined()
-          }).appending(
-            contentsOf: {
-              // #workaround(Filling in symbols not detected yet.)
-              if packageName == "PackageToDocument" {
-                return [
-                  "infix operator ≠ : Precedence",
-                  "precedencegroup Precedence {}",
-                ]
-              } else {
-                return []
-              }
-            }()
-          ).sorted().joined(separator: "\n")
+        ).appending(
+          contentsOf: api.modules.flatMap(
+            { (module) -> [[SymbolGraph.Symbol.DeclarationFragments.Fragment]] in
+              return [
+                module.declaration
+              ].appending(
+                contentsOf: module.symbolGraphs.flatMap({ graph in
+                  return graph.symbols.values.compactMap({ $0.possibleDeclaration })
+                })
+              ).appending(contentsOf: module.operators.compactMap({ $0.possibleDeclaration }))
+            }
+          )
+        ).map({ declaration in
+          return declaration.map({ fragment in
+            return fragment.spelling
+          }).joined()
+        }).appending(
+          contentsOf: {
+            // #workaround(Filling in symbols not detected yet.)
+            if packageName == "PackageToDocument" {
+              return [
+                "precedencegroup Precedence {}"
+              ]
+            } else {
+              return []
+            }
+          }()
+        ).sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(packageName).txt"
         )
@@ -167,6 +191,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .func, displayName: "function"),
       mixins: [:]
     )
-    _ = symbol.declaration
+    _ = symbol.possibleDeclaration
   }
 }

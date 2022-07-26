@@ -244,6 +244,8 @@ let package = Package(
       dependencies: [
         "SDGSwift",
         "SDGSwiftPackageManager",
+        "SDGSwiftSource",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
@@ -254,6 +256,17 @@ let package = Package(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
           // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "swift\u{2D}syntax",
+          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
