@@ -31,7 +31,7 @@ public struct Operator: Comparable, Declared {
 
   // MARK: - Comparable
 
-  let comparisonValue: String
+  private let comparisonValue: String
   public static func < (preceding: Operator, following: Operator) -> Bool {
     return compare(preceding, following, by: { $0.comparisonValue })
   }
