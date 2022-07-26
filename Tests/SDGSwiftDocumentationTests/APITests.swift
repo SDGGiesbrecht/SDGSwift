@@ -52,19 +52,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testOperator() {
-    _ = Operator(declaration: [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "==",
-        preciseIdentifier: nil
-      )
-    ]) < Operator(declaration: [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "≠",
-        preciseIdentifier: nil
-      )
-    ])
+    _ =
+      Operator(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "==",
+          preciseIdentifier: nil
+        )
+      ])
+      < Operator(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "≠",
+          preciseIdentifier: nil
+        )
+      ])
   }
 
   func testPackageAPI() {
