@@ -14,48 +14,31 @@
 
 import SymbolKit
 
-import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
 
-extension OperatorDeclSyntax {
+  extension OperatorDeclSyntax {
 
-  internal func api() -> Operator {
-    var components: [SymbolGraph.Symbol.DeclarationFragments.Fragment] = []
-    if let fixity = modifiers?.first {
+    internal func api() -> Operator {
+      var components: [SymbolGraph.Symbol.DeclarationFragments.Fragment] = []
+      if let fixity = modifiers?.first {
+        components.append(contentsOf: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .keyword,
+            spelling: fixity.name.text,
+            preciseIdentifier: nil
+          ),
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .text,
+            spelling: " ",
+            preciseIdentifier: nil
+          ),
+        ])
+      }
       components.append(contentsOf: [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .keyword,
-          spelling: fixity.name.text,
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: " ",
-          preciseIdentifier: nil
-        ),
-      ])
-    }
-    components.append(contentsOf: [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .keyword,
-        spelling: "operator",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: identifier.text,
-        preciseIdentifier: nil
-      ),
-    ])
-    if let `precedence` = operatorPrecedenceAndTypes?.precedenceGroupAndDesignatedTypes.first {
-      components.append(contentsOf: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ":",
+          spelling: "operator",
           preciseIdentifier: nil
         ),
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
@@ -65,11 +48,30 @@ extension OperatorDeclSyntax {
         ),
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .identifier,
-          spelling: `precedence`.text,
+          spelling: identifier.text,
           preciseIdentifier: nil
         ),
       ])
+      if let `precedence` = operatorPrecedenceAndTypes?.precedenceGroupAndDesignatedTypes.first {
+        components.append(contentsOf: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .text,
+            spelling: ":",
+            preciseIdentifier: nil
+          ),
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .text,
+            spelling: " ",
+            preciseIdentifier: nil
+          ),
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .identifier,
+            spelling: `precedence`.text,
+            preciseIdentifier: nil
+          ),
+        ])
+      }
+      return Operator(declaration: components)
     }
-    return Operator(declaration: components)
   }
-}
+#endif
