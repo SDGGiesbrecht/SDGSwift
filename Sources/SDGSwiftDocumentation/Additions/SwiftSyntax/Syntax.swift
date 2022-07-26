@@ -14,15 +14,17 @@
 
 import SymbolKit
 
-import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
 
-extension SwiftSyntax.Syntax {
+  extension SwiftSyntax.Syntax {
 
-  internal func operators() -> [Operator] {
-    if let declaration = self.as(OperatorDeclSyntax.self) {
-      return [declaration.api()]
-    } else {
-      return children.flatMap({ $0.operators() })
+    internal func operators() -> [Operator] {
+      if let declaration = self.as(OperatorDeclSyntax.self) {
+        return [declaration.api()]
+      } else {
+        return children.flatMap({ $0.operators() })
+      }
     }
   }
-}
+#endif
