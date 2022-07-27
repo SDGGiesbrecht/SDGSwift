@@ -100,7 +100,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testPrecedenceGroup() {
     _ =
-    PrecedenceGroup(declaration: [
+      PrecedenceGroup(declaration: [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .identifier,
           spelling: "A",
