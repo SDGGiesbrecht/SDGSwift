@@ -39,16 +39,20 @@ public struct ModuleAPI: Declared {
     self.symbolGraphs = symbolGraphs
 
     var operators: [Operator] = []
+    var precedenceGroups: [PrecedenceGroup] = []
     for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
       purgingAutoreleased {
         #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
           if let source = try? SyntaxParser.parse(sourceFile) {
-            operators.append(contentsOf: Syntax(source).operators())
+            let syntax = Syntax(source)
+            operators.append(contentsOf: syntax.operators())
+            precedenceGroups.append(contentsOf: syntax.precedenceGroups())
           }
         #endif
       }
     }
     self.operators = operators.sorted()
+    self.precedenceGroups = precedenceGroups.sorted()
   }
 
   /// The name of the module.
@@ -57,7 +61,11 @@ public struct ModuleAPI: Declared {
   /// The module’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
 
+  /// The module’s operators.
   public var operators: [Operator]
+
+  /// The module’s precedence groups.
+  public var precedenceGroups: [PrecedenceGroup]
 
   // MARK: - Declared
 

@@ -38,7 +38,7 @@ import SymbolKit
       components.append(contentsOf: [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .keyword,
-          spelling: "operator",
+          spelling: operatorKeyword.text,
           preciseIdentifier: nil
         ),
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
