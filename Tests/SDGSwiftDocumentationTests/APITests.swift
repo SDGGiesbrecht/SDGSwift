@@ -98,6 +98,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     _ = package.declaration
   }
 
+  func testPrecedenceGroup() {
+    _ =
+    PrecedenceGroup(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "A",
+          preciseIdentifier: nil
+        )
+      ])
+      < PrecedenceGroup(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "B",
+          preciseIdentifier: nil
+        )
+      ])
+  }
+
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
