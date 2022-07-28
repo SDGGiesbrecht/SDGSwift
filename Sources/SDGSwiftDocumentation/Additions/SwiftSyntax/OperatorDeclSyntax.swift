@@ -52,7 +52,7 @@ import SymbolKit
           preciseIdentifier: nil
         ),
       ])
-      return Operator(declaration: components)
+      return Operator(name: identifier.text, declaration: components)
     }
   }
 #endif

@@ -53,20 +53,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testOperator() {
     _ =
-      Operator(declaration: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "==",
-          preciseIdentifier: nil
-        )
-      ])
-      < Operator(declaration: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "≠",
-          preciseIdentifier: nil
-        )
-      ])
+      Operator(
+        name: "==",
+        declaration: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .identifier,
+            spelling: "==",
+            preciseIdentifier: nil
+          )
+        ]
+      )
+      < Operator(
+        name: "≠",
+        declaration: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .identifier,
+            spelling: "≠",
+            preciseIdentifier: nil
+          )
+        ]
+      )
   }
 
   func testPackageAPI() {
@@ -100,20 +106,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testPrecedenceGroup() {
     _ =
-      PrecedenceGroup(declaration: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "A",
-          preciseIdentifier: nil
-        )
-      ])
-      < PrecedenceGroup(declaration: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "B",
-          preciseIdentifier: nil
-        )
-      ])
+      PrecedenceGroup(
+        name: "A",
+        declaration: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .identifier,
+            spelling: "A",
+            preciseIdentifier: nil
+          )
+        ]
+      )
+      < PrecedenceGroup(
+        name: "B",
+        declaration: [
+          SymbolGraph.Symbol.DeclarationFragments.Fragment(
+            kind: .identifier,
+            spelling: "B",
+            preciseIdentifier: nil
+          )
+        ]
+      )
   }
 
   func testSymbolGraphError() {
@@ -150,27 +162,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = package.symbolGraphs(filteringUnreachable: false)
         let api = try package.api().get()
 
-        let declarations = [
-          api.declaration
-        ].appending(
-          contentsOf: api.libraries.map({ $0.declaration })
-        ).appending(
-          contentsOf: api.modules.flatMap(
-            { (module) -> [[SymbolGraph.Symbol.DeclarationFragments.Fragment]] in
-              return [
-                module.declaration
-              ].appending(
-                contentsOf: module.symbolGraphs.flatMap({ graph in
-                  return graph.symbols.values.compactMap({ $0.possibleDeclaration })
-                })
-              ).appending(contentsOf: module.operators.compactMap({ $0.possibleDeclaration }))
-                .appending(
-                  contentsOf: module.precedenceGroups.compactMap({ $0.possibleDeclaration })
-                )
-            }
+        let symbols: [SymbolLike] = [api]
+          .appending(contentsOf: api.libraries)
+          .appending(
+            contentsOf: api.modules.flatMap(
+              { (module) -> [SymbolLike] in
+                return [module]
+                  .appending(
+                    contentsOf: module.symbolGraphs.flatMap({ graph in
+                      return graph.symbols.values
+                    })
+                  )
+                  .appending(contentsOf: module.operators)
+                  .appending(contentsOf: module.precedenceGroups)
+              }
+            )
           )
-        ).map({ declaration in
-          return declaration.map({ fragment in
+
+        let declarations = symbols.compactMap({ symbol in
+          return symbol.possibleDeclaration?.map({ fragment in
             return fragment.spelling
           }).joined()
         }).sorted().joined(separator: "\n")
@@ -180,6 +190,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         SDGPersistenceTestUtilities.compare(
           declarations,
           against: declarationsSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
+
+        let names = symbols.map({ symbol in
+          return symbol.name
+        }).sorted().joined(separator: "\n")
+        let namesSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/Names/\(packageName).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          names,
+          against: namesSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif

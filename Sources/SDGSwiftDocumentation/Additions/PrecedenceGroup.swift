@@ -21,10 +21,13 @@ public struct PrecedenceGroup: Comparable, Declared {
   /// Creates a precedence group.
   ///
   /// - Parameters:
+  ///   - name: The name.
   ///   - declaration: The declaration.
   public init(
+    name: String,
     declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]
   ) {
+    self.name = name
     self.declaration = declaration
     self.comparisonValue = declaration.map({ $0.spelling }).joined()
   }
@@ -39,4 +42,8 @@ public struct PrecedenceGroup: Comparable, Declared {
   // MARK: - Declared
 
   public let declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]
+
+  // MARK: - SymbolLike
+
+  public let name: String
 }

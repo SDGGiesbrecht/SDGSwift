@@ -21,6 +21,7 @@ import SymbolKit
 
     internal func api() -> PrecedenceGroup {
       return PrecedenceGroup(
+        name: identifier.text,
         declaration: [
           SymbolGraph.Symbol.DeclarationFragments.Fragment(
             kind: .keyword,
