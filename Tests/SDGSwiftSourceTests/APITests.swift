@@ -258,6 +258,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
           ]
           .lazy.joined()
+          .filter({ element in
+            switch element {
+            case .conformance:
+              // Conformances are not nodes in DocC.
+              return false
+            default:
+              return true
+            }
+          })
           .map({ element in
             element.name.source()
           }).appending(
