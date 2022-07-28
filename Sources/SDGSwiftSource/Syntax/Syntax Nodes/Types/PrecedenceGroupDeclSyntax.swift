@@ -22,16 +22,6 @@
     // MARK: - APIDeclaration
 
     internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
-
-      let normalizedAttributes = groupAttributes.normalizedForAPIDeclaration()
-
-      let rightBraceTrivia: Trivia
-      if normalizedAttributes.isEmpty {
-        rightBraceTrivia = []
-      } else {
-        rightBraceTrivia = .spaces(1)
-      }
-
       return SyntaxFactory.makePrecedenceGroupDecl(
         attributes: attributes?.normalizedForAPIDeclaration(),
         modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
@@ -39,11 +29,9 @@
           trailingTrivia: .spaces(1)
         ),
         identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        leftBrace: leftBrace.generallyNormalizedAndMissingInsteadOfNil(leadingTrivia: .spaces(1)),
-        groupAttributes: normalizedAttributes,
-        rightBrace: rightBrace.generallyNormalizedAndMissingInsteadOfNil(
-          leadingTrivia: rightBraceTrivia
-        )
+        leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
+        groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
+        rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing)
       )
     }
 

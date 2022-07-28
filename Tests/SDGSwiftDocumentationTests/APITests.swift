@@ -98,6 +98,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     _ = package.declaration
   }
 
+  func testPrecedenceGroup() {
+    _ =
+      PrecedenceGroup(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "A",
+          preciseIdentifier: nil
+        )
+      ])
+      < PrecedenceGroup(declaration: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "B",
+          preciseIdentifier: nil
+        )
+      ])
+  }
+
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
@@ -146,24 +164,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                   return graph.symbols.values.compactMap({ $0.possibleDeclaration })
                 })
               ).appending(contentsOf: module.operators.compactMap({ $0.possibleDeclaration }))
+                .appending(
+                  contentsOf: module.precedenceGroups.compactMap({ $0.possibleDeclaration })
+                )
             }
           )
         ).map({ declaration in
           return declaration.map({ fragment in
             return fragment.spelling
           }).joined()
-        }).appending(
-          contentsOf: {
-            // #workaround(Filling in symbols not detected yet.)
-            if packageName == "PackageToDocument" {
-              return [
-                "precedencegroup Precedence {}"
-              ]
-            } else {
-              return []
-            }
-          }()
-        ).sorted().joined(separator: "\n")
+        }).sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(packageName).txt"
         )

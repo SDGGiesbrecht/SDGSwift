@@ -394,47 +394,6 @@
       return TriviaNormalizer().visit(Syntax(self))
     }
 
-    internal func normalizedPrecedenceAttribute() -> Syntax {
-      switch resolvedExistential() {
-      case let relation as PrecedenceGroupRelationSyntax:
-        return Syntax(relation.normalizedForAPIDeclaration())
-      case let associativity as PrecedenceGroupAssociativitySyntax:
-        return Syntax(associativity.normalizedForAPIDeclaration())
-      case let assignment as PrecedenceGroupAssignmentSyntax:
-        return Syntax(assignment.normalizedForAPIDeclaration())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
-    private func precedenceAttributeGroup()
-      -> PrecedenceGroupAttributeListSyntax
-      .PrecedenceAttributeGroup
-    {
-      switch resolvedExistential() {
-      case let relation as PrecedenceGroupRelationSyntax:
-        if relation.higherThanOrLowerThan.text == "lowerThan" {
-          return .before
-        } else {
-          return .after
-        }
-      case is PrecedenceGroupAssociativitySyntax:
-        return .associativity
-      case is PrecedenceGroupAssignmentSyntax:
-        return .assignment
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return .unknown
-      }
-    }
-
-    internal static func arrangePrecedenceAttributes(lhs: Syntax, rhs: Syntax) -> Bool {
-      return (lhs.precedenceAttributeGroup(), lhs.source()) < (
-        rhs.precedenceAttributeGroup(), lhs.source()
-      )
-    }
-
     internal func attributeIndicatesAbsence() -> Bool {
       switch resolvedExistential() {
       case let attribute as AttributeSyntax:

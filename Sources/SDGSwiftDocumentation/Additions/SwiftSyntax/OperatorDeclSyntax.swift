@@ -38,7 +38,7 @@ import SymbolKit
       components.append(contentsOf: [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .keyword,
-          spelling: "operator",
+          spelling: operatorKeyword.text,
           preciseIdentifier: nil
         ),
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
@@ -52,25 +52,6 @@ import SymbolKit
           preciseIdentifier: nil
         ),
       ])
-      if let `precedence` = operatorPrecedenceAndTypes?.precedenceGroupAndDesignatedTypes.first {
-        components.append(contentsOf: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .text,
-            spelling: ":",
-            preciseIdentifier: nil
-          ),
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .text,
-            spelling: " ",
-            preciseIdentifier: nil
-          ),
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: `precedence`.text,
-            preciseIdentifier: nil
-          ),
-        ])
-      }
       return Operator(declaration: components)
     }
   }

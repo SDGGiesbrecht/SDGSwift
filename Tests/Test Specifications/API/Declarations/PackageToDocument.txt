@@ -69,7 +69,7 @@ func starts<PossiblePrefix>(with: PossiblePrefix, by: (Self.Element, PossiblePre
 func suffix(Int) -> Self.SubSequence
 func suffix(from: Self.Index) -> Self.SubSequence
 func withContiguousStorageIfAvailable<R>((UnsafeBufferPointer<Self.Element>) throws -> R) rethrows -> R?
-infix operator ≠: Precedence
+infix operator ≠
 init()
 init(extendedGraphemeClusterLiteral: Self.StringLiteralType)
 init(from: Decoder) throws
@@ -80,7 +80,7 @@ init(stringLiteral: String)
 init(unicodeScalarLiteral: Self.ExtendedGraphemeClusterLiteralType)
 init?(rawValue: Int)
 let property: Bool
-precedencegroup Precedence {}
+precedencegroup Precedence
 protocol Protocol
 static func != (Self, Self) -> Bool
 static func != (Self, Self) -> Bool

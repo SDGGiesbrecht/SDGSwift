@@ -26,5 +26,13 @@ import SymbolKit
         return children.flatMap({ $0.operators() })
       }
     }
+
+    internal func precedenceGroups() -> [PrecedenceGroup] {
+      if let declaration = self.as(PrecedenceGroupDeclSyntax.self) {
+        return [declaration.api()]
+      } else {
+        return children.flatMap({ $0.precedenceGroups() })
+      }
+    }
   }
 #endif

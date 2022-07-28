@@ -29,7 +29,7 @@
           trailingTrivia: .spaces(1)
         ),
         identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        operatorPrecedenceAndTypes: operatorPrecedenceAndTypes?.normalizedForAPIDeclaration()
+        operatorPrecedenceAndTypes: nil
       )
     }
 
