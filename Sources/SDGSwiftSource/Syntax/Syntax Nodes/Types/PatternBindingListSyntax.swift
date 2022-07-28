@@ -27,9 +27,9 @@
       return result
     }
 
-    internal func normalizedForVariableAPIDeclaration(accessor: AccessorBlockSyntax)
-      -> PatternBindingListSyntax
-    {
+    internal func normalizedForVariableAPIDeclaration(
+      accessor: AccessorBlockSyntax
+    ) -> PatternBindingListSyntax {
       return SyntaxFactory.makePatternBindingList(
         map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) })
       )

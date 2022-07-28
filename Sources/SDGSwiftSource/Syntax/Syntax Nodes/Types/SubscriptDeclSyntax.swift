@@ -51,7 +51,7 @@
       return SyntaxFactory.makeSubscriptDecl(
         attributes: nil,
         modifiers: nil,
-        subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, presence: .missing),
+        subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, trailingTrivia: .spaces(1)),
         genericParameterClause: nil,
         indices: indices.forName(labelBehaviour: .subscript),
         result: SyntaxFactory.makeBlankReturnClause(),

@@ -40,20 +40,11 @@
     internal func forName(
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> ParameterClauseSyntax {
-      switch labelBehaviour {
-      case .function, .operator:
-        return SyntaxFactory.makeParameterClause(
-          leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-          parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
-          rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-        )
-      case .subscript:
-        return SyntaxFactory.makeParameterClause(
-          leftParen: SyntaxFactory.makeToken(.leftSquareBracket),
-          parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
-          rightParen: SyntaxFactory.makeToken(.rightSquareBracket)
-        )
-      }
+      return SyntaxFactory.makeParameterClause(
+        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
+        parameterList: parameterList.forName(labelBehaviour: labelBehaviour),
+        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
+      )
     }
 
     internal func identifierList(
