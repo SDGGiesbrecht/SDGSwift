@@ -28,7 +28,6 @@ Structure
 Subclass
 Superclass
 TypeExpressibleByStringInterpolation
-[_:]
 allSatisfy(_:)
 compactMap(_:)
 contains(_:)
@@ -112,6 +111,7 @@ starts(with:)
 starts(with:by:)
 staticMethod()
 staticProperty
+subscript(_:)
 subscript(_:)
 subscript(_:)
 subscript(_:)
