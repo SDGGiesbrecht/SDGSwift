@@ -84,16 +84,30 @@
         secondName = nil
       }
 
-      return SyntaxFactory.makeFunctionParameter(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        firstName: firstName,
-        secondName: secondName,
-        colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
-        type: type?.normalized(),
-        ellipsis: ellipsis?.generallyNormalized(),
-        defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
-        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-      )
+      if labelBehaviour == .subscript,
+        secondName == nil {
+        return SyntaxFactory.makeFunctionParameter(
+          attributes: attributes?.normalizedForAPIDeclaration(),
+          firstName: nil,
+          secondName: nil,
+          colon: nil,
+          type: type?.normalized(),
+          ellipsis: ellipsis?.generallyNormalized(),
+          defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
+          trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+        )
+      } else {
+        return SyntaxFactory.makeFunctionParameter(
+          attributes: attributes?.normalizedForAPIDeclaration(),
+          firstName: firstName,
+          secondName: secondName,
+          colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
+          type: type?.normalized(),
+          ellipsis: ellipsis?.generallyNormalized(),
+          defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
+          trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
+        )
+      }
     }
 
     internal func forOverloadPattern(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
