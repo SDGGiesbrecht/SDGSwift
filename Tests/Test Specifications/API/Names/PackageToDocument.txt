@@ -15,6 +15,7 @@ CollectionType
 CollectionType.Index
 CollectionType.Indices
 Enumeration
+Enumeration.visible
 Inherited
 InheritingAssociatedType
 InheritingAssociatedType.RawValue
@@ -119,6 +120,5 @@ suffix(_:)
 suffix(from:)
 underestimatedCount
 underestimatedCount
-visible
 withContiguousStorageIfAvailable(_:)
 ≠

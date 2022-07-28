@@ -93,7 +93,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertTrue(parsed == parsed)
 
         let declarations =
-          ([
+          [
             [APIElement.package(parsed)],
             parsed.libraries.map({ APIElement.library($0) }),
             rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
@@ -209,38 +209,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
             }()
           )
-          // Legacy handled let vs var differently.
-          .sorted() as [String])
-          .replacingMatches(
-            for: ["var property: Bool { get }"],
-            with: ["let property: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "static var staticProperty: Bool { get }"
-            ],
-            with: ["static let staticProperty: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "subscript(`subscript`: Int) \u{2D}> Bool { get }"
-            ],
-            with: ["subscript(Int) \u{2D}> Bool"]
-          )
-          .replacingMatches(
-            for: ["var extensionProperty: Bool { get }"],
-            with: ["var extensionProperty: Bool"]
-          )
-          .replacingMatches(
-            for: ["var globalVariable: Bool { get set }"],
-            with: ["var globalVariable: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "var propertyInASeparateExtension: Bool { get }"
-            ],
-            with: ["var propertyInASeparateExtension: Bool"]
-          )
           .sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(parsed.name).txt"
@@ -252,7 +220,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
 
         let names =
-          [
+          ([
             [APIElement.package(parsed)],
             parsed.libraries.map({ APIElement.library($0) }),
             rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
@@ -376,6 +344,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 return []
               }
             }()
+          )
+          // Legacy had no knowledge of parent enumeration.
+          .sorted() as [String])
+          .replacingMatches(
+            for: ["visible"],
+            with: ["Enumeration.visible"]
           )
           .sorted().joined(separator: "\n")
         let namesSpecification = testSpecificationDirectory().appendingPathComponent(
