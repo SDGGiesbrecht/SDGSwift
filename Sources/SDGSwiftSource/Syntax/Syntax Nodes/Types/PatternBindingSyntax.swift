@@ -31,14 +31,12 @@
       }
     }
 
-    internal func normalizedForVariableAPIDeclaration(
-      accessor: AccessorBlockSyntax
-    ) -> PatternBindingSyntax {
+    internal func normalizedForVariableAPIDeclaration() -> PatternBindingSyntax {
       return SyntaxFactory.makePatternBinding(
         pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
         typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
         initializer: nil,
-        accessor: Syntax(accessor),
+        accessor: nil,
         trailingComma: nil
       )
     }

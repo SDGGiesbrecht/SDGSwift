@@ -31,7 +31,7 @@
       accessor: AccessorBlockSyntax
     ) -> PatternBindingListSyntax {
       return SyntaxFactory.makePatternBindingList(
-        map({ $0.normalizedForVariableAPIDeclaration(accessor: accessor) })
+        map({ $0.normalizedForVariableAPIDeclaration() })
       )
     }
 

@@ -43,7 +43,7 @@
         indices: indices.normalizedForDeclaration(labelBehaviour: .subscript),
         result: result.normalizedForSubscriptDeclaration(),
         genericWhereClause: newGenericWhereClause,
-        accessor: Syntax(accessorListForAPIDeclaration())
+        accessor: nil
       )
     }
 
