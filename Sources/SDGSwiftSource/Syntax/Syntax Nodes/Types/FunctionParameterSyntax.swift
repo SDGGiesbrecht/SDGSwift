@@ -130,7 +130,7 @@
         firstName: externalLabel(labelBehaviour: labelBehaviour)
           ?? SyntaxFactory.makeToken(.wildcardKeyword),
         secondName: nil,
-        colon: colon?.generallyNormalized(),
+        colon: SyntaxFactory.makeToken(.colon),
         type: nil,
         ellipsis: nil,
         defaultArgument: nil,
