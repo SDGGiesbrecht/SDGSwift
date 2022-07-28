@@ -250,6 +250,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           against: declarationsSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
+
+        let names =
+          [
+            [APIElement.package(parsed)],
+            parsed.libraries.map({ APIElement.library($0) }),
+            rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
+          ]
+          .lazy.joined()
+          .map({ element in
+            element.name.source()
+          })
+          .sorted().joined(separator: "\n")
+        let namesSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/Names/\(parsed.name).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          names,
+          against: namesSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       }
     #endif
   }
