@@ -11,7 +11,6 @@
 >(_:_:)
 >=(_:_:)
 AnotherSublass
-Bool
 CollectionType
 Enumeration
 Index

@@ -260,8 +260,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           .lazy.joined()
           .filter({ element in
             switch element {
-            case .conformance:
-              // Conformances are not nodes in DocC.
+            case .extension, .conformance:
+              // Not nodes in DocC.
               return false
             default:
               return true

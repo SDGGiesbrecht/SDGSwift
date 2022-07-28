@@ -1,4 +1,3 @@
-Bool
 PackageToDocument2
 PrimaryModule
 PrimaryProduct
