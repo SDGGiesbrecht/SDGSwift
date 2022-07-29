@@ -17,19 +17,9 @@
 
   import SwiftSyntax
 
-  extension SubscriptDeclSyntax: AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed,
+  extension SubscriptDeclSyntax: AccessControlled, APIDeclaration, APISyntax, Attributed,
     Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration
   {
-
-    // MARK: - Accessor
-
-    internal var keyword: TokenSyntax {
-      return subscriptKeyword
-    }
-
-    internal var accessors: Syntax? {
-      return accessor
-    }
 
     // MARK: - APIDeclaration
 
