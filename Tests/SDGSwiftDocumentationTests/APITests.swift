@@ -224,5 +224,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       mixins: [:]
     )
     _ = symbol.possibleDeclaration
+    _ = symbol.name
   }
 }
