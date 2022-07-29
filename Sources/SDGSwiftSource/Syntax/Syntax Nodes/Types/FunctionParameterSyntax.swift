@@ -85,7 +85,8 @@
       }
 
       if labelBehaviour == .subscript,
-        secondName == nil {
+        secondName == nil
+      {
         return SyntaxFactory.makeFunctionParameter(
           attributes: attributes?.normalizedForAPIDeclaration(),
           firstName: nil,
