@@ -8,10 +8,10 @@ NestingStructure • struct NestingStructure
  WithUIKit • typealias WithUIKit • #if !(canImport(AppKit)) && (canImport(UIKit))
 PossiblyConforming • struct PossiblyConforming
  ConditionalSubType • struct ConditionalSubType • #if os(macOS)
- conditionalStaticProperty • static var conditionalStaticProperty: Bool { get } • #if os(macOS)
+ conditionalStaticProperty • static var conditionalStaticProperty: Bool • #if os(macOS)
  init(conditionalInitializer:) • init(conditionalInitializer: Bool) • #if os(macOS)
- conditionalProperty • var conditionalProperty: Bool { get } • #if os(macOS)
- [_:] • subscript(conditionalSubscript: Bool) -> Bool { get } • #if os(macOS)
+ conditionalProperty • var conditionalProperty: Bool • #if os(macOS)
+ subscript(_:) • subscript(Bool) -> Bool • #if os(macOS)
  conditionalMethod() • func conditionalMethod() • #if (os(macOS)) && (ADDITIONAL_CONDITION)
  AnotherConditionallyAvailableProtocol • #if (os(macOS)) && (CUSTOM)
  ConditionallyAvailableProtocol • #if os(macOS)

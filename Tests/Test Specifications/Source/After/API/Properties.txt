@@ -1,16 +1,16 @@
 ObjectiveCClass • class ObjectiveCClass
- delegate • @available(*, introduced: 4.2.1) @IBOutlet weak static var delegate: NSObject? { get set }
- copyingProperty • @objc var copyingProperty: NSString { get set }
+ delegate • @available(*, introduced: 4.2.1) @IBOutlet weak static var delegate: NSObject?
+ copyingProperty • @objc var copyingProperty: NSString
  NSObject
 Structure • struct Structure
- wrapped • @Wrapper var wrapped: Int { get set }
+ wrapped • @Wrapper var wrapped: Int
 Wrapper • @propertyWrapper struct Wrapper
 (Int)
- staticProperty • static var staticProperty: Int { get }
- `var` • var `var`: Int { get }
- constantWithInferredType • var constantWithInferredType { get }
- fileprivateSetter • var fileprivateSetter { get }
- groupedInteger • var groupedInteger: Int { get }
- groupedString • var groupedString: String { get }
- optional • weak var optional: SomeType? { get set }
- privateSetter • var privateSetter { get }
+ staticProperty • static let staticProperty: Int
+ `var` • let `var`: Int
+ constantWithInferredType • let constantWithInferredType
+ fileprivateSetter • var fileprivateSetter
+ groupedInteger • let groupedInteger: Int
+ groupedString • let groupedString: String
+ optional • weak var optional: SomeType?
+ privateSetter • var privateSetter

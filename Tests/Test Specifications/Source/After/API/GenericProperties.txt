@@ -1,2 +1,2 @@
 (Integer)
- singleDigits • var singleDigits: Range<Self> { get }
+ singleDigits • var singleDigits: Range<Self>
