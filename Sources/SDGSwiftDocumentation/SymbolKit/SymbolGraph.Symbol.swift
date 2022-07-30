@@ -18,7 +18,10 @@ extension SymbolGraph.Symbol: SymbolLike {
 
   // MARK: - SymbolLike
 
-  /// The symbol’s declaration.
+  public var name: String {
+    return names.title
+  }
+
   public var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
     return names.subHeading
   }

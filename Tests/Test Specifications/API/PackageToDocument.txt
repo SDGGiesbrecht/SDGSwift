@@ -18,11 +18,11 @@ PackageToDocument • Package(name: "PackageToDocument")
   InheritingAssociatedType • struct InheritingAssociatedType
    RawRepresentable
   Structure • struct Structure
-   staticProperty • static var staticProperty: Bool { get }
+   staticProperty • static let staticProperty: Bool
    staticMethod() • static func staticMethod()
    init() • init()
-   property • var property: Bool { get }
-   [_:] • subscript(`subscript`: Int) -> Bool { get }
+   property • let property: Bool
+   subscript(_:) • subscript(Int) -> Bool
    method() • func method()
    Error
   Subclass • class Subclass
@@ -38,10 +38,10 @@ PackageToDocument • Package(name: "PackageToDocument")
    ExpressibleByStringLiteral
    ExpressibleByUnicodeScalarLiteral
   (Bool)
-   extensionProperty • var extensionProperty: Bool { get }
-   propertyInASeparateExtension • var propertyInASeparateExtension: Bool { get }
+   extensionProperty • var extensionProperty: Bool
+   propertyInASeparateExtension • var propertyInASeparateExtension: Bool
   Protocol • protocol Protocol
-  globalVariable • var globalVariable: Bool { get set }
+  globalVariable • var globalVariable: Bool
   executeFunction() • func executeFunction()
   ≠ • infix operator ≠
   Precedence • precedencegroup Precedence

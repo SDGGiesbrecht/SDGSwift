@@ -17,19 +17,9 @@
 
   import SwiftSyntax
 
-  extension SubscriptDeclSyntax: AccessControlled, Accessor, APIDeclaration, APISyntax, Attributed,
+  extension SubscriptDeclSyntax: AccessControlled, APIDeclaration, APISyntax, Attributed,
     Constrained, Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration
   {
-
-    // MARK: - Accessor
-
-    internal var keyword: TokenSyntax {
-      return subscriptKeyword
-    }
-
-    internal var accessors: Syntax? {
-      return accessor
-    }
 
     // MARK: - APIDeclaration
 
@@ -43,7 +33,7 @@
         indices: indices.normalizedForDeclaration(labelBehaviour: .subscript),
         result: result.normalizedForSubscriptDeclaration(),
         genericWhereClause: newGenericWhereClause,
-        accessor: Syntax(accessorListForAPIDeclaration())
+        accessor: nil
       )
     }
 
@@ -51,7 +41,7 @@
       return SyntaxFactory.makeSubscriptDecl(
         attributes: nil,
         modifiers: nil,
-        subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword, presence: .missing),
+        subscriptKeyword: SyntaxFactory.makeToken(.subscriptKeyword),
         genericParameterClause: nil,
         indices: indices.forName(labelBehaviour: .subscript),
         result: SyntaxFactory.makeBlankReturnClause(),

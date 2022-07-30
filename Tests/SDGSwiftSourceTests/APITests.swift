@@ -93,7 +93,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         XCTAssertTrue(parsed == parsed)
 
         let declarations =
-          ([
+          [
             [APIElement.package(parsed)],
             parsed.libraries.map({ APIElement.library($0) }),
             rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
@@ -209,38 +209,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
             }()
           )
-          // Legacy handled let vs var differently.
-          .sorted() as [String])
-          .replacingMatches(
-            for: ["var property: Bool { get }"],
-            with: ["let property: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "static var staticProperty: Bool { get }"
-            ],
-            with: ["static let staticProperty: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "subscript(`subscript`: Int) \u{2D}> Bool { get }"
-            ],
-            with: ["subscript(Int) \u{2D}> Bool"]
-          )
-          .replacingMatches(
-            for: ["var extensionProperty: Bool { get }"],
-            with: ["var extensionProperty: Bool"]
-          )
-          .replacingMatches(
-            for: ["var globalVariable: Bool { get set }"],
-            with: ["var globalVariable: Bool"]
-          )
-          .replacingMatches(
-            for: [
-              "var propertyInASeparateExtension: Bool { get }"
-            ],
-            with: ["var propertyInASeparateExtension: Bool"]
-          )
           .sorted().joined(separator: "\n")
         let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Declarations/\(parsed.name).txt"
@@ -248,6 +216,148 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         SDGPersistenceTestUtilities.compare(
           declarations,
           against: declarationsSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
+
+        let names =
+          ([
+            [APIElement.package(parsed)],
+            parsed.libraries.map({ APIElement.library($0) }),
+            rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
+          ]
+          .lazy.joined()
+          .filter({ element in
+            switch element {
+            case .extension, .conformance:
+              // Not nodes in DocC.
+              return false
+            default:
+              return true
+            }
+          })
+          .map({ element in
+            element.name.source()
+          }).appending(
+            contentsOf: {
+              if packageName == "PackageToDocument" {
+                // Legacy mode filtered inheritance out instead of inserting it.
+                return [
+                  "allSatisfy(_:)",
+                  "compactMap(_:)",
+                  "contains(_:)",
+                  "contains(where:)",
+                  "distance(from:to:)",
+                  "drop(while:)",
+                  "dropFirst(_:)",
+                  "dropLast(_:)",
+                  "elementsEqual(_:)",
+                  "elementsEqual(_:by:)",
+                  "encode(to:)",
+                  "encode(to:)",
+                  "enumerated()",
+                  "filter(_:)",
+                  "first(where:)",
+                  "firstIndex(of:)",
+                  "firstIndex(where:)",
+                  "flatMap(_:)",
+                  "flatMap(_:)",
+                  "forEach(_:)",
+                  "formIndex(after:)",
+                  "formIndex(_:offsetBy:)",
+                  "formIndex(_:offsetBy:limitedBy:)",
+                  "index(_:offsetBy:)",
+                  "index(_:offsetBy:limitedBy:)",
+                  "index(after:)",
+                  "index(of:)",
+                  "inherited()",
+                  "lexicographicallyPrecedes(_:)",
+                  "lexicographicallyPrecedes(_:by:)",
+                  "makeIterator()",
+                  "map(_:)",
+                  "map(_:)",
+                  "max()",
+                  "max(by:)",
+                  "methodOverride()",
+                  "min()",
+                  "min(by:)",
+                  "prefix(_:)",
+                  "prefix(through:)",
+                  "prefix(upTo:)",
+                  "prefix(while:)",
+                  "provision()",
+                  "randomElement()",
+                  "randomElement(using:)",
+                  "reduce(_:_:)",
+                  "reduce(into:_:)",
+                  "requirement()",
+                  "reversed()",
+                  "shuffled()",
+                  "shuffled(using:)",
+                  "sorted()",
+                  "sorted(by:)",
+                  "split(maxSplits:omittingEmptySubsequences:whereSeparator:)",
+                  "split(separator:maxSplits:omittingEmptySubsequences:)",
+                  "starts(with:)",
+                  "starts(with:by:)",
+                  "suffix(_:)",
+                  "suffix(from:)",
+                  "withContiguousStorageIfAvailable(_:)",
+                  "init(extendedGraphemeClusterLiteral:)",
+                  "init(from:)",
+                  "init(from:)",
+                  "init(stringInterpolation:)",
+                  "init(stringInterpolation:)",
+                  "init(stringLiteral:)",
+                  "init(unicodeScalarLiteral:)",
+                  "init(rawValue:)",
+                  "\u{21}=(_:_:)",
+                  "\u{21}=(_:_:)",
+                  "...(_:)",
+                  "...(_:)",
+                  "...(_:_:)",
+                  "..<(_:)",
+                  "..<(_:_:)",
+                  "<(_:_:)",
+                  "<\u{3D}(_:_:)",
+                  "==(_:_:)",
+                  ">(_:_:)",
+                  ">\u{3D}(_:_:)",
+                  "subscript(_:)",
+                  "subscript(_:)",
+                  "subscript(_:)",
+                  "subscript(_:)",
+                  "CollectionType.Index",
+                  "CollectionType.Indices",
+                  "InheritingAssociatedType.RawValue",
+                  "count",
+                  "endIndex",
+                  "first",
+                  "indices",
+                  "isEmpty",
+                  "lazy",
+                  "rawValue",
+                  "startIndex",
+                  "underestimatedCount",
+                  "underestimatedCount",
+                ]
+              } else {
+                return []
+              }
+            }()
+          )
+          // Legacy had no knowledge of parent enumeration.
+          .sorted() as [String])
+          .replacingMatches(
+            for: ["visible"],
+            with: ["Enumeration.visible"]
+          )
+          .sorted().joined(separator: "\n")
+        let namesSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/Names/\(parsed.name).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          names,
+          against: namesSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
       }

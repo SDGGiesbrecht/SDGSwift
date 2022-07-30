@@ -38,7 +38,9 @@
       return SyntaxFactory.makeVariableDecl(
         attributes: attributes?.normalizedForAPIDeclaration(),
         modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, trailingTrivia: .spaces(1)),
+        letOrVarKeyword: letOrVarKeyword.generallyNormalizedAndMissingInsteadOfNil(
+          trailingTrivia: .spaces(1)
+        ),
         bindings: bindings.normalizedForVariableAPIDeclaration(
           accessor: accessorListForAPIDeclaration()
         )
