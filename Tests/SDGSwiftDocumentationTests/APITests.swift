@@ -236,20 +236,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )
           )
 
-        let declarations = symbols.compactMap({ symbol in
-          return symbol.names.subHeading?.map({ fragment in
-            return fragment.spelling
-          }).joined()
-        }).sorted().joined(separator: "\n")
-        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/Declarations/\(packageName).txt"
-        )
-        SDGPersistenceTestUtilities.compare(
-          declarations,
-          against: declarationsSpecification,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
         let names = symbols.map({ symbol in
           return symbol.names.title
         }).sorted().joined(separator: "\n")
@@ -259,6 +245,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         SDGPersistenceTestUtilities.compare(
           names,
           against: namesSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
+
+        let subHeadings = symbols.compactMap({ symbol in
+          return symbol.names.subHeading?.map({ fragment in
+            return fragment.spelling
+          }).joined()
+        }).sorted().joined(separator: "\n")
+        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/SubHeadings/\(packageName).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          subHeadings,
+          against: declarationsSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif
