@@ -43,35 +43,43 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         URL(fileURLWithPath: #filePath),
       ]
     )
-    _ = module.declaration
+    _ = module.names.subHeading
   }
 
   func testLibraryAPI() {
     let library = LibraryAPI(name: "MyLibrary", modules: ["MyModule"])
-    _ = library.possibleDeclaration
+    _ = library.names.subHeading
   }
 
   func testOperator() {
     _ =
       Operator(
-        name: "==",
-        declaration: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: "==",
-            preciseIdentifier: nil
-          )
-        ]
+        names: SymbolGraph.Symbol.Names(
+          title: "==",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "==",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        )
       )
       < Operator(
-        name: "≠",
-        declaration: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: "≠",
-            preciseIdentifier: nil
-          )
-        ]
+        names: SymbolGraph.Symbol.Names(
+          title: "≠",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "≠",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        )
       )
   }
 
@@ -101,30 +109,38 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       moduleSources: [:]
     )
     _ = package.symbolGraphs()
-    _ = package.declaration
+    _ = package.names.subHeading
   }
 
   func testPrecedenceGroup() {
     _ =
       PrecedenceGroup(
-        name: "A",
-        declaration: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: "A",
-            preciseIdentifier: nil
-          )
-        ]
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "A",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        )
       )
       < PrecedenceGroup(
-        name: "B",
-        declaration: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: "B",
-            preciseIdentifier: nil
-          )
-        ]
+        names: SymbolGraph.Symbol.Names(
+          title: "B",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "B",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        )
       )
   }
 
@@ -180,7 +196,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
 
         let declarations = symbols.compactMap({ symbol in
-          return symbol.possibleDeclaration?.map({ fragment in
+          return symbol.names.subHeading?.map({ fragment in
             return fragment.spelling
           }).joined()
         }).sorted().joined(separator: "\n")
@@ -194,7 +210,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
 
         let names = symbols.map({ symbol in
-          return symbol.name
+          return symbol.names.title
         }).sorted().joined(separator: "\n")
         let namesSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Names/\(packageName).txt"

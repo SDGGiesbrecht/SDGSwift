@@ -21,24 +21,28 @@ import SymbolKit
 
     internal func api() -> PrecedenceGroup {
       return PrecedenceGroup(
-        name: identifier.text,
-        declaration: [
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .keyword,
-            spelling: precedencegroupKeyword.text,
-            preciseIdentifier: nil
-          ),
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .text,
-            spelling: " ",
-            preciseIdentifier: nil
-          ),
-          SymbolGraph.Symbol.DeclarationFragments.Fragment(
-            kind: .identifier,
-            spelling: identifier.text,
-            preciseIdentifier: nil
-          ),
-        ]
+        names: SymbolGraph.Symbol.Names(
+          title: identifier.text,
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .keyword,
+              spelling: precedencegroupKeyword.text,
+              preciseIdentifier: nil
+            ),
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .text,
+              spelling: " ",
+              preciseIdentifier: nil
+            ),
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: identifier.text,
+              preciseIdentifier: nil
+            ),
+          ],
+          prose: nil
+        )
       )
     }
   }

@@ -16,34 +16,25 @@ import SDGMathematics
 
 import SymbolKit
 
-public struct PrecedenceGroup: Comparable, Declared {
+public struct PrecedenceGroup: Comparable, SymbolLike {
 
   /// Creates a precedence group.
   ///
   /// - Parameters:
-  ///   - name: The name.
-  ///   - declaration: The declaration.
+  ///   - names: The names.
   public init(
-    name: String,
-    declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]
+    names: SymbolGraph.Symbol.Names
   ) {
-    self.name = name
-    self.declaration = declaration
-    self.comparisonValue = declaration.map({ $0.spelling }).joined()
+    self.names = names
   }
 
   // MARK: - Comparable
 
-  private let comparisonValue: String
   public static func < (preceding: PrecedenceGroup, following: PrecedenceGroup) -> Bool {
-    return compare(preceding, following, by: { $0.comparisonValue })
+    return compare(preceding, following, by: { ComparableNames(names: $0.names) })
   }
-
-  // MARK: - Declared
-
-  public let declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]
 
   // MARK: - SymbolLike
 
-  public let name: String
+  public let names: SymbolGraph.Symbol.Names
 }

@@ -26,7 +26,7 @@ import SDGControlFlow
 import SymbolKit
 
 /// The API of a module.
-public struct ModuleAPI: Declared {
+public struct ModuleAPI: SymbolLike {
 
   /// Creates a module API.
   ///
@@ -35,7 +35,53 @@ public struct ModuleAPI: Declared {
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
   public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
-    self.name = name
+    self.names = SymbolGraph.Symbol.Names(
+      title: name,
+      navigator: nil,
+      subHeading: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ".",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "target",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: "(",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .externalParameter,
+          spelling: "name",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ":",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .stringLiteral,
+          spelling: "\u{22}\(name)\u{22}",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ")",
+          preciseIdentifier: nil
+        ),
+      ],
+      prose: nil
+    )
     self.symbolGraphs = symbolGraphs
 
     var operators: [Operator] = []
@@ -55,8 +101,8 @@ public struct ModuleAPI: Declared {
     self.precedenceGroups = precedenceGroups.sorted()
   }
 
-  /// The name of the module.
-  public var name: String
+  /// The names of the module.
+  public var names: SymbolGraph.Symbol.Names
 
   /// The module’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
@@ -66,52 +112,4 @@ public struct ModuleAPI: Declared {
 
   /// The module’s precedence groups.
   public var precedenceGroups: [PrecedenceGroup]
-
-  // MARK: - Declared
-
-  /// The module’s declaration.
-  public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
-    return [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ".",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "target",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: "(",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .externalParameter,
-        spelling: "name",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ":",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .stringLiteral,
-        spelling: "\u{22}\(name)\u{22}",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ")",
-        preciseIdentifier: nil
-      ),
-    ]
-  }
 }

@@ -20,9 +20,9 @@ import SymbolKit
   extension OperatorDeclSyntax {
 
     internal func api() -> Operator {
-      var components: [SymbolGraph.Symbol.DeclarationFragments.Fragment] = []
+      var subHeadingComponents: [SymbolGraph.Symbol.DeclarationFragments.Fragment] = []
       if let fixity = modifiers?.first {
-        components.append(contentsOf: [
+        subHeadingComponents.append(contentsOf: [
           SymbolGraph.Symbol.DeclarationFragments.Fragment(
             kind: .keyword,
             spelling: fixity.name.text,
@@ -35,7 +35,7 @@ import SymbolKit
           ),
         ])
       }
-      components.append(contentsOf: [
+      subHeadingComponents.append(contentsOf: [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .keyword,
           spelling: operatorKeyword.text,
@@ -52,7 +52,14 @@ import SymbolKit
           preciseIdentifier: nil
         ),
       ])
-      return Operator(name: identifier.text, declaration: components)
+      return Operator(
+        names: SymbolGraph.Symbol.Names(
+          title: identifier.text,
+          navigator: nil,
+          subHeading: subHeadingComponents,
+          prose: nil
+        )
+      )
     }
   }
 #endif
