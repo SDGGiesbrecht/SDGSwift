@@ -142,6 +142,47 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         )
       )
+    _ =
+      PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "A",
+              preciseIdentifier: nil
+            )
+          ],
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "A",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: "A"
+        )
+      )
+      < PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "A",
+              preciseIdentifier: nil
+            )
+          ],
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "A",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: "A"
+        )
+      )
   }
 
   func testSymbolGraphError() {
