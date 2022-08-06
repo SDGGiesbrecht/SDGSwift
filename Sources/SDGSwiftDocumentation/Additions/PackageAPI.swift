@@ -17,7 +17,7 @@ import Foundation
 import SymbolKit
 
 /// The API of a package.
-public struct PackageAPI: Declared {
+public struct PackageAPI: SymbolLike {
 
   /// Creates a package API.
   ///
@@ -31,7 +31,48 @@ public struct PackageAPI: Declared {
     symbolGraphs: [SymbolGraph],
     moduleSources: [String: [URL]]
   ) {
-    self.name = name
+    self.names = SymbolGraph.Symbol.Names(
+      title: name,
+      navigator: nil,
+      subHeading: [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .typeIdentifier,
+          spelling: "Package",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: "(",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .externalParameter,
+          spelling: "name",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ":",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .stringLiteral,
+          spelling: "\u{22}\(name)\u{22}",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ")",
+          preciseIdentifier: nil
+        ),
+      ],
+      prose: nil
+    )
     self.libraries = libraries
     var existing: Set<String> = []
     self.modules =
@@ -49,8 +90,8 @@ public struct PackageAPI: Declared {
 
   // MARK: - Properties
 
-  /// The name of the package.
-  public var name: String
+  /// The names of the package.
+  public var names: SymbolGraph.Symbol.Names
 
   /// The library products vended by the package.
   public var libraries: [LibraryAPI]
@@ -61,47 +102,5 @@ public struct PackageAPI: Declared {
   /// The package’s symbol graphs.
   public func symbolGraphs() -> [SymbolGraph] {
     return modules.flatMap { $0.symbolGraphs }
-  }
-
-  // MARK: - Declared
-
-  public var declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
-    return [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .typeIdentifier,
-        spelling: "Package",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: "(",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .externalParameter,
-        spelling: "name",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ":",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .stringLiteral,
-        spelling: "\u{22}\(name)\u{22}",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ")",
-        preciseIdentifier: nil
-      ),
-    ]
   }
 }

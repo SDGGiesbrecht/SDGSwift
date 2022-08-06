@@ -17,11 +17,6 @@ import SymbolKit
 /// `SymbolGraph.Symbol` or a type that provides the same information, but represents something not supported by `SymbolKit`.
 public protocol SymbolLike {
 
-  // #workaround(Once these satisfy all legacy capabilities, adapt to more closely resemble Symbol.)
-
-  /// The symbol’s name.
-  var name: String { get }
-
-  /// The symbol’s declaration, if it has one.
-  var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? { get }
+  /// The symbol’s names.
+  var names: SymbolGraph.Symbol.Names { get }
 }
