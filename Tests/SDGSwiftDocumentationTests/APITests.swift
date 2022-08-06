@@ -183,6 +183,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: "A"
         )
       )
+    _ =
+      PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: nil,
+          subHeading: nil,
+          prose: nil
+        )
+      )
+      < PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: nil,
+          subHeading: nil,
+          prose: nil
+        )
+      )
   }
 
   func testSymbolGraphError() {

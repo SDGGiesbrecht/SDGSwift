@@ -20,11 +20,11 @@ internal struct ComparableNames: Comparable {
 
   // MARK: - Properties
 
-  var names: SymbolGraph.Symbol.Names
+  internal var names: SymbolGraph.Symbol.Names
 
   // MARK: - Comparable
 
-  static func < (lhs: ComparableNames, rhs: ComparableNames) -> Bool {
+  internal static func < (lhs: ComparableNames, rhs: ComparableNames) -> Bool {
     return compare(
       lhs,
       rhs,
