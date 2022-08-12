@@ -20,29 +20,31 @@ import SymbolKit
   extension PrecedenceGroupDeclSyntax {
 
     internal func api() -> PrecedenceGroup {
+      let declaration = [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .keyword,
+          spelling: precedencegroupKeyword.text,
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: identifier.text,
+          preciseIdentifier: nil
+        ),
+      ]
       return PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
           title: identifier.text,
           navigator: nil,
-          subHeading: [
-            SymbolGraph.Symbol.DeclarationFragments.Fragment(
-              kind: .keyword,
-              spelling: precedencegroupKeyword.text,
-              preciseIdentifier: nil
-            ),
-            SymbolGraph.Symbol.DeclarationFragments.Fragment(
-              kind: .text,
-              spelling: " ",
-              preciseIdentifier: nil
-            ),
-            SymbolGraph.Symbol.DeclarationFragments.Fragment(
-              kind: .identifier,
-              spelling: identifier.text,
-              preciseIdentifier: nil
-            ),
-          ],
+          subHeading: declaration,
           prose: nil
-        )
+        ),
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
       )
     }
   }

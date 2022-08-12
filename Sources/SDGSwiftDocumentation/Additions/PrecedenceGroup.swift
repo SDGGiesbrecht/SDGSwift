@@ -18,14 +18,19 @@ import SymbolKit
 
 public struct PrecedenceGroup: Comparable, SymbolLike {
 
+  // MARK: - Initialization
+
   /// Creates a precedence group.
   ///
   /// - Parameters:
   ///   - names: The names.
+  ///   - declaration: The declaration.
   public init(
-    names: SymbolGraph.Symbol.Names
+    names: SymbolGraph.Symbol.Names,
+    declaration: SymbolGraph.Symbol.DeclarationFragments
   ) {
     self.names = names
+    self.declaration = declaration
   }
 
   // MARK: - Comparable
@@ -34,7 +39,14 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
     return compare(preceding, following, by: { ComparableNames(names: $0.names) })
   }
 
+  // MARK: - Equatable
+
+  public static func == (preceding: PrecedenceGroup, following: PrecedenceGroup) -> Bool {
+    return ComparableNames(names: preceding.names) == ComparableNames(names: following.names)
+  }
+
   // MARK: - SymbolLike
 
-  public let names: SymbolGraph.Symbol.Names
+  public var names: SymbolGraph.Symbol.Names
+  public var declaration: SymbolGraph.Symbol.DeclarationFragments?
 }

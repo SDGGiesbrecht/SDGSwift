@@ -18,11 +18,7 @@ extension SymbolGraph.Symbol: SymbolLike {
 
   // MARK: - SymbolLike
 
-  public var name: String {
-    return names.title
-  }
-
-  public var possibleDeclaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment]? {
-    return names.subHeading
+  public var declaration: DeclarationFragments? {
+    return mixins[DeclarationFragments.mixinKey] as? DeclarationFragments
   }
 }

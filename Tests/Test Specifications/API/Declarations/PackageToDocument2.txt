@@ -1,0 +1,4 @@
+.library(name: "PrimaryProduct")
+.target(name: "PrimaryModule")
+Package(name: "PackageToDocument2")
+var extensionProperty: Bool { get }
