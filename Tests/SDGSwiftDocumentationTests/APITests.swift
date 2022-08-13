@@ -83,6 +83,37 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
       )
+    _ =
+      Operator(
+        names: SymbolGraph.Symbol.Names(
+          title: "==",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "==",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        ),
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
+      )
+      == Operator(
+        names: SymbolGraph.Symbol.Names(
+          title: "≠",
+          navigator: nil,
+          subHeading: [
+            SymbolGraph.Symbol.DeclarationFragments.Fragment(
+              kind: .identifier,
+              spelling: "≠",
+              preciseIdentifier: nil
+            )
+          ],
+          prose: nil
+        ),
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
+      )
   }
 
   func testPackageAPI() {
@@ -200,6 +231,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
       )
       < PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: nil,
+          subHeading: nil,
+          prose: nil
+        ),
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
+      )
+    _ =
+      PrecedenceGroup(
+        names: SymbolGraph.Symbol.Names(
+          title: "A",
+          navigator: nil,
+          subHeading: nil,
+          prose: nil
+        ),
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: [])
+      )
+      == PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
           title: "A",
           navigator: nil,
