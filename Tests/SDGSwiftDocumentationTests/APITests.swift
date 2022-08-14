@@ -369,5 +369,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .func, displayName: "function"),
       mixins: [:]
     )
+    _ = symbol.declaration
   }
 }
