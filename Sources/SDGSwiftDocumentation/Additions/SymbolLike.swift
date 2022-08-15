@@ -19,4 +19,7 @@ public protocol SymbolLike {
 
   /// The symbol’s names.
   var names: SymbolGraph.Symbol.Names { get }
+
+  /// The symbol’s declaration.
+  var declaration: SymbolGraph.Symbol.DeclarationFragments? { get }
 }

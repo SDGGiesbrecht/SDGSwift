@@ -28,6 +28,8 @@ import SymbolKit
 /// The API of a module.
 public struct ModuleAPI: SymbolLike {
 
+  // MARK: - Initialization
+
   /// Creates a module API.
   ///
   /// - Parameters:
@@ -35,53 +37,55 @@ public struct ModuleAPI: SymbolLike {
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
   public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
+    let declaration = [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ".",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "target",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: "(",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .externalParameter,
+        spelling: "name",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ":",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: " ",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .stringLiteral,
+        spelling: "\u{22}\(name)\u{22}",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ")",
+        preciseIdentifier: nil
+      ),
+    ]
     self.names = SymbolGraph.Symbol.Names(
       title: name,
       navigator: nil,
-      subHeading: [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ".",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "target",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: "(",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .externalParameter,
-          spelling: "name",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ":",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: " ",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .stringLiteral,
-          spelling: "\u{22}\(name)\u{22}",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ")",
-          preciseIdentifier: nil
-        ),
-      ],
+      subHeading: declaration,
       prose: nil
     )
+    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
     self.symbolGraphs = symbolGraphs
 
     var operators: [Operator] = []
@@ -101,8 +105,7 @@ public struct ModuleAPI: SymbolLike {
     self.precedenceGroups = precedenceGroups.sorted()
   }
 
-  /// The names of the module.
-  public var names: SymbolGraph.Symbol.Names
+  // MARK: - Properties
 
   /// The module’s symbol graphs.
   public var symbolGraphs: [SymbolGraph]
@@ -112,4 +115,9 @@ public struct ModuleAPI: SymbolLike {
 
   /// The module’s precedence groups.
   public var precedenceGroups: [PrecedenceGroup]
+
+  // MARK: - SymbolLike
+
+  public var names: SymbolGraph.Symbol.Names
+  public var declaration: SymbolGraph.Symbol.DeclarationFragments?
 }

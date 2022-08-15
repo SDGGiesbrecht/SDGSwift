@@ -23,10 +23,19 @@ public struct Operator: Comparable, SymbolLike {
   ///
   /// - Parameters:
   ///   - names: The names.
+  ///   - declaration: The declaration.
   public init(
-    names: SymbolGraph.Symbol.Names
+    names: SymbolGraph.Symbol.Names,
+    declaration: SymbolGraph.Symbol.DeclarationFragments
   ) {
     self.names = names
+    self.declaration = declaration
+  }
+
+  // MARK: - Equatable
+
+  public static func == (preceding: Operator, following: Operator) -> Bool {
+    return ComparableNames(names: preceding.names) == ComparableNames(names: following.names)
   }
 
   // MARK: - Comparable
@@ -37,5 +46,6 @@ public struct Operator: Comparable, SymbolLike {
 
   // MARK: - SymbolLike
 
-  public let names: SymbolGraph.Symbol.Names
+  public var names: SymbolGraph.Symbol.Names
+  public var declaration: SymbolGraph.Symbol.DeclarationFragments?
 }
