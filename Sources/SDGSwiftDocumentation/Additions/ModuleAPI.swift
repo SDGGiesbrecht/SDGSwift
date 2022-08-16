@@ -103,6 +103,7 @@ public struct ModuleAPI: SymbolLike {
     }
     self.operators = operators.sorted()
     self.precedenceGroups = precedenceGroups.sorted()
+    #warning("Needs to collect documentation comment.")
   }
 
   // MARK: - Properties
@@ -120,4 +121,5 @@ public struct ModuleAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

@@ -75,6 +75,7 @@ public struct LibraryAPI: SymbolLike {
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
     self.modules = modules
+    #warning("Needs to collect documentation comment.")
   }
 
   // MARK: - Properties
@@ -86,4 +87,5 @@ public struct LibraryAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

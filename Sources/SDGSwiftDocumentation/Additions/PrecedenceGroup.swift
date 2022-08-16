@@ -31,6 +31,7 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
   ) {
     self.names = names
     self.declaration = declaration
+    #warning("Needs to collect documentation comment.")
   }
 
   // MARK: - Comparable
@@ -49,4 +50,5 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

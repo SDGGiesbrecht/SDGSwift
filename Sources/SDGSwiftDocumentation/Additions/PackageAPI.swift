@@ -90,6 +90,7 @@ public struct PackageAPI: SymbolLike {
           sources: moduleSources[name] ?? []
         )
       })
+    #warning("Needs to collect documentation comment.")
   }
 
   // MARK: - Properties
@@ -109,4 +110,5 @@ public struct PackageAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

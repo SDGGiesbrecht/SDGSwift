@@ -350,6 +350,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           against: declarationsSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
+
+        let documentation = symbols.compactMap({ symbol in
+          return symbol.docComment?.lines.map({ line in
+            return line.text
+          }).joined(separator: "\n")
+        }).sorted().joined(separator: "\n\n")
+        let documentationSpecification = testSpecificationDirectory().appendingPathComponent(
+          "API/Documentation/\(packageName).txt"
+        )
+        SDGPersistenceTestUtilities.compare(
+          documentation,
+          against: documentationSpecification,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
   }
