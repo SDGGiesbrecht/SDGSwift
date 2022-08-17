@@ -21,3 +21,6 @@
 /// the
 /// operator.
 infix operator ≠: Precedence
+
+// No documentation.
+infix operator ≤: Precedence

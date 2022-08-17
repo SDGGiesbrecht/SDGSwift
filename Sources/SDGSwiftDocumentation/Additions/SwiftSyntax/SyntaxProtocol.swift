@@ -29,7 +29,7 @@ extension SyntaxProtocol {
 
   internal var documentation: SymbolGraph.LineList? {
     guard let token = firstToken() else {
-      return nil
+      return nil  // @exempt(from: tests) Unreachable.
     }
     let leading = token.leadingTrivia
     var scanningLines = false

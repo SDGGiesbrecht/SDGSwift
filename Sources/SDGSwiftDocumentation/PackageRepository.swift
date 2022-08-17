@@ -115,7 +115,7 @@ extension PackageRepository {
     ) -> Result<PackageAPI, SymbolGraph.LoadingError> {
       let manifestSource =
         (try? SyntaxParser.parse(location.appendingPathComponent("Package.swift")))
-        ?? SyntaxFactory.makeBlankSourceFile()
+        ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
       switch package() {
       case .failure(let error):
         return .failure(.packageLoadingError(error))

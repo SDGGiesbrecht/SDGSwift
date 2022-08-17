@@ -48,8 +48,8 @@ public struct PackageAPI: SymbolLike {
     }
     return foundNode.as(Node.self)
       ?? foundNode.ancestors().lazy.compactMap({ node in
-      return node.as(Node.self)
-    }).first
+        return node.as(Node.self)
+      }).first
   }
 
   internal static func findDocumentation<Node>(
