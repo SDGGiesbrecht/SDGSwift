@@ -1,5 +1,3 @@
-This is a block comment describing the precedence group.
-
 A Boolean value indicating whether the collection is empty.
 
 When you need to check whether your collection is empty, use the
@@ -1792,3 +1790,5 @@ comments
 describing
 the
 operator.
+
+This is a block comment describing the precedence group.

@@ -30,11 +30,14 @@ extension SymbolGraph.LineList {
   }
 
   internal init(blockSource: String) {
-    let contents = String(blockSource.dropFirst(3).dropLast(3))
-    self.init(
-      lines: contents.lines.map({ line in
-        return SymbolGraph.LineList.Line(text: String(line.line), range: nil)
-      })
-    )
+    let contents = blockSource.scalars.dropFirst(4).dropLast(3)
+    let indent = contents.prefix(while: { $0 == " " }).count
+    var lines = String(contents).lines.map { line in
+      return SymbolGraph.LineList.Line(text: String(line.line.dropFirst(indent)), range: nil)
+    }
+    if lines.last?.text.isEmpty == true {
+      lines.removeLast()
+    }
+    self.init(lines: lines)
   }
 }
