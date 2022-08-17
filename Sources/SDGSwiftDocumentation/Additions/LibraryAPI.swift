@@ -79,12 +79,11 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    let manifestDeclaration = PackageAPI.find(
-      declaration,
+    self.docComment = PackageAPI.findDocumentation(
+      of: declaration,
       in: manifest,
       as: FunctionCallExprSyntax.self
     )
-    #warning("Need to do something with the node.")
     self.modules = modules
   }
 

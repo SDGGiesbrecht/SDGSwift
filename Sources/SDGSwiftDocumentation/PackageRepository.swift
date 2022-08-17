@@ -127,6 +127,7 @@ extension PackageRepository {
           return .success(
             PackageAPI(
               name: package.manifest.displayName,
+              manifestSource: manifestSource,
               libraries: package.manifest.publicLibraries(manifest: manifestSource),
               symbolGraphs: symbolGraphs,
               moduleSources: package.publicModuleSources()

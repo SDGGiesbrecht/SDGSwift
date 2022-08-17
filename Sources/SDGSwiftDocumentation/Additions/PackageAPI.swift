@@ -31,7 +31,7 @@ public struct PackageAPI: SymbolLike {
 
   // MARK: - Static Methods
 
-  internal static func find<Node>(
+  private static func find<Node>(
     _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
     in manifest: SourceFileSyntax,
     as nodeType: Node.Type
@@ -51,79 +51,97 @@ public struct PackageAPI: SymbolLike {
     }) as? Node
   }
 
+  internal static func findDocumentation<Node>(
+    of declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+    in manifest: SourceFileSyntax,
+    as nodeType: Node.Type
+  ) -> SymbolGraph.LineList? where Node: SyntaxProtocol {
+    let node = find(declaration, in: manifest, as: nodeType)
+    return node?.documentation
+  }
+
   // MARK: - Initialization
 
-  /// Creates a package API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the package.
-  ///   - libraries: The libraries.
-  ///   - symbolGraphs: The symbol graphs.
-  public init(
-    name: String,
-    libraries: [LibraryAPI],
-    symbolGraphs: [SymbolGraph],
-    moduleSources: [String: [URL]]
-  ) {
-    let declaration = [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .typeIdentifier,
-        spelling: "Package",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: "(",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .externalParameter,
-        spelling: "name",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ":",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .stringLiteral,
-        spelling: "\u{22}\(name)\u{22}",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ")",
-        preciseIdentifier: nil
-      ),
-    ]
-    self.names = SymbolGraph.Symbol.Names(
-      title: name,
-      navigator: nil,
-      subHeading: declaration,
-      prose: nil
-    )
-    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.libraries = libraries
-    var existing: Set<String> = []
-    self.modules =
-      libraries
-      .flatMap({ $0.modules })
-      .filter({ existing.insert($0).inserted })
-      .map({ name in
-        return ModuleAPI(
-          name: name,
-          symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
-          sources: moduleSources[name] ?? []
-        )
-      })
-    #warning("Needs to collect documentation comment.")
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a package API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the package.
+    ///   - manifestSource: The source of the manifest.
+    ///   - libraries: The libraries.
+    ///   - symbolGraphs: The symbol graphs.
+    public init(
+      name: String,
+      manifestSource: SourceFileSyntax,
+      libraries: [LibraryAPI],
+      symbolGraphs: [SymbolGraph],
+      moduleSources: [String: [URL]]
+    ) {
+      let declaration = [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .typeIdentifier,
+          spelling: "Package",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: "(",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .externalParameter,
+          spelling: "name",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ":",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .stringLiteral,
+          spelling: "\u{22}\(name)\u{22}",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ")",
+          preciseIdentifier: nil
+        ),
+      ]
+      self.names = SymbolGraph.Symbol.Names(
+        title: name,
+        navigator: nil,
+        subHeading: declaration,
+        prose: nil
+      )
+      self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+      self.docComment = PackageAPI.findDocumentation(
+        of: declaration,
+        in: manifestSource,
+        as: VariableDeclSyntax.self
+      )
+      self.libraries = libraries
+      var existing: Set<String> = []
+      self.modules =
+        libraries
+        .flatMap({ $0.modules })
+        .filter({ existing.insert($0).inserted })
+        .map({ name in
+          return ModuleAPI(
+            name: name,
+            symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
+            sources: moduleSources[name] ?? [],
+            manifestSource: manifestSource
+          )
+        })
+    }
+  #endif
 
   // MARK: - Properties
 

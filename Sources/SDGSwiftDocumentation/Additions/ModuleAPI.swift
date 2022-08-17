@@ -30,81 +30,93 @@ public struct ModuleAPI: SymbolLike {
 
   // MARK: - Initialization
 
-  /// Creates a module API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the module.
-  ///   - symbolGraphs: The module’s symbol graphs.
-  ///   - sources: The URL’s of the module’s sources.
-  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
-    let declaration = [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ".",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "target",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: "(",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .externalParameter,
-        spelling: "name",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ":",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .stringLiteral,
-        spelling: "\u{22}\(name)\u{22}",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ")",
-        preciseIdentifier: nil
-      ),
-    ]
-    self.names = SymbolGraph.Symbol.Names(
-      title: name,
-      navigator: nil,
-      subHeading: declaration,
-      prose: nil
-    )
-    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.symbolGraphs = symbolGraphs
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a module API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the module.
+    ///   - symbolGraphs: The module’s symbol graphs.
+    ///   - sources: The URL’s of the module’s sources.
+    ///   - manifestSource: The source of the package manifest.
+    public init(
+      name: String,
+      symbolGraphs: [SymbolGraph],
+      sources: [URL],
+      manifestSource: SourceFileSyntax
+    ) {
+      let declaration = [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ".",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "target",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: "(",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .externalParameter,
+          spelling: "name",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ":",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .stringLiteral,
+          spelling: "\u{22}\(name)\u{22}",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ")",
+          preciseIdentifier: nil
+        ),
+      ]
+      self.names = SymbolGraph.Symbol.Names(
+        title: name,
+        navigator: nil,
+        subHeading: declaration,
+        prose: nil
+      )
+      self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+      self.docComment = PackageAPI.findDocumentation(
+        of: declaration,
+        in: manifestSource,
+        as: FunctionCallExprSyntax.self
+      )
+      self.symbolGraphs = symbolGraphs
 
-    var operators: [Operator] = []
-    var precedenceGroups: [PrecedenceGroup] = []
-    for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
-      purgingAutoreleased {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-          if let source = try? SyntaxParser.parse(sourceFile) {
-            let syntax = Syntax(source)
-            operators.append(contentsOf: syntax.operators())
-            precedenceGroups.append(contentsOf: syntax.precedenceGroups())
-          }
-        #endif
+      var operators: [Operator] = []
+      var precedenceGroups: [PrecedenceGroup] = []
+      for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
+        purgingAutoreleased {
+          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+            if let source = try? SyntaxParser.parse(sourceFile) {
+              let syntax = Syntax(source)
+              operators.append(contentsOf: syntax.operators())
+              precedenceGroups.append(contentsOf: syntax.precedenceGroups())
+            }
+          #endif
+        }
       }
+      self.operators = operators.sorted()
+      self.precedenceGroups = precedenceGroups.sorted()
     }
-    self.operators = operators.sorted()
-    self.precedenceGroups = precedenceGroups.sorted()
-    #warning("Needs to collect documentation comment.")
-  }
+  #endif
 
   // MARK: - Properties
 
