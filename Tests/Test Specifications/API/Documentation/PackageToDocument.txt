@@ -1,3 +1,5 @@
+This is a block comment describing the precedence group.
+
 A Boolean value indicating whether the collection is empty.
 
 When you need to check whether your collection is empty, use the
@@ -1781,3 +1783,12 @@ type.
 Every distinct value of the conforming type has a corresponding unique
 value of the `RawValue` type, but there may be values of the `RawValue`
 type that don't have a corresponding value of the conforming type.
+
+These
+are
+several
+line
+comments
+describing
+the
+operator.

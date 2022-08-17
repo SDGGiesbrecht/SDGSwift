@@ -41,7 +41,7 @@ extension SyntaxProtocol {
         .carriageReturnLineFeeds:
         continue scan
       case .lineComment, .blockComment, .garbageText:
-        return nil
+        break scan
       case .docLineComment(let line):
         lines.append(SymbolGraph.LineList.Line(lineSource: line))
         scanningLines = true

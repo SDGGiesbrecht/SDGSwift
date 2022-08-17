@@ -12,4 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// These
+/// are
+/// several
+/// line
+/// comments
+/// describing
+/// the
+/// operator.
 infix operator ≠: Precedence
