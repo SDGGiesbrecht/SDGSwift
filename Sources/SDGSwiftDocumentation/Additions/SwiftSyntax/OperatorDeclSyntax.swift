@@ -61,7 +61,8 @@ import SymbolKit
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(
           declarationFragments: declarationComponents
-        )
+        ),
+        documentation: documentation
       )
     }
   }

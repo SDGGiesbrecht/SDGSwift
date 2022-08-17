@@ -27,11 +27,12 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
   ///   - declaration: The declaration.
   public init(
     names: SymbolGraph.Symbol.Names,
-    declaration: SymbolGraph.Symbol.DeclarationFragments
+    declaration: SymbolGraph.Symbol.DeclarationFragments,
+    documentation: SymbolGraph.LineList?
   ) {
     self.names = names
     self.declaration = declaration
-    #warning("Needs to collect documentation comment.")
+    self.docComment = documentation
   }
 
   // MARK: - Comparable

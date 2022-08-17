@@ -44,7 +44,8 @@ import SymbolKit
           subHeading: declaration,
           prose: nil
         ),
-        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+        declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration),
+        documentation: documentation
       )
     }
   }
