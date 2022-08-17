@@ -30,7 +30,6 @@ extension SymbolGraph.LineList.Line {
   }
 
   internal init(lineSource: String) {
-    #warning("Not implemented yet.")
-    fatalError()
+    self.init(text: String(lineSource.dropFirst(4)), range: nil)
   }
 }

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+
 import SymbolKit
 
 extension SymbolGraph.LineList {
@@ -28,7 +30,11 @@ extension SymbolGraph.LineList {
   }
 
   internal init(blockSource: String) {
-    #warning("Not implemented yet.")
-    fatalError()
+    let contents = String(blockSource.dropFirst(3).dropLast(3))
+    self.init(
+      lines: contents.lines.map({ line in
+        return SymbolGraph.LineList.Line(text: String(line.line), range: nil)
+      })
+    )
   }
 }
