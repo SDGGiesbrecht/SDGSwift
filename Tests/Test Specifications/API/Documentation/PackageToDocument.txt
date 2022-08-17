@@ -260,6 +260,10 @@ generate contiguous mutable storage to any of its subsequences by slicing
   support contiguous storage, in which case the method ignores `body` and
   returns `nil`.
 
+Library documentation.
+
+Module documentation.
+
 Offsets the given index by the specified distance, or so that it equals
 the given limiting index.
 
@@ -298,6 +302,8 @@ the collection.
 - Complexity: O(1) if the collection conforms to
   `RandomAccessCollection`; otherwise, O(*k*), where *k* is the absolute
   value of `distance`.
+
+Package documentation.
 
 Replaces the given index with its successor.
 

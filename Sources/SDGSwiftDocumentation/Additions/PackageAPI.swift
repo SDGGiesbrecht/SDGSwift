@@ -36,7 +36,7 @@ public struct PackageAPI: SymbolLike {
     in manifest: SourceFileSyntax,
     as nodeType: Node.Type
   ) -> Node? where Node: SyntaxProtocol {
-    let declarationSource: String = declaration.lazy.map({ $0.spelling }).joined()
+    let declarationSource: String = declaration.dropLast().lazy.map({ $0.spelling }).joined()
     let name = declarationSource.scalars.truncated(after: "(".scalars)
     let parameters = declarationSource.scalars.dropping(through: "(".scalars)
     let partialSearch =
@@ -46,9 +46,10 @@ public struct PackageAPI: SymbolLike {
     guard let foundNode = manifest.smallestSubnode(containing: search) else {
       return nil
     }
-    return foundNode.ancestors().first(where: { node in
-      return node.is(Node.self)
-    }) as? Node
+    return foundNode.as(Node.self)
+      ?? foundNode.ancestors().lazy.compactMap({ node in
+      return node.as(Node.self)
+    }).first
   }
 
   internal static func findDocumentation<Node>(
