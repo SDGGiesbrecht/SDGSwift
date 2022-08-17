@@ -87,12 +87,7 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    #warning("Overhaul this.")
-    let search =
-      ".library(".scalars
-      + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-      + "name: \u{22}\(name)\u{22}".scalars
-    let manifestDeclaration = manifest.smallestSubnode(containing: search)?.parent
+    let manifestDeclaration = PackageAPI.find(declaration, in: manifest)
     #warning("Need to do something with the node.")
     self.modules = modules
   }

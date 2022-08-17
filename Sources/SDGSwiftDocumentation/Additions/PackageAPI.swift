@@ -14,10 +14,38 @@
 
 import Foundation
 
+import SDGCollections
+
 import SymbolKit
+
+import SDGSwiftSource
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
+#endif
 
 /// The API of a package.
 public struct PackageAPI: SymbolLike {
+
+  // MARK: - Static Methods
+  
+  internal static func find(
+    _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+    in manifest: SourceFileSyntax
+  ) -> Syntax? {
+    #warning("Specify node type and walk outward.")
+    let declarationSource: String = declaration.lazy.map({ $0.spelling }).joined()
+    let name = declarationSource.scalars.truncated(after: "(".scalars)
+    let parameters = declarationSource.scalars.dropping(through: "(".scalars)
+    let partialSearch = name
+      + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+    let search = partialSearch + parameters
+    guard let foundNode = manifest.smallestSubnode(containing: search) else {
+      return nil
+    }
+  }
 
   // MARK: - Initialization
 
