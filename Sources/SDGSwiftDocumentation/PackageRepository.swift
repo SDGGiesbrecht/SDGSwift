@@ -22,6 +22,12 @@ import SDGSwiftPackageManager
 
 import SymbolKit
 
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
+#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
 #endif
@@ -107,6 +113,9 @@ extension PackageRepository {
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<PackageAPI, SymbolGraph.LoadingError> {
+      let manifestSource =
+        (try? SyntaxParser.parse(location.appendingPathComponent("Package.swift")))
+        ?? SyntaxFactory.makeBlankSourceFile()
       switch package() {
       case .failure(let error):
         return .failure(.packageLoadingError(error))
@@ -118,7 +127,7 @@ extension PackageRepository {
           return .success(
             PackageAPI(
               name: package.manifest.displayName,
-              libraries: package.manifest.publicLibraries(),
+              libraries: package.manifest.publicLibraries(manifest: manifestSource),
               symbolGraphs: symbolGraphs,
               moduleSources: package.publicModuleSources()
             )

@@ -12,18 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
-import SDGCollections
-
 import SymbolKit
 
-import SDGSwiftSource
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-  import SwiftSyntaxParser
 #endif
 
 /// The API of a library.
@@ -36,7 +28,7 @@ public struct LibraryAPI: SymbolLike {
   /// - Parameters:
   ///   - name: The name of the library.
   ///   - modules: The names of the modules included in the library.
-  ///   - manifest: The URL of the package manifest, if available.
+  ///   - manifest: The source of the package manifest.
   public init(name: String, modules: [String], manifest: SourceFileSyntax) {
     let declaration = [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
@@ -87,7 +79,11 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    let manifestDeclaration = PackageAPI.find(declaration, in: manifest)
+    let manifestDeclaration = PackageAPI.find(
+      declaration,
+      in: manifest,
+      as: FunctionCallExprSyntax.self
+    )
     #warning("Need to do something with the node.")
     self.modules = modules
   }

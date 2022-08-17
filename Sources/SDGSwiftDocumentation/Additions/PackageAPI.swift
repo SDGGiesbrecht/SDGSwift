@@ -30,21 +30,25 @@ import SDGSwiftSource
 public struct PackageAPI: SymbolLike {
 
   // MARK: - Static Methods
-  
-  internal static func find(
+
+  internal static func find<Node>(
     _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
-    in manifest: SourceFileSyntax
-  ) -> Syntax? {
-    #warning("Specify node type and walk outward.")
+    in manifest: SourceFileSyntax,
+    as nodeType: Node.Type
+  ) -> Node? where Node: SyntaxProtocol {
     let declarationSource: String = declaration.lazy.map({ $0.spelling }).joined()
     let name = declarationSource.scalars.truncated(after: "(".scalars)
     let parameters = declarationSource.scalars.dropping(through: "(".scalars)
-    let partialSearch = name
+    let partialSearch =
+      name
       + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
     let search = partialSearch + parameters
     guard let foundNode = manifest.smallestSubnode(containing: search) else {
       return nil
     }
+    return foundNode.ancestors().first(where: { node in
+      return node.is(Node.self)
+    }) as? Node
   }
 
   // MARK: - Initialization

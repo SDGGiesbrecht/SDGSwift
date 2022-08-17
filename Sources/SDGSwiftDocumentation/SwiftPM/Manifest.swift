@@ -19,24 +19,31 @@ import OrderedCollections
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    import SwiftSyntax
+  #endif
+
   extension Manifest {
 
-    internal func publicLibraries() -> [LibraryAPI] {
-      return products.compactMap { product in
-        if product.name.hasPrefix("_") {
-          return nil
-        }
-        switch product.type {
-        case .library:
-          return LibraryAPI(
-            name: product.name,
-            modules: product.targets.filter({ ¬$0.hasPrefix("_") })
-          )
-        default:
-          return nil
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      internal func publicLibraries(manifest: SourceFileSyntax) -> [LibraryAPI] {
+        return products.compactMap { product in
+          if product.name.hasPrefix("_") {
+            return nil
+          }
+          switch product.type {
+          case .library:
+            return LibraryAPI(
+              name: product.name,
+              modules: product.targets.filter({ ¬$0.hasPrefix("_") }),
+              manifest: manifest
+            )
+          default:
+            return nil
+          }
         }
       }
-    }
+    #endif
 
     internal func publicModules() -> OrderedSet<String> {
       return OrderedSet(
