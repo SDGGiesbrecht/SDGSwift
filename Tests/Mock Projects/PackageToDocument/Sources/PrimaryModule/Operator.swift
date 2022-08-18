@@ -24,3 +24,9 @@ infix operator ≠: Precedence
 
 // No documentation.
 infix operator ≤: Precedence
+
+/**
+ This documentation comment is not attached to anything.
+ */
+/// This documentation comment is just one line.
+infix operator ≥: Precedence
