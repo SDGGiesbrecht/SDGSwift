@@ -71,6 +71,7 @@ func suffix(from: Self.Index) -> Self.SubSequence
 func withContiguousStorageIfAvailable<R>((UnsafeBufferPointer<Self.Element>) throws -> R) rethrows -> R?
 infix operator ≠
 infix operator ≤
+infix operator ≥
 init()
 init(extendedGraphemeClusterLiteral: Self.StringLiteralType)
 init(from: Decoder) throws

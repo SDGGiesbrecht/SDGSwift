@@ -1797,4 +1797,6 @@ describing
 the
 operator.
 
+This documentation comment is just one line.
+
 This is a block comment describing the precedence group.
