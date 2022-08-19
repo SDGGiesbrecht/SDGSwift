@@ -20,43 +20,45 @@ import SDGSwiftSource
   import SymbolKit
 #endif
 
-extension SyntaxProtocol {
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  extension SyntaxProtocol {
 
-  internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-  where P: SDGCollections.Pattern, P.Element == Unicode.Scalar {
-    return _smallestSubnode(containing: searchTerm)
-  }
-
-  internal var documentation: SymbolGraph.LineList? {
-    guard let token = firstToken() else {
-      return nil  // @exempt(from: tests) Unreachable.
+    internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
+    where P: SDGCollections.Pattern, P.Element == Unicode.Scalar {
+      return _smallestSubnode(containing: searchTerm)
     }
-    let leading = token.leadingTrivia
-    var scanningLines = false
-    var lines: [SymbolGraph.LineList.Line] = []
-    scan: for index in leading.indices.lazy.reversed() {
-      let trivia = leading[index]
-      switch trivia {
-      case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns,
-        .carriageReturnLineFeeds:
-        continue scan
-      case .lineComment, .blockComment, .garbageText:
-        break scan
-      case .docLineComment(let line):
-        lines.append(SymbolGraph.LineList.Line(lineSource: line))
-        scanningLines = true
-      case .docBlockComment(let block):
-        if scanningLines {
+
+    internal var documentation: SymbolGraph.LineList? {
+      guard let token = firstToken() else {
+        return nil  // @exempt(from: tests) Unreachable.
+      }
+      let leading = token.leadingTrivia
+      var scanningLines = false
+      var lines: [SymbolGraph.LineList.Line] = []
+      scan: for index in leading.indices.lazy.reversed() {
+        let trivia = leading[index]
+        switch trivia {
+        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns,
+          .carriageReturnLineFeeds:
+          continue scan
+        case .lineComment, .blockComment, .garbageText:
           break scan
-        } else {
-          return SymbolGraph.LineList(blockSource: block)
+        case .docLineComment(let line):
+          lines.append(SymbolGraph.LineList.Line(lineSource: line))
+          scanningLines = true
+        case .docBlockComment(let block):
+          if scanningLines {
+            break scan
+          } else {
+            return SymbolGraph.LineList(blockSource: block)
+          }
         }
       }
-    }
-    if lines.isEmpty {
-      return nil
-    } else {
-      return SymbolGraph.LineList(lines: lines.reversed())
+      if lines.isEmpty {
+        return nil
+      } else {
+        return SymbolGraph.LineList(lines: lines.reversed())
+      }
     }
   }
-}
+#endif

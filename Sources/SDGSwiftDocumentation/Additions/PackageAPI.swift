@@ -31,35 +31,37 @@ public struct PackageAPI: SymbolLike {
 
   // MARK: - Static Methods
 
-  private static func find<Node>(
-    _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
-    in manifest: SourceFileSyntax,
-    as nodeType: Node.Type
-  ) -> Node? where Node: SyntaxProtocol {
-    let declarationSource: String = declaration.dropLast().lazy.map({ $0.spelling }).joined()
-    let name = declarationSource.scalars.truncated(after: "(".scalars)
-    let parameters = declarationSource.scalars.dropping(through: "(".scalars)
-    let partialSearch =
-      name
-      + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
-    let search = partialSearch + parameters
-    guard let foundNode = manifest.smallestSubnode(containing: search) else {
-      return nil
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    private static func find<Node>(
+      _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+      in manifest: SourceFileSyntax,
+      as nodeType: Node.Type
+    ) -> Node? where Node: SyntaxProtocol {
+      let declarationSource: String = declaration.dropLast().lazy.map({ $0.spelling }).joined()
+      let name = declarationSource.scalars.truncated(after: "(".scalars)
+      let parameters = declarationSource.scalars.dropping(through: "(".scalars)
+      let partialSearch =
+        name
+        + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+      let search = partialSearch + parameters
+      guard let foundNode = manifest.smallestSubnode(containing: search) else {
+        return nil
+      }
+      return foundNode.as(Node.self)
+        ?? foundNode.ancestors().lazy.compactMap({ node in
+          return node.as(Node.self)
+        }).first
     }
-    return foundNode.as(Node.self)
-      ?? foundNode.ancestors().lazy.compactMap({ node in
-        return node.as(Node.self)
-      }).first
-  }
 
-  internal static func findDocumentation<Node>(
-    of declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
-    in manifest: SourceFileSyntax,
-    as nodeType: Node.Type
-  ) -> SymbolGraph.LineList? where Node: SyntaxProtocol {
-    let node = find(declaration, in: manifest, as: nodeType)
-    return node?.documentation
-  }
+    internal static func findDocumentation<Node>(
+      of declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+      in manifest: SourceFileSyntax,
+      as nodeType: Node.Type
+    ) -> SymbolGraph.LineList? where Node: SyntaxProtocol {
+      let node = find(declaration, in: manifest, as: nodeType)
+      return node?.documentation
+    }
+  #endif
 
   // MARK: - Initialization
 

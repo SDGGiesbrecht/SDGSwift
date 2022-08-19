@@ -23,69 +23,71 @@ public struct LibraryAPI: SymbolLike {
 
   // MARK: - Initialization
 
-  /// Creates a library API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the library.
-  ///   - modules: The names of the modules included in the library.
-  ///   - manifest: The source of the package manifest.
-  public init(name: String, modules: [String], manifest: SourceFileSyntax) {
-    let declaration = [
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ".",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .identifier,
-        spelling: "library",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: "(",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .externalParameter,
-        spelling: "name",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ":",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: " ",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .stringLiteral,
-        spelling: "\u{22}\(name)\u{22}",
-        preciseIdentifier: nil
-      ),
-      SymbolGraph.Symbol.DeclarationFragments.Fragment(
-        kind: .text,
-        spelling: ")",
-        preciseIdentifier: nil
-      ),
-    ]
-    self.names = SymbolGraph.Symbol.Names(
-      title: name,
-      navigator: nil,
-      subHeading: declaration,
-      prose: nil
-    )
-    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.docComment = PackageAPI.findDocumentation(
-      of: declaration,
-      in: manifest,
-      as: FunctionCallExprSyntax.self
-    )
-    self.modules = modules
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a library API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the library.
+    ///   - modules: The names of the modules included in the library.
+    ///   - manifest: The source of the package manifest.
+    public init(name: String, modules: [String], manifest: SourceFileSyntax) {
+      let declaration = [
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ".",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .identifier,
+          spelling: "library",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: "(",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .externalParameter,
+          spelling: "name",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ":",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: " ",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .stringLiteral,
+          spelling: "\u{22}\(name)\u{22}",
+          preciseIdentifier: nil
+        ),
+        SymbolGraph.Symbol.DeclarationFragments.Fragment(
+          kind: .text,
+          spelling: ")",
+          preciseIdentifier: nil
+        ),
+      ]
+      self.names = SymbolGraph.Symbol.Names(
+        title: name,
+        navigator: nil,
+        subHeading: declaration,
+        prose: nil
+      )
+      self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+      self.docComment = PackageAPI.findDocumentation(
+        of: declaration,
+        in: manifest,
+        as: FunctionCallExprSyntax.self
+      )
+      self.modules = modules
+    }
+  #endif
 
   // MARK: - Properties
 
