@@ -23,6 +23,53 @@ public struct LibraryAPI: SymbolLike {
 
   // MARK: - Initialization
 
+  private static func declaration(
+    for name: String
+  ) -> [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ".",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .identifier,
+        spelling: "library",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: "(",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .externalParameter,
+        spelling: "name",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ":",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: " ",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .stringLiteral,
+        spelling: "\u{22}\(name)\u{22}",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ")",
+        preciseIdentifier: nil
+      ),
+    ]
+  }
+
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Creates a library API.
     ///
@@ -31,63 +78,40 @@ public struct LibraryAPI: SymbolLike {
     ///   - modules: The names of the modules included in the library.
     ///   - manifest: The source of the package manifest.
     public init(name: String, modules: [String], manifest: SourceFileSyntax) {
-      let declaration = [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ".",
-          preciseIdentifier: nil
+      self.init(
+        name: name,
+        documentationComment: PackageAPI.findDocumentation(
+          of: LibraryAPI.declaration(for: name),
+          in: manifest,
+          as: FunctionCallExprSyntax.self
         ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .identifier,
-          spelling: "library",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: "(",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .externalParameter,
-          spelling: "name",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ":",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: " ",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .stringLiteral,
-          spelling: "\u{22}\(name)\u{22}",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ")",
-          preciseIdentifier: nil
-        ),
-      ]
-      self.names = SymbolGraph.Symbol.Names(
-        title: name,
-        navigator: nil,
-        subHeading: declaration,
-        prose: nil
+        modules: modules
       )
-      self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-      self.docComment = PackageAPI.findDocumentation(
-        of: declaration,
-        in: manifest,
-        as: FunctionCallExprSyntax.self
-      )
-      self.modules = modules
     }
   #endif
+
+  /// Creates a library API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the library.
+  ///   - documentationComment: The documentation comment.
+  ///   - modules: The names of the modules included in the library.
+  public init(
+    name: String,
+    documentationComment: SymbolGraph.LineList?,
+    modules: [String]
+  ) {
+    let declaration = LibraryAPI.declaration(for: name)
+    self.names = SymbolGraph.Symbol.Names(
+      title: name,
+      navigator: nil,
+      subHeading: declaration,
+      prose: nil
+    )
+    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+    self.docComment = documentationComment
+    self.modules = modules
+  }
 
   // MARK: - Properties
 

@@ -31,6 +31,48 @@ public struct PackageAPI: SymbolLike {
 
   // MARK: - Static Methods
 
+  private static func declaration(
+    for name: String
+  ) -> [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .typeIdentifier,
+        spelling: "Package",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: "(",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .externalParameter,
+        spelling: "name",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ":",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: " ",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .stringLiteral,
+        spelling: "\u{22}\(name)\u{22}",
+        preciseIdentifier: nil
+      ),
+      SymbolGraph.Symbol.DeclarationFragments.Fragment(
+        kind: .text,
+        spelling: ")",
+        preciseIdentifier: nil
+      ),
+    ]
+  }
+
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private static func find<Node>(
       _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
@@ -73,6 +115,7 @@ public struct PackageAPI: SymbolLike {
     ///   - manifestSource: The source of the manifest.
     ///   - libraries: The libraries.
     ///   - symbolGraphs: The symbol graphs.
+    ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
     public init(
       name: String,
       manifestSource: SourceFileSyntax,
@@ -80,71 +123,63 @@ public struct PackageAPI: SymbolLike {
       symbolGraphs: [SymbolGraph],
       moduleSources: [String: [URL]]
     ) {
-      let declaration = [
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .typeIdentifier,
-          spelling: "Package",
-          preciseIdentifier: nil
+      self.init(
+        name: name,
+        documentationComment: PackageAPI.findDocumentation(
+          of: PackageAPI.declaration(for: name),
+          in: manifestSource,
+          as: VariableDeclSyntax.self
         ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: "(",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .externalParameter,
-          spelling: "name",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ":",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: " ",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .stringLiteral,
-          spelling: "\u{22}\(name)\u{22}",
-          preciseIdentifier: nil
-        ),
-        SymbolGraph.Symbol.DeclarationFragments.Fragment(
-          kind: .text,
-          spelling: ")",
-          preciseIdentifier: nil
-        ),
-      ]
-      self.names = SymbolGraph.Symbol.Names(
-        title: name,
-        navigator: nil,
-        subHeading: declaration,
-        prose: nil
+        libraries: libraries,
+        symbolGraphs: symbolGraphs,
+        moduleSources: moduleSources,
+        moduleDocumentationCommentLookup: { name in
+          return ModuleAPI.lookUpDocumentation(for: name, in: manifestSource)
+        }
       )
-      self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-      self.docComment = PackageAPI.findDocumentation(
-        of: declaration,
-        in: manifestSource,
-        as: VariableDeclSyntax.self
-      )
-      self.libraries = libraries
-      var existing: Set<String> = []
-      self.modules =
-        libraries
-        .flatMap({ $0.modules })
-        .filter({ existing.insert($0).inserted })
-        .map({ name in
-          return ModuleAPI(
-            name: name,
-            symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
-            sources: moduleSources[name] ?? [],
-            manifestSource: manifestSource
-          )
-        })
     }
   #endif
+
+  /// Creates a package API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the package.
+  ///   - documentationComment: The documentation comment.
+  ///   - libraries: The libraries.
+  ///   - symbolGraphs: The symbol graphs.
+  ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
+  public init(
+    name: String,
+    documentationComment: SymbolGraph.LineList?,
+    libraries: [LibraryAPI],
+    symbolGraphs: [SymbolGraph],
+    moduleSources: [String: [URL]],
+    moduleDocumentationCommentLookup: (String) -> SymbolGraph.LineList?
+  ) {
+    let declaration = PackageAPI.declaration(for: name)
+    self.names = SymbolGraph.Symbol.Names(
+      title: name,
+      navigator: nil,
+      subHeading: declaration,
+      prose: nil
+    )
+    self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+    self.docComment = documentationComment
+    self.libraries = libraries
+    var existing: Set<String> = []
+    self.modules =
+      libraries
+      .flatMap({ $0.modules })
+      .filter({ existing.insert($0).inserted })
+      .map({ name in
+        return ModuleAPI(
+          name: name,
+          documentationComment: moduleDocumentationCommentLookup(name),
+          symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
+          sources: moduleSources[name] ?? []
+        )
+      })
+  }
 
   // MARK: - Properties
 

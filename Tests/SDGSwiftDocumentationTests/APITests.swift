@@ -38,29 +38,25 @@ import SDGSwiftSource
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testModuleAPI() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let module = ModuleAPI(
-        name: "MyModule",
-        symbolGraphs: [],
-        sources: [
-          URL(fileURLWithPath: #filePath),
-          URL(fileURLWithPath: #filePath),
-        ],
-        manifestSource: SyntaxFactory.makeBlankSourceFile()
-      )
-      _ = module.names.subHeading
-    #endif
+    let module = ModuleAPI(
+      name: "MyModule",
+      documentationComment: nil,
+      symbolGraphs: [],
+      sources: [
+        URL(fileURLWithPath: #filePath),
+        URL(fileURLWithPath: #filePath),
+      ]
+    )
+    _ = module.names.subHeading
   }
 
   func testLibraryAPI() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let library = LibraryAPI(
-        name: "MyLibrary",
-        modules: ["MyModule"],
-        manifest: SyntaxFactory.makeBlankSourceFile()
-      )
-      _ = library.names.subHeading
-    #endif
+    let library = LibraryAPI(
+      name: "MyLibrary",
+      documentationComment: nil,
+      modules: ["MyModule"]
+    )
+    _ = library.names.subHeading
   }
 
   func testOperator() {
@@ -133,41 +129,40 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let package = PackageAPI(
-        name: "MyPackage",
-        manifestSource: SyntaxFactory.makeBlankSourceFile(),
-        libraries: [
-          LibraryAPI(
-            name: "MyLibrary",
-            modules: ["MyModule"],
-            manifest: SyntaxFactory.makeBlankSourceFile()
-          )
-        ],
-        symbolGraphs: [
-          SymbolGraph(
-            metadata: SymbolGraph.Metadata(
-              formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
-              generator: "My Generator"
-            ),
-            module: SymbolGraph.Module(
-              name: "MyModule",
-              platform: SymbolGraph.Platform(
-                architecture: nil,
-                vendor: nil,
-                operatingSystem: nil,
-                environment: nil
-              )
-            ),
-            symbols: [],
-            relationships: []
-          )
-        ],
-        moduleSources: [:]
-      )
-      _ = package.symbolGraphs()
-      _ = package.names.subHeading
-    #endif
+    let package = PackageAPI(
+      name: "MyPackage",
+      documentationComment: nil,
+      libraries: [
+        LibraryAPI(
+          name: "MyLibrary",
+          modules: ["MyModule"],
+          manifest: SyntaxFactory.makeBlankSourceFile()
+        )
+      ],
+      symbolGraphs: [
+        SymbolGraph(
+          metadata: SymbolGraph.Metadata(
+            formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
+            generator: "My Generator"
+          ),
+          module: SymbolGraph.Module(
+            name: "MyModule",
+            platform: SymbolGraph.Platform(
+              architecture: nil,
+              vendor: nil,
+              operatingSystem: nil,
+              environment: nil
+            )
+          ),
+          symbols: [],
+          relationships: []
+        )
+      ],
+      moduleSources: [:],
+      moduleDocumentationCommentLookup: { _ in return nil }
+    )
+    _ = package.symbolGraphs()
+    _ = package.names.subHeading
   }
 
   func testPrecedenceGroup() {
