@@ -48,6 +48,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ]
     )
     _ = module.names.subHeading
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertNil(
+        ModuleAPI(
+          name: "MyModule",
+          symbolGraphs: [],
+          sources: [],
+          manifestSource: SyntaxFactory.makeBlankSourceFile()
+        ).docComment
+      )
+    #endif
   }
 
   func testLibraryAPI() {
@@ -163,6 +173,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     _ = package.symbolGraphs()
     _ = package.names.subHeading
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertNil(
+        PackageAPI(
+          name: "MyPackage",
+          manifestSource: SyntaxFactory.makeBlankSourceFile(),
+          libraries: [],
+          symbolGraphs: [],
+          moduleSources: [:]
+        ).docComment
+      )
+    #endif
   }
 
   func testPrecedenceGroup() {
