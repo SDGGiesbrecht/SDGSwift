@@ -135,8 +135,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       libraries: [
         LibraryAPI(
           name: "MyLibrary",
-          modules: ["MyModule"],
-          manifest: SyntaxFactory.makeBlankSourceFile()
+          documentationComment: nil,
+          modules: ["MyModule"]
         )
       ],
       symbolGraphs: [
