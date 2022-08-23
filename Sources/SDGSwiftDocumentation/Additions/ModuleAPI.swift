@@ -30,14 +30,10 @@ public struct ModuleAPI: SymbolLike {
 
   // MARK: - Initialization
 
-  /// Creates a module API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the module.
-  ///   - symbolGraphs: The module’s symbol graphs.
-  ///   - sources: The URL’s of the module’s sources.
-  public init(name: String, symbolGraphs: [SymbolGraph], sources: [URL]) {
-    let declaration = [
+  private static func declaration(
+    for name: String
+  ) -> [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
         kind: .text,
         spelling: ".",
@@ -79,6 +75,56 @@ public struct ModuleAPI: SymbolLike {
         preciseIdentifier: nil
       ),
     ]
+  }
+
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    internal static func lookUpDocumentation(
+      for name: String,
+      in manifestSource: SourceFileSyntax
+    ) -> SymbolGraph.LineList? {
+      return PackageAPI.findDocumentation(
+        of: ModuleAPI.declaration(for: name),
+        in: manifestSource,
+        as: FunctionCallExprSyntax.self
+      )
+    }
+
+    /// Creates a module API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the module.
+    ///   - symbolGraphs: The module’s symbol graphs.
+    ///   - sources: The URL’s of the module’s sources.
+    ///   - manifestSource: The source of the package manifest.
+    public init(
+      name: String,
+      symbolGraphs: [SymbolGraph],
+      sources: [URL],
+      manifestSource: SourceFileSyntax
+    ) {
+      self.init(
+        name: name,
+        documentationComment: ModuleAPI.lookUpDocumentation(for: name, in: manifestSource),
+        symbolGraphs: symbolGraphs,
+        sources: sources
+      )
+    }
+  #endif
+
+  /// Creates a module API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the module.
+  ///   - documentationComment: The documentation comment.
+  ///   - symbolGraphs: The module’s symbol graphs.
+  ///   - sources: The URL’s of the module’s sources.
+  public init(
+    name: String,
+    documentationComment: SymbolGraph.LineList?,
+    symbolGraphs: [SymbolGraph],
+    sources: [URL]
+  ) {
+    let declaration = ModuleAPI.declaration(for: name)
     self.names = SymbolGraph.Symbol.Names(
       title: name,
       navigator: nil,
@@ -86,6 +132,7 @@ public struct ModuleAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+    self.docComment = documentationComment
     self.symbolGraphs = symbolGraphs
 
     var operators: [Operator] = []
@@ -120,4 +167,5 @@ public struct ModuleAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

@@ -26,10 +26,12 @@ public struct Operator: Comparable, SymbolLike {
   ///   - declaration: The declaration.
   public init(
     names: SymbolGraph.Symbol.Names,
-    declaration: SymbolGraph.Symbol.DeclarationFragments
+    declaration: SymbolGraph.Symbol.DeclarationFragments,
+    documentation: SymbolGraph.LineList?
   ) {
     self.names = names
     self.declaration = declaration
+    self.docComment = documentation
   }
 
   // MARK: - Equatable
@@ -48,4 +50,5 @@ public struct Operator: Comparable, SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

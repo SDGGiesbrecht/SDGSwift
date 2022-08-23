@@ -14,18 +14,19 @@
 
 import SymbolKit
 
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+
 /// The API of a library.
 public struct LibraryAPI: SymbolLike {
 
   // MARK: - Initialization
 
-  /// Creates a library API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the library.
-  ///   - modules: The names of the modules included in the library.
-  public init(name: String, modules: [String]) {
-    let declaration = [
+  private static func declaration(
+    for name: String
+  ) -> [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
         kind: .text,
         spelling: ".",
@@ -67,6 +68,40 @@ public struct LibraryAPI: SymbolLike {
         preciseIdentifier: nil
       ),
     ]
+  }
+
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a library API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the library.
+    ///   - modules: The names of the modules included in the library.
+    ///   - manifest: The source of the package manifest.
+    public init(name: String, modules: [String], manifest: SourceFileSyntax) {
+      self.init(
+        name: name,
+        documentationComment: PackageAPI.findDocumentation(
+          of: LibraryAPI.declaration(for: name),
+          in: manifest,
+          as: FunctionCallExprSyntax.self
+        ),
+        modules: modules
+      )
+    }
+  #endif
+
+  /// Creates a library API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the library.
+  ///   - documentationComment: The documentation comment.
+  ///   - modules: The names of the modules included in the library.
+  public init(
+    name: String,
+    documentationComment: SymbolGraph.LineList?,
+    modules: [String]
+  ) {
+    let declaration = LibraryAPI.declaration(for: name)
     self.names = SymbolGraph.Symbol.Names(
       title: name,
       navigator: nil,
@@ -74,6 +109,7 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+    self.docComment = documentationComment
     self.modules = modules
   }
 
@@ -86,4 +122,5 @@ public struct LibraryAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

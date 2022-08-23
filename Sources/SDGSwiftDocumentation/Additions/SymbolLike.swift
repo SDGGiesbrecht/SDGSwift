@@ -22,4 +22,7 @@ public protocol SymbolLike {
 
   /// The symbol’s declaration.
   var declaration: SymbolGraph.Symbol.DeclarationFragments? { get }
+
+  /// The symbol’s documentation comment.
+  var docComment: SymbolGraph.LineList? { get }
 }

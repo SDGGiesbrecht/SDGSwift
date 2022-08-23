@@ -44,4 +44,6 @@ PackageToDocument • Package(name: "PackageToDocument")
   globalVariable • var globalVariable: Bool
   executeFunction() • func executeFunction()
   ≠ • infix operator ≠
+  ≤ • infix operator ≤
+  ≥ • infix operator ≥
   Precedence • precedencegroup Precedence

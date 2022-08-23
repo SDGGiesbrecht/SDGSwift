@@ -14,26 +14,27 @@
 
 import Foundation
 
+import SDGCollections
+
 import SymbolKit
+
+import SDGSwiftSource
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
+#endif
 
 /// The API of a package.
 public struct PackageAPI: SymbolLike {
 
-  // MARK: - Initialization
+  // MARK: - Static Methods
 
-  /// Creates a package API.
-  ///
-  /// - Parameters:
-  ///   - name: The name of the package.
-  ///   - libraries: The libraries.
-  ///   - symbolGraphs: The symbol graphs.
-  public init(
-    name: String,
-    libraries: [LibraryAPI],
-    symbolGraphs: [SymbolGraph],
-    moduleSources: [String: [URL]]
-  ) {
-    let declaration = [
+  private static func declaration(
+    for name: String
+  ) -> [SymbolGraph.Symbol.DeclarationFragments.Fragment] {
+    return [
       SymbolGraph.Symbol.DeclarationFragments.Fragment(
         kind: .typeIdentifier,
         spelling: "Package",
@@ -70,6 +71,92 @@ public struct PackageAPI: SymbolLike {
         preciseIdentifier: nil
       ),
     ]
+  }
+
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    private static func find<Node>(
+      _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+      in manifest: SourceFileSyntax,
+      as nodeType: Node.Type
+    ) -> Node? where Node: SyntaxProtocol {
+      let declarationSource: String = declaration.dropLast().lazy.map({ $0.spelling }).joined()
+      let name = declarationSource.scalars.truncated(after: "(".scalars)
+      let parameters = declarationSource.scalars.dropping(through: "(".scalars)
+      let partialSearch =
+        name
+        + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+      let search = partialSearch + parameters
+      guard let foundNode = manifest.smallestSubnode(containing: search) else {
+        return nil
+      }
+      return foundNode.as(Node.self)
+        ?? foundNode.ancestors().lazy.compactMap({ node in
+          return node.as(Node.self)
+        }).first
+    }
+
+    internal static func findDocumentation<Node>(
+      of declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
+      in manifest: SourceFileSyntax,
+      as nodeType: Node.Type
+    ) -> SymbolGraph.LineList? where Node: SyntaxProtocol {
+      let node = find(declaration, in: manifest, as: nodeType)
+      return node?.documentation
+    }
+  #endif
+
+  // MARK: - Initialization
+
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a package API.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the package.
+    ///   - manifestSource: The source of the manifest.
+    ///   - libraries: The libraries.
+    ///   - symbolGraphs: The symbol graphs.
+    ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
+    public init(
+      name: String,
+      manifestSource: SourceFileSyntax,
+      libraries: [LibraryAPI],
+      symbolGraphs: [SymbolGraph],
+      moduleSources: [String: [URL]]
+    ) {
+      self.init(
+        name: name,
+        documentationComment: PackageAPI.findDocumentation(
+          of: PackageAPI.declaration(for: name),
+          in: manifestSource,
+          as: VariableDeclSyntax.self
+        ),
+        libraries: libraries,
+        symbolGraphs: symbolGraphs,
+        moduleSources: moduleSources,
+        moduleDocumentationCommentLookup: { name in
+          return ModuleAPI.lookUpDocumentation(for: name, in: manifestSource)
+        }
+      )
+    }
+  #endif
+
+  /// Creates a package API.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the package.
+  ///   - documentationComment: The documentation comment.
+  ///   - libraries: The libraries.
+  ///   - symbolGraphs: The symbol graphs.
+  ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
+  public init(
+    name: String,
+    documentationComment: SymbolGraph.LineList?,
+    libraries: [LibraryAPI],
+    symbolGraphs: [SymbolGraph],
+    moduleSources: [String: [URL]],
+    moduleDocumentationCommentLookup: (String) -> SymbolGraph.LineList?
+  ) {
+    let declaration = PackageAPI.declaration(for: name)
     self.names = SymbolGraph.Symbol.Names(
       title: name,
       navigator: nil,
@@ -77,6 +164,7 @@ public struct PackageAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
+    self.docComment = documentationComment
     self.libraries = libraries
     var existing: Set<String> = []
     self.modules =
@@ -86,6 +174,7 @@ public struct PackageAPI: SymbolLike {
       .map({ name in
         return ModuleAPI(
           name: name,
+          documentationComment: moduleDocumentationCommentLookup(name),
           symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
           sources: moduleSources[name] ?? []
         )
@@ -109,4 +198,5 @@ public struct PackageAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
+  public var docComment: SymbolGraph.LineList?
 }

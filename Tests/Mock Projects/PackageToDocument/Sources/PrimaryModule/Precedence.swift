@@ -12,5 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/**
+ This is a block comment describing the precedence group.
+ */
 precedencegroup Precedence {
 }
