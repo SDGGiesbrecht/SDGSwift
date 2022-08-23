@@ -21,7 +21,7 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testSymbolGraphLineList() {
-    _ = SymbolGraph.LineList(blockSource: "/** ... */")
+    _ = SymbolGraph.LineList(blockSource: "/**\n ...\n */")
   }
 
   func testSymbolGraphLineListLine() {
