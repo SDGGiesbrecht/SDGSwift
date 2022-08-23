@@ -417,6 +417,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     }
   }
 
+  func testSymbolGraphLineList() {
+    _ = SymbolGraph.LineList(lines: [
+      SymbolGraph.LineList.Line(text: "...", range: nil)
+    ])
+  }
+
   func testSymbolGraphSymbol() {
     let symbol = SymbolGraph.Symbol(
       identifier: SymbolGraph.Symbol.Identifier(precise: "symbol", interfaceLanguage: "Swift"),
