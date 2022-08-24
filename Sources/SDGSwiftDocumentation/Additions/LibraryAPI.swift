@@ -80,7 +80,7 @@ public struct LibraryAPI: SymbolLike {
     ///   - modules: The names of the modules included in the library.
     ///   - manifestURL: The URL of the manifest.
     ///   - manifest: The source of the package manifest.
-    public init(name: String, modules: [String], manifestURL: URL, manifest: SourceFileSyntax) {
+    public init(name: String, modules: [String], manifestURL: String, manifest: SourceFileSyntax) {
       let declaration = PackageAPI.find(
         LibraryAPI.declaration(for: name),
         in: manifest,
@@ -89,7 +89,7 @@ public struct LibraryAPI: SymbolLike {
       self.init(
         name: name,
         documentationComment: declaration?.documentation,
-        location: declaration?.location(url: manifestURL.absoluteString, source: manifest),
+        location: declaration?.location(url: manifestURL, source: manifest),
         modules: modules
       )
     }

@@ -26,7 +26,8 @@ import OrderedCollections
   extension Manifest {
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      internal func publicLibraries(manifest: SourceFileSyntax) -> [LibraryAPI] {
+      internal func publicLibraries(manifestURL: String, manifest: SourceFileSyntax) -> [LibraryAPI]
+      {
         return products.compactMap { product in
           if product.name.hasPrefix("_") {
             return nil
@@ -36,6 +37,7 @@ import OrderedCollections
             return LibraryAPI(
               name: product.name,
               modules: product.targets.filter({ ¬$0.hasPrefix("_") }),
+              manifestURL: manifestURL,
               manifest: manifest
             )
           default:

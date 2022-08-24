@@ -100,14 +100,14 @@ public struct ModuleAPI: SymbolLike {
       name: String,
       symbolGraphs: [SymbolGraph],
       sources: [URL],
-      manifestURL: URL,
+      manifestURL: String,
       manifestSource: SourceFileSyntax
     ) {
       let declaration = ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)
       self.init(
         name: name,
         documentationComment: declaration?.documentation,
-        location: declaration?.location(url: manifestURL.absoluteString, source: manifestSource),
+        location: declaration?.location(url: manifestURL, source: manifestSource),
         symbolGraphs: symbolGraphs,
         sources: sources
       )
