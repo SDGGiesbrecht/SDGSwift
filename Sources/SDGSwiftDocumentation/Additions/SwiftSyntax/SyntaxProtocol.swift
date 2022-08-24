@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCollections
 
 import SDGSwiftSource
@@ -59,6 +61,26 @@ import SDGSwiftSource
       } else {
         return SymbolGraph.LineList(lines: lines.reversed())
       }
+    }
+
+    internal func location(url: String, source: SourceFileSyntax) -> SymbolGraph.Symbol.Location? {
+      let start = SourceLocation(
+        offset: positionAfterSkippingLeadingTrivia.utf8Offset,
+        converter: SourceLocationConverter(file: url, tree: source)
+      )
+      guard let url = start.file,
+        let line = start.line,
+        let character = start.column
+      else {
+        return nil
+      }
+      return SymbolGraph.Symbol.Location(
+        url: url,
+        position: SymbolGraph.LineList.SourceRange.Position(
+          line: line,
+          character: character
+        )
+      )
     }
   }
 #endif

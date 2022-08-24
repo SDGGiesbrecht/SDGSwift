@@ -21,4 +21,8 @@ extension SymbolGraph.Symbol: SymbolLike {
   public var declaration: DeclarationFragments? {
     return mixins[DeclarationFragments.mixinKey] as? DeclarationFragments
   }
+
+  public var location: Location? {
+    return mixins[Location.mixinKey] as? Location
+  }
 }

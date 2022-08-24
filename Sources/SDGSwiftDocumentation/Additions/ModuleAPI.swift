@@ -78,12 +78,12 @@ public struct ModuleAPI: SymbolLike {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    internal static func lookUpDocumentation(
+    internal static func lookUpDeclaration(
       for name: String,
       in manifestSource: SourceFileSyntax
-    ) -> SymbolGraph.LineList? {
-      return PackageAPI.findDocumentation(
-        of: ModuleAPI.declaration(for: name),
+    ) -> FunctionCallExprSyntax? {
+      return PackageAPI.find(
+        ModuleAPI.declaration(for: name),
         in: manifestSource,
         as: FunctionCallExprSyntax.self
       )
@@ -100,11 +100,14 @@ public struct ModuleAPI: SymbolLike {
       name: String,
       symbolGraphs: [SymbolGraph],
       sources: [URL],
+      manifestURL: URL,
       manifestSource: SourceFileSyntax
     ) {
+      let declaration = ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)
       self.init(
         name: name,
-        documentationComment: ModuleAPI.lookUpDocumentation(for: name, in: manifestSource),
+        documentationComment: declaration?.documentation,
+        location: declaration?.location(url: manifestURL.absoluteString, source: manifestSource),
         symbolGraphs: symbolGraphs,
         sources: sources
       )
@@ -116,11 +119,13 @@ public struct ModuleAPI: SymbolLike {
   /// - Parameters:
   ///   - name: The name of the module.
   ///   - documentationComment: The documentation comment.
+  ///   - location: The location of the declaration in the source code.
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
   public init(
     name: String,
     documentationComment: SymbolGraph.LineList?,
+    location: SymbolGraph.Symbol.Location?,
     symbolGraphs: [SymbolGraph],
     sources: [URL]
   ) {
@@ -133,6 +138,7 @@ public struct ModuleAPI: SymbolLike {
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
     self.docComment = documentationComment
+    self.location = location
     self.symbolGraphs = symbolGraphs
 
     var operators: [Operator] = []
@@ -140,10 +146,11 @@ public struct ModuleAPI: SymbolLike {
     for sourceFile in sources.filter({ $0.pathExtension == "swift" }).sorted() {
       purgingAutoreleased {
         #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+          let url = sourceFile.absoluteString
           if let source = try? SyntaxParser.parse(sourceFile) {
             let syntax = Syntax(source)
-            operators.append(contentsOf: syntax.operators())
-            precedenceGroups.append(contentsOf: syntax.precedenceGroups())
+            operators.append(contentsOf: syntax.operators(url: url, source: source))
+            precedenceGroups.append(contentsOf: syntax.precedenceGroups(url: url, source: source))
           }
         #endif
       }
@@ -168,4 +175,5 @@ public struct ModuleAPI: SymbolLike {
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
   public var docComment: SymbolGraph.LineList?
+  public var location: SymbolGraph.Symbol.Location?
 }

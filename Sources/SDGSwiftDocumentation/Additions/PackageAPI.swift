@@ -74,7 +74,7 @@ public struct PackageAPI: SymbolLike {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    private static func find<Node>(
+    internal static func find<Node>(
       _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
       in manifest: SourceFileSyntax,
       as nodeType: Node.Type
@@ -93,15 +93,6 @@ public struct PackageAPI: SymbolLike {
         ?? foundNode.ancestors().lazy.compactMap({ node in
           return node.as(Node.self)
         }).first
-    }
-
-    internal static func findDocumentation<Node>(
-      of declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
-      in manifest: SourceFileSyntax,
-      as nodeType: Node.Type
-    ) -> SymbolGraph.LineList? where Node: SyntaxProtocol {
-      let node = find(declaration, in: manifest, as: nodeType)
-      return node?.documentation
     }
   #endif
 

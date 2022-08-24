@@ -25,4 +25,22 @@ public protocol SymbolLike {
 
   /// The symbol’s documentation comment.
   var docComment: SymbolGraph.LineList? { get }
+
+  /// The location of the symbol in the source code.
+  var location: SymbolGraph.Symbol.Location? { get }
+
+  /// The symbol’s documentation.
+  func documentation() -> [SymbolDocumentation]
+}
+
+extension SymbolLike {
+
+  public func documentation() -> [SymbolDocumentation] {
+    guard let first = docComment?.lines.first?.range?.start else {
+      #warning("Custom scanned lines do not contain range information.")
+      return []
+    }
+    #warning("Not implemented yet.")
+    return []
+  }
 }
