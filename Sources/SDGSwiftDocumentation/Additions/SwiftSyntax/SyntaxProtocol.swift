@@ -72,7 +72,7 @@ import SDGSwiftSource
         }
         for index in leading.indices.lazy.reversed() {
           let trivia = leading[index]
-          defer { cursor −= trivia.sourceLength.utf8Length }
+          cursor −= trivia.sourceLength.utf8Length
           switch trivia {
           case .spaces, .tabs:
             break  // ignore
