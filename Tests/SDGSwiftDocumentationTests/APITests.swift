@@ -55,6 +55,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           name: "MyModule",
           symbolGraphs: [],
           sources: [],
+          manifestURL: "somewhere.swift",
           manifestSource: SyntaxFactory.makeBlankSourceFile()
         ).docComment
       )
@@ -64,7 +65,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testLibraryAPI() {
     let library = LibraryAPI(
       name: "MyLibrary",
-      documentationComment: nil,
+      documentation: [],
+      location: nil,
       modules: ["MyModule"]
     )
     _ = library.names.subHeading
@@ -86,7 +88,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: []
       )
       < Operator(
         names: SymbolGraph.Symbol.Names(
@@ -102,7 +104,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: []
       )
     _ =
       Operator(
@@ -119,7 +121,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: []
       )
       == Operator(
         names: SymbolGraph.Symbol.Names(
@@ -129,24 +131,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             SymbolGraph.Symbol.DeclarationFragments.Fragment(
               kind: .identifier,
               spelling: "≠",
-              preciseIdentifier: nil
+              preciseIdentifier: []
             )
           ],
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: []
       )
   }
 
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
-      documentationComment: nil,
+      documentation: [],
       libraries: [
         LibraryAPI(
           name: "MyLibrary",
-          documentationComment: nil,
+          documentation: [],
           modules: ["MyModule"]
         )
       ],
@@ -170,7 +172,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       ],
       moduleSources: [:],
-      moduleDocumentationCommentLookup: { _ in return nil }
+      moduleDocumentationCommentLookup: { _ in return [] }
     )
     _ = package.symbolGraphs()
     _ = package.names.subHeading
@@ -178,6 +180,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNil(
         PackageAPI(
           name: "MyPackage",
+          manifestURL: "somewhere.swift",
           manifestSource: SyntaxFactory.makeBlankSourceFile(),
           libraries: [],
           symbolGraphs: [],
