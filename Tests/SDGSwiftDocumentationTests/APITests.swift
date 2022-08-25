@@ -105,7 +105,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
     _ =
       Operator(
@@ -122,7 +123,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
       == Operator(
         names: SymbolGraph.Symbol.Names(
@@ -132,7 +134,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             SymbolGraph.Symbol.DeclarationFragments.Fragment(
               kind: .identifier,
               spelling: "≠",
-              preciseIdentifier: []
+              preciseIdentifier: nil
             )
           ],
           prose: nil
@@ -252,7 +254,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: "A"
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
       < PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -274,7 +277,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: "A"
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
     _ =
       PrecedenceGroup(
@@ -285,7 +289,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
       < PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -295,7 +300,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
     _ =
       PrecedenceGroup(
@@ -306,7 +312,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: []
+        documentation: [],
+        location: nil
       )
       == PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -316,7 +323,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil,
+        documentation: [],
         location: nil
       )
   }
