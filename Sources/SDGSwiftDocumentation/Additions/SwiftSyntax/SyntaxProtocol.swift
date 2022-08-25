@@ -198,6 +198,7 @@ import SDGSwiftSource
             )
           }
         }
+        assemblePendingLines()
       }
       return result.reversed()
     }
