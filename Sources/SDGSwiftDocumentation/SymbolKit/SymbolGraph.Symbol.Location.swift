@@ -19,13 +19,13 @@ extension SymbolGraph.Symbol.Location {
   /// Creates a location.
   ///
   /// - Parameters:
-  ///   - url: The URL of the file.
+  ///   - uri: The URI of the file.
   ///   - position: The position within the file.
-  public init(url: String, position: SymbolGraph.LineList.SourceRange.Position) {
+  public init(uri: String, position: SymbolGraph.LineList.SourceRange.Position) {
     struct Proxy: Encodable {
-      let url: String
+      let uri: String
       let position: SymbolGraph.LineList.SourceRange.Position
     }
-    self = try! initialize(Self.self, by: Proxy(url: url, position: position))
+    self = try! initialize(Self.self, by: Proxy(uri: uri, position: position))
   }
 }

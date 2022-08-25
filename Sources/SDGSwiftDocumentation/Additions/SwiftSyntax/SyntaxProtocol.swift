@@ -210,7 +210,7 @@ import SDGSwiftSource
         return nil
       }
       return SymbolGraph.Symbol.Location(
-        url: url,
+        uri: url,
         position: SymbolGraph.LineList.SourceRange.Position(
           line: line,
           character: character
