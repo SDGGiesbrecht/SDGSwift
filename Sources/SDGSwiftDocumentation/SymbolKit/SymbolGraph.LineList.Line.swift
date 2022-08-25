@@ -28,8 +28,4 @@ extension SymbolGraph.LineList.Line {
     }
     self = try! initialize(Self.self, by: Proxy(text: text, range: range))
   }
-
-  internal init(lineSource: String) {
-    self.init(text: String(lineSource.dropFirst(4)), range: nil)
-  }
 }

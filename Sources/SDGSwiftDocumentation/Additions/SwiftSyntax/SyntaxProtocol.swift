@@ -147,7 +147,7 @@ import SDGSwiftSource
               )
             )
           case .docBlockComment(var contents):
-            var offset = cursor
+            var offset = 0
             if contents.scalars.count ≥ 5 {
               contents.scalars.removeFirst(3)
               offset += 3
@@ -163,19 +163,23 @@ import SDGSwiftSource
             }
             let indent = contents.scalars.prefix(while: { $0 == " " }).count
             var lines: [SymbolGraph.LineList.Line] = contents.lines.map { line in
+              defer {
+                offset += String(line.line).utf8.count
+                offset += String(line.newline).utf8.count
+              }
               var trimmed = line.line
               var remainingMargin = indent
-              var marginOffset = offset
+              var marginOffset = 0
               while remainingMargin > 0 ∧ trimmed.first == " " {
                 trimmed.removeFirst()
                 remainingMargin −= 1
                 marginOffset += 1
               }
               var range: SymbolGraph.LineList.SourceRange?
-              if let start = SourceLocation(offset: cursor + marginOffset, converter: converter)
+              if let start = SourceLocation(offset: cursor + offset + marginOffset, converter: converter)
                 .symbolKitPosition,
                 let end = SourceLocation(
-                  offset: cursor + marginOffset + contents.utf8.count,
+                  offset: cursor + offset + marginOffset + String(trimmed).utf8.count,
                   converter: converter
                 ).symbolKitPosition
               {
