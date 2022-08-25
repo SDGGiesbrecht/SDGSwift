@@ -62,7 +62,7 @@ import SymbolKit
         declaration: SymbolGraph.Symbol.DeclarationFragments(
           declarationFragments: declarationComponents
         ),
-        documentation: documentation,
+        documentation: documentation(url: url, source: source),
         location: location(url: url, source: source)
       )
     }

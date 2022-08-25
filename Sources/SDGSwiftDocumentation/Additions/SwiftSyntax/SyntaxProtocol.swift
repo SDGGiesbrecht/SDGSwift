@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 import SDGSwiftSource
@@ -30,37 +32,152 @@ import SDGSwiftSource
       return _smallestSubnode(containing: searchTerm)
     }
 
-    internal var documentation: SymbolGraph.LineList? {
-      guard let token = firstToken() else {
-        return nil  // @exempt(from: tests) Unreachable.
-      }
-      let leading = token.leadingTrivia
-      var scanningLines = false
-      var lines: [SymbolGraph.LineList.Line] = []
-      scan: for index in leading.indices.lazy.reversed() {
-        let trivia = leading[index]
-        switch trivia {
-        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns,
-          .carriageReturnLineFeeds:
-          continue scan
-        case .lineComment, .blockComment, .garbageText:
-          break scan
-        case .docLineComment(let line):
-          lines.append(SymbolGraph.LineList.Line(lineSource: line))
-          scanningLines = true
-        case .docBlockComment(let block):
-          if scanningLines {
-            break scan
-          } else {
-            return SymbolGraph.LineList(blockSource: block)
+    internal func documentation(url: String, source: SourceFileSyntax) -> [SymbolDocumentation] {
+      var result: [SymbolDocumentation] = []
+      if let token = firstToken() {
+        let leading = token.leadingTrivia
+        let converter = SourceLocationConverter(file: url, tree: source)
+        var cursor = positionAfterSkippingLeadingTrivia.utf8Offset
+        var pendingLines: [SymbolGraph.LineList.Line] = []
+        var lineBreakAlready: Bool = false
+        func assemblePendingLines() {
+          if ¬pendingLines.isEmpty {
+            result.append(
+              SymbolDocumentation(
+                developerComments: SymbolGraph.LineList(lines: []),
+                documentationComment: SymbolGraph.LineList(lines: pendingLines.reversed())
+              )
+            )
+          }
+          pendingLines = []
+          lineBreakAlready = false
+        }
+        for index in leading.indices.lazy.reversed() {
+          let trivia = leading[index]
+          defer { cursor −= trivia.sourceLength.utf8Length }
+          switch trivia {
+          case .spaces, .tabs:
+            break  // ignore
+          case .verticalTabs(let count), .formfeeds(let count), .newlines(let count),
+            .carriageReturns(let count), .carriageReturnLineFeeds(let count):
+            if lineBreakAlready ∨ count > 1 {
+              assemblePendingLines()
+            }
+            lineBreakAlready = true
+          case .lineComment(var contents):
+            assemblePendingLines()
+            if let last = result.indices.last {
+              var offset = 0
+              if contents.scalars.count ≥ 2 {
+                contents.scalars.removeFirst(2)
+                offset += 2
+              }
+              while contents.scalars.first == " " {
+                offset += 1
+                contents.removeFirst()
+              }
+              var range: SymbolGraph.LineList.SourceRange?
+              if let start = SourceLocation(offset: cursor + offset, converter: converter)
+                .symbolKitPosition,
+                let end = SourceLocation(
+                  offset: cursor + offset + contents.utf8.count,
+                  converter: converter
+                ).symbolKitPosition
+              {
+                range = SymbolGraph.LineList.SourceRange(
+                  start: start,
+                  end: end
+                )
+              }
+              result[last].developerComments.lines.prepend(
+                SymbolGraph.LineList.Line(
+                  text: contents,
+                  range: range
+                )
+              )
+            }
+          case .blockComment, .garbageText:
+            assemblePendingLines()
+          case .docLineComment(var contents):
+            lineBreakAlready = false
+            var offset = 0
+            if contents.scalars.count ≥ 3 {
+              contents.scalars.removeFirst(3)
+              offset += 3
+            }
+            if contents.scalars.first == " " {
+              offset += 1
+              contents.removeFirst()
+            }
+            var range: SymbolGraph.LineList.SourceRange?
+            if let start = SourceLocation(offset: cursor + offset, converter: converter)
+              .symbolKitPosition,
+              let end = SourceLocation(
+                offset: cursor + offset + contents.utf8.count,
+                converter: converter
+              ).symbolKitPosition
+            {
+              range = SymbolGraph.LineList.SourceRange(
+                start: start,
+                end: end
+              )
+            }
+            pendingLines.append(
+              SymbolGraph.LineList.Line(
+                text: contents,
+                range: range
+              )
+            )
+          case .docBlockComment(var contents):
+            var offset = cursor
+            if contents.scalars.count ≥ 5 {
+              contents.scalars.removeFirst(3)
+              offset += 3
+              contents.scalars.removeLast(2)
+            }
+            if contents.scalars.first == "\r" {
+              contents.scalars.removeFirst()
+              offset += 1
+            }
+            if contents.scalars.first == "\n" {
+              contents.scalars.removeFirst()
+              offset += 1
+            }
+            let indent = contents.scalars.prefix(while: { $0 == " " }).count
+            var lines: [SymbolGraph.LineList.Line] = contents.lines.map { line in
+              var trimmed = line.line
+              var remainingMargin = indent
+              var marginOffset = offset
+              while remainingMargin > 0 ∧ trimmed.first == " " {
+                trimmed.removeFirst()
+                remainingMargin −= 1
+                marginOffset += 1
+              }
+              var range: SymbolGraph.LineList.SourceRange?
+              if let start = SourceLocation(offset: cursor + marginOffset, converter: converter)
+                .symbolKitPosition,
+                let end = SourceLocation(
+                  offset: cursor + marginOffset + contents.utf8.count,
+                  converter: converter
+                ).symbolKitPosition
+              {
+                range = SymbolGraph.LineList.SourceRange(start: start, end: end)
+              }
+              return SymbolGraph.LineList.Line(text: String(trimmed), range: range)
+            }
+            if lines.last?.text.isEmpty == true {
+              lines.removeLast()
+            }
+            result.append(
+              SymbolDocumentation(
+                developerComments: SymbolGraph.LineList(lines: []),
+                documentationComment: SymbolGraph.LineList(lines: lines)
+              )
+            )
           }
         }
       }
-      if lines.isEmpty {
-        return nil
-      } else {
-        return SymbolGraph.LineList(lines: lines.reversed())
-      }
+      return result.reversed()
     }
 
     internal func location(url: String, source: SourceFileSyntax) -> SymbolGraph.Symbol.Location? {

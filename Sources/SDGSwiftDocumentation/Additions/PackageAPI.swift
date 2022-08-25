@@ -123,19 +123,18 @@ public struct PackageAPI: SymbolLike {
       )
       self.init(
         name: name,
-        documentationComment: declaration?.documentation,
+        documentation: declaration?.documentation(url: manifestURL, source: manifestSource) ?? [],
         location: declaration?.location(url: manifestURL, source: manifestSource),
         libraries: libraries,
         symbolGraphs: symbolGraphs,
         moduleSources: moduleSources,
         moduleDocumentationCommentLookup: { name in
-          return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?.documentation
+          return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?
+            .documentation(url: manifestURL, source: manifestSource) ?? []
         },
         moduleDeclarationLocationLookup: { name in
-          return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?.location(
-            url: manifestURL,
-            source: manifestSource
-          )
+          return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?
+            .location(url: manifestURL, source: manifestSource)
         }
       )
     }
@@ -145,7 +144,7 @@ public struct PackageAPI: SymbolLike {
   ///
   /// - Parameters:
   ///   - name: The name of the package.
-  ///   - documentationComment: The documentation comment.
+  ///   - documentation: The documentation.
   ///   - location: The location of the declaration in the source code.
   ///   - libraries: The libraries.
   ///   - symbolGraphs: The symbol graphs.
@@ -154,12 +153,12 @@ public struct PackageAPI: SymbolLike {
   ///   - moduleDeclarationLocationLookup: A closure which looks up the location of a module’s declaration.
   public init(
     name: String,
-    documentationComment: SymbolGraph.LineList?,
+    documentation: [SymbolDocumentation],
     location: SymbolGraph.Symbol.Location?,
     libraries: [LibraryAPI],
     symbolGraphs: [SymbolGraph],
     moduleSources: [String: [URL]],
-    moduleDocumentationCommentLookup: (String) -> SymbolGraph.LineList?,
+    moduleDocumentationCommentLookup: (String) -> [SymbolDocumentation],
     moduleDeclarationLocationLookup: (String) -> SymbolGraph.Symbol.Location?
   ) {
     let declaration = PackageAPI.declaration(for: name)
@@ -170,7 +169,7 @@ public struct PackageAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.docComment = documentationComment
+    self.documentation = documentation
     self.location = location
     self.libraries = libraries
     var existing: Set<String> = []
@@ -181,7 +180,7 @@ public struct PackageAPI: SymbolLike {
       .map({ name in
         return ModuleAPI(
           name: name,
-          documentationComment: moduleDocumentationCommentLookup(name),
+          documentation: moduleDocumentationCommentLookup(name),
           location: moduleDeclarationLocationLookup(name),
           symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
           sources: moduleSources[name] ?? []
@@ -206,6 +205,9 @@ public struct PackageAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList?
+  public var docComment: SymbolGraph.LineList? {
+    return documentation.last?.documentationComment
+  }
   public var location: SymbolGraph.Symbol.Location?
+  public var documentation: [SymbolDocumentation]
 }

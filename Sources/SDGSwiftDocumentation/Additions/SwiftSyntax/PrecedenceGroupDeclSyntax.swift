@@ -45,7 +45,7 @@ import SymbolKit
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration),
-        documentation: documentation,
+        documentation: documentation(url: url, source: source),
         location: location(url: url, source: source)
       )
     }

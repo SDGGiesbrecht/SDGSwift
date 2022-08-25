@@ -106,7 +106,7 @@ public struct ModuleAPI: SymbolLike {
       let declaration = ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)
       self.init(
         name: name,
-        documentationComment: declaration?.documentation,
+        documentation: declaration?.documentation(url: manifestURL, source: manifestSource) ?? [],
         location: declaration?.location(url: manifestURL, source: manifestSource),
         symbolGraphs: symbolGraphs,
         sources: sources
@@ -118,13 +118,13 @@ public struct ModuleAPI: SymbolLike {
   ///
   /// - Parameters:
   ///   - name: The name of the module.
-  ///   - documentationComment: The documentation comment.
+  ///   - documentation: The documentation.
   ///   - location: The location of the declaration in the source code.
   ///   - symbolGraphs: The module’s symbol graphs.
   ///   - sources: The URL’s of the module’s sources.
   public init(
     name: String,
-    documentationComment: SymbolGraph.LineList?,
+    documentation: [SymbolDocumentation],
     location: SymbolGraph.Symbol.Location?,
     symbolGraphs: [SymbolGraph],
     sources: [URL]
@@ -137,7 +137,7 @@ public struct ModuleAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.docComment = documentationComment
+    self.documentation = documentation
     self.location = location
     self.symbolGraphs = symbolGraphs
 
@@ -174,6 +174,9 @@ public struct ModuleAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList?
+  public var docComment: SymbolGraph.LineList? {
+    return documentation.last?.documentationComment
+  }
   public var location: SymbolGraph.Symbol.Location?
+  public var documentation: [SymbolDocumentation]
 }

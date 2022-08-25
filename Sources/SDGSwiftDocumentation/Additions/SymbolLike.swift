@@ -37,7 +37,6 @@ extension SymbolLike {
 
   public func documentation() -> [SymbolDocumentation] {
     guard let first = docComment?.lines.first?.range?.start else {
-      #warning("Custom scanned lines do not contain range information.")
       return []
     }
     #warning("Not implemented yet.")

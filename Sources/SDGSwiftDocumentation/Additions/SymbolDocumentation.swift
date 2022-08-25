@@ -17,8 +17,12 @@ import SymbolKit
 /// Symbol documentation.
 public struct SymbolDocumentation {
 
-  internal init(_ documentation: SymbolGraph.LineList) {
-    self.documentationComment = documentation
+  internal init(
+    developerComments: SymbolGraph.LineList,
+    documentationComment: SymbolGraph.LineList
+  ) {
+    self.developerComments = developerComments
+    self.documentationComment = documentationComment
   }
 
   // MARK: - Properties
@@ -26,7 +30,7 @@ public struct SymbolDocumentation {
   /// Any developer line comments preceding the documentation.
   ///
   /// These are included for use by custom tools that wish to extend the documentation functionality directly supported by Swift.
-  public var developerComments: [SymbolGraph.LineList] = []
+  public var developerComments: SymbolGraph.LineList
 
   /// The documentation itself.
   public var documentationComment: SymbolGraph.LineList

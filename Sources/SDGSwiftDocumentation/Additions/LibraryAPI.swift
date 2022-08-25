@@ -88,7 +88,7 @@ public struct LibraryAPI: SymbolLike {
       )
       self.init(
         name: name,
-        documentationComment: declaration?.documentation,
+        documentation: declaration?.documentation(url: manifestURL, source: manifest) ?? [],
         location: declaration?.location(url: manifestURL, source: manifest),
         modules: modules
       )
@@ -99,11 +99,11 @@ public struct LibraryAPI: SymbolLike {
   ///
   /// - Parameters:
   ///   - name: The name of the library.
-  ///   - documentationComment: The documentation comment.
+  ///   - documentation: The documentation.
   ///   - modules: The names of the modules included in the library.
   public init(
     name: String,
-    documentationComment: SymbolGraph.LineList?,
+    documentation: [SymbolDocumentation],
     location: SymbolGraph.Symbol.Location?,
     modules: [String]
   ) {
@@ -115,7 +115,7 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.docComment = documentationComment
+    self.documentation = documentation
     self.modules = modules
     self.location = location
   }
@@ -129,6 +129,9 @@ public struct LibraryAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList?
+  public var docComment: SymbolGraph.LineList? {
+    return documentation.last?.documentationComment
+  }
   public var location: SymbolGraph.Symbol.Location?
+  public var documentation: [SymbolDocumentation]
 }
