@@ -21,7 +21,7 @@ import SymbolKit
 #endif
 
 /// The API of a library.
-public struct LibraryAPI: SymbolLike {
+public struct LibraryAPI: StoredDocumentation, SymbolLike {
 
   // MARK: - Initialization
 
@@ -129,9 +129,6 @@ public struct LibraryAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList? {
-    return documentation.last?.documentationComment
-  }
   public var location: SymbolGraph.Symbol.Location?
   public var documentation: [SymbolDocumentation]
 }

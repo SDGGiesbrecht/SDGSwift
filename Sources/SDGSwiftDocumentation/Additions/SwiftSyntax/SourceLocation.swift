@@ -21,6 +21,13 @@ import SymbolKit
 
   extension SourceLocation {
 
+    internal static func convertLine(fromSymbolGraph line: Int) -> Int {
+      return line + 1
+    }
+    internal static func convertColumn(fromSymbolGraphCharacter character: Int) -> Int {
+      return character + 1
+    }
+
     internal var symbolKitPosition: SymbolGraph.LineList.SourceRange.Position? {
       guard let line = self.line,
         let column = self.column

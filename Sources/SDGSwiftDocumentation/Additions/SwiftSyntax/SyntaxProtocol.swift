@@ -27,6 +27,24 @@ import SDGSwiftSource
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SyntaxProtocol {
 
+    internal func smallest<Node>(
+      _ type: Node.Type,
+      at position: AbsolutePosition
+    ) -> Node?
+    where Node: SyntaxProtocol {
+      guard positionAfterSkippingLeadingTrivia ≤ position,
+        position ≤ endPositionBeforeTrailingTrivia
+      else {
+        return nil
+      }
+      for child in children {
+        if let found = child.smallest(type, at: position) {
+          return found
+        }
+      }
+      return self as? Node
+    }
+
     internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
     where P: SDGCollections.Pattern, P.Element == Unicode.Scalar {
       return _smallestSubnode(containing: searchTerm)

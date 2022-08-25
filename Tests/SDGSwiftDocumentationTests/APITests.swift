@@ -40,7 +40,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testModuleAPI() {
     let module = ModuleAPI(
       name: "MyModule",
-      documentationComment: nil,
+      documentation: [],
+      location: nil,
       symbolGraphs: [],
       sources: [
         URL(fileURLWithPath: #filePath),

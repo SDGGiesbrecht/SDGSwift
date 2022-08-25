@@ -26,7 +26,7 @@ import SDGControlFlow
 import SymbolKit
 
 /// The API of a module.
-public struct ModuleAPI: SymbolLike {
+public struct ModuleAPI: StoredDocumentation, SymbolLike {
 
   // MARK: - Initialization
 
@@ -174,9 +174,6 @@ public struct ModuleAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList? {
-    return documentation.last?.documentationComment
-  }
   public var location: SymbolGraph.Symbol.Location?
   public var documentation: [SymbolDocumentation]
 }
