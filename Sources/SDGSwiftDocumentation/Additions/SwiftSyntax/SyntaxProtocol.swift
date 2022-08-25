@@ -147,6 +147,7 @@ import SDGSwiftSource
               )
             )
           case .docBlockComment(var contents):
+            assemblePendingLines()
             var offset = 0
             if contents.scalars.count ≥ 5 {
               contents.scalars.removeFirst(3)
