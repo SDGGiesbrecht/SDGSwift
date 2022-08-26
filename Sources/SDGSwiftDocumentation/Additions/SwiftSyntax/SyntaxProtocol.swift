@@ -177,8 +177,11 @@ import SDGSwiftSource
                 marginOffset += 1
               }
               var range: SymbolGraph.LineList.SourceRange?
-              if let start = SourceLocation(offset: cursor + offset + marginOffset, converter: converter)
-                .symbolKitPosition,
+              if let start = SourceLocation(
+                offset: cursor + offset + marginOffset,
+                converter: converter
+              )
+              .symbolKitPosition,
                 let end = SourceLocation(
                   offset: cursor + offset + marginOffset + String(trimmed).utf8.count,
                   converter: converter
