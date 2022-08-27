@@ -70,6 +70,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       modules: ["MyModule"]
     )
     _ = library.names.subHeading
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      _ = LibraryAPI(
+        name: "MyLibrary",
+        modules: ["MyModule"],
+        manifestURL: "Package.swift",
+        manifest: SyntaxFactory.makeBlankSourceFile()
+      )
+    #endif
   }
 
   func testOperator() {
@@ -143,6 +151,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         documentation: [],
         location: nil
       )
+    var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
+    _ = Operator(
+      names: SymbolGraph.Symbol.Names(
+        title: "==",
+        navigator: nil,
+        subHeading: [],
+        prose: nil
+      ),
+      declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
+      documentation: [],
+      location: nil
+    ).parseDocumentation(cache: &cache)
   }
 
   func testPackageAPI() {
@@ -189,7 +209,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           name: "MyPackage",
           manifestURL: "somewhere.swift",
           manifestSource: SyntaxFactory.makeBlankSourceFile(),
-          libraries: [],
+          libraries: [
+            LibraryAPI(
+              name: "MyLibrary",
+              modules: ["MyModule"],
+              manifestURL: "Package.swift",
+              manifest: SyntaxFactory.makeBlankSourceFile()
+            )
+          ],
           symbolGraphs: [],
           moduleSources: [:]
         ).docComment
