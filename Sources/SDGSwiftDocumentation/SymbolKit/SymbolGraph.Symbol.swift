@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGCollections
+
 import SymbolKit
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
@@ -61,7 +63,12 @@ extension SymbolGraph.Symbol: SymbolLike {
       return fallback()
     #else
       guard let location = self.location,
-        let url = URL(string: location.uri),
+        let encoded = location.uri.addingPercentEncoding(
+          withAllowedCharacters: CharacterSet(
+            charactersIn: (0x00..<0x80).map({ Unicode.Scalar($0)! })
+          ) ∖ CharacterSet(charactersIn: " ")
+        ),
+        let url = URL(string: encoded),
         let source = try? SyntaxParser.parse(url)
       else {
         return fallback()

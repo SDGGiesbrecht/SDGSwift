@@ -462,7 +462,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
         var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
         for symbol in symbols {
-          XCTAssertEqual(symbol.parseDocumentation(cache: &cache).last?.documentationComment, symbol.docComment)
+          XCTAssertEqual(
+            symbol.parseDocumentation(cache: &cache).last?.documentationComment,
+            symbol.docComment
+          )
         }
       #endif
     }
