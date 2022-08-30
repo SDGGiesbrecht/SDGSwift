@@ -95,7 +95,10 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .newlines(1))
         )
       )
-      let found = nestedFunction.smallest(FunctionDeclSyntax.self, at: AbsolutePosition(utf8Offset: 15))
+      let found = nestedFunction.smallest(
+        FunctionDeclSyntax.self,
+        at: AbsolutePosition(utf8Offset: 15)
+      )
       XCTAssertEqual(found?.identifier.text, "inner")
     #endif
   }
