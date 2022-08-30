@@ -42,7 +42,7 @@ import SDGSwiftSource
           return found
         }
       }
-      return self as? Node
+      return Syntax(self).as(Node.self)
     }
 
     internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
