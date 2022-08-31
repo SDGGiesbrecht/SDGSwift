@@ -524,7 +524,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uri: "some file.swift",
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
-    #if !os(Linux) // #workaround(Swift 5.6.1, Foundation crashes instead of throwing.)
+    #if !os(Linux)  // #workaround(Swift 5.6.1, Foundation crashes instead of throwing.)
       _ = modified.parseDocumentation(cache: &cache)
     #endif
   }

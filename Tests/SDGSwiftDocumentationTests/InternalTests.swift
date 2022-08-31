@@ -100,6 +100,57 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         at: AbsolutePosition(utf8Offset: 15)
       )
       XCTAssertEqual(found?.identifier.text, "inner")
+
+      let documented = SyntaxFactory.makeStructDecl(
+        attributes: nil,
+        modifiers: nil,
+        structKeyword: SyntaxFactory.makeToken(
+          .structKeyword,
+          leadingTrivia: Trivia(pieces: [
+            .lineComment("// Developer comment."),
+            .newlines(1),
+            .docLineComment("/// Documentation."),
+          ]),
+          trailingTrivia: .spaces(1)
+        ),
+        identifier: SyntaxFactory.makeToken(.identifier("Structure")),
+        genericParameterClause: nil,
+        inheritanceClause: nil,
+        genericWhereClause: nil,
+        members: SyntaxFactory.makeMemberDeclBlock(
+          leftBrace: SyntaxFactory.makeToken(
+            .leftBrace,
+            leadingTrivia: .spaces(1),
+            trailingTrivia: .spaces(1)
+          ),
+          members: SyntaxFactory.makeMemberDeclList([]),
+          rightBrace: SyntaxFactory.makeToken(
+            .leftBrace,
+            leadingTrivia: .spaces(1)
+          )
+        )
+      )
+      let documentation = documented.documentation(
+        url: "somewhere.swift",
+        source: SyntaxFactory.makeSourceFile(
+          statements: SyntaxFactory.makeCodeBlockItemList([
+            SyntaxFactory.makeCodeBlockItem(
+              item: Syntax(documented),
+              semicolon: nil,
+              errorTokens: nil
+            )
+          ]),
+          eofToken: SyntaxFactory.makeToken(.eof)
+        )
+      )
+      XCTAssertEqual(
+        documentation.first?.developerComments.lines.map({ $0.text }).joined(separator: "\n"),
+        "Developer comment."
+      )
+      XCTAssertEqual(
+        documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
+        "Documentation."
+      )
     #endif
   }
 }
