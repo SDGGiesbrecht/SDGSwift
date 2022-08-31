@@ -37,6 +37,7 @@ public protocol SymbolLike {
   ///
   /// - Parameters:
   ///   - cache: Pass an empty dictionary on the first call, after which the same dictionary can be passed to later calls to reduce the amount of redundant parsing.
-  func parseDocumentation(cache: inout [URL: SymbolGraph.Symbol.CachedSource])
-    -> [SymbolDocumentation]
+  func parseDocumentation(
+    cache: inout [URL: SymbolGraph.Symbol.CachedSource]
+  ) -> [SymbolDocumentation]
 }
