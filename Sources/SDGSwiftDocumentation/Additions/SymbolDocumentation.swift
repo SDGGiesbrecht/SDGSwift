@@ -17,7 +17,12 @@ import SymbolKit
 /// Symbol documentation.
 public struct SymbolDocumentation {
 
-  internal init(
+  /// Creates symbol documentation.
+  ///
+  /// - Parameters:
+  ///   - developerComments: Any preceding developer comments.
+  ///   - documentationComment: The documentation comment itself.
+  public init(
     developerComments: SymbolGraph.LineList,
     documentationComment: SymbolGraph.LineList
   ) {

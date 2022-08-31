@@ -37,6 +37,13 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testSymbolDocumentation() {
+    _ = SDGSwiftDocumentation.SymbolDocumentation(
+      developerComments: SymbolGraph.LineList(lines: []),
+      documentationComment: SymbolGraph.LineList(lines: [])
+    )
+  }
+
   func testModuleAPI() {
     let module = ModuleAPI(
       name: "MyModule",
@@ -49,6 +56,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ]
     )
     _ = module.names.subHeading
+    _ = module.docComment
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         ModuleAPI(
@@ -478,7 +486,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSymbolGraphLineList() {
     _ = SymbolGraph.LineList(lines: [
-      SymbolGraph.LineList.Line(text: "...", range: nil)
+      SymbolGraph.LineList.Line(text: "...", range: nil),
+      SymbolGraph.LineList.Line(
+        text: "...",
+        range: SymbolGraph.LineList.SourceRange(
+          start: SymbolGraph.LineList.SourceRange.Position(line: 2, character: 4),
+          end: SymbolGraph.LineList.SourceRange.Position(line: 2, character: 7)
+        )
+      ),
     ])
   }
 
@@ -498,5 +513,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       mixins: [:]
     )
     _ = symbol.declaration
+    _ = symbol.location
+    var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
+    _ = symbol.parseDocumentation(cache: &cache)
+
+    var modified = symbol
+    modified.docComment = SymbolGraph.LineList.init(lines: [])
+    _ = modified.parseDocumentation(cache: &cache)
+    modified.location = SymbolGraph.Symbol.Location(
+      uri: "some file.swift",
+      position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
+    )
+    _ = modified.parseDocumentation(cache: &cache)
+  }
+
+  func testSymbolGraphSymbolLocation() {
+    _ = SymbolGraph.Symbol.Location(
+      uri: "somewhere.swift",
+      position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
+    )
   }
 }

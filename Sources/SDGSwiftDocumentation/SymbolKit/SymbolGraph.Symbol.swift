@@ -34,7 +34,12 @@ extension SymbolGraph.Symbol: SymbolLike {
   }
 
   public var location: Location? {
-    return mixins[Location.mixinKey] as? Location
+    get {
+      return mixins[Location.mixinKey] as? Location
+    }
+    set {
+      mixins[Location.mixinKey] = newValue
+    }
   }
 
   #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
