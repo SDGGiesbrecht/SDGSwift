@@ -215,7 +215,7 @@ import SDGSwiftSource
       guard let url = start.file,
         let line = start.line,
         let character = start.column
-      else {
+      else {  // @exempt(from: tests) Presumably unreachable.
         return nil
       }
       return SymbolGraph.Symbol.Location(

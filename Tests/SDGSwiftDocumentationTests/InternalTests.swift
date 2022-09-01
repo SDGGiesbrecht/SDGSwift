@@ -109,7 +109,9 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           leadingTrivia: Trivia(pieces: [
             .lineComment("// Developer comment."),
             .newlines(1),
-            .docLineComment("/// Documentation."),
+            .docLineComment("/// Documentation"),
+            .carriageReturnLineFeeds(1),
+            .docLineComment("/// which continues after a Windows line break.")
           ]),
           trailingTrivia: .spaces(1)
         ),
@@ -149,7 +151,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       )
       XCTAssertEqual(
         documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
-        "Documentation."
+        "Documentation\nwhich continues after a Windows line break."
       )
     #endif
   }
