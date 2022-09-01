@@ -107,6 +107,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         structKeyword: SyntaxFactory.makeToken(
           .structKeyword,
           leadingTrivia: Trivia(pieces: [
+            .docBlockComment("/**\r\n Additional documentation comment framed by Windows line breaks.\r\n */"),
+            .newlines(1),
             .lineComment("// Developer comment."),
             .newlines(1),
             .docLineComment("/// Documentation"),
@@ -146,12 +148,16 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         )
       )
       XCTAssertEqual(
-        documentation.first?.developerComments.lines.map({ $0.text }).joined(separator: "\n"),
+        documentation.last?.developerComments.lines.map({ $0.text }).joined(separator: "\n"),
         "Developer comment."
       )
       XCTAssertEqual(
-        documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
+        documentation.last?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
         "Documentation\nwhich continues after a Windows line break."
+      )
+      XCTAssertEqual(
+        documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
+        "Additional documentation comment framed by Windows line breaks."
       )
     #endif
   }
