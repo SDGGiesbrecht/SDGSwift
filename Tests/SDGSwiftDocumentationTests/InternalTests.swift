@@ -107,13 +107,15 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         structKeyword: SyntaxFactory.makeToken(
           .structKeyword,
           leadingTrivia: Trivia(pieces: [
-            .docBlockComment("/**\r\n Additional documentation comment framed by Windows line breaks.\r\n */"),
+            .docBlockComment(
+              "/**\r\n Additional documentation comment framed by Windows line breaks.\r\n */"
+            ),
             .newlines(1),
             .lineComment("// Developer comment."),
             .newlines(1),
             .docLineComment("/// Documentation"),
             .carriageReturnLineFeeds(1),
-            .docLineComment("/// which continues after a Windows line break.")
+            .docLineComment("/// which continues after a Windows line break."),
           ]),
           trailingTrivia: .spaces(1)
         ),

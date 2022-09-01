@@ -87,7 +87,7 @@ extension SymbolGraph.Symbol: SymbolLike {
       where Node: SyntaxProtocol {
         return source.smallest(type, at: position)?
           .documentation(url: location.uri, source: source)
-          ?? []
+          ?? []  // @exempt(from: tests) Theoretically unreachable.
       }
       switch kind.identifier {
       case .associatedtype:
@@ -115,7 +115,7 @@ extension SymbolGraph.Symbol: SymbolLike {
       case .typealias:
         return scan(for: TypealiasDeclSyntax.self)
       case .module, .unknown:
-        return []
+        return []  // @exempt(from: tests) Theoretically unreachable.
       }
     #endif
   }
