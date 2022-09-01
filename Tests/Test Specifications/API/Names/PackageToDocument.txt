@@ -11,6 +11,7 @@
 >(_:_:)
 >=(_:_:)
 AnotherSublass
+Class
 CollectionType
 CollectionType.Index
 CollectionType.Indices
@@ -27,7 +28,9 @@ Protocol
 Structure
 Subclass
 Superclass
+TypeAlias
 TypeExpressibleByStringInterpolation
+VisibleAssociatedType
 allSatisfy(_:)
 compactMap(_:)
 contains(_:)

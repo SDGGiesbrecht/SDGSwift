@@ -94,7 +94,7 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: AssociatedtypeDeclSyntax.self)
       case .class:
         return scan(for: ClassDeclSyntax.self)
-      case .deinit:
+      case .deinit:  // @exempt(from: tests) Do not seem to actually be in graph.
         return scan(for: DeinitializerDeclSyntax.self)
       case .enum:
         return scan(for: EnumDeclSyntax.self)

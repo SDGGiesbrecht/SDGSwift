@@ -5,8 +5,10 @@
 @warn_unqualified_access func min() -> Self.Element?
 @warn_unqualified_access func min(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows -> Self.Element?
 Package(name: "PackageToDocument")
+associatedtype VisibleAssociatedType
 case visible
 class AnotherSublass
+class Class
 class Subclass
 class Superclass
 enum Enumeration
@@ -111,6 +113,7 @@ subscript<R>(r: R) -> Self.SubSequence where R : RangeExpression, Self.Index == 
 typealias Index = Int
 typealias Indices = DefaultIndices<CollectionType>
 typealias RawValue = Int
+typealias TypeAlias = Bool
 var count: Int { get }
 var endIndex: Int { get }
 var extensionProperty: Bool { get }

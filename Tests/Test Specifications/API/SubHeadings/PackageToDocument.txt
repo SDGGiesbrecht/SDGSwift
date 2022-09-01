@@ -1,8 +1,10 @@
 .library(name: "PrimaryProduct")
 .target(name: "PrimaryModule")
 Package(name: "PackageToDocument")
+associatedtype VisibleAssociatedType
 case visible
 class AnotherSublass
+class Class
 class Subclass
 class Superclass
 enum Enumeration
@@ -111,6 +113,7 @@ subscript<R>(R) -> Self.SubSequence
 typealias Index
 typealias Indices
 typealias RawValue
+typealias TypeAlias
 var count: Int
 var endIndex: Int
 var extensionProperty: Bool
