@@ -16,7 +16,7 @@ import SDGMathematics
 
 import SymbolKit
 
-public struct PrecedenceGroup: Comparable, SymbolLike {
+public struct PrecedenceGroup: Comparable, StoredDocumentation, SymbolLike {
 
   // MARK: - Initialization
 
@@ -25,14 +25,18 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
   /// - Parameters:
   ///   - names: The names.
   ///   - declaration: The declaration.
+  ///   - documentation: The documentation.
+  ///   - location: The location.
   public init(
     names: SymbolGraph.Symbol.Names,
     declaration: SymbolGraph.Symbol.DeclarationFragments,
-    documentation: SymbolGraph.LineList?
+    documentation: [SymbolDocumentation],
+    location: SymbolGraph.Symbol.Location?
   ) {
     self.names = names
     self.declaration = declaration
-    self.docComment = documentation
+    self.documentation = documentation
+    self.location = location
   }
 
   // MARK: - Comparable
@@ -51,5 +55,6 @@ public struct PrecedenceGroup: Comparable, SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList?
+  public var location: SymbolGraph.Symbol.Location?
+  public var documentation: [SymbolDocumentation]
 }

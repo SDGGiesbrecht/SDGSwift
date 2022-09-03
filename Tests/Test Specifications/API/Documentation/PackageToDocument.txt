@@ -16,9 +16,13 @@ through the elements of the collection.
 
 - Complexity: O(1)
 
+A class.
+
 A sequence containing the same elements as this sequence,
 but on which some operations, such as `map` and `filter`, are
 implemented lazily.
+
+A type alias.
 
 A type that represents a position in the collection.
 
@@ -43,6 +47,8 @@ implementation, make sure to compute the value nondestructively.
 
 - Complexity: O(1), except if the sequence also conforms to `Collection`.
   In this case, see the documentation of `Collection.underestimatedCount`.
+
+A visible associated type.
 
 Accesses a contiguous subrange of the collection's elements.
 

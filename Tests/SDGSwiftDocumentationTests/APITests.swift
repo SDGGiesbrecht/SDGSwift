@@ -37,10 +37,18 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testSymbolDocumentation() {
+    _ = SDGSwiftDocumentation.SymbolDocumentation(
+      developerComments: SymbolGraph.LineList(lines: []),
+      documentationComment: SymbolGraph.LineList(lines: [])
+    )
+  }
+
   func testModuleAPI() {
     let module = ModuleAPI(
       name: "MyModule",
-      documentationComment: nil,
+      documentation: [],
+      location: nil,
       symbolGraphs: [],
       sources: [
         URL(fileURLWithPath: #filePath),
@@ -48,12 +56,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ]
     )
     _ = module.names.subHeading
+    _ = module.docComment
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         ModuleAPI(
           name: "MyModule",
           symbolGraphs: [],
           sources: [],
+          manifestURL: "somewhere.swift",
           manifestSource: SyntaxFactory.makeBlankSourceFile()
         ).docComment
       )
@@ -63,10 +73,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testLibraryAPI() {
     let library = LibraryAPI(
       name: "MyLibrary",
-      documentationComment: nil,
+      documentation: [],
+      location: nil,
       modules: ["MyModule"]
     )
     _ = library.names.subHeading
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      _ = LibraryAPI(
+        name: "MyLibrary",
+        modules: ["MyModule"],
+        manifestURL: "Package.swift",
+        manifest: SyntaxFactory.makeBlankSourceFile()
+      )
+    #endif
   }
 
   func testOperator() {
@@ -85,7 +104,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       < Operator(
         names: SymbolGraph.Symbol.Names(
@@ -101,7 +121,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
     _ =
       Operator(
@@ -118,7 +139,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       == Operator(
         names: SymbolGraph.Symbol.Names(
@@ -134,18 +156,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
+    var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
+    _ = Operator(
+      names: SymbolGraph.Symbol.Names(
+        title: "==",
+        navigator: nil,
+        subHeading: [],
+        prose: nil
+      ),
+      declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
+      documentation: [],
+      location: nil
+    ).parseDocumentation(cache: &cache)
   }
 
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
-      documentationComment: nil,
+      documentation: [],
+      location: nil,
       libraries: [
         LibraryAPI(
           name: "MyLibrary",
-          documentationComment: nil,
+          documentation: [],
+          location: nil,
           modules: ["MyModule"]
         )
       ],
@@ -169,7 +206,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       ],
       moduleSources: [:],
-      moduleDocumentationCommentLookup: { _ in return nil }
+      moduleDocumentationCommentLookup: { _ in return [] },
+      moduleDeclarationLocationLookup: { _ in return nil }
     )
     _ = package.symbolGraphs()
     _ = package.names.subHeading
@@ -177,8 +215,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNil(
         PackageAPI(
           name: "MyPackage",
+          manifestURL: "somewhere.swift",
           manifestSource: SyntaxFactory.makeBlankSourceFile(),
-          libraries: [],
+          libraries: [
+            LibraryAPI(
+              name: "MyLibrary",
+              modules: ["MyModule"],
+              manifestURL: "Package.swift",
+              manifest: SyntaxFactory.makeBlankSourceFile()
+            )
+          ],
           symbolGraphs: [],
           moduleSources: [:]
         ).docComment
@@ -202,7 +248,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       < PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -218,7 +265,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
     _ =
       PrecedenceGroup(
@@ -241,7 +289,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: "A"
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       < PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -263,7 +312,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: "A"
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
     _ =
       PrecedenceGroup(
@@ -274,7 +324,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       < PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -284,7 +335,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
     _ =
       PrecedenceGroup(
@@ -295,7 +347,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
       == PrecedenceGroup(
         names: SymbolGraph.Symbol.Names(
@@ -305,7 +358,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
-        documentation: nil
+        documentation: [],
+        location: nil
       )
   }
 
@@ -413,13 +467,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           against: documentationSpecification,
           overwriteSpecificationInsteadOfFailing: false
         )
+
+        var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
+        for symbol in symbols {
+          if let standard = symbol as? SymbolGraph.Symbol,
+            standard.isDocCommentFromSameModule == false
+          {
+            continue  // Parsing is not expected to work.
+          }
+          XCTAssertEqual(
+            symbol.parseDocumentation(cache: &cache).last?.documentationComment,
+            symbol.docComment
+          )
+        }
       #endif
     }
   }
 
   func testSymbolGraphLineList() {
     _ = SymbolGraph.LineList(lines: [
-      SymbolGraph.LineList.Line(text: "...", range: nil)
+      SymbolGraph.LineList.Line(text: "...", range: nil),
+      SymbolGraph.LineList.Line(
+        text: "...",
+        range: SymbolGraph.LineList.SourceRange(
+          start: SymbolGraph.LineList.SourceRange.Position(line: 2, character: 4),
+          end: SymbolGraph.LineList.SourceRange.Position(line: 2, character: 7)
+        )
+      ),
     ])
   }
 
@@ -439,5 +513,26 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       mixins: [:]
     )
     _ = symbol.declaration
+    _ = symbol.location
+    var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
+    _ = symbol.parseDocumentation(cache: &cache)
+
+    var modified = symbol
+    modified.docComment = SymbolGraph.LineList.init(lines: [])
+    _ = modified.parseDocumentation(cache: &cache)
+    modified.location = SymbolGraph.Symbol.Location(
+      uri: "some file.swift",
+      position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
+    )
+    #if !os(Linux)  // #workaround(Swift 5.6.1, Foundation crashes instead of throwing.)
+      _ = modified.parseDocumentation(cache: &cache)
+    #endif
+  }
+
+  func testSymbolGraphSymbolLocation() {
+    _ = SymbolGraph.Symbol.Location(
+      uri: "somewhere.swift",
+      position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
+    )
   }
 }

@@ -1,5 +1,5 @@
 /*
- SymbolGraph.LineList.swift
+ SymbolGraph.LineList.SourceRange.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,20 +12,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-
 import SymbolKit
 
-extension SymbolGraph.LineList {
+extension SymbolGraph.LineList.SourceRange {
 
-  /// Creates a line list.
+  /// Creates a location.
   ///
   /// - Parameters:
-  ///   - lines: The lines.
-  public init(lines: [Line]) {
+  ///   - start: The lower bound.
+  ///   - end: The upper bound.
+  public init(start: Position, end: Position) {
     struct Proxy: Encodable {
-      let lines: [Line]
+      let start: Position
+      let end: Position
     }
-    self = try! initialize(Self.self, by: Proxy(lines: lines))
+    self = try! initialize(Self.self, by: Proxy(start: start, end: end))
   }
 }

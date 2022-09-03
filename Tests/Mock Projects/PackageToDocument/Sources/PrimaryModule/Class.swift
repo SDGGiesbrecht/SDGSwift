@@ -1,5 +1,5 @@
 /*
- SymbolGraph.LineList.swift
+ Class.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,20 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-
-import SymbolKit
-
-extension SymbolGraph.LineList {
-
-  /// Creates a line list.
-  ///
-  /// - Parameters:
-  ///   - lines: The lines.
-  public init(lines: [Line]) {
-    struct Proxy: Encodable {
-      let lines: [Line]
-    }
-    self = try! initialize(Self.self, by: Proxy(lines: lines))
-  }
+/// A class.
+public class Class {
+  /// Deinitializes the instance.
+  deinit {}
 }

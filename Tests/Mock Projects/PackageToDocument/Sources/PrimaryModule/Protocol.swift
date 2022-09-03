@@ -13,6 +13,8 @@
  */
 
 public protocol Protocol {
+  /// A visible associated type.
+  associatedtype VisibleAssociatedType
   associatedtype _HiddenAssociatedType
 }
 

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SymbolKit
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
@@ -19,7 +21,7 @@ import SymbolKit
 #endif
 
 /// The API of a library.
-public struct LibraryAPI: SymbolLike {
+public struct LibraryAPI: StoredDocumentation, SymbolLike {
 
   // MARK: - Initialization
 
@@ -76,15 +78,18 @@ public struct LibraryAPI: SymbolLike {
     /// - Parameters:
     ///   - name: The name of the library.
     ///   - modules: The names of the modules included in the library.
+    ///   - manifestURL: The URL of the manifest.
     ///   - manifest: The source of the package manifest.
-    public init(name: String, modules: [String], manifest: SourceFileSyntax) {
+    public init(name: String, modules: [String], manifestURL: String, manifest: SourceFileSyntax) {
+      let declaration = PackageAPI.find(
+        LibraryAPI.declaration(for: name),
+        in: manifest,
+        as: FunctionCallExprSyntax.self
+      )
       self.init(
         name: name,
-        documentationComment: PackageAPI.findDocumentation(
-          of: LibraryAPI.declaration(for: name),
-          in: manifest,
-          as: FunctionCallExprSyntax.self
-        ),
+        documentation: declaration?.documentation(url: manifestURL, source: manifest) ?? [],
+        location: declaration?.location(url: manifestURL, source: manifest),
         modules: modules
       )
     }
@@ -94,11 +99,12 @@ public struct LibraryAPI: SymbolLike {
   ///
   /// - Parameters:
   ///   - name: The name of the library.
-  ///   - documentationComment: The documentation comment.
+  ///   - documentation: The documentation.
   ///   - modules: The names of the modules included in the library.
   public init(
     name: String,
-    documentationComment: SymbolGraph.LineList?,
+    documentation: [SymbolDocumentation],
+    location: SymbolGraph.Symbol.Location?,
     modules: [String]
   ) {
     let declaration = LibraryAPI.declaration(for: name)
@@ -109,8 +115,9 @@ public struct LibraryAPI: SymbolLike {
       prose: nil
     )
     self.declaration = SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration)
-    self.docComment = documentationComment
+    self.documentation = documentation
     self.modules = modules
+    self.location = location
   }
 
   // MARK: - Properties
@@ -122,5 +129,6 @@ public struct LibraryAPI: SymbolLike {
 
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
-  public var docComment: SymbolGraph.LineList?
+  public var location: SymbolGraph.Symbol.Location?
+  public var documentation: [SymbolDocumentation]
 }

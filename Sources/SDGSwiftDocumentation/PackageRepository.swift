@@ -113,8 +113,9 @@ extension PackageRepository {
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<PackageAPI, SymbolGraph.LoadingError> {
+      let manifestURL = location.appendingPathComponent("Package.swift")
       let manifestSource =
-        (try? SyntaxParser.parse(location.appendingPathComponent("Package.swift")))
+        (try? SyntaxParser.parse(manifestURL))
         ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
       switch package() {
       case .failure(let error):
@@ -124,11 +125,16 @@ extension PackageRepository {
         case .failure(let error):
           return .failure(error)
         case .success(let symbolGraphs):
+          let reportedURL = manifestURL.absoluteString
           return .success(
             PackageAPI(
               name: package.manifest.displayName,
+              manifestURL: reportedURL,
               manifestSource: manifestSource,
-              libraries: package.manifest.publicLibraries(manifest: manifestSource),
+              libraries: package.manifest.publicLibraries(
+                manifestURL: reportedURL,
+                manifest: manifestSource
+              ),
               symbolGraphs: symbolGraphs,
               moduleSources: package.publicModuleSources()
             )
