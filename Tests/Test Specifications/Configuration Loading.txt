@@ -14,7 +14,6 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 [[...]/[...]] Downloading binary artifacts
-Compiling plugin GenerateManualPlugin...
 Building for debugging...
 [[...]/[...]] Emitting module SDGControlFlow
 [[...]/[...]] Emitting module SDGSwiftConfiguration
@@ -24,12 +23,11 @@ Building for debugging...
 
 Cached
 Loading “SampleConfigurationFile.swift”...
-Compiling plugin GenerateManualPlugin...
 Building for debugging...
 [[...]/[...]] Copying lib_InternalSwiftSyntaxParser.dylib
 [[...]/[...]] Emitting module SwiftSyntax
-[[...]/[...]] Emitting module SwiftSyntaxParser
 [[...]/[...]] Archiving libSwiftSyntax.a
+[[...]/[...]] Emitting module SwiftSyntaxParser
 [[...]/[...]] Archiving libSwiftSyntaxParser.a
 Build complete! ([duration]s)
 
@@ -53,7 +51,6 @@ Fetching [...]
 Fetching [...]
 Fetching [...]
 [[...]/[...]] Downloading binary artifacts
-Compiling plugin GenerateManualPlugin...
 Building for debugging...
 [[...]/[...]] Emitting module SDGSwiftConfiguration
 [[...]/[...]] Emitting module SampleConfiguration
