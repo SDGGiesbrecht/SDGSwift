@@ -221,6 +221,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             remove(logEntry: "Creating working copy for")
             remove(logEntry: "Working copy of")
             remove(logEntry: "Computing")
+            remove(logEntry: "Compiling plugin GenerateManualPlugin...")
 
             let fractionPatternStart =
               "[".scalars
