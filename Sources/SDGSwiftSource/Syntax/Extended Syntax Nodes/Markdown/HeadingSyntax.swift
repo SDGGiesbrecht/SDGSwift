@@ -38,7 +38,8 @@
 
       let delimiterPattern = String(repeating: "#", count: level)
       if documentation.scalars[nodeStart..<nodeEnd]
-        .hasPrefix(delimiterPattern.scalars.literal(for: String.ScalarView.SubSequence.self)) {
+        .hasPrefix(delimiterPattern.scalars.literal(for: String.ScalarView.SubSequence.self))
+      {
         let delimiterEnd = documentation.scalars.index(
           nodeStart,
           offsetBy: delimiterPattern.scalars.count

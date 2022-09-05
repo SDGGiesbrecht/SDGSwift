@@ -560,7 +560,9 @@ public enum Xcode: VersionedExternalProcess {
                 }
                 var substring = String(report[subrange])
                 report.removeSubrange(subrange)
-                while let nested = substring.firstMatch(for: NestingPattern(opening: "(", closing: ")")) {
+                while let nested = substring.firstMatch(
+                  for: NestingPattern(opening: "(", closing: ")")
+                ) {
                   let regionString = nested.levelContents.contents
                   substring.removeSubrange(nested.contents.bounds)
 

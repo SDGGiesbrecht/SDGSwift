@@ -241,14 +241,17 @@ extension Configuration {
         where configurationContents.lines[lineIndex].line.hasPrefix(
           "import ".scalars.literal(for: String.ScalarView.SubSequence.self)
         ) {
-          let comment: ExclusiveSuffixMatch<LiteralPattern<String.ScalarView, String.ScalarView.SubSequence>.Match>
+          let comment:
+            ExclusiveSuffixMatch<
+              LiteralPattern<String.ScalarView, String.ScalarView.SubSequence>.Match
+            >
           if let sameLineComment = configurationContents.lines[lineIndex].line
             .suffix(after: "/\u{2F} ".scalars.literal(for: String.ScalarView.SubSequence.self))
           {
             comment = sameLineComment
           } else if let nextLine = configurationContents.lines[lineIndex...].dropFirst().first,
             let nextLineComment = nextLine.line
-            .suffix(after: "/\u{2F} ".scalars.literal(for: String.ScalarView.SubSequence.self))
+              .suffix(after: "/\u{2F} ".scalars.literal(for: String.ScalarView.SubSequence.self))
           {
             comment = nextLineComment
           } else {
