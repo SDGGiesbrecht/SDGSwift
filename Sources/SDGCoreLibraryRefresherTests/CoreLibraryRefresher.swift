@@ -109,9 +109,9 @@ enum CoreLibraryRefresher {
                 {
                   // #workaround(cmark 0.50302.0, Indexing bug leads to infinite loop?)
                   normalized.replaceMatches(
-                    for: "///".scalars
-                      + RepetitionPattern(ConditionalPattern<Unicode.Scalar>({ $0 ≠ "\n" }))
-                      + "\n".scalars,
+                    for: "///".scalars.literal(for: StrictString.self)
+                    + RepetitionPattern(ConditionalPattern<StrictString>({ $0 ≠ "\n" }))
+                      + "\n".scalars.literal(for: StrictString.self),
                     with: "\n".scalars
                   )
                 }

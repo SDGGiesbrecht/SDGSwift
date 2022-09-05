@@ -46,7 +46,7 @@ import SDGSwiftSource
     }
 
     internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-    where P: SDGCollections.Pattern, P.Element == Unicode.Scalar {
+    where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
       return _smallestSubnode(containing: searchTerm)
     }
 

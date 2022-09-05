@@ -114,7 +114,9 @@ public enum Git: VersionedExternalProcess {
         var versions: Set<Version> = []
         for line in output.lines {
           let lineText = line.line
-          if let tagPrefix = lineText.firstMatch(for: "refs/tags/".scalars) {
+          if let tagPrefix = lineText.firstMatch(
+            for: "refs/tags/".scalars.literal(for: String.ScalarView.SubSequence.self)
+          ) {
             let tag = String(lineText[tagPrefix.range.upperBound...])
             if let version = Version(tag) {
               versions.insert(version)

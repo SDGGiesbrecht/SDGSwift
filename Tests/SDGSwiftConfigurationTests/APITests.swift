@@ -198,7 +198,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             abbreviate(logEntry: "Cloning")
             abbreviate(logEntry: "Resolving")
             log.lines.removeAll(where: { line in
-              return line.line.contains("Starting resolution using".scalars)
+              return line.line.contains(
+                "Starting resolution using".scalars.literal(for: String.ScalarView.SubSequence.self)
+              )
             })
 
             // These may occur out of order.
@@ -242,7 +244,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             lines.removeAll(where: { $0.contains("SQLITE_OPEN_FILEPROTECTION_") })
             lines.removeAll(where: { $0.contains("[logging] misuse at line") })
             log = lines.joined(separator: "\n")
-            let digits = ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits })
+        let digits = ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.decimalDigits })
             let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars
             let durationPattern = durationPatternOne + RepetitionPattern(digits) + "s)".scalars
             log.scalars.replaceMatches(

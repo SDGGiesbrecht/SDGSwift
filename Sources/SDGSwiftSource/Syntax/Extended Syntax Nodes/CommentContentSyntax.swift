@@ -39,12 +39,13 @@ public final class CommentContentSyntax: ExtendedSyntax {
 
         while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
           let start =
-            line.scalars[line.startIndex..<`protocol`.lowerBound].lastMatch(for: " ".scalars)?.range
+            line.scalars[line.startIndex..<`protocol`.lowerBound]
+            .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .upperBound ?? line.startIndex
           let end =
-            line.scalars[`protocol`.upperBound..<line.scalars.endIndex].firstMatch(
-              for: " ".scalars
-            )?.range.lowerBound ?? line.endIndex
+            line.scalars[`protocol`.upperBound..<line.scalars.endIndex]
+            .firstMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
+            .lowerBound ?? line.endIndex
 
           if start ≠ line.startIndex {
             children.append(ExtendedTokenSyntax(text: String(line[..<start]), kind: .commentText))

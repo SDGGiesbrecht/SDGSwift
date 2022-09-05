@@ -156,7 +156,7 @@ extension Git {
         let indicator = Array("!! ".scalars)
         var result: [URL] = []
         for line in ignoredSummary.lines.lazy.map({ $0.line })
-        where line.hasPrefix(indicator) {
+        where line.hasPrefix(indicator.literal(for: String.ScalarView.SubSequence.self)) {
           var relativePath = String(line.dropFirst(indicator.count))
           if relativePath.hasPrefix("\u{22}"),
             relativePath.dropFirst().hasSuffix("\u{22}")

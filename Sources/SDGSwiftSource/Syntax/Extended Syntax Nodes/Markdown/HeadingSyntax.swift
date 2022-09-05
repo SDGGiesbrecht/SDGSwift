@@ -37,7 +37,8 @@
       let nodeEnd = node.upperBound(in: documentation)
 
       let delimiterPattern = String(repeating: "#", count: level)
-      if documentation.scalars[nodeStart..<nodeEnd].hasPrefix(delimiterPattern.scalars) {
+      if documentation.scalars[nodeStart..<nodeEnd]
+        .hasPrefix(delimiterPattern.scalars.literal(for: String.ScalarView.SubSequence.self)) {
         let delimiterEnd = documentation.scalars.index(
           nodeStart,
           offsetBy: delimiterPattern.scalars.count
@@ -67,14 +68,14 @@
         indent = nil
 
         if let newline = documentation.scalars[nodeStart..<nodeEnd].firstMatch(
-          for: CharacterSet.newlinePattern
+          for: CharacterSet.newlinePattern(for: String.ScalarView.SubSequence.self)
         ) {
 
           var delimiterEnd = documentation.scalars.endIndex
           if let nextNewline = documentation.scalars[
             newline.range.upperBound..<documentation.scalars.endIndex
           ].firstMatch(
-            for: CharacterSet.newlinePattern
+            for: CharacterSet.newlinePattern(for: String.ScalarView.SubSequence.self)
           ) {
             delimiterEnd = nextNewline.range.lowerBound
           }
