@@ -310,7 +310,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           XCTFail("Should have failed to build.\n\(output)")
         case .failure(let error):
           XCTAssert(
-            error.presentableDescription().contains("Float80".scalars),
+            error.presentableDescription().contains(
+              "Float80".scalars.literal(for: StrictString.self)
+            ),
             "Wrong error:\n\(error.presentableDescription())"
           )
         }

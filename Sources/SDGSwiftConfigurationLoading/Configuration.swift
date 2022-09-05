@@ -238,14 +238,20 @@ extension Configuration {
         var dependencies:
           [(packageName: String, packageURL: URL, version: Version, product: String)] = []
         importSearch: for lineIndex in configurationContents.lines.indices
-        where configurationContents.lines[lineIndex].line.hasPrefix("import ".scalars) {
-          let comment: PatternMatch<String.ScalarView.SubSequence>
+        where configurationContents.lines[lineIndex].line.hasPrefix(
+          "import ".scalars.literal(for: String.ScalarView.SubSequence.self)
+        ) {
+          let comment:
+            ExclusiveSuffixMatch<
+              LiteralPattern<String.ScalarView, String.ScalarView.SubSequence>.Match
+            >
           if let sameLineComment = configurationContents.lines[lineIndex].line
-            .suffix(after: "/\u{2F} ".scalars)
+            .suffix(after: "/\u{2F} ".scalars.literal(for: String.ScalarView.SubSequence.self))
           {
             comment = sameLineComment
           } else if let nextLine = configurationContents.lines[lineIndex...].dropFirst().first,
-            let nextLineComment = nextLine.line.suffix(after: "/\u{2F} ".scalars)
+            let nextLineComment = nextLine.line
+              .suffix(after: "/\u{2F} ".scalars.literal(for: String.ScalarView.SubSequence.self))
           {
             comment = nextLineComment
           } else {

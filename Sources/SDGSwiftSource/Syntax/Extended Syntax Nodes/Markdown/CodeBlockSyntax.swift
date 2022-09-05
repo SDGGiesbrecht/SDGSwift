@@ -47,7 +47,8 @@
       followingChildren.prepend(closingDelimiter)
 
       var isSwift: Bool?
-      if let language = contents.scalars.prefix(upTo: CharacterSet.newlinePattern),
+      if let language = contents.scalars
+        .prefix(upTo: CharacterSet.newlinePattern(for: String.ScalarView.self)),
         ¬language.range.isEmpty
       {
         let languageIdentifier = String(language.contents)

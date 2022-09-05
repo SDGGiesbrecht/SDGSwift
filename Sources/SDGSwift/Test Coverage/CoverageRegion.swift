@@ -108,9 +108,12 @@ extension CoverageRegion where Index == String.ScalarView.Index {
     regions = regions.map { region in
       var start = region.region.lowerBound
       let end = region.region.upperBound
-      if source.scalars[start..<end].hasPrefix("func".scalars),
-        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
-          .upperBound
+      if source.scalars[start..<end].hasPrefix(
+        "func".scalars.literal(for: String.ScalarView.SubSequence.self)
+      ),
+        let implementationStart = source.scalars[start..<end].firstMatch(
+          for: "{".scalars.literal(for: String.ScalarView.SubSequence.self)
+        )?.range.upperBound
       {
         // @exempt(from: tests) Does not occur on Linux.
         start = implementationStart
@@ -122,15 +125,24 @@ extension CoverageRegion where Index == String.ScalarView.Index {
     regions = regions.compactMap { region in
       var start = region.region.lowerBound
       let end = region.region.upperBound
-      if source.scalars[start..<end].isMatch(for: " else ".scalars) {
+      if source.scalars[start..<end].isMatch(
+        for: " else ".scalars.literal(for: String.ScalarView.SubSequence.self)
+      ) {
         // @exempt(from: tests) Does not occur on Linux.
         return nil
       }
-      if source.scalars[start..<end].hasPrefix(" else".scalars)
-        ∨ source.scalars[start..<end].hasPrefix("else".scalars)
-        ∨ source.scalars[start..<end].drop(while: { $0 == " " }).hasPrefix("} else".scalars),
-        let implementationStart = source.scalars[start..<end].firstMatch(for: "{".scalars)?.range
-          .upperBound
+      if source.scalars[start..<end].hasPrefix(
+        " else".scalars.literal(for: String.ScalarView.SubSequence.self)
+      )
+        ∨ source.scalars[start..<end].hasPrefix(
+          "else".scalars.literal(for: String.ScalarView.SubSequence.self)
+        )
+        ∨ source.scalars[start..<end].drop(while: { $0 == " " }).hasPrefix(
+          "} else".scalars.literal(for: String.ScalarView.SubSequence.self)
+        ),
+        let implementationStart = source.scalars[start..<end].firstMatch(
+          for: "{".scalars.literal(for: String.ScalarView.SubSequence.self)
+        )?.range.upperBound
       {
         start = implementationStart
       }

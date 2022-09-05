@@ -105,7 +105,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(9, 0, 0)
+      from: Version(10, 0, 0)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}collections",
@@ -134,7 +134,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(6, 0, 0)
+      from: Version(6, 1, 0)
     ),
   ],
   targets: [

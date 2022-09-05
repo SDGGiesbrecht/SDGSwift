@@ -64,8 +64,10 @@ public enum SwiftCompiler: VersionedExternalProcess {
   public static func _warningBelongsToDependency(
     _ line: String.UnicodeScalarView.SubSequence
   ) -> Bool {
-    if let possiblePath = line.prefix(upTo: ":".scalars)?.contents,
-      possiblePath.contains("/.build/".scalars)
+    if let possiblePath = line.prefix(
+      upTo: ":".scalars.literal(for: String.ScalarView.SubSequence.self)
+    )?.contents,
+      possiblePath.contains("/.build/".scalars.literal(for: String.ScalarView.SubSequence.self))
     {
       return true
     }
@@ -76,7 +78,8 @@ public enum SwiftCompiler: VersionedExternalProcess {
   /// - Parameters:
   ///     - log: The output log to be checked.
   public static func warningsOccurred(during log: String) -> Bool {
-    for line in log.lines.lazy.map({ $0.line }) where line.contains("warning:".scalars) {
+    for line in log.lines.lazy.map({ $0.line })
+    where line.contains("warning:".scalars.literal(for: String.ScalarView.SubSequence.self)) {
       if SwiftCompiler._warningBelongsToDependency(line) {
         continue
       }
