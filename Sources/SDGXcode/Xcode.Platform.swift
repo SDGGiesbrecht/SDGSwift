@@ -15,7 +15,7 @@
 extension Xcode {
 
   /// A target platform supported by Xcode.
-  public enum Platform: Equatable {
+  public enum Platform: Equatable, Sendable {
 
     /// macOS.
     case macOS

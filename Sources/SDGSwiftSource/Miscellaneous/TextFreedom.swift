@@ -13,7 +13,7 @@
  */
 
 /// How much freedom the user has in choosing the text of the element.
-public enum TextFreedom {
+public enum TextFreedom: Sendable {
 
   // MARK: - Cases
 

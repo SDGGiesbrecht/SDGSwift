@@ -17,7 +17,7 @@ import SDGText
 import SDGSwiftLocalizations
 
 /// A documentation callout.
-public enum Callout: String, CaseIterable {
+public enum Callout: String, CaseIterable, Sendable {
 
   // MARK: - Cases
 
