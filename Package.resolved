@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGCornerstone",
       "state" : {
-        "revision" : "5ab7d7449d9c9bea201bbe536b8d51fb1ebc4106",
-        "version" : "9.0.0"
+        "revision" : "3dfcc1275bccee731142fd527a0c16cdfef77d15",
+        "version" : "10.0.0"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGWeb",
       "state" : {
-        "revision" : "c21b18dea008fa1d91a259b14a004a1cb77df602",
-        "version" : "6.0.0"
+        "revision" : "73576316d62fc5ef38dbf30b5e232c59fa2ce832",
+        "version" : "6.1.0"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
-        "version" : "1.0.1"
+        "revision" : "07e47b1e93e5a1e0ef0c50fcb2d6739fb6be4003",
+        "version" : "1.0.0"
       }
     },
     {
