@@ -20,7 +20,7 @@ import SDGVersioning
 import SDGSwiftLocalizations
 
 /// A package build.
-public enum Build: Equatable, TextualPlaygroundDisplay {
+public enum Build: Equatable, Sendable, TextualPlaygroundDisplay {
 
   // MARK: - Cases
 

@@ -52,6 +52,8 @@ public struct CoverageRegion<Index> where Index: Comparable {
   }
 }
 
+extension CoverageRegion: Sendable where Index: Sendable {}
+
 private let charactersIrrelevantToCoverage =
   CharacterSet.whitespacesAndNewlines ∪ [
     "{", "}", "(", ")",

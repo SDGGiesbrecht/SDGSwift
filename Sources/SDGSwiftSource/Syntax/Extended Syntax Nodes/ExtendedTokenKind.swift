@@ -15,7 +15,7 @@
 /// Enumerates the kinds of extended tokens.
 ///
 /// This type is comparable to `TokenKind`, but represents syntax not handled by the `SwiftSyntax` module.
-public enum ExtendedTokenKind {
+public enum ExtendedTokenKind: Sendable {
 
   // MARK: - Cases
 
