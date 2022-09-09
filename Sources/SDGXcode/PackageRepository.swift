@@ -52,13 +52,15 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///     - platform: The platform to run tests on.
+    ///     - deviceName: Optional. The name of a particular device on which to run the tests.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public func test(
       on platform: Xcode.Platform,
+      deviceName: String? = nil,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, Xcode.SchemeError> {
-      return Xcode.test(self, on: platform, reportProgress: reportProgress)
+      return Xcode.test(self, on: platform, deviceName: deviceName, reportProgress: reportProgress)
     }
   #endif
 

@@ -306,11 +306,13 @@ public enum Xcode: VersionedExternalProcess {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - platform: The platform to run tests on.
+    ///     - deviceName: Optional. The name of a particular device on which to run the tests.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
       on platform: Platform,
+      deviceName: String? = nil,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
 
