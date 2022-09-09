@@ -355,7 +355,9 @@ public enum Xcode: VersionedExternalProcess {
         command += ["\u{2D}destination", "name=\(deviceName ?? "iPhone \(iphoneVersion)")"]
       case .watchOS(simulator: true):
         earliestVersion.increase(to: Version(12, 5, 0))
-        command += ["\u{2D}destination", "name=\(deviceName ?? "Apple Watch Series 6 \u{2D} 40mm")"]
+        #warning("Need to figure out versions.")
+        // command += ["\u{2D}destination", "name=\(deviceName ?? "Apple Watch Series 6 \u{2D} 40mm")"]
+        command += ["\u{2D}destination", "name=\(deviceName ?? "Apple Watch Series 7 \u{2D} 41mm")"]
       default:
         let deviceNeeded = Version(13)
         if let resolved = version(
