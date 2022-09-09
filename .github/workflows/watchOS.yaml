@@ -71,6 +71,7 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
+
             workspace validate •job watchos •language '🇨🇦EN' •use‐version 0.40.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Using repository cache of Workspace..."
