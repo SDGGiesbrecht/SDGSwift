@@ -69,4 +69,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TARGETING_WATCHOS=true
         xcodebuild test -destination 'platform=watchOS Simulator,name=Apple Watch Series 6 - 40mm' -scheme SDGSwift-Package
