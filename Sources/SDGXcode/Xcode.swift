@@ -333,7 +333,7 @@ public enum Xcode: VersionedExternalProcess {
           tv4K.append(contentsOf: " (2nd generation)")
         }
 
-        command += ["\u{2D}destination", "name=\(tv4K)"]
+        command += ["\u{2D}destination", "platform=tvOS Simulator,name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
 
         earliestVersion.increase(to: Version(11, 0, 0))
@@ -350,7 +350,7 @@ public enum Xcode: VersionedExternalProcess {
           iphoneVersion = "12"
         }
 
-        command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
+        command += ["\u{2D}destination", "platform=iOS Simulator,name=iPhone \(iphoneVersion)"]
       case .watchOS(simulator: true):
         earliestVersion.increase(to: Version(12, 5, 0))
         command += ["\u{2D}destination", "platform=watchOS Simulator,name=Apple Watch Series 6 \u{2D} 40mm"]
