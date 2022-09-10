@@ -1,5 +1,5 @@
   Mock: /tmp/Mock
-$ xcodebuild test -destination name=iPhone  -scheme Mock -enableCodeCoverage YES -resultBundlePath
+$ xcodebuild test -destination platform=iOS Simulator,name=iPhone  -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 Analyze workspace
 CodeSign [...]/MockTests.xctest
