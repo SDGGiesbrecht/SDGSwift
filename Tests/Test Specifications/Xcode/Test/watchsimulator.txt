@@ -1,5 +1,5 @@
   Mock: /tmp/Mock
-$ xcodebuild test -destination name=Apple Watch Series  - mm -scheme Mock -enableCodeCoverage YES -resultBundlePath
+$ xcodebuild test -destination platform=watchOS Simulator,name=Apple Watch Series  - mm -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 Analyze workspace
 CodeSign [...]/MockTests.xctest
