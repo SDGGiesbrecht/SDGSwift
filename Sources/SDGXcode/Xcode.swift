@@ -306,13 +306,11 @@ public enum Xcode: VersionedExternalProcess {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - platform: The platform to run tests on.
-    ///     - deviceName: Optional. The name of a particular device on which to run the tests.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
       on platform: Platform,
-      deviceName: String? = nil,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<String, SchemeError> {
 
@@ -335,7 +333,7 @@ public enum Xcode: VersionedExternalProcess {
           tv4K.append(contentsOf: " (2nd generation)")
         }
 
-        command += ["\u{2D}destination", "name=\(deviceName ?? tv4K)"]
+        command += ["\u{2D}destination", "name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
 
         earliestVersion.increase(to: Version(11, 0, 0))
@@ -352,23 +350,10 @@ public enum Xcode: VersionedExternalProcess {
           iphoneVersion = "12"
         }
 
-        command += ["\u{2D}destination", "name=\(deviceName ?? "iPhone \(iphoneVersion)")"]
+        command += ["\u{2D}destination", "name=iPhone \(iphoneVersion)"]
       case .watchOS(simulator: true):
         earliestVersion.increase(to: Version(12, 5, 0))
-        var series = "6 \u{2D} 40mm"
-
-        let series7Available = Version(13)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ series7Available
-        {
-          // @exempt(from: tests) Unreachable on Linux.
-          earliestVersion.increase(to: series7Available)
-          series = "7 \u{2D} 41mm"
-        }
-
-        command += ["\u{2D}destination", "platform=watchOS Simulator,name=\(deviceName ?? "Apple Watch Series \(series)")"]
+        command += ["\u{2D}destination", "platform=watchOS Simulator,name=Apple Watch Series 6 \u{2D} 40mm"]
       default:
         let deviceNeeded = Version(13)
         if let resolved = version(
