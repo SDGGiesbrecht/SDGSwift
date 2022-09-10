@@ -368,7 +368,7 @@ public enum Xcode: VersionedExternalProcess {
           series = "7 \u{2D} 41mm"
         }
 
-        command += ["\u{2D}destination", "name=\(deviceName ?? "Apple Watch Series \(series)")"]
+        command += ["\u{2D}destination", "platform=watchOS Simulator,name=\(deviceName ?? "Apple Watch Series \(series)")"]
       default:
         let deviceNeeded = Version(13)
         if let resolved = version(
