@@ -106,6 +106,3 @@ configuration.documentation.api.ignoredDependencies = [
   "_CSwiftSyntax",
   "SwiftSyntax",
 ]
-
-// #workaround(workspace version 0.40.2, watchOS does not work.)
-configuration.continuousIntegration.manage = false
