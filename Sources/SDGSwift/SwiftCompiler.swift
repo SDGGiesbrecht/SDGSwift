@@ -398,16 +398,18 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
-  public static let englishName: StrictString = "Swift"
-  public static var deutscherNameInDativ: StrictString = "Swift"
+  public static var englishName: StrictString { "Swift" }
+  public static var deutscherNameInDativ: StrictString { "Swift" }
 
-  public static let commandName: String = "swift"
+  public static var commandName: String { "swift" }
 
-  public static let searchCommands: [[String]] = [
-    ["which", "swift"],  // Swift
-    ["xcrun", "\u{2D}\u{2D}find", "swift"],  // Xcode
-    ["swiftenv", "which", "swift"],  // Swift Version Manager
-  ]
+  public static var searchCommands: [[String]] {
+    [
+      ["which", "swift"],  // Swift
+      ["xcrun", "\u{2D}\u{2D}find", "swift"],  // Xcode
+      ["swiftenv", "which", "swift"],  // Swift Version Manager
+    ]
+  }
 
-  public static var versionQuery: [String] = ["\u{2D}\u{2D}version"]
+  public static var versionQuery: [String] { ["\u{2D}\u{2D}version"] }
 }

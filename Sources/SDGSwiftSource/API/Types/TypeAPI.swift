@@ -72,8 +72,8 @@
 
     // MARK: - DeclaredAPIElement
 
-    public let genericDeclaration: Syntax
-    public let genericName: Syntax
+    public private(set) var genericDeclaration: Syntax
+    public private(set) var genericName: Syntax
 
     // MARK: - OverloadableAPIElement
 
