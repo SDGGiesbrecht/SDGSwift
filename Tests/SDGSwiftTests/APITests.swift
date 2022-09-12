@@ -134,6 +134,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try? Git.clone(Package(url: url), to: url).get()
       }
     #endif
+    _ = Git.versionQuery
   }
 
   func testGitError() {
@@ -284,6 +285,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try? SwiftCompiler.resolve(package).get()
       }
     #endif
+    _ = SwiftCompiler.versionQuery
   }
 
   func testSwiftCompilerError() {

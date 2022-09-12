@@ -150,14 +150,16 @@ public enum Git: VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
-  public static let englishName: StrictString = "Git"
-  public static var deutscherNameInDativ: StrictString = "Git"
+  public static var englishName: StrictString { "Git" }
+  public static var deutscherNameInDativ: StrictString { "Git" }
 
-  public static var commandName: String = "git"
+  public static var commandName: String { "git" }
 
-  public static let searchCommands: [[String]] = [
-    ["which", "git"]
-  ]
+  public static var searchCommands: [[String]] {
+    [
+      ["which", "git"]
+    ]
+  }
 
-  public static let versionQuery: [String] = ["\u{2D}\u{2D}version"]
+  public static var versionQuery: [String] { ["\u{2D}\u{2D}version"] }
 }

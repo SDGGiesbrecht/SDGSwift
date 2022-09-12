@@ -706,14 +706,16 @@ public enum Xcode: VersionedExternalProcess {
 
   // MARK: - VersionedExternalProcess
 
-  public static let englishName: StrictString = "Xcode"
-  public static var deutscherNameInDativ: StrictString = "Xcode"
+  public static var englishName: StrictString { "Xcode" }
+  public static var deutscherNameInDativ: StrictString { "Xcode" }
 
-  public static var commandName: String = "xcodebuild"
+  public static var commandName: String { "xcodebuild" }
 
-  public static let searchCommands: [[String]] = [
-    ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"]  // Xcode
-  ]
+  public static var searchCommands: [[String]] {
+    [
+      ["xcrun", "\u{2D}\u{2D}find", "xcodebuild"]  // Xcode
+    ]
+  }
 
-  public static var versionQuery: [String] = ["\u{2D}version"]
+  public static var versionQuery: [String] { ["\u{2D}version"] }
 }
