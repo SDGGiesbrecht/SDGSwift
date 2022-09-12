@@ -296,6 +296,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       #endif
     #endif
+    _ = Xcode.versionQuery
   }
 
   func testXcodeAllArchitectures() throws {
