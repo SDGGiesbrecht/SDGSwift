@@ -584,20 +584,29 @@ package.dependencies.removeAll(where: { dependency in
   })
 })
 for target in package.targets {
-  let shouldRemove: (Target.Dependency) -> Bool = { (dependency: Target.Dependency) -> Bool in
+  target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    // #warning(Debugging...)
-    /*case .productItem(let name, let package, condition: _):
-      if let package = package,
-        impossibleDependencyPackages.contains(package)
-      {
-        return true
-      } else {
-        return impossibleDependencyProducts.contains(name)
-      }*/
+    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Associated values changed.)
+      case .productItem(let name, let package, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(package)
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(name)
+        }
+    #else
+      case .productItem(let name, let package, moduleAliases: _, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(package)
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(name)
+        }
+    #endif
     default:
       return false
     }
-  }
-  target.dependencies.removeAll(where: shouldRemove)
+  })
 }
