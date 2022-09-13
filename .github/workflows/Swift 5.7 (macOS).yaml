@@ -32,4 +32,4 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift build
+        swift test
