@@ -1,19 +1,4 @@
 Loading “SampleConfigurationFile.swift”...
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-[[...]/[...]] Downloading binary artifacts
 Building for debugging...
 [[...]/[...]] Emitting module SDGControlFlow
 [[...]/[...]] Emitting module SDGSwiftConfiguration
@@ -36,21 +21,6 @@ No configuration found. Using defaults...
 
 Empty
 Loading “SampleConfigurationFile.swift”...
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-[[...]/[...]] Downloading binary artifacts
 Building for debugging...
 [[...]/[...]] Emitting module SDGSwiftConfiguration
 [[...]/[...]] Emitting module SampleConfiguration
