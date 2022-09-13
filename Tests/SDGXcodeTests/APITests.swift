@@ -167,14 +167,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              compare(
-                filtered.sorted().joined(separator: "\n"),
-                against: testSpecificationDirectory()
-                  .appendingPathComponent("Xcode")
-                  .appendingPathComponent("Build")
-                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+              #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                compare(
+                  filtered.sorted().joined(separator: "\n"),
+                  against: testSpecificationDirectory()
+                    .appendingPathComponent("Xcode")
+                    .appendingPathComponent("Build")
+                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              #endif
             #endif
           }
 
@@ -277,14 +279,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              compare(
-                filtered.sorted().joined(separator: "\n"),
-                against: testSpecificationDirectory()
-                  .appendingPathComponent("Xcode")
-                  .appendingPathComponent("Test")
-                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+              #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                compare(
+                  filtered.sorted().joined(separator: "\n"),
+                  against: testSpecificationDirectory()
+                    .appendingPathComponent("Xcode")
+                    .appendingPathComponent("Test")
+                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              #endif
             #endif
           }
         }
