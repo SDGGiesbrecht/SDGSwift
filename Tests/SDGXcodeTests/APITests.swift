@@ -111,14 +111,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var log = Set<String>()  // Xcode’s order is not deterministic.
             let processLog: (String) -> Void = { outputLine in
               if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                XCTAssert(
-                  abbreviated.count < 100
-                    ∨ abbreviated.contains("warning:")
-                    ∨ abbreviated.contains("error:")
-                    ∨ abbreviated.contains("note:")
-                    ∨ abbreviated.hasPrefix("$ "),
-                  "Output is too long: " + abbreviated
-                )
+                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                  XCTAssert(
+                    abbreviated.count < 100
+                      ∨ abbreviated.contains("warning:")
+                      ∨ abbreviated.contains("error:")
+                      ∨ abbreviated.contains("note:")
+                      ∨ abbreviated.hasPrefix("$ "),
+                    "Output is too long: " + abbreviated
+                  )
+                #endif
                 log.insert(abbreviated)
               }
             }
@@ -200,19 +202,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var log = Set<String>()  // Xcode’s order is not deterministic.
             let processLog: (String) -> Void = { outputLine in
               if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                XCTAssert(
-                  abbreviated.count < 100
-                    ∨ abbreviated.contains("warning:")
-                    ∨ abbreviated.contains("error:")
-                    ∨ abbreviated.contains("Failed")
-                    ∨ abbreviated.contains("note:")
-                    ∨ abbreviated.contains("failed")
-                    ∨ abbreviated.contains("bug")
-                    ∨ abbreviated.contains("Promise")
-                    ∨ abbreviated.contains("Warning")
-                    ∨ abbreviated.hasPrefix("$ "),
-                  "Output is too long: " + abbreviated
-                )
+                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                  XCTAssert(
+                    abbreviated.count < 100
+                      ∨ abbreviated.contains("warning:")
+                      ∨ abbreviated.contains("error:")
+                      ∨ abbreviated.contains("Failed")
+                      ∨ abbreviated.contains("note:")
+                      ∨ abbreviated.contains("failed")
+                      ∨ abbreviated.contains("bug")
+                      ∨ abbreviated.contains("Promise")
+                      ∨ abbreviated.contains("Warning")
+                      ∨ abbreviated.hasPrefix("$ "),
+                    "Output is too long: " + abbreviated
+                  )
+                #endif
                 log.insert(abbreviated)
               }
             }
