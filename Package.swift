@@ -584,11 +584,7 @@ package.dependencies.removeAll(where: { dependency in
   })
 })
 for target in package.targets {
-  // #warning(Debugging...)
-  var dependencies: [Target.Dependency] = target.dependencies
-  dependencies.removeAll(where: { (dependency: Target.Dependency) -> Bool in false })
-
-  target.dependencies.removeAll(where: { (dependency: Target.Dependency) -> Bool in
+  let shouldRemove: (Target.Dependency) -> Bool = { dependency in
     switch dependency {
     case .productItem(let name, let package, condition: _):
       if let package = package,
@@ -601,5 +597,6 @@ for target in package.targets {
     default:
       return false
     }
-  })
+  }
+  target.dependencies.removeAll(where: shouldRemove)
 }
