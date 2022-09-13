@@ -188,7 +188,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             func remove(logEntry: String) {
               let pattern =
-                logEntry.scalars
+                RepetitionPattern("[[...]/[...]] ".scalars, count: 0...1)
+                + logEntry.scalars
                 + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
                 + "\n".scalars
               log.scalars.replaceMatches(for: pattern, with: "".scalars)
