@@ -342,7 +342,8 @@ public enum Xcode: VersionedExternalProcess {
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination = "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}appletvsimulator:placeholder"
+          destination =
+            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}appletvsimulator:placeholder"
         }
 
         command += ["\u{2D}destination", destination]
@@ -371,7 +372,8 @@ public enum Xcode: VersionedExternalProcess {
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination = "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}iphonesimulator:placeholder"
+          destination =
+            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}iphonesimulator:placeholder"
         }
 
         command += ["\u{2D}destination", destination]
@@ -387,7 +389,8 @@ public enum Xcode: VersionedExternalProcess {
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination = "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}watchsimulator:placeholder"
+          destination =
+            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}watchsimulator:placeholder"
         }
 
         command += [
