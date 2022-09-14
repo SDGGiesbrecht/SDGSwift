@@ -188,8 +188,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             func remove(logEntry: String) {
               let pattern =
-                RepetitionPattern("[[...]/[...]] ".scalars, count: 0...1)
-                + logEntry.scalars
+                logEntry.scalars
                 + RepetitionPattern(ConditionalPattern({ $0 ≠ "\n" }))
                 + "\n".scalars
               log.scalars.replaceMatches(for: pattern, with: "".scalars)
@@ -225,9 +224,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             remove(logEntry: "Working copy of")
             remove(logEntry: "Computing")
             remove(logEntry: "Compiling plugin GenerateManualPlugin...")
-            remove(logEntry: "Fetching")
-            remove(logEntry: "Downloading binary artifact")
-            remove(logEntry: "Downloading binary artifacts")
 
             let fractionPatternStart =
               "[".scalars
