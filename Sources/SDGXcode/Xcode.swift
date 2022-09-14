@@ -333,20 +333,7 @@ public enum Xcode: VersionedExternalProcess {
           tv4K.append(contentsOf: " (2nd generation)")
         }
 
-        var destination = "platform=tvOS Simulator,name=\(tv4K)"
-        let automaticDeviceSelectionAvailable = Version(14)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ automaticDeviceSelectionAvailable
-        {
-          // @exempt(from: tests) Unreachable on Linux.
-          earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination =
-            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}appletvsimulator:placeholder"
-        }
-
-        command += ["\u{2D}destination", destination]
+        command += ["\u{2D}destination", "platform=tvOS Simulator,name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
 
         earliestVersion.increase(to: Version(11, 0, 0))
@@ -363,38 +350,11 @@ public enum Xcode: VersionedExternalProcess {
           iphoneVersion = "12"
         }
 
-        var destination = "platform=iOS Simulator,name=iPhone \(iphoneVersion)"
-        let automaticDeviceSelectionAvailable = Version(14)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ automaticDeviceSelectionAvailable
-        {
-          // @exempt(from: tests) Unreachable on Linux.
-          earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination =
-            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}iphonesimulator:placeholder"
-        }
-
-        command += ["\u{2D}destination", destination]
+        command += ["\u{2D}destination", "platform=iOS Simulator,name=iPhone \(iphoneVersion)"]
       case .watchOS(simulator: true):
         earliestVersion.increase(to: Version(12, 5, 0))
-        var destination = "platform=watchOS Simulator,name=Apple Watch Series 6 \u{2D} 40mm"
-
-        let automaticDeviceSelectionAvailable = Version(14)
-        if let resolved = version(
-          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
-        ),
-          resolved ≥ automaticDeviceSelectionAvailable
-        {
-          // @exempt(from: tests) Unreachable on Linux.
-          earliestVersion.increase(to: automaticDeviceSelectionAvailable)
-          destination =
-            "id=dvtdevice\u{2D}DVTiOSDeviceSimulatorPlaceholder\u{2D}watchsimulator:placeholder"
-        }
-
         command += [
-          "\u{2D}destination", destination,
+          "\u{2D}destination", "platform=watchOS Simulator,name=Apple Watch Series 6 \u{2D} 40mm",
         ]
       default:
         let deviceNeeded = Version(13)
