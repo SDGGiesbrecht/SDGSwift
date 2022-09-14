@@ -255,13 +255,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             if swift5_6 {
               // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
               #if !os(Linux)
-                compare(
-                  log,
-                  against: testSpecificationDirectory().appendingPathComponent(
-                    "Configuration Loading.txt"
-                  ),
-                  overwriteSpecificationInsteadOfFailing: false
-                )
+                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                  compare(
+                    log,
+                    against: testSpecificationDirectory().appendingPathComponent(
+                      "Configuration Loading.txt"
+                    ),
+                    overwriteSpecificationInsteadOfFailing: false
+                  )
+                #endif
               #endif
             }
           #endif

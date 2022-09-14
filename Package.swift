@@ -544,6 +544,10 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
+  // #workaround(Until switch to 5.7.)
+  #if compiler(>=5.7)
+    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
+  #endif
 }
 
 import Foundation
@@ -586,14 +590,25 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    case .productItem(let name, let package, condition: _):
-      if let package = package,
-        impossibleDependencyPackages.contains(package)
-      {
-        return true
-      } else {
-        return impossibleDependencyProducts.contains(name)
-      }
+    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Associated values changed.)
+      case .productItem(let name, let package, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(package)
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(name)
+        }
+    #else
+      case .productItem(let name, let package, moduleAliases: _, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(package)
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(name)
+        }
+    #endif
     default:
       return false
     }
