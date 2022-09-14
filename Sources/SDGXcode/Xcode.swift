@@ -335,7 +335,6 @@ public enum Xcode: VersionedExternalProcess {
 
         command += ["\u{2D}destination", "platform=tvOS Simulator,name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
-
         earliestVersion.increase(to: Version(11, 0, 0))
         var iphoneVersion = "11"
 
@@ -348,6 +347,17 @@ public enum Xcode: VersionedExternalProcess {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: iPhone12Available)
           iphoneVersion = "12"
+        }
+
+        let iPhone14Available = Version(14)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ iPhone14Available
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: iPhone14Available)
+          iphoneVersion = "14"
         }
 
         command += ["\u{2D}destination", "platform=iOS Simulator,name=iPhone \(iphoneVersion)"]
