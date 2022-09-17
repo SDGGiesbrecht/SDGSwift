@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "d2930e8fcf9c33162b9fcc1d522bc975e2d4179b",
-        "version" : "1.0.1"
+        "revision" : "e394bf350e38cb100b6bc4172834770ede1b7232",
+        "version" : "1.0.3"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "07e47b1e93e5a1e0ef0c50fcb2d6739fb6be4003",
-        "version" : "1.0.0"
+        "revision" : "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
+        "version" : "1.0.1"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-driver",
       "state" : {
-        "revision" : "5864885ffd1e732cc1c186f4241686b190aa5cbf",
-        "version" : "0.50600.2"
+        "revision" : "da1a9380a94c2a98dac34e814d8f4852346eff1b",
+        "version" : "0.50700.0"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-package-manager",
       "state" : {
-        "revision" : "62cbf6cd5aed417fd485b8a0a4990f8b452f4e09",
-        "version" : "0.50600.3"
+        "revision" : "8d54b76e34debc8e9f246db508e7ed00e6c4f930",
+        "version" : "0.50700.0"
       }
     },
     {
@@ -109,12 +109,21 @@
       }
     },
     {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "revision" : "836bc4557b74fe6d2660218d56e3ce96aff76574",
+        "version" : "1.1.1"
+      }
+    },
+    {
       "identity" : "swift-tools-support-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+      "location" : "https://github.com/apple/swift-tools-support-core",
       "state" : {
-        "revision" : "107e570e3565920174d5a25bc3a0340b32d16042",
-        "version" : "0.50600.0"
+        "revision" : "4f07be3dc201f6e2ee85b6942d0c220a16926811",
+        "version" : "0.2.7"
       }
     },
     {

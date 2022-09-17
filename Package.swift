@@ -109,16 +109,15 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}collections",
-      from: Version(1, 0, 0)
+      from: Version(1, 0, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      // Remember to update the compatible compiler versions in SDGSwiftPackageManager too.
-      exact: Version(0, 50600, 3)
+      exact: Version(0, 50700, 0)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}tools\u{2D}support\u{2D}core",
-      .upToNextMinor(from: Version(0, 50600, 0))
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core",
+      exact: Version(0, 2, 7)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
