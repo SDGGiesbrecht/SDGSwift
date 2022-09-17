@@ -52,8 +52,9 @@ extension PackageRepository {
       do {
         let initializer = try InitPackage(
           name: String(name),
+          packageType: type,
           destinationPath: AbsolutePath(location.path),
-          packageType: type
+          fileSystem: localFileSystem
         )
         try initializer.writePackageStructure()
       } catch {
@@ -98,6 +99,7 @@ extension PackageRepository {
     }
 
     /// Returns the package manifest.
+    @available(macOS 10.15, *)
     public func manifest() -> Swift.Result<Manifest, SwiftCompiler.PackageLoadingError> {
       return packageWorkspace().flatMap { workspace in
         do {
@@ -117,6 +119,7 @@ extension PackageRepository {
     }
 
     /// Returns the package structure.
+    @available(macOS 10.15, *)
     public func package() -> Swift.Result<PackageModel.Package, SwiftCompiler.PackageLoadingError> {
       return packageWorkspace().flatMap { workspace in
         do {
@@ -136,6 +139,7 @@ extension PackageRepository {
     }
 
     /// Returns the package workspace.
+    @available(macOS 10.15, *)
     public func packageWorkspace() -> Swift.Result<Workspace, SwiftCompiler.PackageLoadingError> {
       do {
         return .success(try Workspace(forRootPackage: path))
