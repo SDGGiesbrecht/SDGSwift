@@ -115,7 +115,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       // #warning(Branch.)
       //exact: Version(0, 50700, 0)
-      branch: "availability"
+      branch: "swift‐5.7"
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core",
