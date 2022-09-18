@@ -139,6 +139,16 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
           named: StrictString(mock.lastPathComponent),
           type: .library
         ).get()
+        #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+          // Revert tools version so that the initialized package can be loaded by the standard toolchain.
+          let manifest = repository.location.appendingPathComponent("Package.swift")
+          var string = try String(from: manifest)
+          string.replaceMatches(
+            for: "swift\u{2D}tools\u{2D}version: 5.7",
+            with: "swift\u{2D}tools\u{2D}version: 5.6"
+          )
+          try string.save(to: manifest)
+        #endif
         try test(repository)
       }
     }
