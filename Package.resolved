@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-driver",
       "state" : {
-        "revision" : "da1a9380a94c2a98dac34e814d8f4852346eff1b",
-        "version" : "0.50700.0"
+        "revision" : "cf45d612ff5de77db97308a5da3f0114a95486e1",
+        "version" : "0.50700.1"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-package-manager",
       "state" : {
-        "revision" : "8d54b76e34debc8e9f246db508e7ed00e6c4f930",
-        "version" : "0.50700.0"
+        "branch" : "availability",
+        "revision" : "19db84fad5c49def4ef5b50770e71cfd9afa0dfe"
       }
     },
     {
