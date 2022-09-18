@@ -143,10 +143,14 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
           // Revert tools version so that the initialized package can be loaded by the standard toolchain.
           let manifest = repository.location.appendingPathComponent("Package.swift")
           var string = try String(from: manifest)
+          #warning("Debugging...")
+          print(string)
           string.replaceMatches(
             for: "swift\u{2D}tools\u{2D}version:5.7",
             with: "swift\u{2D}tools\u{2D}version:5.6"
           )
+          #warning("Debugging...")
+          print(string)
           try string.save(to: manifest)
         #endif
         try test(repository)
