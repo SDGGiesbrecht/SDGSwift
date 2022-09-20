@@ -38,6 +38,7 @@
           trailingTrivia: .spaces(1)
         ),
         identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
+        primaryAssociatedTypeClause: nil,  // #workaround(Not supported yet.)
         inheritanceClause: nil,
         genericWhereClause: genericWhereClause?.normalized(),
         members: SyntaxFactory.makeBlankMemberDeclBlock()
@@ -50,6 +51,7 @@
         modifiers: nil,
         protocolKeyword: SyntaxFactory.makeToken(.protocolKeyword, presence: .missing),
         identifier: identifier,
+        primaryAssociatedTypeClause: nil,  // #workaround(Not supported yet.)
         inheritanceClause: nil,
         genericWhereClause: nil,
         members: SyntaxFactory.makeBlankMemberDeclBlock()
