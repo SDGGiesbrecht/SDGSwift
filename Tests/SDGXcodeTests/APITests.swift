@@ -111,16 +111,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var log = Set<String>()  // Xcode’s order is not deterministic.
             let processLog: (String) -> Void = { outputLine in
               if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-                  XCTAssert(
-                    abbreviated.count < 100
-                      ∨ abbreviated.contains("warning:")
-                      ∨ abbreviated.contains("error:")
-                      ∨ abbreviated.contains("note:")
-                      ∨ abbreviated.hasPrefix("$ "),
-                    "Output is too long: " + abbreviated
-                  )
-                #endif
+                XCTAssert(
+                  abbreviated.count < 100
+                    ∨ abbreviated.contains("warning:")
+                    ∨ abbreviated.contains("error:")
+                    ∨ abbreviated.contains("note:")
+                    ∨ abbreviated.hasPrefix("$ "),
+                  "Output is too long: " + abbreviated
+                )
                 log.insert(abbreviated)
               }
             }
@@ -167,16 +165,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-                compare(
-                  filtered.sorted().joined(separator: "\n"),
-                  against: testSpecificationDirectory()
-                    .appendingPathComponent("Xcode")
-                    .appendingPathComponent("Build")
-                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              #endif
+              compare(
+                filtered.sorted().joined(separator: "\n"),
+                against: testSpecificationDirectory()
+                  .appendingPathComponent("Xcode")
+                  .appendingPathComponent("Build")
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                overwriteSpecificationInsteadOfFailing: false
+              )
             #endif
           }
 
@@ -204,21 +200,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var log = Set<String>()  // Xcode’s order is not deterministic.
             let processLog: (String) -> Void = { outputLine in
               if let abbreviated = Xcode.abbreviate(output: outputLine) {
-                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-                  XCTAssert(
-                    abbreviated.count < 100
-                      ∨ abbreviated.contains("warning:")
-                      ∨ abbreviated.contains("error:")
-                      ∨ abbreviated.contains("Failed")
-                      ∨ abbreviated.contains("note:")
-                      ∨ abbreviated.contains("failed")
-                      ∨ abbreviated.contains("bug")
-                      ∨ abbreviated.contains("Promise")
-                      ∨ abbreviated.contains("Warning")
-                      ∨ abbreviated.hasPrefix("$ "),
-                    "Output is too long: " + abbreviated
-                  )
-                #endif
+                XCTAssert(
+                  abbreviated.count < 100
+                    ∨ abbreviated.contains("warning:")
+                    ∨ abbreviated.contains("error:")
+                    ∨ abbreviated.contains("Failed")
+                    ∨ abbreviated.contains("note:")
+                    ∨ abbreviated.contains("failed")
+                    ∨ abbreviated.contains("bug")
+                    ∨ abbreviated.contains("Promise")
+                    ∨ abbreviated.contains("Warning")
+                    ∨ abbreviated.hasPrefix("$ "),
+                  "Output is too long: " + abbreviated
+                )
                 log.insert(abbreviated)
               }
             }
@@ -279,16 +273,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
             #if PLATFORM_HAS_XCODE
-              #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-                compare(
-                  filtered.sorted().joined(separator: "\n"),
-                  against: testSpecificationDirectory()
-                    .appendingPathComponent("Xcode")
-                    .appendingPathComponent("Test")
-                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              #endif
+              compare(
+                filtered.sorted().joined(separator: "\n"),
+                against: testSpecificationDirectory()
+                  .appendingPathComponent("Xcode")
+                  .appendingPathComponent("Test")
+                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                overwriteSpecificationInsteadOfFailing: false
+              )
             #endif
           }
         }

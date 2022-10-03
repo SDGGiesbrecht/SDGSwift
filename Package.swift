@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 
 /*
  Package.swift
@@ -550,10 +550,6 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
-  // #workaround(Until switch to 5.7.)
-  #if compiler(>=5.7)
-    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
-  #endif
 }
 
 import Foundation
