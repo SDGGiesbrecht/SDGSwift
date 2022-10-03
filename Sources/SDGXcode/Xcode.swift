@@ -181,6 +181,7 @@ public enum Xcode: VersionedExternalProcess {
         let components = commandLine.components(separatedBy: "/")
         var result: String
         if components.count == 1 {
+          // @exempt(from: tests) Does not occur in current Xcode release.
           result = commandLine
         } else {
           let file = String(components.last!.contents)
