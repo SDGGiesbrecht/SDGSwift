@@ -63,7 +63,7 @@ let package = Package(
   name: "SDGSwift",
   platforms: [
     // These must also be updated in Sources/SDGSwiftConfigurationLoading/Configuration.swift.
-    .macOS(.v10_10)
+    .macOS(.v10_13)
   ],
   products: [
     // @documentation(SDGSwift)
