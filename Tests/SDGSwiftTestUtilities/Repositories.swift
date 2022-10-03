@@ -68,12 +68,7 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
     #else
-      if #available(tvOS 10, iOS 10, watchOS 3, *) {
-        temporaryDirectory = FileManager.default.temporaryDirectory
-      } else {
-        // @exempt(from: tests)
-        temporaryDirectory = URL(fileURLWithPath: "/tmp")
-      }
+      temporaryDirectory = FileManager.default.temporaryDirectory
     #endif
 
     var mocks: [URL] = []
