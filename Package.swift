@@ -121,14 +121,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: {
-        // #workaround(Until switch to 5.7.)
-        #if compiler(>=5.7)
-          return Version(0, 50700, 0)
-        #else
-          return Version(0, 50600, 1)
-        #endif
-      }()
+      exact: Version(0, 50700, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
@@ -592,25 +585,14 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Associated values changed.)
-      case .productItem(let name, let package, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(package)
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(name)
-        }
-    #else
-      case .productItem(let name, let package, moduleAliases: _, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(package)
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(name)
-        }
-    #endif
+    case .productItem(let name, let package, moduleAliases: _, condition: _):
+      if let package = package,
+        impossibleDependencyPackages.contains(package)
+      {
+        return true
+      } else {
+        return impossibleDependencyProducts.contains(name)
+      }
     default:
       return false
     }

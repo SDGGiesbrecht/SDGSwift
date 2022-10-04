@@ -33,12 +33,6 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-#if compiler(>=5.6)
-  var swift5_6 = true
-#else
-  var swift5_6 = false
-#endif
-
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
@@ -252,18 +246,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               with: "([duration]s)".scalars
             )
 
-            if swift5_6 {
-              // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
-              #if !os(Linux)
-                compare(
-                  log,
-                  against: testSpecificationDirectory().appendingPathComponent(
-                    "Configuration Loading.txt"
-                  ),
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              #endif
-            }
+            // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
+            #if !os(Linux)
+              compare(
+                log,
+                against: testSpecificationDirectory().appendingPathComponent(
+                  "Configuration Loading.txt"
+                ),
+                overwriteSpecificationInsteadOfFailing: false
+              )
+            #endif
           #endif
         #endif
 
