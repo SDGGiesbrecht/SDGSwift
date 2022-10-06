@@ -1,18 +1,30 @@
   Mock: /tmp/Mock
-$ xcodebuild test -destination platform=watchOS Simulator,name=Apple Watch Series  - mm -scheme Mock -enableCodeCoverage YES -resultBundlePath
+$ xcodebuild test -destination platform=watchOS Simulator,name=Apple Watch Series  (mm) -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
-Analyze workspace
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwiftSources normal x_ com.apple.xcode.tools.swift.compiler
+Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
+ExtractAppIntentsMetadata (in target 'MockTests' from project 'Mock')
 Ld [...]/Mock.o normal
 Ld [...]/MockTests normal
 MkDir [...]/MockTests.xctest
+Prepare packages
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
+SwiftCompile [...]/Mock.swift
+SwiftCompile [...]/MockTests.swift
+SwiftDriver Mock normal x_ com.apple.xcode.tools.swift.compiler
+SwiftDriver MockTests normal x_ com.apple.xcode.tools.swift.compiler
+SwiftDriverJobDiscovery normal x_ Compiling Mock.swift
+SwiftDriverJobDiscovery normal x_ Compiling MockTests.swift
+SwiftDriverJobDiscovery normal x_ Emitting module for Mock
+SwiftDriverJobDiscovery normal x_ Emitting module for MockTests
+SwiftEmitModule normal x_ Emitting\ module\ for\ Mock
+SwiftEmitModule normal x_ Emitting\ module\ for\ MockTests
+SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Test Case '-[MockTests.MockTests testExample]' passed (. seconds).
 Test Case '-[MockTests.MockTests testExample]' started.
 Test Suite 'All tests' passed at -- ::..
@@ -33,5 +45,4 @@ WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
 Writing result bundle at path:
-note: Build preparation complete
-note: Planning
+note: Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'MockTests' from project 'Mock')
