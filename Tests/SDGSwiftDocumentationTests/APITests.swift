@@ -462,11 +462,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let documentationSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Documentation/\(packageName).txt"
         )
-        SDGPersistenceTestUtilities.compare(
-          documentation,
-          against: documentationSpecification,
-          overwriteSpecificationInsteadOfFailing: false
-        )
+        #if !os(Linux)  // Inherited documenation differs between toolchains.
+          SDGPersistenceTestUtilities.compare(
+            documentation,
+            against: documentationSpecification,
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        #endif
 
         var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
         for symbol in symbols {

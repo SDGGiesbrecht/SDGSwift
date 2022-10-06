@@ -237,6 +237,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var lines = log.lines.map { String(String.UnicodeScalarView($0.line)) }
             lines.removeAll(where: { $0.contains("SQLITE_OPEN_FILEPROTECTION_") })
             lines.removeAll(where: { $0.contains("[logging] misuse at line") })
+            lines.removeAll(where: { $0.contains("Fetching") })
+            lines.removeAll(where: { $0.contains("Emitting module SwiftSyntaxParser") })
             log = lines.joined(separator: "\n")
             let digits = ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.decimalDigits })
             let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars
