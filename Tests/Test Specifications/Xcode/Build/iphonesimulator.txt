@@ -1,28 +1,44 @@
   Mock: /tmp/Mock
 $ xcodebuild build -destination generic/platform=iOS Simulator -scheme Mock
 ** BUILD SUCCEEDED **
-Analyze workspace
 CodeSign [...]/MockTests.xctest
 CompileSwift [...]/Mock.swift
 CompileSwift [...]/MockTests.swift
-CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
-CompileSwiftSources normal i386 com.apple.xcode.tools.swift.compiler
-CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-iphonesimulator
+CreateBuildDirectory [...]/EagerLinkingTBDs
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
+ExtractAppIntentsMetadata (in target 'MockTests' from project 'Mock')
 Ld [...]/Mock.o normal arm64
-Ld [...]/Mock.o normal i386
 Ld [...]/Mock.o normal x86_64
 Ld [...]/MockTests normal arm64
-Ld [...]/MockTests normal i386
 Ld [...]/MockTests normal x86_64
 MkDir [...]/MockTests.xctest
+Prepare packages
 ProcessInfoPlistFile [...]/empty-MockTests.plist
 Resolve Package Graph
 Resolved source packages:
+SwiftCompile [...]/Mock.swift
+SwiftCompile [...]/MockTests.swift
+SwiftDriver Mock normal arm64 com.apple.xcode.tools.swift.compiler
+SwiftDriver Mock normal x86_64 com.apple.xcode.tools.swift.compiler
+SwiftDriver MockTests normal arm64 com.apple.xcode.tools.swift.compiler
+SwiftDriver MockTests normal x86_64 com.apple.xcode.tools.swift.compiler
+SwiftDriverJobDiscovery normal arm64 Compiling Mock.swift
+SwiftDriverJobDiscovery normal arm64 Compiling MockTests.swift
+SwiftDriverJobDiscovery normal arm64 Emitting module for Mock
+SwiftDriverJobDiscovery normal arm64 Emitting module for MockTests
+SwiftDriverJobDiscovery normal x86_64 Compiling Mock.swift
+SwiftDriverJobDiscovery normal x86_64 Compiling MockTests.swift
+SwiftDriverJobDiscovery normal x86_64 Emitting module for Mock
+SwiftDriverJobDiscovery normal x86_64 Emitting module for MockTests
+SwiftEmitModule normal arm64 Emitting\ module\ for\ Mock
+SwiftEmitModule normal arm64 Emitting\ module\ for\ MockTests
+SwiftEmitModule normal x86_64 Emitting\ module\ for\ Mock
+SwiftEmitModule normal x86_64 Emitting\ module\ for\ MockTests
 SwiftMergeGeneratedHeaders [...]/Mock-Swift.h
 Touch [...]/MockTests.xctest
 WriteAuxiliaryFile [...]/Mock-OutputFileMap.json
@@ -33,5 +49,4 @@ WriteAuxiliaryFile [...]/MockTests-OutputFileMap.json
 WriteAuxiliaryFile [...]/MockTests.LinkFileList
 WriteAuxiliaryFile [...]/MockTests.SwiftFileList
 WriteAuxiliaryFile [...]/empty-MockTests.plist
-note: Build preparation complete
-note: Planning
+note: Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'MockTests' from project 'Mock')
