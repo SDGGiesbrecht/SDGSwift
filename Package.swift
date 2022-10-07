@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 
 /*
  Package.swift
@@ -63,7 +63,7 @@ let package = Package(
   name: "SDGSwift",
   platforms: [
     // These must also be updated in Sources/SDGSwiftConfigurationLoading/Configuration.swift.
-    .macOS(.v10_10)
+    .macOS(.v10_13)
   ],
   products: [
     // @documentation(SDGSwift)
@@ -121,14 +121,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: {
-        // #workaround(Until switch to 5.7.)
-        #if compiler(>=5.7)
-          return Version(0, 50700, 0)
-        #else
-          return Version(0, 50600, 1)
-        #endif
-      }()
+      exact: Version(0, 50700, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
@@ -550,10 +543,6 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
-  // #workaround(Until switch to 5.7.)
-  #if compiler(>=5.7)
-    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
-  #endif
 }
 
 import Foundation
@@ -596,25 +585,14 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Associated values changed.)
-      case .productItem(let name, let package, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(package)
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(name)
-        }
-    #else
-      case .productItem(let name, let package, moduleAliases: _, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(package)
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(name)
-        }
-    #endif
+    case .productItem(let name, let package, moduleAliases: _, condition: _):
+      if let package = package,
+        impossibleDependencyPackages.contains(package)
+      {
+        return true
+      } else {
+        return impossibleDependencyProducts.contains(name)
+      }
     default:
       return false
     }

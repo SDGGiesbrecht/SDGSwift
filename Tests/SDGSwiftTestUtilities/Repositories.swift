@@ -68,12 +68,7 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
       // Fixed path to prevent run‐away growth of Xcode’s derived data.
       temporaryDirectory = URL(fileURLWithPath: "/tmp")
     #else
-      if #available(tvOS 10, iOS 10, watchOS 3, *) {
-        temporaryDirectory = FileManager.default.temporaryDirectory
-      } else {
-        // @exempt(from: tests)
-        temporaryDirectory = URL(fileURLWithPath: "/tmp")
-      }
+      temporaryDirectory = FileManager.default.temporaryDirectory
     #endif
 
     var mocks: [URL] = []
@@ -139,16 +134,6 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
           named: StrictString(mock.lastPathComponent),
           type: .library
         ).get()
-        #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-          // Revert tools version so that the initialized package can be loaded by the standard toolchain.
-          let manifest = repository.location.appendingPathComponent("Package.swift")
-          var string = try String(from: manifest)
-          string.replaceMatches(
-            for: "swift\u{2D}tools\u{2D}version: 5.7",
-            with: "swift\u{2D}tools\u{2D}version: 5.6"
-          )
-          try string.save(to: manifest)
-        #endif
         try test(repository)
       }
     }

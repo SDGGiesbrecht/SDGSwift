@@ -1,19 +1,7 @@
 Loading “SampleConfigurationFile.swift”...
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-[[...]/[...]] Downloading binary artifacts
+Downloading binary artifact https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip
+[[...]/[...]] Downloading https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip
+Downloaded https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip ([duration]s)
 Building for debugging...
 [[...]/[...]] Emitting module SDGControlFlow
 [[...]/[...]] Emitting module SDGSwiftConfiguration
@@ -27,7 +15,6 @@ Building for debugging...
 [[...]/[...]] Copying lib_InternalSwiftSyntaxParser.dylib
 [[...]/[...]] Emitting module SwiftSyntax
 [[...]/[...]] Archiving libSwiftSyntax.a
-[[...]/[...]] Emitting module SwiftSyntaxParser
 [[...]/[...]] Archiving libSwiftSyntaxParser.a
 Build complete! ([duration]s)
 
@@ -36,21 +23,9 @@ No configuration found. Using defaults...
 
 Empty
 Loading “SampleConfigurationFile.swift”...
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-Fetching [...]
-[[...]/[...]] Downloading binary artifacts
+Downloading binary artifact https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip
+[[...]/[...]] Downloading https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip
+Downloaded https://github.com/apple/swift-syntax/releases/download/0.50600.1/_InternalSwiftSyntaxParser.xcframework.zip ([duration]s)
 Building for debugging...
 [[...]/[...]] Emitting module SDGSwiftConfiguration
 [[...]/[...]] Emitting module SampleConfiguration

@@ -462,7 +462,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         let documentationSpecification = testSpecificationDirectory().appendingPathComponent(
           "API/Documentation/\(packageName).txt"
         )
-        #if !EXPERIMENTAL_TOOLCHAIN_VERSION  // Inherited documentation changed.
+        #if !os(Linux)  // Inherited documenation differs between toolchains.
           SDGPersistenceTestUtilities.compare(
             documentation,
             against: documentationSpecification,

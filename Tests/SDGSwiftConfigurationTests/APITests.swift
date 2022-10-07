@@ -33,12 +33,6 @@ import SDGXCTestUtilities
 
 import SDGSwiftTestUtilities
 
-#if compiler(>=5.6)
-  var swift5_6 = true
-#else
-  var swift5_6 = false
-#endif
-
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testConfiguration() throws {
@@ -243,6 +237,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             var lines = log.lines.map { String(String.UnicodeScalarView($0.line)) }
             lines.removeAll(where: { $0.contains("SQLITE_OPEN_FILEPROTECTION_") })
             lines.removeAll(where: { $0.contains("[logging] misuse at line") })
+            lines.removeAll(where: { $0.contains("Fetching") })
+            lines.removeAll(where: { $0.contains("Emitting module SwiftSyntaxParser") })
             log = lines.joined(separator: "\n")
             let digits = ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.decimalDigits })
             let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars
@@ -252,20 +248,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               with: "([duration]s)".scalars
             )
 
-            if swift5_6 {
-              // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
-              #if !os(Linux)
-                #if !EXPERIMENTAL_TOOLCHAIN_VERSION
-                  compare(
-                    log,
-                    against: testSpecificationDirectory().appendingPathComponent(
-                      "Configuration Loading.txt"
-                    ),
-                    overwriteSpecificationInsteadOfFailing: false
-                  )
-                #endif
-              #endif
-            }
+            // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
+            #if !os(Linux)
+              compare(
+                log,
+                against: testSpecificationDirectory().appendingPathComponent(
+                  "Configuration Loading.txt"
+                ),
+                overwriteSpecificationInsteadOfFailing: false
+              )
+            #endif
           #endif
         #endif
 
