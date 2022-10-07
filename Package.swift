@@ -213,14 +213,14 @@ let package = Package(
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "cmark", package: "swift\u{2D}cmark"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
@@ -255,7 +255,7 @@ let package = Package(
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -266,7 +266,7 @@ let package = Package(
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -420,7 +420,7 @@ let package = Package(
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
       ]
@@ -450,13 +450,13 @@ let package = Package(
         .product(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50600.1, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
@@ -514,11 +514,11 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.6, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.7, Web lacks Foundation.Process.)
     // #workaround(Swift 5.6, Web lacks Foundation.ProcessInfo.)
-    // #workaround(Swift 5.6, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.6, SwiftSyntaxParser does not compile on Windows.)
+    // #workaround(Swift 5.7, SwiftPM does not compile on Windows.)
+    // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
