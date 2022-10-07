@@ -182,8 +182,8 @@ let package = Package(
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          // #warning(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
       ]
     ),
