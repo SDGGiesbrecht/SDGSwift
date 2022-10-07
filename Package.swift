@@ -176,14 +176,14 @@ let package = Package(
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
           package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #warning(SwiftPM 0.50600.3, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .windows, .linux])
+          // #workaround(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ]
     ),
