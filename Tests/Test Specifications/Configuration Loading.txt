@@ -14,7 +14,6 @@ Loading “SampleConfigurationFile.swift”...
 Building for debugging...
 [[...]/[...]] Copying lib_InternalSwiftSyntaxParser.dylib
 [[...]/[...]] Emitting module SwiftSyntax
-[[...]/[...]] Emitting module SwiftSyntaxParser
 [[...]/[...]] Archiving libSwiftSyntax.a
 [[...]/[...]] Archiving libSwiftSyntaxParser.a
 Build complete! ([duration]s)
