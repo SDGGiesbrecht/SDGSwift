@@ -550,11 +550,11 @@ import Foundation
 var impossibleDependencyPackages: [String] = []
 var impossibleDependencyProducts: [String] = []
 
-// #warning(Swift 5.6, Conditional dependencies fail to skip for Windows and Android.)
+// #workaround(Swift 5.7, Conditional dependencies fail to skip for Windows and Android.)
 if ["WINDOWS", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
-  //impossibleDependencyProducts.append("SwiftSyntaxParser")
+  impossibleDependencyProducts.append("SwiftSyntaxParser")
 }
 
 // #workaround(Swift 5.7, Web toolchain rejects manifest due to dynamic library.)
