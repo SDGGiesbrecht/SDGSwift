@@ -202,14 +202,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       )
     #else
-      #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
-        testCustomStringConvertibleConformance(
-          of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Mock",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      testCustomStringConvertibleConformance(
+        of: PackageRepository(at: URL(fileURLWithPath: "/path/to/Mock Package")),
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Mock",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM

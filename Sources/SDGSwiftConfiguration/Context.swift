@@ -19,16 +19,12 @@ public protocol Context: Codable {}
 
 extension Context {
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-    /// Returns the context provided by the configuration loader.
-    public static func accept() -> Self? {  // @exempt(from: tests) Requires 0.1.10
-
-      guard ProcessInfo.processInfo.arguments.count > 1 else {
-        return nil
-      }
-
-      let json = ProcessInfo.processInfo.arguments[1]
-      return (try? JSONDecoder().decode([Self].self, from: json.data(using: .utf8)!))?.first
+  /// Returns the context provided by the configuration loader.
+  public static func accept() -> Self? {  // @exempt(from: tests) Requires 0.1.10
+    guard ProcessInfo.processInfo.arguments.count > 1 else {
+      return nil
     }
-  #endif
+    let json = ProcessInfo.processInfo.arguments[1]
+    return (try? JSONDecoder().decode([Self].self, from: json.data(using: .utf8)!))?.first
+  }
 }

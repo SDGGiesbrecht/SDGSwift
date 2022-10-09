@@ -19,10 +19,8 @@ public struct SampleContext: Context {
 
   // MARK: - Static Properties
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-    /// The context received from the configuration loader.
-    public static var context: SampleContext? = SampleContext.accept()
-  #endif
+  /// The context received from the configuration loader.
+  public static var context: SampleContext? = SampleContext.accept()
 
   // MARK: - Initialization
 
