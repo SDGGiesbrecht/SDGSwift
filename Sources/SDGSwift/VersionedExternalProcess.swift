@@ -116,7 +116,7 @@ extension VersionedExternalProcess {
         return .success(found)  // @exempt(from: tests) Unreachable on tvOS.
       } else {
 
-        // #workaround(Swift 5.6, Shell misbehaves on Windows; this tries hard‐coded paths as a fallback.)
+        // #workaround(Swift 5.7, Shell misbehaves on Windows; this tries hard‐coded paths as a fallback.)
         #if os(Windows)
           var hardCoded: [URL] = []
           if Self.self == Git.self {
