@@ -16,10 +16,8 @@ import Foundation
 
 import SDGLogic
 
-#if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-  extension ProcessInfo {
+extension ProcessInfo {
 
-    internal static let isInGitHubAction =
-      ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
-  }
-#endif
+  internal static let isInGitHubAction =
+    ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+}

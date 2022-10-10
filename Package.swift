@@ -45,7 +45,6 @@ import PackageDescription
 /// ```swift
 /// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
-/// .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -516,13 +515,11 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
     // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.7, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.6, Web lacks Foundation.ProcessInfo.)
     // #workaround(Swift 5.7, SwiftPM does not compile on Windows.)
     // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -539,8 +536,6 @@ for target in package.targets {
 
     // Internal‐only:
     .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
-    // #workaround(Swift 5.6, Web lacks Foundation.URL.init(fileURLWithPath:).)
-    .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
 }

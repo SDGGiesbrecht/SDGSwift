@@ -38,14 +38,12 @@ public let thisRepository: PackageRepository = {
       root = URL(fileURLWithPath: directory)
     }
   #endif
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-    if let overridden = ProcessInfo.processInfo
-      .environment["SWIFTPM_PACKAGE_ROOT"]
-    {  // @exempt(from: tests)
-      // @exempt(from: tests)
-      root = URL(fileURLWithPath: overridden)
-    }
-  #endif
+  if let overridden = ProcessInfo.processInfo
+    .environment["SWIFTPM_PACKAGE_ROOT"]
+  {  // @exempt(from: tests)
+    // @exempt(from: tests)
+    root = URL(fileURLWithPath: overridden)
+  }
   return PackageRepository(at: root)
 }()
 public let mocksDirectory = thisRepository.location
