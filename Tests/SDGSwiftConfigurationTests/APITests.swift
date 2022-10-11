@@ -248,7 +248,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               with: "([duration]s)".scalars
             )
 
-            // #workaround(Swift 5.6, Log differs by platform due to SwiftSyntax.)
+            // #workaround(Swift 5.7, Log differs by platform due to SwiftSyntax.)
             #if !os(Linux)
               compare(
                 log,
