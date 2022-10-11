@@ -108,6 +108,7 @@ public struct PackageRepository: TransparentWrapper {
     ///     - arguments: The arguments to supply to the target.
     ///     - environment: Optional. A different set of environment variables.
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
+    ///     - ignoreStandardError: Optional. If `true`, standard error will be excluded from the output. The default is `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     ///     - progressReport: A line of output.
     @discardableResult public func run(
@@ -115,6 +116,7 @@ public struct PackageRepository: TransparentWrapper {
       arguments: [String] = [],
       environment: [String: String]? = nil,
       releaseConfiguration: Bool = false,
+      ignoreStandardError: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       SwiftCompiler.run(
@@ -123,6 +125,7 @@ public struct PackageRepository: TransparentWrapper {
         arguments: arguments,
         environment: environment,
         releaseConfiguration: releaseConfiguration,
+        ignoreStandardError: ignoreStandardError,
         reportProgress: reportProgress
       )
     }

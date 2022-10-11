@@ -167,6 +167,7 @@ extension VersionedExternalProcess {
     ///   - workingDirectory: Optional. A different working directory.
     ///   - environment: Optional. A different set of environment variables.
     ///   - versionConstraints: The acceptable range of versions.
+    ///   - ignoreStandardError: Optional. If `true`, standard error will be excluded from the output. The default is `false`.
     ///   - reportProgress: Optional. A closure to execute for each line of output.
     ///   - progressReport: A line of output.
     @discardableResult public static func runCustomSubcommand<Constraints>(
@@ -174,6 +175,7 @@ extension VersionedExternalProcess {
       in workingDirectory: URL? = nil,
       with environment: [String: String]? = nil,
       versionConstraints: Constraints,
+      ignoreStandardError: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<Self>>
     where Constraints: RangeFamily, Constraints.Bound == Version {
@@ -199,6 +201,7 @@ extension VersionedExternalProcess {
           arguments,
           in: workingDirectory,
           with: environment,
+          ignoreStandardError: ignoreStandardError,
           reportProgress: reportProgress
         ) {
         case .failure(let error):
