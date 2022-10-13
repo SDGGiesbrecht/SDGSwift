@@ -478,7 +478,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             continue  // Parsing is not expected to work.
           }
           XCTAssertEqual(
-            symbol.parseDocumentation(cache: &cache, module: "PrimaryModule").last?.documentationComment,
+            symbol.parseDocumentation(cache: &cache, module: "PrimaryModule").last?
+              .documentationComment,
             symbol.docComment
           )
         }
