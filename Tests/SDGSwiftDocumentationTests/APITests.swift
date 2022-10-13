@@ -473,7 +473,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
         for symbol in symbols {
           if let standard = symbol as? SymbolGraph.Symbol,
-            standard.isDocCommentFromSameModule == false
+            standard.docComment?.moduleName == "Swift"
           {
             continue  // Parsing is not expected to work.
           }
