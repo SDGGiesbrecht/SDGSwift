@@ -50,7 +50,11 @@ import SDGSwiftSource
       return _smallestSubnode(containing: searchTerm)
     }
 
-    internal func documentation(url: String, source: SourceFileSyntax) -> [SymbolDocumentation] {
+    internal func documentation(
+      url: String,
+      source: SourceFileSyntax,
+      module: String?
+    ) -> [SymbolDocumentation] {
       var result: [SymbolDocumentation] = []
       if let token = firstToken() {
         let leading = token.leadingTrivia
@@ -62,8 +66,12 @@ import SDGSwiftSource
           if ¬pendingLines.isEmpty {
             result.append(
               SymbolDocumentation(
-                developerComments: SymbolGraph.LineList(lines: []),
-                documentationComment: SymbolGraph.LineList(lines: pendingLines.reversed())
+                developerComments: SymbolGraph.LineList([], uri: url, moduleName: module),
+                documentationComment: SymbolGraph.LineList(
+                  pendingLines.reversed(),
+                  uri: url,
+                  moduleName: module
+                )
               )
             )
           }
@@ -196,8 +204,8 @@ import SDGSwiftSource
             }
             result.append(
               SymbolDocumentation(
-                developerComments: SymbolGraph.LineList(lines: []),
-                documentationComment: SymbolGraph.LineList(lines: lines)
+                developerComments: SymbolGraph.LineList([], uri: url, moduleName: module),
+                documentationComment: SymbolGraph.LineList(lines, uri: url, moduleName: module)
               )
             )
           }

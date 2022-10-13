@@ -27,7 +27,8 @@ extension StoredDocumentation {
   }
 
   public func parseDocumentation(
-    cache: inout [URL: SymbolGraph.Symbol.CachedSource]
+    cache: inout [URL: SymbolGraph.Symbol.CachedSource],
+    module: String?
   ) -> [SymbolDocumentation] {
     return documentation
   }

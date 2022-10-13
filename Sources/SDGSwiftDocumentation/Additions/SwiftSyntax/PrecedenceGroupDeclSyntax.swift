@@ -19,7 +19,7 @@ import SymbolKit
 
   extension PrecedenceGroupDeclSyntax {
 
-    internal func api(url: String, source: SourceFileSyntax) -> PrecedenceGroup {
+    internal func api(url: String, source: SourceFileSyntax, module: String) -> PrecedenceGroup {
       let declaration = [
         SymbolGraph.Symbol.DeclarationFragments.Fragment(
           kind: .keyword,
@@ -45,7 +45,7 @@ import SymbolKit
           prose: nil
         ),
         declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: declaration),
-        documentation: documentation(url: url, source: source),
+        documentation: documentation(url: url, source: source, module: module),
         location: location(url: url, source: source)
       )
     }

@@ -106,7 +106,11 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
       let declaration = ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)
       self.init(
         name: name,
-        documentation: declaration?.documentation(url: manifestURL, source: manifestSource) ?? [],
+        documentation: declaration?.documentation(
+          url: manifestURL,
+          source: manifestSource,
+          module: nil
+        ) ?? [],
         location: declaration?.location(url: manifestURL, source: manifestSource),
         symbolGraphs: symbolGraphs,
         sources: sources
@@ -149,8 +153,10 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
           let url = sourceFile.absoluteString
           if let source = try? SyntaxParser.parse(sourceFile) {
             let syntax = Syntax(source)
-            operators.append(contentsOf: syntax.operators(url: url, source: source))
-            precedenceGroups.append(contentsOf: syntax.precedenceGroups(url: url, source: source))
+            operators.append(contentsOf: syntax.operators(url: url, source: source, module: name))
+            precedenceGroups.append(
+              contentsOf: syntax.precedenceGroups(url: url, source: source, module: name)
+            )
           }
         #endif
       }

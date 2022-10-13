@@ -51,12 +51,19 @@ extension SymbolGraph.Symbol: SymbolLike {
     /// A parsed file.
     public typealias CachedSource = SourceFileSyntax
   #endif
-  public func parseDocumentation(cache: inout [URL: CachedSource]) -> [SymbolDocumentation] {
+  public func parseDocumentation(
+    cache: inout [URL: CachedSource],
+    module: String?
+  ) -> [SymbolDocumentation] {
     func fallback() -> [SymbolDocumentation] {
       if let stored = docComment {
         return [
           SymbolDocumentation(
-            developerComments: SymbolGraph.LineList(lines: []),
+            developerComments: SymbolGraph.LineList(
+              [],
+              uri: stored.uri,
+              moduleName: stored.moduleName
+            ),
             documentationComment: stored
           )
         ]
@@ -86,7 +93,7 @@ extension SymbolGraph.Symbol: SymbolLike {
       func scan<Node>(for type: Node.Type) -> [SymbolDocumentation]
       where Node: SyntaxProtocol {
         return source.smallest(type, at: position)?
-          .documentation(url: location.uri, source: source)
+          .documentation(url: location.uri, source: source, module: module)
           ?? []  // @exempt(from: tests) Theoretically unreachable.
       }
       switch kind.identifier {

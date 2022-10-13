@@ -88,7 +88,8 @@ public struct LibraryAPI: StoredDocumentation, SymbolLike {
       )
       self.init(
         name: name,
-        documentation: declaration?.documentation(url: manifestURL, source: manifest) ?? [],
+        documentation: declaration?.documentation(url: manifestURL, source: manifest, module: nil)
+          ?? [],
         location: declaration?.location(url: manifestURL, source: manifest),
         modules: modules
       )
