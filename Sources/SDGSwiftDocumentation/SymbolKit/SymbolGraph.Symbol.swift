@@ -104,6 +104,8 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: FunctionDeclSyntax.self)
       case .`init`:
         return scan(for: InitializerDeclSyntax.self)
+      case .ivar, .macro, .module, .snippet, .snippetGroup, .unknown:
+        return []  // @exempt(from: tests) Theoretically unreachable.
       case .property, .typeProperty, .var:
         return scan(for: VariableDeclSyntax.self)
       case .protocol:
@@ -114,8 +116,6 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: SubscriptDeclSyntax.self)
       case .typealias:
         return scan(for: TypealiasDeclSyntax.self)
-      case .module, .unknown:
-        return []  // @exempt(from: tests) Theoretically unreachable.
       }
     #endif
   }
