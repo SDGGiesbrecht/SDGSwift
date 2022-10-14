@@ -51,12 +51,19 @@ extension SymbolGraph.Symbol: SymbolLike {
     /// A parsed file.
     public typealias CachedSource = SourceFileSyntax
   #endif
-  public func parseDocumentation(cache: inout [URL: CachedSource]) -> [SymbolDocumentation] {
+  public func parseDocumentation(
+    cache: inout [URL: CachedSource],
+    module: String?
+  ) -> [SymbolDocumentation] {
     func fallback() -> [SymbolDocumentation] {
       if let stored = docComment {
         return [
           SymbolDocumentation(
-            developerComments: SymbolGraph.LineList(lines: []),
+            developerComments: SymbolGraph.LineList(
+              [],
+              uri: stored.uri,
+              moduleName: stored.moduleName
+            ),
             documentationComment: stored
           )
         ]
@@ -86,7 +93,7 @@ extension SymbolGraph.Symbol: SymbolLike {
       func scan<Node>(for type: Node.Type) -> [SymbolDocumentation]
       where Node: SyntaxProtocol {
         return source.smallest(type, at: position)?
-          .documentation(url: location.uri, source: source)
+          .documentation(url: location.uri, source: source, module: module)
           ?? []  // @exempt(from: tests) Theoretically unreachable.
       }
       switch kind.identifier {
@@ -104,6 +111,8 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: FunctionDeclSyntax.self)
       case .`init`:
         return scan(for: InitializerDeclSyntax.self)
+      case .ivar, .macro, .module, .snippet, .snippetGroup, .unknown:
+        return []  // @exempt(from: tests) Theoretically unreachable.
       case .property, .typeProperty, .var:
         return scan(for: VariableDeclSyntax.self)
       case .protocol:
@@ -114,8 +123,6 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: SubscriptDeclSyntax.self)
       case .typealias:
         return scan(for: TypealiasDeclSyntax.self)
-      case .module, .unknown:
-        return []  // @exempt(from: tests) Theoretically unreachable.
       }
     #endif
   }

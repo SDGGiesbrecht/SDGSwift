@@ -123,14 +123,18 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
       )
       self.init(
         name: name,
-        documentation: declaration?.documentation(url: manifestURL, source: manifestSource) ?? [],
+        documentation: declaration?.documentation(
+          url: manifestURL,
+          source: manifestSource,
+          module: nil
+        ) ?? [],
         location: declaration?.location(url: manifestURL, source: manifestSource),
         libraries: libraries,
         symbolGraphs: symbolGraphs,
         moduleSources: moduleSources,
         moduleDocumentationCommentLookup: { name in
           return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?
-            .documentation(url: manifestURL, source: manifestSource) ?? []
+            .documentation(url: manifestURL, source: manifestSource, module: nil) ?? []
         },
         moduleDeclarationLocationLookup: { name in
           return ModuleAPI.lookUpDeclaration(for: name, in: manifestSource)?

@@ -39,8 +39,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testSymbolDocumentation() {
     _ = SDGSwiftDocumentation.SymbolDocumentation(
-      developerComments: SymbolGraph.LineList(lines: []),
-      documentationComment: SymbolGraph.LineList(lines: [])
+      developerComments: SymbolGraph.LineList([]),
+      documentationComment: SymbolGraph.LineList([])
     )
   }
 
@@ -170,7 +170,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       declaration: SymbolGraph.Symbol.DeclarationFragments(declarationFragments: []),
       documentation: [],
       location: nil
-    ).parseDocumentation(cache: &cache)
+    ).parseDocumentation(cache: &cache, module: nil)
   }
 
   func testPackageAPI() {
@@ -473,12 +473,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
         for symbol in symbols {
           if let standard = symbol as? SymbolGraph.Symbol,
-            standard.isDocCommentFromSameModule == false
+            standard.docComment?.moduleName == "Swift"
           {
             continue  // Parsing is not expected to work.
           }
           XCTAssertEqual(
-            symbol.parseDocumentation(cache: &cache).last?.documentationComment,
+            symbol.parseDocumentation(cache: &cache, module: "PrimaryModule").last?
+              .documentationComment,
             symbol.docComment
           )
         }
@@ -487,7 +488,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSymbolGraphLineList() {
-    _ = SymbolGraph.LineList(lines: [
+    _ = SymbolGraph.LineList([
       SymbolGraph.LineList.Line(text: "...", range: nil),
       SymbolGraph.LineList.Line(
         text: "...",
@@ -517,17 +518,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     _ = symbol.declaration
     _ = symbol.location
     var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
-    _ = symbol.parseDocumentation(cache: &cache)
+    _ = symbol.parseDocumentation(cache: &cache, module: nil)
 
     var modified = symbol
-    modified.docComment = SymbolGraph.LineList.init(lines: [])
-    _ = modified.parseDocumentation(cache: &cache)
+    modified.docComment = SymbolGraph.LineList.init([])
+    _ = modified.parseDocumentation(cache: &cache, module: nil)
     modified.location = SymbolGraph.Symbol.Location(
       uri: "some file.swift",
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
     #if !os(Linux)  // #workaround(Swift 5.7, Foundation crashes instead of throwing.)
-      _ = modified.parseDocumentation(cache: &cache)
+      _ = modified.parseDocumentation(cache: &cache, module: nil)
     #endif
   }
 

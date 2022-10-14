@@ -147,7 +147,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
             )
           ]),
           eofToken: SyntaxFactory.makeToken(.eof)
-        )
+        ),
+        module: nil
       )
       XCTAssertEqual(
         documentation.last?.developerComments.lines.map({ $0.text }).joined(separator: "\n"),

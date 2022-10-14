@@ -19,7 +19,7 @@ import SymbolKit
 
   extension OperatorDeclSyntax {
 
-    internal func api(url: String, source: SourceFileSyntax) -> Operator {
+    internal func api(url: String, source: SourceFileSyntax, module: String) -> Operator {
       var declarationComponents: [SymbolGraph.Symbol.DeclarationFragments.Fragment] = []
       if let fixity = modifiers?.first {
         declarationComponents.append(contentsOf: [
@@ -62,7 +62,7 @@ import SymbolKit
         declaration: SymbolGraph.Symbol.DeclarationFragments(
           declarationFragments: declarationComponents
         ),
-        documentation: documentation(url: url, source: source),
+        documentation: documentation(url: url, source: source, module: module),
         location: location(url: url, source: source)
       )
     }

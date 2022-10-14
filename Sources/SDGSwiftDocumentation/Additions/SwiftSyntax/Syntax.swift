@@ -19,19 +19,23 @@ import SymbolKit
 
   extension SwiftSyntax.Syntax {
 
-    internal func operators(url: String, source: SourceFileSyntax) -> [Operator] {
+    internal func operators(url: String, source: SourceFileSyntax, module: String) -> [Operator] {
       if let declaration = self.as(OperatorDeclSyntax.self) {
-        return [declaration.api(url: url, source: source)]
+        return [declaration.api(url: url, source: source, module: module)]
       } else {
-        return children.flatMap({ $0.operators(url: url, source: source) })
+        return children.flatMap({ $0.operators(url: url, source: source, module: module) })
       }
     }
 
-    internal func precedenceGroups(url: String, source: SourceFileSyntax) -> [PrecedenceGroup] {
+    internal func precedenceGroups(
+      url: String,
+      source: SourceFileSyntax,
+      module: String
+    ) -> [PrecedenceGroup] {
       if let declaration = self.as(PrecedenceGroupDeclSyntax.self) {
-        return [declaration.api(url: url, source: source)]
+        return [declaration.api(url: url, source: source, module: module)]
       } else {
-        return children.flatMap({ $0.precedenceGroups(url: url, source: source) })
+        return children.flatMap({ $0.precedenceGroups(url: url, source: source, module: module) })
       }
     }
   }
