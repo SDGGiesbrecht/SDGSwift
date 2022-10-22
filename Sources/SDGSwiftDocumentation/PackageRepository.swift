@@ -117,7 +117,7 @@ extension PackageRepository {
     private func reported(manifestURL: URL) -> String {
       return manifestURL.absoluteString
     }
-    /// Loads only the documentation of the root package documentation node.
+    /// Loads only the documentation of the root package documentation node without loading the rest of the API.
     ///
     /// - Parameters:
     ///   - packageName: The name of the package.
