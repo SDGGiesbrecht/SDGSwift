@@ -59,65 +59,6 @@
     // MARK: - Initialization
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      /// Creates a package API instance by parsing the specified package’s sources.
-      ///
-      /// - Parameters:
-      ///     - package: The package, already loaded by the `SwiftPM` package.
-      ///     - ignoredDependencies: Optional. An array of dependency module names known to be irrelevant to documentation. Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
-      ///     - reportProgress: Optional. A closure to execute to report progress at significant milestones.
-      ///     - progressReport: A line of text reporting a progress milestone.
-      @available(macOS 10.15, *)
-      public convenience init(
-        package: PackageGraph,
-        ignoredDependencies: Set<String> = [],
-        reportProgress: (_ progressReport: String) -> Void = { _ in }
-      ) throws {
-
-        let root = package.rootPackages.first!.underlyingPackage
-        try self.init(package: root, reportProgress: reportProgress)
-
-        var dependencyModules: [ModuleAPI] = []
-
-        for (name, source) in [
-          ("Swift", Resources.swift),
-          ("Foundation", Resources.foundation),
-          ("Dispatch", Resources.dispatch),
-          ("XCTest", Resources.xctest),
-        ] where name ∉ ignoredDependencies {
-          reportProgress(
-            String(PackageAPI.reportForLoadingInheritance(from: StrictString(name)).resolved())
-          )
-          dependencyModules.append(try ModuleAPI(source: source))
-        }
-
-        let declaredDependencies = package.reachableTargets.filter({ module in
-          switch module.type {
-          case .executable, .systemModule, .test, .binary, .plugin, .snippet:
-            return false
-          case .library:
-            return ¬root.targets.contains(module.underlyingTarget)
-          }
-        })
-        for module in declaredDependencies.sorted(by: { $0.name < $1.name })
-        where module.name ∉ ignoredDependencies {
-          reportProgress(
-            String(
-              PackageAPI.reportForLoadingInheritance(from: StrictString(module.name)).resolved()
-            )
-          )
-          dependencyModules.append(
-            try ModuleAPI(module: module.underlyingTarget, manifest: Optional<Syntax>.none)
-          )
-        }
-
-        for module in dependencyModules {
-          self.dependencies.append(module)
-        }
-        APIElement.resolveConformances(
-          elements: [.package(self)] + dependencyModules.lazy.map({ APIElement.module($0) })
-        )
-      }
-
       @available(macOS 10.15, *)
       private static func documentation(
         for package: PackageModel.Package,
