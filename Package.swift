@@ -83,6 +83,12 @@ let package = Package(
     /// This module is built on SwiftSyntax and provides utilities such as syntax colouring and API parsing.
     .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
+    // @documentation(SDGSwiftDocumentation)
+    /// Utilities for working with Swift documentation.
+    ///
+    /// This module is built on DocC and provides utilities such as API parsing.
+    .library(name: "SDGSwiftDocumentation", targets: ["SDGSwiftDocumentation"]),
+
     // @documentation(SDGXcode)
     /// Xcode‐related utilities for working with Swift packages.
     .library(name: "SDGXcode", targets: ["SDGXcode"]),
@@ -233,7 +239,7 @@ let package = Package(
       ]
     ),
 
-    // #workaround(Not exposed yet; still incomplete.)
+    // #documentation(SDGSwiftDocumentation)
     /// Utilities for working with Swift documentation.
     ///
     /// This module is built on DocC and provides utilities such as API parsing.
