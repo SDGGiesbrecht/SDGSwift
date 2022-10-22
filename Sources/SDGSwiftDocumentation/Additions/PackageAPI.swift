@@ -99,6 +99,35 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   // MARK: - Initialization
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    private static func declaration(name: String, manifestSource: SourceFileSyntax) -> VariableDeclSyntax? {
+      return PackageAPI.find(
+        PackageAPI.declaration(for: name),
+        in: manifestSource,
+        as: VariableDeclSyntax.self
+      )
+    }
+    private static func documentation(
+      declaration: VariableDeclSyntax?,
+      manifestURL: String,
+      manifestSource: SourceFileSyntax
+    ) -> [SymbolDocumentation] {
+      return declaration?.documentation(
+        url: manifestURL,
+        source: manifestSource,
+        module: nil
+      ) ?? []
+    }
+    internal static func documentation(
+      name: String,
+      manifestURL: String,
+      manifestSource: SourceFileSyntax
+    ) -> [SymbolDocumentation] {
+      return documentation(
+        declaration: declaration(name: name, manifestSource: manifestSource),
+        manifestURL: manifestURL,
+        manifestSource: manifestSource
+      )
+    }
     /// Creates a package API.
     ///
     /// - Parameters:
@@ -116,18 +145,14 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
       symbolGraphs: [SymbolGraph],
       moduleSources: [String: [URL]]
     ) {
-      let declaration = PackageAPI.find(
-        PackageAPI.declaration(for: name),
-        in: manifestSource,
-        as: VariableDeclSyntax.self
-      )
+      let declaration = PackageAPI.declaration(name: name, manifestSource: manifestSource)
       self.init(
         name: name,
-        documentation: declaration?.documentation(
-          url: manifestURL,
-          source: manifestSource,
-          module: nil
-        ) ?? [],
+        documentation: PackageAPI.documentation(
+          declaration: declaration,
+          manifestURL: manifestURL,
+          manifestSource: manifestSource
+        ),
         location: declaration?.location(url: manifestURL, source: manifestSource),
         libraries: libraries,
         symbolGraphs: symbolGraphs,
