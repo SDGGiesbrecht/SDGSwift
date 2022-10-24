@@ -173,6 +173,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     ).parseDocumentation(cache: &cache, module: nil)
   }
 
+  func testPackageRepository() {
+    XCTAssert(thisRepository.documentation(packageName: "SDGSwift").count ≠ 0)
+  }
+
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
