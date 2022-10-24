@@ -174,7 +174,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageRepository() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       XCTAssert(thisRepository.documentation(packageName: "SDGSwift").count ≠ 0)
     #endif
   }
