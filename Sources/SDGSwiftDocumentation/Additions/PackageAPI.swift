@@ -99,7 +99,10 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   // MARK: - Initialization
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    private static func declaration(name: String, manifestSource: SourceFileSyntax) -> VariableDeclSyntax? {
+    private static func declaration(
+      name: String,
+      manifestSource: SourceFileSyntax
+    ) -> VariableDeclSyntax? {
       return PackageAPI.find(
         PackageAPI.declaration(for: name),
         in: manifestSource,

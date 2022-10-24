@@ -112,7 +112,7 @@ extension PackageRepository {
     }
     private func manifestSource(url: URL) -> SourceFileSyntax {
       return (try? SyntaxParser.parse(manifestURL))
-      ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
+        ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
     }
     private func reported(manifestURL: URL) -> String {
       return manifestURL.absoluteString
