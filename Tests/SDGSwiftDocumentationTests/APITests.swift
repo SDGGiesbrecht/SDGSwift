@@ -173,6 +173,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     ).parseDocumentation(cache: &cache, module: nil)
   }
 
+  func testPackageRepository() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      XCTAssert(thisRepository.documentation(packageName: "SDGSwift").count ≠ 0)
+    #endif
+  }
+
   func testPackageAPI() {
     let package = PackageAPI(
       name: "MyPackage",
