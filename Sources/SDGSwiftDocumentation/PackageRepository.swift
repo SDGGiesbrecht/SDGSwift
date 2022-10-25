@@ -107,6 +107,29 @@ extension PackageRepository {
       )
     }
 
+    private var manifestURL: URL {
+      return location.appendingPathComponent("Package.swift")
+    }
+    private func manifestSource(url: URL) -> SourceFileSyntax {
+      return (try? SyntaxParser.parse(manifestURL))
+        ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
+    }
+    private func reported(manifestURL: URL) -> String {
+      return manifestURL.absoluteString
+    }
+    /// Loads only the documentation of the root package documentation node without loading the rest of the API.
+    ///
+    /// - Parameters:
+    ///   - packageName: The name of the package.
+    public func documentation(packageName: String) -> [SymbolDocumentation] {
+      let manifestURL = self.manifestURL
+      let manifestSource = self.manifestSource(url: manifestURL)
+      return PackageAPI.documentation(
+        name: packageName,
+        manifestURL: reported(manifestURL: manifestURL),
+        manifestSource: manifestSource
+      )
+    }
     /// Loads and returns the package’s API.
     ///
     /// - Parameters:
@@ -115,10 +138,8 @@ extension PackageRepository {
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<PackageAPI, SymbolGraph.LoadingError> {
-      let manifestURL = location.appendingPathComponent("Package.swift")
-      let manifestSource =
-        (try? SyntaxParser.parse(manifestURL))
-        ?? SyntaxFactory.makeBlankSourceFile()  // @exempt(from: tests)
+      let manifestURL = self.manifestURL
+      let manifestSource = self.manifestSource(url: manifestURL)
       switch package() {
       case .failure(let error):
         return .failure(.packageLoadingError(error))
@@ -127,7 +148,7 @@ extension PackageRepository {
         case .failure(let error):
           return .failure(error)
         case .success(let symbolGraphs):
-          let reportedURL = manifestURL.absoluteString
+          let reportedURL = reported(manifestURL: manifestURL)
           return .success(
             PackageAPI(
               name: package.manifest.displayName,
