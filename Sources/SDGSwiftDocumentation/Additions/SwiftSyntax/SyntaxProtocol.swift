@@ -32,8 +32,8 @@ import SDGSwiftSource
       at position: AbsolutePosition
     ) -> Node?
     where Node: SyntaxProtocol {
-      guard positionAfterSkippingLeadingTrivia ≤ position,
-        position ≤ endPositionBeforeTrailingTrivia
+      guard self.position ≤ position,
+        position ≤ endPosition
       else {
         return nil
       }
