@@ -20,16 +20,6 @@
 
   extension _UniquelyDeclaredManifestAPIElement {
 
-    internal init(documentation: [SymbolDocumentation], declaration: Declaration) {
-      self.init(
-        documentation: documentation,
-        alreadyNormalizedDeclaration: declaration,
-        constraints: nil,
-        name: declaration.manifestEntryName(),
-        children: []
-      )
-    }
-
     // MARK: - APIElementProtocol
 
     public func _shallowIdentifierList() -> Set<String> {
