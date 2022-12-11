@@ -374,12 +374,6 @@
       return elementProtocol.summary()
     }
 
-    // @documentation(SDGSwiftSource.APIElement.identifierList)
-    /// A list of all identifiers made available by the element.
-    public func identifierList() -> Set<String> {
-      return elementProtocol.identifierList()
-    }
-
     // MARK: - Comparable
 
     // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)

@@ -139,14 +139,6 @@
       }
     }
 
-    // MARK: - Identifiers
-
-    // #documentation(SDGSwiftSource.APIElement.identifierList)
-    /// A list of all identifiers made available by the element.
-    public func identifierList() -> Set<String> {
-      return children.reduce(into: _shallowIdentifierList()) { $0 ∪= $1.identifierList() }
-    }
-
     // MARK: - Summary
 
     public var _summaryName: String {
