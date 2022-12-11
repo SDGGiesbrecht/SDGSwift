@@ -29,23 +29,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> InitializerDeclSyntax {
-      let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-      return SyntaxFactory.makeInitializerDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        initKeyword: initKeyword.generallyNormalizedAndMissingInsteadOfNil(),
-        optionalMark: optionalMark?.generallyNormalized(),
-        genericParameterClause: newGenericParemeterClause,
-        parameters: parameters.normalizedForDeclaration(labelBehaviour: .function),
-        throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
-          leadingTrivia: .spaces(1)
-        ),
-        genericWhereClause: newGenericWhereClause,
-        body: nil
-      )
-    }
-
     internal func name() -> InitializerDeclSyntax {
       return SyntaxFactory.makeInitializerDecl(
         attributes: nil,

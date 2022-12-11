@@ -23,20 +23,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> SubscriptDeclSyntax {
-      let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-      return SyntaxFactory.makeSubscriptDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        subscriptKeyword: subscriptKeyword.generallyNormalizedAndMissingInsteadOfNil(),
-        genericParameterClause: newGenericParemeterClause,
-        indices: indices.normalizedForDeclaration(labelBehaviour: .subscript),
-        result: result.normalizedForSubscriptDeclaration(),
-        genericWhereClause: newGenericWhereClause,
-        accessor: nil
-      )
-    }
-
     internal func name() -> SubscriptDeclSyntax {
       return SyntaxFactory.makeSubscriptDecl(
         attributes: nil,

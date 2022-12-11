@@ -29,27 +29,6 @@
 
     // MARK: - TypeDeclaration
 
-    internal func normalizedAPIDeclaration() -> (
-      declaration: StructDeclSyntax, constraints: GenericWhereClauseSyntax?
-    ) {
-      let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-      return (
-        SyntaxFactory.makeStructDecl(
-          attributes: attributes?.normalizedForAPIDeclaration(),
-          modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-          structKeyword: structKeyword.generallyNormalizedAndMissingInsteadOfNil(
-            trailingTrivia: .spaces(1)
-          ),
-          identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-          genericParameterClause: newGenericParemeterClause,
-          inheritanceClause: nil,
-          genericWhereClause: nil,
-          members: SyntaxFactory.makeBlankMemberDeclBlock()
-        ),
-        newGenericWhereClause
-      )
-    }
-
     internal func name() -> StructDeclSyntax {
       return SyntaxFactory.makeStructDecl(
         attributes: nil,
