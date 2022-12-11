@@ -25,7 +25,7 @@
 
     /// Parses a documentation syntax node from the content of a documentation comment (excluding its delimiters).
     ///
-    /// -Parameters:
+    /// - Parameters:
     ///   - source: The documentation source.
     public static func parse(source: String) -> DocumentationSyntax {
       return cached(in: &documentationCache[source]) {
