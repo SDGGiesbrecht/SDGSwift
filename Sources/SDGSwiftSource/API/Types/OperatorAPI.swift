@@ -17,7 +17,7 @@
 
   /// An operator.
   public final class OperatorAPI: APIElementProtocol, DeclaredAPIElement,
-    _NonOverloadableAPIElement, SortableAPIElement, _UniquelyDeclaredAPIElement,
+    _NonOverloadableAPIElement, _UniquelyDeclaredAPIElement,
     _UniquelyDeclaredSyntaxAPIElement
   {
 
@@ -39,7 +39,6 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: OperatorDeclSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: OperatorDeclSyntax,
       children: [APIElement]
     ) {
@@ -47,7 +46,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
   }
 #endif

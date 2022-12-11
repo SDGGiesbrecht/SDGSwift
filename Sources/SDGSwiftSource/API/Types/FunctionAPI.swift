@@ -19,8 +19,7 @@
   import SwiftSyntax
 
   /// A function or method.
-  public final class FunctionAPI: SortableAPIElement,
-    UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+  public final class FunctionAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
   {
 
     // MARK: - Initialization
@@ -28,7 +27,6 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: FunctionDeclSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: FunctionDeclSyntax,
       children: [APIElement]
     ) {
@@ -36,7 +34,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

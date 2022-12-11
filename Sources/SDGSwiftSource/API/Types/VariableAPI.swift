@@ -16,8 +16,7 @@
   import SwiftSyntax
 
   /// A variable or property.
-  public final class VariableAPI: SortableAPIElement,
-    UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+  public final class VariableAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
   {
 
     // MARK: - Initialization
@@ -25,7 +24,6 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: VariableDeclSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: VariableDeclSyntax,
       children: [APIElement]
     ) {
@@ -33,7 +31,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

@@ -23,7 +23,7 @@
   ///
   /// A type may be a structure, class, enumeration, type alias or associated type.
   public final class TypeAPI: DeclaredAPIElement,
-    _OverloadableAPIElement, SortableAPIElement
+    _OverloadableAPIElement
   {
 
     // MARK: - Initialization
@@ -31,12 +31,11 @@
     internal init<T>(documentation: [SymbolDocumentation], declaration: T, children: [APIElement])
     where T: TypeDeclaration {
 
-      let (normalizedDeclaration, normalizedConstraints) = declaration.normalizedAPIDeclaration()
+      let (normalizedDeclaration, _) = declaration.normalizedAPIDeclaration()
       self.declaration = normalizedDeclaration
       genericDeclaration = Syntax(normalizedDeclaration)
       genericName = Syntax(normalizedDeclaration.name())
-      _storage = APIElementStorage(documentation: documentation, children: children)
-      self.constraints = normalizedConstraints
+      _storage = APIElementStorage(documentation: documentation)
     }
 
     // MARK: - Properties

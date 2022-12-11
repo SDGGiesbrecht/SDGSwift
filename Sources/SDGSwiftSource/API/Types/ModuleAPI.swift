@@ -29,14 +29,13 @@
   import SDGSwiftPackageManager
 
   /// A Swift module.
-  public final class ModuleAPI: _NonOverloadableAPIElement, SortableAPIElement,
+  public final class ModuleAPI: _NonOverloadableAPIElement,
     _UniquelyDeclaredManifestAPIElement
   {
 
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: TokenSyntax,
       children: [APIElement]
     ) {
@@ -44,7 +43,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

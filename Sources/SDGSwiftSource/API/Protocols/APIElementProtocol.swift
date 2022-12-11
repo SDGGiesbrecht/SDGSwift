@@ -22,8 +22,6 @@
   /// A type‐erased element of API.
   public protocol APIElementProtocol: AnyObject {
 
-    var _storage: _APIElementStorage { get set }
-
     // #documentation(SDGSwiftSource.APIElement.declaration)
     /// The element’s declaration.
     var possibleDeclaration: Syntax? { get }
@@ -34,39 +32,6 @@
   }
 
   extension APIElementProtocol {
-
-    // MARK: - Storage
-
-    internal var storage: APIElementStorage {
-      get {
-        return _storage
-      }
-      set {
-        _storage = newValue
-      }
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.constraints)
-    /// Any generic constraints the element has.
-    public internal(set) var constraints: GenericWhereClauseSyntax? {
-      get {
-        return storage.constraints
-      }
-      set {
-        storage.constraints = newValue
-      }
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
-    /// Whether or not the element is a protocol requirement.
-    public internal(set) var isProtocolRequirement: Bool {
-      get {
-        return storage.isProtocolRequirement
-      }
-      set {
-        storage.isProtocolRequirement = newValue
-      }
-    }
 
     // MARK: - Summary
 

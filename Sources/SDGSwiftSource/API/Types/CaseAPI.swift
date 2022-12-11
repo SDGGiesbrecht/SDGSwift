@@ -18,7 +18,7 @@
   import SwiftSyntax
 
   /// An enumeration case.
-  public final class CaseAPI: _NonOverloadableAPIElement, SortableAPIElement,
+  public final class CaseAPI: _NonOverloadableAPIElement,
     _UniquelyDeclaredSyntaxAPIElement
   {
 
@@ -40,7 +40,6 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: EnumCaseDeclSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: EnumCaseDeclSyntax,
       children: [APIElement]
     ) {
@@ -48,7 +47,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
   }
 #endif

@@ -32,7 +32,7 @@
   import SDGSwiftLocalizations
 
   /// A library product of a package.
-  public final class LibraryAPI: _NonOverloadableAPIElement, SortableAPIElement,
+  public final class LibraryAPI: _NonOverloadableAPIElement,
     _UniquelyDeclaredManifestAPIElement
   {
 
@@ -41,7 +41,6 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: FunctionCallExprSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: TokenSyntax,
       children: [APIElement]
     ) {
@@ -49,7 +48,6 @@
       self.declaration = declaration
       self.name = name
       _storage = APIElementStorage(documentation: documentation)
-      self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

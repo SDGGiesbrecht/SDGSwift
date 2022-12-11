@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   /// A protocol conformance or superclass inheritance.
-  public final class ConformanceAPI: SortableAPIElement,
+  public final class ConformanceAPI:
     _UndeclaredAPIElementProtocol
   {
 

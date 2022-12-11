@@ -23,13 +23,11 @@
     internal init(
       documentation: [SymbolDocumentation],
       compilationConditions: Syntax? = nil,
-      constraints: GenericWhereClauseSyntax? = nil,
-      children: [APIElement] = []
+      constraints: GenericWhereClauseSyntax? = nil
     ) {
       self.documentation = documentation
       self.compilationConditions = compilationConditions
       self.constraints = constraints
-      self.children = children
     }
 
     // MARK: - Properties
@@ -49,14 +47,6 @@
     }
 
     private var _children: [APIElement] = []
-    internal var children: [APIElement] {
-      get {
-        return _children
-      }
-      set {
-        _children = newValue.sorted()
-      }
-    }
 
     internal var isProtocolRequirement: Bool = false
     internal var hasDefaultImplementation: Bool = false

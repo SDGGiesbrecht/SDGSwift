@@ -27,7 +27,6 @@
       self.init(
         documentation: documentation,
         alreadyNormalizedDeclaration: normalized,
-        constraints: nil,
         name: normalized.name(),
         children: children
       )
@@ -53,7 +52,6 @@
       self.init(
         documentation: documentation,
         alreadyNormalizedDeclaration: normalized,
-        constraints: constraints,
         name: normalized.name(),
         children: children
       )

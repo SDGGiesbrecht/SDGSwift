@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  internal protocol _OverloadableAPIElement: SortableAPIElement {
+  internal protocol _OverloadableAPIElement {
     func genericOverloadPattern() -> Syntax
   }
 #endif

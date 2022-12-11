@@ -18,7 +18,7 @@
   import SwiftSyntax
 
   /// An extension.
-  public final class ExtensionAPI: APIElementProtocol, SortableAPIElement,
+  public final class ExtensionAPI: APIElementProtocol,
     _UndeclaredAPIElementProtocol
   {
 
@@ -29,7 +29,6 @@
       constraints: GenericWhereClauseSyntax?
     ) where Syntax: TypeSyntaxProtocol {
       _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
-      self.constraints = constraints
     }
 
     // MARK: - APIElementProtocol

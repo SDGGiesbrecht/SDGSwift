@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   // Must be public so that `type` is accessible.
-  public protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement, SortableAPIElement {
+  public protocol _UndeclaredAPIElementProtocol: _NonOverloadableAPIElement {
     var _undeclaredStorage: _UndeclaredAPIElementStorage { get set }
   }
 

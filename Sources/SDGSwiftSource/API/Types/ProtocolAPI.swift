@@ -18,8 +18,7 @@
   import SwiftSyntax
 
   /// A protocol.
-  public final class ProtocolAPI: _NonOverloadableAPIElement,
-    SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement
+  public final class ProtocolAPI: _NonOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
   {
 
     // MARK: - Initialization
@@ -27,19 +26,13 @@
     internal init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: ProtocolDeclSyntax,
-      constraints: GenericWhereClauseSyntax?,
       name: ProtocolDeclSyntax,
       children: [APIElement]
     ) {
 
       self.declaration = declaration
       self.name = name
-      _storage = APIElementStorage(documentation: documentation, children: children)
-      self.constraints = constraints
-
-      for child in children {
-        child.isProtocolRequirement = true
-      }
+      _storage = APIElementStorage(documentation: documentation)
     }
 
     // MARK: - APIElementProtocol

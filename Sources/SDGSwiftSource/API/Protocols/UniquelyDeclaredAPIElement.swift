@@ -22,7 +22,6 @@
     init(
       documentation: [SymbolDocumentation],
       alreadyNormalizedDeclaration declaration: Declaration,
-      constraints: GenericWhereClauseSyntax?,
       name: Name,
       children: [APIElement]
     )
