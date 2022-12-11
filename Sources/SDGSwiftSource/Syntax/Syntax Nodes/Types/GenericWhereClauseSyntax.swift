@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension GenericWhereClauseSyntax: Mergeable {
+  extension GenericWhereClauseSyntax {
 
     internal func normalized() -> GenericWhereClauseSyntax? {
       return SyntaxFactory.makeGenericWhereClause(
@@ -27,14 +27,6 @@
         ),
         requirementList: requirementList.normalized()
       )
-    }
-
-    // MARK: - Mergeable
-
-    internal mutating func merge(with other: GenericWhereClauseSyntax) {
-      var requirementList = self.requirementList
-      requirementList.merge(with: other.requirementList)
-      self = withRequirementList(requirementList)
     }
   }
 #endif
