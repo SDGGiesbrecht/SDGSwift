@@ -19,7 +19,6 @@
     func genericOverloadPattern() -> Syntax
     var isProtocolRequirement: Bool { get }
     var hasDefaultImplementation: Bool { get set }
-    var _overloads: [APIElement] { get set }
   }
 
   extension _OverloadableAPIElement {
