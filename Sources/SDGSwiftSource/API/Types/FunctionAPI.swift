@@ -19,8 +19,7 @@
   import SwiftSyntax
 
   /// A function or method.
-  public final class FunctionAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class FunctionAPI {
 
     // MARK: - Initialization
 

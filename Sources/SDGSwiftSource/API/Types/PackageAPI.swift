@@ -35,7 +35,7 @@
   import SDGSwiftLocalizations
 
   /// A package.
-  public final class PackageAPI: _NonOverloadableAPIElement,
+  public final class PackageAPI:
     _UniquelyDeclaredManifestAPIElement
   {
 

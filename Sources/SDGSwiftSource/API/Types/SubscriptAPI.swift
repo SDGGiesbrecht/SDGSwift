@@ -19,8 +19,7 @@
   import SwiftSyntax
 
   /// A subscript.
-  public final class SubscriptAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class SubscriptAPI {
 
     // MARK: - Initialization
 

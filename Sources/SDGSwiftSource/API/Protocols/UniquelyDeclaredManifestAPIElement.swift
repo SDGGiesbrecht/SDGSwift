@@ -15,8 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  internal protocol _UniquelyDeclaredManifestAPIElement: _UniquelyDeclaredAPIElement
-  where Declaration == FunctionCallExprSyntax, Name == TokenSyntax {}
+  internal protocol _UniquelyDeclaredManifestAPIElement {}
 
   extension _UniquelyDeclaredManifestAPIElement {
 

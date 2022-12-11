@@ -16,8 +16,7 @@
   import SwiftSyntax
 
   /// A variable or property.
-  public final class VariableAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class VariableAPI {
 
     // MARK: - Initialization
 

@@ -18,9 +18,7 @@
   import SwiftSyntax
 
   /// An enumeration case.
-  public final class CaseAPI: _NonOverloadableAPIElement,
-    _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class CaseAPI {
 
     // MARK: - DeclaredAPIElement
 

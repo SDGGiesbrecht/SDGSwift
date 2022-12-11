@@ -61,16 +61,6 @@
         ∪ signature.identifierList(labelBehaviour: identifier.isOperator ? .operator : .function)
     }
 
-    // MARK: - APISyntax
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [.function(FunctionAPI(documentation: documentation, declaration: self))]
-    }
-
     // MARK: - Hidable
 
     internal var hidabilityIdentifier: TokenSyntax? {

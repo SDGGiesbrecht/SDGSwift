@@ -16,10 +16,7 @@
   import SwiftSyntax
 
   /// An operator.
-  public final class OperatorAPI: DeclaredAPIElement,
-    _NonOverloadableAPIElement, _UniquelyDeclaredAPIElement,
-    _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class OperatorAPI {
 
     // MARK: - DeclaredAPIElement
 

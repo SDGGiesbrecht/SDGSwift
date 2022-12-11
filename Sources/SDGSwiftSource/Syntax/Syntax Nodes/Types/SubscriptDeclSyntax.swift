@@ -54,23 +54,6 @@
       return indices.identifierList(labelBehaviour: .subscript)
     }
 
-    // MARK: - APISyntax
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [
-        .subscript(
-          SubscriptAPI(
-            documentation: documentation,
-            declaration: self
-          )
-        )
-      ]
-    }
-
     // MARK: - Hidable
 
     internal var hidabilityIdentifier: TokenSyntax? {

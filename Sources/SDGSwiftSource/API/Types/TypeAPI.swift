@@ -22,8 +22,7 @@
   /// A type.
   ///
   /// A type may be a structure, class, enumeration, type alias or associated type.
-  public final class TypeAPI: DeclaredAPIElement,
-    _OverloadableAPIElement
+  public final class TypeAPI
   {
 
     // MARK: - Initialization

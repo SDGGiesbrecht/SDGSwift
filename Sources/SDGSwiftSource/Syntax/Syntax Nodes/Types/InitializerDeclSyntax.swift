@@ -64,16 +64,6 @@
       return parameters.identifierList(labelBehaviour: .function)
     }
 
-    // MARK: - APISyntax
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [.initializer(InitializerAPI(documentation: documentation, declaration: self))]
-    }
-
     // MARK: - OverloadableAPIDeclaration
 
     internal func overloadPattern() -> InitializerDeclSyntax {

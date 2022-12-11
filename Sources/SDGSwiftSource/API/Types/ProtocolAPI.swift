@@ -18,8 +18,7 @@
   import SwiftSyntax
 
   /// A protocol.
-  public final class ProtocolAPI: _NonOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class ProtocolAPI {
 
     // MARK: - Initialization
 

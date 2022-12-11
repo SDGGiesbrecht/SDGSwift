@@ -46,23 +46,5 @@
     internal func identifierList() -> Set<String> {
       return [identifier.text]
     }
-
-    // MARK: - APISyntax
-
-    internal func isPublic() -> Bool {
-      return true
-    }
-
-    internal var isHidden: Bool {
-      return false
-    }
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [.operator(OperatorAPI(documentation: documentation, declaration: self))]
-    }
   }
 #endif

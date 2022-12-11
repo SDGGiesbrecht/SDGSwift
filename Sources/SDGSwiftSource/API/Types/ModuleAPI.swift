@@ -29,7 +29,7 @@
   import SDGSwiftPackageManager
 
   /// A Swift module.
-  public final class ModuleAPI: _NonOverloadableAPIElement,
+  public final class ModuleAPI:
     _UniquelyDeclaredManifestAPIElement
   {
 

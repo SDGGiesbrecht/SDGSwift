@@ -65,37 +65,6 @@
       return Set(identifiers.joined())
     }
 
-    // MARK: - APISyntax
-
-    internal var isHidden: Bool {
-      return bindings.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
-    }
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      var list: [APIElement] = []
-      for separate in bindings.flattenedForAPI() {
-        list.append(
-          .variable(
-            VariableAPI(
-              // The documentation only applies to the first.
-              documentation: list.isEmpty ? documentation : [],
-              declaration: SyntaxFactory.makeVariableDecl(
-                attributes: attributes,
-                modifiers: modifiers,
-                letOrVarKeyword: letOrVarKeyword,
-                bindings: separate
-              )
-            )
-          )
-        )
-      }
-      return list
-    }
-
     // MARK: - OverloadableAPIDeclaration
 
     internal func overloadPattern() -> VariableDeclSyntax {

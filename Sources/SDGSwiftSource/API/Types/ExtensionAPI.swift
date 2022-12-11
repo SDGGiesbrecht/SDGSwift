@@ -18,8 +18,7 @@
   import SwiftSyntax
 
   /// An extension.
-  public final class ExtensionAPI: _UndeclaredAPIElementProtocol
-  {
+  public final class ExtensionAPI {
 
     // MARK: - Initialization
 
@@ -27,17 +26,6 @@
       type: Syntax,
       constraints: GenericWhereClauseSyntax?
     ) where Syntax: TypeSyntaxProtocol {
-      _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
     }
-
-    // MARK: - APIElementProtocol
-
-    public var _summaryName: String {
-      return "(" + genericName.source() + ")"
-    }
-
-    // MARK: - UndeclaredAPIElementProtocol
-
-    public var _undeclaredStorage: _UndeclaredAPIElementStorage
   }
 #endif

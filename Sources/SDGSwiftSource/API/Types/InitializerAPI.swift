@@ -19,8 +19,7 @@
   import SwiftSyntax
 
   /// An initializer.
-  public final class InitializerAPI: UniquelyDeclaredOverloadableAPIElement, _UniquelyDeclaredSyntaxAPIElement
-  {
+  public final class InitializerAPI {
 
     // MARK: - Initialization
 

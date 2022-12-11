@@ -61,23 +61,5 @@
     internal func identifierList() -> Set<String> {
       return [identifier.text]
     }
-
-    // MARK: - APISyntax
-
-    internal var shouldLookForChildren: Bool {
-      return true
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [
-        .protocol(
-          ProtocolAPI(
-            documentation: documentation,
-            declaration: self,
-            children: children
-          )
-        )
-      ]
-    }
   }
 #endif
