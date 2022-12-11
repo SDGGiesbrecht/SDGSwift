@@ -43,25 +43,6 @@
 
     private let declaration: TypeDeclaration
 
-    internal func isSubclassable() -> Bool {
-      return declaration is ClassDeclSyntax
-    }
-
-    // MARK: - APIElementBase
-
-    internal func mergeIfExtended(by extension: ExtensionAPI) -> Bool {
-      if `extension`.isExtension(of: self) {
-        merge(extension: `extension`)
-        return true
-      }
-      if let nested = `extension`.nested(in: self) {
-        for subtype in types where subtype.mergeIfExtended(by: nested) {
-          return true
-        }
-      }
-      return false
-    }
-
     // MARK: - APIElementProtocol
 
     public var _storage: _APIElementStorage
