@@ -35,9 +35,7 @@
   import SDGSwiftLocalizations
 
   /// A package.
-  public final class PackageAPI:
-    _UniquelyDeclaredManifestAPIElement
-  {
+  public final class PackageAPI {
 
     // MARK: - Initialization
 

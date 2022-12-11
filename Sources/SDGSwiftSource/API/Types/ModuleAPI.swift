@@ -29,9 +29,7 @@
   import SDGSwiftPackageManager
 
   /// A Swift module.
-  public final class ModuleAPI:
-    _UniquelyDeclaredManifestAPIElement
-  {
+  public final class ModuleAPI {
 
     internal init(
       documentation: [SymbolDocumentation],

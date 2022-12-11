@@ -32,9 +32,7 @@
   import SDGSwiftLocalizations
 
   /// A library product of a package.
-  public final class LibraryAPI:
-    _UniquelyDeclaredManifestAPIElement
-  {
+  public final class LibraryAPI {
 
     // MARK: - Initialization
 
