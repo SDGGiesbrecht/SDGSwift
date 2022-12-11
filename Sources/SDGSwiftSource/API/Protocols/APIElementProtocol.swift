@@ -46,23 +46,6 @@
       }
     }
 
-    // #documentation(SDGSwiftSource.APIElement.documentation)
-    /// The element’s documentation.
-    public var documentation: [SymbolDocumentation] {
-      return storage.documentation
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.compilationConditions)
-    /// The compilation conditions under which the element is available.
-    public internal(set) var compilationConditions: Syntax? {
-      get {
-        return storage.compilationConditions
-      }
-      set {
-        storage.compilationConditions = newValue
-      }
-    }
-
     // #documentation(SDGSwiftSource.APIElement.constraints)
     /// Any generic constraints the element has.
     public internal(set) var constraints: GenericWhereClauseSyntax? {
