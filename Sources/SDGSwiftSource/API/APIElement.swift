@@ -45,9 +45,6 @@
     /// An extension.
     case `extension`(ExtensionAPI)
 
-    /// An enumeration case.
-    case `case`(CaseAPI)
-
     /// An initializer.
     case initializer(InitializerAPI)
 
@@ -65,8 +62,5 @@
 
     /// An operator precedence group.
     case precedence(PrecedenceAPI)
-
-    /// A conformance or superclass.
-    case conformance(ConformanceAPI)
   }
 #endif
