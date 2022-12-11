@@ -28,12 +28,6 @@
     /// A Swift package.
     case package(PackageAPI)
 
-    /// A library product of a package.
-    case library(LibraryAPI)
-
-    /// A Swift module.
-    case module(ModuleAPI)
-
     /// A type.
     ///
     /// A type may be a structure, class, enumeration, type alias or associated type.
@@ -42,23 +36,11 @@
     /// A protocol.
     case `protocol`(ProtocolAPI)
 
-    /// An extension.
-    case `extension`(ExtensionAPI)
-
-    /// An initializer.
-    case initializer(InitializerAPI)
-
     /// A variable or property.
     case variable(VariableAPI)
 
     /// A subscript.
     case `subscript`(SubscriptAPI)
-
-    /// A function or method.
-    case function(FunctionAPI)
-
-    /// An operator.
-    case `operator`(OperatorAPI)
 
     /// An operator precedence group.
     case precedence(PrecedenceAPI)
