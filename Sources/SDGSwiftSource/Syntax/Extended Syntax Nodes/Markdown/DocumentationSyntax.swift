@@ -22,7 +22,12 @@
   public final class DocumentationSyntax: MarkdownSyntax {
 
     private static let documentationCache = ParsedDocumentationCache()
-    internal static func parse(source: String) -> DocumentationSyntax {
+
+    /// Parses a documentation syntax node from the content of a documentation comment (excluding its delimiters).
+    ///
+    /// -Parameters:
+    ///   - source: The documentation source.
+    public static func parse(source: String) -> DocumentationSyntax {
       return cached(in: &documentationCache[source]) {
         return DocumentationSyntax(source: source)
       }
