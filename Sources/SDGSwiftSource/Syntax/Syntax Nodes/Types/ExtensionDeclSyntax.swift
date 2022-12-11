@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension ExtensionDeclSyntax: Attributed, APISyntax, Constrained, Hidable, Inheritor {
+  extension ExtensionDeclSyntax: Attributed, Constrained, Hidable, Inheritor {
 
     // MARK: - APISyntax
 

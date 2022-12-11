@@ -18,7 +18,7 @@
 
   import SwiftSyntax
 
-  internal protocol TypeDeclaration: AccessControlled, Attributed, APISyntax, Generic, Inheritor {
+  internal protocol TypeDeclaration: AccessControlled, Attributed, Generic, Inheritor {
     var identifier: TokenSyntax { get }
 
     func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)

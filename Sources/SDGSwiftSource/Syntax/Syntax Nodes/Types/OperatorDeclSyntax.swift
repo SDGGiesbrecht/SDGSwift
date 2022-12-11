@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension OperatorDeclSyntax: APIDeclaration, APISyntax, Attributed {
+  extension OperatorDeclSyntax: APIDeclaration, Attributed {
 
     // MARK: - APIDeclaration
 
