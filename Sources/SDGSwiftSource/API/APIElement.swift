@@ -146,12 +146,6 @@
       }
     }
 
-    // @documentation(SDGSwiftSource.APIElement.summary)
-    /// A summary of the element’s API.
-    public func summary() -> [String] {
-      return elementProtocol.summary()
-    }
-
     // MARK: - Comparable
 
     // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)

@@ -32,13 +32,8 @@
     /// The name of the element.
     var genericName: Syntax { get }
 
-    // #documentation(SDGSwiftSource.APIElement.name)
-    /// The name of the element.
-    var overloads: [APIElement] { get }
-
     func _shallowIdentifierList() -> Set<String>
     var _summaryName: String { get }
-    func _summarySubentries() -> [String]
   }
 
   extension APIElementProtocol {
@@ -155,40 +150,6 @@
       if let constraints = constraints {
         description += constraints.source()
       }
-    }
-
-    public func _summarySubentries() -> [String] {
-      var result: [String] = []
-      for overload in overloads {
-        if let declaration = overload.declaration {
-          var declaration = declaration.source()
-          overload.elementProtocol.appendConstraints(to: &declaration)
-          overload.elementProtocol.appendCompilationConditions(to: &declaration)
-          result.append(declaration)
-        }
-      }
-      result.append(contentsOf: children.lazy.map({ $0.summary() }).joined())
-      return result
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.summary)
-    /// A summary of the element’s API.
-    public func summary() -> [String] {
-      var entry = ""
-      if isProtocolRequirement ∧ ¬(self is TypeAPI ∨ self is ConformanceAPI) {
-        if hasDefaultImplementation {
-          entry += "(customizable) "
-        } else {
-          entry += "(required) "
-        }
-      }
-      entry += _summaryName
-      if let declaration = possibleDeclaration?.source() {
-        entry += " • " + declaration
-      }
-      appendConstraints(to: &entry)
-      appendCompilationConditions(to: &entry)
-      return [entry] + _summarySubentries().lazy.map { $0.prepending(contentsOf: " ") }
     }
 
     // MARK: - Children
