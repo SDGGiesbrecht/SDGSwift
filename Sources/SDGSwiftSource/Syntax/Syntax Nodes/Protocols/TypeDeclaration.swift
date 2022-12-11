@@ -34,23 +34,5 @@
       }
       return result
     }
-
-    // MARK: - APISyntax
-
-    internal var shouldLookForChildren: Bool {
-      return true
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      return [
-        .type(
-          TypeAPI(
-            documentation: documentation,
-            declaration: self,
-            children: children
-          )
-        )
-      ]
-    }
   }
 #endif

@@ -22,27 +22,5 @@
 
   /// An element of API.
   public enum APIElement {
-
-    // MARK: - Cases
-
-    /// A Swift package.
-    case package(PackageAPI)
-
-    /// A type.
-    ///
-    /// A type may be a structure, class, enumeration, type alias or associated type.
-    case type(TypeAPI)
-
-    /// A protocol.
-    case `protocol`(ProtocolAPI)
-
-    /// A variable or property.
-    case variable(VariableAPI)
-
-    /// A subscript.
-    case `subscript`(SubscriptAPI)
-
-    /// An operator precedence group.
-    case precedence(PrecedenceAPI)
   }
 #endif
