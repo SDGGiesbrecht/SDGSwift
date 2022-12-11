@@ -101,39 +101,6 @@
       }
     }
 
-    // #documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
-    /// Whether or not the element has a default implementation.
-    public internal(set) var hasDefaultImplementation: Bool {
-      get {
-        return storage.hasDefaultImplementation
-      }
-      set {
-        storage.hasDefaultImplementation = newValue
-      }
-    }
-
-    internal var _overloads: [APIElement] {
-      get {
-        return storage._overloads
-      }
-      set {
-        storage._overloads = newValue
-      }
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.userInformation)
-    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
-    ///
-    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
-    public var userInformation: Any? {
-      get {
-        return storage.userInformation
-      }
-      set {
-        storage.userInformation = newValue
-      }
-    }
-
     // MARK: - Summary
 
     public var _summaryName: String {
