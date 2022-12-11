@@ -139,27 +139,6 @@
       }
     }
 
-    // MARK: - Merging
-
-    internal func moveConditionsToChildren() {
-      for child in children {
-        child.compilationConditions.prependCompilationConditions(compilationConditions)
-        if child.constraints ≠ nil {
-          child.constraints.merge(with: constraints)
-        } else {
-          child.constraints = constraints
-        }
-      }
-      compilationConditions = nil
-      constraints = nil
-    }
-
-    internal func merge(extension: ExtensionAPI) {
-      `extension`.moveConditionsToChildren()
-      children.append(contentsOf: `extension`.children)
-      children = APIElement.groupIntoOverloads(children)
-    }
-
     // MARK: - Identifiers
 
     // #documentation(SDGSwiftSource.APIElement.identifierList)
