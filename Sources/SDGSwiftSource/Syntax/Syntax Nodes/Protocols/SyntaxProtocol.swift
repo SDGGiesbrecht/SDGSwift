@@ -325,55 +325,6 @@
       }
     }
 
-    // MARK: - API
-
-    internal var documentation: [SymbolDocumentation] {
-      var result: [SymbolDocumentation] = []
-      if let token = firstToken() {
-        let leading = token.leadingTrivia
-        for index in leading.indices.lazy.reversed() {
-          let trivia = leading[index]
-          switch trivia {
-          case .docLineComment, .docBlockComment, .lineComment:
-            let comment = trivia.syntax(siblings: leading, index: index)
-            if let line = comment as? LineDocumentationSyntax,
-              let documentation = line.content.context as? DocumentationSyntax
-            {
-              if documentation.text ≠ result.last?.documentationComment.text {
-                result.append(SymbolDocumentation(documentation))
-              }
-            } else if let block = comment as? BlockDocumentationSyntax {
-              result.append(SymbolDocumentation(block.documentation))
-            } else if let other = comment as? LineDeveloperCommentSyntax,
-              ¬result.isEmpty
-            {
-              result[result.indices.last!].developerComments.prepend(other)
-            }
-          default:
-            break
-          }
-        }
-      }
-      return result.reversed()
-    }
-
-    internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-    where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
-      return _smallestSubnode(containing: searchTerm)
-    }
-    public func _smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-    where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
-      guard source().scalars.contains(searchTerm) else {
-        return nil
-      }
-      for child in children {
-        if let found = child.smallestSubnode(containing: searchTerm) {
-          return found
-        }
-      }
-      return Syntax(self)
-    }
-
     // MARK: - Normalization
 
     internal func withTriviaReducedToSpaces() -> Syntax {
