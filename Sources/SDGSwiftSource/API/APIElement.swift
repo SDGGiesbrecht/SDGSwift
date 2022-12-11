@@ -121,23 +121,6 @@
       }
     }
 
-    // @documentation(SDGSwiftSource.APIElement.documentation)
-    /// The element’s documentation.
-    public var documentation: [SymbolDocumentation] {
-      return elementProtocol.documentation
-    }
-
-    // @documentation(SDGSwiftSource.APIElement.compilationConditions)
-    /// The compilation conditions under which the element is available.
-    public internal(set) var compilationConditions: Syntax? {
-      get {
-        return elementProtocol.compilationConditions
-      }
-      nonmutating set {
-        elementProtocol.compilationConditions = newValue
-      }
-    }
-
     // @documentation(SDGSwiftSource.APIElement.name)
     /// The name of the element.
     public var name: Syntax {
