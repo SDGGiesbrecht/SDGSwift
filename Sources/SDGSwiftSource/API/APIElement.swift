@@ -163,23 +163,6 @@
       }
     }
 
-    // @documentation(SDGSwiftSource.APIElement.hasDefaultImplementation)
-    /// Whether or not the element has a default implementation.
-    public var hasDefaultImplementation: Bool {
-      return elementProtocol.hasDefaultImplementation
-    }
-
-    private func nestedList<T>(of type: T.Type) -> [T] {
-      var result: [T] = []
-      if let element = elementProtocol as? T {
-        result.append(element)
-      }
-      for child in children {
-        result.append(contentsOf: child.nestedList(of: T.self))
-      }
-      return result
-    }
-
     // @documentation(SDGSwiftSource.APIElement.summary)
     /// A summary of the element’s API.
     public func summary() -> [String] {
