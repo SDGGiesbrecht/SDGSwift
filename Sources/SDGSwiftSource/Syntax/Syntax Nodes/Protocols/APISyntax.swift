@@ -30,21 +30,5 @@
     internal func isVisible() -> Bool {
       return isPublic() ∧ ¬isUnavailable() ∧ ¬isHidden
     }
-
-    internal func parseAPI() -> [APIElement] {
-      if ¬isVisible() ∨ (self as? OverridableDeclaration)?.isOverride() == true {
-        return []
-      }
-
-      var children = shouldLookForChildren ? apiChildren() : []
-
-      if let inheritor = self as? Inheritor,
-        let conformances = inheritor.inheritanceClause?.conformances
-      {
-        children.append(contentsOf: conformances.lazy.map({ APIElement.conformance($0) }))
-      }
-
-      return createAPI(children: children)
-    }
   }
 #endif

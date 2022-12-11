@@ -327,24 +327,6 @@
 
     // MARK: - API
 
-    internal func apiChildren() -> [APIElement] {
-      let elements = Array(children.map({ $0.api() }).joined())
-      return APIElement.merge(elements: elements)
-    }
-
-    /// Returns the API provided by this node.
-    public func api() -> [APIElement] {
-      if let element = self.resolvedExistential() as? APISyntax {
-        return element.parseAPI()
-      }
-      switch resolvedExistential() {
-      case let conditionallyCompiledSection as IfConfigDeclSyntax:
-        return conditionallyCompiledSection.conditionalAPI
-      default:
-        return apiChildren()
-      }
-    }
-
     internal var documentation: [SymbolDocumentation] {
       var result: [SymbolDocumentation] = []
       if let token = firstToken() {
