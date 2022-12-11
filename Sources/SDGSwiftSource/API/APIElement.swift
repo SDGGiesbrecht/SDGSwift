@@ -104,37 +104,6 @@
       }
     }
 
-    // @documentation(SDGSwiftSource.APIElement.declaration)
-    /// The element’s declaration.
-    public var declaration: Syntax? {
-      return elementProtocol.possibleDeclaration
-    }
-
-    // @documentation(SDGSwiftSource.APIElement.constraints)
-    /// Any generic constraints the element has.
-    public internal(set) var constraints: GenericWhereClauseSyntax? {
-      get {
-        return elementProtocol.constraints
-      }
-      nonmutating set {
-        elementProtocol.constraints = newValue
-      }
-    }
-
-    // @documentation(SDGSwiftSource.APIElement.name)
-    /// The name of the element.
-    public var name: Syntax {
-      return elementProtocol.genericName
-    }
-
-    // @documentation(SDGSwiftSource.APIElement.children)
-    /// Any children the element has.
-    ///
-    /// For example, types may have methods and properties as children.
-    public var children: [APIElement] {
-      return elementProtocol.children
-    }
-
     // @documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
     /// Whether or not the element is a protocol requirement.
     public internal(set) var isProtocolRequirement: Bool {
