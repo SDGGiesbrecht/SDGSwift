@@ -21,7 +21,7 @@
   import SwiftSyntax
 
   /// An element of API.
-  public enum APIElement: Comparable, Hashable {
+  public enum APIElement: Comparable {
 
     // MARK: - Cases
 
@@ -223,12 +223,6 @@
 
     public static func == (precedingValue: APIElement, followingValue: APIElement) -> Bool {
       return precedingValue.comparisonIdentity() == followingValue.comparisonIdentity()
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-      hasher.combine(declaration?.source() ?? name.source())
     }
   }
 #endif
