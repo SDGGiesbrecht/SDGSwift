@@ -55,11 +55,6 @@
       self.constraints = constraints
     }
 
-    // MARK: - Properties
-
-    // Storage because conformances only have weak references.
-    private var dependencies: [ModuleAPI] = []
-
     // MARK: - APIElementProtocol
 
     public var _storage: _APIElementStorage
