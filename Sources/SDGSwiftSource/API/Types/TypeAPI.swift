@@ -35,7 +35,6 @@
       self.declaration = normalizedDeclaration
       genericDeclaration = Syntax(normalizedDeclaration)
       genericName = Syntax(normalizedDeclaration.name())
-      _storage = APIElementStorage(documentation: documentation)
     }
 
     // MARK: - Properties
@@ -43,8 +42,6 @@
     private let declaration: TypeDeclaration
 
     // MARK: - APIElementProtocol
-
-    public var _storage: _APIElementStorage
 
     public func _shallowIdentifierList() -> Set<String> {
       return declaration.identifierList()

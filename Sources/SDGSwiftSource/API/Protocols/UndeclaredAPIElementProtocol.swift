@@ -31,15 +31,6 @@
       }
     }
 
-    public var _storage: _APIElementStorage {
-      get {
-        undeclaredStorage.storage
-      }
-      set {
-        undeclaredStorage.storage = newValue
-      }
-    }
-
     public var type: TypeSyntax {
       return undeclaredStorage.type
     }

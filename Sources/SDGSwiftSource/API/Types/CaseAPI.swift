@@ -22,10 +22,6 @@
     _UniquelyDeclaredSyntaxAPIElement
   {
 
-    // MARK: - APIElementProtocol
-
-    public var _storage: _APIElementStorage
-
     // MARK: - DeclaredAPIElement
 
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
@@ -46,7 +42,6 @@
 
       self.declaration = declaration
       self.name = name
-      _storage = APIElementStorage(documentation: documentation)
     }
   }
 #endif

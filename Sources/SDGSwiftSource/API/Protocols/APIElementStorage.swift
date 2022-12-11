@@ -15,7 +15,6 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  internal typealias APIElementStorage = _APIElementStorage
   public struct _APIElementStorage {
 
     // MARK: - Initialization

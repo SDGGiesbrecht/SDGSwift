@@ -30,12 +30,7 @@
 
       self.declaration = declaration
       self.name = name
-      _storage = APIElementStorage(documentation: documentation)
     }
-
-    // MARK: - APIElementProtocol
-
-    public var _storage: _APIElementStorage
 
     // MARK: - DeclaredAPIElement
 

@@ -22,12 +22,10 @@
 
     internal init<Syntax>(type: Syntax) where Syntax: TypeSyntaxProtocol {
       self.type = TypeSyntax(type).normalized()
-      self.storage = APIElementStorage(documentation: [])
     }
 
     // MARK: - Properties
 
     internal let type: TypeSyntax
-    internal var storage: APIElementStorage
   }
 #endif
