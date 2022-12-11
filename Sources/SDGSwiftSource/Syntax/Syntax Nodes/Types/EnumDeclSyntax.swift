@@ -33,27 +33,6 @@
       return genericParameters
     }
 
-    internal func normalizedAPIDeclaration() -> (
-      declaration: EnumDeclSyntax, constraints: GenericWhereClauseSyntax?
-    ) {
-      let (newGenericParemeterClause, newGenericWhereClause) = normalizedGenerics()
-      return (
-        SyntaxFactory.makeEnumDecl(
-          attributes: attributes?.normalizedForAPIDeclaration(),
-          modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-          enumKeyword: enumKeyword.generallyNormalizedAndMissingInsteadOfNil(
-            trailingTrivia: .spaces(1)
-          ),
-          identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-          genericParameters: newGenericParemeterClause,
-          inheritanceClause: nil,
-          genericWhereClause: nil,
-          members: SyntaxFactory.makeBlankMemberDeclBlock()
-        ),
-        newGenericWhereClause
-      )
-    }
-
     internal func name() -> EnumDeclSyntax {
       return SyntaxFactory.makeEnumDecl(
         attributes: nil,
