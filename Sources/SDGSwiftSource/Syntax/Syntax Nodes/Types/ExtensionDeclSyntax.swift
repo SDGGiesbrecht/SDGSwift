@@ -19,16 +19,6 @@
 
   extension ExtensionDeclSyntax: Attributed, Constrained, Hidable, Inheritor {
 
-    // MARK: - APISyntax
-
-    internal func isPublic() -> Bool {
-      return true
-    }
-
-    internal var shouldLookForChildren: Bool {
-      return true
-    }
-
     // MARK: - Hidable
 
     internal var hidabilityIdentifier: TokenSyntax? {
