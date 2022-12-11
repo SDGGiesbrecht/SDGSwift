@@ -26,12 +26,10 @@
 
     internal init<Syntax>(
       type: Syntax,
-      constraints: GenericWhereClauseSyntax?,
-      children: [APIElement]
+      constraints: GenericWhereClauseSyntax?
     ) where Syntax: TypeSyntaxProtocol {
       _undeclaredStorage = UndeclaredAPIElementStorage(type: type)
       self.constraints = constraints
-      self.children = children
     }
 
     // MARK: - APIElementProtocol

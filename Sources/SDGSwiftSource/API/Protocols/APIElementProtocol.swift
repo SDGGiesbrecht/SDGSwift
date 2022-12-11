@@ -57,19 +57,6 @@
       }
     }
 
-    // #documentation(SDGSwiftSource.APIElement.children)
-    /// Any children the element has.
-    ///
-    /// For example, types may have methods and properties as children.
-    public internal(set) var children: [APIElement] {
-      get {
-        return storage.children
-      }
-      set {
-        storage.children = newValue
-      }
-    }
-
     // #documentation(SDGSwiftSource.APIElement.isProtocolRequirement)
     /// Whether or not the element is a protocol requirement.
     public internal(set) var isProtocolRequirement: Bool {

@@ -29,21 +29,6 @@
       return true
     }
 
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      guard ¬children.isEmpty else {
-        return []
-      }
-      return [
-        .extension(
-          ExtensionAPI(
-            type: extendedType,
-            constraints: genericWhereClause,
-            children: children
-          )
-        )
-      ]
-    }
-
     // MARK: - Hidable
 
     internal var hidabilityIdentifier: TokenSyntax? {
