@@ -56,10 +56,6 @@
 
     public var _storage: _APIElementStorage
 
-    public func _summarySubentries() -> [String] {
-      return modules.map({ $0.name.source() })
-    }
-
     // MARK: - DeclaredAPIElement
 
     // #documentation(SDGSwiftSource.UniquelyDeclaredAPIElement.declaration)
