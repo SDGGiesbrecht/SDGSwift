@@ -18,7 +18,7 @@
   import SwiftSyntax
 
   /// A protocol.
-  public final class ProtocolAPI: APIElementProtocol, _NonOverloadableAPIElement,
+  public final class ProtocolAPI: _NonOverloadableAPIElement,
     SortableAPIElement, _UniquelyDeclaredSyntaxAPIElement
   {
 
