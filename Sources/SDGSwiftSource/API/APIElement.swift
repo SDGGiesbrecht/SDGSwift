@@ -315,12 +315,6 @@
       return elementProtocol.genericName
     }
 
-    // @documentation(SDGSwiftSource.APIElement.overloads)
-    /// The element’s overloads.
-    public var overloads: [APIElement] {
-      return elementProtocol.overloads
-    }
-
     // @documentation(SDGSwiftSource.APIElement.children)
     /// Any children the element has.
     ///
