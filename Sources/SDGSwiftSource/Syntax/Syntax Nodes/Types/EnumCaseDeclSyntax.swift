@@ -44,40 +44,5 @@
     internal func identifierList() -> Set<String> {
       return Set(elements.lazy.map({ $0.identifier.text }))
     }
-
-    // MARK: - APISyntax
-
-    internal func isPublic() -> Bool {
-      return true
-    }
-
-    internal var isHidden: Bool {
-      return elements.allSatisfy({ $0.isHidden })
-    }
-
-    internal var shouldLookForChildren: Bool {
-      return false
-    }
-
-    internal func createAPI(children: [APIElement]) -> [APIElement] {
-      var list: [APIElement] = []
-      for element in elements where ¬element.isHidden {
-        list.append(
-          .case(
-            CaseAPI(
-              // The documentation only applies to the first.
-              documentation: list.isEmpty ? documentation : [],
-              declaration: SyntaxFactory.makeEnumCaseDecl(
-                attributes: attributes,
-                modifiers: modifiers,
-                caseKeyword: caseKeyword,
-                elements: SyntaxFactory.makeEnumCaseElementList([element])
-              )
-            )
-          )
-        )
-      }
-      return list
-    }
   }
 #endif
