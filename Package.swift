@@ -232,10 +232,6 @@ let package = Package(
       ],
       resources: [
         .copy("Syntax Highlighting.css"),
-        .copy("Core Libraries/Swift.txt"),
-        .copy("Core Libraries/Foundation.txt"),
-        .copy("Core Libraries/Dispatch.txt"),
-        .copy("Core Libraries/XCTest.txt"),
       ]
     ),
 
@@ -333,27 +329,6 @@ let package = Package(
       dependencies: [
         .product(name: "SDGLocalization", package: "SDGCornerstone")
       ]
-    ),
-
-    .testTarget(
-      // #workaround(xcodebuild -version 13.3.1, Should be executable, but for interference with tvOS etc.) @exempt(from: unicode)
-      name: "SDGCoreLibraryRefresherTests",
-      dependencies: [
-        "SDGSwiftPackageManager",
-        "SDGSwiftSource",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-      ],
-      path: "Sources/SDGCoreLibraryRefresherTests"
     ),
 
     // Tests
