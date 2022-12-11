@@ -21,6 +21,7 @@
   internal protocol TypeDeclaration: AccessControlled, Attributed, Generic, Inheritor {
     var identifier: TokenSyntax { get }
 
+    func normalizedAPIDeclaration() -> (declaration: Self, constraints: GenericWhereClauseSyntax?)
     func name() -> Self
   }
 
