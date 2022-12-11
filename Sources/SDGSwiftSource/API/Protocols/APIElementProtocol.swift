@@ -106,49 +106,5 @@
     public var _summaryName: String {
       return genericName.source()
     }
-
-    internal func appendCompilationConditions(to description: inout String) {
-      if let conditions = compilationConditions {
-        description += " • " + conditions.source()
-      }
-    }
-
-    internal func appendConstraints(to description: inout String) {
-      if let constraints = constraints {
-        description += constraints.source()
-      }
-    }
-
-    // MARK: - Children
-
-    private func filtered<T>(_ filter: (APIElement) -> T?) -> AnyBidirectionalCollection<T> {
-      return AnyBidirectionalCollection(children.lazy.map(filter).compactMap({ $0 }))
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.libraries)
-    /// The children which are libraries.
-    public var libraries: AnyBidirectionalCollection<LibraryAPI> {
-      return filtered { (element) -> LibraryAPI? in
-        switch element {
-        case .library(let library):
-          return library
-        default:
-          return nil
-        }
-      }
-    }
-
-    // #documentation(SDGSwiftSource.APIElement.modules)
-    /// The children which are modules.
-    public var modules: AnyBidirectionalCollection<ModuleAPI> {
-      return filtered { (element) -> ModuleAPI? in
-        switch element {
-        case .module(let module):
-          return module
-        default:
-          return nil
-        }
-      }
-    }
   }
 #endif
