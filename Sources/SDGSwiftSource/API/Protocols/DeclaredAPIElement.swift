@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   /// An API element which has a unique declaration.
-  public protocol DeclaredAPIElement: APIElementProtocol {
+  public protocol DeclaredAPIElement {
     /// The unique declaration.
     var genericDeclaration: Syntax { get }
   }

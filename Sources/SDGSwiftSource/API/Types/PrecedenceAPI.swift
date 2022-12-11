@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   /// An operator precedence group.
-  public final class PrecedenceAPI: APIElementProtocol, DeclaredAPIElement,
+  public final class PrecedenceAPI: DeclaredAPIElement,
     _NonOverloadableAPIElement, _UniquelyDeclaredAPIElement,
     _UniquelyDeclaredSyntaxAPIElement
   {

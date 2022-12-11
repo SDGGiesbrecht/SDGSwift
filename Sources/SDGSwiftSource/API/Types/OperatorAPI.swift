@@ -16,7 +16,7 @@
   import SwiftSyntax
 
   /// An operator.
-  public final class OperatorAPI: APIElementProtocol, DeclaredAPIElement,
+  public final class OperatorAPI: DeclaredAPIElement,
     _NonOverloadableAPIElement, _UniquelyDeclaredAPIElement,
     _UniquelyDeclaredSyntaxAPIElement
   {

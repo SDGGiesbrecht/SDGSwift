@@ -18,8 +18,7 @@
   import SwiftSyntax
 
   /// An extension.
-  public final class ExtensionAPI: APIElementProtocol,
-    _UndeclaredAPIElementProtocol
+  public final class ExtensionAPI: _UndeclaredAPIElementProtocol
   {
 
     // MARK: - Initialization
