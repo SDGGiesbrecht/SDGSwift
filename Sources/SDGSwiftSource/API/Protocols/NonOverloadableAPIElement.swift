@@ -13,7 +13,7 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  public protocol _NonOverloadableAPIElement: APIElementProtocol {}
+  public protocol _NonOverloadableAPIElement {}
 
   extension _NonOverloadableAPIElement {
 
