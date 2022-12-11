@@ -17,6 +17,7 @@
 
   internal protocol APIDeclaration: SyntaxProtocol {
     associatedtype Name: SyntaxProtocol
+    func normalizedAPIDeclaration() -> Self
     func name() -> Name
     func identifierList() -> Set<String>
   }
