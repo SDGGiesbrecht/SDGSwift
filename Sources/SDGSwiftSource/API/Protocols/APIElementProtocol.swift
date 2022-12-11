@@ -31,9 +31,6 @@
     // #documentation(SDGSwiftSource.APIElement.name)
     /// The name of the element.
     var genericName: Syntax { get }
-
-    func _shallowIdentifierList() -> Set<String>
-    var _summaryName: String { get }
   }
 
   extension APIElementProtocol {
