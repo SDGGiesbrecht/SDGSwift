@@ -380,19 +380,6 @@
       return elementProtocol.identifierList()
     }
 
-    // @documentation(SDGSwiftSource.APIElement.userInformation)
-    /// Arbitrary storage for use by client modules which need to associate other values to APIElement instances.
-    ///
-    /// This property is never used by anything in `SDGSwift` and will always be `nil` unless a client module sets it to something else.
-    public var userInformation: Any? {
-      get {
-        return elementProtocol.userInformation
-      }
-      nonmutating set {
-        elementProtocol.userInformation = newValue
-      }
-    }
-
     // MARK: - Comparable
 
     // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
