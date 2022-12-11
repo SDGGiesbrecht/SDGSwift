@@ -263,7 +263,7 @@
           genericParameterClause = `class`.genericParameterClause
         case let enumeration as EnumDeclSyntax:
           identifier = enumeration.identifier
-          genericParameterClause = enumeration.genericParameterClause
+          genericParameterClause = enumeration.genericParameters
         case let `protocol` as ProtocolDeclSyntax:
           identifier = `protocol`.identifier
         case let alias as TypealiasDeclSyntax:
@@ -271,7 +271,7 @@
           genericParameterClause = alias.genericParameterClause
         case let associated as AssociatedtypeDeclSyntax:
           identifier = associated.identifier
-          genericParameterClause = associated.genericParameterClause
+          genericParameterClause = nil
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
           genericParameterClause = initializer.genericParameterClause
