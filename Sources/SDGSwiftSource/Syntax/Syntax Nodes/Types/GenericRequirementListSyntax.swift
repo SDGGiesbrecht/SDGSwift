@@ -19,7 +19,7 @@
 
   import SwiftSyntax
 
-  extension GenericRequirementListSyntax: Mergeable {
+  extension GenericRequirementListSyntax {
 
     internal func normalized() -> GenericRequirementListSyntax {
       var requirements = map({ $0.normalized(comma: true) }).sorted(
@@ -30,12 +30,6 @@
         requirements.append(last.normalized(comma: false))
       }
       return SyntaxFactory.makeGenericRequirementList(requirements)
-    }
-
-    // MARK: - Mergeable
-
-    internal mutating func merge(with other: GenericRequirementListSyntax) {
-      self = SyntaxFactory.makeGenericRequirementList(Array(self) + Array(other)).normalized()
     }
   }
 #endif
