@@ -20,23 +20,6 @@
   import SwiftSyntax
 
   /// A type‐erased element of API.
-  public protocol APIElementProtocol: AnyObject {
-
-    // #documentation(SDGSwiftSource.APIElement.declaration)
-    /// The element’s declaration.
-    var possibleDeclaration: Syntax? { get }
-
-    // #documentation(SDGSwiftSource.APIElement.name)
-    /// The name of the element.
-    var genericName: Syntax { get }
-  }
-
-  extension APIElementProtocol {
-
-    // MARK: - Summary
-
-    public var _summaryName: String {
-      return genericName.source()
-    }
+  public protocol APIElementProtocol {
   }
 #endif
