@@ -20,16 +20,6 @@
 
   extension VariableDeclSyntax {
 
-    // MARK: - Accessor
-
-    internal var keyword: TokenSyntax {
-      return letOrVarKeyword
-    }
-
-    internal var accessors: Syntax? {
-      return bindings.first?.accessor
-    }
-
     // MARK: - APIDeclaration
 
     internal func identifierList() -> Set<String> {
