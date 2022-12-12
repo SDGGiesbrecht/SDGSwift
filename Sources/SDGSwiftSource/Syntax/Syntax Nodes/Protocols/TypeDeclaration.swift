@@ -18,7 +18,7 @@
 
   import SwiftSyntax
 
-  internal protocol TypeDeclaration: Inheritor {
+  internal protocol TypeDeclaration {
     var identifier: TokenSyntax { get }
 
     func name() -> Self

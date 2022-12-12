@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension ExtensionDeclSyntax: Inheritor {
+  extension ExtensionDeclSyntax {
 
     // MARK: - Hidable
 
