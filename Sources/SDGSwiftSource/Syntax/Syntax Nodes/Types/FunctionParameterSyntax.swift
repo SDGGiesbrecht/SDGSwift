@@ -52,20 +52,6 @@
 
     // MARK: - API
 
-    internal func forName(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
-      return SyntaxFactory.makeFunctionParameter(
-        attributes: nil,
-        firstName: externalLabel(labelBehaviour: labelBehaviour)
-          ?? SyntaxFactory.makeToken(.wildcardKeyword),
-        secondName: nil,
-        colon: SyntaxFactory.makeToken(.colon),
-        type: nil,
-        ellipsis: nil,
-        defaultArgument: nil,
-        trailingComma: nil
-      )
-    }
-
     internal func identifierList(labelBehaviour: LabelBehaviour) -> Set<String> {
       var result: Set<String> = []
       if let label = externalLabel(labelBehaviour: labelBehaviour) {
