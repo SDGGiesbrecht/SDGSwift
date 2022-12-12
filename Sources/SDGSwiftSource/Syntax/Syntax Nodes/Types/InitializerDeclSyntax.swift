@@ -46,21 +46,5 @@
     internal func identifierList() -> Set<String> {
       return parameters.identifierList(labelBehaviour: .function)
     }
-
-    // MARK: - OverloadableAPIDeclaration
-
-    internal func overloadPattern() -> InitializerDeclSyntax {
-      return SyntaxFactory.makeInitializerDecl(
-        attributes: nil,
-        modifiers: modifiers?.forOverloadPattern(),
-        initKeyword: initKeyword,
-        optionalMark: nil,
-        genericParameterClause: nil,
-        parameters: parameters.forOverloadPattern(labelBehaviour: .function),
-        throwsOrRethrowsKeyword: nil,
-        genericWhereClause: nil,
-        body: nil
-      )
-    }
   }
 #endif

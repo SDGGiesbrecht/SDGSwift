@@ -45,20 +45,5 @@
     internal var hidabilityIdentifier: TokenSyntax? {
       return indices.parameterList.first?.firstName
     }
-
-    // MARK: - OverloadableAPIDeclaration
-
-    internal func overloadPattern() -> SubscriptDeclSyntax {
-      return SyntaxFactory.makeSubscriptDecl(
-        attributes: nil,
-        modifiers: modifiers?.forOverloadPattern(),
-        subscriptKeyword: subscriptKeyword,
-        genericParameterClause: nil,
-        indices: indices.forOverloadPattern(labelBehaviour: .subscript),
-        result: SyntaxFactory.makeBlankReturnClause(),
-        genericWhereClause: nil,
-        accessor: nil
-      )
-    }
   }
 #endif

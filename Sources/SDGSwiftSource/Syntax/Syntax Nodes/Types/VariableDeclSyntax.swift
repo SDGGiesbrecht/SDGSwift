@@ -51,16 +51,5 @@
       }
       return Set(identifiers.joined())
     }
-
-    // MARK: - OverloadableAPIDeclaration
-
-    internal func overloadPattern() -> VariableDeclSyntax {
-      return SyntaxFactory.makeVariableDecl(
-        attributes: nil,
-        modifiers: modifiers?.forOverloadPattern(),
-        letOrVarKeyword: letOrVarKeyword,
-        bindings: bindings.forVariableOverloadPattern()
-      )
-    }
   }
 #endif

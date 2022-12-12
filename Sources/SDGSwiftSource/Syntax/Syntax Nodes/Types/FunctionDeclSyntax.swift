@@ -48,22 +48,5 @@
     internal var hidabilityIdentifier: TokenSyntax? {
       return identifier
     }
-
-    // MARK: - OverloadableAPIDeclaration
-
-    internal func overloadPattern() -> FunctionDeclSyntax {
-      return SyntaxFactory.makeFunctionDecl(
-        attributes: nil,
-        modifiers: modifiers?.forOverloadPattern(),
-        funcKeyword: funcKeyword,
-        identifier: identifier,
-        genericParameterClause: nil,
-        signature: signature.forOverloadPattern(
-          labelBehaviour: identifier.isOperator ? .operator : .function
-        ),
-        genericWhereClause: nil,
-        body: nil
-      )
-    }
   }
 #endif
