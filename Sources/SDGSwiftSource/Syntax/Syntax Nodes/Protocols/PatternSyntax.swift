@@ -20,17 +20,6 @@
 
   extension PatternSyntax {
 
-    internal var concreteSyntaxIsHidden: Bool {
-      if let identifier = self.as(IdentifierPatternSyntax.self) {
-        return identifier.isHidden
-      } else if let tuple = self.as(TuplePatternSyntax.self) {
-        return tuple.elements.allSatisfy({ $0.pattern.concreteSyntaxIsHidden })
-      } else {  // @exempt(from: tests)
-        warnUnidentified()
-        return false
-      }
-    }
-
     internal func flattenedForAPI() -> [(identifier: IdentifierPatternSyntax, indexPath: [Int])] {
       var list: [(identifier: IdentifierPatternSyntax, indexPath: [Int])] = []
       if let identifier = self.as(IdentifierPatternSyntax.self) {
@@ -54,33 +43,6 @@
         warnUnidentified()
       }
       return list.filter({ ¬$0.identifier.isHidden })
-    }
-
-    internal func normalizedVariableBindingForAPIDeclaration() -> PatternSyntax {
-      if let identifier = self.as(IdentifierPatternSyntax.self) {
-        return PatternSyntax(identifier.normalizedVariableBindingIdentiferForAPIDeclaration())
-      } else {  // @exempt(from: tests)
-        warnUnidentified()
-        return self
-      }
-    }
-
-    internal func variableBindingForOverloadPattern() -> PatternSyntax {
-      if let identifier = self.as(IdentifierPatternSyntax.self) {
-        return PatternSyntax(identifier.variableBindingIdentifierForOverloadPattern())
-      } else {  // @exempt(from: tests)
-        warnUnidentified()
-        return self
-      }
-    }
-
-    internal func variableBindingForName() -> PatternSyntax {
-      if let identifier = self.as(IdentifierPatternSyntax.self) {
-        return PatternSyntax(identifier.variableBindingIdentifierForName())
-      } else {  // @exempt(from: tests)
-        warnUnidentified()
-        return self
-      }
     }
   }
 #endif

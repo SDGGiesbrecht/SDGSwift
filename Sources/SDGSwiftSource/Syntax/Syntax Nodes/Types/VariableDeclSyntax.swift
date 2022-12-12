@@ -32,15 +32,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func name() -> VariableDeclSyntax {
-      return SyntaxFactory.makeVariableDecl(
-        attributes: nil,
-        modifiers: nil,
-        letOrVarKeyword: SyntaxFactory.makeToken(.varKeyword, presence: .missing),
-        bindings: bindings.forVariableName()
-      )
-    }
-
     internal func identifierList() -> Set<String> {
       let identifiers = bindings.lazy.map { binding in
         return binding.pattern.flattenedForAPI().lazy.map { flattened in
