@@ -50,16 +50,6 @@
       }
     }
 
-    // MARK: - API
-
-    internal func identifierList(labelBehaviour: LabelBehaviour) -> Set<String> {
-      var result: Set<String> = []
-      if let label = externalLabel(labelBehaviour: labelBehaviour) {
-        result.insert(label.text)
-      }
-      return result
-    }
-
     // MARK: - Associated Values
 
     internal func forAssociatedValueName() -> FunctionParameterSyntax {
