@@ -327,10 +327,6 @@
 
     // MARK: - Normalization
 
-    internal func withTriviaReducedToSpaces() -> Syntax {
-      return TriviaNormalizer().visit(Syntax(self))
-    }
-
     internal func attributeIndicatesAbsence() -> Bool {
       switch resolvedExistential() {
       case let attribute as AttributeSyntax:
