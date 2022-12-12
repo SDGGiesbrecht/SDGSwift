@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  extension AssociatedtypeDeclSyntax: Attributed, Constrained, Hidable,
+  extension AssociatedtypeDeclSyntax: Constrained, Hidable,
     TypeDeclaration
   {
 

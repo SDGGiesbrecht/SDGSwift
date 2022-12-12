@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension EnumCaseDeclSyntax: Attributed {
+  extension EnumCaseDeclSyntax {
 
     // MARK: - APIDeclaration
 

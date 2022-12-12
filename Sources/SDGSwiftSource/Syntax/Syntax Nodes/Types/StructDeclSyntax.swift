@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension StructDeclSyntax: Attributed, Constrained, Generic, Hidable,
+  extension StructDeclSyntax: Constrained, Generic, Hidable,
     TypeDeclaration
   {
 

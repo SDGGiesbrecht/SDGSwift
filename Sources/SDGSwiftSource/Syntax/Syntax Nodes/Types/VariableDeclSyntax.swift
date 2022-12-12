@@ -18,8 +18,7 @@
 
   import SwiftSyntax
 
-  extension VariableDeclSyntax: Attributed,
-    Member, OverridableDeclaration
+  extension VariableDeclSyntax: Member, OverridableDeclaration
   {
 
     // MARK: - Accessor
