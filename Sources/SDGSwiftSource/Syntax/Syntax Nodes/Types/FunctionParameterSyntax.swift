@@ -28,20 +28,5 @@
         return firstName
       }
     }
-
-    // MARK: - Associated Values
-
-    internal func forAssociatedValueName() -> FunctionParameterSyntax {
-      return SyntaxFactory.makeFunctionParameter(
-        attributes: nil,
-        firstName: SyntaxFactory.makeToken(.wildcardKeyword),
-        secondName: nil,
-        colon: nil,
-        type: nil,
-        ellipsis: ellipsis,
-        defaultArgument: nil,
-        trailingComma: trailingComma
-      )
-    }
   }
 #endif
