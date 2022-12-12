@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  extension ClassDeclSyntax: Hidable, Generic,
+  extension ClassDeclSyntax: Hidable,
     TypeDeclaration
   {
 

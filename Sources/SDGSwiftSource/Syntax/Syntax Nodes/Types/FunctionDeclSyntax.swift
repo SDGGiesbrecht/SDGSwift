@@ -19,7 +19,7 @@
   import SwiftSyntax
 
   extension FunctionDeclSyntax:
-    Generic, Hidable, Member, OverridableDeclaration
+    Hidable, Member, OverridableDeclaration
   {
 
     // MARK: - APIDeclaration

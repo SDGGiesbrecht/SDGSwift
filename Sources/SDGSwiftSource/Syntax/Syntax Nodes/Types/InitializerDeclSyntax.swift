@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension InitializerDeclSyntax: Generic, Hidable, OverridableDeclaration
+  extension InitializerDeclSyntax: Hidable, OverridableDeclaration
   {
 
     // MARK: - Hidable

@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  extension TypealiasDeclSyntax: Generic, Hidable, TypeDeclaration {
+  extension TypealiasDeclSyntax: Hidable, TypeDeclaration {
 
     // MARK: - Hidable
 

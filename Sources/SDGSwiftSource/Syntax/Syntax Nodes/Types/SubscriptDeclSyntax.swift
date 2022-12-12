@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension SubscriptDeclSyntax: Generic, Hidable, Member, OverridableDeclaration
+  extension SubscriptDeclSyntax: Hidable, Member, OverridableDeclaration
   {
 
     // MARK: - APIDeclaration

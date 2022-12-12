@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension EnumDeclSyntax: Generic, Hidable,
+  extension EnumDeclSyntax: Hidable,
     TypeDeclaration
   {
 

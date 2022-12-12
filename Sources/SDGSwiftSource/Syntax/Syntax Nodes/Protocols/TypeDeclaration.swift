@@ -18,20 +18,9 @@
 
   import SwiftSyntax
 
-  internal protocol TypeDeclaration: Generic, Inheritor {
+  internal protocol TypeDeclaration: Inheritor {
     var identifier: TokenSyntax { get }
 
     func name() -> Self
-  }
-
-  extension TypeDeclaration {
-
-    internal func identifierList() -> Set<String> {
-      var result: Set<String> = [identifier.text]
-      if let genericParameters = genericParameterClause {
-        result ∪= genericParameters.identifierList()
-      }
-      return result
-    }
   }
 #endif
