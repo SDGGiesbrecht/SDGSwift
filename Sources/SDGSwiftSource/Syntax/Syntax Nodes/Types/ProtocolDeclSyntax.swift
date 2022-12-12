@@ -18,7 +18,6 @@
   import SwiftSyntax
 
   extension ProtocolDeclSyntax:
-    Constrained,
     Hidable, Inheritor
   {
 

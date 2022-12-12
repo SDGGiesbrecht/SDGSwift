@@ -17,7 +17,7 @@
 
   import SDGLogic
 
-  internal protocol Generic: Constrained {
+  internal protocol Generic {
     var genericParameterClause: GenericParameterClauseSyntax? { get }
   }
 #endif
