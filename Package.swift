@@ -231,7 +231,7 @@ let package = Package(
         .product(name: "SDGHTML", package: "SDGWeb"),
       ],
       resources: [
-        .copy("Syntax Highlighting.css"),
+        .copy("Syntax Highlighting.css")
       ]
     ),
 

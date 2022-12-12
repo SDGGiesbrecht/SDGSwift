@@ -93,7 +93,7 @@
           lineStartByteIndex,
           offsetBy: column − 1,
           limitedBy: utf8.endIndex
-        ) ?? utf8.endIndex
+        ) ?? utf8.endIndex  // @exempt(from: tests) Only occurs when cmark exhibits bugs.
       var result: String.ScalarView.Index? = index.samePosition(in: scalars)
       while result == nil {  // @exempt(from: tests) Only occurs when CommonMark exhibits bugs.
         index = utf8.index(before: index)

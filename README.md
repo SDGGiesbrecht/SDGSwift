@@ -83,6 +83,7 @@ let package = Package(
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
@@ -99,6 +100,7 @@ The modules can then be imported in source files:
 import SDGSwift
 import SDGSwiftPackageManager
 import SDGSwiftSource
+import SDGSwiftDocumentation
 import SDGXcode
 import SDGSwiftConfiguration
 import SDGSwiftConfigurationLoading
