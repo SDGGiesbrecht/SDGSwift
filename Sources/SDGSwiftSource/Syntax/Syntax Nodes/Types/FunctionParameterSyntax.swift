@@ -21,27 +21,6 @@
 
     // MARK: - Names & Labels
 
-    internal enum LabelBehaviour {
-      case function
-      case `operator`
-      case `subscript`
-    }
-
-    internal func externalLabel(labelBehaviour: LabelBehaviour) -> TokenSyntax? {
-      switch labelBehaviour {
-      case .function:
-        return firstName
-      case .operator:
-        return nil
-      case .subscript:
-        if secondName?.isPresent == true {
-          return firstName
-        } else {
-          return nil
-        }
-      }
-    }
-
     internal var internalName: TokenSyntax? {
       if secondName?.isPresent == true {
         return secondName
