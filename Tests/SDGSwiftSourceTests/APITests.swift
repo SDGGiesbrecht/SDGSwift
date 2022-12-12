@@ -229,39 +229,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testCoreLibraries() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-
-      let syntax = try SyntaxParser.parse(
-        URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-          .deletingLastPathComponent().appendingPathComponent(
-            "Sources/SDGSwiftSource/Core Libraries/Swift.txt"
-          )
-      )
-      var foundLessThan = false
-      var foundEncodable = false
-      try FunctionalSyntaxScanner(
-        checkSyntax: { syntax, _ in
-          if let function = syntax.as(FunctionDeclSyntax.self) {
-            XCTAssert(function.identifier.text ≠ "", "Corrupt function:\n\(function)")
-            if function.identifier.text == "<" {
-              foundLessThan = true
-            }
-          } else if let `protocol` = syntax.as(ProtocolDeclSyntax.self) {
-            if `protocol`.identifier.text == "Encodable" {
-              foundEncodable = true
-            }
-          }
-          return true
-        },
-        shouldExtendToken: { _ in false },
-        shouldExtendFragment: { _ in false }
-      ).scan(syntax)
-      XCTAssert(foundLessThan)
-      XCTAssert(foundEncodable)
-    #endif
-  }
-
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
