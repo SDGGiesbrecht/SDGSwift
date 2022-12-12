@@ -17,28 +17,6 @@
 
   extension FunctionSignatureSyntax {
 
-    internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-      -> FunctionSignatureSyntax
-    {
-      return SyntaxFactory.makeFunctionSignature(
-        input: input.forOverloadPattern(labelBehaviour: labelBehaviour),
-        asyncOrReasyncKeyword: nil,
-        throwsOrRethrowsKeyword: nil,
-        output: nil
-      )
-    }
-
-    internal func forName(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
-      -> FunctionSignatureSyntax
-    {
-      return SyntaxFactory.makeFunctionSignature(
-        input: input.forName(labelBehaviour: labelBehaviour),
-        asyncOrReasyncKeyword: nil,
-        throwsOrRethrowsKeyword: nil,
-        output: nil
-      )
-    }
-
     internal func identifierList(
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> Set<String> {
