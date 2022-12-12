@@ -27,15 +27,6 @@
       case `operator`
       case `subscript`
 
-      internal var capableOfLabels: Bool {
-        switch self {
-        case .function, .subscript:
-          return true
-        case .operator:
-          return false
-        }
-      }
-
       internal var hasLabelByDefault: Bool {
         switch self {
         case .function:
@@ -70,20 +61,6 @@
     }
 
     // MARK: - API
-
-    internal func forOverloadPattern(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
-      return SyntaxFactory.makeFunctionParameter(
-        attributes: nil,
-        firstName: labelBehaviour.capableOfLabels
-          ? firstName?.generallyNormalized() : SyntaxFactory.makeToken(.identifier("_")),
-        secondName: nil,
-        colon: colon,
-        type: nil,
-        ellipsis: ellipsis,
-        defaultArgument: nil,
-        trailingComma: trailingComma
-      )
-    }
 
     internal func forName(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
       return SyntaxFactory.makeFunctionParameter(
