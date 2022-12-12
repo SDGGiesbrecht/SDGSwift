@@ -30,12 +30,6 @@ import SDGSwiftTestUtilities
 
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
-  func testEmptySyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssert(SyntaxFactory.makeBlankUnknownExpr().documentation.isEmpty)
-    #endif
-  }
-
   func testExtendedSyntaxContext() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let contextSource = ""
@@ -58,61 +52,6 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           context: context,
           offset: 0
         )
-    #endif
-  }
-
-  func testLocalizations() {
-    for localization in InterfaceLocalization.allCases {
-      LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          _ = LibraryAPI.reportForParsing(module: "[...]").resolved()
-          _ = PackageAPI.reportForLoadingInheritance(from: "[...]").resolved()
-        #endif
-      }
-    }
-  }
-
-  func testResources() {
-    _ = Resources.swift
-    _ = Resources.foundation
-    _ = Resources.dispatch
-    _ = Resources.xctest
-  }
-
-  func testStringLiteral() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let literal = "\u{22}...\u{22}"
-      let kind = TokenKind.stringLiteral(literal).normalized()
-      if case .stringLiteral(let normalized) = kind {
-        XCTAssertEqual(normalized, literal)
-      } else {
-        XCTFail("String literal not found.")
-      }
-    #endif
-  }
-
-  func testTokenNormalization() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let tokens: [TokenKind] = [
-        .stringSegment("\u{C0}"),
-        .dollarIdentifier("$0"),
-        .unspacedBinaryOperator("=="),
-        .prefixOperator("!"),
-        .postfixOperator("..."),
-        .integerLiteral("0"),
-        .floatingLiteral("0"),
-        .contextualKeyword("mutating"),
-        .unknown("..."),
-      ]
-      for kind in tokens {
-        let token = SyntaxFactory.makeToken(kind)
-        XCTAssert(
-          token.generallyNormalizedAndMissingInsteadOfNil().text.scalars.elementsEqual(
-            token.text.decomposedStringWithCanonicalMapping.scalars
-          ),
-          "Token kind not normalized."
-        )
-      }
     #endif
   }
 }

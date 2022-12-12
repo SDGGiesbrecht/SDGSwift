@@ -30,33 +30,6 @@ import SDGSwiftTestUtilities
 
 class RegressionTests: SDGSwiftTestUtilities.TestCase {
 
-  func testCodeBlockWithCombiningCharacters() throws {
-    // Untracked.
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-      let source = [
-        "/// ...",
-        "///",
-        "/// ```swift",
-        "/// let ä = ö".decomposedStringWithCompatibilityMapping,
-        "/// ```",
-        "public func function() {}",
-      ].joined(separator: "\n")
-      let parsed = try SyntaxParser.parse(source: source)
-      let documentation: SymbolDocumentation = parsed.api().first!.documentation.first!
-      XCTAssertEqual(
-        documentation.documentationComment.text,
-        [
-          "...",
-          "",
-          "```swift",
-          "let ä = ö".decomposedStringWithCompatibilityMapping,
-          "```",
-        ].joined(separator: "\n")
-      )
-    #endif
-  }
-
   func testContinuedCallout() throws {
     // Untracked.
 
@@ -68,8 +41,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// ...",
         "public func function() {}",
       ].joined(separator: "\n")
-      let parsed = try SyntaxParser.parse(source: source)
-      _ = parsed.api()
+      let _ = try SyntaxParser.parse(source: source)
     #endif
   }
 
@@ -83,10 +55,6 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
       ].joined(separator: "\n")
       let parsed = try SyntaxParser.parse(source: source)
       XCTAssertEqual(parsed.source(), source)
-      let documentation = parsed.api().first?.documentation
-      let comment = documentation?.last?.documentationComment
-      XCTAssertEqual(comment?.text, "...&#x2D;...")
-      XCTAssertEqual(comment?.renderedHTML(localization: "en"), "<p>...&#x2D;...</p>")
     #endif
   }
 
@@ -104,34 +72,7 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
         "/// > Line 3",
         "public func function() {}",
       ].joined(separator: "\n")
-      let parsed = try SyntaxParser.parse(source: source)
       XCTAssertEqual(try SyntaxParser.parse(source: source).source(), source)
-      let documentation = parsed.api().first?.documentation
-      XCTAssertEqual(
-        documentation?.last?.documentationComment.text,
-        "...\n\n> Line 1\n>\n> Line 2\n>\n> Line 3"
-      )
-    #endif
-  }
-
-  func testPackageDeclaration() {
-    // Untracked.
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let declaration = FunctionCallExprSyntax.packageDeclaration(named: "SomePackage")
-      let highlighted = declaration.syntaxHighlightedHTML(
-        inline: false,
-        internalIdentifiers: ["SomePackage"],
-        symbolLinks: ["SomePackage": "some/page"]
-      )
-      let html = HTMLPage(
-        content: highlighted,
-        cssPath: "../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
-      )
-      let location = testSpecificationDirectory().appendingPathComponent(
-        "Source/Package Declaration.html"
-      )
-      compare(html, against: location, overwriteSpecificationInsteadOfFailing: false)
     #endif
   }
 }

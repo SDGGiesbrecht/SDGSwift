@@ -288,13 +288,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(ExtendedTokenKind.quotationMark.textFreedom, .invariable)
   }
 
-  func testExtension() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
-      XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
-    #endif
-  }
-
   func testFunctionalSyntaxScanner() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       let source = [
@@ -409,15 +402,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testPackageDocumentation() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      let package = try thisRepository.package().get()
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-        XCTAssertNotNil(try PackageAPI.documentation(for: package))
-      #endif
-    #endif
-  }
-
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
@@ -469,122 +453,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .appendingPathExtension("html"),
           overwriteSpecificationInsteadOfFailing: false
         )
-
-        // API
-        let api = sourceFile.api().sorted()
-        let summary = api.map({ $0.summary().joined(separator: "\n") }).joined(separator: "\n")
-        SDGPersistenceTestUtilities.compare(
-          summary,
-          against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API")
-            .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
-            .appendingPathExtension("txt"),
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
-        let syntaxHighlighting = api.map({ $0.flattenedTree() }).joined().map({ element in
-          if var declaration = element.declaration?.syntaxHighlightedHTML(
-            inline: false,
-            internalIdentifiers: identifiers
-          ) {
-
-            if let constraints = element.constraints?.syntaxHighlightedHTML(
-              inline: false,
-              internalIdentifiers: identifiers
-            ) {
-              declaration += "\n" + constraints
-            }
-
-            if let conditions = element.compilationConditions?.syntaxHighlightedHTML(
-              inline: false,
-              internalIdentifiers: identifiers
-            ) {
-              declaration = conditions + "\n" + declaration
-            }
-
-            return declaration
-          } else {
-            return nil
-          }
-        }).compactMap({ $0 }).joined(separator: "\n\n")
-        SDGPersistenceTestUtilities.compare(
-          HTMLPage(
-            content: syntaxHighlighting,
-            cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
-          ),
-          against: sourceDirectory.appendingPathComponent("After").appendingPathComponent(
-            "API Syntax Highlighting"
-          ).appendingPathComponent(url.deletingPathExtension().lastPathComponent)
-            .appendingPathExtension("html"),
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        if url.deletingPathExtension().lastPathComponent == "Documentation" {
-          var found = false
-          search: for element in api {
-            `switch`: switch element {
-            case .extension(let `extension`):
-              found = true
-              let method = `extension`.instanceMethods.first(where: {
-                $0.name.source().hasPrefix("performAction")
-              })!
-              let methods = [
-                method,
-                `extension`.instanceMethods.first(where: {
-                  $0.name.source().hasPrefix("withSeparateParameters")
-                })!,
-              ]
-              _ = method.documentation.last!.documentationComment
-                .renderedHTML(localization: "zxx")
-
-              for localization in InterfaceLocalization.allCases {
-                let rendered = methods.map({
-                  $0.documentation.last!.documentationComment.renderedSpecification(
-                    localization: localization.code
-                  )
-                }).joined(separator: "\n")
-
-                let specification = testSpecificationDirectory().appendingPathComponent(
-                  "Source/After/Rendered Documentation/\(localization.icon!).html"
-                )
-                SDGPersistenceTestUtilities.compare(
-                  HTMLPage(
-                    content: rendered,
-                    cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
-                  ),
-                  against: specification,
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              }
-
-              let blockDocumentation = `extension`.instanceMethods.first(where: {
-                $0.name.source().hasPrefix("documentedWithBlockStyle")
-              })!
-              XCTAssertNotNil(blockDocumentation.documentation)
-
-              break search
-            default:
-              break `switch`
-            }
-          }
-          XCTAssert(found, "Failed to find test documentation.")
-        }
-        if url.deletingPathExtension().lastPathComponent == "Attributes" {
-          var found = false
-          search: for element in api {
-            `switch`: switch element {
-            case .function(let function):
-              if function.name.identifier.text == "withHiddenAttribute" {
-                XCTAssertNotNil(element.documentation)
-                found = true
-                break search
-              }
-            default:
-              break `switch`
-            }
-          }
-          XCTAssert(found, "Failed to find hidden attribute test.")
-        }
       }
     #endif
   }
@@ -636,7 +504,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           rightBrace: SyntaxFactory.makeRightBraceToken()
         )
       )
-      XCTAssertEqual(declaration.api().first!.declaration!.source(), "init()")
     #endif
   }
 

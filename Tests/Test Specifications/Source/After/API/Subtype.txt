@@ -1,5 +1,0 @@
-(String)
- AliasedSubtype • typealias AliasedSubtype
- Subtype • struct Subtype
-  description • var description: String
-  CustomStringConvertible

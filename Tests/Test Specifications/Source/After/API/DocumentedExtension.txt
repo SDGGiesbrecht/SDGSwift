@@ -1,4 +1,0 @@
-(Bool)
- readOnlyComputedProperty • var readOnlyComputedProperty: Bool
- readOnlyWithInternalSetter • var readOnlyWithInternalSetter: Bool
- readWriteComputedProperty • var readWriteComputedProperty: Bool
