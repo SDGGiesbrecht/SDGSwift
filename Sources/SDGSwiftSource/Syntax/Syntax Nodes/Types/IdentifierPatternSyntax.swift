@@ -23,23 +23,5 @@
       let text = identifier.text
       return text.hasPrefix("_") == true ∧ text ≠ "_"
     }
-
-    internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil()
-      )
-    }
-
-    internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier
-      )
-    }
-
-    internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier
-      )
-    }
   }
 #endif
