@@ -255,17 +255,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       source: [
         "Some documentation.",
         "",
-        "\u{22} Parameters:",
-        "  \u{22} first: The first.",
-        "  \u{22} second: The second.",
+        "\u{2D} Parameters:",
+        "  \u{2D} first: The first.",
+        "  \u{2D} second: The second.",
       ].joined(separator: "\n")
     )
     let separate = DocumentationSyntax.parse(
       source: [
         "Some documentation.",
         "",
-        "  \u{22} parameter first: The first.",
-        "  \u{22} parameter second: The second.",
+        "  \u{2D} parameter first: The first.",
+        "  \u{2D} parameter second: The second.",
       ].joined(separator: "\n")
     )
     XCTAssertEqual(
@@ -367,7 +367,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "up",
         ".",
         "",
-        "Lines",
+        "Lines  ",
         "may be split.",
         "",
         "- Warning: There is something to watch out for.",

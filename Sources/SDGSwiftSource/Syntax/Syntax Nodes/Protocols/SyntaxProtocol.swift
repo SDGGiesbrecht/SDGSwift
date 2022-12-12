@@ -132,18 +132,6 @@
       }
     }
 
-    internal func tokens() -> [TokenSyntax] {
-      var tokens: [TokenSyntax] = []
-      for child in children {
-        if let token = child.as(TokenSyntax.self) {
-          tokens.append(token)
-        } else {
-          tokens.append(contentsOf: child.tokens())
-        }
-      }
-      return tokens
-    }
-
     // @documentation(SDGSwiftSource.Syntax.firstToken())
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {

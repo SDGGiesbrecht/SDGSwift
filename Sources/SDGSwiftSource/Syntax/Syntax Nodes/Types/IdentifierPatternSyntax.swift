@@ -21,7 +21,8 @@
 
     internal var isHidden: Bool {
       let text = identifier.text
-      return text.hasPrefix("_") == true ∧ text ≠ "_"
+      return text.hasPrefix("_") == true
+        ∧ text ≠ "_"  // @exempt(from: tests) Reachability unknown.
     }
   }
 #endif

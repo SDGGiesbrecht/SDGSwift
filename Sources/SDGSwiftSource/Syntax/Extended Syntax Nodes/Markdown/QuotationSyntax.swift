@@ -77,6 +77,7 @@
               newlineToken.kind == .newlines,
               newlineIndex ≠ children.startIndex
             {
+              // @exempt(from: tests) Reachability unknown.
               let predecessor = children.index(before: newlineIndex)
               if children[predecessor] is ParagraphSyntax {
                 children.insert(
