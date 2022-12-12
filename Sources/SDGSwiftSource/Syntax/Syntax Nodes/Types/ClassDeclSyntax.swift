@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  extension ClassDeclSyntax: AccessControlled, Attributed, Constrained, Hidable, Generic,
+  extension ClassDeclSyntax: Attributed, Constrained, Hidable, Generic,
     TypeDeclaration
   {
 

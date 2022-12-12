@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension InitializerDeclSyntax: AccessControlled, APIDeclaration, Attributed,
+  extension InitializerDeclSyntax: APIDeclaration, Attributed,
     Constrained, Generic, Hidable, OverridableDeclaration
   {
 

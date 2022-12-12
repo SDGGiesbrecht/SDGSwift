@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension ProtocolDeclSyntax: AccessControlled, APIDeclaration, Attributed,
+  extension ProtocolDeclSyntax: APIDeclaration, Attributed,
     Constrained,
     Hidable, Inheritor
   {

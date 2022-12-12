@@ -18,7 +18,7 @@
 
   import SwiftSyntax
 
-  extension VariableDeclSyntax: AccessControlled, Accessor, APIDeclaration, Attributed,
+  extension VariableDeclSyntax: APIDeclaration, Attributed,
     Member, OverridableDeclaration
   {
 

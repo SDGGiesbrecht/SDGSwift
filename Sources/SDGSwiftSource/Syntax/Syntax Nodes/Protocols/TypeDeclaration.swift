@@ -18,7 +18,7 @@
 
   import SwiftSyntax
 
-  internal protocol TypeDeclaration: AccessControlled, Attributed, Generic, Inheritor {
+  internal protocol TypeDeclaration: Attributed, Generic, Inheritor {
     var identifier: TokenSyntax { get }
 
     func name() -> Self

@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension SubscriptDeclSyntax: AccessControlled, APIDeclaration, Attributed,
+  extension SubscriptDeclSyntax: APIDeclaration, Attributed,
     Constrained, Generic, Hidable, Member, OverridableDeclaration
   {
 
