@@ -46,30 +46,6 @@
       }
     }
 
-    private func normalized() -> AttributeSyntax {
-      if let argument = self.argument {
-        return SyntaxFactory.makeAttribute(
-          atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
-          attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(),
-          leftParen: leftParen?.generallyNormalized(),
-          argument: argument.normalizedAttributeArgument(),
-          rightParen: rightParen?.generallyNormalized(trailingTrivia: .spaces(1)),
-          tokenList: nil
-        )
-      } else {
-        return SyntaxFactory.makeAttribute(
-          atSignToken: atSignToken.generallyNormalizedAndMissingInsteadOfNil(),
-          attributeName: attributeName.generallyNormalizedAndMissingInsteadOfNil(
-            trailingTrivia: .spaces(1)
-          ),
-          leftParen: nil,
-          argument: nil,
-          rightParen: nil,
-          tokenList: nil
-        )
-      }
-    }
-
     // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
     private enum Group: Int, Comparable, OrderedEnumeration {
       case unknown
