@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension EnumCaseElementSyntax: Hidable {
+  extension EnumCaseElementSyntax {
 
     internal func forName() -> EnumCaseElementSyntax {
       return SyntaxFactory.makeEnumCaseElement(

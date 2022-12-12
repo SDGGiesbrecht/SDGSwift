@@ -13,9 +13,16 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SDGLogic
+
   import SwiftSyntax
 
-  extension IdentifierPatternSyntax: Hidable {
+  extension IdentifierPatternSyntax {
+
+    internal var isHidden: Bool {
+      let text = identifier.text
+      return text.hasPrefix("_") == true ∧ text ≠ "_"
+    }
 
     internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
       return SyntaxFactory.makeIdentifierPattern(
@@ -33,12 +40,6 @@
       return SyntaxFactory.makeIdentifierPattern(
         identifier: identifier
       )
-    }
-
-    // MARK: - Hidable
-
-    internal var hidabilityIdentifier: TokenSyntax? {
-      return identifier
     }
   }
 #endif

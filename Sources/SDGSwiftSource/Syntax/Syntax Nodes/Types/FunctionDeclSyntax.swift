@@ -18,9 +18,7 @@
 
   import SwiftSyntax
 
-  extension FunctionDeclSyntax:
-    Hidable, Member, OverridableDeclaration
-  {
+  extension FunctionDeclSyntax: Member, OverridableDeclaration {
 
     // MARK: - APIDeclaration
 

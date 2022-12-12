@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension PrecedenceGroupDeclSyntax: Hidable {
+  extension PrecedenceGroupDeclSyntax {
 
     // MARK: - APIDeclaration
 

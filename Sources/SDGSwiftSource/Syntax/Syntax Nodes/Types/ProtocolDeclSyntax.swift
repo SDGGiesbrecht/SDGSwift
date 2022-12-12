@@ -17,9 +17,7 @@
 
   import SwiftSyntax
 
-  extension ProtocolDeclSyntax:
-    Hidable, Inheritor
-  {
+  extension ProtocolDeclSyntax: Inheritor {
 
     // MARK: - Hidable
 
