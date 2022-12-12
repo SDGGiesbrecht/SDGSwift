@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension EnumDeclSyntax: TypeDeclaration {
+  extension EnumDeclSyntax {
 
     // MARK: - Hidable
 

@@ -17,7 +17,7 @@
 
   import SwiftSyntax
 
-  extension StructDeclSyntax: TypeDeclaration {
+  extension StructDeclSyntax {
 
     // MARK: - Hidable
 

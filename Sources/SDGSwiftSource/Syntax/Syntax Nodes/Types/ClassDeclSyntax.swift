@@ -15,7 +15,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
-  extension ClassDeclSyntax: TypeDeclaration {
+  extension ClassDeclSyntax {
 
     // MARK: - Hidable
 
