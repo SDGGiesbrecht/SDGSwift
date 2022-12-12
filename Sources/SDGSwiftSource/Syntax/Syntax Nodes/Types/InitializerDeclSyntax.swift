@@ -18,7 +18,7 @@
   import SwiftSyntax
 
   extension InitializerDeclSyntax: AccessControlled, APIDeclaration, Attributed,
-    Constrained, Generic, Hidable, OverloadableAPIDeclaration, OverridableDeclaration
+    Constrained, Generic, Hidable, OverridableDeclaration
   {
 
     // MARK: - Hidable

@@ -20,7 +20,7 @@
 
   extension FunctionDeclSyntax: AccessControlled, APIDeclaration, Attributed,
     Constrained,
-    Generic, Hidable, Member, OverloadableAPIDeclaration, OverridableDeclaration
+    Generic, Hidable, Member, OverridableDeclaration
   {
 
     // MARK: - APIDeclaration

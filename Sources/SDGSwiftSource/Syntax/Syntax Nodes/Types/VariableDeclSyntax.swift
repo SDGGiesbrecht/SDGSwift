@@ -19,7 +19,7 @@
   import SwiftSyntax
 
   extension VariableDeclSyntax: AccessControlled, Accessor, APIDeclaration, Attributed,
-    Member, OverloadableAPIDeclaration, OverridableDeclaration
+    Member, OverridableDeclaration
   {
 
     // MARK: - Accessor
