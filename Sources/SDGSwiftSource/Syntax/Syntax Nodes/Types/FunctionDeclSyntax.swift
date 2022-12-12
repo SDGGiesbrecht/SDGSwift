@@ -18,7 +18,7 @@
 
   import SwiftSyntax
 
-  extension FunctionDeclSyntax: APIDeclaration, Attributed,
+  extension FunctionDeclSyntax: Attributed,
     Constrained,
     Generic, Hidable, Member, OverridableDeclaration
   {
