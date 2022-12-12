@@ -22,19 +22,9 @@
     // MARK: - Names & Labels
 
     internal enum LabelBehaviour {
-
       case function
       case `operator`
       case `subscript`
-
-      internal var hasLabelByDefault: Bool {
-        switch self {
-        case .function:
-          return true
-        case .operator, .subscript:
-          return false
-        }
-      }
     }
 
     internal func externalLabel(labelBehaviour: LabelBehaviour) -> TokenSyntax? {
