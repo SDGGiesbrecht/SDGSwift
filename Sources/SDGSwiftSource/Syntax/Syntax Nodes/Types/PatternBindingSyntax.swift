@@ -17,30 +17,6 @@
 
   extension PatternBindingSyntax {
 
-    internal func flattenedForAPI() -> [PatternBindingSyntax] {
-      return pattern.flattenedForAPI().map { (pattern, indexPath) in
-        return SyntaxFactory.makePatternBinding(
-          pattern: PatternSyntax(pattern),
-          typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(
-            extractingFromIndexPath: indexPath
-          ),
-          initializer: nil,
-          accessor: accessor,
-          trailingComma: nil
-        )
-      }
-    }
-
-    internal func normalizedForVariableAPIDeclaration() -> PatternBindingSyntax {
-      return SyntaxFactory.makePatternBinding(
-        pattern: pattern.normalizedVariableBindingForAPIDeclaration(),
-        typeAnnotation: typeAnnotation?.normalizedForVariableBindingForAPIDeclaration(),
-        initializer: nil,
-        accessor: nil,
-        trailingComma: nil
-      )
-    }
-
     internal func forOverloadPattern() -> PatternBindingSyntax {
       return SyntaxFactory.makePatternBinding(
         pattern: pattern.variableBindingForOverloadPattern(),

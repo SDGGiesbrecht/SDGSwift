@@ -30,21 +30,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> ProtocolDeclSyntax {
-      return SyntaxFactory.makeProtocolDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        protocolKeyword: protocolKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
-        ),
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        primaryAssociatedTypeClause: nil,  // #workaround(Not supported yet.)
-        inheritanceClause: nil,
-        genericWhereClause: genericWhereClause?.normalized(),
-        members: SyntaxFactory.makeBlankMemberDeclBlock()
-      )
-    }
-
     internal func name() -> ProtocolDeclSyntax {
       return SyntaxFactory.makeProtocolDecl(
         attributes: nil,

@@ -21,18 +21,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> OperatorDeclSyntax {
-      return SyntaxFactory.makeOperatorDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        operatorKeyword: operatorKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
-        ),
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        operatorPrecedenceAndTypes: nil
-      )
-    }
-
     internal func name() -> OperatorDeclSyntax {
       return SyntaxFactory.makeOperatorDecl(
         attributes: nil,

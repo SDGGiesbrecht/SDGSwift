@@ -19,29 +19,6 @@
 
   extension GenericParameterClauseSyntax {
 
-    internal func normalizedForAPIDeclaration() -> (
-      GenericParameterClauseSyntax?, GenericWhereClauseSyntax?
-    ) {
-      let (newParameters, newConstraints) = genericParameterList.normalizedForAPIDeclaration()
-      let parameters = SyntaxFactory.makeGenericParameterClause(
-        leftAngleBracket: leftAngleBracket.generallyNormalizedAndMissingInsteadOfNil(),
-        genericParameterList: newParameters,
-        rightAngleBracket: rightAngleBracket.generallyNormalizedAndMissingInsteadOfNil()
-      )
-      var constraints: GenericWhereClauseSyntax?
-      if let new = newConstraints {
-        constraints = SyntaxFactory.makeGenericWhereClause(
-          whereKeyword: SyntaxFactory.makeToken(
-            .whereKeyword,
-            leadingTrivia: .spaces(1),
-            trailingTrivia: .spaces(1)
-          ),
-          requirementList: new
-        )
-      }
-      return (parameters, constraints)
-    }
-
     internal func identifierList() -> Set<String> {
       return Set(genericParameterList.map({ $0.name.text }))
     }

@@ -31,25 +31,6 @@
       return nil
     }
 
-    internal func normalizedAPIDeclaration() -> (
-      declaration: AssociatedtypeDeclSyntax, constraints: GenericWhereClauseSyntax?
-    ) {
-      return (
-        SyntaxFactory.makeAssociatedtypeDecl(
-          attributes: attributes?.normalizedForAPIDeclaration(),
-          modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-          associatedtypeKeyword: associatedtypeKeyword.generallyNormalizedAndMissingInsteadOfNil(
-            trailingTrivia: .spaces(1)
-          ),
-          identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-          inheritanceClause: nil,
-          initializer: nil,
-          genericWhereClause: nil
-        ),
-        genericWhereClause?.normalized()
-      )
-    }
-
     internal func name() -> AssociatedtypeDeclSyntax {
       return SyntaxFactory.makeAssociatedtypeDecl(
         attributes: nil,

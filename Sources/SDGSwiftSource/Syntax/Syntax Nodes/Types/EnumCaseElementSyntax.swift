@@ -19,15 +19,6 @@
 
   extension EnumCaseElementSyntax: Hidable {
 
-    internal func normalizedForAPIDeclaration() -> EnumCaseElementSyntax {
-      return SyntaxFactory.makeEnumCaseElement(
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        associatedValue: associatedValue?.normalizedForAssociatedValue(),
-        rawValue: nil,
-        trailingComma: nil
-      )
-    }
-
     internal func forName() -> EnumCaseElementSyntax {
       return SyntaxFactory.makeEnumCaseElement(
         identifier: identifier,

@@ -21,17 +21,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> EnumCaseDeclSyntax {
-      return SyntaxFactory.makeEnumCaseDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        caseKeyword: caseKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
-        ),
-        elements: elements.normalizedForAPIDeclaration()
-      )
-    }
-
     internal func name() -> EnumCaseDeclSyntax {
       return SyntaxFactory.makeEnumCaseDecl(
         attributes: nil,

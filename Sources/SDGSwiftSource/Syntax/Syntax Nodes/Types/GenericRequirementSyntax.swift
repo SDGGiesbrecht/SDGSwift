@@ -19,22 +19,6 @@
 
   extension GenericRequirementSyntax {
 
-    internal func normalized(comma: Bool) -> GenericRequirementSyntax {
-      let normalizedBody: Syntax
-      if let conformance = body.as(ConformanceRequirementSyntax.self) {
-        normalizedBody = Syntax(conformance.normalized())
-      } else if let sameType = body.as(SameTypeRequirementSyntax.self) {
-        normalizedBody = Syntax(sameType.normalized())
-      } else {  // @exempt(from: tests)
-        warnUnidentified()
-        normalizedBody = body
-      }
-      return SyntaxFactory.makeGenericRequirement(
-        body: normalizedBody,
-        trailingComma: comma ? SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1)) : nil
-      )
-    }
-
     // #warkaround(SDGCornerstone 9.0.0, RawRepresentable only necessary because of SR‐15734 evasion.)
     private enum Group: Int, Comparable, OrderedEnumeration {
       case conformance

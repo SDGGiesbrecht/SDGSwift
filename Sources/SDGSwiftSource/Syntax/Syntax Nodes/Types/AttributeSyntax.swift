@@ -159,9 +159,5 @@
         return .unknown
       }
     }
-
-    internal static func arrange(lhs: AttributeSyntax, rhs: AttributeSyntax) -> Bool {
-      return (lhs.group(), lhs.attributeName.text) < (rhs.group(), rhs.attributeName.text)
-    }
   }
 #endif

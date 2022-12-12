@@ -34,19 +34,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> VariableDeclSyntax {
-      return SyntaxFactory.makeVariableDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        letOrVarKeyword: letOrVarKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
-        ),
-        bindings: bindings.normalizedForVariableAPIDeclaration(
-          accessor: accessorListForAPIDeclaration()
-        )
-      )
-    }
-
     internal func name() -> VariableDeclSyntax {
       return SyntaxFactory.makeVariableDecl(
         attributes: nil,

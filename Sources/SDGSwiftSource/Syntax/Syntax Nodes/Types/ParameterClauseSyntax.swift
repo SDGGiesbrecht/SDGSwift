@@ -17,16 +17,6 @@
 
   extension ParameterClauseSyntax {
 
-    internal func normalizedForDeclaration(
-      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
-    ) -> ParameterClauseSyntax {
-      return SyntaxFactory.makeParameterClause(
-        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-        parameterList: parameterList.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-      )
-    }
-
     internal func forOverloadPattern(
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> ParameterClauseSyntax {
@@ -51,14 +41,6 @@
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> Set<String> {
       return parameterList.identifierList(labelBehaviour: labelBehaviour)
-    }
-
-    internal func normalizedForAssociatedValue() -> ParameterClauseSyntax {
-      return SyntaxFactory.makeParameterClause(
-        leftParen: leftParen.generallyNormalizedAndMissingInsteadOfNil(),
-        parameterList: parameterList.normalizedForAssociatedValue(),
-        rightParen: rightParen.generallyNormalizedAndMissingInsteadOfNil()
-      )
     }
 
     internal func forAssociatedValueName() -> ParameterClauseSyntax {

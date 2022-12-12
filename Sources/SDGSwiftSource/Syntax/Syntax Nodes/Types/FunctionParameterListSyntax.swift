@@ -20,14 +20,6 @@
 
   extension FunctionParameterListSyntax {
 
-    internal func normalizedForDeclaration(
-      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
-    ) -> FunctionParameterListSyntax {
-      return SyntaxFactory.makeFunctionParameterList(
-        map({ $0.normalizedForDeclaration(labelBehaviour: labelBehaviour) })
-      )
-    }
-
     internal func forOverloadPattern(
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> FunctionParameterListSyntax {
@@ -48,10 +40,6 @@
       labelBehaviour: FunctionParameterSyntax.LabelBehaviour
     ) -> Set<String> {
       return reduce(into: Set<String>()) { $0 ∪= $1.identifierList(labelBehaviour: labelBehaviour) }
-    }
-
-    internal func normalizedForAssociatedValue() -> FunctionParameterListSyntax {
-      return SyntaxFactory.makeFunctionParameterList(map({ $0.normalizedForAssociatedValue() }))
     }
 
     internal func forAssociatedValueName() -> FunctionParameterListSyntax {

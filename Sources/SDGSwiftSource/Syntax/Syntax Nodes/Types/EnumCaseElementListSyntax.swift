@@ -17,11 +17,6 @@
 
   extension EnumCaseElementListSyntax {
 
-    internal func normalizedForAPIDeclaration() -> EnumCaseElementListSyntax {
-      // Will only ever have one entry, because grouped declarations are split before reaching this.
-      return SyntaxFactory.makeEnumCaseElementList(map({ $0.normalizedForAPIDeclaration() }))
-    }
-
     internal func forName() -> EnumCaseElementListSyntax {
       // Will only ever have one entry, because grouped declarations are split before reaching this.
       return SyntaxFactory.makeEnumCaseElementList(map({ $0.forName() }))

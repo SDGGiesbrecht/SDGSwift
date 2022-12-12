@@ -343,18 +343,6 @@
       }
     }
 
-    internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
-      switch resolvedExistential() {
-      case let attribute as AttributeSyntax:
-        return Syntax(attribute.normalizedForAPIDeclaration())
-      case let attribute as CustomAttributeSyntax:
-        return Syntax(attribute.normalizedForAPIDeclaration())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(AttributeSyntax(Syntax(self)))
-      }
-    }
-
     internal func normalizedAttributeArgument() -> Syntax {
       switch resolvedExistential() {
       case let availablitiy as AvailabilitySpecListSyntax:

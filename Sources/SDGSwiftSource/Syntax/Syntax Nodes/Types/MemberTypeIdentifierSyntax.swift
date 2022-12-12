@@ -17,34 +17,6 @@
 
   extension MemberTypeIdentifierSyntax {
 
-    // MARK: - Normalization
-
-    internal func normalized() -> TypeSyntax {
-
-      let newName = self.name.generallyNormalizedAndMissingInsteadOfNil()
-      let newGenericArgumentClause = genericArgumentClause?.normalized()
-
-      if let simple = baseType.as(SimpleTypeIdentifierSyntax.self),
-        simple.name.tokenKind == .capitalSelfKeyword
-      {
-        return TypeSyntax(
-          SyntaxFactory.makeSimpleTypeIdentifier(
-            name: newName,
-            genericArgumentClause: newGenericArgumentClause
-          )
-        )
-      } else {
-        return TypeSyntax(
-          SyntaxFactory.makeMemberTypeIdentifier(
-            baseType: baseType.normalized(),
-            period: period.generallyNormalizedAndMissingInsteadOfNil(),
-            name: newName,
-            genericArgumentClause: newGenericArgumentClause
-          )
-        )
-      }
-    }
-
     // MARK: - Merging
 
     internal func rootType() -> TypeSyntax {

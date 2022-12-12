@@ -20,20 +20,5 @@
     internal func indicatesAbsence() -> Bool {
       return contains(where: { $0.attributeIndicatesAbsence() })
     }
-
-    internal func normalizedForAPIDeclaration() -> AttributeListSyntax? {
-      let unsorted = lazy.compactMap({ $0.normalizedAttributeForAPIDeclaration() })
-      var builtIn: [AttributeSyntax] = []
-      var custom: [Syntax] = []
-      for entry in unsorted {
-        if let attribute = entry.as(AttributeSyntax.self) {  // Built‐in
-          builtIn.append(attribute)
-        } else {  // Custom
-          custom.append(entry)
-        }
-      }
-      let sorted = builtIn.sorted(by: AttributeSyntax.arrange).map({ Syntax($0) }) + custom
-      return sorted.isEmpty ? nil : SyntaxFactory.makeAttributeList(sorted)
-    }
   }
 #endif

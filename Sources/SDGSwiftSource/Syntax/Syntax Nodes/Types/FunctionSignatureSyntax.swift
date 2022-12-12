@@ -17,23 +17,6 @@
 
   extension FunctionSignatureSyntax {
 
-    internal func normalizedForAPIDeclaration(
-      labelBehaviour: FunctionParameterSyntax.LabelBehaviour
-    )
-      -> FunctionSignatureSyntax
-    {
-      return SyntaxFactory.makeFunctionSignature(
-        input: input.normalizedForDeclaration(labelBehaviour: labelBehaviour),
-        asyncOrReasyncKeyword: asyncOrReasyncKeyword?.generallyNormalized(
-          leadingTrivia: .spaces(1)
-        ),
-        throwsOrRethrowsKeyword: throwsOrRethrowsKeyword?.generallyNormalized(
-          leadingTrivia: .spaces(1)
-        ),
-        output: output?.normalizedForFunctionDeclaration()
-      )
-    }
-
     internal func forOverloadPattern(labelBehaviour: FunctionParameterSyntax.LabelBehaviour)
       -> FunctionSignatureSyntax
     {

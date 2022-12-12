@@ -21,20 +21,6 @@
 
     // MARK: - APIDeclaration
 
-    internal func normalizedAPIDeclaration() -> PrecedenceGroupDeclSyntax {
-      return SyntaxFactory.makePrecedenceGroupDecl(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        modifiers: modifiers?.normalizedForAPIDeclaration(operatorFunction: false),
-        precedencegroupKeyword: precedencegroupKeyword.generallyNormalizedAndMissingInsteadOfNil(
-          trailingTrivia: .spaces(1)
-        ),
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil(),
-        leftBrace: SyntaxFactory.makeToken(.leftBrace, presence: .missing),
-        groupAttributes: SyntaxFactory.makeBlankPrecedenceGroupAttributeList(),
-        rightBrace: SyntaxFactory.makeToken(.rightBrace, presence: .missing)
-      )
-    }
-
     internal func name() -> PrecedenceGroupDeclSyntax {
       return SyntaxFactory.makePrecedenceGroupDecl(
         attributes: nil,

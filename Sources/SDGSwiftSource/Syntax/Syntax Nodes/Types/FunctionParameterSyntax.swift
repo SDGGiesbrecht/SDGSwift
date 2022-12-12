@@ -71,46 +71,6 @@
 
     // MARK: - API
 
-    internal func normalizedForDeclaration(
-      labelBehaviour: LabelBehaviour
-    ) -> FunctionParameterSyntax {
-
-      var firstName = self.firstName?.generallyNormalized()
-      var secondName = self.secondName?.generallyNormalized(leadingTrivia: .spaces(1))
-      if ¬labelBehaviour.hasLabelByDefault,
-        firstName?.tokenKind == .wildcardKeyword
-      {
-        firstName = secondName?.generallyNormalized()
-        secondName = nil
-      }
-
-      if labelBehaviour == .subscript,
-        secondName == nil
-      {
-        return SyntaxFactory.makeFunctionParameter(
-          attributes: attributes?.normalizedForAPIDeclaration(),
-          firstName: nil,
-          secondName: nil,
-          colon: nil,
-          type: type?.normalized(),
-          ellipsis: ellipsis?.generallyNormalized(),
-          defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
-          trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-        )
-      } else {
-        return SyntaxFactory.makeFunctionParameter(
-          attributes: attributes?.normalizedForAPIDeclaration(),
-          firstName: firstName,
-          secondName: secondName,
-          colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
-          type: type?.normalized(),
-          ellipsis: ellipsis?.generallyNormalized(),
-          defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
-          trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-        )
-      }
-    }
-
     internal func forOverloadPattern(labelBehaviour: LabelBehaviour) -> FunctionParameterSyntax {
       return SyntaxFactory.makeFunctionParameter(
         attributes: nil,
@@ -148,19 +108,6 @@
     }
 
     // MARK: - Associated Values
-
-    internal func normalizedForAssociatedValue() -> FunctionParameterSyntax {
-      return SyntaxFactory.makeFunctionParameter(
-        attributes: attributes?.normalizedForAPIDeclaration(),
-        firstName: firstName?.generallyNormalized(trailingTrivia: .spaces(1)),
-        secondName: secondName?.generallyNormalized(),
-        colon: colon?.generallyNormalized(trailingTrivia: .spaces(1)),
-        type: type?.normalized(),
-        ellipsis: ellipsis?.generallyNormalized(),
-        defaultArgument: defaultArgument?.normalizeForDefaultArgument(),
-        trailingComma: trailingComma?.generallyNormalized(trailingTrivia: .spaces(1))
-      )
-    }
 
     internal func forAssociatedValueName() -> FunctionParameterSyntax {
       return SyntaxFactory.makeFunctionParameter(
