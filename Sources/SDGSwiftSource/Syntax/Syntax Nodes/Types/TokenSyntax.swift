@@ -291,16 +291,5 @@
         return nil
       }
     }
-
-    // MARK: - Short Cuts
-
-    internal var isOperator: Bool {
-      switch tokenKind {
-      case .prefixOperator, .postfixOperator, .spacedBinaryOperator, .unspacedBinaryOperator:
-        return true
-      default:
-        return false
-      }
-    }
   }
 #endif
