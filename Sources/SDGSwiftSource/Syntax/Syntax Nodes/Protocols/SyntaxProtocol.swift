@@ -327,18 +327,6 @@
 
     // MARK: - Normalization
 
-    internal func attributeIndicatesAbsence() -> Bool {
-      switch resolvedExistential() {
-      case let attribute as AttributeSyntax:
-        return attribute.indicatesAbsence()
-      case is CustomAttributeSyntax:
-        return false
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return false
-      }
-    }
-
     internal func normalizedAttributeArgument() -> Syntax {
       switch resolvedExistential() {
       case let availablitiy as AvailabilitySpecListSyntax:
