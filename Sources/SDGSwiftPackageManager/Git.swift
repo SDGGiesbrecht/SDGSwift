@@ -36,8 +36,11 @@ extension Git {
       _ repository: PackageRepository
     ) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
       let versions = Version(1, 5, 0)..<currentMajor.compatibleVersions.upperBound
-      return runCustomSubcommand(["init"], in: repository.location, versionConstraints: versions)
-        .map { _ in () }
+      return runCustomSubcommand(
+        ["init", "\u{2D}\u{2D}initial\u{2D}branch", "master"],
+        in: repository.location,
+        versionConstraints: versions
+      ).map { _ in () }
     }
 
     /// Checks a branch out.
