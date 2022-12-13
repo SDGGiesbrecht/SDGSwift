@@ -333,7 +333,9 @@ public enum Xcode: VersionedExternalProcess {
         earliestVersion.increase(to: Version(9, 0, 0))
 
         var tv4K = "Apple TV 4K"
+
         let parenthesesNeeded = Version(12, 5)
+        var appendix = ""
         if let resolved = version(
           forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
         ),
@@ -341,8 +343,21 @@ public enum Xcode: VersionedExternalProcess {
         {
           // @exempt(from: tests) Unreachable on Linux.
           earliestVersion.increase(to: parenthesesNeeded)
-          tv4K.append(contentsOf: " (2nd generation)")
+          appendix = " (2nd generation)"
         }
+
+        let thirdGenerationNeeded = Version(14, 1)
+        if let resolved = version(
+          forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+        ),
+          resolved ≥ thirdGenerationNeeded
+        {
+          // @exempt(from: tests) Unreachable on Linux.
+          earliestVersion.increase(to: thirdGenerationNeeded)
+          appendix = " (3rd generation)"
+        }
+
+        tv4K.append(contentsOf: appendix)
 
         command += ["\u{2D}destination", "platform=tvOS Simulator,name=\(tv4K)"]
       case .iOS(simulator: true):  // @exempt(from: tests) Tested separately.
