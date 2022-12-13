@@ -95,6 +95,7 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
     ///   - name: The name of the module.
     ///   - symbolGraphs: The module’s symbol graphs.
     ///   - sources: The URL’s of the module’s sources.
+    ///   - manifestURL: The URL of the manifest.
     ///   - manifestSource: The source of the package manifest.
     public init(
       name: String,
@@ -181,5 +182,6 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
   public var location: SymbolGraph.Symbol.Location?
+  /// The documentation.
   public var documentation: [SymbolDocumentation]
 }

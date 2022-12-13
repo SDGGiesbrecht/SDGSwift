@@ -133,7 +133,8 @@ extension PackageRepository {
     /// Loads and returns the package’s API.
     ///
     /// - Parameters:
-    ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///   - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+    ///   - progressReport: A line of progress to report.
     @available(macOS 10.15, *)
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)

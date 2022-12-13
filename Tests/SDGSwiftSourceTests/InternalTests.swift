@@ -31,29 +31,33 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testBlockDocumentationSyntax() {
-    let documentationComment = BlockDocumentationSyntax(source: "/** ... */")
-    let documentation = documentationComment.documentation
-    XCTAssertEqual(documentation.text, "...")
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      let documentationComment = BlockDocumentationSyntax(source: "/** ... */")
+      let documentation = documentationComment.documentation
+      XCTAssertEqual(documentation.text, "...")
+    #endif
   }
 
   func testCodeBlockSyntax() {
-    let documentationComment = BlockDocumentationSyntax(
-      source: [
-        "/**",
-        " Some documentation.",
-        "",
-        " ```swift",
-        " let code = this",
-        " ```",
-        " */",
-      ].joined(separator: "\n")
-    )
-    let documentation = documentationComment.documentation
-    for child in documentation.children {
-      if let code = child as? SDGSwiftSource.CodeBlockSyntax {
-        _ = code.syntaxHighlightedHTML(inline: false)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      let documentationComment = BlockDocumentationSyntax(
+        source: [
+          "/**",
+          " Some documentation.",
+          "",
+          " ```swift",
+          " let code = this",
+          " ```",
+          " */",
+        ].joined(separator: "\n")
+      )
+      let documentation = documentationComment.documentation
+      for child in documentation.children {
+        if let code = child as? SDGSwiftSource.CodeBlockSyntax {
+          _ = code.syntaxHighlightedHTML(inline: false)
+        }
       }
-    }
+    #endif
   }
 
   func testExtendedSyntaxContext() {
