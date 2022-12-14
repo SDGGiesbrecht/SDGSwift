@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 import SDGText
 import SDGVersioning
@@ -35,11 +36,23 @@ extension Git {
     public static func initialize(
       _ repository: PackageRepository
     ) -> Result<Void, VersionedExternalProcessExecutionError<Git>> {
-      let versions = Version(1, 5, 0)..<currentMajor.compatibleVersions.upperBound
+      var earliestVersion = Version(1, 5, 0)
+      var command = ["init"]
+
+      let customizableBranch = Version(2, 27, 0)
+      if let resolved = version(
+        forConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
+      ),
+        resolved ≥ customizableBranch
+      {
+        earliestVersion.increase(to: customizableBranch)
+        command.append(contentsOf: ["\u{2D}\u{2D}initial\u{2D}branch", "master"])
+      }
+
       return runCustomSubcommand(
-        ["init", "\u{2D}\u{2D}initial\u{2D}branch", "master"],
+        command,
         in: repository.location,
-        versionConstraints: versions
+        versionConstraints: earliestVersion..<currentMajor.compatibleVersions.upperBound
       ).map { _ in () }
     }
 
