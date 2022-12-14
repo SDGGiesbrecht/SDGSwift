@@ -46,7 +46,11 @@ class RegressionTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testDocumentationParsingHandlesDoubleLineBrakeAtEnd() {
-    _ = DocumentationSyntax.parse(source: "...\n\n")
+    // Untracked.
+
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      _ = DocumentationSyntax.parse(source: "...\n\n")
+    #endif
   }
 
   func testMarkdownEntity() throws {
