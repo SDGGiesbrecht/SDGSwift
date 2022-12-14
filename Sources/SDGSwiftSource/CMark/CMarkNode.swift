@@ -65,7 +65,11 @@
           line = cmark_node_get_start_line(next)
           column = cmark_node_get_start_column(next)
         }
-        node = cmark_node_parent(node)
+        if let parent = cmark_node_parent(node) {
+          node = parent
+        } else {  // In trailing whitespace ignored by parser.
+          return documentation.scalars.endIndex
+        }
       }
 
       switch cmark_node_get_type(self) {
