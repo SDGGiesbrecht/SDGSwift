@@ -274,8 +274,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         separate.normalizedParameters.first?.name.text
       )
       XCTAssertEqual(
-        (unified.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?.drop(while: { $0 == " " }),
-        (separate.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?.drop(while: { $0 == " " })
+        (unified.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?.drop(
+          while: { $0 == " " }),
+        (separate.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?
+          .drop(while: { $0 == " " })
       )
       let documentation = DocumentationSyntax.parse(
         source: [

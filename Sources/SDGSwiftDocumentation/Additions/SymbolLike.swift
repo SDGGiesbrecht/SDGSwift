@@ -25,12 +25,14 @@ public protocol SymbolLike {
   /// The symbol’s declaration.
   var declaration: SymbolGraph.Symbol.DeclarationFragments? { get }
 
+  // @documentation(SymbolLike.docComment)
   /// The symbol’s documentation comment.
   var docComment: SymbolGraph.LineList? { get }
 
   /// The location of the symbol in the source code.
   var location: SymbolGraph.Symbol.Location? { get }
 
+  // @documentation(SymbolLike.parseDocumentation(cache:module:))
   /// Parses the symbol’s documentation.
   ///
   /// If the documentation cannot be located or parsed, the result will be empty.
