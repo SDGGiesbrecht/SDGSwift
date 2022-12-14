@@ -87,6 +87,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        man git-init
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
             workspace validate •job ubuntu •language '🇨🇦EN' •use‐version 0.41.3
