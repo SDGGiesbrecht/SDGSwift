@@ -17,6 +17,8 @@
   import SDGMathematics
   import SDGCollections
 
+  import SDGSwift
+
   import SwiftSyntax
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
     import SwiftSyntaxParser

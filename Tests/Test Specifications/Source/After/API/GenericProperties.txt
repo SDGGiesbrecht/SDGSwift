@@ -1,2 +1,0 @@
-(Integer)
- singleDigits • var singleDigits: Range<Self>

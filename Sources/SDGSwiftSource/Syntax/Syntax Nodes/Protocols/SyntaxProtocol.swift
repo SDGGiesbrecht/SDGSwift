@@ -132,18 +132,6 @@
       }
     }
 
-    internal func tokens() -> [TokenSyntax] {
-      var tokens: [TokenSyntax] = []
-      for child in children {
-        if let token = child.as(TokenSyntax.self) {
-          tokens.append(token)
-        } else {
-          tokens.append(contentsOf: child.tokens())
-        }
-      }
-      return tokens
-    }
-
     // @documentation(SDGSwiftSource.Syntax.firstToken())
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
@@ -263,7 +251,7 @@
           genericParameterClause = `class`.genericParameterClause
         case let enumeration as EnumDeclSyntax:
           identifier = enumeration.identifier
-          genericParameterClause = enumeration.genericParameterClause
+          genericParameterClause = enumeration.genericParameters
         case let `protocol` as ProtocolDeclSyntax:
           identifier = `protocol`.identifier
         case let alias as TypealiasDeclSyntax:
@@ -271,7 +259,7 @@
           genericParameterClause = alias.genericParameterClause
         case let associated as AssociatedtypeDeclSyntax:
           identifier = associated.identifier
-          genericParameterClause = associated.genericParameterClause
+          genericParameterClause = nil
         case let initializer as InitializerDeclSyntax:
           parameterClause = initializer.parameters
           genericParameterClause = initializer.genericParameterClause
@@ -323,174 +311,6 @@
         result.append(contentsOf: "</span>")
         return result
       }
-    }
-
-    // MARK: - API
-
-    internal func apiChildren() -> [APIElement] {
-      let elements = Array(children.map({ $0.api() }).joined())
-      return APIElement.merge(elements: elements)
-    }
-
-    /// Returns the API provided by this node.
-    public func api() -> [APIElement] {
-      if let element = self.resolvedExistential() as? APISyntax {
-        return element.parseAPI()
-      }
-      switch resolvedExistential() {
-      case let conditionallyCompiledSection as IfConfigDeclSyntax:
-        return conditionallyCompiledSection.conditionalAPI
-      default:
-        return apiChildren()
-      }
-    }
-
-    internal var documentation: [SymbolDocumentation] {
-      var result: [SymbolDocumentation] = []
-      if let token = firstToken() {
-        let leading = token.leadingTrivia
-        for index in leading.indices.lazy.reversed() {
-          let trivia = leading[index]
-          switch trivia {
-          case .docLineComment, .docBlockComment, .lineComment:
-            let comment = trivia.syntax(siblings: leading, index: index)
-            if let line = comment as? LineDocumentationSyntax,
-              let documentation = line.content.context as? DocumentationSyntax
-            {
-              if documentation.text ≠ result.last?.documentationComment.text {
-                result.append(SymbolDocumentation(documentation))
-              }
-            } else if let block = comment as? BlockDocumentationSyntax {
-              result.append(SymbolDocumentation(block.documentation))
-            } else if let other = comment as? LineDeveloperCommentSyntax,
-              ¬result.isEmpty
-            {
-              result[result.indices.last!].developerComments.prepend(other)
-            }
-          default:
-            break
-          }
-        }
-      }
-      return result.reversed()
-    }
-
-    internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-    where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
-      return _smallestSubnode(containing: searchTerm)
-    }
-    public func _smallestSubnode<P>(containing searchTerm: P) -> Syntax?
-    where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
-      guard source().scalars.contains(searchTerm) else {
-        return nil
-      }
-      for child in children {
-        if let found = child.smallestSubnode(containing: searchTerm) {
-          return found
-        }
-      }
-      return Syntax(self)
-    }
-
-    // MARK: - Normalization
-
-    internal func withTriviaReducedToSpaces() -> Syntax {
-      return TriviaNormalizer().visit(Syntax(self))
-    }
-
-    internal func attributeIndicatesAbsence() -> Bool {
-      switch resolvedExistential() {
-      case let attribute as AttributeSyntax:
-        return attribute.indicatesAbsence()
-      case is CustomAttributeSyntax:
-        return false
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return false
-      }
-    }
-
-    internal func normalizedAttributeForAPIDeclaration() -> Syntax? {
-      switch resolvedExistential() {
-      case let attribute as AttributeSyntax:
-        return Syntax(attribute.normalizedForAPIDeclaration())
-      case let attribute as CustomAttributeSyntax:
-        return Syntax(attribute.normalizedForAPIDeclaration())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(AttributeSyntax(Syntax(self)))
-      }
-    }
-
-    internal func normalizedAttributeArgument() -> Syntax {
-      switch resolvedExistential() {
-      case let availablitiy as AvailabilitySpecListSyntax:
-        return Syntax(availablitiy.normalized())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
-    internal func normalizedAvailabilityArgument() -> Syntax {
-      switch resolvedExistential() {
-      case let token as TokenSyntax:
-        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
-      case let labeled as AvailabilityLabeledArgumentSyntax:
-        return Syntax(labeled.normalized())
-      case let restriction as AvailabilityVersionRestrictionSyntax:
-        return Syntax(restriction.normalized())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
-    internal func normalizedAvailability() -> Syntax {
-      switch resolvedExistential() {
-      case let token as TokenSyntax:
-        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
-      case let version as VersionTupleSyntax:
-        return Syntax(version.normalized())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
-    internal func normalizedVersion() -> Syntax {
-      switch resolvedExistential() {
-      case let token as TokenSyntax:
-        return Syntax(token.generallyNormalizedAndMissingInsteadOfNil())
-      default:  // @exempt(from: tests)
-        warnUnidentified()
-        return Syntax(self)
-      }
-    }
-
-    // MARK: - Compilation Conditions
-
-    internal func prependingCompilationConditions(_ addition: Syntax) -> Syntax {
-      let existingCondition = Array(tokens().dropFirst())
-      let newCondition = Array(addition.tokens().dropFirst())
-      return Syntax(
-        SyntaxFactory.makeUnknownSyntax(
-          tokens: [
-            SyntaxFactory.makeToken(.poundIfKeyword, trailingTrivia: .spaces(1)),
-            SyntaxFactory.makeToken(.leftParen),
-          ] + newCondition + [
-            SyntaxFactory.makeToken(.rightParen),
-            SyntaxFactory.makeToken(
-              .spacedBinaryOperator("\u{26}&"),
-              leadingTrivia: .spaces(1),
-              trailingTrivia: .spaces(1)
-            ),
-            SyntaxFactory.makeToken(.leftParen),
-          ] + existingCondition + [
-            SyntaxFactory.makeToken(.rightParen)
-          ]
-        )
-      )
     }
 
     // MARK: - Debugging

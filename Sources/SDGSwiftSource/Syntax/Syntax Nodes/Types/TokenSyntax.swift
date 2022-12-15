@@ -291,42 +291,5 @@
         return nil
       }
     }
-
-    // MARK: - Short Cuts
-
-    internal var isOperator: Bool {
-      switch tokenKind {
-      case .prefixOperator, .postfixOperator, .spacedBinaryOperator, .unspacedBinaryOperator:
-        return true
-      default:
-        return false
-      }
-    }
-
-    // MARK: - API
-
-    internal func generallyNormalizedAndMissingInsteadOfNil(
-      leadingTrivia: Trivia = [],
-      trailingTrivia: Trivia = []
-    ) -> TokenSyntax {
-      return SyntaxFactory.makeToken(
-        tokenKind.normalized(),
-        leadingTrivia: leadingTrivia,
-        trailingTrivia: trailingTrivia
-      )
-    }
-
-    internal func generallyNormalized(
-      leadingTrivia: Trivia = [],
-      trailingTrivia: Trivia = []
-    ) -> TokenSyntax? {
-      if ¬isPresent {
-        return nil
-      }
-      return generallyNormalizedAndMissingInsteadOfNil(
-        leadingTrivia: leadingTrivia,
-        trailingTrivia: trailingTrivia
-      )
-    }
   }
 #endif

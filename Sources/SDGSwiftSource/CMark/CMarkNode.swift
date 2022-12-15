@@ -65,7 +65,11 @@
           line = cmark_node_get_start_line(next)
           column = cmark_node_get_start_column(next)
         }
-        node = cmark_node_parent(node)
+        if let parent = cmark_node_parent(node) {
+          node = parent
+        } else {  // In trailing whitespace ignored by parser.
+          return documentation.scalars.endIndex
+        }
       }
 
       switch cmark_node_get_type(self) {
@@ -93,7 +97,7 @@
           lineStartByteIndex,
           offsetBy: column − 1,
           limitedBy: utf8.endIndex
-        ) ?? utf8.endIndex
+        ) ?? utf8.endIndex  // @exempt(from: tests) Only occurs when cmark exhibits bugs.
       var result: String.ScalarView.Index? = index.samePosition(in: scalars)
       while result == nil {  // @exempt(from: tests) Only occurs when CommonMark exhibits bugs.
         index = utf8.index(before: index)

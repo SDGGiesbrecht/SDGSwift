@@ -13,32 +13,16 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SDGLogic
+
   import SwiftSyntax
 
-  extension IdentifierPatternSyntax: Hidable {
+  extension IdentifierPatternSyntax {
 
-    internal func normalizedVariableBindingIdentiferForAPIDeclaration() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier.generallyNormalizedAndMissingInsteadOfNil()
-      )
-    }
-
-    internal func variableBindingIdentifierForOverloadPattern() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier
-      )
-    }
-
-    internal func variableBindingIdentifierForName() -> IdentifierPatternSyntax {
-      return SyntaxFactory.makeIdentifierPattern(
-        identifier: identifier
-      )
-    }
-
-    // MARK: - Hidable
-
-    internal var hidabilityIdentifier: TokenSyntax? {
-      return identifier
+    internal var isHidden: Bool {
+      let text = identifier.text
+      return text.hasPrefix("_") == true
+        ∧ text ≠ "_"  // @exempt(from: tests) Reachability unknown.
     }
   }
 #endif

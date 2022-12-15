@@ -101,6 +101,7 @@ public struct LibraryAPI: StoredDocumentation, SymbolLike {
   /// - Parameters:
   ///   - name: The name of the library.
   ///   - documentation: The documentation.
+  ///   - location: The location of the declaration.
   ///   - modules: The names of the modules included in the library.
   public init(
     name: String,
@@ -131,5 +132,6 @@ public struct LibraryAPI: StoredDocumentation, SymbolLike {
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
   public var location: SymbolGraph.Symbol.Location?
+  /// The documentation.
   public var documentation: [SymbolDocumentation]
 }
