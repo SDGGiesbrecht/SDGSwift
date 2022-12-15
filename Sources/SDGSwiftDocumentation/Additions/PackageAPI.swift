@@ -182,7 +182,9 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   ///   - symbolGraphs: The symbol graphs.
   ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
   ///   - moduleDocumentationCommentLookup: A closure which looks up a module’s documentation comment.
+  ///   - toDocument: The name of the module whose documentation is sought.
   ///   - moduleDeclarationLocationLookup: A closure which looks up the location of a module’s declaration.
+  ///   - toFind: The name of the module whose declaration is sought.
   public init(
     name: String,
     documentation: [SymbolDocumentation],
@@ -190,8 +192,8 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
     libraries: [LibraryAPI],
     symbolGraphs: [SymbolGraph],
     moduleSources: [String: [URL]],
-    moduleDocumentationCommentLookup: (String) -> [SymbolDocumentation],
-    moduleDeclarationLocationLookup: (String) -> SymbolGraph.Symbol.Location?
+    moduleDocumentationCommentLookup: (_ toDocument: String) -> [SymbolDocumentation],
+    moduleDeclarationLocationLookup: (_ toFind: String) -> SymbolGraph.Symbol.Location?
   ) {
     let declaration = PackageAPI.declaration(for: name)
     self.names = SymbolGraph.Symbol.Names(
@@ -238,5 +240,6 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   public var names: SymbolGraph.Symbol.Names
   public var declaration: SymbolGraph.Symbol.DeclarationFragments?
   public var location: SymbolGraph.Symbol.Location?
+  /// The documentation.
   public var documentation: [SymbolDocumentation]
 }

@@ -38,332 +38,6 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testAPIParsing() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-      for packageURL in documentationTestPackages {
-        let packageName = packageURL.lastPathComponent
-        let package = PackageRepository(at: packageURL)
-        let parsed = try PackageAPI(
-          package: package.packageGraph().get(),
-          reportProgress: { print($0) }
-        )
-        XCTAssertNotNil(parsed.documentation.last)
-        XCTAssertNotNil(parsed.libraries.first?.documentation.last)
-        XCTAssertNotNil(parsed.modules.first?.documentation.last)
-        let summary = parsed.summary().joined(separator: "\n")
-        let specification = testSpecificationDirectory().appendingPathComponent(
-          "API/\(parsed.name).txt"
-        )
-        SDGPersistenceTestUtilities.compare(
-          summary,
-          against: specification,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        if packageName == "PackageToDocument" {
-          XCTAssert("Structure" ∈ parsed.identifierList())
-        }
-
-        let rootElement = APIElement.package(parsed)
-        for element in rootElement.flattenedTree() {
-          element.userInformation = true
-        }
-        for element in rootElement.flattenedTree() {
-          XCTAssertEqual(element.userInformation as? Bool, true)
-          _ = element.libraries
-          _ = element.modules
-          _ = element.types
-          _ = element.extensions
-          _ = element.protocols
-          _ = element.cases
-          _ = element.typeProperties
-          _ = element.typeMethods
-          _ = element.initializers
-          _ = element.instanceProperties
-          _ = element.subscripts
-          _ = element.instanceMethods
-          _ = element.operators
-          _ = element.precedenceGroups
-          _ = element.conformances
-          _ = element.overloads
-          _ = element.isProtocolRequirement
-          _ = element.hasDefaultImplementation
-        }
-        XCTAssertFalse(rootElement < rootElement)
-        XCTAssertTrue(parsed == parsed)
-
-        let names =
-          ([
-            [APIElement.package(parsed)],
-            parsed.libraries.map({ APIElement.library($0) }),
-            rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
-          ]
-          .lazy.joined()
-          .filter({ element in
-            switch element {
-            case .extension, .conformance:
-              // Not nodes in DocC.
-              return false
-            default:
-              return true
-            }
-          })
-          .map({ element in
-            element.name.source()
-          }).appending(
-            contentsOf: {
-              if packageName == "PackageToDocument" {
-                // Legacy mode filtered inheritance out instead of inserting it.
-                return [
-                  "allSatisfy(_:)",
-                  "compactMap(_:)",
-                  "contains(_:)",
-                  "contains(where:)",
-                  "distance(from:to:)",
-                  "drop(while:)",
-                  "dropFirst(_:)",
-                  "dropLast(_:)",
-                  "elementsEqual(_:)",
-                  "elementsEqual(_:by:)",
-                  "encode(to:)",
-                  "encode(to:)",
-                  "enumerated()",
-                  "filter(_:)",
-                  "first(where:)",
-                  "firstIndex(of:)",
-                  "firstIndex(where:)",
-                  "flatMap(_:)",
-                  "flatMap(_:)",
-                  "forEach(_:)",
-                  "formIndex(after:)",
-                  "formIndex(_:offsetBy:)",
-                  "formIndex(_:offsetBy:limitedBy:)",
-                  "index(_:offsetBy:)",
-                  "index(_:offsetBy:limitedBy:)",
-                  "index(after:)",
-                  "index(of:)",
-                  "inherited()",
-                  "lexicographicallyPrecedes(_:)",
-                  "lexicographicallyPrecedes(_:by:)",
-                  "makeIterator()",
-                  "map(_:)",
-                  "map(_:)",
-                  "max()",
-                  "max(by:)",
-                  "methodOverride()",
-                  "min()",
-                  "min(by:)",
-                  "prefix(_:)",
-                  "prefix(through:)",
-                  "prefix(upTo:)",
-                  "prefix(while:)",
-                  "provision()",
-                  "randomElement()",
-                  "randomElement(using:)",
-                  "reduce(_:_:)",
-                  "reduce(into:_:)",
-                  "requirement()",
-                  "reversed()",
-                  "shuffled()",
-                  "shuffled(using:)",
-                  "sorted()",
-                  "sorted(by:)",
-                  "split(maxSplits:omittingEmptySubsequences:whereSeparator:)",
-                  "split(separator:maxSplits:omittingEmptySubsequences:)",
-                  "starts(with:)",
-                  "starts(with:by:)",
-                  "suffix(_:)",
-                  "suffix(from:)",
-                  "withContiguousStorageIfAvailable(_:)",
-                  "init(extendedGraphemeClusterLiteral:)",
-                  "init(from:)",
-                  "init(from:)",
-                  "init(stringInterpolation:)",
-                  "init(stringInterpolation:)",
-                  "init(stringLiteral:)",
-                  "init(unicodeScalarLiteral:)",
-                  "init(rawValue:)",
-                  "\u{21}=(_:_:)",
-                  "\u{21}=(_:_:)",
-                  "...(_:)",
-                  "...(_:)",
-                  "...(_:_:)",
-                  "..<(_:)",
-                  "..<(_:_:)",
-                  "<(_:_:)",
-                  "<\u{3D}(_:_:)",
-                  "==(_:_:)",
-                  ">(_:_:)",
-                  ">\u{3D}(_:_:)",
-                  "subscript(_:)",
-                  "subscript(_:)",
-                  "subscript(_:)",
-                  "subscript(_:)",
-                  "CollectionType.Index",
-                  "CollectionType.Indices",
-                  "InheritingAssociatedType.RawValue",
-                  "count",
-                  "endIndex",
-                  "first",
-                  "indices",
-                  "isEmpty",
-                  "lazy",
-                  "rawValue",
-                  "startIndex",
-                  "underestimatedCount",
-                  "underestimatedCount",
-                ]
-              } else {
-                return []
-              }
-            }()
-          )
-          // Legacy had no knowledge of parent enumeration.
-          .sorted() as [String])
-          .replacingMatches(
-            for: ["visible"],
-            with: ["Enumeration.visible"]
-          )
-          .sorted().joined(separator: "\n")
-        let namesSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/Names/\(parsed.name).txt"
-        )
-        SDGPersistenceTestUtilities.compare(
-          names,
-          against: namesSpecification,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        let subHeadings =
-          [
-            [APIElement.package(parsed)],
-            parsed.libraries.map({ APIElement.library($0) }),
-            rootElement.modules.flatMap({ APIElement.module($0).flattenedTree() }),
-          ]
-          .lazy.joined()
-          .compactMap({ element in
-            element.declaration?.source()
-          }).appending(
-            contentsOf: {
-              if packageName == "PackageToDocument" {
-                // Legacy mode filtered inheritance out instead of inserting it.
-                return [
-                  "func allSatisfy((Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
-                  "func compactMap<ElementOfResult>((Self.Element) throws \u{2D}> ElementOfResult?) rethrows \u{2D}> [ElementOfResult]",
-                  "func contains(Self.Element) \u{2D}> Bool",
-                  "func contains(where: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
-                  "func distance(from: Self.Index, to: Self.Index) \u{2D}> Int",
-                  "func drop(while: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.SubSequence",
-                  "func dropFirst(Int) \u{2D}> Self.SubSequence",
-                  "func dropLast(Int) \u{2D}> Self.SubSequence",
-                  "func elementsEqual<OtherSequence>(OtherSequence) \u{2D}> Bool",
-                  "func elementsEqual<OtherSequence>(OtherSequence, by: (Self.Element, OtherSequence.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
-                  "func encode(to: Encoder) throws",
-                  "func encode(to: Encoder) throws",
-                  "func enumerated() \u{2D}> EnumeratedSequence<Self>",
-                  "func filter((Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> [Self.Element]",
-                  "func first(where: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.Element?",
-                  "func firstIndex(of: Self.Element) \u{2D}> Self.Index?",
-                  "func firstIndex(where: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.Index?",
-                  "func flatMap<ElementOfResult>((Self.Element) throws \u{2D}> ElementOfResult?) rethrows \u{2D}> [ElementOfResult]",
-                  "func flatMap<SegmentOfResult>((Self.Element) throws \u{2D}> SegmentOfResult) rethrows \u{2D}> [SegmentOfResult.Element]",
-                  "func forEach((Self.Element) throws \u{2D}> Void) rethrows",
-                  "func formIndex(after: inout Self.Index)",
-                  "func formIndex(inout Self.Index, offsetBy: Int)",
-                  "func formIndex(inout Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Bool",
-                  "func index(Self.Index, offsetBy: Int) \u{2D}> Self.Index",
-                  "func index(Self.Index, offsetBy: Int, limitedBy: Self.Index) \u{2D}> Self.Index?",
-                  "func index(after: Int) \u{2D}> Int",
-                  "func index(of: Self.Element) \u{2D}> Self.Index?",
-                  "func inherited()",
-                  "func lexicographicallyPrecedes<OtherSequence>(OtherSequence) \u{2D}> Bool",
-                  "func lexicographicallyPrecedes<OtherSequence>(OtherSequence, by: (Self.Element, Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
-                  "func makeIterator() \u{2D}> IndexingIterator<Self>",
-                  "func map<T>((Self.Element) throws \u{2D}> T) rethrows \u{2D}> [T]",
-                  "func map<T>((Self.Element) throws \u{2D}> T) rethrows \u{2D}> [T]",
-                  "func max() \u{2D}> Self.Element?",
-                  "func max(by: (Self.Element, Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.Element?",
-                  "func methodOverride()",
-                  "func min() \u{2D}> Self.Element?",
-                  "func min(by: (Self.Element, Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.Element?",
-                  "func prefix(Int) \u{2D}> Self.SubSequence",
-                  "func prefix(through: Self.Index) \u{2D}> Self.SubSequence",
-                  "func prefix(upTo: Self.Index) \u{2D}> Self.SubSequence",
-                  "func prefix(while: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> Self.SubSequence",
-                  "func provision()",
-                  "func randomElement() \u{2D}> Self.Element?",
-                  "func randomElement<T>(using: inout T) \u{2D}> Self.Element?",
-                  "func reduce<Result>(Result, (Result, Self.Element) throws \u{2D}> Result) rethrows \u{2D}> Result",
-                  "func reduce<Result>(into: Result, (inout Result, Self.Element) throws \u{2D}> ()) rethrows \u{2D}> Result",
-                  "func requirement()",
-                  "func reversed() \u{2D}> [Self.Element]",
-                  "func shuffled() \u{2D}> [Self.Element]",
-                  "func shuffled<T>(using: inout T) \u{2D}> [Self.Element]",
-                  "func sorted() \u{2D}> [Self.Element]",
-                  "func sorted(by: (Self.Element, Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> [Self.Element]",
-                  "func split(maxSplits: Int, omittingEmptySubsequences: Bool, whereSeparator: (Self.Element) throws \u{2D}> Bool) rethrows \u{2D}> [Self.SubSequence]",
-                  "func split(separator: Self.Element, maxSplits: Int, omittingEmptySubsequences: Bool) \u{2D}> [Self.SubSequence]",
-                  "func starts<PossiblePrefix>(with: PossiblePrefix) \u{2D}> Bool",
-                  "func starts<PossiblePrefix>(with: PossiblePrefix, by: (Self.Element, PossiblePrefix.Element) throws \u{2D}> Bool) rethrows \u{2D}> Bool",
-                  "func suffix(Int) \u{2D}> Self.SubSequence",
-                  "func suffix(from: Self.Index) \u{2D}> Self.SubSequence",
-                  "func withContiguousStorageIfAvailable<R>((UnsafeBufferPointer<Self.Element>) throws \u{2D}> R) rethrows \u{2D}> R?",
-                  "init(extendedGraphemeClusterLiteral: Self.StringLiteralType)",
-                  "init(from: Decoder) throws",
-                  "init(from: Decoder) throws",
-                  "init(stringInterpolation: DefaultStringInterpolation)",
-                  "init(stringInterpolation: DefaultStringInterpolation)",
-                  "init(stringLiteral: String)",
-                  "init(unicodeScalarLiteral: Self.ExtendedGraphemeClusterLiteralType)",
-                  "init?(rawValue: Int)",
-                  "static func \u{21}= (Self, Self) \u{2D}> Bool",
-                  "static func \u{21}= (Self, Self) \u{2D}> Bool",
-                  "static func ... (Self) \u{2D}> PartialRangeFrom<Self>",
-                  "static func ... (Self) \u{2D}> PartialRangeThrough<Self>",
-                  "static func ... (Self, Self) \u{2D}> ClosedRange<Self>",
-                  "static func ..< (Self) \u{2D}> PartialRangeUpTo<Self>",
-                  "static func ..< (Self, Self) \u{2D}> Range<Self>",
-                  "static func < (Inherited, Inherited) \u{2D}> Bool",
-                  "static func <\u{3D} (Self, Self) \u{2D}> Bool",
-                  "static func == (Inherited, Inherited) \u{2D}> Bool",
-                  "static func > (Self, Self) \u{2D}> Bool",
-                  "static func >\u{3D} (Self, Self) \u{2D}> Bool",
-                  "subscript((UnboundedRange_) \u{2D}> ()) \u{2D}> Self.SubSequence",
-                  "subscript(Int) \u{2D}> Int",
-                  "subscript(Range<Self.Index>) \u{2D}> Slice<Self>",
-                  "subscript<R>(R) \u{2D}> Self.SubSequence",
-                  "typealias Index",
-                  "typealias Indices",
-                  "typealias RawValue",
-                  "var count: Int",
-                  "var endIndex: Int",
-                  "var first: Self.Element?",
-                  "var indices: DefaultIndices<Self>",
-                  "var isEmpty: Bool",
-                  "var lazy: LazySequence<Self>",
-                  "var rawValue: Int",
-                  "var startIndex: Int",
-                  "var underestimatedCount: Int",
-                  "var underestimatedCount: Int",
-                ]
-              } else {
-                return []
-              }
-            }()
-          )
-          .sorted().joined(separator: "\n")
-        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/SubHeadings/\(parsed.name).txt"
-        )
-        SDGPersistenceTestUtilities.compare(
-          subHeadings,
-          against: declarationsSpecification,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      }
-    #endif
-  }
-
   func testCallout() {
     for localization in InterfaceLocalization.allCases {
       let specification = Callout.allCases
@@ -555,39 +229,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testCoreLibraries() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-
-      let syntax = try SyntaxParser.parse(
-        URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-          .deletingLastPathComponent().appendingPathComponent(
-            "Sources/SDGSwiftSource/Core Libraries/Swift.txt"
-          )
-      )
-      var foundLessThan = false
-      var foundEncodable = false
-      try FunctionalSyntaxScanner(
-        checkSyntax: { syntax, _ in
-          if let function = syntax.as(FunctionDeclSyntax.self) {
-            XCTAssert(function.identifier.text ≠ "", "Corrupt function:\n\(function)")
-            if function.identifier.text == "<" {
-              foundLessThan = true
-            }
-          } else if let `protocol` = syntax.as(ProtocolDeclSyntax.self) {
-            if `protocol`.identifier.text == "Encodable" {
-              foundEncodable = true
-            }
-          }
-          return true
-        },
-        shouldExtendToken: { _ in false },
-        shouldExtendFragment: { _ in false }
-      ).scan(syntax)
-      XCTAssert(foundLessThan)
-      XCTAssert(foundEncodable)
-    #endif
-  }
-
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
@@ -609,16 +250,225 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testDocumentationSyntax() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      let unified = DocumentationSyntax.parse(
+        source: [
+          "Some documentation.",
+          "",
+          "\u{2D} Parameters:",
+          "  \u{2D} first: The first.",
+          "  \u{2D} second: The second.",
+        ].joined(separator: "\n")
+      )
+      let separate = DocumentationSyntax.parse(
+        source: [
+          "Some documentation.",
+          "",
+          "  \u{2D} parameter first: The first.",
+          "  \u{2D} parameter second: The second.",
+        ].joined(separator: "\n")
+      )
+      XCTAssertEqual(
+        unified.normalizedParameters.first?.name.text,
+        separate.normalizedParameters.first?.name.text
+      )
+      XCTAssertEqual(
+        (unified.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?.drop(
+          while: { $0 == " " }),
+        (separate.normalizedParameters.last?.description.map({ $0.text }).joined() as String?)?
+          .drop(while: { $0 == " " })
+      )
+      let documentation = DocumentationSyntax.parse(
+        source: [
+          "Performs an action using the specified parameters.",
+          "",
+          "This is a second paragraph.",
+          "",
+          "# Primary Heading",
+          "",
+          "## Secondary Heading",
+          "",
+          "### Tertiary Heading",
+          "",
+          "#### Level 4 Heading",
+          "",
+          "##### Level 5 Heading",
+          "",
+          "###### Level 6 Heading",
+          "",
+          "Another Primary Heading",
+          "=======================",
+          "",
+          "Another Secondary Heading",
+          "\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}",
+          "",
+          "Asterisms:",
+          "",
+          "***",
+          "",
+          "* * *",
+          "",
+          "\u{2D}\u{2D}\u{2D}",
+          "",
+          "___",
+          "",
+          "This is a list:",
+          "\u{2D} First entry.",
+          "\u{2D} Second entry.",
+          "",
+          "This is also list:",
+          "* First entry.",
+          "* Second entry.",
+          "",
+          "And this is a list too:",
+          "+ First entry.",
+          "+ Second entry.",
+          "",
+          "And this is an ordered List:",
+          "1. First entry.",
+          "2. Second entry.",
+          "",
+          "There is something significant about `parameterOne`.",
+          "",
+          "And `let x = 1` contains a keyword.",
+          "",
+          "```swift",
+          "// This is an example.",
+          "if try performAction(on: \u{22}1\u{22}, with: \u{22}2\u{22}) {",
+          "    print(\u{22}It worked.\u{22})",
+          "}",
+          "```",
+          "",
+          "```",
+          "let unmarked = true",
+          "```",
+          "",
+          "```other",
+          "This is unidentified.",
+          "```",
+          "",
+          "And empty:",
+          "",
+          "```swift",
+          "```",
+          "",
+          "Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)",
+          "",
+          "There are also [links](somewhere.com).",
+          "",
+          "And ![images](somewhere.com/image).",
+          "",
+          "> And someone said this.",
+          "",
+          "> ―Someone.",
+          "",
+          "Paragraphs",
+          "may",
+          "be",
+          "broken",
+          "up",
+          ".",
+          "",
+          "Lines  ",
+          "may be split.",
+          "",
+          "\u{2D} Warning: There is something to watch out for.",
+          "",
+          "\u{2D} Attention: ...",
+          "",
+          "\u{2D} Author: ...",
+          "",
+          "\u{2D} Authors: ...",
+          "",
+          "\u{2D} Bug: ...",
+          "",
+          "\u{2D} Complexity: ...",
+          "",
+          "\u{2D} Copyright: ...",
+          "",
+          "\u{2D} Date: ...",
+          "",
+          "\u{2D} Experiment: ...",
+          "",
+          "\u{2D} Important: ...",
+          "",
+          "\u{2D} Invariant: ...",
+          "",
+          "\u{2D} LocalizationKey: ...",
+          "",
+          "\u{2D} MutatingVariant: ...",
+          "",
+          "\u{2D} NonmutatingVariant: ...",
+          "",
+          "\u{2D} Note: ...",
+          "",
+          "\u{2D} Postcondition: ...",
+          "",
+          "\u{2D} Precondition: ...",
+          "",
+          "\u{2D} Remark: ...",
+          "",
+          "\u{2D} Remarks: ...",
+          "",
+          "\u{2D} Requires: ...",
+          "",
+          "\u{2D} SeeAlso: ...",
+          "",
+          "\u{2D} Since: ...",
+          "",
+          "\u{2D} Tag: ...",
+          "",
+          "\u{2D} ToDo: ...",
+          "",
+          "\u{2D} Version: ...",
+          "",
+          "\u{2D} Keyword: ...",
+          "",
+          "\u{2D} Recommended: ...",
+          "",
+          "\u{2D} RecommendedOver: ...",
+          "",
+          "\u{2D} Parameters:",
+          "    \u{2D} parameterOne: The first parameter.",
+          "    \u{2D} parameterTwo: The second parameter.",
+          "",
+          "\u{2D} Returns: A Boolean value.",
+          "",
+          "\u{2D} Throws: An error.",
+          "",
+          "\u{2D} List item.",
+          "\u{2D} Warning: Undefined callout in the middle of a list.",
+          "\u{2D} List item.",
+          "",
+          "```swift",
+          "/*",
+          " This",
+          " nested",
+          " element",
+          " is",
+          " fragmented.",
+          " */",
+          "```",
+          "",
+          "\u{2D} List ending with a multibyte character: ✓",
+        ].joined(separator: "\n")
+      )
+      let rendered = documentation.renderedHTML(localization: "en")
+      XCTAssert(rendered.contains("<em>"))
+      XCTAssert(rendered.contains("<strong>"))
+      XCTAssert(rendered.contains("<h1>"))
+      XCTAssert(rendered.contains("<h2>"))
+      XCTAssert(rendered.contains("<h3>"))
+      XCTAssert(rendered.contains("<h4>"))
+      XCTAssert(rendered.contains("<h5>"))
+      XCTAssert(rendered.contains("<h6>"))
+    #endif
+  }
+
   func testExtendedTokenKind() {
     XCTAssertEqual(ExtendedTokenKind.string.textFreedom, .arbitrary)
     XCTAssertEqual(ExtendedTokenKind.quotationMark.textFreedom, .invariable)
-  }
-
-  func testExtension() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssert(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "String")))
-      XCTAssertFalse(ExtensionAPI(type: "String").extendsSameType(as: ExtensionAPI(type: "Int")))
-    #endif
   }
 
   func testFunctionalSyntaxScanner() throws {
@@ -735,25 +585,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testPackageAPI() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      try withDefaultMockRepository { package in
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          _ = try? PackageAPI(package: package.packageGraph().get())
-        #endif
-      }
-    #endif
-  }
-
-  func testPackageDocumentation() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      let package = try thisRepository.package().get()
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-        XCTAssertNotNil(try PackageAPI.documentation(for: package))
-      #endif
-    #endif
-  }
-
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
@@ -805,122 +636,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .appendingPathExtension("html"),
           overwriteSpecificationInsteadOfFailing: false
         )
-
-        // API
-        let api = sourceFile.api().sorted()
-        let summary = api.map({ $0.summary().joined(separator: "\n") }).joined(separator: "\n")
-        SDGPersistenceTestUtilities.compare(
-          summary,
-          against: sourceDirectory.appendingPathComponent("After").appendingPathComponent("API")
-            .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
-            .appendingPathExtension("txt"),
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        let identifiers = api.reduce(into: Set<String>()) { $0 ∪= $1.identifierList() }
-        let syntaxHighlighting = api.map({ $0.flattenedTree() }).joined().map({ element in
-          if var declaration = element.declaration?.syntaxHighlightedHTML(
-            inline: false,
-            internalIdentifiers: identifiers
-          ) {
-
-            if let constraints = element.constraints?.syntaxHighlightedHTML(
-              inline: false,
-              internalIdentifiers: identifiers
-            ) {
-              declaration += "\n" + constraints
-            }
-
-            if let conditions = element.compilationConditions?.syntaxHighlightedHTML(
-              inline: false,
-              internalIdentifiers: identifiers
-            ) {
-              declaration = conditions + "\n" + declaration
-            }
-
-            return declaration
-          } else {
-            return nil
-          }
-        }).compactMap({ $0 }).joined(separator: "\n\n")
-        SDGPersistenceTestUtilities.compare(
-          HTMLPage(
-            content: syntaxHighlighting,
-            cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
-          ),
-          against: sourceDirectory.appendingPathComponent("After").appendingPathComponent(
-            "API Syntax Highlighting"
-          ).appendingPathComponent(url.deletingPathExtension().lastPathComponent)
-            .appendingPathExtension("html"),
-          overwriteSpecificationInsteadOfFailing: false
-        )
-
-        if url.deletingPathExtension().lastPathComponent == "Documentation" {
-          var found = false
-          search: for element in api {
-            `switch`: switch element {
-            case .extension(let `extension`):
-              found = true
-              let method = `extension`.instanceMethods.first(where: {
-                $0.name.source().hasPrefix("performAction")
-              })!
-              let methods = [
-                method,
-                `extension`.instanceMethods.first(where: {
-                  $0.name.source().hasPrefix("withSeparateParameters")
-                })!,
-              ]
-              _ = method.documentation.last!.documentationComment
-                .renderedHTML(localization: "zxx")
-
-              for localization in InterfaceLocalization.allCases {
-                let rendered = methods.map({
-                  $0.documentation.last!.documentationComment.renderedSpecification(
-                    localization: localization.code
-                  )
-                }).joined(separator: "\n")
-
-                let specification = testSpecificationDirectory().appendingPathComponent(
-                  "Source/After/Rendered Documentation/\(localization.icon!).html"
-                )
-                SDGPersistenceTestUtilities.compare(
-                  HTMLPage(
-                    content: rendered,
-                    cssPath: "../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
-                  ),
-                  against: specification,
-                  overwriteSpecificationInsteadOfFailing: false
-                )
-              }
-
-              let blockDocumentation = `extension`.instanceMethods.first(where: {
-                $0.name.source().hasPrefix("documentedWithBlockStyle")
-              })!
-              XCTAssertNotNil(blockDocumentation.documentation)
-
-              break search
-            default:
-              break `switch`
-            }
-          }
-          XCTAssert(found, "Failed to find test documentation.")
-        }
-        if url.deletingPathExtension().lastPathComponent == "Attributes" {
-          var found = false
-          search: for element in api {
-            `switch`: switch element {
-            case .function(let function):
-              if function.name.identifier.text == "withHiddenAttribute" {
-                XCTAssertNotNil(element.documentation)
-                found = true
-                break search
-              }
-            default:
-              break `switch`
-            }
-          }
-          XCTAssert(found, "Failed to find hidden attribute test.")
-        }
       }
     #endif
   }
@@ -972,7 +687,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           rightBrace: SyntaxFactory.makeRightBraceToken()
         )
       )
-      XCTAssertEqual(declaration.api().first!.declaration!.source(), "init()")
     #endif
   }
 

@@ -1,4 +1,0 @@
-Initializable • struct Initializable
- init(string:) • init?(string: String)
- init(throwing:) • init(throwing: Bool) throws
- init(x:y:) • init(x: Int, y: Int)

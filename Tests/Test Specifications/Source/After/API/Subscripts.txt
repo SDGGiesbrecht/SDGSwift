@@ -1,8 +1,0 @@
-AlsoSubscripted • struct AlsoSubscripted
- subscript(_:) • subscript(Int) -> Int
-Subscripted • struct Subscripted
- subscript(_:) • subscript(Int) -> Int
-  subscript(Int) -> Int
-  subscript(String) -> String
-  subscript(inout Bool) -> Bool
- subscript(x:y:) • subscript(x x: Int, y y: Int) -> Int

@@ -83,6 +83,12 @@ let package = Package(
     /// This module is built on SwiftSyntax and provides utilities such as syntax colouring and API parsing.
     .library(name: "SDGSwiftSource", targets: ["SDGSwiftSource"]),
 
+    // @documentation(SDGSwiftDocumentation)
+    /// Utilities for working with Swift documentation.
+    ///
+    /// This module is built on DocC and provides utilities such as API parsing.
+    .library(name: "SDGSwiftDocumentation", targets: ["SDGSwiftDocumentation"]),
+
     // @documentation(SDGXcode)
     /// Xcode‐related utilities for working with Swift packages.
     .library(name: "SDGXcode", targets: ["SDGXcode"]),
@@ -225,15 +231,11 @@ let package = Package(
         .product(name: "SDGHTML", package: "SDGWeb"),
       ],
       resources: [
-        .copy("Syntax Highlighting.css"),
-        .copy("Core Libraries/Swift.txt"),
-        .copy("Core Libraries/Foundation.txt"),
-        .copy("Core Libraries/Dispatch.txt"),
-        .copy("Core Libraries/XCTest.txt"),
+        .copy("Syntax Highlighting.css")
       ]
     ),
 
-    // #workaround(Not exposed yet; still incomplete.)
+    // #documentation(SDGSwiftDocumentation)
     /// Utilities for working with Swift documentation.
     ///
     /// This module is built on DocC and provides utilities such as API parsing.
@@ -327,27 +329,6 @@ let package = Package(
       dependencies: [
         .product(name: "SDGLocalization", package: "SDGCornerstone")
       ]
-    ),
-
-    .testTarget(
-      // #workaround(xcodebuild -version 13.3.1, Should be executable, but for interference with tvOS etc.) @exempt(from: unicode)
-      name: "SDGCoreLibraryRefresherTests",
-      dependencies: [
-        "SDGSwiftPackageManager",
-        "SDGSwiftSource",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-      ],
-      path: "Sources/SDGCoreLibraryRefresherTests"
     ),
 
     // Tests
