@@ -469,7 +469,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           "API/Documentation/\(packageName).txt"
         )
         #if os(Linux)  // Inherited documenation differs between toolchains.
-          _ = documenation
+          _ = documentation
           _ = documentationSpecification
         #else
           SDGPersistenceTestUtilities.compare(
