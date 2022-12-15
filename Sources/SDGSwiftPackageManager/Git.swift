@@ -45,7 +45,7 @@ extension Git {
       ),
         resolved ≥ customizableBranch
       {
-        earliestVersion.increase(to: customizableBranch)
+        earliestVersion.increase(to: customizableBranch)  // @exempt(from: tests)
         command.append(contentsOf: ["\u{2D}\u{2D}initial\u{2D}branch", "master"])
       }
 
