@@ -82,7 +82,16 @@ public let documentationTestPackages = ["PackageToDocument", "PackageToDocument2
       mocks.append(mock.location)
       try FileManager.default.copy(mocksDirectory.appendingPathComponent(name), to: mock.location)
       #if !PLATFORM_LACKS_GIT && !os(Windows)
-        _ = try Shell.default.run(command: ["git", "init"], in: mock.location).get()
+        var initialization = ["git", "init"]
+        #if os(Linux)  // Ubuntu’s git is too old.
+          initialization.append(contentsOf: [])
+        #else
+          initialization.append(contentsOf: ["\u{2D}\u{2D}initial\u{2D}branch", "master"])
+        #endif
+        _ = try Shell.default.run(
+          command: initialization,
+          in: mock.location
+        ).get()
         _ = try Shell.default.run(command: ["git", "add", "."], in: mock.location).get()
         _ = try Shell.default.run(
           command: ["git", "commit", "\u{2D}m", "Initialized."],
