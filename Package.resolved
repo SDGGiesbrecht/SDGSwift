@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
       "state" : {
-        "revision" : "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
-        "version" : "0.50302.0"
+        "revision" : "93ea3be9662b7d5b36779f3ae23db51b20d3995d",
+        "version" : "0.50700.0"
       }
     },
     {

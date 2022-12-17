@@ -661,7 +661,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testTokenSyntax() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let missing = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
-      let declaration = SyntaxFactory.makeInitializerDecl(
+      _ = SyntaxFactory.makeInitializerDecl(
         attributes: nil,
         modifiers: SyntaxFactory.makeModifierList([
           SyntaxFactory.makeDeclModifier(
