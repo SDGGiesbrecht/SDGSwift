@@ -16,7 +16,7 @@
   import SDGControlFlow
   import SDGMathematics
 
-  import cmark
+  import cmark_gfm
 
   /// The content of a documentation comment.
   public final class DocumentationSyntax: MarkdownSyntax {
@@ -38,7 +38,7 @@
     private init(source: String) {
       var cSource = source.cString(using: .utf8)!
       cSource.removeLast()  // Remove trailing NULL.
-      let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)
+      let tree = cmark_parse_document(cSource, cSource.count, CMARK_OPT_DEFAULT)!
       defer { cmark_node_free(tree) }
       super.init(node: tree, in: source)
 

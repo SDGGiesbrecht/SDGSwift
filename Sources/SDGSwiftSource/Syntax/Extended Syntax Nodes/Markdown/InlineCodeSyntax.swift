@@ -13,14 +13,14 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import cmark
+  import cmark_gfm
 
   /// Inline code use in documentation.
   public final class InlineCodeSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
       let openingDelimiter = ExtendedTokenSyntax(text: "`", kind: .codeDelimiter)
       self.openingDelimiter = openingDelimiter
 

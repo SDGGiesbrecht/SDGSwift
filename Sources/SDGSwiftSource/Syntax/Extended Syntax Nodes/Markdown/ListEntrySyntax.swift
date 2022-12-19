@@ -19,10 +19,12 @@
   import SDGCollections
   import SDGText
 
+  import cmark_gfm
+
   /// A list entry in documentation.
   public final class ListEntrySyntax: MarkdownSyntax {
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
       var precedingChildren: [ExtendedSyntax] = []
 
       let contentStart = node.lowerBound(in: documentation)

@@ -19,12 +19,12 @@
   import SDGCollections
   import SDGText
 
-  import cmark
+  import cmark_gfm
 
   /// A quotation in documentation.
   public final class QuotationSyntax: MarkdownSyntax {
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
       var precedingChildren: [ExtendedSyntax] = []
 
       let nodeStart = node.lowerBound(in: documentation)

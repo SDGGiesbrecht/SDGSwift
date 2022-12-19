@@ -19,7 +19,7 @@
   import SDGLogic
   import SDGCollections
 
-  import cmark
+  import cmark_gfm
 
   /// A Markdown node in documentation.
   public class MarkdownSyntax: ExtendedSyntax {  // @exempt(from: classFinality)
@@ -27,7 +27,7 @@
     // MARK: - Initialization
 
     internal init(
-      node: cmark_node,
+      node: UnsafeMutablePointer<cmark_node>,
       in documentation: String,
       precedingChildren: [ExtendedSyntax] = [],
       followingChildren: [ExtendedSyntax] = []

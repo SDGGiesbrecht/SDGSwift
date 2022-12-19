@@ -15,13 +15,13 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SDGCollections
 
-  import cmark
+  import cmark_gfm
   import enum SDGHTML.HTML
 
   /// A link in documentation.
   public final class LinkSyntax: MarkdownSyntax {
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
 
       let openingDelimiter = ExtendedTokenSyntax(text: "[", kind: .linkDelimiter)
       self.openingDelimiter = openingDelimiter

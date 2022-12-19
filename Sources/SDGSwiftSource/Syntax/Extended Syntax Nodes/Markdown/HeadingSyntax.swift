@@ -19,14 +19,14 @@
   import SDGCollections
   import SDGText
 
-  import cmark
+  import cmark_gfm
 
   /// A documentation heading.
   public final class HeadingSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
       var precedingChildren: [ExtendedSyntax] = []
       var followingChildren: [ExtendedSyntax] = []
 
