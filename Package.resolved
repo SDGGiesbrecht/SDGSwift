@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
       "state" : {
-        "revision" : "93ea3be9662b7d5b36779f3ae23db51b20d3995d",
-        "version" : "0.50700.0"
+        "revision" : "ba5e03be521f621fcfd29e63be2cf475b97efd5a",
+        "version" : "0.50700.1"
       }
     },
     {
@@ -79,6 +79,15 @@
       "state" : {
         "revision" : "5cd4df550b31301508a77064e3dfaa5c5628780e",
         "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-markdown",
+      "state" : {
+        "revision" : "02a366ea32348b57e3f26d741640d742e416a544",
+        "version" : "0.50700.0"
       }
     },
     {

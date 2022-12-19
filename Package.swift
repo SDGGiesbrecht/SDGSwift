@@ -133,8 +133,13 @@ let package = Package(
       exact: Version(0, 50700, 0)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
       exact: Version(0, 50700, 0)
+    ),
+    // #workaround(Possibly dead after markdown refactor?)
+    .package(
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
+      exact: Version(0, 50700, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -222,7 +227,7 @@ let package = Package(
           // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
-        .product(name: "cmark", package: "swift\u{2D}cmark"),
+        .product(name: "cmark\u{2D}gfm", package: "swift\u{2D}cmark"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "swift\u{2D}package\u{2D}manager",
@@ -233,6 +238,13 @@ let package = Package(
       ],
       resources: [
         .copy("Syntax Highlighting.css")
+      ]
+    ),
+    // #workaround(Until complete.)
+    .target(
+      name: "SDGSwiftSource2",
+      dependencies: [
+        .product(name: "Markdown", package: "swift\u{2D}markdown"),
       ]
     ),
 
