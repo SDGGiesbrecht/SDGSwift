@@ -244,7 +244,7 @@ let package = Package(
     .target(
       name: "SDGSwiftSource2",
       dependencies: [
-        .product(name: "Markdown", package: "swift\u{2D}markdown"),
+        .product(name: "Markdown", package: "swift\u{2D}markdown")
       ]
     ),
 

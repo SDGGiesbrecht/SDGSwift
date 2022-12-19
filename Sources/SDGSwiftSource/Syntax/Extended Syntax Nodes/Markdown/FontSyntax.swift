@@ -22,7 +22,11 @@
 
     // MARK: - Initialization
 
-    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String, delimiter: String) {
+    internal init(
+      node: UnsafeMutablePointer<cmark_node>,
+      in documentation: String,
+      delimiter: String
+    ) {
 
       let openingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
       self.openingDelimiter = openingDelimiter
