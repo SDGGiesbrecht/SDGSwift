@@ -15,13 +15,13 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SDGCollections
 
-  import cmark
+  import cmark_gfm
   import enum SDGHTML.HTML
 
   /// An image insertion in documentation.
   public final class ImageSyntax: MarkdownSyntax {
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
 
       let imageDelimiter = ExtendedTokenSyntax(text: "!", kind: .imageDelimiter)
       self.imageDelimiter = imageDelimiter

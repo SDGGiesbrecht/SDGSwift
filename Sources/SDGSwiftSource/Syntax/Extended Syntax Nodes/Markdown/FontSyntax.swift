@@ -13,6 +13,8 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import cmark_gfm
+
   /// A section of documentation text with font modifications.
   ///
   /// This same class is used for both strong and emphasized text. Check the delimiters to differentiate between them.
@@ -20,7 +22,11 @@
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String, delimiter: String) {
+    internal init(
+      node: UnsafeMutablePointer<cmark_node>,
+      in documentation: String,
+      delimiter: String
+    ) {
 
       let openingDelimiter = ExtendedTokenSyntax(text: delimiter, kind: .fontModificationDelimiter)
       self.openingDelimiter = openingDelimiter

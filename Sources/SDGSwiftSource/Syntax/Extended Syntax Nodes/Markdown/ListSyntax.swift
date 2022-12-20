@@ -15,12 +15,14 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SDGLogic
 
+  import cmark_gfm
+
   /// A list in documentation.
   public final class ListSyntax: MarkdownSyntax {
 
     // MARK: - Initialization
 
-    internal init(node: cmark_node, in documentation: String) {
+    internal init(node: UnsafeMutablePointer<cmark_node>, in documentation: String) {
       super.init(node: node, in: documentation)
 
       if children.contains(where: { $0 is CalloutSyntax }) {

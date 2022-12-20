@@ -16,25 +16,9 @@
   import SDGLogic
   import SDGMathematics
 
-  import cmark
+  import cmark_gfm
 
-  internal typealias cmark_node = OpaquePointer?
-
-  extension OpaquePointer {
-
-    internal func syntax(in documentation: String) -> [ExtendedSyntax] {
-      return Optional(self).syntax(in: documentation)
-    }
-
-    internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
-      return Optional(self).lowerBound(in: documentation)
-    }
-    internal func upperBound(in documentation: String) -> String.ScalarView.Index {
-      return Optional(self).upperBound(in: documentation)
-    }
-  }
-
-  extension Optional where Wrapped == OpaquePointer {
+  extension UnsafeMutablePointer<cmark_node> {
 
     internal func lowerBound(in documentation: String) -> String.ScalarView.Index {
       var node = self
