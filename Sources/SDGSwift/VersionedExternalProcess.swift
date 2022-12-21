@@ -169,7 +169,6 @@ extension VersionedExternalProcess {
     ///   - versionConstraints: The acceptable range of versions.
     ///   - ignoreStandardError: Optional. If `true`, standard error will be excluded from the output. The default is `false`.
     ///   - reportProgress: Optional. A closure to execute for each line of output.
-    ///   - progressReport: A line of output.
     @discardableResult public static func runCustomSubcommand<Constraints>(
       _ arguments: [String],
       in workingDirectory: URL? = nil,

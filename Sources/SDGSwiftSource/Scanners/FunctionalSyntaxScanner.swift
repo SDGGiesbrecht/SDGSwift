@@ -76,26 +76,38 @@
 
     // MARK: - SyntaxScanner
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     public func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
       return checkSyntax(node, context)
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     public func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
       return checkExtendedSyntax(node, context)
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     public func visit(_ node: Trivia, context: TriviaContext) -> Bool {
       return checkTrivia(node, context)
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     public func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
       return checkTriviaPiece(node, context)
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     public func shouldExtend(_ node: TokenSyntax) -> Bool {
       return shouldExtendToken(node)
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(CodeFragmentSyntax))
     public func shouldExtend(_ node: CodeFragmentSyntax) -> Bool {
       return shouldExtendFragment(node)
     }

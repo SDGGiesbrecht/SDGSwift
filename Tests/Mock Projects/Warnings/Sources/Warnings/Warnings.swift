@@ -13,6 +13,6 @@
  */
 
 public enum Warnings {
-  public static var text = "Hello, World!"
+  public static var text: String = "Hello, World!"
 }
 #warning("Encountered a warning.")  // @exempt(from: manualWarnings)

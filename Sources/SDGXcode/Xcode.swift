@@ -722,7 +722,6 @@ public enum Xcode: VersionedExternalProcess {
     ///   - environment: Optional. A different set of environment variables.
     ///   - versionConstraints: The acceptable range of versions.
     ///   - reportProgress: Optional. A closure to execute for each line of output.
-    ///   - progressReport: A line of output.
     @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
       _ arguments: [String],
       in workingDirectory: URL? = nil,

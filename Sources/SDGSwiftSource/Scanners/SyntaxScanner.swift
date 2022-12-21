@@ -74,6 +74,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool
 
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
     /// Subclass this to skip extended parsing for particular tokens.
@@ -84,6 +85,7 @@
     /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` subclass; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
     func shouldExtend(_ node: TokenSyntax) -> Bool
 
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(CodeFragmentSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
     /// Subclass this to skip extended parsing for particular tokens.
