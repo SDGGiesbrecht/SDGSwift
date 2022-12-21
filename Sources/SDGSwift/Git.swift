@@ -41,7 +41,6 @@ public enum Git: VersionedExternalProcess {
     ///     - location: The location to create the clone.
     ///     - build: Optional. A specific version to check out.
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
     @discardableResult public static func clone(
       _ package: Package,
       to location: URL,

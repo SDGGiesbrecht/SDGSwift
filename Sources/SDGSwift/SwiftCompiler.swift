@@ -41,7 +41,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - package: The package to build.
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func build(
       _ package: PackageRepository,
       releaseConfiguration: Bool = false,
@@ -127,7 +126,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - ignoreStandardError: Optional. If `true`, standard error will be excluded from the output. The default is `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func run(
       _ target: String,
       from package: PackageRepository,
@@ -159,7 +157,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     /// - Parameters:
     ///     - package: The package to test.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
@@ -212,7 +209,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     /// - Parameters:
     ///     - package: The package to resolve.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func resolve(
       _ package: PackageRepository,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
@@ -231,7 +227,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     /// - Parameters:
     ///     - package: The package whose symbol graph should be exported.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     public static func exportSymbolGraph(
       _ package: PackageRepository,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
