@@ -26,21 +26,11 @@
     ///
     /// - Parameters:
     ///     - checkSyntax: Optional. A closure which checks syntax nodes.
-    ///     - node: The syntax node to check.
-    ///     - nodeContext: The context of the syntax node.
     ///     - checkExtendedSyntax: Optional. A closure which checks extended syntax nodes.
-    ///     - extendedNode: The extended syntax node to check.
-    ///     - extendedNodeContext: The context of the extended syntax node.
     ///     - checkTrivia: Optional. A closure which checks trivia.
-    ///     - trivia: The trivia node to check.
-    ///     - triviaContext: The context of the trivia.
     ///     - checkTriviaPiece: Optional. A closure which checks trivia pieces.
-    ///     - triviaPiece: The trivia piece to check.
-    ///     - triviaPieceContext: The context of the trivia piece.
     ///     - shouldExtendToken: Optional. A closure which decides whether or not to parse the token’s extended syntax.
-    ///     - token: A token to decide whether or not to parse.
     ///     - shouldExtendFragment: Optional. A closure which decides whether or not to parse a code fragment.
-    ///     - codeFragment: A fragment to decide whether or not to parse.
     public init(
       checkSyntax: @escaping (_ node: Syntax, _ nodeContext: SyntaxContext) -> Bool = { _, _ in true
       },

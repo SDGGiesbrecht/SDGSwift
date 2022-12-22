@@ -182,9 +182,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   ///   - symbolGraphs: The symbol graphs.
   ///   - moduleSources: A list of module sources in the form of a dictionary whose keys are module names and whose values are arrays of file URLs.
   ///   - moduleDocumentationCommentLookup: A closure which looks up a module’s documentation comment.
-  ///   - toDocument: The name of the module whose documentation is sought.
   ///   - moduleDeclarationLocationLookup: A closure which looks up the location of a module’s declaration.
-  ///   - toFind: The name of the module whose declaration is sought.
   public init(
     name: String,
     documentation: [SymbolDocumentation],

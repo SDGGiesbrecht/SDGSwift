@@ -94,7 +94,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - package: The package to build.
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     public static func productsDirectory(
       for package: PackageRepository,
       releaseConfiguration: Bool = false,
