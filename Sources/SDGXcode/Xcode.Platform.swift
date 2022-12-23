@@ -20,13 +20,25 @@ extension Xcode {
     /// macOS.
     case macOS
 
+    // #workaround(workspace version 0.42.0, Expects parameters, but these are not parameters.)
     /// tvOS.
+    ///
+    /// - Parameters:
+    ///   - simulator: Whether or not to target the simulator instead.
     case tvOS(simulator: Bool)
 
+    // #workaround(workspace version 0.42.0, Expects parameters, but these are not parameters.)
     /// iOS.
+    ///
+    /// - Parameters:
+    ///   - simulator: Whether or not to target the simulator instead.
     case iOS(simulator: Bool)
 
+    // #workaround(workspace version 0.42.0, Expects parameters, but these are not parameters.)
     /// watchOS.
+    ///
+    /// - Parameters:
+    ///   - simulator: Whether or not to target the simulator instead. 
     case watchOS(simulator: Bool)
 
     /// The SDK name used by the command line interface.

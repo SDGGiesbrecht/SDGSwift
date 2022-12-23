@@ -24,7 +24,11 @@ where Process: VersionedExternalProcess {
 
   // MARK: - Cases
 
+  // #workaround(workspace version 0.42.0, Expects parameters, but these are not parameters.)
   /// No compatible version of the process could be located.
+  ///
+  /// - Parameters:
+  ///   - versionConstraints: The version constraints which could not be satisfied.
   case unavailable(versionConstraints: StrictString)
 
   // MARK: - PresentableError

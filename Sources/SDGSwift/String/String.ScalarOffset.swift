@@ -39,6 +39,12 @@ extension String {
       precedingValue.offset += followingValue
     }
 
+    // #workaround(workspace version 0.42.0, Redundant, but inheritance broken.)
+    /// See `PointProtocol.−(_:_:)`.
+    ///
+    /// - Parameters:
+    ///   - precedingValue: See `PointProtocol.−(_:_:)`.
+    ///   - followingValue: See `PointProtocol.−(_:_:)`.
     public static func − (
       precedingValue: String.ScalarOffset,
       followingValue: String.ScalarOffset

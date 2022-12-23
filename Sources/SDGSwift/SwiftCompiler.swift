@@ -265,7 +265,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - package: The package to test.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public static func codeCoverageReport(
