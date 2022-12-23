@@ -38,7 +38,7 @@ extension Xcode {
     /// watchOS.
     ///
     /// - Parameters:
-    ///   - simulator: Whether or not to target the simulator instead. 
+    ///   - simulator: Whether or not to target the simulator instead.
     case watchOS(simulator: Bool)
 
     /// The SDK name used by the command line interface.
