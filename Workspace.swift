@@ -37,6 +37,3 @@ configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 configuration.testing.exemptPaths.insert("Sources/SampleConfiguration")
-
-// #workaround(workspace version 0.42.0, Complains about synthesized symbols.)
-configuration.documentation.api.enforceCoverage = false
