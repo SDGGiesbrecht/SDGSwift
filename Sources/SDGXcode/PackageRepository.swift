@@ -34,7 +34,6 @@ extension PackageRepository {
     ///     - platform: The platform to build for.
     ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     @discardableResult public func build(
       for platform: Xcode.Platform,
       allArchitectures: Bool = false,
@@ -53,7 +52,6 @@ extension PackageRepository {
     /// - Parameters:
     ///     - platform: The platform to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     @discardableResult public func test(
       on platform: Xcode.Platform,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
@@ -69,7 +67,6 @@ extension PackageRepository {
     ///     - platform: The platform to run tests on.
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(

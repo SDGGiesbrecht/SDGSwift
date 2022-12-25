@@ -62,7 +62,6 @@ public struct Package: TransparentWrapper {
     ///     - build: The version to build.
     ///     - destination: The directory to put the products in.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     public func build(
       _ build: Build,
       to destination: URL,
@@ -185,7 +184,6 @@ public struct Package: TransparentWrapper {
     ///     - arguments: The arguments to send to the executable.
     ///     - cacheDirectory: Optional. A directory to store the executable in for future use. If the executable is already in the cache, the cached version will be used instead of fetching and rebuilding.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public func execute(
       _ build: Build,
       of executableNames: Set<StrictString>,

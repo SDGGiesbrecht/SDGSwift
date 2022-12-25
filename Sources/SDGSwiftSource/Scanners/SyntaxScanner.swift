@@ -74,6 +74,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool
 
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
     /// Subclass this to skip extended parsing for particular tokens.
@@ -84,6 +85,7 @@
     /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` subclass; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
     func shouldExtend(_ node: TokenSyntax) -> Bool
 
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(CodeFragmentSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
     /// Subclass this to skip extended parsing for particular tokens.
@@ -99,26 +101,98 @@
 
     // MARK: - Default Implementations
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: Trivia, context: TriviaContext) -> Bool {
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Subclass this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Subclass this to skip extended parsing for particular tokens.
+    ///
+    /// - Parameters:
+    ///     - node: A `TokenSyntax` instance.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` subclass; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
     public func shouldExtend(_ node: TokenSyntax) -> Bool {
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(CodeFragmentSyntax))
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Subclass this to skip extended parsing for particular tokens.
+    ///
+    /// - Parameters:
+    ///     - node: A `CodeFragmentSyntax` instance.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as `Syntax` subclasses; return `false` to skip extended parsing and have the token visited as a `CodeFragmentSyntax` instance.
     public func shouldExtend(_ node: CodeFragmentSyntax) -> Bool {
       return true
     }

@@ -33,6 +33,9 @@ extension Package {
     case foundationError(Swift.Error)
 
     /// The package did not produce an executable with any of the requested names.
+    ///
+    /// - Parameters:
+    ///   - requested: The requested names.
     case noSuchExecutable(requested: Set<StrictString>)
 
     /// The tool encountered an error during its execution.

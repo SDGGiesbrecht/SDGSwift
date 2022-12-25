@@ -46,7 +46,6 @@ public struct CoverageRegion<Index> where Index: Comparable {
   ///
   /// - Parameters:
   ///   - indexConversion: A closure which converts the index.
-  ///   - index: An instance of the original index type.
   public func convert<I>(using indexConversion: (_ index: Index) -> I) -> CoverageRegion<I> {
     return CoverageRegion<I>(region: region.map(indexConversion), count: count)
   }

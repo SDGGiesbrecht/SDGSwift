@@ -222,7 +222,6 @@ public enum Xcode: VersionedExternalProcess {
     ///     - platform: The platform to build for.
     ///     - allArchitectures: Optional. Pass `true` to build for all architectures.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func build(
       _ package: PackageRepository,
       for platform: Platform,
@@ -318,7 +317,6 @@ public enum Xcode: VersionedExternalProcess {
     ///     - package: The package to test.
     ///     - platform: The platform to run tests on.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     @discardableResult public static func test(
       _ package: PackageRepository,
       on platform: Platform,
@@ -460,7 +458,6 @@ public enum Xcode: VersionedExternalProcess {
       ///     - platform: The platform to run tests on.
       ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
       ///     - reportProgress: Optional. A closure to execute for each line of output.
-      ///     - progressReport: A line of output.
       ///
       /// - Returns: The report, or `nil` if there is no code coverage information.
       public static func codeCoverageReport(
@@ -722,7 +719,6 @@ public enum Xcode: VersionedExternalProcess {
     ///   - environment: Optional. A different set of environment variables.
     ///   - versionConstraints: The acceptable range of versions.
     ///   - reportProgress: Optional. A closure to execute for each line of output.
-    ///   - progressReport: A line of output.
     @discardableResult public static func runCustomCoverageSubcommand<Constraints>(
       _ arguments: [String],
       in workingDirectory: URL? = nil,

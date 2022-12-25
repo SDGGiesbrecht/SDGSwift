@@ -17,7 +17,7 @@ public struct Structure: Error {
   public static func staticMethod() {}
   public init() {}
   public let property: Bool = false
-  public let _hiddenProperty = 0
+  public let _hiddenProperty: Int = 0
   public subscript(`subscript`: Int) -> Bool { return false }
   public func method() {}
 }

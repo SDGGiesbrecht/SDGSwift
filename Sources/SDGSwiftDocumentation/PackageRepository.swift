@@ -82,7 +82,6 @@ extension PackageRepository {
     /// - Parameters:
     ///     - filteringUnreachable: Whether unreachable modules should be filtered out. Defaults to `true`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @available(macOS 10.15, *)
     public func symbolGraphs(
       filteringUnreachable: Bool = true,
@@ -134,7 +133,6 @@ extension PackageRepository {
     ///
     /// - Parameters:
     ///   - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///   - progressReport: A line of progress to report.
     @available(macOS 10.15, *)
     public func api(
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)

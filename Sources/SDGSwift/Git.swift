@@ -26,7 +26,7 @@ public enum Git: VersionedExternalProcess {
 
   // MARK: - Static Properties
 
-  public static let _currentMajor = Version(2)
+  public static let _currentMajor: Version = Version(2)
   #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     private static var currentMajor: Version {
       return _currentMajor
@@ -41,8 +41,7 @@ public enum Git: VersionedExternalProcess {
     ///     - location: The location to create the clone.
     ///     - build: Optional. A specific version to check out.
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
-    ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
+    ///     - reportProgress: Optional. A closure to execute for each line of Git’s output.
     @discardableResult public static func clone(
       _ package: Package,
       to location: URL,

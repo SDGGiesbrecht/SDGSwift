@@ -110,7 +110,6 @@ extension Configuration {
     ///     - releaseVersion: The version of the package to link against.
     ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
-    ///     - progressReport: A line of output.
     ///
     /// - Returns: The loaded configuration if one is present, otherwise the default configuration.
     public class func load<C, L>(
@@ -158,7 +157,6 @@ extension Configuration {
     ///     - minimumMacOSVersion: The minimum version of macOS required by the package. This restriction must be narrower than any indirectly imported package.
     ///     - context: The context to provide to the configuration file.
     ///     - reportProgress: Optional. A closure to execute for each line of compiler output.
-    ///     - progressReport: A line of output.
     public class func load<C, L, E>(
       configuration: C.Type,
       named fileName: UserFacing<StrictString, L>,

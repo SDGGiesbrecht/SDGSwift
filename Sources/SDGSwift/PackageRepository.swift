@@ -38,7 +38,6 @@ public struct PackageRepository: TransparentWrapper {
     ///     - build: Optional. A specific version to check out.
     ///     - shallow: Optional. Specify `true` to perform a shallow clone. Defaults to `false`. (This may be ignored if the available version of Git is too old.)
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     public static func clone(
       _ package: Package,
       to location: URL,
@@ -89,7 +88,6 @@ public struct PackageRepository: TransparentWrapper {
     /// - Parameters:
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public func build(
       releaseConfiguration: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
@@ -110,7 +108,6 @@ public struct PackageRepository: TransparentWrapper {
     ///     - releaseConfiguration: Optional. Whether or not to build in the release configuration. Defaults to `false`, i.e. the default debug configuration.
     ///     - ignoreStandardError: Optional. If `true`, standard error will be excluded from the output. The default is `false`.
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public func run(
       _ target: String,
       arguments: [String] = [],
@@ -134,7 +131,6 @@ public struct PackageRepository: TransparentWrapper {
     ///
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public func test(
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
@@ -153,7 +149,6 @@ public struct PackageRepository: TransparentWrapper {
     /// - Parameters:
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
-    ///     - progressReport: A line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
     public func codeCoverageReport(
@@ -171,7 +166,6 @@ public struct PackageRepository: TransparentWrapper {
     ///
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     @discardableResult public func resolve(
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
@@ -182,7 +176,6 @@ public struct PackageRepository: TransparentWrapper {
     ///
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
-    ///     - progressReport: A line of output.
     public func exportSymbolGraph(
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
