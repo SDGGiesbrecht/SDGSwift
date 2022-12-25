@@ -14,6 +14,6 @@
 
 import SDGPersistenceTestUtilities
 
-let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
-let beforeDirectory = sourceDirectory.appendingPathComponent("Before")
-let afterDirectory = sourceDirectory.appendingPathComponent("After")
+public let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
+public let beforeDirectory = sourceDirectory.appendingPathComponent("Before")
+public let afterDirectory = sourceDirectory.appendingPathComponent("After")

@@ -23,6 +23,8 @@
 
   import SDGPersistenceTestUtilities
 
+  import SDGSwiftTestUtilities
+
   class Highlighter: SyntaxScanner {
 
     func shouldHighlight(_ token: TokenSyntax) -> Bool {
