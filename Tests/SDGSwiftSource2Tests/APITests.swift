@@ -44,6 +44,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         sourceFile.write(to: &roundTripSource)
         XCTAssertEqual(roundTripSource, originalSource)
 
+        struct DefaultSyntaxScanner: SyntaxScanner {}
+        var defaultScanner = DefaultSyntaxScanner()
+        defaultScanner.scan(sourceFile)
+
         struct RoundTripSyntaxScanner: SyntaxScanner {
           var result = ""
           mutating func visit(
