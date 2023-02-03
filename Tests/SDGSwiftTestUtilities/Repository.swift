@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -12,8 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGPersistenceTestUtilities
 
-public let sourceDirectory = testSpecificationDirectory().appendingPathComponent("Source")
-public let beforeDirectory = sourceDirectory.appendingPathComponent("Before")
-public let afterDirectory = sourceDirectory.appendingPathComponent("After")
+public let sourceDirectory: URL = testSpecificationDirectory().appendingPathComponent("Source")
+public let beforeDirectory: URL = sourceDirectory.appendingPathComponent("Before")
+public let afterDirectory: URL = sourceDirectory.appendingPathComponent("After")
