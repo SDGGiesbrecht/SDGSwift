@@ -6,7 +6,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -45,6 +45,10 @@ import PackageDescription
 /// ```swift
 /// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 /// .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
+/// .define(
+///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN",  // @exempt(from: marks)
+///   .when(platforms: [.wasi])
+/// ),
 /// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -244,7 +248,17 @@ let package = Package(
     .target(
       name: "SDGSwiftSource2",
       dependencies: [
-        .product(name: "Markdown", package: "swift\u{2D}markdown")
+        .product(
+          name: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "Markdown",
+          package: "swift\u{2D}markdown",
+          // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
       ]
     ),
 
@@ -356,6 +370,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
       ],
       path: "Tests/SDGSwiftTestUtilities"
     ),
@@ -405,6 +420,26 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(
+          name: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "swift\u{2D}syntax",
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+      ]
+    ),
+    .testTarget(
+      name: "SDGSwiftSource2Tests",
+      dependencies: [
+        "SDGSwiftSource2",
+        "SDGSwiftTestUtilities",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
@@ -509,11 +544,16 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
     // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.7, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
     // #workaround(Swift 5.7, SwiftPM does not compile on Windows.)
     // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN",  // @exempt(from: marks)
+      .when(platforms: [.wasi])
+    ),
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])

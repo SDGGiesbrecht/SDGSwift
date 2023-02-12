@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -46,6 +46,10 @@ Some platforms lack certain features. The compilation conditions which appear th
 ```swift
 .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
+.define(
+  "PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN",  // @exempt(from: marks)
+  .when(platforms: [.wasi])
+),
 .define(
   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
