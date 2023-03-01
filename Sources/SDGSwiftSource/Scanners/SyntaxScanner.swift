@@ -18,10 +18,10 @@
   /// A scanner for read‐only handling of a syntax tree.
   public protocol SyntaxScanner {
 
-    // @documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -29,13 +29,13 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: Syntax, context: SyntaxContext) -> Bool
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -43,13 +43,13 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -57,13 +57,13 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: Trivia, context: TriviaContext) -> Bool
 
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -71,7 +71,7 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool
 
     // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
@@ -105,7 +105,7 @@
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -113,7 +113,7 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
       return true
     }
@@ -122,7 +122,7 @@
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -130,7 +130,7 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
       return true
     }
@@ -139,7 +139,7 @@
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -147,7 +147,7 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: Trivia, context: TriviaContext) -> Bool {
       return true
     }
@@ -156,7 +156,7 @@
     // #documentation(SDGSwiftSource.SyntaxScanner.visit)
     /// Visits a syntax node.
     ///
-    /// Subclass this to read information from a particular node.
+    /// Provide a custom implementation of this to read information from a particular node.
     ///
     /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
     ///
@@ -164,7 +164,7 @@
     ///     - node: The current node.
     ///     - context: The context of the current node.
     ///
-    /// - Returns: Whether or not the scanner should visit the node’s children. The superclass implementation returns `true`, thus scanning the entire syntax tree. Subclasses can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     public func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
       return true
     }

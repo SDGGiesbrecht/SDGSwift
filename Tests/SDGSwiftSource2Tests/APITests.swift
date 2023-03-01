@@ -51,11 +51,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         struct RoundTripSyntaxScanner: SyntaxScanner {
           var result = ""
           mutating func visit(
-            _ node: SwiftSyntax.Syntax,
-            context: SDGSwiftSource2.SyntaxContext
+            _ node: Syntax,
+            context: SyntaxContext
           ) -> Bool {
             if let token = node.as(TokenSyntax.self) {
-              token.write(to: &result)
+              result.append(contentsOf: token.text)
+              for piece in token.trailingTrivia {
+                piece.write(to: &result)
+              }
+            }
+            return true
+          }
+          mutating func visit(
+            _ node: Trivia,
+            context: TriviaContext
+          ) -> Bool {
+            for piece in node {
+              piece.write(to: &result)
             }
             return true
           }
