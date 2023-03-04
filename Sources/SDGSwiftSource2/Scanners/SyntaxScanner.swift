@@ -105,7 +105,8 @@
         scan(token.leadingTrivia, context: leadingTriviaContext)
         // #workaround(Skipping possible extension of token.)
         _ = visit(Syntax(token), context: context)
-        // #workaround(Skipping trailing trivia.)
+        let trailingTriviaContext = TriviaContext()
+        scan(token.trailingTrivia, context: trailingTriviaContext)
       } else {
         if visit(node, context: context) {
           for child in node.children {
