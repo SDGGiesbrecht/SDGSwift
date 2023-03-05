@@ -56,9 +56,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ) -> Bool {
             if let token = node.as(TokenSyntax.self) {
               result.append(contentsOf: token.text)
-              for piece in token.trailingTrivia {
-                piece.write(to: &result)
-              }
             }
             return true
           }
