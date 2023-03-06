@@ -60,6 +60,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             return true
           }
           mutating func visit(
+            _ node: ExtendedSyntax,
+            context: ExtendedSyntaxContext
+          ) -> Bool {
+            if let token = node as? ExtendedTokenSyntax {
+              result.append(contentsOf: token.text)
+            }
+            return true
+          }
+          mutating func visit(
             _ node: Trivia,
             context: TriviaContext
           ) -> Bool {
