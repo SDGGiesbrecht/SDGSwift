@@ -23,7 +23,7 @@ public enum ExtendedTokenKind: Sendable {
   case quotationMark
 
   /// The textual representation of this token kind.
-  var text: String {
+  public var text: String {
     switch self {
     case .string(let string):
       return string
