@@ -185,9 +185,7 @@
     private mutating func scan(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) {
       // #workaround(Skipping code fragment syntax.)
       if visit(node, context: context) {
-        for child in node.children {
-          scan(child, context: context)
-        }
+        // #workaround(Skipping children because none exist yet.)
       }
     }
 
