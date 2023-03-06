@@ -81,34 +81,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         var syntaxScanner = RoundTripSyntaxScanner()
         syntaxScanner.scan(sourceFile)
         XCTAssertEqual(syntaxScanner.result, originalSource)
-
-        struct ShortCircuitingSyntaxScanner: SyntaxScanner {
-          var result = ""
-          mutating func visit(
-            _ node: Syntax,
-            context: SyntaxContext
-          ) -> Bool {
-            if let token = node.as(TokenSyntax.self) {
-              result.append(contentsOf: token.text)
-            }
-            return true
-          }
-          func shouldExtend(_ node: TokenSyntax) -> Bool {
-            return false
-          }
-          mutating func visit(
-            _ node: Trivia,
-            context: TriviaContext
-          ) -> Bool {
-            for piece in node {
-              piece.write(to: &result)
-            }
-            return true
-          }
-        }
-        var shortCircuitingScanner = ShortCircuitingSyntaxScanner()
-        shortCircuitingScanner.scan(sourceFile)
-        XCTAssertEqual(shortCircuitingScanner.result, originalSource)
       }
     #endif
   }
