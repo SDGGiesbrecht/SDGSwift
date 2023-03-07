@@ -186,6 +186,7 @@
       // #workaround(Skipping code fragment syntax.)
       if visit(node, context: context) {
         // #workaround(Skipping children because none exist yet.)
+        for _ in node.children {}
       }
     }
 
