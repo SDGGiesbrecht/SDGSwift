@@ -15,7 +15,7 @@
 /// A syntax node representing a single token.
 ///
 /// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public final class ExtendedTokenSyntax: ExtendedSyntax {
+public final class ExtendedTokenSyntax: ExtendedSyntax, TextOutputStreamable {
 
   // MARK: - Initialization
 
@@ -30,13 +30,17 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
   /// The kind of the token.
   public let kind: ExtendedTokenKind
 
-  public var text: String {
-    return kind.text
-  }
-
   // MARK: - ExtendedSyntax
 
   public var children: [ExtendedSyntax] {
     return []
+  }
+
+  // MARK: - TextOutputStreamable
+
+  public func write<Target>(
+    to target: inout Target
+  ) where Target: TextOutputStream {
+    kind.text.write(to: &target)
   }
 }
