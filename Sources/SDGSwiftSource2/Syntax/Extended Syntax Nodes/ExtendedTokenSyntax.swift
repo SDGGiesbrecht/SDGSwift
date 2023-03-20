@@ -19,7 +19,8 @@ public final class ExtendedTokenSyntax: ExtendedSyntax, TextOutputStreamable {
 
   // MARK: - Initialization
 
-  internal init(
+  /// Creates an extended syntax token.
+  public init(
     kind: ExtendedTokenKind
   ) {
     self.kind = kind

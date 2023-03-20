@@ -23,6 +23,22 @@ public struct StringLiteralSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
+  /// Creates a string literal syntax node.
+  ///
+  /// - Parameters:
+  ///   - openingQuotationMark: Optional. The opening quotation mark.
+  ///   - string: The contents of the string.
+  ///   - closingQuotationMark: Optional. The closing quotation mark.
+  public init(
+    openingQuotationMark: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .quotationMark),
+    string: ExtendedTokenSyntax,
+    closingQuotationMark: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .quotationMark)
+  ) {
+    self.openingQuotationMark = openingQuotationMark
+    self.string = string
+    self.closingQuotationMark = closingQuotationMark
+  }
+
   internal init(source: String) {
     let quotationMark = StringLiteralSyntax.quotationMark
     let quotationMarkLength = quotationMark.text.unicodeScalars.count

@@ -34,13 +34,12 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testExtendedParsing() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssertEqual(
-        SyntaxFactory.makeToken(.stringLiteral("\u{22}...\u{22}"), presence: .present).extended?
-          .text,
-        "\u{22}...\u{22}"
-      )
-    #endif
+    XCTAssertEqual(
+      StringLiteralSyntax(
+        string: ExtendedTokenSyntax(kind: .string("..."))
+      ).text,
+      "\u{22}...\u{22}"
+    )
   }
 
   func testParsing() throws {
