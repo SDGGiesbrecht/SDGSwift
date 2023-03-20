@@ -15,12 +15,6 @@
 /// A string literal.
 public struct StringLiteralSyntax: ExtendedSyntax {
 
-  // MARK: - Static Properties
-
-  private static var quotationMark: ExtendedTokenSyntax {
-    return ExtendedTokenSyntax(kind: .quotationMark)
-  }
-
   // MARK: - Initialization
 
   /// Creates a string literal syntax node.
@@ -39,18 +33,26 @@ public struct StringLiteralSyntax: ExtendedSyntax {
     self.closingQuotationMark = closingQuotationMark
   }
 
-  internal init(source: String) {
-    let quotationMark = StringLiteralSyntax.quotationMark
-    let quotationMarkLength = quotationMark.text.unicodeScalars.count
-
-    self.openingQuotationMark = quotationMark
+  /// Parses a string literal.
+  public init?(source: String) {
+    let quotationMark = ExtendedTokenSyntax(kind: .quotationMark)
+    let quotationMarkText = quotationMark.text.unicodeScalars
+    let quotationMarkLength = quotationMarkText.count
 
     var string = source
+    guard string.unicodeScalars.starts(with: quotationMarkText) else {
+      return nil
+    }
+    self.openingQuotationMark = quotationMark
     string.unicodeScalars.removeFirst(quotationMarkLength)
-    string.unicodeScalars.removeLast(quotationMarkLength)
-    self.string = ExtendedTokenSyntax(kind: .string(string))
 
+    guard string.unicodeScalars.suffix(quotationMarkLength).elementsEqual(quotationMarkText) else {
+      return nil
+    }
+    string.unicodeScalars.removeLast(quotationMarkLength)
     self.closingQuotationMark = quotationMark
+
+    self.string = ExtendedTokenSyntax(kind: .string(string))
   }
 
   // MARK: - Properties

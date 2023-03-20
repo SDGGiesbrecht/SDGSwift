@@ -40,6 +40,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).text,
       "\u{22}...\u{22}"
     )
+    XCTAssert(ExtendedTokenSyntax(kind: .quotationMark).children.isEmpty)
+    XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
+    XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
+    XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
   }
 
   func testParsing() throws {
