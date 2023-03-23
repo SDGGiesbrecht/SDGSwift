@@ -33,6 +33,19 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testExtendedParsing() {
+    XCTAssertEqual(
+      StringLiteralSyntax(
+        string: ExtendedTokenSyntax(kind: .string("..."))
+      ).text,
+      "\u{22}...\u{22}"
+    )
+    XCTAssert(ExtendedTokenSyntax(kind: .quotationMark).children.isEmpty)
+    XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
+    XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
+    XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
+  }
+
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
@@ -55,6 +68,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             context: SyntaxContext
           ) -> Bool {
             if let token = node.as(TokenSyntax.self) {
+              result.append(contentsOf: token.text)
+            }
+            return true
+          }
+          mutating func visit(
+            _ node: ExtendedSyntax,
+            context: ExtendedSyntaxContext
+          ) -> Bool {
+            if let token = node as? ExtendedTokenSyntax {
               result.append(contentsOf: token.text)
             }
             return true
