@@ -22,6 +22,13 @@ public enum ExtendedTokenKind: Sendable {
   case string(String)
   case quotationMark
 
+  case whitespace(String)
+  case lineBreaks(String)
+  case source(String)
+
+  // #warning(Not parsed yet.)
+  case skipped(String)
+
   /// The textual representation of this token kind.
   public var text: String {
     switch self {
@@ -29,6 +36,14 @@ public enum ExtendedTokenKind: Sendable {
       return string
     case .quotationMark:
       return "\u{22}"
+    case .whitespace(let whitespace):
+      return whitespace
+    case .lineBreaks(let breaks):
+      return breaks
+    case .source(let source):
+      return source
+    case .skipped(let skipped):
+      return skipped
     }
   }
 }

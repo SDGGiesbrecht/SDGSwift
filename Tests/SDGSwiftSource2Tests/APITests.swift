@@ -81,14 +81,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             return true
           }
-          mutating func visit(
-            _ node: Trivia,
-            context: TriviaContext
-          ) -> Bool {
-            for piece in node {
-              piece.write(to: &result)
-            }
-            return true
+          mutating func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+            result.append(contentsOf: node.text)
           }
         }
         var syntaxScanner = RoundTripSyntaxScanner()
