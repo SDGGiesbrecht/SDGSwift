@@ -26,7 +26,7 @@ public enum ExtendedTokenKind: Sendable {
   case lineBreaks(String)
   case source(String)
 
-  // #warning(Not parsed yet.)
+  // #workaround(Not parsed yet.)
   case skipped(String)
 
   /// The textual representation of this token kind.
