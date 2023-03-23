@@ -81,9 +81,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             }
             return true
           }
-          mutating func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
-            result.append(contentsOf: node.text)
-          }
         }
         var syntaxScanner = RoundTripSyntaxScanner()
         syntaxScanner.scan(sourceFile)
