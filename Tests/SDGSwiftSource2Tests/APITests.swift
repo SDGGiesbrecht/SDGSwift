@@ -46,6 +46,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
   }
 
+  func testExtendedTokenKind() {
+    XCTAssertEqual(ExtendedTokenKind.source("...").text, "...")
+  }
+
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
