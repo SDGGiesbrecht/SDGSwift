@@ -33,12 +33,15 @@
       case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
         result = ExtendedTokenSyntax(kind: .lineBreaks(text))
       case .lineComment:
-        result = ExtendedTokenSyntax(kind: .skipped(text))
+        result = LineCommentSyntax(source: text)
       case .blockComment:
+        // #workaround(Not implemented yet.)
         result = ExtendedTokenSyntax(kind: .skipped(text))
       case .docLineComment:
+        // #workaround(Not implemented yet.)
         result = ExtendedTokenSyntax(kind: .skipped(text))
       case .docBlockComment:
+        // #workaround(Not implemented yet.)
         result = ExtendedTokenSyntax(kind: .skipped(text))
       case .garbageText:  // @exempt(from: tests)
         result = ExtendedTokenSyntax(kind: .source(text))

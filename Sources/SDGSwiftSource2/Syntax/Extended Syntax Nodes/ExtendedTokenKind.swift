@@ -24,6 +24,7 @@ public enum ExtendedTokenKind: Sendable {
 
   case whitespace(String)
   case lineBreaks(String)
+  case lineCommentDelimiter
   case source(String)
 
   // #workaround(Not parsed yet.)
@@ -32,6 +33,8 @@ public enum ExtendedTokenKind: Sendable {
   /// The textual representation of this token kind.
   public var text: String {
     switch self {
+    case .lineCommentDelimiter:
+      return "//"
     case .string(let string):
       return string
     case .quotationMark:
