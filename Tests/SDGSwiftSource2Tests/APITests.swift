@@ -46,6 +46,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
   }
 
+  func testExtendedTokenKind() {
+    XCTAssertEqual(ExtendedTokenKind.whitespace(" ").text, " ")
+    XCTAssertEqual(ExtendedTokenKind.lineBreaks("\n").text, "\n")
+    XCTAssertEqual(ExtendedTokenKind.source("...").text, "...")
+    XCTAssertEqual(ExtendedTokenKind.skipped("...").text, "...")
+  }
+
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
@@ -78,15 +85,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ) -> Bool {
             if let token = node as? ExtendedTokenSyntax {
               result.append(contentsOf: token.text)
-            }
-            return true
-          }
-          mutating func visit(
-            _ node: Trivia,
-            context: TriviaContext
-          ) -> Bool {
-            for piece in node {
-              piece.write(to: &result)
             }
             return true
           }

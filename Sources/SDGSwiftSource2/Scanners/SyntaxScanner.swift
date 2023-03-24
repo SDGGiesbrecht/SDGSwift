@@ -61,6 +61,20 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     mutating func visit(_ node: Trivia, context: TriviaContext) -> Bool
 
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Provide a custom implementation of this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    mutating func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool
+
     // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
@@ -129,6 +143,23 @@
     }
 
     // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    /// Visits a syntax node.
+    ///
+    /// Provide a custom implementation of this to read information from a particular node.
+    ///
+    /// - Important: The provided context is only valid for the node with which it was received, not for any of its parents, children or neighbours.
+    ///
+    /// - Parameters:
+    ///     - node: The current node.
+    ///     - context: The context of the current node.
+    ///
+    /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+    public mutating func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+      return true
+    }
+
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
     // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
@@ -192,7 +223,18 @@
 
     private mutating func scan(_ trivia: Trivia, context: TriviaContext) {
       if visit(trivia, context: context) {
-        // #workaround(Skipping pieces.)
+        for index in trivia.indices {
+          let newContext = TriviaPieceContext()
+          let piece = trivia[index]
+          scan(piece, context: newContext)
+        }
+      }
+    }
+
+    private mutating func scan(_ piece: TriviaPiece, context: TriviaPieceContext) {
+      if visit(piece, context: context) {
+        let newContext = ExtendedSyntaxContext()
+        scan(piece.extended, context: newContext)
       }
     }
   }
