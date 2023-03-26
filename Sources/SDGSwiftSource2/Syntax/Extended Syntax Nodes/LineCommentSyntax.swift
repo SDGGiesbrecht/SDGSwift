@@ -13,7 +13,7 @@
  */
 
 /// A line comment.
-public struct LineCommentSyntax: ExtendedSyntax {
+public struct LineCommentSyntax: ExtendedSyntax, LineCommentSyntaxProtocol {
 
   // MARK: - Initialization
 
@@ -35,6 +35,7 @@ public struct LineCommentSyntax: ExtendedSyntax {
 
   /// Parses a string literal.
   public init(source: String) {
+    (self.delimiter, self.indent, self.content) = Self.parse(source: source)
   }
 
   // MARK: - Properties
@@ -48,14 +49,9 @@ public struct LineCommentSyntax: ExtendedSyntax {
   /// The content.
   public let content: CommentContentSyntax
 
-  // MARK: - ExtendedSyntax
+  // MARK: - LineCommentSyntaxProtocol
 
-  public var children: [ExtendedSyntax] {
-    var result: [ExtendedSyntax] = [delimiter]
-    if let indent = indent {
-      result.append(indent)
-    }
-    result.append(content)
-    return result
+  internal static var delimiter: ExtendedTokenKind {
+    return .lineCommentDelimiter
   }
 }

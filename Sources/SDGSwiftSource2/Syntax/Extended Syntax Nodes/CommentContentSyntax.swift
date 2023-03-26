@@ -13,11 +13,12 @@
  */
 
 import SDGLogic
+import SDGCollections
 import SDGText
 
 /// The content of a comment.
-public struct CommentContentSyntax: ExtendedSyntax {
-  
+public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
+
   // MARK: - Initialization
 
   internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
@@ -30,36 +31,43 @@ public struct CommentContentSyntax: ExtendedSyntax {
         func check(forHeading heading: String) {
           if line.hasPrefix(heading.scalars.literal()) {
             line.removeFirst(heading.scalars.count)
-            children.append(SourceHeadingSyntax(mark: ExtendedTokenSyntax(kind: .mark(heading)), heading: ExtendedTokenSyntax(kind: .sourceHeadingText(String(String.UnicodeScalarView(line))))))
+            children.append(
+              SourceHeadingSyntax(
+                mark: ExtendedTokenSyntax(kind: .mark(heading)),
+                heading: ExtendedTokenSyntax(
+                  kind: .sourceHeadingText(String(String.UnicodeScalarView(line)))
+                )
+              )
+            )
             line = "".scalars[...]
           }
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
         check(forHeading: SourceHeadingSyntax.minimalDelimiter)
 
-        while let `protocol` = line.scalars.firstMatch(for: "://".scalars)?.range {
+        while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
           let start =
-            line.scalars[line.startIndex..<`protocol`.lowerBound]
+            line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .upperBound ?? line.startIndex
           let end =
-            line.scalars[`protocol`.upperBound..<line.scalars.endIndex]
+            line[`protocol`.upperBound..<line.endIndex]
             .firstMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .lowerBound ?? line.endIndex
 
           if start ≠ line.startIndex {
-            children.append(ExtendedTokenSyntax(text: String(line[..<start]), kind: .commentText))
+            children.append(ExtendedTokenSyntax(kind: .commentText(String(line[..<start]))))
           }
-          children.append(ExtendedTokenSyntax(text: String(line[start..<end]), kind: .commentURL))
-          line.scalars.removeSubrange(line.scalars.startIndex..<end)
+          children.append(ExtendedTokenSyntax(kind: .commentURL(String(line[start..<end]))))
+          line.removeSubrange(line.startIndex..<end)
         }
 
         if ¬line.isEmpty {
-          children.append(ExtendedTokenSyntax(text: line, kind: .commentText))
+          children.append(ExtendedTokenSyntax(kind: .commentText(String(line))))
         }
       }
       if ¬lineInfo.newline.isEmpty {
-        children.append(ExtendedTokenSyntax(text: String(lineInfo.newline), kind: .newlines))
+        children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(lineInfo.newline))))
       }
     }
 

@@ -31,7 +31,10 @@ public enum ExtendedTokenKind: Sendable {
 
   /// A pair of slashes delimiting a line comment.
   case lineCommentDelimiter
-
+  /// Raw text in a comment.
+  case commentText(String)
+  /// A URL in a comment.
+  case commentURL(String)
   /// A source heading delimiter.
   case mark(String)
   /// The text of a source heading.
@@ -51,12 +54,14 @@ public enum ExtendedTokenKind: Sendable {
     case .lineCommentDelimiter:
       return "//"
     case .string(let text),
-        .whitespace(let text),
-        .lineBreaks(let text),
-        .mark(let text),
-        .sourceHeadingText(let text),
-        .source(let text),
-        .skipped(let text):
+      .whitespace(let text),
+      .lineBreaks(let text),
+      .commentText(let text),
+      .commentURL(let text),
+      .mark(let text),
+      .sourceHeadingText(let text),
+      .source(let text),
+      .skipped(let text):
       return text
     }
   }
