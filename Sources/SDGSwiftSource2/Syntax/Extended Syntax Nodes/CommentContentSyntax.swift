@@ -22,6 +22,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
   // MARK: - Initialization
 
   internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
+    #warning("Crashing on Linux?")
+
+    /*
     var children: [ExtendedSyntax] = []
 
     for lineInfo in source.lines {
@@ -72,6 +75,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
     }
 
     self.children = children
+    */
   }
 
   // MARK: - ExtendedSyntax
