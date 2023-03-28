@@ -23,6 +23,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
 
   internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     #warning("Crashing on Linux?")
+    children = []
 
     /*
     var children: [ExtendedSyntax] = []
