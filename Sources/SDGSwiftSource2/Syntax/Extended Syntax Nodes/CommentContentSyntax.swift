@@ -66,10 +66,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
           children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line)))))
         }*/
       }
-      #warning("Crashing on Linux?")
-      /*if ¬lineInfo.newline.isEmpty {
+      if ¬lineInfo.newline.isEmpty {
         children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline)))))
-      }*/
+      }
     }
     self.children = children
   }
