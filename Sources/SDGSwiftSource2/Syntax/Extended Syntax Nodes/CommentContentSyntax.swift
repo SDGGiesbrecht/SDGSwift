@@ -24,10 +24,11 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
   internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
     var children: [ExtendedSyntax] = []
     for lineInfo in source.lines {
-      #warning("Crashing on Linux?")
-      /*if ¬lineInfo.line.isEmpty {
+      if ¬lineInfo.line.isEmpty {
         var line = lineInfo.line[...]
 
+        #warning("Crashing on Linux?")
+        /*
         func check(forHeading heading: String) {
           if line.hasPrefix(heading.scalars.literal()) {
             line.removeFirst(heading.scalars.count)
@@ -64,9 +65,10 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
 
         if ¬line.isEmpty {
           children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line)))))
-        }
+        }*/
       }
-      if ¬lineInfo.newline.isEmpty {
+      #warning("Crashing on Linux?")
+      /*if ¬lineInfo.newline.isEmpty {
         children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline)))))
       }*/
     }
