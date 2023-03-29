@@ -30,8 +30,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
         func check(forHeading heading: String) {
           if line.hasPrefix(heading.scalars.literal()) {
             line.removeFirst(heading.scalars.count)
-            #warning("Crashing on Linux?")
-            /*children.append(
+            children.append(
               SourceHeadingSyntax(
                 mark: ExtendedTokenSyntax(kind: .mark(heading)),
                 heading: ExtendedTokenSyntax(
@@ -39,7 +38,8 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
                 )
               )
             )
-            line = "".scalars[...]*/
+            #warning("Crashing on Linux?")
+            //line = "".scalars[...]
           }
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
