@@ -38,8 +38,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
                 )
               )
             )
-            #warning("Crashing on Linux?")
-            //line = "".scalars[...]
+            line = "".scalars[...]
           }
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
