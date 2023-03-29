@@ -42,10 +42,10 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
           }
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
-        #warning("Crashing on Linux?")
-        /*check(forHeading: SourceHeadingSyntax.minimalDelimiter)
+        check(forHeading: SourceHeadingSyntax.minimalDelimiter)
 
-        while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
+        #warning("Crashing on Linux?")
+        /*while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
           let start =
             line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
