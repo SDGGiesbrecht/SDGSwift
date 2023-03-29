@@ -22,14 +22,10 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
   // MARK: - Initialization
 
   internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
-    #warning("Crashing on Linux?")
-    children = []
-
-    /*
     var children: [ExtendedSyntax] = []
-
     for lineInfo in source.lines {
-      if ¬lineInfo.line.isEmpty {
+      #warning("Crashing on Linux?")
+      /*if ¬lineInfo.line.isEmpty {
         var line = lineInfo.line[...]
 
         func check(forHeading heading: String) {
@@ -72,11 +68,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
       }
       if ¬lineInfo.newline.isEmpty {
         children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline)))))
-      }
+      }*/
     }
-
     self.children = children
-    */
   }
 
   // MARK: - ExtendedSyntax
