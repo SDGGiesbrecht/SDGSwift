@@ -28,9 +28,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
         var line = lineInfo.line[...]
 
         func check(forHeading heading: String) {
-          #warning("Crashing on Linux?")
-          /*if line.hasPrefix(heading.scalars.literal()) {
-            line.removeFirst(heading.scalars.count)
+          if line.hasPrefix(heading.scalars.literal()) {
+            #warning("Crashing on Linux?")
+            /*line.removeFirst(heading.scalars.count)
             children.append(
               SourceHeadingSyntax(
                 mark: ExtendedTokenSyntax(kind: .mark(heading)),
@@ -39,8 +39,8 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
                 )
               )
             )
-            line = "".scalars[...]
-          }*/
+            line = "".scalars[...]*/
+          }
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
         #warning("Crashing on Linux?")
