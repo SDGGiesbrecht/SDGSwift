@@ -27,10 +27,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
       if ¬lineInfo.line.isEmpty {
         var line = lineInfo.line[...]
 
-        #warning("Crashing on Linux?")
-        /*
         func check(forHeading heading: String) {
-          if line.hasPrefix(heading.scalars.literal()) {
+          #warning("Crashing on Linux?")
+          /*if line.hasPrefix(heading.scalars.literal()) {
             line.removeFirst(heading.scalars.count)
             children.append(
               SourceHeadingSyntax(
@@ -41,10 +40,11 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
               )
             )
             line = "".scalars[...]
-          }
+          }*/
         }
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
-        check(forHeading: SourceHeadingSyntax.minimalDelimiter)
+        #warning("Crashing on Linux?")
+        /*check(forHeading: SourceHeadingSyntax.minimalDelimiter)
 
         while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
           let start =
