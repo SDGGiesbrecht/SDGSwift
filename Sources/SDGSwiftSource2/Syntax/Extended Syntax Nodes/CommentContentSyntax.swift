@@ -60,11 +60,11 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
           }
           children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
           line.removeSubrange(line.startIndex..<end)
-        }
+        }*/
 
         if ¬line.isEmpty {
           children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line)))))
-        }*/
+        }
       }
       if ¬lineInfo.newline.isEmpty {
         children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline)))))
