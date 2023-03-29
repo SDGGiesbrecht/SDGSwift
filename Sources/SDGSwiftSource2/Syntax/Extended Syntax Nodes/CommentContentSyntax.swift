@@ -29,9 +29,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
 
         func check(forHeading heading: String) {
           if line.hasPrefix(heading.scalars.literal()) {
+            line.removeFirst(heading.scalars.count)
             #warning("Crashing on Linux?")
-            /*line.removeFirst(heading.scalars.count)
-            children.append(
+            /*children.append(
               SourceHeadingSyntax(
                 mark: ExtendedTokenSyntax(kind: .mark(heading)),
                 heading: ExtendedTokenSyntax(
