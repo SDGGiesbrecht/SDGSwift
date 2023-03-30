@@ -50,13 +50,13 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
             line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .upperBound ?? line.startIndex
-          #warning("Crashing on Linux?")
-          /*let end =
+          let end =
             line[`protocol`.upperBound..<line.endIndex]
             .firstMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .lowerBound ?? line.endIndex
 
-          if start ≠ line.startIndex {
+          #warning("Crashing on Linux?")
+          /*if start ≠ line.startIndex {
             children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line[..<start])))))
           }
           children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
