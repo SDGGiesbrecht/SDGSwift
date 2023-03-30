@@ -44,8 +44,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
         check(forHeading: SourceHeadingSyntax.fullDelimiter)
         check(forHeading: SourceHeadingSyntax.minimalDelimiter)
 
-        #warning("Crashing on Linux?")
-        /*while*/ if let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
+        while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
           let start =
             line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
