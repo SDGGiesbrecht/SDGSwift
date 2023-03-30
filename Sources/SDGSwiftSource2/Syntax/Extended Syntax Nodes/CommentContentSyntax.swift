@@ -59,8 +59,7 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
             children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line[..<start])))))
           }
           children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
-          #warning("Crashing on Linux?")
-          /*line.removeSubrange(line.startIndex..<end)*/
+          line.removeSubrange(line.startIndex..<end)
         }
 
         if ¬line.isEmpty {
