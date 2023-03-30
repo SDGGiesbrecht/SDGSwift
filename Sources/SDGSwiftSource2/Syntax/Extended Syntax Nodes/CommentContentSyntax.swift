@@ -55,11 +55,11 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
             .firstMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .lowerBound ?? line.endIndex
 
-          #warning("Crashing on Linux?")
-          /*if start ≠ line.startIndex {
+          if start ≠ line.startIndex {
             children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line[..<start])))))
           }
-          children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
+          #warning("Crashing on Linux?")
+          /*children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
           line.removeSubrange(line.startIndex..<end)*/
         }
 
