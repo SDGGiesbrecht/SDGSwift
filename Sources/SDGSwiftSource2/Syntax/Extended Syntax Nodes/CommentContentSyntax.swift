@@ -45,8 +45,9 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
         check(forHeading: SourceHeadingSyntax.minimalDelimiter)
 
         #warning("Crashing on Linux?")
-        /*while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
-          let start =
+        /*while*/ if let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
+          #warning("Crashing on Linux?")
+          /*let start =
             line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .upperBound ?? line.startIndex
@@ -59,8 +60,8 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
             children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line[..<start])))))
           }
           children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
-          line.removeSubrange(line.startIndex..<end)
-        }*/
+          line.removeSubrange(line.startIndex..<end)*/
+        }
 
         if ¬line.isEmpty {
           children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line)))))
