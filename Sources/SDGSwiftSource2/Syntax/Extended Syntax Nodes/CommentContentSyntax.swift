@@ -46,12 +46,12 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
 
         #warning("Crashing on Linux?")
         /*while*/ if let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
-          #warning("Crashing on Linux?")
-          /*let start =
+          let start =
             line[line.startIndex..<`protocol`.lowerBound]
             .lastMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .upperBound ?? line.startIndex
-          let end =
+          #warning("Crashing on Linux?")
+          /*let end =
             line[`protocol`.upperBound..<line.endIndex]
             .firstMatch(for: " ".scalars.literal(for: String.ScalarView.SubSequence.self))?.range
             .lowerBound ?? line.endIndex
