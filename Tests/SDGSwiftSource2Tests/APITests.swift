@@ -54,7 +54,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).text,
       "// ..."
     )
-    XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
+    #endif
   }
 
   func testExtendedTokenKind() {
