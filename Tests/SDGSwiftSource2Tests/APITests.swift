@@ -44,6 +44,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
     XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
     XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
+    XCTAssertEqual(CommentContentSyntax(source: "http://example.com").text, "http://example.com")
+    XCTAssertEqual(CommentContentSyntax(source: "...\n...").text, "...\n...")
+    XCTAssertEqual(
+      LineCommentSyntax(
+        delimiter: ExtendedTokenSyntax(kind: .lineCommentDelimiter),
+        indent: ExtendedTokenSyntax(kind: .whitespace(" ")),
+        content: CommentContentSyntax(source: "...")
+      ).text,
+      "// ..."
+    )
+    XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
   }
 
   func testExtendedTokenKind() {

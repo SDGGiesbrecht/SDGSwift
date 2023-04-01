@@ -21,7 +21,8 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
 
   // MARK: - Initialization
 
-  internal init(source: String) {  // @exempt(from: tests)  Unreachable from tvOS.
+  /// Creates a comment content syntax note by parsing its source.
+  public init(source: String) {
     var children: [ExtendedSyntax] = []
     for lineInfo in source.lines {
       if ¬lineInfo.line.isEmpty {
@@ -55,18 +56,30 @@ public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
             .lowerBound ?? line.endIndex
 
           if start ≠ line.startIndex {
-            children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line[..<start])))))
+            children.append(
+              ExtendedTokenSyntax(
+                kind: .commentText(String(String.UnicodeScalarView(line[..<start])))
+              )
+            )
           }
-          children.append(ExtendedTokenSyntax(kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))))
+          children.append(
+            ExtendedTokenSyntax(
+              kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))
+            )
+          )
           line = lineInfo.line[end...]
         }
 
         if ¬line.isEmpty {
-          children.append(ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line)))))
+          children.append(
+            ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line))))
+          )
         }
       }
       if ¬lineInfo.newline.isEmpty {
-        children.append(ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline)))))
+        children.append(
+          ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline))))
+        )
       }
     }
     self.children = children
