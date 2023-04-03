@@ -57,8 +57,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
     #endif
-    XCTAssertEqual(LineCommentSyntax(source: "// \u{2D} MARK: Heading").text, "// \u{2D} MARK: Heading")
-    XCTAssertEqual(LineCommentSyntax(source: "// ... http://example.com ...").text, "// ... http://example.com ...")
+    XCTAssertEqual(
+      LineCommentSyntax(source: "// \u{2D} MARK: Heading").text,
+      "// \u{2D} MARK: Heading"
+    )
+    XCTAssertEqual(
+      LineCommentSyntax(source: "// ... http://example.com ...").text,
+      "// ... http://example.com ..."
+    )
   }
 
   func testExtendedTokenKind() {
