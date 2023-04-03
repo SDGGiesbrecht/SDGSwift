@@ -44,6 +44,31 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
     XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
     XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
+    XCTAssertEqual(CommentContentSyntax(source: "http://example.com").text, "http://example.com")
+    XCTAssertEqual(CommentContentSyntax(source: "...\n...").text, "...\n...")
+    XCTAssertEqual(
+      LineCommentSyntax(
+        delimiter: ExtendedTokenSyntax(kind: .lineCommentDelimiter),
+        indent: ExtendedTokenSyntax(kind: .whitespace(" ")),
+        content: CommentContentSyntax(source: "...")
+      ).text,
+      "// ..."
+    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
+    #endif
+    XCTAssertEqual(
+      LineCommentSyntax(source: "// MARK: \u{2D} Heading").text,
+      "// MARK: \u{2D} Heading"
+    )
+    XCTAssertEqual(
+      LineCommentSyntax(source: "// ... http://example.com ...").text,
+      "// ... http://example.com ..."
+    )
+    XCTAssertEqual(LineCommentSyntax(source: "//...").text, "//...")
+    XCTAssertNotNil(
+      SourceHeadingSyntax(heading: ExtendedTokenSyntax(kind: .sourceHeadingText("..."))).children
+    )
   }
 
   func testExtendedTokenKind() {
