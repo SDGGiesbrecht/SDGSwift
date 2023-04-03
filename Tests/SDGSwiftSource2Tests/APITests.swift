@@ -58,12 +58,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
     #endif
     XCTAssertEqual(
-      LineCommentSyntax(source: "// \u{2D} MARK: Heading").text,
-      "// \u{2D} MARK: Heading"
+      LineCommentSyntax(source: "// MARK: \u{2D} Heading").text,
+      "// MARK: \u{2D} Heading"
     )
     XCTAssertEqual(
       LineCommentSyntax(source: "// ... http://example.com ...").text,
       "// ... http://example.com ..."
+    )
+    XCTAssertEqual(LineCommentSyntax(source: "//...").text, "//...")
+    XCTAssertNotNil(
+      SourceHeadingSyntax(heading: ExtendedTokenSyntax(kind: .sourceHeadingText("..."))).children
     )
   }
 
