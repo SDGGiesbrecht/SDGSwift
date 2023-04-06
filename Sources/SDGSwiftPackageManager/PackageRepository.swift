@@ -53,7 +53,7 @@ extension PackageRepository {
         let initializer = try InitPackage(
           name: String(name),
           packageType: type,
-          destinationPath: AbsolutePath(location.path),
+          destinationPath: AbsolutePath(validating: location.path),
           fileSystem: localFileSystem
         )
         try initializer.writePackageStructure()
@@ -91,7 +91,7 @@ extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     private var path: AbsolutePath {
-      return AbsolutePath(location.path)
+      return try! AbsolutePath(validating: location.path)
     }
 
     private func observabilitySystem() -> ObservabilitySystem {
