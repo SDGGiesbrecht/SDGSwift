@@ -50,13 +50,20 @@ extension PackageRepository {
       let repository = PackageRepository(at: location)
 
       do {
+        let location = try AbsolutePath(validating: location.path)
         let initializer = try InitPackage(
           name: String(name),
           packageType: type,
-          destinationPath: AbsolutePath(location.path),
+          destinationPath: location,
           fileSystem: localFileSystem
         )
         try initializer.writePackageStructure()
+        // #workaround(Swift 5.7.2, Ensures compatibility with Swift 5.7 while it remains the standard toolchain.)
+        try ToolsVersionSpecificationWriter.rewriteSpecification(
+          manifestDirectory: location,
+          toolsVersion: ToolsVersion(version: Version(5, 7, 0)),
+          fileSystem: localFileSystem
+        )
       } catch {
         return .failure(.packageManagerError(error))
       }
@@ -91,7 +98,7 @@ extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     private var path: AbsolutePath {
-      return AbsolutePath(location.path)
+      return try! AbsolutePath(validating: location.path)
     }
 
     private func observabilitySystem() -> ObservabilitySystem {
