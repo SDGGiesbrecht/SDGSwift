@@ -244,7 +244,7 @@
           try scan(token.trailingTrivia, context: trailingTriviaContext)
         } else {
           if visit(node, context: context) {
-            for child in node.children {
+            for child in node.children(viewMode: .sourceAccurate) {
               try scan(child, context: context)
             }
           }

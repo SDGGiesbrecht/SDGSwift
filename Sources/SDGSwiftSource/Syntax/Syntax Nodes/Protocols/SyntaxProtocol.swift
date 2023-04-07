@@ -140,7 +140,7 @@
       {
         return token
       }
-      return children.lazy.compactMap({ $0.firstToken() }).first
+      return children(viewMode: .sourceAccurate).lazy.compactMap({ $0.firstToken() }).first
     }
 
     // @documentation(SDGSwiftSource.Syntax.lastToken())
@@ -151,7 +151,7 @@
       {
         return token
       }
-      return children.reversed().lazy.compactMap({ $0.lastToken() }).first
+      return children(viewMode: .sourceAccurate).reversed().lazy.compactMap({ $0.lastToken() }).first
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {
@@ -298,7 +298,7 @@
           identifiers ∪= Set(parameters)
         }
 
-        var result = children.map({
+        var result = children(viewMode: .sourceAccurate).map({
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
         var classes = [

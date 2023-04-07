@@ -158,7 +158,7 @@
     public func previousToken() -> TokenSyntax? {
       func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
         var result: Syntax?
-        for sibling in relationship.parent.children
+        for sibling in relationship.parent.children(viewMode: .sourceAccurate)
         where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
           result = sibling
         }
@@ -179,7 +179,7 @@
     /// Returns the next token.
     public func nextToken() -> TokenSyntax? {
       func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-        for sibling in relationship.parent.children
+        for sibling in relationship.parent.children(viewMode: .sourceAccurate)
         where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
           return sibling
         }
@@ -212,7 +212,8 @@
         .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword,
         .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword, .falseKeyword,
         .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword,
-        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
+        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword,
+        .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,

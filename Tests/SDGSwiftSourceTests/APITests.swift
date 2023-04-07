@@ -672,11 +672,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         initKeyword: SyntaxFactory.makeInitKeyword(),
         optionalMark: missing,
         genericParameterClause: nil,
-        signature: SyntaxFactory.makeFunctionSignature(input: SyntaxFactory.makeParameterClause(
-          leftParen: SyntaxFactory.makeLeftParenToken(),
-          parameterList: SyntaxFactory.makeFunctionParameterList([]),
-          rightParen: SyntaxFactory.makeRightParenToken()
-        ), asyncOrReasyncKeyword: nil, throwsOrRethrowsKeyword: nil, output: nil),
+        signature: SyntaxFactory.makeFunctionSignature(
+          input: SyntaxFactory.makeParameterClause(
+            leftParen: SyntaxFactory.makeLeftParenToken(),
+            parameterList: SyntaxFactory.makeFunctionParameterList([]),
+            rightParen: SyntaxFactory.makeRightParenToken()
+          ),
+          asyncOrReasyncKeyword: nil,
+          throwsOrRethrowsKeyword: nil,
+          output: nil
+        ),
         genericWhereClause: nil,
         body: SyntaxFactory.makeCodeBlock(
           leftBrace: SyntaxFactory.makeLeftBraceToken(),
