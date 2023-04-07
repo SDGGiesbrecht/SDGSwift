@@ -1,0 +1,3 @@
+#!/usr/bin/swift
+
+print("H̲e̲l̲l̲o̲,̲ ̲w̲o̲r̲l̲d̲!̲")

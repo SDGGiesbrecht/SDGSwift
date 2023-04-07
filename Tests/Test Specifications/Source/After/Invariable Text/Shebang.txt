@@ -1,0 +1,4 @@
+#̲!̲/̲u̲s̲r̲/̲b̲i̲n̲/̲s̲w̲i̲f̲t̲
+̲
+̲print(̲"̲Hello, world!"̲)̲
+̲
