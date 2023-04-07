@@ -321,15 +321,7 @@
       function: StaticString = #function
     ) {  // @exempt(from: tests)
       #if DEBUG
-        switch resolvedExistential() {
-        /*#warning(These no longer exist?)
-        case is UnknownSyntax,
-          is UnknownPatternSyntax,
-          is UnknownTypeSyntax:
-          break*/
-        default:  // @exempt(from: tests)
-          print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
-        }
+        print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
       #endif
     }
   }
