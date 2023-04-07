@@ -129,8 +129,8 @@ let package = Package(
       exact: Version(0, 5, 2)
     ),
     .package(
-      url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: Version(0, 50700, 0)
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}syntax",
+      exact: Version(0, 50800, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
