@@ -31,7 +31,7 @@ import SDGCollections
       if location ∉ sourceRange(converter: converter) {
         return nil
       }
-      for child in children {
+      for child in children(viewMode: .sourceAccurate) {
         if let valid = child.smallest(type, at: location, converter: converter) {
           return valid
         }

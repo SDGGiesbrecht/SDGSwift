@@ -370,7 +370,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 on: .macOS,
                 ignoreCoveredRegions: true
               )
-              #if PLATFORM_HAS_XCODE
+              #if !PLATFORM_HAS_XCODE
+                func pretendToThrow() throws {}
+                try pretendToThrow()
+              #else
                 let extractedReport = try possibleReport.get()
                 guard let coverageReport = extractedReport else {
                   XCTFail("No test coverage report found.")
