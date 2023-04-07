@@ -71,12 +71,6 @@
           {
             return .invariable
           }
-          if let declarationModifier = parent.as(DeclModifierSyntax.self),
-            declarationModifier.name == self
-          {
-            // “open”, “mutating”, etc.
-            return .invariable
-          }
           if let accessPath = parent.as(AccessPathComponentSyntax.self),
             accessPath.name == self
           {
@@ -100,9 +94,6 @@
           }
         }
 
-        if text == "init" {
-          return .invariable
-        }
         return .aliasable
       case .stringSegment, .integerLiteral, .floatingLiteral, .stringLiteral, .regexLiteral:
         return .arbitrary
@@ -247,19 +238,10 @@
           return "compilation‐condition"
         }
 
-        if name == "get" ∨ name == "set" {
-          return "keyword"
-        }
         if let attribute = parent?.as(AttributeSyntax.self),
           attribute.attributeName == self
         {
           // @available, @objc, etc.
-          return "keyword"
-        }
-        if let declarationModifier = parent?.as(DeclModifierSyntax.self),
-          declarationModifier.name == self
-        {
-          // “open”, “mutating”, etc.
           return "keyword"
         }
 
