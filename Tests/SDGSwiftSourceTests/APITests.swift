@@ -628,7 +628,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
             content: highlighted,
-            cssPath: "../../../../../Resources/SDGSwiftSource/Syntax%20Highlighting.css"
+            cssPath: "../../../../../Sources/SDGSwiftSource/Syntax%20Highlighting.css"
           ),
           against: sourceDirectory.appendingPathComponent("After").appendingPathComponent(
             "Syntax Highlighting"
