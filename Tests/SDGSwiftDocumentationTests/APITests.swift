@@ -64,7 +64,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           symbolGraphs: [],
           sources: [],
           manifestURL: "somewhere.swift",
-          manifestSource: SyntaxFactory.makeBlankSourceFile()
+          manifestSource: SourceFileSyntax(
+            statements: CodeBlockItemListSyntax([]),
+            eofToken: TokenSyntax(.eof)
+          )
         ).docComment
       )
     #endif
@@ -83,7 +86,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         name: "MyLibrary",
         modules: ["MyModule"],
         manifestURL: "Package.swift",
-        manifest: SyntaxFactory.makeBlankSourceFile()
+        manifest: SourceFileSyntax(
+          statements: CodeBlockItemListSyntax([]),
+          eofToken: TokenSyntax(.eof)
+        )
       )
     #endif
   }
@@ -222,13 +228,19 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         PackageAPI(
           name: "MyPackage",
           manifestURL: "somewhere.swift",
-          manifestSource: SyntaxFactory.makeBlankSourceFile(),
+          manifestSource: SourceFileSyntax(
+            statements: CodeBlockItemListSyntax([]),
+            eofToken: TokenSyntax(.eof)
+          ),
           libraries: [
             LibraryAPI(
               name: "MyLibrary",
               modules: ["MyModule"],
               manifestURL: "Package.swift",
-              manifest: SyntaxFactory.makeBlankSourceFile()
+              manifest: SourceFileSyntax(
+                statements: CodeBlockItemListSyntax([]),
+                eofToken: TokenSyntax(.eof)
+              )
             )
           ],
           symbolGraphs: [],

@@ -21,6 +21,27 @@
 
   extension TokenSyntax {
 
+    // MARK: - Initialization
+
+    /// Creates a token.
+    ///
+    /// - Parameters:
+    ///     - kind: A token kind.
+    ///     - leadingTrivia: Optional. Leading trivia.
+    ///     - trailingTrivia: Optional. Trailing trivia.
+    public init(
+      _ kind: TokenKind,
+      leadingTrivia: Trivia = [],
+      trailingTrivia: Trivia = []
+    ) {
+      self.init(
+        kind,
+        leadingTrivia: leadingTrivia,
+        trailingTrivia: trailingTrivia,
+        presence: .present
+      )
+    }
+
     // MARK: - Properties
 
     /// The extended syntax of the token.

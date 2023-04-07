@@ -34,57 +34,57 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testSyntaxProtocol() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let nestedFunction = SyntaxFactory.makeFunctionDecl(
+      let nestedFunction = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
-        identifier: SyntaxFactory.makeToken(.identifier("outer")),
+        funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1)),
+        identifier: TokenSyntax(.identifier("outer")),
         genericParameterClause: nil,
-        signature: SyntaxFactory.makeFunctionSignature(
-          input: SyntaxFactory.makeParameterClause(
-            leftParen: SyntaxFactory.makeToken(.leftParen),
-            parameterList: SyntaxFactory.makeFunctionParameterList([]),
-            rightParen: SyntaxFactory.makeToken(.rightParen)
+        signature: FunctionSignatureSyntax(
+          input: ParameterClauseSyntax(
+            leftParen: TokenSyntax(.leftParen),
+            parameterList: FunctionParameterListSyntax([]),
+            rightParen: TokenSyntax(.rightParen)
           ),
           asyncOrReasyncKeyword: nil,
           throwsOrRethrowsKeyword: nil,
           output: nil
         ),
         genericWhereClause: nil,
-        body: SyntaxFactory.makeCodeBlock(
-          leftBrace: SyntaxFactory.makeToken(
+        body: CodeBlockSyntax(
+          leftBrace: TokenSyntax(
             .leftBrace,
             leadingTrivia: .spaces(1),
             trailingTrivia: .newlines(1)
           ),
-          statements: SyntaxFactory.makeCodeBlockItemList([
-            SyntaxFactory.makeCodeBlockItem(
-              item: Syntax(
-                SyntaxFactory.makeFunctionDecl(
+          statements: CodeBlockItemListSyntax([
+            CodeBlockItemSyntax(
+              item: CodeBlockItemSyntax.Item(
+                FunctionDeclSyntax(
                   attributes: nil,
                   modifiers: nil,
-                  funcKeyword: SyntaxFactory.makeToken(.funcKeyword, trailingTrivia: .spaces(1)),
-                  identifier: SyntaxFactory.makeToken(.identifier("inner")),
+                  funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1)),
+                  identifier: TokenSyntax(.identifier("inner")),
                   genericParameterClause: nil,
-                  signature: SyntaxFactory.makeFunctionSignature(
-                    input: SyntaxFactory.makeParameterClause(
-                      leftParen: SyntaxFactory.makeToken(.leftParen),
-                      parameterList: SyntaxFactory.makeFunctionParameterList([]),
-                      rightParen: SyntaxFactory.makeToken(.rightParen)
+                  signature: FunctionSignatureSyntax(
+                    input: ParameterClauseSyntax(
+                      leftParen: TokenSyntax(.leftParen),
+                      parameterList: FunctionParameterListSyntax([]),
+                      rightParen: TokenSyntax(.rightParen)
                     ),
                     asyncOrReasyncKeyword: nil,
                     throwsOrRethrowsKeyword: nil,
                     output: nil
                   ),
                   genericWhereClause: nil,
-                  body: SyntaxFactory.makeCodeBlock(
-                    leftBrace: SyntaxFactory.makeToken(
+                  body: CodeBlockSyntax(
+                    leftBrace: TokenSyntax(
                       .leftBrace,
                       leadingTrivia: .spaces(1),
                       trailingTrivia: .newlines(1)
                     ),
-                    statements: SyntaxFactory.makeCodeBlockItemList([]),
-                    rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .newlines(1))
+                    statements: CodeBlockItemListSyntax([]),
+                    rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1))
                   )
                 )
               ),
@@ -92,7 +92,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
               errorTokens: nil
             )
           ]),
-          rightBrace: SyntaxFactory.makeToken(.rightBrace, leadingTrivia: .newlines(1))
+          rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1))
         )
       )
       let found = nestedFunction.smallest(
@@ -101,10 +101,10 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       )
       XCTAssertEqual(found?.identifier.text, "inner")
 
-      let documented = SyntaxFactory.makeStructDecl(
+      let documented = StructDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        structKeyword: SyntaxFactory.makeToken(
+        structKeyword: TokenSyntax(
           .structKeyword,
           leadingTrivia: Trivia(pieces: [
             .docBlockComment(
@@ -119,18 +119,18 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           ]),
           trailingTrivia: .spaces(1)
         ),
-        identifier: SyntaxFactory.makeToken(.identifier("Structure")),
+        identifier: TokenSyntax(.identifier("Structure")),
         genericParameterClause: nil,
         inheritanceClause: nil,
         genericWhereClause: nil,
-        members: SyntaxFactory.makeMemberDeclBlock(
-          leftBrace: SyntaxFactory.makeToken(
+        members: MemberDeclBlockSyntax(
+          leftBrace: TokenSyntax(
             .leftBrace,
             leadingTrivia: .spaces(1),
             trailingTrivia: .spaces(1)
           ),
-          members: SyntaxFactory.makeMemberDeclList([]),
-          rightBrace: SyntaxFactory.makeToken(
+          members: MemberDeclListSyntax([]),
+          rightBrace: TokenSyntax(
             .leftBrace,
             leadingTrivia: .spaces(1)
           )
@@ -138,15 +138,15 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       )
       let documentation = documented.documentation(
         url: "somewhere.swift",
-        source: SyntaxFactory.makeSourceFile(
-          statements: SyntaxFactory.makeCodeBlockItemList([
-            SyntaxFactory.makeCodeBlockItem(
-              item: Syntax(documented),
+        source: SourceFileSyntax(
+          statements: CodeBlockItemListSyntax([
+            CodeBlockItemSyntax(
+              item: CodeBlockItemSyntax.Item(documented),
               semicolon: nil,
               errorTokens: nil
             )
           ]),
-          eofToken: SyntaxFactory.makeToken(.eof)
+          eofToken: TokenSyntax(.eof)
         ),
         module: nil
       )

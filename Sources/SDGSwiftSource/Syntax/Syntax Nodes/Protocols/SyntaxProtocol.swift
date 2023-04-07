@@ -151,7 +151,8 @@
       {
         return token
       }
-      return children(viewMode: .sourceAccurate).reversed().lazy.compactMap({ $0.lastToken() }).first
+      return children(viewMode: .sourceAccurate).reversed().lazy.compactMap({ $0.lastToken() })
+        .first
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {

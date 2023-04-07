@@ -232,11 +232,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let highlighted = SyntaxFactory.makeVariableDecl(
+      let highlighted = VariableDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        letOrVarKeyword: SyntaxFactory.makeToken(.letKeyword),
-        bindings: SyntaxFactory.makePatternBindingList([])
+        letOrVarKeyword: TokenSyntax(.letKeyword),
+        bindings: PatternBindingListSyntax([])
       )
       .syntaxHighlightedHTML(inline: true)
       XCTAssert(
@@ -660,33 +660,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testTokenSyntax() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let missing = SyntaxFactory.makeToken(.infixQuestionMark, presence: .missing)
-      _ = SyntaxFactory.makeInitializerDecl(
+      let missing = TokenSyntax(.infixQuestionMark, presence: .missing)
+      _ = InitializerDeclSyntax(
         attributes: nil,
-        modifiers: SyntaxFactory.makeModifierList([
-          SyntaxFactory.makeDeclModifier(
-            name: SyntaxFactory.makePublicKeyword(),
+        modifiers: ModifierListSyntax([
+          DeclModifierSyntax(
+            name: TokenSyntax.publicKeyword(),
             detail: nil
           )
         ]),
-        initKeyword: SyntaxFactory.makeInitKeyword(),
+        initKeyword: TokenSyntax.initKeyword(),
         optionalMark: missing,
         genericParameterClause: nil,
-        signature: SyntaxFactory.makeFunctionSignature(
-          input: SyntaxFactory.makeParameterClause(
-            leftParen: SyntaxFactory.makeLeftParenToken(),
-            parameterList: SyntaxFactory.makeFunctionParameterList([]),
-            rightParen: SyntaxFactory.makeRightParenToken()
+        signature: FunctionSignatureSyntax(
+          input: ParameterClauseSyntax(
+            leftParen: TokenSyntax.leftParenToken(),
+            parameterList: FunctionParameterListSyntax([]),
+            rightParen: TokenSyntax.rightParenToken()
           ),
           asyncOrReasyncKeyword: nil,
           throwsOrRethrowsKeyword: nil,
           output: nil
         ),
         genericWhereClause: nil,
-        body: SyntaxFactory.makeCodeBlock(
-          leftBrace: SyntaxFactory.makeLeftBraceToken(),
-          statements: SyntaxFactory.makeCodeBlockItemList([]),
-          rightBrace: SyntaxFactory.makeRightBraceToken()
+        body: CodeBlockSyntax(
+          leftBrace: TokenSyntax.leftBraceToken(),
+          statements: CodeBlockItemListSyntax([]),
+          rightBrace: TokenSyntax.rightBraceToken()
         )
       )
     #endif
@@ -697,8 +697,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       let source = "/\u{2F} ...\nlet x = 0 \n"
       let syntax = try SyntaxParser.parse(source: source)
       XCTAssertNil(syntax.ancestors().first(where: { _ in true }))
-      XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).previousToken())
-      XCTAssertNil(SyntaxFactory.makeToken(.identifier("a")).nextToken())
+      XCTAssertNil(TokenSyntax(.identifier("a")).previousToken())
+      XCTAssertNil(TokenSyntax(.identifier("a")).nextToken())
       XCTAssertNil(syntax.firstToken()!.previousToken())
       XCTAssertNil(syntax.lastToken()!.nextToken())
       XCTAssertEqual(syntax.firstToken()!.tokenKind, .letKeyword)
@@ -713,20 +713,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertEqual(eof.firstPrecedingTrivia()?.text, TriviaPiece.newlines(1).text)
       XCTAssertNil(eof.firstFollowingTrivia()?.text)
 
-      let incomplete = SyntaxFactory.makeFunctionDecl(
+      let incomplete = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        funcKeyword: SyntaxFactory.makeToken(.funcKeyword, presence: .missing),
-        identifier: SyntaxFactory.makeToken(.identifier("identifier")),
+        funcKeyword: TokenSyntax(.funcKeyword, presence: .missing),
+        identifier: TokenSyntax(.identifier("identifier")),
         genericParameterClause: nil,
-        signature: SyntaxFactory.makeFunctionSignature(
-          input: SyntaxFactory.makeParameterClause(
-            leftParen: SyntaxFactory.makeToken(.leftParen, presence: .missing),
-            parameterList: SyntaxFactory.makeFunctionParameterList([]),
-            rightParen: SyntaxFactory.makeToken(.rightParen)
+        signature: FunctionSignatureSyntax(
+          input: ParameterClauseSyntax(
+            leftParen: TokenSyntax(.leftParen, presence: .missing),
+            parameterList: FunctionParameterListSyntax([]),
+            rightParen: TokenSyntax(.rightParen)
           ),
           asyncOrReasyncKeyword: nil,
-          throwsOrRethrowsKeyword: SyntaxFactory.makeToken(.throwsKeyword, presence: .missing),
+          throwsOrRethrowsKeyword: TokenSyntax(.throwsKeyword, presence: .missing),
           output: nil
         ),
         genericWhereClause: nil,
