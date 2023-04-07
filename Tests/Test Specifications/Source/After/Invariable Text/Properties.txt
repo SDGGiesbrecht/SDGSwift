@@ -11,12 +11,12 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Int {̲
 ̲
 ̲    p̲u̲b̲l̲i̲c̲ l̲e̲t̲ (̲groupedInteger,̲ groupedString)̲ :̲ (̲Int,̲ String)̲ =̲ (̲0,̲ "̲"̲)̲
 ̲
-̲    p̲u̲b̲l̲i̲c̲ f̲i̲l̲e̲p̲r̲i̲v̲a̲t̲e̲(̲set)̲ v̲a̲r̲ fileprivateSetter =̲ 0
-̲    p̲u̲b̲l̲i̲c̲ p̲r̲i̲v̲a̲t̲e̲(̲set)̲ v̲a̲r̲ privateSetter =̲ 0
+̲    p̲u̲b̲l̲i̲c̲ f̲i̲l̲e̲p̲r̲i̲v̲a̲t̲e̲(̲s̲e̲t̲)̲ v̲a̲r̲ fileprivateSetter =̲ 0
+̲    p̲u̲b̲l̲i̲c̲ p̲r̲i̲v̲a̲t̲e̲(̲s̲e̲t̲)̲ v̲a̲r̲ privateSetter =̲ 0
 ̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCClass :̲ NSObject {̲
-̲    @̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ introduced:̲ 4.2.̲1)̲ @̲I̲B̲O̲u̲t̲l̲e̲t̲ p̲u̲b̲l̲i̲c̲ w̲e̲a̲k̲ s̲t̲a̲t̲i̲c̲ v̲a̲r̲ delegate:̲ NSObject?̲
+̲    @̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲:̲ 4.2.̲1)̲ @̲I̲B̲O̲u̲t̲l̲e̲t̲ p̲u̲b̲l̲i̲c̲ w̲e̲a̲k̲ s̲t̲a̲t̲i̲c̲ v̲a̲r̲ delegate:̲ NSObject?̲
 ̲    @̲N̲S̲C̲o̲p̲y̲i̲n̲g̲ p̲u̲b̲l̲i̲c̲ v̲a̲r̲ copyingProperty:̲ NSString
 ̲}̲
 ̲
