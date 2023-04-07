@@ -144,7 +144,8 @@
             .carriageReturnLineFeeds,
             .lineComment,
             .docLineComment,
-            .garbageText:
+            .unexpectedText,
+            .shebang:
             // Unreachable. Never multiline; never split between multiple fragments.
             return [.trivia(trivia, siblings, index)]
           case .blockComment, .docBlockComment:

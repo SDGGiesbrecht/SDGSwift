@@ -54,7 +54,7 @@
         case .docLineComment:
           preceding.prepend(process(sibling: sibling))
           interveningNewlines = 0
-        case .lineComment, .blockComment, .docBlockComment, .garbageText:
+        case .lineComment, .blockComment, .docBlockComment, .unexpectedText, .shebang:
           break search
         }
       }
@@ -75,7 +75,7 @@
         case .docLineComment:
           following.append(process(sibling: sibling))
           interveningNewlines = 0
-        case .lineComment, .blockComment, .docBlockComment, .garbageText:
+        case .lineComment, .blockComment, .docBlockComment, .unexpectedText, .shebang:
           break search
         }
       }

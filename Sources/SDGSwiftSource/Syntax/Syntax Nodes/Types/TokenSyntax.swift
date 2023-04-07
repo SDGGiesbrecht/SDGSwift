@@ -116,8 +116,7 @@
         .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword,
         .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword,
         .capitalSelfKeyword, .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-        .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword,
-        .__dso_handle__Keyword, .wildcardKeyword, .poundAvailableKeyword, .poundEndifKeyword,
+        .wildcardKeyword, .poundAvailableKeyword, .poundEndifKeyword,
         .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .poundSourceLocationKeyword,
         .poundFileKeyword, .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword,
         .poundDsohandleKeyword, .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
@@ -128,7 +127,7 @@
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote,
         .dollarIdentifier, .contextualKeyword, .unknown, .pound, .backtick, .poundAssertKeyword,
         .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis, .singleQuote,
-        .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
+        .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword, .poundHasSymbolKeyword:
         return .invariable
       }
     }
@@ -222,14 +221,12 @@
         .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword,
         .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword, .falseKeyword,
         .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword,
-        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .__file__Keyword,
-        .__line__Keyword, .__column__Keyword, .__function__Keyword, .__dso_handle__Keyword,
-        .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
+        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,
         .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword,
-        .poundUnavailableKeyword:
+        .poundUnavailableKeyword, .poundHasSymbolKeyword:
         return "keyword"
 
       case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound,

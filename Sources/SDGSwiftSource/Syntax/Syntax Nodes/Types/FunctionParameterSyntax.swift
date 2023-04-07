@@ -22,7 +22,7 @@
     // MARK: - Names & Labels
 
     internal var internalName: TokenSyntax? {
-      if secondName?.isPresent == true {
+      if secondName?.presence == .present {
         return secondName
       } else {
         return firstName

@@ -666,20 +666,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         modifiers: SyntaxFactory.makeModifierList([
           SyntaxFactory.makeDeclModifier(
             name: SyntaxFactory.makePublicKeyword(),
-            detailLeftParen: nil,
-            detail: nil,
-            detailRightParen: nil
+            detail: nil
           )
         ]),
         initKeyword: SyntaxFactory.makeInitKeyword(),
         optionalMark: missing,
         genericParameterClause: nil,
-        parameters: SyntaxFactory.makeParameterClause(
+        signature: SyntaxFactory.makeFunctionSignature(input: SyntaxFactory.makeParameterClause(
           leftParen: SyntaxFactory.makeLeftParenToken(),
           parameterList: SyntaxFactory.makeFunctionParameterList([]),
           rightParen: SyntaxFactory.makeRightParenToken()
-        ),
-        throwsOrRethrowsKeyword: nil,
+        ), asyncOrReasyncKeyword: nil, throwsOrRethrowsKeyword: nil, output: nil),
         genericWhereClause: nil,
         body: SyntaxFactory.makeCodeBlock(
           leftBrace: SyntaxFactory.makeLeftBraceToken(),

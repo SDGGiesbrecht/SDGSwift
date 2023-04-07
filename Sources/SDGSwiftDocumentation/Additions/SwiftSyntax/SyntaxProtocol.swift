@@ -130,7 +130,7 @@ import SDGSwiftSource
                 )
               )
             }
-          case .blockComment, .garbageText:
+          case .blockComment, .unexpectedText, .shebang:
             assemblePendingLines()
           case .docLineComment(var contents):
             lineBreakAlready = false

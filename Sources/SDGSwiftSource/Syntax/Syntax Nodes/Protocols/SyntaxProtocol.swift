@@ -136,7 +136,7 @@
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
       if let token = Syntax(self).as(TokenSyntax.self),
-        token.isPresent
+        token.presence == .present
       {
         return token
       }
@@ -147,7 +147,7 @@
     /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
       if let token = Syntax(self).as(TokenSyntax.self),
-        token.isPresent
+        token.presence == .present
       {
         return token
       }
@@ -261,7 +261,7 @@
           identifier = associated.identifier
           genericParameterClause = nil
         case let initializer as InitializerDeclSyntax:
-          parameterClause = initializer.parameters
+          parameterClause = initializer.signature.input
           genericParameterClause = initializer.genericParameterClause
         case let variable as VariableDeclSyntax:
           variableBindings = variable.identifierList()
@@ -321,10 +321,11 @@
     ) {  // @exempt(from: tests)
       #if DEBUG
         switch resolvedExistential() {
+        /*#warning(These no longer exist?)
         case is UnknownSyntax,
           is UnknownPatternSyntax,
           is UnknownTypeSyntax:
-          break
+          break*/
         default:  // @exempt(from: tests)
           print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
         }
