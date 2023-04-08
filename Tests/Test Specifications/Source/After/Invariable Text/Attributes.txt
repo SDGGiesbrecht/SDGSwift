@@ -1,12 +1,12 @@
 i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲
 ̲/̲/̲/̲ Documentation before hidden attribute.
-̲@̲_̲s̲p̲e̲c̲i̲a̲l̲i̲z̲e̲(̲kind:̲ full,̲ w̲h̲e̲r̲e̲ T == Int)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withHiddenAttribute<̲T>̲(̲_̲ parameter:̲ T)̲ {̲}̲
+̲@̲_̲s̲p̲e̲c̲i̲a̲l̲i̲z̲e̲(̲k̲i̲n̲d̲:̲ full,̲ w̲h̲e̲r̲e̲ T == Int)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ withHiddenAttribute<̲T>̲(̲_̲ parameter:̲ T)̲ {̲}̲
 ̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ unavailable)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ unavailable(̲)̲ {̲}̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ introduced:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ introduced(̲)̲ {̲}̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ deprecated:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ deprecated(̲)̲ {̲}̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ obsoleted:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ obsoleted(̲)̲ {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ unavailable(̲)̲ {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ introduced(̲)̲ {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ d̲e̲p̲r̲e̲c̲a̲t̲e̲d̲:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ deprecated(̲)̲ {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ o̲b̲s̲o̲l̲e̲t̲e̲d̲:̲ 4.2.̲1)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ obsoleted(̲)̲ {̲}̲
 ̲
 ̲p̲u̲b̲l̲i̲c̲ c̲l̲a̲s̲s̲ ObjectiveCObject :̲ NSObject {̲
 ̲    @̲o̲b̲j̲c̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ objectiveCMethod(̲)̲ {̲}̲
@@ -20,8 +20,8 @@ i̲m̲p̲o̲r̲t̲ F̲o̲u̲n̲d̲a̲t̲i̲o̲n̲
 ̲@̲d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ discardableResult(̲)̲ -̲>̲ Bool
 ̲
 ̲e̲x̲t̲e̲n̲s̲i̲o̲n̲ ObjectiveCObject {̲
-̲    @̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ introduced:̲ 4.2.̲1)̲ @̲o̲b̲j̲c̲ @̲d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ everything(̲_̲ closure:̲ @̲e̲s̲c̲a̲p̲i̲n̲g̲ @̲a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ (̲)̲ -̲>̲ Void)̲ {̲}̲
+̲    @̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲:̲ 4.2.̲1)̲ @̲o̲b̲j̲c̲ @̲d̲i̲s̲c̲a̲r̲d̲a̲b̲l̲e̲R̲e̲s̲u̲l̲t̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ everything(̲_̲ closure:̲ @̲e̲s̲c̲a̲p̲i̲n̲g̲ @̲a̲u̲t̲o̲c̲l̲o̲s̲u̲r̲e̲ (̲)̲ -̲>̲ Void)̲ {̲}̲
 ̲}̲
 ̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲swift,̲ introduced:̲ 4.0,̲ message:̲ "̲Message."̲)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ introductionMessage(̲)̲ {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲swift,̲ i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲:̲ 4.0,̲ m̲e̲s̲s̲a̲g̲e̲:̲ "̲Message."̲)̲ p̲u̲b̲l̲i̲c̲ f̲u̲n̲c̲ introductionMessage(̲)̲ {̲}̲
 ̲

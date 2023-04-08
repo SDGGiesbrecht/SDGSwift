@@ -136,22 +136,23 @@
     /// Return the first token of the node.
     public func firstToken() -> TokenSyntax? {
       if let token = Syntax(self).as(TokenSyntax.self),
-        token.isPresent
+        token.presence == .present
       {
         return token
       }
-      return children.lazy.compactMap({ $0.firstToken() }).first
+      return children(viewMode: .sourceAccurate).lazy.compactMap({ $0.firstToken() }).first
     }
 
     // @documentation(SDGSwiftSource.Syntax.lastToken())
     /// Returns the last token of the node.
     public func lastToken() -> TokenSyntax? {
       if let token = Syntax(self).as(TokenSyntax.self),
-        token.isPresent
+        token.presence == .present
       {
         return token
       }
-      return children.reversed().lazy.compactMap({ $0.lastToken() }).first
+      return children(viewMode: .sourceAccurate).reversed().lazy.compactMap({ $0.lastToken() })
+        .first
     }
 
     private var parentRelationship: (parent: Syntax, index: Int)? {
@@ -261,7 +262,7 @@
           identifier = associated.identifier
           genericParameterClause = nil
         case let initializer as InitializerDeclSyntax:
-          parameterClause = initializer.parameters
+          parameterClause = initializer.signature.input
           genericParameterClause = initializer.genericParameterClause
         case let variable as VariableDeclSyntax:
           variableBindings = variable.identifierList()
@@ -298,7 +299,7 @@
           identifiers ∪= Set(parameters)
         }
 
-        var result = children.map({
+        var result = children(viewMode: .sourceAccurate).map({
           $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
         }).joined()
         var classes = [
@@ -320,14 +321,7 @@
       function: StaticString = #function
     ) {  // @exempt(from: tests)
       #if DEBUG
-        switch resolvedExistential() {
-        case is UnknownSyntax,
-          is UnknownPatternSyntax,
-          is UnknownTypeSyntax:
-          break
-        default:  // @exempt(from: tests)
-          print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
-        }
+        print("Unidentified syntax node: \(Swift.type(of: self)) (\(file), \(function))")
       #endif
     }
   }

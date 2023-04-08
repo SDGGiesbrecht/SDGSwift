@@ -20,7 +20,7 @@
 ̲    }̲
 ̲
 ̲    /̲/̲/̲ A read‐only computed property with an internal setter.
-̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲set)̲ v̲a̲r̲ readOnlyWithInternalSetter:̲ Bool {̲
+̲    p̲u̲b̲l̲i̲c̲ i̲n̲t̲e̲r̲n̲a̲l̲(̲s̲e̲t̲)̲ v̲a̲r̲ readOnlyWithInternalSetter:̲ Bool {̲
 ̲        g̲e̲t̲ {̲
 ̲            r̲e̲t̲u̲r̲n̲ s̲e̲l̲f̲
 ̲        }̲

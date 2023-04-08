@@ -18,14 +18,14 @@ e̲x̲t̲e̲n̲s̲i̲o̲n̲ Bool {̲
 ̲i̲n̲f̲i̲x̲ o̲p̲e̲r̲a̲t̲o̲r̲ ≠:̲ ComparisonPrecedence
 ̲
 ̲p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ LotsOfAttributes {̲
-̲    associativity:̲ right
-̲    higherThan:̲ DoneAfter,̲ AlsoDoneAfter
-̲    lowerThan:̲ DoneFirst,̲ AlsoDoneFirst
-̲    assignment:̲ t̲r̲u̲e̲
+̲    a̲s̲s̲o̲c̲i̲a̲t̲i̲v̲i̲t̲y̲:̲ right
+̲    h̲i̲g̲h̲e̲r̲T̲h̲a̲n̲:̲ DoneAfter,̲ AlsoDoneAfter
+̲    l̲o̲w̲e̲r̲T̲h̲a̲n̲:̲ DoneFirst,̲ AlsoDoneFirst
+̲    a̲s̲s̲i̲g̲n̲m̲e̲n̲t̲:̲ t̲r̲u̲e̲
 ̲}̲
 ̲
 ̲p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ NoAttributes {̲}̲
 ̲
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ unavailable)̲ i̲n̲f̲i̲x̲ o̲p̲e̲r̲a̲t̲o̲r̲ ≠≠
-̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ unavailable)̲ p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ UnavailablePrecedence {̲}̲
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲)̲ i̲n̲f̲i̲x̲ o̲p̲e̲r̲a̲t̲o̲r̲ ≠≠
+̲@̲a̲v̲a̲i̲l̲a̲b̲l̲e̲(̲*,̲ u̲n̲a̲v̲a̲i̲l̲a̲b̲l̲e̲)̲ p̲r̲e̲c̲e̲d̲e̲n̲c̲e̲g̲r̲o̲u̲p̲ UnavailablePrecedence {̲}̲
 ̲

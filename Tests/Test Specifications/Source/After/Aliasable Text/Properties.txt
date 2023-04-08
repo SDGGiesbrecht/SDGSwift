@@ -11,12 +11,12 @@ extension I̲n̲t̲ {
 
     public let (groupedInteger, groupedString) : (I̲n̲t̲, S̲t̲r̲i̲n̲g̲) = (0, "")
 
-    public fileprivate(s̲e̲t̲) var fileprivateSetter = 0
-    public private(s̲e̲t̲) var privateSetter = 0
+    public fileprivate(set) var fileprivateSetter = 0
+    public private(set) var privateSetter = 0
 }
 
 public class ObjectiveCClass : N̲S̲O̲b̲j̲e̲c̲t̲ {
-    @available(*̲, i̲n̲t̲r̲o̲d̲u̲c̲e̲d̲: 4.2.1) @IBOutlet public weak static var delegate: N̲S̲O̲b̲j̲e̲c̲t̲?
+    @available(*̲, introduced: 4.2.1) @IBOutlet public weak static var delegate: N̲S̲O̲b̲j̲e̲c̲t̲?
     @NSCopying public var copyingProperty: N̲S̲S̲t̲r̲i̲n̲g̲
 }
 

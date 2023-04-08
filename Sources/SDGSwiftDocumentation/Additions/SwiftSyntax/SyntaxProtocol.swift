@@ -37,7 +37,7 @@ import SDGSwiftSource
       else {
         return nil
       }
-      for child in children {
+      for child in children(viewMode: .sourceAccurate) {
         if let found = child.smallest(type, at: position) {
           return found
         }
@@ -50,7 +50,7 @@ import SDGSwiftSource
       guard source().scalars.contains(searchTerm) else {
         return nil
       }
-      for child in children {
+      for child in children(viewMode: .sourceAccurate) {
         if let found = child.smallestSubnode(containing: searchTerm) {
           return found
         }
@@ -130,7 +130,7 @@ import SDGSwiftSource
                 )
               )
             }
-          case .blockComment, .garbageText:
+          case .blockComment, .unexpectedText, .shebang:
             assemblePendingLines()
           case .docLineComment(var contents):
             lineBreakAlready = false

@@ -43,8 +43,11 @@
       case .docBlockComment:
         // #workaround(Not implemented yet.)
         result = ExtendedTokenSyntax(kind: .skipped(text))
-      case .garbageText:  // @exempt(from: tests)
+      case .unexpectedText:  // @exempt(from: tests)
         result = ExtendedTokenSyntax(kind: .source(text))
+      case .shebang:
+        // #workaround(Not implemented yet.)
+        result = ExtendedTokenSyntax(kind: .skipped(text))
       }
       return result
     }

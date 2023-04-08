@@ -23,7 +23,9 @@ import SymbolKit
       if let declaration = self.as(OperatorDeclSyntax.self) {
         return [declaration.api(url: url, source: source, module: module)]
       } else {
-        return children.flatMap({ $0.operators(url: url, source: source, module: module) })
+        return children(viewMode: .sourceAccurate).flatMap({
+          $0.operators(url: url, source: source, module: module)
+        })
       }
     }
 
@@ -35,7 +37,9 @@ import SymbolKit
       if let declaration = self.as(PrecedenceGroupDeclSyntax.self) {
         return [declaration.api(url: url, source: source, module: module)]
       } else {
-        return children.flatMap({ $0.precedenceGroups(url: url, source: source, module: module) })
+        return children(viewMode: .sourceAccurate).flatMap({
+          $0.precedenceGroups(url: url, source: source, module: module)
+        })
       }
     }
   }

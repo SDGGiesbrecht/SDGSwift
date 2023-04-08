@@ -64,7 +64,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let contextSource = ""
       let context = ExtendedSyntaxContext._token(
-        SyntaxFactory.makeToken(.comma),
+        TokenSyntax(.comma),
         context: SyntaxContext(
           fragmentContext: contextSource,
           fragmentOffset: contextSource.offset(of: contextSource.scalars.startIndex),

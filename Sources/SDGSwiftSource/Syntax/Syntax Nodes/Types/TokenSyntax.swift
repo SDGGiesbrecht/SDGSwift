@@ -21,6 +21,27 @@
 
   extension TokenSyntax {
 
+    // MARK: - Initialization
+
+    /// Creates a token.
+    ///
+    /// - Parameters:
+    ///     - kind: A token kind.
+    ///     - leadingTrivia: Optional. Leading trivia.
+    ///     - trailingTrivia: Optional. Trailing trivia.
+    public init(
+      _ kind: TokenKind,
+      leadingTrivia: Trivia = [],
+      trailingTrivia: Trivia = []
+    ) {
+      self.init(
+        kind,
+        leadingTrivia: leadingTrivia,
+        trailingTrivia: trailingTrivia,
+        presence: .present
+      )
+    }
+
     // MARK: - Properties
 
     /// The extended syntax of the token.
@@ -71,12 +92,6 @@
           {
             return .invariable
           }
-          if let declarationModifier = parent.as(DeclModifierSyntax.self),
-            declarationModifier.name == self
-          {
-            // “open”, “mutating”, etc.
-            return .invariable
-          }
           if let accessPath = parent.as(AccessPathComponentSyntax.self),
             accessPath.name == self
           {
@@ -100,9 +115,6 @@
           }
         }
 
-        if text == "init" {
-          return .invariable
-        }
         return .aliasable
       case .stringSegment, .integerLiteral, .floatingLiteral, .stringLiteral, .regexLiteral:
         return .arbitrary
@@ -116,8 +128,7 @@
         .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword,
         .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword,
         .capitalSelfKeyword, .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-        .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword,
-        .__dso_handle__Keyword, .wildcardKeyword, .poundAvailableKeyword, .poundEndifKeyword,
+        .wildcardKeyword, .poundAvailableKeyword, .poundEndifKeyword,
         .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .poundSourceLocationKeyword,
         .poundFileKeyword, .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword,
         .poundDsohandleKeyword, .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
@@ -128,7 +139,7 @@
         .backslash, .stringInterpolationAnchor, .stringQuote, .multilineStringQuote,
         .dollarIdentifier, .contextualKeyword, .unknown, .pound, .backtick, .poundAssertKeyword,
         .poundWarningKeyword, .poundErrorKeyword, .yield, .ellipsis, .singleQuote,
-        .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
+        .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword, .poundHasSymbolKeyword:
         return .invariable
       }
     }
@@ -168,7 +179,7 @@
     public func previousToken() -> TokenSyntax? {
       func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
         var result: Syntax?
-        for sibling in relationship.parent.children
+        for sibling in relationship.parent.children(viewMode: .sourceAccurate)
         where sibling.indexInParent < relationship.index ∧ sibling.firstToken() ≠ nil {
           result = sibling
         }
@@ -189,7 +200,7 @@
     /// Returns the next token.
     public func nextToken() -> TokenSyntax? {
       func nextSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-        for sibling in relationship.parent.children
+        for sibling in relationship.parent.children(viewMode: .sourceAccurate)
         where sibling.indexInParent > relationship.index ∧ sibling.firstToken() ≠ nil {
           return sibling
         }
@@ -222,14 +233,13 @@
         .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword,
         .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword, .falseKeyword,
         .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword,
-        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .__file__Keyword,
-        .__line__Keyword, .__column__Keyword, .__function__Keyword, .__dso_handle__Keyword,
-        .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
+        .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword,
+        .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword,
         .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword,
         .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword,
         .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign,
         .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword,
-        .poundUnavailableKeyword:
+        .poundUnavailableKeyword, .poundHasSymbolKeyword:
         return "keyword"
 
       case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound,
@@ -250,19 +260,10 @@
           return "compilation‐condition"
         }
 
-        if name == "get" ∨ name == "set" {
-          return "keyword"
-        }
         if let attribute = parent?.as(AttributeSyntax.self),
           attribute.attributeName == self
         {
           // @available, @objc, etc.
-          return "keyword"
-        }
-        if let declarationModifier = parent?.as(DeclModifierSyntax.self),
-          declarationModifier.name == self
-        {
-          // “open”, “mutating”, etc.
           return "keyword"
         }
 

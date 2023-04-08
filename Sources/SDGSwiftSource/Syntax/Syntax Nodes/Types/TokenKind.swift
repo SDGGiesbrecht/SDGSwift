@@ -29,8 +29,7 @@
         .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
         .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
         .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-        .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword,
-        .__dso_handle__Keyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace,
+        .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace,
         .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod,
         .comma, .ellipsis, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow,
         .backtick, .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark,
@@ -42,7 +41,7 @@
         .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword,
         .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier,
         .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield,
-        .poundFileIDKeyword, .poundUnavailableKeyword, .regexLiteral:
+        .poundFileIDKeyword, .poundUnavailableKeyword, .regexLiteral, .poundHasSymbolKeyword:
         return false
       case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
         .prefixOperator:

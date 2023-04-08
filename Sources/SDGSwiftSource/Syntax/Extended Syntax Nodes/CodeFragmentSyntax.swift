@@ -99,7 +99,7 @@
 
             return result
           } else {
-            return Array(node.children.map({ syntax(of: $0) }).joined())
+            return Array(node.children(viewMode: .sourceAccurate).map({ syntax(of: $0) }).joined())
           }
         }
       } else {
@@ -144,7 +144,8 @@
             .carriageReturnLineFeeds,
             .lineComment,
             .docLineComment,
-            .garbageText:
+            .unexpectedText,
+            .shebang:
             // Unreachable. Never multiline; never split between multiple fragments.
             return [.trivia(trivia, siblings, index)]
           case .blockComment, .docBlockComment:
