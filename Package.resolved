@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-docc-symbolkit",
       "state" : {
-        "revision" : "8682202025906dce29a8b04f9263f40ba87b89d8",
-        "version" : "0.50700.0"
+        "revision" : "eaaf9b3531186b5390de3f558e58233d37cfb817",
+        "version" : "0.50800.0"
       }
     },
     {
