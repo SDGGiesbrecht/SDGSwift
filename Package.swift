@@ -134,7 +134,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
-      exact: Version(0, 50700, 0)
+      exact: Version(0, 50800, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
