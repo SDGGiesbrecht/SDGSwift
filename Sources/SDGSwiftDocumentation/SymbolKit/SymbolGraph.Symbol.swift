@@ -125,7 +125,7 @@ extension SymbolGraph.Symbol: SymbolLike {
       case .`init`:
         return scan(for: InitializerDeclSyntax.self)
           ?? []  // @exempt(from: tests) Theoretically unreachable.
-      case .ivar, .macro, .module, .snippet, .snippetGroup, .unknown:
+      case .ivar, .macro, .module, .snippet, .snippetGroup:
         return []  // @exempt(from: tests) Theoretically unreachable.
       case .property, .typeProperty, .var:
         return scan(for: VariableDeclSyntax.self)
@@ -143,6 +143,11 @@ extension SymbolGraph.Symbol: SymbolLike {
         return scan(for: TypealiasDeclSyntax.self)
           ?? scan(for: AssociatedtypeDeclSyntax.self)
           ?? []  // @exempt(from: tests) Theoretically unreachable.
+      default:  // @exempt(from: tests)
+        #if DEBUG
+          print("Unidentified symbol graph node: \(kind.identifier) (\(#fileID), \(#function))")
+        #endif
+        return []
       }
     #endif
   }
