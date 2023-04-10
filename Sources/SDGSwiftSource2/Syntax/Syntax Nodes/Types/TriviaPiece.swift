@@ -35,8 +35,7 @@
       case .lineComment:
         result = LineCommentSyntax(source: text)
       case .blockComment:
-        // #workaround(Not implemented yet.)
-        result = ExtendedTokenSyntax(kind: .skipped(text))
+        result = BlockCommentSyntax(source: text)
       case .docLineComment:
         // #workaround(Not implemented yet.)
         result = ExtendedTokenSyntax(kind: .skipped(text))
