@@ -82,6 +82,10 @@ public enum SwiftCompiler: VersionedExternalProcess {
       if SwiftCompiler._warningBelongsToDependency(line) {
         continue
       }
+      if line.hasPrefix("warning: unable to restore workspace state:".scalars.literal()) {  // @exempt(from: tests) Difficult to trigger deliberately.
+        // This warning is irrelevant; mismatched caches are cleared and the build continues.
+        continue
+      }
       return true
     }
     return false
