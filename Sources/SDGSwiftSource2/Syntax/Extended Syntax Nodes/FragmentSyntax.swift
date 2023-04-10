@@ -45,7 +45,7 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
         let childOffsets = lower..<upper
 
         // #workaround(Skipping CodeFragmentsyntax.)
-        if let token = child as? ExtendedTokenSyntax {
+        if child is ExtendedTokenSyntax {
           var childText = childText
           if childLength > upper {
             childText.truncate(at: childText.scalars.index(childText.startIndex, offsetBy: upper))
@@ -53,7 +53,12 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
           childText.removeFirst(lower)
           cropped.append(ExtendedTokenSyntax(kind: .fragment(childText)))
         } else {
-          cropped.append(FragmentSyntax(scalarOffsets: childOffsets, in: child))
+          cropped.append(
+            FragmentSyntax<AnyExtendedSyntax>(
+              scalarOffsets: childOffsets,
+              in: AnyExtendedSyntax(child)
+            )
+          )
         }
       } else if start > scalarOffsets.upperBound {
         break
