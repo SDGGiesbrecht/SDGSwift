@@ -69,6 +69,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNotNil(
       SourceHeadingSyntax(heading: ExtendedTokenSyntax(kind: .sourceHeadingText("..."))).children
     )
+    XCTAssertEqual(
+      FragmentSyntax(scalarOffsets: 1..<5, in: LineCommentSyntax(source: "// ...\n")).text,
+      "/ .."
+    )
   }
 
   func testExtendedTokenKind() {
