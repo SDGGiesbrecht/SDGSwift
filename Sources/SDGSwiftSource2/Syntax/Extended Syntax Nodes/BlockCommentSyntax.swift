@@ -27,11 +27,11 @@ public struct BlockCommentSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
 
   // MARK: - BlockCommentSyntaxProtocol
 
-  static var openingDelimiter: ExtendedTokenKind {
+  internal static var openingDelimiter: ExtendedTokenKind {
     return .openingBlockCommentDelimiter
   }
 
-  static var closingDelimiter: ExtendedTokenKind {
+  internal static var closingDelimiter: ExtendedTokenKind {
     return .closingBlockCommentDelimiter
   }
 
