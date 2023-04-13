@@ -73,6 +73,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       FragmentSyntax(scalarOffsets: 1..<5, in: LineCommentSyntax(source: "// ...\n")).text,
       "/ .."
     )
+    XCTAssertEqual(BlockCommentSyntax(source: "/* ... */").text, "/* ... */")
+    XCTAssertEqual(BlockCommentSyntax(source: "/*\n ...\n */").text, "/*\n ...\n */")
+    XCTAssertEqual(BlockCommentSyntax(source: "/*...*/").text, "/*...*/")
+    XCTAssertEqual(BlockCommentSyntax(source: "/**/").text, "/**/")
+    let missingIndent = [
+      "/*",
+      " ...",
+      " ...",
+      "...",  // Missing indent.
+      " */"
+    ].joined(separator: "\n")
+    XCTAssertEqual(BlockCommentSyntax(source: missingIndent).text, missingIndent)
   }
 
   func testExtendedTokenKind() {
