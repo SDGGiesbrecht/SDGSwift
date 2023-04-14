@@ -82,7 +82,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       " ...",
       " ...",
       "...",  // Missing indent.
-      " */"
+      " */",
     ].joined(separator: "\n")
     XCTAssertEqual(BlockCommentSyntax(source: missingIndent).text, missingIndent)
   }
