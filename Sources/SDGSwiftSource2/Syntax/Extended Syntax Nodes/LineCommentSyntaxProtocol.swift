@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+
 /// Functionality shared between line comments and line documentation.
 internal protocol LineCommentSyntaxProtocol {
   associatedtype Content: LineCommentContentProtocol
@@ -35,11 +37,11 @@ extension LineCommentSyntaxProtocol {
     let delimiter = ExtendedTokenSyntax(kind: Self.delimiter)
 
     var line = source
-    line.removeFirst(delimiter.text.count)
+    line.scalars.removeFirst(delimiter.text.scalars.count)
 
     let indent: ExtendedTokenSyntax?
-    if line.first == " " {
-      line.removeFirst()
+    if line.scalars.first == " " {
+      line.scalars.removeFirst()
       let indentSyntax = ExtendedTokenSyntax(kind: .whitespace(" "))
       indent = indentSyntax
     } else {

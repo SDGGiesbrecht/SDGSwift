@@ -249,6 +249,7 @@ let package = Package(
       name: "SDGSwiftSource2",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(

@@ -17,7 +17,9 @@ import SDGCollections
 import SDGText
 
 /// The content of a comment.
-public struct CommentContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
+public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
+  LineCommentContentProtocol
+{
 
   // MARK: - Initialization
 
