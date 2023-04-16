@@ -18,7 +18,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 
-/// Functionality shared between line comments and line documentation.
+/// Functionality shared between block comments and block documentation.
 internal protocol BlockCommentSyntaxProtocol {
   associatedtype Content: BlockCommentContentProtocol
   static var openingDelimiter: ExtendedTokenKind { get }
