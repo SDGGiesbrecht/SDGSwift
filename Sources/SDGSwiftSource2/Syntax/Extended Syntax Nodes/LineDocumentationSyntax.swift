@@ -25,7 +25,7 @@ public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol
 
   internal typealias Content = DocumentationContentSyntax
 
-  static var delimiter: ExtendedTokenKind {
+  internal static var delimiter: ExtendedTokenKind {
     return .lineDocumentationDelimiter
   }
 
