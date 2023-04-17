@@ -13,7 +13,9 @@
  */
 
 /// Documentation.
-public struct DocumentationContentSyntax: ExtendedSyntax, LineCommentContentProtocol {
+public struct DocumentationContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
+  LineCommentContentProtocol
+{
 
   // #workaround(Not parsed yet.)
   public var source: ExtendedTokenSyntax
