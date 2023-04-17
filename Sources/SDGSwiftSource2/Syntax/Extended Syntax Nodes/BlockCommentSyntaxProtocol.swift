@@ -19,7 +19,7 @@ import SDGCollections
 import SDGText
 
 /// Functionality shared between block comments and block documentation.
-internal protocol BlockCommentSyntaxProtocol {
+internal protocol BlockCommentSyntaxProtocol: ExtendedSyntax {
   associatedtype Content: BlockCommentContentProtocol
   static var openingDelimiter: ExtendedTokenKind { get }
   static var closingDelimiter: ExtendedTokenKind { get }
@@ -126,5 +126,23 @@ extension BlockCommentSyntaxProtocol {
       closingDelimiterIndentation: closingDelimiterIndentation,
       closingDelimiter: closingDelimiter
     )
+  }
+
+  // MARK: - ExtendedSyntax
+
+  public var children: [ExtendedSyntax] {
+    var result: [ExtendedSyntax] = [openingDelimiter]
+    if let openingVerticalMargin = openingVerticalMargin {
+      result.append(openingVerticalMargin)
+    }
+    result.append(contentsOf: content)
+    if let closingVerticalMargin = closingVerticalMargin {
+      result.append(closingVerticalMargin)
+    }
+    if let closingDelimiterIndentation = closingDelimiterIndentation {
+      result.append(closingDelimiterIndentation)
+    }
+    result.append(closingDelimiter)
+    return result
   }
 }

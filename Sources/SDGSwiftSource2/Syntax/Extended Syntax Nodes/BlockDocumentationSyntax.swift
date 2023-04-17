@@ -1,5 +1,5 @@
 /*
- BlockCommentSyntax.swift
+ BlockDocumentationSyntax.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,12 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A block comment.
-public struct BlockCommentSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
+/// A block documentation comment.
+public struct BlockDocumentationSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
 
   // MARK: - Initialization
 
-  /// Parses a block comment.
+  /// Parses a block documentation comment.
   public init(source: String) {
     (
       self.openingDelimiter, self.openingVerticalMargin, self.content, self.closingVerticalMargin,
@@ -27,12 +27,14 @@ public struct BlockCommentSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
 
   // MARK: - BlockCommentSyntaxProtocol
 
+  internal typealias Content = DocumentationContentSyntax
+
   internal static var openingDelimiter: ExtendedTokenKind {
-    return .openingBlockCommentDelimiter
+    return .openingBlockDocumentationDelimiter
   }
 
   internal static var closingDelimiter: ExtendedTokenKind {
-    return .closingBlockCommentDelimiter
+    return .closingBlockDocumentationDelimiter
   }
 
   /// The opening delimiter.
@@ -42,7 +44,7 @@ public struct BlockCommentSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
   public var openingVerticalMargin: ExtendedTokenSyntax?
 
   /// The content.
-  public var content: [LineFragmentSyntax<FragmentSyntax<CommentContentSyntax>>]
+  public var content: [LineFragmentSyntax<FragmentSyntax<DocumentationContentSyntax>>]
 
   /// The closing vertical margin (a possible newline between the delimiter and the content).
   public var closingVerticalMargin: ExtendedTokenSyntax?

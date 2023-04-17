@@ -47,14 +47,20 @@ public enum ExtendedTokenKind: Sendable {
   /// A trio of slashes delimiting a line documentation comment.
   case lineDocumentationDelimiter
 
+  /// A slash and two asterisks delimiting the start of a block comment.
+  case openingBlockDocumentationDelimiter
+
+  /// An asterisk and a slash delimiting the end of a block comment.
+  case closingBlockDocumentationDelimiter
+
   /// Source code.
   case source(String)
 
   /// An incomplete fragment of a token.
   case fragment(String)
 
-  // #workaround(Not parsed yet.)
-  case skipped(String)
+  /// A script shebang.
+  case shebang(String)
 
   /// The textual representation of this token kind.
   public var text: String {
@@ -69,6 +75,10 @@ public enum ExtendedTokenKind: Sendable {
       return "*/"
     case .lineDocumentationDelimiter:
       return "///"
+    case .openingBlockDocumentationDelimiter:
+      return "/**"
+    case .closingBlockDocumentationDelimiter:
+      return "*/"
     case .string(let text),
       .whitespace(let text),
       .lineBreaks(let text),
@@ -78,7 +88,7 @@ public enum ExtendedTokenKind: Sendable {
       .sourceHeadingText(let text),
       .source(let text),
       .fragment(let text),
-      .skipped(let text):
+      .shebang(let text):
       return text
     }
   }
