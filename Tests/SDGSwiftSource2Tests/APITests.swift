@@ -86,6 +86,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     ].joined(separator: "\n")
     XCTAssertEqual(BlockCommentSyntax(source: missingIndent).text, missingIndent)
     XCTAssertEqual(LineDocumentationSyntax(source: "/// ...").text, "/// ...")
+    XCTAssertEqual(BlockDocumentationSyntax(source: "/** ... */").text, "/** ... */")
   }
 
   func testExtendedTokenKind() {
