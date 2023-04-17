@@ -44,6 +44,9 @@ public enum ExtendedTokenKind: Sendable {
   /// The text of a source heading.
   case sourceHeadingText(String)
 
+  /// A trio of slashes delimiting a line documentation comment.
+  case lineDocumentationDelimiter
+
   /// Source code.
   case source(String)
 
@@ -64,6 +67,8 @@ public enum ExtendedTokenKind: Sendable {
       return "/*"
     case .closingBlockCommentDelimiter:
       return "*/"
+    case .lineDocumentationDelimiter:
+      return "///"
     case .string(let text),
       .whitespace(let text),
       .lineBreaks(let text),
