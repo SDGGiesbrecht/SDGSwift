@@ -62,9 +62,6 @@ public enum ExtendedTokenKind: Sendable {
   /// A script shebang.
   case shebang(String)
 
-  // #workaround(Not parsed yet.)
-  case skipped(String)
-
   /// The textual representation of this token kind.
   public var text: String {
     switch self {
@@ -91,8 +88,7 @@ public enum ExtendedTokenKind: Sendable {
       .sourceHeadingText(let text),
       .source(let text),
       .fragment(let text),
-      .shebang(let text),
-      .skipped(let text):
+      .shebang(let text):
       return text
     }
   }
