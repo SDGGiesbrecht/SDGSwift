@@ -92,7 +92,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(ExtendedTokenKind.whitespace(" ").text, " ")
     XCTAssertEqual(ExtendedTokenKind.lineBreaks("\n").text, "\n")
     XCTAssertEqual(ExtendedTokenKind.source("...").text, "...")
-    XCTAssertEqual(ExtendedTokenKind.skipped("...").text, "...")
   }
 
   func testParsing() throws {
