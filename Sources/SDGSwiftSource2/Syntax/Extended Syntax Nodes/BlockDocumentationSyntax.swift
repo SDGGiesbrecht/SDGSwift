@@ -38,20 +38,20 @@ public struct BlockDocumentationSyntax: BlockCommentSyntaxProtocol, ExtendedSynt
   }
 
   /// The opening delimiter.
-  var openingDelimiter: ExtendedTokenSyntax
+  public var openingDelimiter: ExtendedTokenSyntax
 
   /// The opening vertical margin (a possible newline between the delimiter and the content).
-  var openingVerticalMargin: ExtendedTokenSyntax?
+  public var openingVerticalMargin: ExtendedTokenSyntax?
 
   /// The content.
   public var content: [LineFragmentSyntax<FragmentSyntax<DocumentationContentSyntax>>]
 
   /// The closing vertical margin (a possible newline between the delimiter and the content).
-  var closingVerticalMargin: ExtendedTokenSyntax?
+  public var closingVerticalMargin: ExtendedTokenSyntax?
 
   /// The indentation of the closing delimiter (a possible space preceding it).
-  var closingDelimiterIndentation: ExtendedTokenSyntax?
+  public var closingDelimiterIndentation: ExtendedTokenSyntax?
 
   /// The closing delimiter.
-  var closingDelimiter: ExtendedTokenSyntax
+  public var closingDelimiter: ExtendedTokenSyntax
 }
