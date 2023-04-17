@@ -17,7 +17,7 @@ public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol
 
   // MARK: - Initialization
 
-  internal init(source: String) {
+  public init(source: String) {
     (delimiter, indent, content) = Self.parse(source: source)
   }
 
