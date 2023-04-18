@@ -265,7 +265,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
       ),
         resolved ≥ requiresEnablingCodeCoverage
       {
-        earliest.increase(to: requiresEnablingCodeCoverage)
+        earliest.increase(to: requiresEnablingCodeCoverage)  // @exempt(from: tests)
         arguments.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
       }
 
