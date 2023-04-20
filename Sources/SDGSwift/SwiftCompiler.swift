@@ -256,9 +256,22 @@ public enum SwiftCompiler: VersionedExternalProcess {
     private static func codeCoverageDataFile(
       for package: PackageRepository
     ) -> Swift.Result<Foundation.URL, VersionedExternalProcessExecutionError<Self>> {
-      let earliest = Version(5, 2, 0)
+      var earliest = Version(5, 2, 0)
+      var arguments = ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"]
+
+      // #workaround(Swift 5.7.2, This seems to actually trigger a test run in 5.8, should it be refactored?)
+      let requiresEnablingCodeCoverage = Version(5, 8, 0)
+      if let resolved = version(
+        forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+      ),
+        resolved ≥ requiresEnablingCodeCoverage
+      {
+        earliest.increase(to: requiresEnablingCodeCoverage)  // @exempt(from: tests)
+        arguments.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
+      }
+
       return runCustomSubcommand(
-        ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"],
+        arguments,
         in: package.location,
         versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
       ).map { URL(parsingOutput: $0) }

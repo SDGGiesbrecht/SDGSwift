@@ -61,12 +61,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             // @example(configurationLoading)
             // These refer to a real, working sample product.
             // See its source for more details:
-            // https://github.com/SDGGiesbrecht/SDGSwift/tree/9.0.0/Sources/SampleConfiguration
+            // https://github.com/SDGGiesbrecht/SDGSwift/tree/13.0.0/Sources/SampleConfiguration
             let product = "SampleConfiguration"
             let packageName = "SDGSwift"
             let packageURL = URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!
             let minimumMacOSVersion = Version(10, 13)
-            let version = Version(9, 0, 0)
+            let version = Version(13, 0, 0)
             let type = SampleConfiguration.self  // Import it first if necessary.
 
             // Assuming the above file is called “SampleConfigurationFile.swift”...
@@ -247,6 +247,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               for: durationPattern,
               with: "([duration]s)".scalars
             )
+            remove(
+              logEntry:
+                "warning: failed to retrieve search paths with pkg\u{2D}config; maybe pkg\u{2D}config is not installed"
+            )
+            remove(logEntry: "warning: couldn\u{27}t find pc file for sqlite3")
+            remove(logEntry: "[[...]/[...]] Archiving")
 
             // #workaround(Swift 5.7, Log differs by platform due to SwiftSyntax.)
             #if !os(Linux)
