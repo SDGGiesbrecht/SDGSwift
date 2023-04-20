@@ -12,10 +12,8 @@ Loading “SampleConfigurationFile.swift”...
 Compiling plugin GenerateManual...
 Building for debugging...
 [[...]/[...]] Emitting module SwiftSyntax
-[[...]/[...]] Archiving libSwiftSyntax.a
 [[...]/[...]] Emitting module SwiftDiagnostics
 [[...]/[...]] Emitting module SwiftParser
-[[...]/[...]] Archiving libSwiftSyntaxParser.a
 Build complete! ([duration]s)
 
 None

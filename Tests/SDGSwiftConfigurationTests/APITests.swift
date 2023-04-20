@@ -252,6 +252,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 "warning: failed to retrieve search paths with pkg\u{2D}config; maybe pkg\u{2D}config is not installed"
             )
             remove(logEntry: "warning: couldn\u{27}t find pc file for sqlite3")
+            remove(logEntry: "[[...]/[...]] Archiving")
 
             // #workaround(Swift 5.7, Log differs by platform due to SwiftSyntax.)
             #if !os(Linux)
