@@ -247,6 +247,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               for: durationPattern,
               with: "([duration]s)".scalars
             )
+            remove(
+              logEntry:
+                "warning: failed to retrieve search paths with pkg-config; maybe pkg-config is not installed"
+            )
+            remove(logEntry: "warning: couldn't find pc file for sqlite3")
 
             // #workaround(Swift 5.7, Log differs by platform due to SwiftSyntax.)
             #if !os(Linux)
