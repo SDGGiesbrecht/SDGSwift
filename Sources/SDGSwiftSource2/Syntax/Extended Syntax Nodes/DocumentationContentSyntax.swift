@@ -12,13 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Markdown
+
 /// Documentation.
 public struct DocumentationContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
   LineCommentContentProtocol
 {
 
-  // #workaround(Not parsed yet.)
-  public var source: ExtendedTokenSyntax
+  // MARK: - Properties
+
+  public let source: ExtendedTokenSyntax
 
   // MARK: - ExtendedSyntax
 
@@ -29,7 +32,8 @@ public struct DocumentationContentSyntax: BlockCommentContentProtocol, ExtendedS
   // MARK: - LineCommentContentProtocol
 
   public init(source: String) {
-    // #workaround(Not parsed yet, nor has context been channelled here.)
     self.source = ExtendedTokenSyntax(kind: .source(source))
+    // #warning(Haven’t done anything with this yet.)
+    let markdown = Document(parsing: source)
   }
 }
