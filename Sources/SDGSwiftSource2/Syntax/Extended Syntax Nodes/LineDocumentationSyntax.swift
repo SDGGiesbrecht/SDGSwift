@@ -36,5 +36,5 @@ public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol
   public var indent: ExtendedTokenSyntax?
 
   /// The content of the line documentation comment.
-  public var content: DocumentationContentSyntax
+  public var content: FragmentSyntax<DocumentationContentSyntax>
 }

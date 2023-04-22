@@ -20,7 +20,7 @@ internal protocol LineCommentSyntaxProtocol {
   static var delimiter: ExtendedTokenKind { get }
   var delimiter: ExtendedTokenSyntax { get }
   var indent: ExtendedTokenSyntax? { get }
-  var content: Content { get }
+  var content: FragmentSyntax<Content> { get }
 }
 
 extension LineCommentSyntaxProtocol {
@@ -28,11 +28,13 @@ extension LineCommentSyntaxProtocol {
   // MARK: - Initialization
 
   internal static func parse(
-    source: String
+    precedingContentContext: String,
+    source: String,
+    followingContentContext: String
   ) -> (
     delimiter: ExtendedTokenSyntax,
     indent: ExtendedTokenSyntax?,
-    content: Content
+    content: FragmentSyntax<Content>
   ) {
     let delimiter = ExtendedTokenSyntax(kind: Self.delimiter)
 
@@ -48,9 +50,11 @@ extension LineCommentSyntaxProtocol {
       indent = nil
     }
 
-    let content = Content(source: line)
+    let content = Content(source: precedingContentContext + line + followingContentContext)
+    let precedingCount = precedingContentContext.scalars.count
+    let fragment = FragmentSyntax(scalarOffsets: precedingCount ..< precedingCount + line.scalars.count, in: content)
 
-    return (delimiter: delimiter, indent: indent, content: content)
+    return (delimiter: delimiter, indent: indent, content: fragment)
   }
 
   // MARK: - ExtendedSyntax

@@ -20,13 +20,13 @@ public struct LineCommentSyntax: ExtendedSyntax, LineCommentSyntaxProtocol {
   /// Creates a line comment syntax node.
   ///
   /// - Parameters:
-  ///   - openingQuotationMark: Optional. The opening quotation mark.
-  ///   - string: The contents of the string.
-  ///   - closingQuotationMark: Optional. The closing quotation mark.
+  ///   - delimiter: The delimiter.
+  ///   - indent: Any indentation after the delimiter.
+  ///   - content: The content of the comment.
   public init(
     delimiter: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .lineCommentDelimiter),
     indent: ExtendedTokenSyntax? = ExtendedTokenSyntax(kind: .whitespace(" ")),
-    content: CommentContentSyntax
+    content: FragmentSyntax<CommentContentSyntax>
   ) {
     self.delimiter = delimiter
     self.indent = indent
@@ -47,7 +47,7 @@ public struct LineCommentSyntax: ExtendedSyntax, LineCommentSyntaxProtocol {
   public let indent: ExtendedTokenSyntax?
 
   /// The content.
-  public let content: CommentContentSyntax
+  public let content: FragmentSyntax<CommentContentSyntax>
 
   // MARK: - LineCommentSyntaxProtocol
 
