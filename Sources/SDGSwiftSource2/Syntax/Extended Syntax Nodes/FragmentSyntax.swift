@@ -79,3 +79,14 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
 
   public let children: [ExtendedSyntax]
 }
+
+extension FragmentSyntax where Context == DocumentationContentSyntax {
+
+  public func markdownSyntax(cache: inout MarkdownParserCache) -> FragmentSyntax<MarkdownSyntax> {
+    let contextTree = context.markdownSyntax(cache: &cache)
+    return FragmentSyntax<MarkdownSyntax>(
+      scalarOffsets: scalarOffsets,
+      in: MarkdownSyntax(contextTree)
+    )
+  }
+}
