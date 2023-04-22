@@ -129,8 +129,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ) -> Bool {
             if let token = node as? ExtendedTokenSyntax {
               result.append(contentsOf: token.text)
-            } else if let markup = (node as? MarkdownSyntax)?.markdown {
-              #warning("Skipping at the moment.")
+            } else if let markdown = (node as? MarkdownSyntax)?.markdown,
+              markdown.isEmpty
+            {
+              result.append(contentsOf: markdown.text)
             }
             return true
           }

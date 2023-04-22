@@ -30,7 +30,7 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
     self.children = [node]
   }
 
-  /// Creates a syntax node representing one section of a fragmented context, such as a single line of markup in documentation spread across a series of single‐line delimiters.
+  /// Creates a syntax node representing one section of a fragmented context, such as a single line of mark‐up in documentation spread across a series of single‐line delimiters.
   ///
   /// - Parameters:
   ///   - scalarOffsets: The range the fragment describes within its context.
