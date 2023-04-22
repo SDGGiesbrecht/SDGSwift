@@ -17,8 +17,12 @@ public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol
 
   // MARK: - Initialization
 
-  public init(source: String) {
-    (delimiter, indent, content) = Self.parse(source: source)
+  public init(
+    precedingContentContext: String? = nil,
+    source: String,
+    followingContentContext: String? = nil
+  ) {
+    (delimiter, indent, content) = Self.parse(precedingContentContext: precedingContentContext ?? "", source: source, followingContentContext: followingContentContext ?? "")
   }
 
   // MARK: - LineCommentSyntaxProtocol
