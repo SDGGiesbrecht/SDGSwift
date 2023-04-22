@@ -87,6 +87,20 @@
     ///
     /// - Returns: Whether extended parsing should be applied to a node. Return `true` to try to have the token visited as an `ExtendedSyntax` tree; return `false` to skip extended parsing and have the token visited as a `TokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and a `TokenSyntax` instance will be visited regardless.
     func shouldExtend(_ node: TokenSyntax) -> Bool
+
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(FragmentSyntax<DocumentationContentSyntax>))
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Implement this to skip extended parsing for particular nodes.
+    ///
+    /// - Parameters:
+    ///     - node: A fragment of documentation syntax.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a documentation node. Return `true` to try to have the node visited as a markdown syntax tree; return `false` to skip extended parsing and have the token visited as a flat `ExtendedTokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and an `ExtendedTokenSyntax` instance will be visited regardless.
+    func shouldExtend(_ node: FragmentSyntax<DocumentationContentSyntax>) -> Bool
+
+    /// A cache for the syntax scanner.
+    var cache: SyntaxScannerCache { get set }
   }
 
   extension SyntaxScanner {
@@ -175,6 +189,20 @@
       return true
     }
 
+    // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
+    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(FragmentSyntax<DocumentationContentSyntax>))
+    /// Checks whether a node should be scanned in its extended form.
+    ///
+    /// Implement this to skip extended parsing for particular nodes.
+    ///
+    /// - Parameters:
+    ///     - node: A fragment of documentation syntax.
+    ///
+    /// - Returns: Whether extended parsing should be applied to a documentation node. Return `true` to try to have the node visited as a markdown syntax tree; return `false` to skip extended parsing and have the token visited as a flat `ExtendedTokenSyntax` instance. If the node does not support extended parsing, the result will be ignored and an `ExtendedTokenSyntax` instance will be visited regardless.
+    public func shouldExtend(_ node: FragmentSyntax<DocumentationContentSyntax>) -> Bool {
+      return true
+    }
+
     // MARK: - Scanning
 
     // @documentation(SDGSwiftSource.SyntaxScanner.scan)
@@ -216,10 +244,17 @@
     }
 
     private mutating func scan(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) {
-      // #workaround(Skipping code fragment syntax.)
-      if visit(node, context: context) {
-        for child in node.children {
-          scan(child, context: context)
+      if let documentationFragment = node as? FragmentSyntax<DocumentationContentSyntax>,
+        shouldExtend(documentationFragment)
+      {
+        let markdown = documentationFragment.context.markdownSyntax(
+          cache: &self.cache.markdownParserCache
+        )
+      } else {
+        if visit(node, context: context) {
+          for child in node.children {
+            scan(child, context: context)
+          }
         }
       }
     }

@@ -26,6 +26,9 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
   ///   - scalarOffsets: The range the fragment describes within its context.
   ///   - context: The syntax node into which the fragment node provides a view.
   public init(scalarOffsets: CountableRange<Int>, in context: Context) {
+    self.context = context
+    self.scalarOffsets = scalarOffsets
+
     var cropped: [ExtendedSyntax] = []
     var index = 0
     for child in context.children {
@@ -66,6 +69,11 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
     }
     self.children = cropped
   }
+
+  // MARK: - Properties
+
+  internal let context: Context
+  internal let scalarOffsets: CountableRange<Int>
 
   // MARK: - ExtendedSyntax
 
