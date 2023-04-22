@@ -18,5 +18,9 @@
 
 /// The context of a trivia piece.
 public struct TriviaPieceContext {
-  // #workaround(Is this type still needed?)
+
+  // MARK: - Properties
+
+  internal var precedingDocumentationContext: String?
+  internal var followingDocumentationContext: String?
 }

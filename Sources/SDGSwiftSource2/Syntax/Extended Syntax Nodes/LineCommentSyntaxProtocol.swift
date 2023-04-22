@@ -52,7 +52,10 @@ extension LineCommentSyntaxProtocol {
 
     let content = Content(source: precedingContentContext + line + followingContentContext)
     let precedingCount = precedingContentContext.scalars.count
-    let fragment = FragmentSyntax(scalarOffsets: precedingCount ..< precedingCount + line.scalars.count, in: content)
+    let fragment = FragmentSyntax(
+      scalarOffsets: precedingCount..<precedingCount + line.scalars.count,
+      in: content
+    )
 
     return (delimiter: delimiter, indent: indent, content: fragment)
   }

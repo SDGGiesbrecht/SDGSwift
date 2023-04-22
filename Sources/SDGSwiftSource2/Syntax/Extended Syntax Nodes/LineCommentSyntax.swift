@@ -35,7 +35,11 @@ public struct LineCommentSyntax: ExtendedSyntax, LineCommentSyntaxProtocol {
 
   /// Parses a string literal.
   public init(source: String) {
-    (self.delimiter, self.indent, self.content) = Self.parse(precedingContentContext: "", source: source, followingContentContext: "")
+    (self.delimiter, self.indent, self.content) = Self.parse(
+      precedingContentContext: "",
+      source: source,
+      followingContentContext: ""
+    )
   }
 
   // MARK: - Properties

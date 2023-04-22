@@ -25,7 +25,7 @@
     }
 
     /// The extended syntax of the trivia piece.
-    public var extended: ExtendedSyntax {
+    public func extended(context: TriviaPieceContext?) -> ExtendedSyntax {
       let result: ExtendedSyntax
       switch self {
       case .spaces, .tabs:
@@ -37,7 +37,11 @@
       case .blockComment:
         result = BlockCommentSyntax(source: text)
       case .docLineComment:
-        result = LineDocumentationSyntax(source: text)
+        return LineDocumentationSyntax(
+          precedingContentContext: context?.precedingDocumentationContext,
+          source: text,
+          followingContentContext: context?.followingDocumentationContext
+        )
       case .docBlockComment:
         result = BlockDocumentationSyntax(source: text)
       case .unexpectedText:  // @exempt(from: tests)

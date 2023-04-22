@@ -22,7 +22,11 @@ public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol
     source: String,
     followingContentContext: String? = nil
   ) {
-    (delimiter, indent, content) = Self.parse(precedingContentContext: precedingContentContext ?? "", source: source, followingContentContext: followingContentContext ?? "")
+    (delimiter, indent, content) = Self.parse(
+      precedingContentContext: precedingContentContext ?? "",
+      source: source,
+      followingContentContext: followingContentContext ?? ""
+    )
   }
 
   // MARK: - LineCommentSyntaxProtocol

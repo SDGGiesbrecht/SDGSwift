@@ -13,6 +13,8 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SDGLogic
+
   import SwiftSyntax
 
   /// A scanner for read‐only handling of a syntax tree.
@@ -224,9 +226,35 @@
 
     private mutating func scan(_ trivia: Trivia, context: TriviaContext) {
       if visit(trivia, context: context) {
-        for index in trivia.indices {
-          let newContext = TriviaPieceContext()
-          let piece = trivia[index]
+        var handledDocumentation: [[String]] = [[]]
+        var pendingDocumentation: [[String]] = trivia.lineDocumentationSourceGroups()
+        for piece in trivia.pieces {
+          var currentSource: String?
+          if case .docLineComment = piece,
+            let groupIndex = pendingDocumentation.indices.first,
+            ¬pendingDocumentation[groupIndex].isEmpty
+          {
+            currentSource = pendingDocumentation[groupIndex].removeFirst()
+          }
+          defer {
+            if let current = currentSource,
+              let groupIndex = handledDocumentation.indices.last
+            {
+              handledDocumentation[groupIndex].append(current)
+            }
+            if pendingDocumentation.first?.isEmpty == true {
+              handledDocumentation.append(pendingDocumentation.removeFirst())
+            }
+          }
+
+          let newContext = TriviaPieceContext(
+            precedingDocumentationContext: handledDocumentation.last?.appending("").joined(
+              separator: "\n"
+            ),
+            followingDocumentationContext: pendingDocumentation.first?.prepending("").joined(
+              separator: "\n"
+            )
+          )
           scan(piece, context: newContext)
         }
       }
@@ -235,7 +263,7 @@
     private mutating func scan(_ piece: TriviaPiece, context: TriviaPieceContext) {
       if visit(piece, context: context) {
         let newContext = ExtendedSyntaxContext()
-        scan(piece.extended, context: newContext)
+        scan(piece.extended(context: context), context: newContext)
       }
     }
   }
