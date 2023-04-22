@@ -23,6 +23,10 @@ public struct DocumentationContentSyntax: BlockCommentContentProtocol, ExtendedS
 
   public let source: ExtendedTokenSyntax
 
+  public func markdownSyntax(cache: inout MarkdownParserCache) -> Markdown.Document {
+    return cache.parse(source: source.text)
+  }
+
   // MARK: - ExtendedSyntax
 
   public var children: [ExtendedSyntax] {
@@ -33,7 +37,5 @@ public struct DocumentationContentSyntax: BlockCommentContentProtocol, ExtendedS
 
   public init(source: String) {
     self.source = ExtendedTokenSyntax(kind: .source(source))
-    // #warning(Haven’t done anything with this yet.)
-    let markdown = Document(parsing: source)
   }
 }
