@@ -18,17 +18,17 @@ public struct MarkdownSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  public init(_ markUp: Markup) {
-    self.markUp = markUp
+  public init(_ markdown: Markup) {
+    self.markdown = markdown
   }
 
   // MARK: - Properties
 
-  public var markUp: Markup
+  public var markdown: Markup
 
   // MARK: - ExtendedSyntax
 
   public var children: [ExtendedSyntax] {
-    return markUp.children.map { MarkdownSyntax($0) }
+    return markdown.children.map { MarkdownSyntax($0) }
   }
 }

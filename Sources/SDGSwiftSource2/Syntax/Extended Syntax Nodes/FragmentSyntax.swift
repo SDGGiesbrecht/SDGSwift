@@ -20,6 +20,16 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
 
   // MARK: - Initialization
 
+  /// Creates a fragment node representing the entirety of another syntax node.
+  ///
+  /// - Parameters:
+  ///   - node: The base node.
+  public init(entiretyOf node: Context) {
+    self.context = node
+    self.scalarOffsets = 0..<node.text.scalars.count
+    self.children = [node]
+  }
+
   /// Creates a syntax node representing one section of a fragmented context, such as a single line of markup in documentation spread across a series of single‐line delimiters.
   ///
   /// - Parameters:

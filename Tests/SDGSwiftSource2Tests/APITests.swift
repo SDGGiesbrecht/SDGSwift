@@ -50,7 +50,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       LineCommentSyntax(
         delimiter: ExtendedTokenSyntax(kind: .lineCommentDelimiter),
         indent: ExtendedTokenSyntax(kind: .whitespace(" ")),
-        content: CommentContentSyntax(source: "...")
+        content: FragmentSyntax(entiretyOf: CommentContentSyntax(source: "..."))
       ).text,
       "// ..."
     )
@@ -106,7 +106,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         sourceFile.write(to: &roundTripSource)
         XCTAssertEqual(roundTripSource, originalSource)
 
-        struct DefaultSyntaxScanner: SyntaxScanner {}
+        struct DefaultSyntaxScanner: SyntaxScanner {
+          var cache = SyntaxScannerCache()
+        }
         var defaultScanner = DefaultSyntaxScanner()
         defaultScanner.scan(sourceFile)
 
@@ -127,9 +129,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ) -> Bool {
             if let token = node as? ExtendedTokenSyntax {
               result.append(contentsOf: token.text)
+            } else if let markup = (node as? MarkdownSyntax)?.markdown {
+              #warning("Skipping at the moment.")
             }
             return true
           }
+          var cache = SyntaxScannerCache()
         }
         var syntaxScanner = RoundTripSyntaxScanner()
         syntaxScanner.scan(sourceFile)
