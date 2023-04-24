@@ -24,20 +24,30 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
   /// - Parameters:
   ///   - source: The Markdown source.
   public init(source: String) {
-    self.init(unsafeMarkdown: Document(parsing: source), source: source)
+    self.init(
+      unsafeMarkdown: Document(parsing: source),
+      rootSource: source,
+      range: source.scalars.bounds
+    )
   }
 
   /// This must remain private to ensure only *parsed* nodes are accepted, so that they have the requisite range information. See `children`.
-  private init(unsafeMarkdown markdown: Markup, source: String) {
+  private init(
+    unsafeMarkdown markdown: Markup,
+    rootSource: String,
+    range: Range<String.UnicodeScalarView.Index>
+  ) {
     self.markdown = markdown
-    self.source = source
+    self.rootSource = rootSource
+    self.range = range
   }
 
   // MARK: - Properties
 
   /// The Markdown node.
   public let markdown: Markup
-  private let source: String
+  private let rootSource: String
+  private let range: Range<String.UnicodeScalarView.Index>
 
   // MARK: - SyntaxNode
 
@@ -51,9 +61,13 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       return markdown.children.map { node in
         #warning("Debugging...")
         assert(node.range != nil, "Node does not know its range: \(node)")
-        
+
         let range = node.range!  // If a node knows its range; so will its children.
-        return MarkdownNode(unsafeMarkdown: node, source: source[range])
+        return MarkdownNode(
+          unsafeMarkdown: node,
+          rootSource: rootSource,
+          range: rootSource.scalarRange(of: range)
+        )
       }
     }
   }
@@ -61,6 +75,6 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
   // MARK: - TextOutputStreamable
 
   public func write<Target>(to target: inout Target) where Target: TextOutputStream {
-    source.write(to: &target)
+    String(String.UnicodeScalarView(rootSource.scalars[range])).write(to: &target)
   }
 }

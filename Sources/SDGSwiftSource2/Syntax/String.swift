@@ -18,17 +18,21 @@ import Markdown
 
 extension String {
 
-  private func index(of location: SourceLocation) -> String.Index {
+  private func scalarIndex(of location: SourceLocation) -> String.UnicodeScalarView.Index {
     let lineIndex =
       lines.index(lines.startIndex, offsetBy: location.line, limitedBy: lines.endIndex)
       ?? lines.endIndex
     let lineScalar = lineIndex.samePosition(in: scalars)
     let lineUTF8 = lineScalar.samePosition(in: utf8)!
-    return utf8.index(lineUTF8, offsetBy: location.column, limitedBy: utf8.endIndex)
+    let columnUTF8 =
+      utf8.index(lineUTF8, offsetBy: location.column, limitedBy: utf8.endIndex)
       ?? utf8.endIndex
+    return columnUTF8.scalar(in: scalars)
   }
 
-  internal subscript(_ sourceRange: Range<SourceLocation>) -> String {
-    return String(self[index(of: sourceRange.lowerBound)..<index(of: sourceRange.upperBound)])
+  internal func scalarRange(of sourceRange: Range<SourceLocation>) -> Range<
+    String.UnicodeScalarView.Index
+  > {
+    return scalarIndex(of: sourceRange.lowerBound)..<scalarIndex(of: sourceRange.upperBound)
   }
 }
