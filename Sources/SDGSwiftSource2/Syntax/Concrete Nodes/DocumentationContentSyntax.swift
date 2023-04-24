@@ -33,9 +33,7 @@ public struct DocumentationContent: BlockCommentContentProtocol, LineCommentCont
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    let parsed = cache.parse(markdown: source)
-    #warning("Not implemented yet.")
-    fatalError()
+    return [MarkdownNode(cache.parse(markdown: source))]
   }
 
   // MARK: - TextOutputStreamable

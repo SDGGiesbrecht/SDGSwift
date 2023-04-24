@@ -97,16 +97,3 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
     String(String.UnicodeScalarView(scalars)).write(to: &target)
   }
 }
-
-#warning("This should not be here anymore.")
-/*
-extension Fragment where Context == DocumentationContent {
-
-  public func markdownSyntax(cache: inout MarkdownParserCache) -> FragmentSyntax<MarkdownSyntax> {
-    let contextTree = context.markdownSyntax(cache: &cache)
-    return FragmentSyntax<MarkdownSyntax>(
-      scalarOffsets: scalarOffsets,
-      in: MarkdownSyntax(contextTree)
-    )
-  }
-}*/
