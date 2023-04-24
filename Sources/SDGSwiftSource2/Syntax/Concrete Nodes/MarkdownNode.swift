@@ -30,12 +30,17 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    return markdown.children.map { MarkdownNode($0) }
+    switch markdown {
+    case let text as Text:
+      return [Token(kind: .documentationText(text.string))]
+    default:
+      return markdown.children.map { MarkdownNode($0) }
+    }
   }
 
   // MARK: - TextOutputStreamable
 
   public func write<Target>(to target: inout Target) where Target: TextOutputStream {
-    #warning("Not implemented yet.")
+    markdown.format().write(to: &target)
   }
 }

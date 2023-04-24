@@ -53,6 +53,9 @@ extension Token {
     /// An asterisk and a slash delimiting the end of a block comment.
     case closingBlockDocumentationDelimiter
 
+    /// Documentation text.
+    case documentationText(String)
+
     /// Source code.
     case source(String)
 
@@ -85,6 +88,7 @@ extension Token {
         .commentURL(let text),
         .mark(let text),
         .sourceHeadingText(let text),
+        .documentationText(let text),
         .source(let text),
         .fragment(let text),
         .shebang(let text):
