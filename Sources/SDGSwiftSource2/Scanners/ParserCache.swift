@@ -25,13 +25,13 @@ public struct ParserCache {
 
   // MARK: - Properties
 
-  public var parsedMarkdown: [String: Markdown.Document] = [:]
+  public var parsedMarkdown: [String: MarkdownNode] = [:]
 
   // MARK: - Parsing
 
-  internal mutating func parse(markdown: String) -> Markdown.Document {
+  internal mutating func parse(markdown: String) -> MarkdownNode {
     return cached(in: &parsedMarkdown[markdown]) {
-      return Document(parsing: markdown)
+      return MarkdownNode(source: markdown)
     }
   }
 }

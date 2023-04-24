@@ -19,13 +19,25 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
 
   // MARK: - Initialization
 
-  public init(_ markdown: Markup) {
+  /// Creates a Markdown node by parsing source.
+  ///
+  /// - Parameters:
+  ///   - source: The Markdown source.
+  public init(source: String) {
+    self.init(unsafeMarkdown: Document(parsing: source), source: source)
+  }
+
+  /// This must remain private to ensure only *parsed* nodes are accepted, so that they have the requisite range information. See `children`.
+  private init(unsafeMarkdown markdown: Markup, source: String) {
     self.markdown = markdown
+    self.source = source
   }
 
   // MARK: - Properties
 
-  public var markdown: Markup
+  /// The Markdown node.
+  public let markdown: Markup
+  private let source: String
 
   // MARK: - SyntaxNode
 
@@ -33,14 +45,22 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     switch markdown {
     case let text as Text:
       return [Token(kind: .documentationText(text.string))]
+    case let lineBreak as LineBreak:
+      return [Token(kind: .lineBreaks(lineBreak.plainText))]
     default:
-      return markdown.children.map { MarkdownNode($0) }
+      return markdown.children.map { node in
+        #warning("Debugging...")
+        assert(node.range != nil, "Node does not know its range: \(node)")
+        
+        let range = node.range!  // If a node knows its range; so will its children.
+        return MarkdownNode(unsafeMarkdown: node, source: source[range])
+      }
     }
   }
 
   // MARK: - TextOutputStreamable
 
   public func write<Target>(to target: inout Target) where Target: TextOutputStream {
-    markdown.format().write(to: &target)
+    source.write(to: &target)
   }
 }

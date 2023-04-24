@@ -41,20 +41,20 @@ public struct BlockDocumentation: BlockCommentProtocol, SyntaxNode {
   }
 
   /// The opening delimiter.
-  public var openingDelimiter: Token
+  public let openingDelimiter: Token
 
   /// The opening vertical margin (a possible newline between the delimiter and the content).
-  public var openingVerticalMargin: Token?
+  public let openingVerticalMargin: Token?
 
   /// The content.
-  public var content: [LineFragment<Fragment<DocumentationContent>>]
+  public let content: [LineFragment<Fragment<DocumentationContent>>]
 
   /// The closing vertical margin (a possible newline between the delimiter and the content).
-  public var closingVerticalMargin: Token?
+  public let closingVerticalMargin: Token?
 
   /// The indentation of the closing delimiter (a possible space preceding it).
-  public var closingDelimiterIndentation: Token?
+  public let closingDelimiterIndentation: Token?
 
   /// The closing delimiter.
-  public var closingDelimiter: Token
+  public let closingDelimiter: Token
 }

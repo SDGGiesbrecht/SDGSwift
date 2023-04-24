@@ -33,7 +33,16 @@ public struct DocumentationContent: BlockCommentContentProtocol, LineCommentCont
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    return [MarkdownNode(cache.parse(markdown: source))]
+    #warning("Debugging...")
+    let source = self.source
+    let syntax = cache.parse(markdown: source)
+    let roundTrip = syntax.text
+    assert(
+      source == roundTrip,
+      "“\(source)” ≠ “\(roundTrip)”: \(syntax.markdown.debugDescription())"
+    )
+
+    return [cache.parse(markdown: source)]
   }
 
   // MARK: - TextOutputStreamable

@@ -44,11 +44,11 @@ public struct LineDocumentation: SyntaxNode, LineCommentProtocol {
   }
 
   /// The delimiter.
-  public var delimiter: Token
+  public let delimiter: Token
 
   /// The indent.
-  public var indent: Token?
+  public let indent: Token?
 
   /// The content of the line documentation comment.
-  public var content: Fragment<DocumentationContent>
+  public let content: Fragment<DocumentationContent>
 }

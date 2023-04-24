@@ -32,13 +32,13 @@ public struct LineFragment<Content>: StreamedViaChildren, SyntaxNode where Conte
   // MARK: - Properties
 
   /// The indent.
-  public var indent: Token?
+  public let indent: Token?
 
   /// The content.
-  public var content: Content
+  public let content: Content
 
   /// The trailing lineBreak
-  public var lineBreak: Token?
+  public let lineBreak: Token?
 
   // MARK: - StreamedViaChildren
 
