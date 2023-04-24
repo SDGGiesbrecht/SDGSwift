@@ -40,7 +40,7 @@ public struct LineComment: LineCommentProtocol, SyntaxNode {
   public let indent: Token?
 
   /// The content.
-  public let content: Fragment<CommentContentSyntax>
+  public let content: Fragment<CommentContent>
 
   // MARK: - LineCommentSyntaxProtocol
 

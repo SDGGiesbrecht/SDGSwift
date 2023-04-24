@@ -50,9 +50,9 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
   /// The closing quotation mark.
   public let closingQuotationMark: Token
 
-  // MARK: - SyntaxNode
-
-  public func children() -> [SyntaxNode] {
+  // MARK: - StreamedViaChildren
+  
+  internal var storedChildren: [SyntaxNode] {
     return [openingQuotationMark, string, closingQuotationMark]
   }
 }

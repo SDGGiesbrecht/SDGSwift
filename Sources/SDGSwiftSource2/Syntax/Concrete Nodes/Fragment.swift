@@ -99,7 +99,8 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
 }
 
 #warning("This should not be here anymore.")
-extension FragmentSyntax where Context == DocumentationContentSyntax {
+/*
+extension Fragment where Context == DocumentationContent {
 
   public func markdownSyntax(cache: inout MarkdownParserCache) -> FragmentSyntax<MarkdownSyntax> {
     let contextTree = context.markdownSyntax(cache: &cache)
@@ -108,4 +109,4 @@ extension FragmentSyntax where Context == DocumentationContentSyntax {
       in: MarkdownSyntax(contextTree)
     )
   }
-}
+}*/

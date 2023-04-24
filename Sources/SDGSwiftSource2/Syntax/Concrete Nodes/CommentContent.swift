@@ -34,7 +34,7 @@ public struct CommentContent: BlockCommentContentProtocol, StreamedViaChildren, 
           if line.hasPrefix(heading.scalars.literal()) {
             line.removeFirst(heading.scalars.count)
             children.append(
-              SourceHeadingSyntax(
+              SourceHeading(
                 mark: Token(kind: .mark(heading)),
                 heading: Token(
                   kind: .sourceHeadingText(String(String.UnicodeScalarView(line)))
@@ -44,8 +44,8 @@ public struct CommentContent: BlockCommentContentProtocol, StreamedViaChildren, 
             line = "".scalars[...]
           }
         }
-        check(forHeading: SourceHeadingSyntax.fullDelimiter)
-        check(forHeading: SourceHeadingSyntax.minimalDelimiter)
+        check(forHeading: SourceHeading.fullDelimiter)
+        check(forHeading: SourceHeading.minimalDelimiter)
 
         while let `protocol` = line.firstMatch(for: "://".scalars.literal())?.range {
           let start =
