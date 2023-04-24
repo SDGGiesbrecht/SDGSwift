@@ -82,13 +82,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testParsing() throws {
-    #warning("Debugging...")
-    return
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-      for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
-      where url.lastPathComponent ≠ ".DS_Store" {
-        SwiftSyntaxNode.roundTripTest(try String(from: url))
-      }
-    #endif
+    for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
+    where url.lastPathComponent ≠ ".DS_Store" {
+      SwiftSyntaxNode.roundTripTest(try String(from: url))
+    }
   }
 }
