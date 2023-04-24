@@ -53,10 +53,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
     switch markdown {
-    case let text as Text:
-      return [Token(kind: .documentationText(text.string))]
-    case let lineBreak as LineBreak:
-      return [Token(kind: .lineBreaks(lineBreak.plainText))]
+    case is SoftBreak:
+      return [Token(kind: .lineBreaks(text))]
+    case is Text:
+      return [Token(kind: .documentationText(text))]
     default:
       return markdown.children.map { node in
         #warning("Debugging...")
