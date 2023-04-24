@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
 import SDGText
 
 import Markdown
@@ -20,12 +21,12 @@ extension String {
 
   private func scalarIndex(of location: SourceLocation) -> String.UnicodeScalarView.Index {
     let lineIndex =
-      lines.index(lines.startIndex, offsetBy: location.line, limitedBy: lines.endIndex)
+      lines.index(lines.startIndex, offsetBy: location.line − 1, limitedBy: lines.endIndex)
       ?? lines.endIndex
     let lineScalar = lineIndex.samePosition(in: scalars)
     let lineUTF8 = lineScalar.samePosition(in: utf8)!
     let columnUTF8 =
-      utf8.index(lineUTF8, offsetBy: location.column, limitedBy: utf8.endIndex)
+      utf8.index(lineUTF8, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
       ?? utf8.endIndex
     return columnUTF8.scalar(in: scalars)
   }

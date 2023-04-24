@@ -23,6 +23,14 @@ struct RoundTripSyntaxScanner: SyntaxScanner {
   // MARK: - SyntaxScanner
 
   mutating func visit(_ node: SyntaxNode) -> Bool {
+    #warning("Debugging...")
+    print(type(of: node))
+    if let markdown = node as? MarkdownNode {
+      print(type(of: markdown.markdown))
+      print(markdown.markdown.range)
+    }
+    print(node.text)
+
     if let token = node as? Token {
       result.append(contentsOf: token.text)
     }
