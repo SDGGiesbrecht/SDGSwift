@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SwiftSyntax
+import SwiftSyntaxParser
 
 /// A syntax node from the SwiftSyntax library.
 public struct SwiftSyntaxNode: SyntaxNode {
@@ -25,6 +28,24 @@ public struct SwiftSyntaxNode: SyntaxNode {
   ///   - swiftSyntaxNode: The SwiftSyntax node.
   public init(_ swiftSyntaxNode: Syntax) {
     self.swiftSyntaxNode = swiftSyntaxNode
+  }
+
+  /// Creates a node by parsing source.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
+  public init(source: String) throws {
+    let swiftSyntax = try SyntaxParser.parse(source: source)
+    self.init(Syntax(swiftSyntax))
+  }
+
+  /// Creates a node by parsing a source file.
+  ///
+  /// - Parameters:
+  ///   - file: The URL of the source file.
+  public init(file: URL) throws {
+    let swiftSyntax = try SyntaxParser.parse(file)
+    self.init(Syntax(swiftSyntax))
   }
 
   // MARK: - Properties

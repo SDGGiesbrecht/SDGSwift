@@ -34,49 +34,42 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testExtendedParsing() {
+    var cache = ParserCache()
     XCTAssertEqual(
-      StringLiteralSyntax(
-        string: ExtendedTokenSyntax(kind: .string("..."))
-      ).text,
+      StringLiteral(
+        source: "\u{22}...\u{22}"
+      )?.text,
       "\u{22}...\u{22}"
     )
-    XCTAssert(ExtendedTokenSyntax(kind: .quotationMark).children.isEmpty)
-    XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
-    XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
-    XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
-    XCTAssertEqual(CommentContentSyntax(source: "http://example.com").text, "http://example.com")
-    XCTAssertEqual(CommentContentSyntax(source: "...\n...").text, "...\n...")
+    XCTAssert(Token(kind: .swiftSyntax(.stringQuote)).children(cache: &cache).isEmpty)
+    XCTAssertNil(StringLiteral(source: "...\u{22}"))
+    XCTAssertNil(StringLiteral(source: "\u{22}..."))
+    XCTAssertEqual(StringLiteral(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
+    XCTAssertEqual(CommentContent(source: "http://example.com").text, "http://example.com")
+    XCTAssertEqual(CommentContent(source: "...\n...").text, "...\n...")
     XCTAssertEqual(
-      LineCommentSyntax(
-        delimiter: ExtendedTokenSyntax(kind: .lineCommentDelimiter),
-        indent: ExtendedTokenSyntax(kind: .whitespace(" ")),
-        content: FragmentSyntax(entiretyOf: CommentContentSyntax(source: "..."))
-      ).text,
+      LineComment(
+        source: "// ..."
+      )?.text,
       "// ..."
     )
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
-    #endif
     XCTAssertEqual(
-      LineCommentSyntax(source: "// MARK: \u{2D} Heading").text,
+      LineComment(source: "// MARK: \u{2D} Heading")?.text,
       "// MARK: \u{2D} Heading"
     )
     XCTAssertEqual(
-      LineCommentSyntax(source: "// ... http://example.com ...").text,
+      LineComment(source: "// ... http://example.com ...")?.text,
       "// ... http://example.com ..."
     )
-    XCTAssertEqual(LineCommentSyntax(source: "//...").text, "//...")
-    XCTAssertNotNil(
-      SourceHeadingSyntax(heading: ExtendedTokenSyntax(kind: .sourceHeadingText("..."))).children
-    )
+    XCTAssertEqual(LineComment(source: "//...")?.text, "//...")
     XCTAssertEqual(
-      FragmentSyntax(scalarOffsets: 1..<5, in: LineCommentSyntax(source: "// ...\n")).text,
+      Fragment(scalarOffsets: 1..<5, in: LineComment(source: "// ...\n")!).text,
       "/ .."
     )
-    XCTAssertEqual(BlockCommentSyntax(source: "/* ... */").text, "/* ... */")
-    XCTAssertEqual(BlockCommentSyntax(source: "/*\n ...\n */").text, "/*\n ...\n */")
-    XCTAssertEqual(BlockCommentSyntax(source: "/*...*/").text, "/*...*/")
-    XCTAssertEqual(BlockCommentSyntax(source: "/**/").text, "/**/")
+    XCTAssertEqual(BlockComment(source: "/* ... */")?.text, "/* ... */")
+    XCTAssertEqual(BlockComment(source: "/*\n ...\n */")?.text, "/*\n ...\n */")
+    XCTAssertEqual(BlockComment(source: "/*...*/")?.text, "/*...*/")
+    XCTAssertEqual(BlockComment(source: "/**/")?.text, "/**/")
     let missingIndent = [
       "/*",
       " ...",
@@ -84,59 +77,41 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       "...",  // Missing indent.
       " */",
     ].joined(separator: "\n")
-    XCTAssertEqual(BlockCommentSyntax(source: missingIndent).text, missingIndent)
-    XCTAssertEqual(LineDocumentationSyntax(source: "/// ...").text, "/// ...")
-    XCTAssertEqual(BlockDocumentationSyntax(source: "/** ... */").text, "/** ... */")
+    XCTAssertEqual(BlockComment(source: missingIndent)?.text, missingIndent)
+    XCTAssertEqual(LineDocumentation(source: "/// ...")?.text, "/// ...")
+    XCTAssertEqual(BlockDocumentation(source: "/** ... */")?.text, "/** ... */")
   }
 
   func testExtendedTokenKind() {
-    XCTAssertEqual(ExtendedTokenKind.whitespace(" ").text, " ")
-    XCTAssertEqual(ExtendedTokenKind.lineBreaks("\n").text, "\n")
-    XCTAssertEqual(ExtendedTokenKind.source("...").text, "...")
+    XCTAssertEqual(Token.Kind.whitespace(" ").text, " ")
+    XCTAssertEqual(Token.Kind.lineBreaks("\n").text, "\n")
+    XCTAssertEqual(Token.Kind.source("...").text, "...")
   }
 
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
       where url.lastPathComponent ≠ ".DS_Store" {
-        let sourceFile = try SyntaxParser.parse(url)
+        let sourceFile = try SwiftSyntaxNode(file: url)
 
         let originalSource = try String(from: url)
-        var roundTripSource = ""
-        sourceFile.write(to: &roundTripSource)
-        XCTAssertEqual(roundTripSource, originalSource)
+        XCTAssertEqual(sourceFile.text, originalSource)
 
         struct DefaultSyntaxScanner: SyntaxScanner {
-          var cache = SyntaxScannerCache()
+          var cache = ParserCache()
         }
         var defaultScanner = DefaultSyntaxScanner()
         defaultScanner.scan(sourceFile)
 
         struct RoundTripSyntaxScanner: SyntaxScanner {
           var result = ""
-          mutating func visit(
-            _ node: Syntax,
-            context: SyntaxContext
-          ) -> Bool {
-            if let token = node.as(TokenSyntax.self) {
+          mutating func visit(_ node: SyntaxNode) -> Bool {
+            if let token = node as? Token {
               result.append(contentsOf: token.text)
             }
             return true
           }
-          mutating func visit(
-            _ node: ExtendedSyntax,
-            context: ExtendedSyntaxContext
-          ) -> Bool {
-            if let token = node as? ExtendedTokenSyntax {
-              result.append(contentsOf: token.text)
-            } else if let markdown = (node as? MarkdownSyntax)?.markdown,
-              markdown.isEmpty
-            {
-              result.append(contentsOf: markdown.text)
-            }
-            return true
-          }
-          var cache = SyntaxScannerCache()
+          var cache = ParserCache()
         }
         var syntaxScanner = RoundTripSyntaxScanner()
         syntaxScanner.scan(sourceFile)

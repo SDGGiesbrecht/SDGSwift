@@ -51,7 +51,7 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
   public let closingQuotationMark: Token
 
   // MARK: - StreamedViaChildren
-  
+
   internal var storedChildren: [SyntaxNode] {
     return [openingQuotationMark, string, closingQuotationMark]
   }

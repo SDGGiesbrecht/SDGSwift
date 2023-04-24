@@ -259,6 +259,12 @@ let package = Package(
           condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
+          name: "SwiftSyntaxParser",
+          package: "swift\u{2D}syntax",
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
           name: "Markdown",
           package: "swift\u{2D}markdown",
           // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
