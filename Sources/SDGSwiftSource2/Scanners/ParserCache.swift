@@ -1,5 +1,5 @@
 /*
- MarkdownParserCache.swift
+ ParserCache.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -16,22 +16,22 @@ import SDGControlFlow
 
 import Markdown
 
-public struct MarkdownParserCache {
+public struct ParserCache {
 
   // MARK: - Initialization
 
-  /// Creates a Markdown parser cache.
+  /// Creates a parser cache.
   public init() {}
 
   // MARK: - Properties
 
-  internal var parsed: [String: Markdown.Document] = [:]
+  public var parsedMarkdown: [String: Markdown.Document] = [:]
 
   // MARK: - Parsing
 
-  internal mutating func parse(source: String) -> Markdown.Document {
-    return cached(in: &parsed[source]) {
-      return Document(parsing: source)
+  internal mutating func parse(markdown: String) -> Markdown.Document {
+    return cached(in: &parsedMarkdown[markdown]) {
+      return Document(parsing: markdown)
     }
   }
 }

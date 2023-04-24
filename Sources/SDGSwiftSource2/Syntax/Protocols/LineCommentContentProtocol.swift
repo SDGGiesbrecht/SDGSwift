@@ -1,5 +1,5 @@
 /*
- ExtendedSyntaxContext.swift
+ LineCommentContentProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// The context of an extended syntax node.
-public struct ExtendedSyntaxContext {
-  // #workaround(Is this type still needed?)
+/// Functionality shared by line comment content and documentation comment content.
+internal protocol LineCommentContentProtocol: SyntaxNode {
+  init(source: String)
 }

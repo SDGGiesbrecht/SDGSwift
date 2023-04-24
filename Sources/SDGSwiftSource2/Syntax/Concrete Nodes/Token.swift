@@ -1,5 +1,5 @@
 /*
- ExtendedTokenSyntax.swift
+ Token.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,28 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SwiftSyntax
+
 /// A syntax node representing a single token.
-///
-/// This type is comparable to `TokenSyntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public final class ExtendedTokenSyntax: ExtendedSyntax, TextOutputStreamable {
+public struct Token: SyntaxNode {
 
   // MARK: - Initialization
 
-  /// Creates an extended syntax token.
-  public init(
-    kind: ExtendedTokenKind
-  ) {
+  /// Creates a token.
+  ///
+  /// - Parameters:
+  ///   - kind: The kind of token.
+  public init(kind: Kind) {
     self.kind = kind
   }
 
   // MARK: - Properties
 
-  /// The kind of the token.
-  public let kind: ExtendedTokenKind
+  /// The kind of token.
+  public let kind: Kind
 
-  // MARK: - ExtendedSyntax
+  // MARK: - SyntaxNode
 
-  public var children: [ExtendedSyntax] {
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
     return []
   }
 

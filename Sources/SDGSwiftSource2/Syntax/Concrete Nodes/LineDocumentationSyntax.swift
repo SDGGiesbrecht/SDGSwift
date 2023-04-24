@@ -13,36 +13,42 @@
  */
 
 /// A line documentation comment.
-public struct LineDocumentationSyntax: ExtendedSyntax, LineCommentSyntaxProtocol {
+public struct LineDocumentation: SyntaxNode, LineCommentProtocol {
 
   // MARK: - Initialization
 
-  public init(
-    precedingContentContext: String? = nil,
+  /// Parses a line documentation comment.
+  public init?(
     source: String,
+    precedingContentContext: String? = nil,
     followingContentContext: String? = nil
   ) {
-    (delimiter, indent, content) = Self.parse(
-      precedingContentContext: precedingContentContext ?? "",
-      source: source,
-      followingContentContext: followingContentContext ?? ""
-    )
+    guard
+      let parsed = Self.parse(
+        precedingContentContext: precedingContentContext ?? "",
+        source: source,
+        followingContentContext: followingContentContext ?? ""
+      )
+    else {
+      return nil
+    }
+    (delimiter, indent, content) = parsed
   }
 
   // MARK: - LineCommentSyntaxProtocol
 
-  internal typealias Content = DocumentationContentSyntax
+  internal typealias Content = DocumentationContent
 
-  internal static var delimiter: ExtendedTokenKind {
+  internal static var delimiter: Token.Kind {
     return .lineDocumentationDelimiter
   }
 
   /// The delimiter.
-  public var delimiter: ExtendedTokenSyntax
+  public var delimiter: Token
 
   /// The indent.
-  public var indent: ExtendedTokenSyntax?
+  public var indent: Token?
 
   /// The content of the line documentation comment.
-  public var content: FragmentSyntax<DocumentationContentSyntax>
+  public var content: Fragment<DocumentationContent>
 }

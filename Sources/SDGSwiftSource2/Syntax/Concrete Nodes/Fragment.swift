@@ -1,5 +1,5 @@
 /*
- FragmentSyntax.swift
+ Fragment.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,9 +14,10 @@
 
 import SDGMathematics
 import SDGCollections
+import SDGText
 
 /// A smaller fragment of a larger syntax node.
-public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyntax {
+public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
 
   // MARK: - Initialization
 
@@ -27,7 +28,6 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
   public init(entiretyOf node: Context) {
     self.context = node
     self.scalarOffsets = 0..<node.text.scalars.count
-    self.children = [node]
   }
 
   /// Creates a syntax node representing one section of a fragmented context, such as a single line of mark‐up in documentation spread across a series of single‐line delimiters.
@@ -38,10 +38,19 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
   public init(scalarOffsets: CountableRange<Int>, in context: Context) {
     self.context = context
     self.scalarOffsets = scalarOffsets
+  }
 
-    var cropped: [ExtendedSyntax] = []
+  // MARK: - Properties
+
+  internal let context: Context
+  internal let scalarOffsets: CountableRange<Int>
+
+  // MARK: - SyntaxNode
+
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    var cropped: [SyntaxNode] = []
     var index = 0
-    for child in context.children {
+    for child in context.children(cache: &cache) {
       let childText = child.text
       let childLength = childText.scalars.count
       let start = index
@@ -57,19 +66,18 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
         lower.increase(to: 0)
         let childOffsets = lower..<upper
 
-        // #workaround(Skipping CodeFragmentsyntax.)
-        if child is ExtendedTokenSyntax {
+        if child is Token {
           var childText = childText
           if childLength > upper {
             childText.truncate(at: childText.scalars.index(childText.startIndex, offsetBy: upper))
           }
           childText.removeFirst(lower)
-          cropped.append(ExtendedTokenSyntax(kind: .fragment(childText)))
+          cropped.append(Token(kind: .fragment(childText)))
         } else {
           cropped.append(
-            FragmentSyntax<AnyExtendedSyntax>(
+            Fragment<AnySyntaxNode>(
               scalarOffsets: childOffsets,
-              in: AnyExtendedSyntax(child)
+              in: AnySyntaxNode(child)
             )
           )
         }
@@ -77,19 +85,20 @@ public struct FragmentSyntax<Context>: ExtendedSyntax where Context: ExtendedSyn
         break
       }
     }
-    self.children = cropped
+    return cropped
   }
 
-  // MARK: - Properties
+  // MARK: - TextOutputStreamable
 
-  internal let context: Context
-  internal let scalarOffsets: CountableRange<Int>
-
-  // MARK: - ExtendedSyntax
-
-  public let children: [ExtendedSyntax]
+  public func write<Target>(to target: inout Target) where Target: TextOutputStream {
+    let scalars = context.text.scalars.dropFirst(scalarOffsets.lowerBound).prefix(
+      scalarOffsets.count
+    )
+    String(String.UnicodeScalarView(scalars)).write(to: &target)
+  }
 }
 
+#warning("This should not be here anymore.")
 extension FragmentSyntax where Context == DocumentationContentSyntax {
 
   public func markdownSyntax(cache: inout MarkdownParserCache) -> FragmentSyntax<MarkdownSyntax> {

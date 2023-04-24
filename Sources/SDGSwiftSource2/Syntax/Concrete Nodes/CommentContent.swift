@@ -1,5 +1,5 @@
 /*
- CommentContentSyntax.swift
+ CommentContent.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -17,7 +17,7 @@ import SDGCollections
 import SDGText
 
 /// The content of a comment.
-public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
+public struct CommentContent: BlockCommentContentProtocol, StreamedViaChildren, SyntaxNode,
   LineCommentContentProtocol
 {
 
@@ -25,7 +25,7 @@ public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
 
   /// Creates a comment content syntax note by parsing its source.
   public init(source: String) {
-    var children: [ExtendedSyntax] = []
+    var children: [SyntaxNode] = []
     for lineInfo in source.lines {
       if ¬lineInfo.line.isEmpty {
         var line = lineInfo.line[...]
@@ -35,8 +35,8 @@ public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
             line.removeFirst(heading.scalars.count)
             children.append(
               SourceHeadingSyntax(
-                mark: ExtendedTokenSyntax(kind: .mark(heading)),
-                heading: ExtendedTokenSyntax(
+                mark: Token(kind: .mark(heading)),
+                heading: Token(
                   kind: .sourceHeadingText(String(String.UnicodeScalarView(line)))
                 )
               )
@@ -59,13 +59,13 @@ public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
 
           if start ≠ line.startIndex {
             children.append(
-              ExtendedTokenSyntax(
+              Token(
                 kind: .commentText(String(String.UnicodeScalarView(line[..<start])))
               )
             )
           }
           children.append(
-            ExtendedTokenSyntax(
+            Token(
               kind: .commentURL(String(String.UnicodeScalarView(line[start..<end])))
             )
           )
@@ -74,20 +74,20 @@ public struct CommentContentSyntax: BlockCommentContentProtocol, ExtendedSyntax,
 
         if ¬line.isEmpty {
           children.append(
-            ExtendedTokenSyntax(kind: .commentText(String(String.UnicodeScalarView(line))))
+            Token(kind: .commentText(String(String.UnicodeScalarView(line))))
           )
         }
       }
       if ¬lineInfo.newline.isEmpty {
         children.append(
-          ExtendedTokenSyntax(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline))))
+          Token(kind: .lineBreaks(String(String.UnicodeScalarView(lineInfo.newline))))
         )
       }
     }
-    self.children = children
+    self.storedChildren = children
   }
 
-  // MARK: - ExtendedSyntax
+  // MARK: - StreamedViaChildren
 
-  public let children: [ExtendedSyntax]
+  internal let storedChildren: [SyntaxNode]
 }

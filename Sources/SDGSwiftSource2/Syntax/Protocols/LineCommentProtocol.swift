@@ -1,5 +1,5 @@
 /*
- LineCommentSyntaxProtocol.swift
+ LineCommentProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -15,15 +15,15 @@
 import SDGText
 
 /// Functionality shared between line comments and line documentation.
-internal protocol LineCommentSyntaxProtocol {
+internal protocol LineCommentProtocol: StreamedViaChildren, SyntaxNode {
   associatedtype Content: LineCommentContentProtocol
-  static var delimiter: ExtendedTokenKind { get }
-  var delimiter: ExtendedTokenSyntax { get }
-  var indent: ExtendedTokenSyntax? { get }
-  var content: FragmentSyntax<Content> { get }
+  static var delimiter: Token.Kind { get }
+  var delimiter: Token { get }
+  var indent: Token? { get }
+  var content: Fragment<Content> { get }
 }
 
-extension LineCommentSyntaxProtocol {
+extension LineCommentProtocol {
 
   // MARK: - Initialization
 
@@ -32,19 +32,22 @@ extension LineCommentSyntaxProtocol {
     source: String,
     followingContentContext: String
   ) -> (
-    delimiter: ExtendedTokenSyntax,
-    indent: ExtendedTokenSyntax?,
-    content: FragmentSyntax<Content>
-  ) {
-    let delimiter = ExtendedTokenSyntax(kind: Self.delimiter)
+    delimiter: Token,
+    indent: Token?,
+    content: Fragment<Content>
+  )? {
+    let delimiter = Token(kind: Self.delimiter)
 
     var line = source
+    guard line.scalars.hasPrefix(delimiter.text.scalars) else {
+      return nil
+    }
     line.scalars.removeFirst(delimiter.text.scalars.count)
 
-    let indent: ExtendedTokenSyntax?
+    let indent: Token?
     if line.scalars.first == " " {
       line.scalars.removeFirst()
-      let indentSyntax = ExtendedTokenSyntax(kind: .whitespace(" "))
+      let indentSyntax = Token(kind: .whitespace(" "))
       indent = indentSyntax
     } else {
       indent = nil
@@ -52,7 +55,7 @@ extension LineCommentSyntaxProtocol {
 
     let content = Content(source: precedingContentContext + line + followingContentContext)
     let precedingCount = precedingContentContext.scalars.count
-    let fragment = FragmentSyntax(
+    let fragment = Fragment(
       scalarOffsets: precedingCount..<precedingCount + line.scalars.count,
       in: content
     )
@@ -60,10 +63,10 @@ extension LineCommentSyntaxProtocol {
     return (delimiter: delimiter, indent: indent, content: fragment)
   }
 
-  // MARK: - ExtendedSyntax
+  // MARK: - StreamedViaChildren
 
-  public var children: [ExtendedSyntax] {
-    var result: [ExtendedSyntax] = [delimiter]
+  internal var storedChildren: [SyntaxNode] {
+    var result: [SyntaxNode] = [delimiter]
     if let indent = indent {
       result.append(indent)
     }

@@ -1,5 +1,5 @@
 /*
- LineFragmentSyntax.swift
+ LineFragment.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -13,7 +13,7 @@
  */
 
 /// A line fragment.
-public struct LineFragmentSyntax<Content>: ExtendedSyntax where Content: ExtendedSyntax {
+public struct LineFragment<Content>: StreamedViaChildren, SyntaxNode where Content: SyntaxNode {
 
   // MARK: - Initialization
 
@@ -23,7 +23,7 @@ public struct LineFragmentSyntax<Content>: ExtendedSyntax where Content: Extende
   ///   - indent: The indent.
   ///   - content: The content.
   ///   - lineBreak: The trailing line break.
-  public init(indent: ExtendedTokenSyntax?, content: Content, lineBreak: ExtendedTokenSyntax?) {
+  public init(indent: Token?, content: Content, lineBreak: Token?) {
     self.indent = indent
     self.content = content
     self.lineBreak = lineBreak
@@ -32,18 +32,18 @@ public struct LineFragmentSyntax<Content>: ExtendedSyntax where Content: Extende
   // MARK: - Properties
 
   /// The indent.
-  public var indent: ExtendedTokenSyntax?
+  public var indent: Token?
 
   /// The content.
   public var content: Content
 
   /// The trailing lineBreak
-  public var lineBreak: ExtendedTokenSyntax?
+  public var lineBreak: Token?
 
-  // MARK: - ExtendedSyntax
+  // MARK: - StreamedViaChildren
 
-  public var children: [ExtendedSyntax] {
-    var result: [ExtendedSyntax] = []
+  internal var storedChildren: [SyntaxNode] {
+    var result: [SyntaxNode] = []
     if let indent = indent {
       result.append(indent)
     }

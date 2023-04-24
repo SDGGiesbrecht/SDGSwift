@@ -1,5 +1,5 @@
 /*
- MarkdownSyntax.swift
+ MarkdownNode.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,7 +14,8 @@
 
 import Markdown
 
-public struct MarkdownSyntax: ExtendedSyntax {
+/// A syntax node from the Markdown library.
+public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
 
   // MARK: - Initialization
 
@@ -26,9 +27,15 @@ public struct MarkdownSyntax: ExtendedSyntax {
 
   public var markdown: Markup
 
-  // MARK: - ExtendedSyntax
+  // MARK: - SyntaxNode
 
-  public var children: [ExtendedSyntax] {
-    return markdown.children.map { MarkdownSyntax($0) }
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    return markdown.children.map { MarkdownNode($0) }
+  }
+
+  // MARK: - TextOutputStreamable
+
+  public func write<Target>(to target: inout Target) where Target: TextOutputStream {
+    #warning("Not implemented yet.")
   }
 }

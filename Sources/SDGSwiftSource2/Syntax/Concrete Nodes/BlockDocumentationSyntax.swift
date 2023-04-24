@@ -13,45 +13,48 @@
  */
 
 /// A block documentation comment.
-public struct BlockDocumentationSyntax: BlockCommentSyntaxProtocol, ExtendedSyntax {
+public struct BlockDocumentation: BlockCommentProtocol, SyntaxNode {
 
   // MARK: - Initialization
 
   /// Parses a block documentation comment.
-  public init(source: String) {
+  public init?(source: String) {
+    guard let parsed = Self.parse(source: source) else {
+      return nil
+    }
     (
       self.openingDelimiter, self.openingVerticalMargin, self.content, self.closingVerticalMargin,
       self.closingDelimiterIndentation, self.closingDelimiter
-    ) = Self.parse(source: source)
+    ) = parsed
   }
 
-  // MARK: - BlockCommentSyntaxProtocol
+  // MARK: - BlockCommentProtocol
 
-  internal typealias Content = DocumentationContentSyntax
+  internal typealias Content = DocumentationContent
 
-  internal static var openingDelimiter: ExtendedTokenKind {
+  internal static var openingDelimiter: Token.Kind {
     return .openingBlockDocumentationDelimiter
   }
 
-  internal static var closingDelimiter: ExtendedTokenKind {
+  internal static var closingDelimiter: Token.Kind {
     return .closingBlockDocumentationDelimiter
   }
 
   /// The opening delimiter.
-  public var openingDelimiter: ExtendedTokenSyntax
+  public var openingDelimiter: Token
 
   /// The opening vertical margin (a possible newline between the delimiter and the content).
-  public var openingVerticalMargin: ExtendedTokenSyntax?
+  public var openingVerticalMargin: Token?
 
   /// The content.
-  public var content: [LineFragmentSyntax<FragmentSyntax<DocumentationContentSyntax>>]
+  public var content: [LineFragment<Fragment<DocumentationContent>>]
 
   /// The closing vertical margin (a possible newline between the delimiter and the content).
-  public var closingVerticalMargin: ExtendedTokenSyntax?
+  public var closingVerticalMargin: Token?
 
   /// The indentation of the closing delimiter (a possible space preceding it).
-  public var closingDelimiterIndentation: ExtendedTokenSyntax?
+  public var closingDelimiterIndentation: Token?
 
   /// The closing delimiter.
-  public var closingDelimiter: ExtendedTokenSyntax
+  public var closingDelimiter: Token
 }

@@ -1,5 +1,5 @@
 /*
- Markup.swift
+ BlockCommentContentProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -12,19 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Markdown
-
-extension Markup {
-
-  /// The node’s source text.
-  public var text: String {
-    switch self {
-    case let text as Text:
-      return text.string
-    default:
-      #warning("Not implemented yet.")
-      print("Not implemented yet: \(type(of: self))")
-      return ""
-    }
-  }
+/// Functionality shared by line comment content and documentation comment content.
+internal protocol BlockCommentContentProtocol: SyntaxNode {
+  init(source: String)
 }

@@ -1,5 +1,5 @@
 /*
- StringLiteralSyntax.swift
+ StringLiteral.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -13,29 +13,13 @@
  */
 
 /// A string literal.
-public struct StringLiteralSyntax: ExtendedSyntax {
+public struct StringLiteral: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
 
-  /// Creates a string literal syntax node.
-  ///
-  /// - Parameters:
-  ///   - openingQuotationMark: Optional. The opening quotation mark.
-  ///   - string: The contents of the string.
-  ///   - closingQuotationMark: Optional. The closing quotation mark.
-  public init(
-    openingQuotationMark: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .quotationMark),
-    string: ExtendedTokenSyntax,
-    closingQuotationMark: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .quotationMark)
-  ) {
-    self.openingQuotationMark = openingQuotationMark
-    self.string = string
-    self.closingQuotationMark = closingQuotationMark
-  }
-
   /// Parses a string literal.
   public init?(source: String) {
-    let quotationMark = ExtendedTokenSyntax(kind: .quotationMark)
+    let quotationMark = Token(kind: .swiftSyntax(.stringQuote))
     let quotationMarkText = quotationMark.text.unicodeScalars
     let quotationMarkLength = quotationMarkText.count
 
@@ -52,23 +36,23 @@ public struct StringLiteralSyntax: ExtendedSyntax {
     string.unicodeScalars.removeLast(quotationMarkLength)
     self.closingQuotationMark = quotationMark
 
-    self.string = ExtendedTokenSyntax(kind: .string(string))
+    self.string = Token(kind: .swiftSyntax(.stringSegment(string)))
   }
 
   // MARK: - Properties
 
   /// The opening quotation mark.
-  public let openingQuotationMark: ExtendedTokenSyntax
+  public let openingQuotationMark: Token
 
   /// The content.
-  public let string: ExtendedTokenSyntax
+  public let string: Token
 
   /// The closing quotation mark.
-  public let closingQuotationMark: ExtendedTokenSyntax
+  public let closingQuotationMark: Token
 
-  // MARK: - ExtendedSyntax
+  // MARK: - SyntaxNode
 
-  public var children: [ExtendedSyntax] {
+  public func children() -> [SyntaxNode] {
     return [openingQuotationMark, string, closingQuotationMark]
   }
 }

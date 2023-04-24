@@ -18,7 +18,7 @@
   /// A scanner for read‐only handling of a syntax tree.
   public protocol SyntaxScanner {
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // @documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -32,7 +32,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: Syntax, context: SyntaxContext) -> Bool
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -46,7 +46,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -60,7 +60,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: Trivia, context: TriviaContext) -> Bool
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -74,7 +74,7 @@
     /// - Returns: Whether or not the scanner should visit the node’s children. The default implementation returns `true`, thus scanning the entire syntax tree. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
     func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool
 
-    // #documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
+    // @documentation(SDGSwiftSource.SyntaxScanner.shouldExtend(TokenSyntax))
     /// Checks whether a node should be scanned in its extended form.
     ///
     /// Implement this to skip extended parsing for particular tokens.
@@ -102,7 +102,7 @@
     // MARK: - Default Implementations
 
     // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -119,7 +119,7 @@
     }
 
     // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -136,7 +136,7 @@
     }
 
     // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.
@@ -153,7 +153,7 @@
     }
 
     // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
-    // #documentation(SDGSwiftSource.SyntaxScanner.visit)
+    // #documentation(SDGSwiftSource.SyntaxScanner.visit(_:context:))
     /// Visits a syntax node.
     ///
     /// Provide a custom implementation of this to read information from a particular node.

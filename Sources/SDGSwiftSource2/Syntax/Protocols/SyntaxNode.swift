@@ -1,5 +1,5 @@
 /*
- ExtendedSyntax.swift
+ SyntaxNode.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -13,30 +13,21 @@
  */
 
 /// A syntax node.
-///
-/// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
-public protocol ExtendedSyntax: TextOutputStreamable {
+public protocol SyntaxNode: TextOutputStreamable {
 
-  /// The children of the node.
-  var children: [ExtendedSyntax] { get }
+  /// Returns the children of the node, parsing into more detail if necessary.
+  func children(cache: inout ParserCache) -> [SyntaxNode]
+
+  /// The node’s source text.
+  var text: String { get }
 }
 
-extension ExtendedSyntax {
+extension SyntaxNode {
 
   /// The node’s source text.
   public var text: String {
     var result = ""
     write(to: &result)
     return result
-  }
-
-  // MARK: - TextOutputStreamable
-
-  public func write<Target>(
-    to target: inout Target
-  ) where Target: TextOutputStream {
-    for child in children {
-      child.write(to: &target)
-    }
   }
 }

@@ -1,5 +1,5 @@
 /*
- BlockCommentSyntaxProtocol.swift
+ BlockCommentProtocol.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -19,56 +19,62 @@ import SDGCollections
 import SDGText
 
 /// Functionality shared between block comments and block documentation.
-internal protocol BlockCommentSyntaxProtocol: ExtendedSyntax {
+internal protocol BlockCommentProtocol: StreamedViaChildren, SyntaxNode {
   associatedtype Content: BlockCommentContentProtocol
-  static var openingDelimiter: ExtendedTokenKind { get }
-  static var closingDelimiter: ExtendedTokenKind { get }
-  var openingDelimiter: ExtendedTokenSyntax { get }
-  var openingVerticalMargin: ExtendedTokenSyntax? { get }
-  var content: [LineFragmentSyntax<FragmentSyntax<Content>>] { get }
-  var closingVerticalMargin: ExtendedTokenSyntax? { get }
-  var closingDelimiterIndentation: ExtendedTokenSyntax? { get }
-  var closingDelimiter: ExtendedTokenSyntax { get }
+  static var openingDelimiter: Token.Kind { get }
+  static var closingDelimiter: Token.Kind { get }
+  var openingDelimiter: Token { get }
+  var openingVerticalMargin: Token? { get }
+  var content: [LineFragment<Fragment<Content>>] { get }
+  var closingVerticalMargin: Token? { get }
+  var closingDelimiterIndentation: Token? { get }
+  var closingDelimiter: Token { get }
 }
 
-extension BlockCommentSyntaxProtocol {
+extension BlockCommentProtocol {
 
   internal static func parse(source: String) -> (
-    openingDelimiter: ExtendedTokenSyntax,
-    openingVerticalMargin: ExtendedTokenSyntax?,
-    content: [LineFragmentSyntax<FragmentSyntax<Content>>],
-    closingVerticalMargin: ExtendedTokenSyntax?,
-    closingDelimiterIndentation: ExtendedTokenSyntax?,
-    closingDelimiter: ExtendedTokenSyntax
-  ) {
-    let openingDelimiter = ExtendedTokenSyntax(kind: Self.openingDelimiter)
-    let closingDelimiter = ExtendedTokenSyntax(kind: Self.closingDelimiter)
+    openingDelimiter: Token,
+    openingVerticalMargin: Token?,
+    content: [LineFragment<Fragment<Content>>],
+    closingVerticalMargin: Token?,
+    closingDelimiterIndentation: Token?,
+    closingDelimiter: Token
+  )? {
+    let openingDelimiter = Token(kind: Self.openingDelimiter)
+    let closingDelimiter = Token(kind: Self.closingDelimiter)
 
     var block = source
+    guard block.scalars.hasPrefix(openingDelimiter.text.scalars) else {
+      return nil
+    }
     block.scalars.removeFirst(openingDelimiter.text.scalars.count)
 
+    guard block.scalars.hasSuffix(closingDelimiter.text.scalars) else {
+      return nil
+    }
     block.scalars.removeLast(closingDelimiter.text.scalars.count)
 
-    let closingDelimiterIndentation: ExtendedTokenSyntax?
+    let closingDelimiterIndentation: Token?
     if block.scalars.last == " " {
       block.scalars.removeLast()
-      closingDelimiterIndentation = ExtendedTokenSyntax(kind: .whitespace(" "))
+      closingDelimiterIndentation = Token(kind: .whitespace(" "))
     } else {
       closingDelimiterIndentation = nil
     }
 
-    let openingVerticalMargin: ExtendedTokenSyntax?
+    let openingVerticalMargin: Token?
     if block.scalars.first == "\n" {
       block.scalars.removeFirst()
-      openingVerticalMargin = ExtendedTokenSyntax(kind: .lineBreaks("\n"))
+      openingVerticalMargin = Token(kind: .lineBreaks("\n"))
     } else {
       openingVerticalMargin = nil
     }
 
-    let closingVerticalMargin: ExtendedTokenSyntax?
+    let closingVerticalMargin: Token?
     if block.scalars.last == "\n" {
       block.scalars.removeLast()
-      closingVerticalMargin = ExtendedTokenSyntax(kind: .lineBreaks("\n"))
+      closingVerticalMargin = Token(kind: .lineBreaks("\n"))
     } else {
       closingVerticalMargin = nil
     }
@@ -94,13 +100,13 @@ extension BlockCommentSyntaxProtocol {
     let contentsString = contents.joined(separator: "\n")
     let parsed = Content(source: contentsString)
 
-    var content: [LineFragmentSyntax<FragmentSyntax<Content>>] = []
+    var content: [LineFragment<Fragment<Content>>] = []
     var index = 0
     for line in contentsString.lines {
       defer { index += 1 }
       let indent = indents[index]
-      let indentNode: ExtendedTokenSyntax? =
-        indent.isEmpty ? nil : ExtendedTokenSyntax(kind: .whitespace(indent))
+      let indentNode: Token? =
+        indent.isEmpty ? nil : Token(kind: .whitespace(indent))
       let lowerOffset = contentsString.scalars.distance(
         from: contentsString.scalars.startIndex,
         to: line.line.startIndex
@@ -109,12 +115,12 @@ extension BlockCommentSyntaxProtocol {
         from: contentsString.scalars.startIndex,
         to: line.line.endIndex
       )
-      let contentNode = FragmentSyntax(scalarOffsets: lowerOffset..<upperOffset, in: parsed)
+      let contentNode = Fragment(scalarOffsets: lowerOffset..<upperOffset, in: parsed)
       let newline = newlines[index]
-      let lineBreakNode: ExtendedTokenSyntax? =
-        newline.isEmpty ? nil : ExtendedTokenSyntax(kind: .lineBreaks(newline))
+      let lineBreakNode: Token? =
+        newline.isEmpty ? nil : Token(kind: .lineBreaks(newline))
       content.append(
-        LineFragmentSyntax(indent: indentNode, content: contentNode, lineBreak: lineBreakNode)
+        LineFragment(indent: indentNode, content: contentNode, lineBreak: lineBreakNode)
       )
     }
 
@@ -128,10 +134,10 @@ extension BlockCommentSyntaxProtocol {
     )
   }
 
-  // MARK: - ExtendedSyntax
+  // MARK: - StreamedViaChildren
 
-  public var children: [ExtendedSyntax] {
-    var result: [ExtendedSyntax] = [openingDelimiter]
+  internal var storedChildren: [SyntaxNode] {
+    var result: [SyntaxNode] = [openingDelimiter]
     if let openingVerticalMargin = openingVerticalMargin {
       result.append(openingVerticalMargin)
     }

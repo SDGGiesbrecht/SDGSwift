@@ -1,5 +1,5 @@
 /*
- SourceHeadingSyntax.swift
+ SourceHeading.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -13,7 +13,7 @@
  */
 
 /// A heading in source code.
-public struct SourceHeadingSyntax: ExtendedSyntax {
+public struct SourceHeading: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Static Properties
 
@@ -23,14 +23,9 @@ public struct SourceHeadingSyntax: ExtendedSyntax {
 
   // MARK: - Initialization
 
-  /// Creates a line comment syntax node.
-  ///
-  /// - Parameters:
-  ///   - mark: The delimiter.
-  ///   - heading: The heading.
-  public init(
-    mark: ExtendedTokenSyntax = ExtendedTokenSyntax(kind: .mark(SourceHeadingSyntax.fullDelimiter)),
-    heading: ExtendedTokenSyntax
+  internal init(
+    mark: Token,
+    heading: Token
   ) {
     self.mark = mark
     self.heading = heading
@@ -39,14 +34,14 @@ public struct SourceHeadingSyntax: ExtendedSyntax {
   // MARK: - Properties
 
   /// The delimiter.
-  public let mark: ExtendedTokenSyntax
+  public let mark: Token
 
   /// The heading.
-  public let heading: ExtendedTokenSyntax
+  public let heading: Token
 
-  // MARK: - ExtendedSyntax
+  // MARK: - StreamedViaChildren
 
-  public var children: [ExtendedSyntax] {
+  internal var storedChildren: [SyntaxNode] {
     return [mark, heading]
   }
 }

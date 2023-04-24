@@ -1,5 +1,5 @@
 /*
- AnyExtendedSyntax.swift
+ AnySyntaxNode.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -13,7 +13,7 @@
  */
 
 /// A type‐erased syntax node.
-public struct AnyExtendedSyntax: ExtendedSyntax {
+public struct AnySyntaxNode: SyntaxNode {
 
   // MARK: - Initialization
 
@@ -21,17 +21,23 @@ public struct AnyExtendedSyntax: ExtendedSyntax {
   ///
   /// - Parameters:
   ///   - wrapped: The syntax node to type‐erase.
-  public init(_ wrapped: ExtendedSyntax) {
+  public init(_ wrapped: SyntaxNode) {
     self.wrapped = wrapped
   }
 
   // MARK: - Properties
 
-  public var wrapped: ExtendedSyntax
+  public var wrapped: SyntaxNode
 
-  // MARK: - Properties
+  // MARK: - SyntaxNode
 
-  public var children: [ExtendedSyntax] {
-    return wrapped.children
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    return wrapped.children(cache: &cache)
+  }
+
+  // MARK: - TextOutputStreamable
+
+  public func write<Target>(to target: inout Target) where Target: TextOutputStream {
+    wrapped.write(to: &target)
   }
 }
