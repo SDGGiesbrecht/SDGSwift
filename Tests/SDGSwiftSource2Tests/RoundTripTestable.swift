@@ -27,14 +27,22 @@ extension RoundTripTestable {
       XCTFail("“\(Self.self)” failed to parse “\(source)”", file: file, line: line)
       return
     }
-    XCTAssertEqual(parsed.text, source, "Syntax tree source differs from parsed source.")
+    XCTAssertEqual(
+      parsed.text,
+      source,
+      "Syntax tree source differs from parsed source.",
+      file: file,
+      line: line
+    )
 
     var syntaxScanner = RoundTripSyntaxScanner()
     syntaxScanner.scan(parsed)
     XCTAssertEqual(
       syntaxScanner.result,
       source,
-      "Syntax scan produced source that differs from the original."
+      "Syntax scan produced source that differs from the original.",
+      file: file,
+      line: line
     )
   }
 }
