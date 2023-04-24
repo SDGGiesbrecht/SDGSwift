@@ -58,15 +58,18 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     case is Text:
       return [Token(kind: .documentationText(text))]
     default:
-      return markdown.children.map { node in
-        #warning("Debugging...")
-        assert(node.range != nil, "Node does not know its range: \(node)")
-
-        let range = node.range!  // If a node knows its range; so will its children.
+      var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
+      return markdown.children.map { child in
+        let childRange: Range<String.UnicodeScalarView.Index>
+        if let knownRange = child.range {
+          childRange = rootSource.scalarRange(of: knownRange)
+        } else {
+          childRange = lastAccountedForIndex..<lastAccountedForIndex
+        }
         return MarkdownNode(
-          unsafeMarkdown: node,
+          unsafeMarkdown: child,
           rootSource: rootSource,
-          range: rootSource.scalarRange(of: range)
+          range: childRange
         )
       }
     }
