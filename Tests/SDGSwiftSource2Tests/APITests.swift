@@ -33,6 +33,10 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
+  func testAnySyntaxNode() {
+    XCTAssertEqual(AnySyntaxNode(LineComment(source: "// ...")!).text, "// ...")
+  }
+
   func testBlockComment() {
     BlockComment.roundTripTest("/* ... */")
     BlockComment.roundTripTest("/*\n ...\n */")
@@ -47,6 +51,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         " */",
       ].joined(separator: "\n")
     )
+    XCTAssertNil(BlockComment(source: "..."))
   }
 
   func testBlockDocumentation() {
@@ -60,6 +65,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "   */",
       ].joined(separator: "\n")
     )
+    XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
   func testCommentContent() {
@@ -91,21 +97,41 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
   }
 
+  func testInlineCodeNode() {
+    XCTAssertNil(InlineCodeNode(source: "..."))
+    XCTAssertNil(InlineCodeNode(source: "`..."))
+  }
+
   func testLineComment() {
     LineComment.roundTripTest("// ...")
     LineComment.roundTripTest("// MARK: \u{2D} Heading")
     LineComment.roundTripTest("// ... http://example.com ...")
+    XCTAssertNil(LineComment(source: "..."))
   }
 
   func testLineDocumentation() {
     LineDocumentation.roundTripTest("/// ...")
+    XCTAssertNil(LineDocumentation(source: "..."))
   }
 
   func testParsing() throws {
+    var first = true
     for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
     where url.lastPathComponent ≠ ".DS_Store" {
+      if first {
+        first = false
+        _ = try SwiftSyntaxNode(file: url)
+      }
       SwiftSyntaxNode.roundTripTest(try String(from: url))
     }
+  }
+
+  func testTriviaNode() {
+    XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
+  }
+
+  func testTriviaPieceNode() {
+
   }
 
   func testStringLiteral() {

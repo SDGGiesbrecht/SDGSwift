@@ -52,19 +52,28 @@ public struct TriviaPieceNode: SyntaxNode {
     case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
       return [Token(kind: .lineBreaks(text))]
     case .lineComment:
-      return [LineComment(source: text) ?? Token(kind: .swiftSyntax(.unknown(text)))]
+      return [
+        LineComment(source: text)
+          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+      ]
     case .blockComment:
-      return [BlockComment(source: text) ?? Token(kind: .swiftSyntax(.unknown(text)))]
+      return [
+        BlockComment(source: text)
+          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+      ]
     case .docLineComment:
       return [
         LineDocumentation(
           source: text,
           precedingContentContext: precedingDocumentationContext,
           followingContentContext: followingDocumentationContext
-        ) ?? Token(kind: .swiftSyntax(.unknown(text)))
+        ) ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
       ]
     case .docBlockComment:
-      return [BlockDocumentation(source: text) ?? Token(kind: .swiftSyntax(.unknown(text)))]
+      return [
+        BlockDocumentation(source: text)
+          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+      ]
     case .unexpectedText:  // @exempt(from: tests)
       return [Token(kind: .source(text))]
     case .shebang:

@@ -18,12 +18,10 @@ public protocol SyntaxScanner {
   // @documentation(SDGSwiftSource.SyntaxScanner.visit)
   /// Visits a syntax node.
   ///
-  /// Provide a custom implementation of this to read information from a particular node.
-  ///
   /// - Parameters:
-  ///     - node: The current node.
+  ///     - node: The node.
   ///
-  /// - Returns: Whether or not the scanner should visit the node’s children. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
+  /// - Returns: Whether or not the scanner should visit the node’s children. Conforming types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
   mutating func visit(_ node: SyntaxNode) -> Bool
 
   /// A cache for the syntax scanner.
@@ -31,22 +29,6 @@ public protocol SyntaxScanner {
 }
 
 extension SyntaxScanner {
-
-  // MARK: - Default Implementations
-
-  // #workaround(workspace version 0.42.0, Redundant documentation, but inheritance is broken.)
-  // #documentation(SDGSwiftSource.SyntaxScanner.visit)
-  /// Visits a syntax node.
-  ///
-  /// Provide a custom implementation of this to read information from a particular node.
-  ///
-  /// - Parameters:
-  ///     - node: The current node.
-  ///
-  /// - Returns: Whether or not the scanner should visit the node’s children. Types can speed up the scan by returning `false` if it is already known that nothing relevant could be nested within the node. For example, a scanner concerned with the exposed API does not care about function bodies, and can skip scanning them entirely by returning `false` whenever they appear.
-  public mutating func visit(_ node: SyntaxNode) -> Bool {
-    return true
-  }
 
   // MARK: - Scanning
 
