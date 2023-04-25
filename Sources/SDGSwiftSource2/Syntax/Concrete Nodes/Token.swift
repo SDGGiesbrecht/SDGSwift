@@ -12,8 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
-
 /// A syntax node representing a single token.
 public struct Token: SyntaxNode {
 

@@ -14,7 +14,9 @@
 
 import Foundation
 
-import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -24,13 +26,15 @@ public struct SwiftSyntaxNode: SyntaxNode {
 
   // MARK: - Initialization
 
-  /// Creates a node from a `Syntax` instance.
-  ///
-  /// - Parameters:
-  ///   - swiftSyntaxNode: The SwiftSyntax node.
-  public init(_ swiftSyntaxNode: Syntax) {
-    self.swiftSyntaxNode = swiftSyntaxNode
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a node from a `Syntax` instance.
+    ///
+    /// - Parameters:
+    ///   - swiftSyntaxNode: The SwiftSyntax node.
+    public init(_ swiftSyntaxNode: Syntax) {
+      self.swiftSyntaxNode = swiftSyntaxNode
+    }
+  #endif
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
     /// Creates a node by parsing source.
@@ -54,28 +58,34 @@ public struct SwiftSyntaxNode: SyntaxNode {
 
   // MARK: - Properties
 
-  /// The SwiftSyntax node.
-  public let swiftSyntaxNode: Syntax
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// The SwiftSyntax node.
+    public let swiftSyntaxNode: Syntax
+  #endif
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    if let token = swiftSyntaxNode.as(TokenSyntax.self) {
-      var children: [SyntaxNode] = [TriviaNode(token.leadingTrivia)]
-      if case .stringLiteral(let source) = token.tokenKind,
-        let literal = StringLiteral(source: source)
-      {
-        children.append(literal)
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      return []
+    #else
+      if let token = swiftSyntaxNode.as(TokenSyntax.self) {
+        var children: [SyntaxNode] = [TriviaNode(token.leadingTrivia)]
+        if case .stringLiteral(let source) = token.tokenKind,
+          let literal = StringLiteral(source: source)
+        {
+          children.append(literal)
+        } else {
+          children.append(Token(kind: .swiftSyntax(token.tokenKind)))
+        }
+        children.append(TriviaNode(token.trailingTrivia))
+        return children
       } else {
-        children.append(Token(kind: .swiftSyntax(token.tokenKind)))
+        return swiftSyntaxNode.children(viewMode: .sourceAccurate).map { node in
+          return SwiftSyntaxNode(node)
+        }
       }
-      children.append(TriviaNode(token.trailingTrivia))
-      return children
-    } else {
-      return swiftSyntaxNode.children(viewMode: .sourceAccurate).map { node in
-        return SwiftSyntaxNode(node)
-      }
-    }
+    #endif
   }
 
   // MARK: - TextOutputStreamable
@@ -83,6 +93,8 @@ public struct SwiftSyntaxNode: SyntaxNode {
   public func write<Target>(
     to target: inout Target
   ) where Target: TextOutputStream {
-    swiftSyntaxNode.write(to: &target)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      swiftSyntaxNode.write(to: &target)
+    #endif
   }
 }

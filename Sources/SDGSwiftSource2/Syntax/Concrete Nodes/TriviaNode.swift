@@ -14,7 +14,9 @@
 
 import SDGLogic
 
-import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
 
 /// A trivia node from the SwiftSyntax library.
 public struct TriviaNode: SyntaxNode {
