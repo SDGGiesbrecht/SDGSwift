@@ -52,6 +52,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ].joined(separator: "\n")
     )
     XCTAssertNil(BlockComment(source: "..."))
+    XCTAssertNil(BlockComment(source: "/* ..."))
   }
 
   func testBlockDocumentation() {
