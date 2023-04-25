@@ -51,18 +51,30 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBlockDocumentation() {
     BlockDocumentation.roundTripTest("/** ... */")
-    BlockDocumentation.roundTripTest([
-      "/**",
-      "   ...",
-      "",
-      "   ...",
-      "   */",
-    ].joined(separator: "\n"))
+    BlockDocumentation.roundTripTest(
+      [
+        "/**",
+        "   ...",
+        "",
+        "   ...",
+        "   */",
+      ].joined(separator: "\n")
+    )
   }
 
   func testCommentContent() {
     CommentContent.roundTripTest("http://example.com")
     CommentContent.roundTripTest("...\n...")
+  }
+
+  func testDocumentationContent() {
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "",
+        "...",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
