@@ -63,7 +63,18 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       return [Token(kind: .documentationText(text))]
     default:
       var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
-      return markdown.children.flatMap { child in
+      func interveningNodes(upTo index: String.UnicodeScalarView.Index) -> [SyntaxNode] {
+        guard index ≠ lastAccountedForIndex else {
+          return []
+        }
+        let source = String(
+          String.UnicodeScalarView(
+            rootSource.scalars[lastAccountedForIndex..<index]
+          )
+        )
+        return [Token(kind: .swiftSyntax(.unknown(source)))]
+      }
+      var result = markdown.children.flatMap({ child in
         let childRange: Range<String.UnicodeScalarView.Index>
         defer { lastAccountedForIndex = childRange.upperBound }
         if let knownRange = child.range {
@@ -71,24 +82,16 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         } else {
           childRange = lastAccountedForIndex..<lastAccountedForIndex
         }
-        var upToThisChild: [SyntaxNode] = []
-        if childRange.lowerBound ≠ lastAccountedForIndex {
-          let source = String(
-            String.UnicodeScalarView(
-              rootSource.scalars[lastAccountedForIndex..<childRange.lowerBound]
-            )
-          )
-          upToThisChild.append(Token(kind: .swiftSyntax(.unknown(source))))
-        }
-        upToThisChild.append(
+        return interveningNodes(upTo: childRange.lowerBound).appending(
           MarkdownNode(
             unsafeMarkdown: child,
             rootSource: rootSource,
             range: childRange
           )
         )
-        return upToThisChild
-      }
+      })
+      result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
+      return result
     }
   }
 

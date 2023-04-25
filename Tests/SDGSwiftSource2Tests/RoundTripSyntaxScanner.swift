@@ -24,7 +24,7 @@ struct RoundTripSyntaxScanner: SyntaxScanner {
 
   mutating func visit(_ node: SyntaxNode) -> Bool {
     #warning("Debugging...")
-    if false {
+    if true {
       print(type(of: node))
       if let markdown = node as? MarkdownNode {
         print(type(of: markdown.markdown))
