@@ -14,7 +14,9 @@
 
 import SDGLogic
 
-import Markdown
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  import Markdown
+#endif
 
 /// A syntax node from the Markdown library.
 public struct MarkdownNode: SyntaxNode, TextOutputStreamable {

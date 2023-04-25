@@ -32,23 +32,25 @@ public struct SwiftSyntaxNode: SyntaxNode {
     self.swiftSyntaxNode = swiftSyntaxNode
   }
 
-  /// Creates a node by parsing source.
-  ///
-  /// - Parameters:
-  ///   - source: The source.
-  public init(source: String) throws {
-    let swiftSyntax = try SyntaxParser.parse(source: source)
-    self.init(Syntax(swiftSyntax))
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    /// Creates a node by parsing source.
+    ///
+    /// - Parameters:
+    ///   - source: The source.
+    public init(source: String) throws {
+      let swiftSyntax = try SyntaxParser.parse(source: source)
+      self.init(Syntax(swiftSyntax))
+    }
 
-  /// Creates a node by parsing a source file.
-  ///
-  /// - Parameters:
-  ///   - file: The URL of the source file.
-  public init(file: URL) throws {
-    let swiftSyntax = try SyntaxParser.parse(file)
-    self.init(Syntax(swiftSyntax))
-  }
+    /// Creates a node by parsing a source file.
+    ///
+    /// - Parameters:
+    ///   - file: The URL of the source file.
+    public init(file: URL) throws {
+      let swiftSyntax = try SyntaxParser.parse(file)
+      self.init(Syntax(swiftSyntax))
+    }
+  #endif
 
   // MARK: - Properties
 

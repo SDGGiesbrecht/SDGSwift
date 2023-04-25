@@ -12,7 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Markdown
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  import Markdown
+#endif
 
 /// Documentation.
 public struct DocumentationContent: BlockCommentContentProtocol, LineCommentContentProtocol,

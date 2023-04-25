@@ -14,7 +14,9 @@
 
 import SDGControlFlow
 
-import Markdown
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  import Markdown
+#endif
 
 public struct ParserCache {
 
