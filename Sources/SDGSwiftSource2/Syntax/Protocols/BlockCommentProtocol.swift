@@ -101,7 +101,6 @@ extension BlockCommentProtocol {
       newlines.append(String(line.newline))
     }
     let contentsString = contents.joined(separator: "\n")
-    print("contentsString “\(contentsString)”")
     let parsed = Content(source: contentsString)
 
     var content: [LineFragment<Fragment<Content>>] = []
