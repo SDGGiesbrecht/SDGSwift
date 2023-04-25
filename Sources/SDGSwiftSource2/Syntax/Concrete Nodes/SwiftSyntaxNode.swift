@@ -85,7 +85,7 @@ public struct SwiftSyntaxNode: SyntaxNode {
           return SwiftSyntaxNode(node)
         }
       }
-    #endif
+    #endif  // @exempt(from: tests)
   }
 
   // MARK: - TextOutputStreamable
