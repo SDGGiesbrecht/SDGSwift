@@ -56,9 +56,12 @@ extension BlockCommentProtocol {
     block.scalars.removeLast(closingDelimiter.text.scalars.count)
 
     let closingDelimiterIndentation: Token?
-    if block.scalars.last == " " {
-      block.scalars.removeLast()
-      closingDelimiterIndentation = Token(kind: .whitespace(" "))
+    var closingDelimiterIndentationString = ""
+    while block.scalars.last == " " ∨ block.scalars.last == "\t" {
+      closingDelimiterIndentationString.scalars.append(block.scalars.removeLast())
+    }
+    if ¬closingDelimiterIndentationString.isEmpty {
+      closingDelimiterIndentation = Token(kind: .whitespace(closingDelimiterIndentationString))
     } else {
       closingDelimiterIndentation = nil
     }
@@ -98,6 +101,7 @@ extension BlockCommentProtocol {
       newlines.append(String(line.newline))
     }
     let contentsString = contents.joined(separator: "\n")
+    print("contentsString “\(contentsString)”")
     let parsed = Content(source: contentsString)
 
     var content: [LineFragment<Fragment<Content>>] = []

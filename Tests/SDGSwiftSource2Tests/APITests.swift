@@ -51,6 +51,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testBlockDocumentation() {
     BlockDocumentation.roundTripTest("/** ... */")
+    BlockDocumentation.roundTripTest([
+      "/**",
+      "   ...",
+      "",
+      "   ...",
+      "   */",
+    ].joined(separator: "\n"))
   }
 
   func testCommentContent() {
