@@ -85,16 +85,6 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
         break
       }
     }
-    #warning("Debugging...")
-    if false {
-      print("Context: \(context.text)")
-      print("Fragment: \(scalarOffsets)")
-      let mapped = cropped.map({ $0.text })
-      print(mapped)
-      if mapped == ["."] {
-        fatalError("Tripped.")
-      }
-    }
     return cropped
   }
 
