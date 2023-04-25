@@ -56,12 +56,12 @@ public struct TriviaPieceNode: SyntaxNode {
     case .lineComment:
       return [
         LineComment(source: text)
-          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+          ?? Token.unknown(text)  // @exempt(from: tests)
       ]
     case .blockComment:
       return [
         BlockComment(source: text)
-          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+          ?? Token.unknown(text)  // @exempt(from: tests)
       ]
     case .docLineComment:
       return [
@@ -69,12 +69,12 @@ public struct TriviaPieceNode: SyntaxNode {
           source: text,
           precedingContentContext: precedingDocumentationContext,
           followingContentContext: followingDocumentationContext
-        ) ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+        ) ?? Token.unknown(text)  // @exempt(from: tests)
       ]
     case .docBlockComment:
       return [
         BlockDocumentation(source: text)
-          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+          ?? Token.unknown(text)  // @exempt(from: tests)
       ]
     case .unexpectedText:  // @exempt(from: tests)
       return [Token(kind: .source(text))]

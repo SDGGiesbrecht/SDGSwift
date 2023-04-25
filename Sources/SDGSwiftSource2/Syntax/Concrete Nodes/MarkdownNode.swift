@@ -60,7 +60,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     case is InlineCode:
       return [
         InlineCodeNode(source: text)
-          ?? Token(kind: .swiftSyntax(.unknown(text)))  // @exempt(from: tests)
+          ?? Token.unknown(text)  // @exempt(from: tests)
       ]
     case is SoftBreak:
       return [Token(kind: .lineBreaks(text))]
@@ -77,7 +77,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             rootSource.scalars[lastAccountedForIndex..<index]
           )
         )
-        return [Token(kind: .swiftSyntax(.unknown(source)))]
+        return [Token.unknown(source)]
       }
       var result = markdown.children.flatMap({ child in
         let childRange: Range<String.UnicodeScalarView.Index>

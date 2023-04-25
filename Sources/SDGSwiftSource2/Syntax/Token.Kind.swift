@@ -23,8 +23,10 @@ extension Token {
 
     // MARK: - Cases
 
-    /// A token kind from SwiftSyntax.
-    case swiftSyntax(TokenKind)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      /// A token kind from SwiftSyntax.
+      case swiftSyntax(TokenKind)
+    #endif
 
     /// Whitespace; a sequence of spaces (U+0020) or similar ASCII controls.
     case whitespace(String)
@@ -70,8 +72,10 @@ extension Token {
     /// The textual representation of this token kind.
     public var text: String {
       switch self {
-      case .swiftSyntax(let swiftSyntax):
-        return TokenSyntax(swiftSyntax, presence: .present).text
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+        case .swiftSyntax(let swiftSyntax):
+          return TokenSyntax(swiftSyntax, presence: .present).text
+      #endif
       case .lineCommentDelimiter:
         return "//"
       case .openingBlockCommentDelimiter:
