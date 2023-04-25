@@ -15,7 +15,9 @@
 import Foundation
 
 import SwiftSyntax
-import SwiftSyntaxParser
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  import SwiftSyntaxParser
+#endif
 
 /// A syntax node from the SwiftSyntax library.
 public struct SwiftSyntaxNode: SyntaxNode {
