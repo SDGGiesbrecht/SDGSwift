@@ -23,83 +23,95 @@ public struct TriviaNode: SyntaxNode {
 
   // MARK: - Initialization
 
-  /// Creates a node from a `Trivia` instance.
-  ///
-  /// - Parameters:
-  ///   - trivia: The trivia.
-  public init(_ trivia: Trivia) {
-    self.trivia = trivia
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// Creates a node from a `Trivia` instance.
+    ///
+    /// - Parameters:
+    ///   - trivia: The trivia.
+    public init(_ trivia: Trivia) {
+      self.trivia = trivia
+    }
+  #endif
 
   // MARK: - Properties
 
-  /// The trivia.
-  public let trivia: Trivia
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    /// The trivia.
+    public let trivia: Trivia
+  #endif
 
   // MARK: - Parsing
 
   private func lineDocumentationSourceGroups() -> [[String]] {
-    var result: [[String]] = []
-    var interveningLineBreaks = 0
-    var interrupted = false
-    for piece in trivia.pieces {
-      switch piece {
-      case .spaces, .tabs:
-        continue
-      case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds(_):
-        interveningLineBreaks += 1
-      case .lineComment, .blockComment, .docBlockComment, .unexpectedText, .shebang:
-        interrupted = true
-      case .docLineComment(let line):
-        var sourceFragment = line.scalars.dropFirst(3)
-        if sourceFragment.first == " " {
-          sourceFragment.removeFirst()
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      return []
+    #else
+      var result: [[String]] = []
+      var interveningLineBreaks = 0
+      var interrupted = false
+      for piece in trivia.pieces {
+        switch piece {
+        case .spaces, .tabs:
+          continue
+        case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds(_):
+          interveningLineBreaks += 1
+        case .lineComment, .blockComment, .docBlockComment, .unexpectedText, .shebang:
+          interrupted = true
+        case .docLineComment(let line):
+          var sourceFragment = line.scalars.dropFirst(3)
+          if sourceFragment.first == " " {
+            sourceFragment.removeFirst()
+          }
+          if result.isEmpty ∨ interveningLineBreaks > 1 ∨ interrupted {
+            result.append([])
+            interveningLineBreaks = 0
+            interrupted = false
+          }
+          result[result.indices.last!].append(String(sourceFragment))
         }
-        if result.isEmpty ∨ interveningLineBreaks > 1 ∨ interrupted {
-          result.append([])
-          interveningLineBreaks = 0
-          interrupted = false
-        }
-        result[result.indices.last!].append(String(sourceFragment))
       }
-    }
-    return result
+      return result
+    #endif
   }
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    var handledDocumentation: [[String]] = [[]]
-    var pendingDocumentation: [[String]] = lineDocumentationSourceGroups()
-    return trivia.pieces.map { piece in
-      var currentSource: String?
-      if case .docLineComment = piece,
-        let groupIndex = pendingDocumentation.indices.first,
-        ¬pendingDocumentation[groupIndex].isEmpty
-      {
-        currentSource = pendingDocumentation[groupIndex].removeFirst()
-      }
-      defer {
-        if let current = currentSource,
-          let groupIndex = handledDocumentation.indices.last
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      return []
+    #else
+      var handledDocumentation: [[String]] = [[]]
+      var pendingDocumentation: [[String]] = lineDocumentationSourceGroups()
+      return trivia.pieces.map { piece in
+        var currentSource: String?
+        if case .docLineComment = piece,
+          let groupIndex = pendingDocumentation.indices.first,
+          ¬pendingDocumentation[groupIndex].isEmpty
         {
-          handledDocumentation[groupIndex].append(current)
+          currentSource = pendingDocumentation[groupIndex].removeFirst()
         }
-        if pendingDocumentation.first?.isEmpty == true {
-          handledDocumentation.append(pendingDocumentation.removeFirst())
+        defer {
+          if let current = currentSource,
+            let groupIndex = handledDocumentation.indices.last
+          {
+            handledDocumentation[groupIndex].append(current)
+          }
+          if pendingDocumentation.first?.isEmpty == true {
+            handledDocumentation.append(pendingDocumentation.removeFirst())
+          }
         }
-      }
 
-      return TriviaPieceNode(
-        piece,
-        precedingDocumentationContext: handledDocumentation.last?.appending("").joined(
-          separator: "\n"
-        ),
-        followingDocumentationContext: pendingDocumentation.first?.prepending("").joined(
-          separator: "\n"
+        return TriviaPieceNode(
+          piece,
+          precedingDocumentationContext: handledDocumentation.last?.appending("").joined(
+            separator: "\n"
+          ),
+          followingDocumentationContext: pendingDocumentation.first?.prepending("").joined(
+            separator: "\n"
+          )
         )
-      )
-    }
+      }
+    #endif
   }
 
   // MARK: - TextOutputStreamable
@@ -107,6 +119,8 @@ public struct TriviaNode: SyntaxNode {
   public func write<Target>(
     to target: inout Target
   ) where Target: TextOutputStream {
-    trivia.write(to: &target)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      trivia.write(to: &target)
+    #endif
   }
 }

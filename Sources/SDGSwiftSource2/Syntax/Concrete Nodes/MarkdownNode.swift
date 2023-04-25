@@ -28,76 +28,89 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
   /// - Parameters:
   ///   - source: The Markdown source.
   public init(source: String) {
-    self.init(
-      unsafeMarkdown: Document(parsing: source),
-      rootSource: source,
-      range: source.scalars.bounds
-    )
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      self.rootSource = source
+      self.range = source.scalars.bounds
+    #else
+      self.init(
+        unsafeMarkdown: Document(parsing: source),
+        rootSource: source,
+        range: source.scalars.bounds
+      )
+    #endif
   }
 
-  /// This must remain private to ensure only *parsed* nodes are accepted, so that they have the requisite range information. See `children`.
-  private init(
-    unsafeMarkdown markdown: Markup,
-    rootSource: String,
-    range: Range<String.UnicodeScalarView.Index>
-  ) {
-    self.markdown = markdown
-    self.rootSource = rootSource
-    self.range = range
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+    /// This must remain private to ensure only *parsed* nodes are accepted, so that they have the requisite range information. See `children`.
+    private init(
+      unsafeMarkdown markdown: Markup,
+      rootSource: String,
+      range: Range<String.UnicodeScalarView.Index>
+    ) {
+      self.markdown = markdown
+      self.rootSource = rootSource
+      self.range = range
+    }
+  #endif
 
   // MARK: - Properties
 
-  /// The Markdown node.
-  public let markdown: Markup
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+    /// The Markdown node.
+    public let markdown: Markup
+  #endif
   private let rootSource: String
   private let range: Range<String.UnicodeScalarView.Index>
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    switch markdown {
-    case is InlineCode:
-      return [
-        InlineCodeNode(source: text)
-          ?? Token.unknown(text)  // @exempt(from: tests)
-      ]
-    case is SoftBreak:
-      return [Token(kind: .lineBreaks(text))]
-    case is Text:
-      return [Token(kind: .documentationText(text))]
-    default:
-      var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
-      func interveningNodes(upTo index: String.UnicodeScalarView.Index) -> [SyntaxNode] {
-        guard index ≠ lastAccountedForIndex else {
-          return []
-        }
-        let source = String(
-          String.UnicodeScalarView(
-            rootSource.scalars[lastAccountedForIndex..<index]
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      return Token.unknown(text)
+    #else
+      switch markdown {
+      case is InlineCode:
+        return [
+          InlineCodeNode(source: text)
+            ?? Token.unknown(text)  // @exempt(from: tests)
+        ]
+      case is SoftBreak:
+        return [Token(kind: .lineBreaks(text))]
+      case is Text:
+        return [Token(kind: .documentationText(text))]
+      default:
+        var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
+        func interveningNodes(upTo index: String.UnicodeScalarView.Index) -> [SyntaxNode] {
+          guard index ≠ lastAccountedForIndex else {
+            return []
+          }
+          let source = String(
+            String.UnicodeScalarView(
+              rootSource.scalars[lastAccountedForIndex..<index]
+            )
           )
-        )
-        return [Token.unknown(source)]
+          return [Token.unknown(source)]
+        }
+        var result = markdown.children.flatMap({ child in
+          let childRange: Range<String.UnicodeScalarView.Index>
+          defer { lastAccountedForIndex = childRange.upperBound }
+          if let knownRange = child.range {
+            childRange = rootSource.scalarRange(of: knownRange)
+          } else {
+            childRange = lastAccountedForIndex..<lastAccountedForIndex
+          }
+          return interveningNodes(upTo: childRange.lowerBound).appending(
+            MarkdownNode(
+              unsafeMarkdown: child,
+              rootSource: rootSource,
+              range: childRange
+            )
+          )
+        })
+        result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
+        return result
       }
-      var result = markdown.children.flatMap({ child in
-        let childRange: Range<String.UnicodeScalarView.Index>
-        defer { lastAccountedForIndex = childRange.upperBound }
-        if let knownRange = child.range {
-          childRange = rootSource.scalarRange(of: knownRange)
-        } else {
-          childRange = lastAccountedForIndex..<lastAccountedForIndex
-        }
-        return interveningNodes(upTo: childRange.lowerBound).appending(
-          MarkdownNode(
-            unsafeMarkdown: child,
-            rootSource: rootSource,
-            range: childRange
-          )
-        )
-      })
-      result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
-      return result
-    }
+    #endif
   }
 
   // MARK: - TextOutputStreamable
