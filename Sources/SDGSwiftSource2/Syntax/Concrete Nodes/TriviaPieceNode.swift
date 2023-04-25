@@ -12,7 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SwiftSyntax
+#endif
 
 /// A trivia piece from the SwiftSyntax library.
 public struct TriviaPieceNode: SyntaxNode {
