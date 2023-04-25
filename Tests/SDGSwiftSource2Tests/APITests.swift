@@ -116,23 +116,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testParsing() throws {
-    var first = true
-    for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
-    where url.lastPathComponent ≠ ".DS_Store" {
-      if first {
-        first = false
-        _ = try SwiftSyntaxNode(file: url)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      var first = true
+      for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
+      where url.lastPathComponent ≠ ".DS_Store" {
+        if first {
+          first = false
+          _ = try SwiftSyntaxNode(file: url)
+        }
+        SwiftSyntaxNode.roundTripTest(try String(from: url))
       }
-      SwiftSyntaxNode.roundTripTest(try String(from: url))
-    }
+    #endif
   }
 
   func testTriviaNode() {
-    XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
-  }
-
-  func testTriviaPieceNode() {
-
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
+    #endif
   }
 
   func testStringLiteral() {

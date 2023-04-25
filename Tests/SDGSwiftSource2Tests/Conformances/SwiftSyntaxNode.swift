@@ -14,4 +14,6 @@
 
 import SDGSwiftSource2
 
-extension SwiftSyntaxNode: RoundTripTestable {}
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+  extension SwiftSyntaxNode: RoundTripTestable {}
+#endif
