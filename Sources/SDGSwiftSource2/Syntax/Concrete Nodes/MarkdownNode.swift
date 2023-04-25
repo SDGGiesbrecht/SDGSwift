@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import Markdown
 
 /// A syntax node from the Markdown library.
@@ -59,7 +61,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       return [Token(kind: .documentationText(text))]
     default:
       var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
-      return markdown.children.map { child in
+      return markdown.children.flatMap { child in
         let childRange: Range<String.UnicodeScalarView.Index>
         defer { lastAccountedForIndex = childRange.upperBound }
         if let knownRange = child.range {
@@ -67,11 +69,23 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         } else {
           childRange = lastAccountedForIndex..<lastAccountedForIndex
         }
-        return MarkdownNode(
-          unsafeMarkdown: child,
-          rootSource: rootSource,
-          range: childRange
+        var upToThisChild: [SyntaxNode] = []
+        if childRange.lowerBound ≠ lastAccountedForIndex {
+          let source = String(
+            String.UnicodeScalarView(
+              rootSource.scalars[lastAccountedForIndex..<childRange.lowerBound]
+            )
+          )
+          upToThisChild.append(Token(kind: .swiftSyntax(.unknown(source))))
+        }
+        upToThisChild.append(
+          MarkdownNode(
+            unsafeMarkdown: child,
+            rootSource: rootSource,
+            range: childRange
+          )
         )
+        return upToThisChild
       }
     }
   }

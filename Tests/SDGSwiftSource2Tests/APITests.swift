@@ -94,16 +94,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     LineDocumentation.roundTripTest("/// ...")
   }
 
-  func testStringLiteral() {
-    StringLiteral.roundTripTest("\u{22}...\u{22}")
-    XCTAssertNil(StringLiteral(source: "...\u{22}"))
-    XCTAssertNil(StringLiteral(source: "\u{22}..."))
-  }
-
   func testParsing() throws {
     for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
     where url.lastPathComponent ≠ ".DS_Store" {
       SwiftSyntaxNode.roundTripTest(try String(from: url))
     }
+  }
+
+  func testStringLiteral() {
+    StringLiteral.roundTripTest("\u{22}...\u{22}")
+    XCTAssertNil(StringLiteral(source: "...\u{22}"))
+    XCTAssertNil(StringLiteral(source: "\u{22}..."))
   }
 }
