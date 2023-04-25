@@ -55,6 +55,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
     switch markdown {
+    case is InlineCode:
+      return [InlineCodeNode(source: text) ?? Token(kind: .swiftSyntax(.unknown(text)))]
     case is SoftBreak:
       return [Token(kind: .lineBreaks(text))]
     case is Text:

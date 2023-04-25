@@ -75,6 +75,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "...",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest("`©`")
   }
 
   func testFragment() {
