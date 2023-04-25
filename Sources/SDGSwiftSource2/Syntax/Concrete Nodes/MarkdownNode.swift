@@ -61,6 +61,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
       return markdown.children.map { child in
         let childRange: Range<String.UnicodeScalarView.Index>
+        defer { lastAccountedForIndex = childRange.upperBound }
         if let knownRange = child.range {
           childRange = rootSource.scalarRange(of: knownRange)
         } else {
