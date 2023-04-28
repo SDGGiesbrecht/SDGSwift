@@ -33,108 +33,120 @@ import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testExtendedParsing() {
-    XCTAssertEqual(
-      StringLiteralSyntax(
-        string: ExtendedTokenSyntax(kind: .string("..."))
-      ).text,
-      "\u{22}...\u{22}"
-    )
-    XCTAssert(ExtendedTokenSyntax(kind: .quotationMark).children.isEmpty)
-    XCTAssertNil(StringLiteralSyntax(source: "...\u{22}"))
-    XCTAssertNil(StringLiteralSyntax(source: "\u{22}..."))
-    XCTAssertEqual(StringLiteralSyntax(source: "\u{22}...\u{22}")?.text, "\u{22}...\u{22}")
-    XCTAssertEqual(CommentContentSyntax(source: "http://example.com").text, "http://example.com")
-    XCTAssertEqual(CommentContentSyntax(source: "...\n...").text, "...\n...")
-    XCTAssertEqual(
-      LineCommentSyntax(
-        delimiter: ExtendedTokenSyntax(kind: .lineCommentDelimiter),
-        indent: ExtendedTokenSyntax(kind: .whitespace(" ")),
-        content: CommentContentSyntax(source: "...")
-      ).text,
-      "// ..."
-    )
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssertNotNil(TriviaPiece.lineComment("//...").extended)
-    #endif
-    XCTAssertEqual(
-      LineCommentSyntax(source: "// MARK: \u{2D} Heading").text,
-      "// MARK: \u{2D} Heading"
-    )
-    XCTAssertEqual(
-      LineCommentSyntax(source: "// ... http://example.com ...").text,
-      "// ... http://example.com ..."
-    )
-    XCTAssertEqual(LineCommentSyntax(source: "//...").text, "//...")
-    XCTAssertNotNil(
-      SourceHeadingSyntax(heading: ExtendedTokenSyntax(kind: .sourceHeadingText("..."))).children
-    )
-    XCTAssertEqual(
-      FragmentSyntax(scalarOffsets: 1..<5, in: LineCommentSyntax(source: "// ...\n")).text,
-      "/ .."
-    )
-    XCTAssertEqual(BlockCommentSyntax(source: "/* ... */").text, "/* ... */")
-    XCTAssertEqual(BlockCommentSyntax(source: "/*\n ...\n */").text, "/*\n ...\n */")
-    XCTAssertEqual(BlockCommentSyntax(source: "/*...*/").text, "/*...*/")
-    XCTAssertEqual(BlockCommentSyntax(source: "/**/").text, "/**/")
-    let missingIndent = [
-      "/*",
-      " ...",
-      " ...",
-      "...",  // Missing indent.
-      " */",
-    ].joined(separator: "\n")
-    XCTAssertEqual(BlockCommentSyntax(source: missingIndent).text, missingIndent)
-    XCTAssertEqual(LineDocumentationSyntax(source: "/// ...").text, "/// ...")
-    XCTAssertEqual(BlockDocumentationSyntax(source: "/** ... */").text, "/** ... */")
+  func testAnySyntaxNode() {
+    XCTAssertEqual(AnySyntaxNode(LineComment(source: "// ...")!).text, "// ...")
   }
 
-  func testExtendedTokenKind() {
-    XCTAssertEqual(ExtendedTokenKind.whitespace(" ").text, " ")
-    XCTAssertEqual(ExtendedTokenKind.lineBreaks("\n").text, "\n")
-    XCTAssertEqual(ExtendedTokenKind.source("...").text, "...")
+  func testBlockComment() {
+    BlockComment.roundTripTest("/* ... */")
+    BlockComment.roundTripTest("/*\n ...\n */")
+    BlockComment.roundTripTest("/*...*/")
+    BlockComment.roundTripTest("/**/")
+    BlockComment.roundTripTest(
+      [
+        "/*",
+        " ...",
+        " ...",
+        "...",  // Missing indent.
+        " */",
+      ].joined(separator: "\n")
+    )
+    XCTAssertNil(BlockComment(source: "..."))
+    XCTAssertNil(BlockComment(source: "/* ..."))
+  }
+
+  func testBlockDocumentation() {
+    BlockDocumentation.roundTripTest("/** ... */")
+    BlockDocumentation.roundTripTest(
+      [
+        "/**",
+        "   ...",
+        "",
+        "   ...",
+        "   */",
+      ].joined(separator: "\n")
+    )
+    XCTAssertNil(BlockDocumentation(source: "..."))
+  }
+
+  func testCommentContent() {
+    CommentContent.roundTripTest("http://example.com")
+    CommentContent.roundTripTest("...\n...")
+  }
+
+  func testDocumentationContent() {
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "",
+        "...",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("`©`")
+    DocumentationContent.roundTripTest(
+      [
+        "... ...",
+        "=======",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "...",
+      ].joined(separator: "\n")
+    )
+  }
+
+  func testFragment() {
+    let fragment = Fragment(scalarOffsets: 1..<5, in: LineComment(source: "// ...\n")!)
+    let fragmentSource = "/ .."
+    XCTAssertEqual(fragment.text, fragmentSource)
+    var scanner = RoundTripSyntaxScanner()
+    scanner.scan(fragment)
+    XCTAssertEqual(scanner.result, fragmentSource)
+  }
+
+  func testInlineCodeNode() {
+    XCTAssertNil(InlineCodeNode(source: "..."))
+    XCTAssertNil(InlineCodeNode(source: "`..."))
+  }
+
+  func testLineComment() {
+    LineComment.roundTripTest("// ...")
+    LineComment.roundTripTest("// MARK: \u{2D} Heading")
+    LineComment.roundTripTest("// ... http://example.com ...")
+    XCTAssertNil(LineComment(source: "..."))
+    LineComment.roundTripTest("//...")
+  }
+
+  func testLineDocumentation() {
+    LineDocumentation.roundTripTest("/// ...")
+    XCTAssertNil(LineDocumentation(source: "..."))
   }
 
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+      var first = true
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
       where url.lastPathComponent ≠ ".DS_Store" {
-        let sourceFile = try SyntaxParser.parse(url)
-
-        let originalSource = try String(from: url)
-        var roundTripSource = ""
-        sourceFile.write(to: &roundTripSource)
-        XCTAssertEqual(roundTripSource, originalSource)
-
-        struct DefaultSyntaxScanner: SyntaxScanner {}
-        var defaultScanner = DefaultSyntaxScanner()
-        defaultScanner.scan(sourceFile)
-
-        struct RoundTripSyntaxScanner: SyntaxScanner {
-          var result = ""
-          mutating func visit(
-            _ node: Syntax,
-            context: SyntaxContext
-          ) -> Bool {
-            if let token = node.as(TokenSyntax.self) {
-              result.append(contentsOf: token.text)
-            }
-            return true
-          }
-          mutating func visit(
-            _ node: ExtendedSyntax,
-            context: ExtendedSyntaxContext
-          ) -> Bool {
-            if let token = node as? ExtendedTokenSyntax {
-              result.append(contentsOf: token.text)
-            }
-            return true
-          }
+        if first {
+          first = false
+          _ = try SwiftSyntaxNode(file: url)
         }
-        var syntaxScanner = RoundTripSyntaxScanner()
-        syntaxScanner.scan(sourceFile)
-        XCTAssertEqual(syntaxScanner.result, originalSource)
+        SwiftSyntaxNode.roundTripTest(try String(from: url))
       }
     #endif
+  }
+
+  func testTriviaNode() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
+    #endif
+  }
+
+  func testStringLiteral() {
+    StringLiteral.roundTripTest("\u{22}...\u{22}")
+    XCTAssertNil(StringLiteral(source: "...\u{22}"))
+    XCTAssertNil(StringLiteral(source: "\u{22}..."))
   }
 }

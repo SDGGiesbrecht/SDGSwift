@@ -248,6 +248,7 @@ let package = Package(
     .target(
       name: "SDGSwiftSource2",
       dependencies: [
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
@@ -256,6 +257,12 @@ let package = Package(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .windows, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
+          package: "swift\u{2D}syntax",
+          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "Markdown",
