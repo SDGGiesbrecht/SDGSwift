@@ -42,10 +42,8 @@ public struct TriviaNode: SyntaxNode {
 
   // MARK: - Parsing
 
-  private func lineDocumentationSourceGroups() -> [[String]] {
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      return []
-    #else
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    private func lineDocumentationSourceGroups() -> [[String]] {
       var result: [[String]] = []
       var interveningLineBreaks = 0
       var interrupted = false
@@ -71,12 +69,13 @@ public struct TriviaNode: SyntaxNode {
         }
       }
       return result
-    #endif
-  }
+    }
+  #endif
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    // @exempt(from: tests) Unreachable without SwiftSyntax because initialization is impossible.
     #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       return []
     #else
@@ -119,6 +118,7 @@ public struct TriviaNode: SyntaxNode {
   public func write<Target>(
     to target: inout Target
   ) where Target: TextOutputStream {
+    // @exempt(from: tests) Unreachable without SwiftSyntax because initialization is impossible.
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       trivia.write(to: &target)
     #endif

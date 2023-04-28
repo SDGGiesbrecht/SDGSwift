@@ -52,6 +52,7 @@ public struct TriviaPieceNode: SyntaxNode {
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    // @exempt(from: tests) Unreachable without SwiftSyntax because initialization is impossible.
     #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       return []
     #else
@@ -96,6 +97,7 @@ public struct TriviaPieceNode: SyntaxNode {
   public func write<Target>(
     to target: inout Target
   ) where Target: TextOutputStream {
+    // @exempt(from: tests) Unreachable without SwiftSyntax because initialization is impossible.
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       piece.write(to: &target)
     #endif

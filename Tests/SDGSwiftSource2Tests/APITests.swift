@@ -89,13 +89,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "=======",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "...",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
-    XCTAssertEqual(
-      Fragment(scalarOffsets: 1..<5, in: LineComment(source: "// ...\n")!).text,
-      "/ .."
-    )
+    let fragment = Fragment(scalarOffsets: 1..<5, in: LineComment(source: "// ...\n")!)
+    let fragmentSource = "/ .."
+    XCTAssertEqual(fragment.text, fragmentSource)
+    var scanner = RoundTripSyntaxScanner()
+    scanner.scan(fragment)
+    XCTAssertEqual(scanner.result, fragmentSource)
   }
 
   func testInlineCodeNode() {
@@ -108,6 +116,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     LineComment.roundTripTest("// MARK: \u{2D} Heading")
     LineComment.roundTripTest("// ... http://example.com ...")
     XCTAssertNil(LineComment(source: "..."))
+    LineComment.roundTripTest("//...")
   }
 
   func testLineDocumentation() {
