@@ -41,7 +41,10 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
     string.unicodeScalars.removeLast(delimiterLength)
     self.closingDelimiter = delimiter
 
-    self.source = Token(kind: .source(string))
+    self.source = CodeContent(
+      source: string,
+      isSwift: true  // Inline code cannot declare its language, so treat it as probably Swift.
+    )
   }
 
   // MARK: - Properties
@@ -49,9 +52,8 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
   /// The opening delimiter.
   public let openingDelimiter: Token
 
-  // #workaround(Not parsed into anything yet.)
   /// The contents of the inline code.
-  public let source: Token
+  public let source: CodeContent
 
   /// The closing delimiter.
   public let closingDelimiter: Token
