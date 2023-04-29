@@ -34,7 +34,11 @@ public struct ParserCache {
 
   internal mutating func parse(swift: String) -> SwiftSyntaxNode? {
     return cached(in: &parsedSwift[swift]) {
-      return try? SwiftSyntaxNode(source: swift)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+        return nil
+      #else
+        return try? SwiftSyntaxNode(source: swift)
+      #endif
     }
   }
 
