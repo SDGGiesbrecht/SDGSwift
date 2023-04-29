@@ -69,6 +69,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
+  func testCodeContent() {
+    CodeContent.roundTripTest("print(\u{22}Hello, world!\u{22})")
+    let other = CodeContent(source: "This is not Swift.", isSwift: false)
+    var cache = ParserCache()
+    _ = other.children(cache: &cache)
+  }
+
   func testCommentContent() {
     CommentContent.roundTripTest("http://example.com")
     CommentContent.roundTripTest("...\n...")
