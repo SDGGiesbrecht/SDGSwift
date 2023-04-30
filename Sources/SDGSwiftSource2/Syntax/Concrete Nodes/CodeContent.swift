@@ -34,7 +34,7 @@ public struct CodeContent: SyntaxNode {
     if isSwift,
       let parsed = cache.parse(swift: source)
     {
-      return [parsed]
+      return [parsed]  // @exempt(from: tests) Unreachable without SwiftSyntax.
     } else {
       return [Token(kind: .source(source))]
     }
