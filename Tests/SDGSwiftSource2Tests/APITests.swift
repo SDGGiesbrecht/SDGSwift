@@ -102,6 +102,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "...",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest("# Heading")
   }
 
   func testFragment() {
@@ -129,6 +130,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testLineDocumentation() {
     LineDocumentation.roundTripTest("/// ...")
     XCTAssertNil(LineDocumentation(source: "..."))
+  }
+
+  func testNumberedHeading() {
+    NumberedHeading.roundTripTest("# Heading")
+    NumberedHeading.roundTripTest("#Heading")
+    XCTAssertNil(NumberedHeading(source: "Not a Heading"))
   }
 
   func testParsing() throws {

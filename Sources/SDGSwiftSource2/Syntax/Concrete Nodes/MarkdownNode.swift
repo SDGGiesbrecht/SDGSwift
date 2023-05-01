@@ -70,92 +70,64 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     #else
       switch markdown {
       case is InlineCode:
-        return [
-          InlineCodeNode(source: text)
-            ?? Token.unknown(text)  // @exempt(from: tests)
-        ]
+        return InlineCodeNode(source: text).map({ [$0] })
+          ?? fallbackChildren() // @exempt(from: tests)
+      case is Heading:
+        return NumberedHeading(source: text).map({ [$0] }) ?? fallbackChildren()
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
       case is Text:
         return [Token(kind: .documentationText(text))]
       default:
-        var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
-        func interveningNodes(upTo index: String.UnicodeScalarView.Index) -> [SyntaxNode] {
-          guard index ≠ lastAccountedForIndex else {
-            return []
-          }
-          var source = rootSource.scalars[lastAccountedForIndex..<index]
-          var kinds: [Token.Kind] = []
-          while ¬source.isEmpty {
-            let first = source.removeFirst()
-            switch first {
-            case " ", "\t":
-              var group = String(first)
-              while source.first == first {
-                group.scalars.append(source.removeFirst())
-              }
-              kinds.append(.whitespace(group))
-            case "#":
-              var group = String(first)
-              while source.first == first {
-                group.scalars.append(source.removeFirst())
-              }
-              kinds.append(.headingDelimiter(group))
-            default:
-              kinds.append(.swiftSyntax(.unknown(String(first))))
-            }
-          }
-          return kinds.map { Token(kind: $0) }
-        }
-        var result = markdown.children.flatMap({ child in
-          let childRange: Range<String.UnicodeScalarView.Index>
-          defer { lastAccountedForIndex = childRange.upperBound }
-          if let knownRange = child.range {
-            childRange = rootSource.scalarRange(of: knownRange)
-          } else {
-            childRange = lastAccountedForIndex..<lastAccountedForIndex
-          }
-          var intervening = interveningNodes(upTo: childRange.lowerBound)
-
-          if let heading = child as? Heading {
-            var indent: Token?
-            if let foundIndent = intervening.last as? Token {
-              indent = foundIndent
-            }
-            if let delimiter = intervening.last as? Token,
-              case .headingDelimiter = delimiter.kind
-            {
-              if indent ≠ nil {
-                intervening.removeLast()
-              }
-              intervening.removeLast()
-              return intervening.appending(
-                NumberedHeading(
-                  delimiter: delimiter,
-                  indent: indent,
-                  heading: MarkdownNode(
-                    unsafeMarkdown: heading,
-                    rootSource: rootSource,
-                    range: childRange
-                  )
-                )
-              )
-            }
-          }
-
-          return intervening.appending(
-            MarkdownNode(
-              unsafeMarkdown: child,
-              rootSource: rootSource,
-              range: childRange
-            )
-          )
-        })
-        result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
-        return result
+        return fallbackChildren()
       }
     #endif
   }
+
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+    private func fallbackChildren() -> [SyntaxNode] {
+      var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
+      func interveningNodes(upTo index: String.UnicodeScalarView.Index) -> [SyntaxNode] {
+        guard index ≠ lastAccountedForIndex else {
+          return []
+        }
+        var source = rootSource.scalars[lastAccountedForIndex..<index]
+        var kinds: [Token.Kind] = []
+        while ¬source.isEmpty {
+          let first = source.removeFirst()
+          switch first {
+          case " ", "\t":
+            var group = String(first)
+            while source.first == first {
+              group.scalars.append(source.removeFirst())
+            }
+            kinds.append(.whitespace(group))
+          default:
+            kinds.append(.swiftSyntax(.unknown(String(first))))
+          }
+        }
+        return kinds.map { Token(kind: $0) }
+      }
+      var result = markdown.children.flatMap({ child in
+        let childRange: Range<String.UnicodeScalarView.Index>
+        defer { lastAccountedForIndex = childRange.upperBound }
+        if let knownRange = child.range {
+          childRange = rootSource.scalarRange(of: knownRange)
+        } else {
+          childRange = lastAccountedForIndex..<lastAccountedForIndex
+        }
+        return interveningNodes(upTo: childRange.lowerBound).appending(
+          MarkdownNode(
+            unsafeMarkdown: child,
+            rootSource: rootSource,
+            range: childRange
+          )
+        )
+      })
+      result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
+      return result
+    }
+  #endif
 
   // MARK: - TextOutputStreamable
 
