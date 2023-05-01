@@ -27,9 +27,20 @@ public struct ParserCache {
 
   // MARK: - Properties
 
+  public var parsedSwift: [String: SwiftSyntaxNode?] = [:]
   public var parsedMarkdown: [String: MarkdownNode] = [:]
 
   // MARK: - Parsing
+
+  internal mutating func parse(swift: String) -> SwiftSyntaxNode? {
+    return cached(in: &parsedSwift[swift]) {
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+        return nil
+      #else
+        return try? SwiftSyntaxNode(source: swift)
+      #endif
+    }
+  }
 
   internal mutating func parse(markdown: String) -> MarkdownNode {
     return cached(in: &parsedMarkdown[markdown]) {
