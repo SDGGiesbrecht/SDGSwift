@@ -451,6 +451,7 @@ let package = Package(
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",

@@ -141,6 +141,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           _ = try SwiftSyntaxNode(file: url)
         }
         SwiftSyntaxNode.roundTripTest(try String(from: url))
+
+        let parsed = try SwiftSyntaxNode(file: url)
+
+        var unknown = UnknownHighlighter()
+        try unknown.assertHighlightsNothing(in: parsed, "Unknown tokens detected in “\(url.path)”")
+
+        var arbitrary = TextFreedomHighlighter(targetTestFreedom: .arbitrary)
+        try arbitrary.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Arbitrary Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        var aliasable = TextFreedomHighlighter(targetTestFreedom: .aliasable)
+        try aliasable.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Aliasable Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        var invariable = TextFreedomHighlighter(targetTestFreedom: .invariable)
+        try invariable.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Invariable Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
       }
     #endif
   }
