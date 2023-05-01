@@ -84,12 +84,28 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           guard index ≠ lastAccountedForIndex else {
             return []
           }
-          let source = String(
-            String.UnicodeScalarView(
-              rootSource.scalars[lastAccountedForIndex..<index]
-            )
-          )
-          return [Token.unknown(source)]
+          var source = rootSource.scalars[lastAccountedForIndex..<index]
+          var kinds: [Token.Kind] = []
+          while ¬source.isEmpty {
+            let first = source.removeFirst()
+            switch first {
+            case " ", "\t":
+              var group = String(first)
+              while source.first == first {
+                group.scalars.append(source.removeFirst())
+              }
+              kinds.append(.whitespace(group))
+            case "#":
+              var group = String(first)
+              while source.first == first {
+                group.scalars.append(source.removeFirst())
+              }
+              kinds.append(.headingDelimiter(group))
+            default:
+              kinds.append(.swiftSyntax(.unknown(String(first))))
+            }
+          }
+          return kinds.map { Token(kind: $0) }
         }
         var result = markdown.children.flatMap({ child in
           let childRange: Range<String.UnicodeScalarView.Index>
@@ -99,7 +115,35 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           } else {
             childRange = lastAccountedForIndex..<lastAccountedForIndex
           }
-          return interveningNodes(upTo: childRange.lowerBound).appending(
+          var intervening = interveningNodes(upTo: childRange.lowerBound)
+
+          if let heading = child as? Heading {
+            var indent: Token?
+            if let foundIndent = intervening.last as? Token {
+              indent = foundIndent
+            }
+            if let delimiter = intervening.last as? Token,
+              case .headingDelimiter = delimiter.kind
+            {
+              if indent ≠ nil {
+                intervening.removeLast()
+              }
+              intervening.removeLast()
+              return intervening.appending(
+                NumberedHeading(
+                  delimiter: delimiter,
+                  indent: indent,
+                  heading: MarkdownNode(
+                    unsafeMarkdown: heading,
+                    rootSource: rootSource,
+                    range: childRange
+                  )
+                )
+              )
+            }
+          }
+
+          return intervening.appending(
             MarkdownNode(
               unsafeMarkdown: child,
               rootSource: rootSource,

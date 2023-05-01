@@ -63,6 +63,9 @@ extension Token {
     /// Source code.
     case source(String)
 
+    /// A Markdown delimiter for a heading.
+    case headingDelimiter(String)
+
     /// An incomplete fragment of a token.
     case fragment(String)
 
@@ -96,6 +99,7 @@ extension Token {
         .sourceHeadingText(let text),
         .documentationText(let text),
         .source(let text),
+        .headingDelimiter(let text),
         .fragment(let text),
         .shebang(let text):
         return text
