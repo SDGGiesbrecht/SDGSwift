@@ -104,7 +104,16 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
               group.scalars.append(source.removeFirst())
             }
             kinds.append(.whitespace(group))
+          case "\n", "\r":
+            var group = String(first)
+            while source.first == first {
+              group.scalars.append(source.removeFirst())
+            }
+            kinds.append(.lineBreaks(group))
           default:
+            #warning("Debugging...")
+            print(type(of: markdown), "“\(text)”", "“\(first)”")
+
             kinds.append(.swiftSyntax(.unknown(String(first))))
           }
         }
