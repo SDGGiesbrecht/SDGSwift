@@ -63,6 +63,12 @@ extension Token {
     /// A Markdown delimiter for a bullet.
     case bullet(String)
 
+    /// A Markdown code delimiter.
+    case codeDelimiter(String)
+
+    /// A language identifier for a Markdown code block.
+    case language(String)
+
     /// Source code.
     case source(String)
 
@@ -105,6 +111,8 @@ extension Token {
         .sourceHeadingText(let text),
         .documentationText(let text),
         .bullet(let text),
+        .codeDelimiter(let text),
+        .language(let text),
         .source(let text),
         .headingDelimiter(let text),
         .asterism(let text),

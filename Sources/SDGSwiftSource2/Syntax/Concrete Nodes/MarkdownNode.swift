@@ -70,7 +70,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     #else
       switch markdown {
       case is CodeBlock:
-        return []
+        return CodeBlockNode(source: text).map({ [$0] })
+          ?? fallbackChildren()  // @exempt(from: tests)
       case is InlineCode:
         return InlineCodeNode(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
