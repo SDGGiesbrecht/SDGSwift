@@ -69,6 +69,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
+  func testCodeBlockNode() {
+    CodeBlockNode.roundTripTest(
+      [
+        "```swift",
+        "print(\u{22}Hello, world!\u{22})",
+        "```",
+      ].joined(separator: "\n")
+    )
+  }
+
   func testCodeContent() {
     CodeContent.roundTripTest("print(\u{22}Hello, world!\u{22})")
     let other = CodeContent(source: "This is not Swift.", isSwift: false)
