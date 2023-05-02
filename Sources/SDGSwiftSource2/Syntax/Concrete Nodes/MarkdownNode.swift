@@ -73,6 +73,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       case is CodeBlock:
         return CodeBlockNode(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
+      case is Emphasis:
+        let components = fallbackChildren()
+        return EmphasisNode(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is InlineCode:
         return InlineCodeNode(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
@@ -86,6 +90,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           ?? components  // @exempt(from: tests)
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
+      case is Strong:
+        let components = fallbackChildren()
+        return StrongNode(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is Text:
         return [Token(kind: .documentationText(text))]
       case is ThematicBreak:
@@ -133,7 +141,12 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             kinds.append(.swiftSyntax(.unknown(group)))
 
             #warning("Debugging...")
-            print(type(of: markdown), "“\(text)”", "“\(group)”")
+            if type(of: markdown) ≠ ListItem.self
+              ∧ type(of: markdown) ≠ Strong.self
+              ∧ type(of: markdown) ≠ Emphasis.self
+            {
+              print(type(of: markdown), "“\(text)”", "“\(group)”")
+            }
           }
         }
         return kinds.map { Token(kind: $0) }

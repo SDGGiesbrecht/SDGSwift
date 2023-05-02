@@ -78,6 +78,12 @@ extension Token {
     /// A Markdown delimiter for an asterism.
     case asterism(String)
 
+    /// A Markdown delimiter for applying an emphatic font.
+    case emphasisDelimiter(String)
+
+    /// A Markdown delimiter for applying a strong font.
+    case strengthDelimiter(String)
+
     /// An incomplete fragment of a token.
     case fragment(String)
 
@@ -116,6 +122,8 @@ extension Token {
         .source(let text),
         .headingDelimiter(let text),
         .asterism(let text),
+        .emphasisDelimiter(let text),
+        .strengthDelimiter(let text),
         .fragment(let text),
         .shebang(let text):
         return text
