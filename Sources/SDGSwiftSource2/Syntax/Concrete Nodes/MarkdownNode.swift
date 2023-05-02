@@ -71,9 +71,11 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       switch markdown {
       case is InlineCode:
         return InlineCodeNode(source: text).map({ [$0] })
-          ?? fallbackChildren() // @exempt(from: tests)
+          ?? fallbackChildren()  // @exempt(from: tests)
       case is Heading:
-        return NumberedHeading(source: text).map({ [$0] }) ?? fallbackChildren()
+        return NumberedHeading(source: text).map({ [$0] })
+          ?? UnderlinedHeading(source: text).map({ [$0] })
+          ?? fallbackChildren()  // @exempt(from: tests)
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
       case is Text:

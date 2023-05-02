@@ -103,6 +103,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ].joined(separator: "\n")
     )
     DocumentationContent.roundTripTest("# Heading")
+    DocumentationContent.roundTripTest(
+      [
+        "Heading",
+        "=======",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
@@ -179,15 +185,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testStringLiteral() {
+    StringLiteral.roundTripTest("\u{22}...\u{22}")
+    XCTAssertNil(StringLiteral(source: "...\u{22}"))
+    XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  }
+
   func testTriviaNode() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
     #endif
   }
 
-  func testStringLiteral() {
-    StringLiteral.roundTripTest("\u{22}...\u{22}")
-    XCTAssertNil(StringLiteral(source: "...\u{22}"))
-    XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  func testUnderlinedHeading() {
+    XCTAssertNil(UnderlinedHeading(source: "Not a heading"))
+    UnderlinedHeading.roundTripTest(
+      [
+        "Heading",
+        "\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}",
+      ].joined(separator: "\n")
+    )
+    XCTAssertNil(
+      UnderlinedHeading(
+        source: [
+          "Not a",
+          "heading",
+        ].joined(separator: "\n")
+      )
+    )
   }
 }
