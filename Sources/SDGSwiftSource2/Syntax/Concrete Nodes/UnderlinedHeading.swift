@@ -39,7 +39,13 @@ public struct UnderlinedHeading: StreamedViaChildren, SyntaxNode {
     guard remainder.first?.isNewline == true else {
       return nil
     }
-    self.lineBreak = Token(kind: .lineBreaks(String(remainder.removeFirst())))
+    self.medialLineBreak = Token(kind: .lineBreaks(String(remainder.removeFirst())))
+
+    if remainder.last?.isNewline == true {
+      self.trailingLineBreak = Token(kind: .lineBreaks(String(remainder.removeLast())))
+    } else {
+      self.trailingLineBreak = nil
+    }
 
     guard
       remainder.allSatisfy({ $0 == "=" })
@@ -56,14 +62,21 @@ public struct UnderlinedHeading: StreamedViaChildren, SyntaxNode {
   public let heading: Token
 
   /// The line break between the heading and its underline.
-  public let lineBreak: Token
+  public let medialLineBreak: Token
 
   /// The underline.
   public let underline: Token
 
+  /// The line break after the underline.
+  public let trailingLineBreak: Token?
+
   // MARK: - StreamedViaChildren
 
   internal var storedChildren: [SyntaxNode] {
-    return [heading, lineBreak, underline]
+    var children: [SyntaxNode] = [heading, medialLineBreak, underline]
+    if let trailing = trailingLineBreak {
+      children.append(trailing)
+    }
+    return children
   }
 }

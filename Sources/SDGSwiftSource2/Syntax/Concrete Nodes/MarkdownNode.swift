@@ -126,7 +126,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           default:
             var group = String(first)
             while ¬source.isEmpty,
-              source.first ∉ MarkdownNode.syntaxScalars {
+              source.first ∉ MarkdownNode.syntaxScalars
+            {
               group.scalars.append(source.removeFirst())
             }
             kinds.append(.swiftSyntax(.unknown(group)))
