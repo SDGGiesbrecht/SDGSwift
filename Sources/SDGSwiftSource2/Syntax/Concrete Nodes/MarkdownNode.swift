@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
   import Markdown
@@ -95,6 +96,9 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     #endif
   }
 
+  static let whitespaceScalars: Set<Unicode.Scalar> = [" ", "\t"]
+  static let lineBreakScalars: Set<Unicode.Scalar> = ["\n", "\r"]
+  static let syntaxScalars = whitespaceScalars ∪ lineBreakScalars
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
     private func fallbackChildren() -> [SyntaxNode] {
       var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound
@@ -107,25 +111,28 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         while ¬source.isEmpty {
           let first = source.removeFirst()
           switch first {
-          case " ", "\t":
+          case MarkdownNode.whitespaceScalars:
             var group = String(first)
             while source.first == first {
               group.scalars.append(source.removeFirst())
             }
             kinds.append(.whitespace(group))
-          case "\n", "\r":
+          case MarkdownNode.lineBreakScalars:
             var group = String(first)
             while source.first == first {
               group.scalars.append(source.removeFirst())
             }
             kinds.append(.lineBreaks(group))
           default:
-            #warning("Debugging...")
-            if type(of: markdown) ≠ ListItem.self {
-              print(type(of: markdown), "“\(text)”", "“\(first)”")
+            var group = String(first)
+            while ¬source.isEmpty,
+              source.first ∉ MarkdownNode.syntaxScalars {
+              group.scalars.append(source.removeFirst())
             }
+            kinds.append(.swiftSyntax(.unknown(group)))
 
-            kinds.append(.swiftSyntax(.unknown(String(first))))
+            #warning("Debugging...")
+            print(type(of: markdown), "“\(text)”", "“\(group)”")
           }
         }
         return kinds.map { Token(kind: $0) }
