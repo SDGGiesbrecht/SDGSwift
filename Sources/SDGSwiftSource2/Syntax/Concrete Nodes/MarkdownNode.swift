@@ -76,6 +76,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         return NumberedHeading(source: text).map({ [$0] })
           ?? UnderlinedHeading(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
+      case is ListItem:
+        let components = fallbackChildren()
+        return ListEntry(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
       case is Text:
@@ -114,7 +118,9 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             kinds.append(.lineBreaks(group))
           default:
             #warning("Debugging...")
-            print(type(of: markdown), "“\(text)”", "“\(first)”")
+            if type(of: markdown) ≠ ListItem.self {
+              print(type(of: markdown), "“\(text)”", "“\(first)”")
+            }
 
             kinds.append(.swiftSyntax(.unknown(String(first))))
           }

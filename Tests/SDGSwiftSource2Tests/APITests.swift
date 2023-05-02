@@ -109,6 +109,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "=======",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest(
+      [
+        "\u{2D} First list entry.",
+        "\u{2D} Second list entry.",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {

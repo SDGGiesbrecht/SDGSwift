@@ -60,6 +60,9 @@ extension Token {
     /// Documentation text.
     case documentationText(String)
 
+    /// A Markdown delimiter for a bullet.
+    case bullet(String)
+
     /// Source code.
     case source(String)
 
@@ -101,6 +104,7 @@ extension Token {
         .mark(let text),
         .sourceHeadingText(let text),
         .documentationText(let text),
+        .bullet(let text),
         .source(let text),
         .headingDelimiter(let text),
         .asterism(let text),
