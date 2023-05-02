@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// An entry in a Markdown list.
-public struct ListEntry: StreamedViaChildren, SyntaxNode {
+/// A Markdown list item.
+public struct ListItemNode: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
 

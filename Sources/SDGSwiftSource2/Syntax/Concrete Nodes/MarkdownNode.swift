@@ -69,6 +69,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       return [Token.unknown(text)]
     #else
       switch markdown {
+      case is CodeBlock:
+        return []
       case is InlineCode:
         return InlineCodeNode(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
@@ -78,7 +80,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           ?? fallbackChildren()  // @exempt(from: tests)
       case is ListItem:
         let components = fallbackChildren()
-        return ListEntry(components: components).map({ [$0] })
+        return ListItemNode(components: components).map({ [$0] })
           ?? components  // @exempt(from: tests)
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
