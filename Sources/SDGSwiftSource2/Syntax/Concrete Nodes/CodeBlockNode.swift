@@ -19,7 +19,7 @@ public struct CodeBlockNode: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
 
-  /// Parses an inline code node.
+  /// Parses code block node.
   public init?(source: String) {
     let delimiter = Token(kind: .codeDelimiter("```"))
     let delimiterText = delimiter.text.unicodeScalars
