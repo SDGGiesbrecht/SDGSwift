@@ -80,6 +80,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         return [Token(kind: .lineBreaks(text))]
       case is Text:
         return [Token(kind: .documentationText(text))]
+      case is ThematicBreak:
+        return [Token(kind: .asterism(text))]
       default:
         return fallbackChildren()
       }
