@@ -30,6 +30,7 @@ public struct ListEntry: StreamedViaChildren, SyntaxNode {
     else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
+    remainder.removeFirst()
     self.indent = indent
 
     self.contents = Array(remainder)
