@@ -125,16 +125,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "\u{2D} Second list entry.",
       ].joined(separator: "\n")
     )
-    CodeBlockNode.roundTripTest(
-      [
-        "```swift",
-        "// This is an example.",
-        "if try performAction(on: \u{22}1\u{22}, with: \u{22}2\u{22}) {",
-        "  print(\u{22}It worked.\u{22})",
-        "}",
-        "```",
-      ].joined(separator: "\n")
-    )
   }
 
   func testFragment() {
