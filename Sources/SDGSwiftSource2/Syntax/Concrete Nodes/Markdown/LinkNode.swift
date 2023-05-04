@@ -42,7 +42,7 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
     self.content = LinkContent(
       openingDelimiter: openingDelimiter,
       contents: Array(remainder),
-      closingDelimiter: Token(kind: .closingLinkTargetDelimiter)
+      closingDelimiter: Token(kind: .closingLinkContentDelimiter)
     )
 
     guard targetRemainder.first == "(" else {
@@ -54,7 +54,7 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
     guard targetRemainder.last == ")" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
-    targetRemainder.removeFirst()
+    targetRemainder.removeLast()
     let targetEnd = Token(kind: .closingLinkTargetDelimiter)
 
     self.target = LinkTarget(
