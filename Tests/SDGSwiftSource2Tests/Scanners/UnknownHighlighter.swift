@@ -24,9 +24,12 @@ struct UnknownHighlighter: Highlighter {
 
   // MARK: - Exceptions
 
+  static let expectedParserRejections: Set<String> = [
+    /*This cannot compile*/"."
+  ]
+
   static let expectedSource: Set<String> = [
     "func doSomething()",
-    /*This cannot compile*/".",
     "This is unidentified.",
   ]
 
@@ -62,7 +65,7 @@ struct UnknownHighlighter: Highlighter {
         .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
         return false
       case .unknown:
-        return true
+        return token.text ∉ UnknownHighlighter.expectedParserRejections
       }
     case .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,
       .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText,
