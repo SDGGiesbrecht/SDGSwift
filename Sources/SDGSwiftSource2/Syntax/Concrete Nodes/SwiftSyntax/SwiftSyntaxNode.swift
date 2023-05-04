@@ -68,7 +68,7 @@ public struct SwiftSyntaxNode: SyntaxNode {
   // @documentation(SDGSwiftSource.Syntax.localAncestors())
   /// All the node’s ancestors in order from its immediate parent to the root node of the local syntax context.
   ///
-  /// The local syntax context is the contiguous syntax tree accessible without escaping through fragmentation into parent contexts. That is, the root node of a code block in a documentation comment is the unified code block itself, not the source file containing the documentation comment, and any intervening documentation delimiters or indentation beloninging to them do not participate in the local tree.
+  /// The local syntax context is the contiguous syntax tree accessible without escaping through fragmentation into parent contexts. That is, the root node of code in a documentation comment is the unified code block itself, not the source file containing the documentation comment, and any intervening documentation delimiters or indentation beloninging to them do not participate in the local tree.
   public func localAncestors() -> AnySequence<Syntax> {
     if let parent = swiftSyntaxNode.parent {
       return AnySequence(sequence(first: parent, next: { $0.parent }))

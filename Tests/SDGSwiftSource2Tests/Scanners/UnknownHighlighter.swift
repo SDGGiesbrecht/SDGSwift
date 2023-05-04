@@ -33,7 +33,7 @@ struct UnknownHighlighter: Highlighter {
 
   // MARK: - Highlighter
 
-  func shouldHighlight(_ token: Token) -> Bool {
+  func shouldHighlight(_ token: Token, context: ScanContext) -> Bool {
     switch token.kind {
     case .swiftSyntax(let swiftSyntax):
       switch swiftSyntax {

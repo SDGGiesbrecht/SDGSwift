@@ -22,7 +22,7 @@ struct RoundTripSyntaxScanner: SyntaxScanner {
 
   // MARK: - SyntaxScanner
 
-  mutating func visit(_ node: SyntaxNode) -> Bool {
+  mutating func visit(_ node: SyntaxNode, context: ScanContext) -> Bool {
     if let token = node as? Token {
       result.append(contentsOf: token.text)
     }

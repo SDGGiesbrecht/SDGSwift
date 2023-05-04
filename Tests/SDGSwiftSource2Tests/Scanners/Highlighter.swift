@@ -25,7 +25,7 @@ import SDGPersistenceTestUtilities
 import SDGSwiftTestUtilities
 
 protocol Highlighter: SyntaxScanner {
-  func shouldHighlight(_ token: Token) -> Bool
+  func shouldHighlight(_ token: Token, context: ScanContext) -> Bool
   var highlighted: String { get set }
 }
 
@@ -78,9 +78,9 @@ extension Highlighter {
 
   // MARK: - SyntaxScanner
 
-  mutating func visit(_ node: SyntaxNode) -> Bool {
+  mutating func visit(_ node: SyntaxNode, context: ScanContext) -> Bool {
     if let token = node as? Token {
-      highlighted += shouldHighlight(token) ? highlight(token.text) : token.text
+      highlighted += shouldHighlight(token, context: context) ? highlight(token.text) : token.text
     }
     return true
   }

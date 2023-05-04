@@ -22,8 +22,8 @@ struct TextFreedomHighlighter: Highlighter {
 
   // MARK: - Highlighter
 
-  func shouldHighlight(_ token: Token) -> Bool {
-    return token.kind.textFreedom == targetTestFreedom
+  func shouldHighlight(_ token: Token, context: ScanContext) -> Bool {
+    return token.kind.textFreedom(globalAncestors: context.globalAncestors) == targetTestFreedom
   }
 
   var highlighted: String = ""
