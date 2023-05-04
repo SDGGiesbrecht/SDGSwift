@@ -199,11 +199,7 @@ extension Token {
           return .arbitrary
         case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
           .prefixOperator:
-          if let syntaxNode =
-            (globalAncestors
-            .dropLast()  // Token
-            .last  // SwiftSyntaxNode with TokenSyntax
-            as? SwiftSyntaxNode),
+          if let syntaxNode = globalAncestors.last as? SwiftSyntaxNode,
             let token = syntaxNode.swiftSyntaxNode.as(TokenSyntax.self),
             let parent = token.parent
           {
