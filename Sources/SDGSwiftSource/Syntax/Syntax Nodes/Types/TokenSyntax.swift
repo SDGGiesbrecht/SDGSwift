@@ -55,7 +55,7 @@
       }
     }
 
-    // @documentation(SDGSwiftSource.TokenSyntax.textFreedom)
+    // #documentation(SDGSwiftSource.TokenSyntax.textFreedom)
     /// The amount of freedom avialable to the token’s text.
     public var textFreedom: TextFreedom {
       switch tokenKind {

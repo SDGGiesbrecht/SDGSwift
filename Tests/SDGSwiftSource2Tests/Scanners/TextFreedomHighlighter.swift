@@ -23,9 +23,7 @@ struct TextFreedomHighlighter: Highlighter {
   // MARK: - Highlighter
 
   func shouldHighlight(_ token: Token) -> Bool {
-    #warning("Not ready yet.")
-    return false
-    //return token.textFreedom == targetTestFreedom
+    return token.kind.textFreedom == targetTestFreedom
   }
 
   var highlighted: String = ""
