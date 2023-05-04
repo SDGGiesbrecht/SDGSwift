@@ -129,7 +129,7 @@ extension Token {
       case .lineDocumentationDelimiter:
         return "///"
       case .openingBlockDocumentationDelimiter:
-        return "/**"
+        return "/*\u{2A}"
       case .closingBlockDocumentationDelimiter:
         return "*/"
       case .openingLinkContentDelimiter:
