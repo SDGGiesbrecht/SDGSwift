@@ -107,6 +107,15 @@ extension Token {
     /// A Markdown delimiter for a quotation.
     case quotationDelimiter
 
+    /// A documentation callout.
+    case callout(String)
+
+    /// A parameter name used with the `Parameter` callout.
+    case calloutParameter(String)
+
+    /// A colon used in a documenation callout.
+    case calloutColon
+
     /// A Markdown line break (two trailing spaces).
     case markdownLineBreak
 
@@ -147,6 +156,8 @@ extension Token {
         return "!"
       case .quotationDelimiter:
         return ">"
+      case .calloutColon:
+        return ":"
       case .markdownLineBreak:
         return "  "
       case .whitespace(let text),
@@ -165,6 +176,8 @@ extension Token {
         .emphasisDelimiter(let text),
         .strengthDelimiter(let text),
         .linkURL(let text),
+        .callout(let text),
+        .calloutParameter(let text),
         .fragment(let text),
         .shebang(let text):
         return text
@@ -263,7 +276,8 @@ extension Token {
         .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter,
         .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter,
         .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter,
-        .quotationDelimiter, .markdownLineBreak, .fragment, .shebang:
+        .quotationDelimiter, .callout, .calloutParameter, .calloutColon, .markdownLineBreak,
+        .fragment, .shebang:
         return .invariable
       }
     }

@@ -101,8 +101,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           ?? components  // @exempt(from: tests)
       case is ListItem:
         let components = fallbackChildren()
-        return ListItemNode(components: components).map({ [$0] })
-          ?? components  // @exempt(from: tests)
+        guard let list = ListItemNode(components: components) else {
+          return components  // @exempt(from: tests)
+        }
+        return [CalloutNode(listItem: list, cache: &cache) ?? list]
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text))]
       case is Strong:

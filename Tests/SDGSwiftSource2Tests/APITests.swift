@@ -131,6 +131,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "Break",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest(
+      [
+        "- Warning: Watch out!"
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
