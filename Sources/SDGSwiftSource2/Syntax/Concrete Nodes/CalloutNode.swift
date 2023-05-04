@@ -86,7 +86,7 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
           guard let parsed = itemChildren.first as? ListItemNode,
             itemChildren.count == 1
           else {
-            return item
+            return item  // @exempt(from: tests) Theoretically unreachable.
           }
           return ParametersEntry(listItem: parsed, cache: &cache) ?? item
         }

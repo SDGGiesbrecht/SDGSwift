@@ -27,8 +27,11 @@ import SDGPersistence
 
 import SDGSwiftSource2
 
+import SDGSwiftLocalizations
+
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
@@ -69,6 +72,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
+  func testCallout() {
+    for localization in InterfaceLocalization.allCases {
+      let specification = Callout.allCases
+        .map({ $0.localizedText(localization.code) })
+        .joined(separator: "\n")
+      compare(
+        String(specification),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Localization/Callouts/\(localization.icon!).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
+    XCTAssertNotNil(Callout("Returns"))
+    XCTAssertNil(Callout("no‐such‐callout"))
+    XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
+  }
+
   func testCodeBlockNode() {
     CodeBlockNode.roundTripTest(
       [
@@ -76,6 +97,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "print(\u{22}Hello, world!\u{22})",
         "```",
       ].joined(separator: "\n")
+    )
+    XCTAssertNil(CodeBlockNode(source: "Not code."))
+    XCTAssertNil(CodeBlockNode(source: "```...```"))
+    XCTAssertNil(
+      CodeBlockNode(
+        source: [
+          "```",
+          "Unterminated...",
+        ].joined(separator: "\n")
+      )
     )
   }
 
@@ -131,16 +162,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "Break",
       ].joined(separator: "\n")
     )
-    DocumentationContent.roundTripTest(
-      [
-        "- Warning: Watch out!"
-      ].joined(separator: "\n")
-    )
+    DocumentationContent.roundTripTest("- Warning: Watch out!")
     DocumentationContent.roundTripTest(
       [
         "- Parameters:",
         "   - first: The first parameter.",
         "   - second: The second parameter.",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("- ***")
+    DocumentationContent.roundTripTest("- *emphasis*")
+    DocumentationContent.roundTripTest(
+      [
+        "- Parameters:",
+        "   - This is actually a list.",
+        "   - ***",
+        "   - *emphasis*",
+        "   - colonless",
       ].joined(separator: "\n")
     )
   }
@@ -223,6 +261,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     StringLiteral.roundTripTest("\u{22}...\u{22}")
     XCTAssertNil(StringLiteral(source: "...\u{22}"))
     XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  }
+
+  func testSwiftSyntaxNode() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      _ = SwiftSyntaxNode(Syntax(TokenSyntax(.importKeyword, presence: .present))).localAncestors()
+    #endif
   }
 
   func testTriviaNode() {

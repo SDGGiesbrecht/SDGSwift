@@ -449,6 +449,7 @@ let package = Package(
       name: "SDGSwiftSource2Tests",
       dependencies: [
         "SDGSwiftSource2",
+        "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
