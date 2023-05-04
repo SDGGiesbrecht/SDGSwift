@@ -450,6 +450,7 @@ let package = Package(
         "SDGSwiftSource2",
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(

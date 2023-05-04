@@ -109,7 +109,12 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       case is Text:
         return [Token(kind: .documentationText(text))]
       case is ThematicBreak:
-        return [Token(kind: .asterism(text))]
+        var children: [SyntaxNode] = []
+        var components = text
+        if text.scalars.last ∈ MarkdownNode.lineBreakScalars {
+          children.append(Token(kind: .lineBreaks(String(components.removeLast()))))
+        }
+        return children.prepending(Token(kind: .asterism(components)))
       default:
         return fallbackChildren()
       }

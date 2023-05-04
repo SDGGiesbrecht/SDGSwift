@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
@@ -19,6 +21,15 @@
 import SDGSwiftSource2
 
 struct UnknownHighlighter: Highlighter {
+
+  // MARK: - Exceptions
+
+  static let expectedSource: Set<String> = [
+    "func doSomething()",
+    "let unmarked = true",
+    "This cannot compile.",
+    "This is unidentified.",
+  ]
 
   // MARK: - Highlighter
 
@@ -62,7 +73,9 @@ struct UnknownHighlighter: Highlighter {
       .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter,
       .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .shebang:
       return false
-    case .source, .fragment:
+    case .source:
+      return token.text ∉ UnknownHighlighter.expectedSource
+    case .fragment:
       return true
     }
   }
