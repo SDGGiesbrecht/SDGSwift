@@ -59,7 +59,7 @@ struct UnknownHighlighter: Highlighter {
       .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
       .closingBlockDocumentationDelimiter, .documentationText, .bullet, .codeDelimiter, .language,
       .headingDelimiter, .asterism, .strengthDelimiter, .emphasisDelimiter, .linkDelimiter,
-      .linkURL, .shebang:
+      .linkURL, .imageDelimiter, .shebang:
       return false
     case .source, .fragment:
       return true

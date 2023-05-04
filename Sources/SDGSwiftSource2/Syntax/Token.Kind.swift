@@ -90,6 +90,9 @@ extension Token {
     /// The URL of a Markdown link.
     case linkURL(String)
 
+    /// A Markdown image delimiter.
+    case imageDelimiter(String)
+
     /// An incomplete fragment of a token.
     case fragment(String)
 
@@ -132,6 +135,7 @@ extension Token {
         .strengthDelimiter(let text),
         .linkDelimiter(let text),
         .linkURL(let text),
+        .imageDelimiter(let text),
         .fragment(let text),
         .shebang(let text):
         return text
