@@ -136,6 +136,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "- Warning: Watch out!"
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest(
+      [
+        "- Parameters:",
+        "   - first: The first parameter.",
+        "   - second: The second parameter.",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {

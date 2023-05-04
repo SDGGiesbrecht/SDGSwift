@@ -12,11 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Can docc handle this?)
-
+import SDGLogic
 import SDGText
 
 import Markdown
+
+// #workaround(Can docc handle this?)
 
 /// A documentation callout.
 public struct CalloutNode: StreamedViaChildren, SyntaxNode {
@@ -63,9 +64,34 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
     self.colon = Token(kind: .calloutColon)
 
     let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
-    self.contents = [adjustedText]
+    let simpleContents = [adjustedText]
       .appending(contentsOf: paragraphChildren.dropFirst())
       .appending(contentsOf: listItem.contents.dropFirst())
+    if callout ≠ .parameters {
+      self.contents = simpleContents
+    } else {
+      self.contents = simpleContents.flatMap { content in
+        guard let unordered = content as? MarkdownNode,
+          unordered.markdown is UnorderedList
+        else {
+          return [content]
+        }
+        return unordered.children(cache: &cache).map { unorderedChild in
+          guard let item = unorderedChild as? MarkdownNode,
+            item.markdown is ListItem
+          else {
+            return unorderedChild
+          }
+          let itemChildren = item.children(cache: &cache)
+          guard let parsed = itemChildren.first as? ListItemNode,
+            itemChildren.count == 1
+          else {
+            return item
+          }
+          return ParametersEntry(listItem: parsed, cache: &cache) ?? item
+        }
+      }
+    }
   }
 
   // MARK: - Properties
