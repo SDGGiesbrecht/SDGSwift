@@ -38,7 +38,7 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
 
     self.source = CodeContent(
       source: string,
-      isSwift: true  // Inline code cannot declare its language, so treat it as probably Swift.
+      isSwift: nil
     )
   }
 

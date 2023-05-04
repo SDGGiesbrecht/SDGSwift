@@ -12,13 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 /// The content of code used in documentation.
 public struct CodeContent: SyntaxNode {
 
   // MARK: - Initialization
 
   /// Parses code.
-  public init(source: String, isSwift: Bool = true) {
+  public init(source: String, isSwift: Bool?) {
     self.source = source
     self.isSwift = isSwift
   }
@@ -26,12 +28,12 @@ public struct CodeContent: SyntaxNode {
   // MARK: - Properties
 
   private let source: String
-  private let isSwift: Bool
+  private let isSwift: Bool?
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    if isSwift,
+    if isSwift ≠ false,
       let parsed = cache.parse(swift: source)
     {
       return [parsed]  // @exempt(from: tests) Unreachable without SwiftSyntax.

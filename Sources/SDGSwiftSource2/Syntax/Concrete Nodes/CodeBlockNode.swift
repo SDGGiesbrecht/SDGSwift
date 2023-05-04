@@ -59,9 +59,15 @@ public struct CodeBlockNode: StreamedViaChildren, SyntaxNode {
       self.closingVerticalMargin = nil
     }
 
+    var isSwift: Bool?
+    if language == "swift" {
+      isSwift = true
+    } else if ¬language.isEmpty {
+      isSwift = false
+    }
     self.source = CodeContent(
       source: string,
-      isSwift: language == "swift"
+      isSwift: isSwift
     )
   }
 

@@ -17,6 +17,6 @@ import SDGSwiftSource2
 extension CodeContent: RoundTripTestable {
 
   init(source: String) throws {
-    self.init(source: source, isSwift: true)
+    self.init(source: source, isSwift: nil)
   }
 }

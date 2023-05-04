@@ -26,8 +26,7 @@ struct UnknownHighlighter: Highlighter {
 
   static let expectedSource: Set<String> = [
     "func doSomething()",
-    "let unmarked = true",
-    "This cannot compile.",
+    /*This cannot compile*/".",
     "This is unidentified.",
   ]
 
