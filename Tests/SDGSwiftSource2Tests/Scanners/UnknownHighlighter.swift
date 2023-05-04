@@ -37,36 +37,39 @@ struct UnknownHighlighter: Highlighter {
 
   func shouldHighlight(_ token: Token, context: ScanContext) -> Bool {
     switch token.kind {
-    case .swiftSyntax(let swiftSyntax):
-      switch swiftSyntax {
-      case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
-        .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword,
-        .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword,
-        .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword,
-        .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword,
-        .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
-        .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword,
-        .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
-        .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
-        .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-        .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket,
-        .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis,
-        .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick,
-        .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote,
-        .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword,
-        .poundSelectorKeyword, .poundFileKeyword, .poundFileIDKeyword, .poundFilePathKeyword,
-        .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword,
-        .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword,
-        .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
-        .poundUnavailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
-        .poundColorLiteralKeyword, .poundHasSymbolKeyword, .integerLiteral, .floatingLiteral,
-        .stringLiteral, .regexLiteral, .identifier, .unspacedBinaryOperator, .spacedBinaryOperator,
-        .postfixOperator, .prefixOperator, .dollarIdentifier, .contextualKeyword,
-        .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
-        return false
-      case .unknown:
-        return token.text ∉ UnknownHighlighter.expectedParserRejections
-      }
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      case .swiftSyntax(let swiftSyntax):
+        switch swiftSyntax {
+        case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
+          .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword,
+          .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword,
+          .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword,
+          .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword,
+          .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
+          .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword,
+          .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
+          .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
+          .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
+          .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket,
+          .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis,
+          .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick,
+          .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote,
+          .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword,
+          .poundSelectorKeyword, .poundFileKeyword, .poundFileIDKeyword, .poundFilePathKeyword,
+          .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword,
+          .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword,
+          .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
+          .poundUnavailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
+          .poundColorLiteralKeyword, .poundHasSymbolKeyword, .integerLiteral, .floatingLiteral,
+          .stringLiteral, .regexLiteral, .identifier, .unspacedBinaryOperator,
+          .spacedBinaryOperator,
+          .postfixOperator, .prefixOperator, .dollarIdentifier, .contextualKeyword,
+          .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
+          return false
+        case .unknown:
+          return token.text ∉ UnknownHighlighter.expectedParserRejections
+        }
+    #endif
     case .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,
       .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText,
       .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
