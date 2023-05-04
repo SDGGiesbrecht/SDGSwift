@@ -15,7 +15,9 @@
 import SDGLogic
 import SDGText
 
-import Markdown
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  import Markdown
+#endif
 
 // #workaround(Can docc handle this?)
 
