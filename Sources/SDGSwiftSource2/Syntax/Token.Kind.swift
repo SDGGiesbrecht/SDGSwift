@@ -107,6 +107,9 @@ extension Token {
     /// A Markdown delimiter for a quotation.
     case quotationDelimiter
 
+    /// A Markdown line break (two trailing spaces).
+    case markdownLineBreak
+
     /// An incomplete fragment of a token.
     case fragment(String)
 
@@ -144,6 +147,8 @@ extension Token {
         return "!"
       case .quotationDelimiter:
         return ">"
+      case .markdownLineBreak:
+        return "  "
       case .whitespace(let text),
         .lineBreaks(let text),
         .commentText(let text),
@@ -258,7 +263,7 @@ extension Token {
         .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter,
         .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter,
         .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter,
-        .quotationDelimiter, .fragment, .shebang:
+        .quotationDelimiter, .markdownLineBreak, .fragment, .shebang:
         return .invariable
       }
     }

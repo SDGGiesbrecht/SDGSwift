@@ -92,6 +92,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         let components = fallbackChildren()
         return ImageNode(components: components).map({ [$0] })
           ?? components  // @exempt(from: tests)
+      case is LineBreak:
+        return [Token(kind: .markdownLineBreak)]
       case is Link:
         let components = fallbackChildren()
         return LinkNode(components: components).map({ [$0] })

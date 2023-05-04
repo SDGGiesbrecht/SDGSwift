@@ -73,7 +73,8 @@ struct UnknownHighlighter: Highlighter {
       .closingBlockDocumentationDelimiter, .documentationText, .bullet, .codeDelimiter, .language,
       .headingDelimiter, .asterism, .strengthDelimiter, .emphasisDelimiter,
       .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter,
-      .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .shebang:
+      .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter,
+      .markdownLineBreak, .shebang:
       return false
     case .source:
       return token.text ∉ UnknownHighlighter.expectedSource
