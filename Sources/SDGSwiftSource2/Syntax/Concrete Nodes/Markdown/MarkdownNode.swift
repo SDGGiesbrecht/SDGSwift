@@ -84,6 +84,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         return NumberedHeading(source: text).map({ [$0] })
           ?? UnderlinedHeading(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
+      case is Link:
+        let components = fallbackChildren()
+        return LinkNode(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is ListItem:
         let components = fallbackChildren()
         return ListItemNode(components: components).map({ [$0] })
@@ -144,6 +148,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             if type(of: markdown) ≠ ListItem.self
               ∧ type(of: markdown) ≠ Strong.self
               ∧ type(of: markdown) ≠ Emphasis.self
+              ∧ type(of: markdown) ≠ Link.self
             {
               print(type(of: markdown), "“\(text)”", "“\(group)”")
             }

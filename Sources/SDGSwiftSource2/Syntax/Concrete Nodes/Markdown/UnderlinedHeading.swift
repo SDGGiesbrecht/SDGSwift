@@ -18,7 +18,7 @@ import SDGLogic
   import Markdown
 #endif
 
-/// A heading in source code using underline notation.
+/// A heading in documentation using underline notation.
 public struct UnderlinedHeading: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization

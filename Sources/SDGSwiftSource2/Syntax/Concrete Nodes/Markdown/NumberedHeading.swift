@@ -18,7 +18,7 @@ import SDGLogic
   import Markdown
 #endif
 
-/// A heading in source code using number sign notation.
+/// A heading in documentation using number sign notation.
 public struct NumberedHeading: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization

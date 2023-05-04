@@ -84,6 +84,12 @@ extension Token {
     /// A Markdown delimiter for applying a strong font.
     case strengthDelimiter(String)
 
+    /// A Markdown link delimiter.
+    case linkDelimiter(String)
+
+    /// The URL of a Markdown link.
+    case linkURL(String)
+
     /// An incomplete fragment of a token.
     case fragment(String)
 
@@ -124,6 +130,8 @@ extension Token {
         .asterism(let text),
         .emphasisDelimiter(let text),
         .strengthDelimiter(let text),
+        .linkDelimiter(let text),
+        .linkURL(let text),
         .fragment(let text),
         .shebang(let text):
         return text

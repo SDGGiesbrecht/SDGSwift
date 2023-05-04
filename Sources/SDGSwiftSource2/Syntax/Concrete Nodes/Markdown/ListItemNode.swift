@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/// A Markdown list item.
+/// An entry in a list in documentation.
 public struct ListItemNode: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
