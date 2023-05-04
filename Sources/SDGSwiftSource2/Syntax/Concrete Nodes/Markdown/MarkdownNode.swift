@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
@@ -179,6 +180,38 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         )
       })
       result.append(contentsOf: interveningNodes(upTo: self.range.upperBound))
+
+      // Line break’s ranges are misaligned.
+      while let documentationIndex = result.indices.first(where: { index in
+        if (result[index...].dropFirst().first as? MarkdownNode)?.markdown is LineBreak,
+          let textMarkdown = result[index] as? MarkdownNode,
+          textMarkdown.markdown is Text,
+          textMarkdown.text.hasSuffix("  ")
+        {
+          return true
+        } else {
+          return false
+        }
+      }) {
+        let documentation = result[documentationIndex] as! MarkdownNode
+        let adjustedDivision = documentation.rootSource.index(
+          documentation.range.upperBound,
+          offsetBy: −2
+        )
+        result[documentationIndex] = MarkdownNode(
+          unsafeMarkdown: documentation.markdown,
+          rootSource: documentation.rootSource,
+          range: documentation.range.lowerBound..<adjustedDivision
+        )
+        let lineBreakIndex = result.index(after: documentationIndex)
+        let lineBreak = result[lineBreakIndex] as! MarkdownNode
+        result[lineBreakIndex] = MarkdownNode(
+          unsafeMarkdown: lineBreak.markdown,
+          rootSource: lineBreak.rootSource,
+          range: adjustedDivision..<lineBreak.range.upperBound
+        )
+      }
+
       return result
     }
   #endif

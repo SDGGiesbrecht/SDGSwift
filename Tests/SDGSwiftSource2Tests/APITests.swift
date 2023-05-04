@@ -125,6 +125,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "\u{2D} Second list entry.",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest(
+      [
+        "Line  ",
+        "Break",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
