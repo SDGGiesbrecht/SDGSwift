@@ -188,86 +188,91 @@ extension Token {
     /// The amount of freedom avialable to the token’s text.
     public func textFreedom(globalAncestors: [SyntaxNode]) -> TextFreedom {
       switch self {
-      case .swiftSyntax(let kind):
-        switch kind {
-        case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
-          .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword,
-          .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword,
-          .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword,
-          .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword,
-          .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
-          .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword,
-          .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
-          .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
-          .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-          .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket,
-          .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis,
-          .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick,
-          .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote,
-          .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword,
-          .poundSelectorKeyword, .poundFileKeyword, .poundFileIDKeyword, .poundFilePathKeyword,
-          .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword,
-          .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword,
-          .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
-          .poundUnavailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
-          .poundColorLiteralKeyword, .poundHasSymbolKeyword, .unknown, .dollarIdentifier,
-          .contextualKeyword, .rawStringDelimiter, .stringInterpolationAnchor, .yield:
-          return .invariable
-        case .integerLiteral, .floatingLiteral, .stringLiteral, .regexLiteral, .stringSegment:
-          return .arbitrary
-        case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
-          .prefixOperator:
-          if let syntaxNode = globalAncestors.last as? SwiftSyntaxNode,
-            let token = syntaxNode.swiftSyntaxNode.as(TokenSyntax.self),
-            let parent = token.parent
-          {
-            if let enumerationCaseElement = parent.as(EnumCaseElementSyntax.self),
-              enumerationCaseElement.identifier == token
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+        case .swiftSyntax(let kind):
+          switch kind {
+          case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
+            .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword,
+            .letKeyword,
+            .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword,
+            .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword,
+            .internalKeyword,
+            .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword,
+            .guardKeyword,
+            .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
+            .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword,
+            .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
+            .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
+            .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
+            .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket,
+            .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis,
+            .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick,
+            .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote,
+            .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword,
+            .poundSelectorKeyword, .poundFileKeyword, .poundFileIDKeyword, .poundFilePathKeyword,
+            .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword,
+            .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword,
+            .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword,
+            .poundUnavailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
+            .poundColorLiteralKeyword, .poundHasSymbolKeyword, .unknown, .dollarIdentifier,
+            .contextualKeyword, .rawStringDelimiter, .stringInterpolationAnchor, .yield:
+            return .invariable
+          case .integerLiteral, .floatingLiteral, .stringLiteral, .regexLiteral, .stringSegment:
+            return .arbitrary
+          case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
+            .prefixOperator:
+            if let syntaxNode = globalAncestors.last as? SwiftSyntaxNode,
+              let token = syntaxNode.swiftSyntaxNode.as(TokenSyntax.self),
+              let parent = token.parent
             {
-              // Enumeration case declaration.
-              return .arbitrary
-            }
-            if let identifierPattern = parent.as(IdentifierPatternSyntax.self),
-              identifierPattern.identifier == token
-            {
-              // Variable declaration.
-              return .arbitrary
-            }
-            if let functionParameter = parent.as(FunctionParameterSyntax.self),
-              functionParameter.firstName == token ∨ functionParameter.secondName == token
-            {
-              // Function parameter declaration.
-              return .arbitrary
-            }
-            if let genericParameter = parent.as(GenericParameterSyntax.self),
-              genericParameter.name == token
-            {
-              // Generic member type declaration.
-              return .arbitrary
-            }
+              if let enumerationCaseElement = parent.as(EnumCaseElementSyntax.self),
+                enumerationCaseElement.identifier == token
+              {
+                // Enumeration case declaration.
+                return .arbitrary
+              }
+              if let identifierPattern = parent.as(IdentifierPatternSyntax.self),
+                identifierPattern.identifier == token
+              {
+                // Variable declaration.
+                return .arbitrary
+              }
+              if let functionParameter = parent.as(FunctionParameterSyntax.self),
+                functionParameter.firstName == token ∨ functionParameter.secondName == token
+              {
+                // Function parameter declaration.
+                return .arbitrary
+              }
+              if let genericParameter = parent.as(GenericParameterSyntax.self),
+                genericParameter.name == token
+              {
+                // Generic member type declaration.
+                return .arbitrary
+              }
 
-            if let attribute = parent.as(AttributeSyntax.self),
-              attribute.attributeName == token
-            {
-              return .invariable
-            }
-            if let accessPath = parent.as(AccessPathComponentSyntax.self),
-              accessPath.name == token
-            {
-              // Import statement.
-              return .invariable
-            }
-            if syntaxNode.isInLocalIfConfigurationCondition() {
-              return .invariable
-            }
+              if let attribute = parent.as(AttributeSyntax.self),
+                attribute.attributeName == token
+              {
+                return .invariable
+              }
+              if let accessPath = parent.as(AccessPathComponentSyntax.self),
+                accessPath.name == token
+              {
+                // Import statement.
+                return .invariable
+              }
+              if syntaxNode.isInLocalIfConfigurationCondition() {
+                return .invariable
+              }
 
-            if parent.isProtocol(DeclSyntaxProtocol.self) == true {
-              // Declaration.
-              return .arbitrary
+              if parent.isProtocol(DeclSyntaxProtocol.self) == true {
+                // Declaration.
+                return .arbitrary
+              }
             }
+            return .aliasable
           }
-          return .aliasable
-        }
+      #endif
       case .whitespace, .commentText, .sourceHeadingText, .documentationText:
         return .arbitrary
       case .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,

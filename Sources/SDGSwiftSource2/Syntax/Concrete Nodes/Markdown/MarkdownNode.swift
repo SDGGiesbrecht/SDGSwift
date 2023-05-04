@@ -160,7 +160,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             {
               group.scalars.append(source.removeFirst())
             }
-            kinds.append(.swiftSyntax(.unknown(group)))
+            kinds.append(Token.unknown(group).kind)
           }
         }
         return kinds.map { Token(kind: $0) }
