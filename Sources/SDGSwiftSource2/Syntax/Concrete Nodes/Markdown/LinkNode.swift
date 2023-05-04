@@ -20,11 +20,13 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
   internal init?(components: [SyntaxNode]) {
     var remainder = components[...]
 
-    guard let opening = remainder.first as? Token else {
+    guard let opening = remainder.first as? Token,
+      opening.text == "["
+    else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
     remainder.removeFirst()
-    let openingDelimiter = Token(kind: .linkDelimiter(opening.text))
+    let openingDelimiter = Token(kind: .openingLinkContentDelimiter)
 
     guard let unprocessedTarget = remainder.last as? Token else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
@@ -36,21 +38,24 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
     guard targetRemainder.first == "]" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
+    targetRemainder.removeFirst()
     self.content = LinkContent(
       openingDelimiter: openingDelimiter,
       contents: Array(remainder),
-      closingDelimiter: Token(kind: .linkDelimiter(String(targetRemainder.removeFirst())))
+      closingDelimiter: Token(kind: .closingLinkTargetDelimiter)
     )
 
     guard targetRemainder.first == "(" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
-    let targetStart = Token(kind: .linkDelimiter(String(targetRemainder.removeFirst())))
+    targetRemainder.removeFirst()
+    let targetStart = Token(kind: .openingLinkTargetDelimiter)
 
     guard targetRemainder.last == ")" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
-    let targetEnd = Token(kind: .linkDelimiter(String(targetRemainder.removeLast())))
+    targetRemainder.removeFirst()
+    let targetEnd = Token(kind: .closingLinkTargetDelimiter)
 
     self.target = LinkTarget(
       openingDelimiter: targetStart,

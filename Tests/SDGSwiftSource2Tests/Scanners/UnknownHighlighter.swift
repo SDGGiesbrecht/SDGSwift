@@ -58,8 +58,9 @@ struct UnknownHighlighter: Highlighter {
       .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText,
       .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
       .closingBlockDocumentationDelimiter, .documentationText, .bullet, .codeDelimiter, .language,
-      .headingDelimiter, .asterism, .strengthDelimiter, .emphasisDelimiter, .linkDelimiter,
-      .linkURL, .imageDelimiter, .shebang:
+      .headingDelimiter, .asterism, .strengthDelimiter, .emphasisDelimiter,
+      .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter,
+      .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .shebang:
       return false
     case .source, .fragment:
       return true

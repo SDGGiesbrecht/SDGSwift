@@ -84,14 +84,26 @@ extension Token {
     /// A Markdown delimiter for applying a strong font.
     case strengthDelimiter(String)
 
-    /// A Markdown link delimiter.
-    case linkDelimiter(String)
+    /// An opening Markdown link delimiter.
+    case openingLinkContentDelimiter
+
+    /// A closing Markdown link delimiter.
+    case closingLinkContentDelimiter
+
+    /// An opening Markdown link delimiter.
+    case openingLinkTargetDelimiter
+
+    /// A closing Markdown link delimiter.
+    case closingLinkTargetDelimiter
 
     /// The URL of a Markdown link.
     case linkURL(String)
 
     /// A Markdown image delimiter.
-    case imageDelimiter(String)
+    case imageDelimiter
+
+    /// A Markdown delimiter for a quotation.
+    case quotationDelimiter
 
     /// An incomplete fragment of a token.
     case fragment(String)
@@ -118,6 +130,18 @@ extension Token {
         return "/**"
       case .closingBlockDocumentationDelimiter:
         return "*/"
+      case .openingLinkContentDelimiter:
+        return "["
+      case .closingLinkContentDelimiter:
+        return "]"
+      case .openingLinkTargetDelimiter:
+        return "("
+      case .closingLinkTargetDelimiter:
+        return ")"
+      case .imageDelimiter:
+        return "!"
+      case .quotationDelimiter:
+        return ">"
       case .whitespace(let text),
         .lineBreaks(let text),
         .commentText(let text),
@@ -133,9 +157,7 @@ extension Token {
         .asterism(let text),
         .emphasisDelimiter(let text),
         .strengthDelimiter(let text),
-        .linkDelimiter(let text),
         .linkURL(let text),
-        .imageDelimiter(let text),
         .fragment(let text),
         .shebang(let text):
         return text

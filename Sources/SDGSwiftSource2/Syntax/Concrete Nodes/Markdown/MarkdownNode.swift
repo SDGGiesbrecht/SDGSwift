@@ -70,6 +70,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
       return [Token.unknown(text)]
     #else
       switch markdown {
+      case is BlockQuote:
+        let components = fallbackChildren()
+        return Quotation(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is CodeBlock:
         return CodeBlockNode(source: text).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
@@ -147,16 +151,6 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
               group.scalars.append(source.removeFirst())
             }
             kinds.append(.swiftSyntax(.unknown(group)))
-
-            #warning("Debugging...")
-            if type(of: markdown) ≠ ListItem.self
-              ∧ type(of: markdown) ≠ Strong.self
-              ∧ type(of: markdown) ≠ Emphasis.self
-              ∧ type(of: markdown) ≠ Link.self
-              ∧ type(of: markdown) ≠ Image.self
-            {
-              print(type(of: markdown), "“\(text)”", "“\(group)”")
-            }
           }
         }
         return kinds.map { Token(kind: $0) }
