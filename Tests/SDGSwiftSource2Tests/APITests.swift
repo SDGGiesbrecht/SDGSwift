@@ -162,23 +162,23 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "Break",
       ].joined(separator: "\n")
     )
-    DocumentationContent.roundTripTest("- Warning: Watch out!")
+    DocumentationContent.roundTripTest("\u{2D} Warning: Watch out!")
     DocumentationContent.roundTripTest(
       [
-        "- Parameters:",
-        "   - first: The first parameter.",
-        "   - second: The second parameter.",
+        "\u{2D} Parameters:",
+        "   \u{2D} first: The first parameter.",
+        "   \u{2D} second: The second parameter.",
       ].joined(separator: "\n")
     )
     DocumentationContent.roundTripTest("- ***")
     DocumentationContent.roundTripTest("- *emphasis*")
     DocumentationContent.roundTripTest(
       [
-        "- Parameters:",
-        "   - This is actually a list.",
-        "   - ***",
-        "   - *emphasis*",
-        "   - colonless",
+        "\u{2D} Parameters:",
+        "   \u{2D} This is actually a list.",
+        "   \u{2D} ***",
+        "   \u{2D} *emphasis*",
+        "   \u{2D} colonless",
       ].joined(separator: "\n")
     )
   }

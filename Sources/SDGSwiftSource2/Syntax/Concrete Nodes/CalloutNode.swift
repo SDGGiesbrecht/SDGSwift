@@ -30,76 +30,80 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
     self.bullet = listItem.bullet
     self.indent = listItem.indent
 
-    guard let paragraph = listItem.contents.first as? MarkdownNode,
-      paragraph.markdown is Paragraph
-    else {
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
       return nil
-    }
-    let paragraphChildren = paragraph.children(cache: &cache)
-    guard let textNode = paragraphChildren.first as? MarkdownNode,
-      textNode.markdown is Text
-    else {
-      return nil
-    }
+    #else
+      guard let paragraph = listItem.contents.first as? MarkdownNode,
+        paragraph.markdown is Paragraph
+      else {
+        return nil
+      }
+      let paragraphChildren = paragraph.children(cache: &cache)
+      guard let textNode = paragraphChildren.first as? MarkdownNode,
+        textNode.markdown is Text
+      else {
+        return nil
+      }
 
-    let text = textNode.text
-    guard let colon = text.scalars.firstIndex(of: ":") else {
-      return nil
-    }
-    var name = String(text[..<colon])
-    if let space = name.scalars.firstIndex(of: " ") {
-      defer { name = String(name[..<space]) }
-      self.space = Token(kind: .whitespace(" "))
-      self.parameterName = Token(
-        kind: .calloutParameter(String(name.scalars[space...].dropFirst()))
-      )
-    } else {
-      self.space = nil
-      self.parameterName = nil
-    }
+      let text = textNode.text
+      guard let colon = text.scalars.firstIndex(of: ":") else {
+        return nil
+      }
+      var name = String(text[..<colon])
+      if let space = name.scalars.firstIndex(of: " ") {
+        defer { name = String(name[..<space]) }
+        self.space = Token(kind: .whitespace(" "))
+        self.parameterName = Token(
+          kind: .calloutParameter(String(name.scalars[space...].dropFirst()))
+        )
+      } else {
+        self.space = nil
+        self.parameterName = nil
+      }
 
-    guard let callout = Callout(name) else {
-      return nil
-    }
-    self.callout = callout
-    self.name = Token(kind: .callout(name))
-    self.colon = Token(kind: .calloutColon)
+      guard let callout = Callout(name) else {
+        return nil
+      }
+      self.callout = callout
+      self.name = Token(kind: .callout(name))
+      self.colon = Token(kind: .calloutColon)
 
-    let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
-    let simpleContents = [adjustedText]
-      .appending(contentsOf: paragraphChildren.dropFirst())
-      .appending(contentsOf: listItem.contents.dropFirst())
-    if callout ≠ .parameters {
-      self.contents = simpleContents
-    } else {
-      self.contents = simpleContents.flatMap { content in
-        guard let unordered = content as? MarkdownNode,
-          unordered.markdown is UnorderedList
-        else {
-          return [content]
-        }
-        return unordered.children(cache: &cache).map { unorderedChild in
-          guard let item = unorderedChild as? MarkdownNode,
-            item.markdown is ListItem
+      let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
+      let simpleContents = [adjustedText]
+        .appending(contentsOf: paragraphChildren.dropFirst())
+        .appending(contentsOf: listItem.contents.dropFirst())
+      if callout ≠ .parameters {
+        self.contents = simpleContents
+      } else {
+        self.contents = simpleContents.flatMap { content in
+          guard let unordered = content as? MarkdownNode,
+            unordered.markdown is UnorderedList
           else {
-            return unorderedChild
+            return [content]
           }
-          let itemChildren = item.children(cache: &cache)
-          guard let parsed = itemChildren.first as? ListItemNode,
-            itemChildren.count == 1
-          else {
-            return item  // @exempt(from: tests) Theoretically unreachable.
+          return unordered.children(cache: &cache).map { unorderedChild in
+            guard let item = unorderedChild as? MarkdownNode,
+              item.markdown is ListItem
+            else {
+              return unorderedChild
+            }
+            let itemChildren = item.children(cache: &cache)
+            guard let parsed = itemChildren.first as? ListItemNode,
+              itemChildren.count == 1
+            else {
+              return item  // @exempt(from: tests) Theoretically unreachable.
+            }
+            return ParametersEntry(listItem: parsed, cache: &cache) ?? item
           }
-          return ParametersEntry(listItem: parsed, cache: &cache) ?? item
         }
       }
-    }
+    #endif
   }
 
   // MARK: - Properties
 
   /// The callout.
-  let callout: Callout
+  public let callout: Callout
 
   /// The delimiter.
   public let bullet: Token

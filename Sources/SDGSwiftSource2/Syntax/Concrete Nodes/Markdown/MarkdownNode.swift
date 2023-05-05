@@ -126,9 +126,9 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
     #endif
   }
 
-  static let whitespaceScalars: Set<Unicode.Scalar> = [" ", "\t"]
-  static let lineBreakScalars: Set<Unicode.Scalar> = ["\n", "\r"]
-  static let syntaxScalars = whitespaceScalars ∪ lineBreakScalars
+  private static let whitespaceScalars: Set<Unicode.Scalar> = [" ", "\t"]
+  private static let lineBreakScalars: Set<Unicode.Scalar> = ["\n", "\r"]
+  private static let syntaxScalars = whitespaceScalars ∪ lineBreakScalars
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
     private func fallbackChildren() -> [SyntaxNode] {
       var lastAccountedForIndex: String.UnicodeScalarView.Index = self.range.lowerBound

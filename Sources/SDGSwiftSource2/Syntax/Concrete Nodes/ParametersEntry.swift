@@ -25,30 +25,34 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
     self.bullet = listItem.bullet
     self.indent = listItem.indent
 
-    guard let paragraph = listItem.contents.first as? MarkdownNode,
-      paragraph.markdown is Paragraph
-    else {
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
       return nil
-    }
-    let paragraphChildren = paragraph.children(cache: &cache)
-    guard let textNode = paragraphChildren.first as? MarkdownNode,
-      textNode.markdown is Text
-    else {
-      return nil
-    }
+    #else
+      guard let paragraph = listItem.contents.first as? MarkdownNode,
+        paragraph.markdown is Paragraph
+      else {
+        return nil
+      }
+      let paragraphChildren = paragraph.children(cache: &cache)
+      guard let textNode = paragraphChildren.first as? MarkdownNode,
+        textNode.markdown is Text
+      else {
+        return nil
+      }
 
-    let text = textNode.text
-    guard let colon = text.scalars.firstIndex(of: ":") else {
-      return nil
-    }
-    let name = String(text[..<colon])
-    self.parameterName = Token(kind: .calloutParameter(name))
-    self.colon = Token(kind: .calloutColon)
+      let text = textNode.text
+      guard let colon = text.scalars.firstIndex(of: ":") else {
+        return nil
+      }
+      let name = String(text[..<colon])
+      self.parameterName = Token(kind: .calloutParameter(name))
+      self.colon = Token(kind: .calloutColon)
 
-    let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
-    self.contents = [adjustedText]
-      .appending(contentsOf: paragraphChildren.dropFirst())
-      .appending(contentsOf: listItem.contents.dropFirst())
+      let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
+      self.contents = [adjustedText]
+        .appending(contentsOf: paragraphChildren.dropFirst())
+        .appending(contentsOf: listItem.contents.dropFirst())
+    #endif
   }
 
   // MARK: - Properties
