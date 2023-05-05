@@ -181,6 +181,24 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "   \u{2D} colonless",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest("\u{2D} parameter aParameter: Description.")
+    DocumentationContent.roundTripTest(
+      [
+        "```not‐swift",
+        "```",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("![image](somewhere)")
+    DocumentationContent.roundTripTest("> Quotation.")
+    DocumentationContent.roundTripTest("**Strong**.")
+    DocumentationContent.roundTripTest(
+      [
+        "Heading",
+        "=======",
+        "",
+        "Paragraph.",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
@@ -267,6 +285,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       _ = SwiftSyntaxNode(Syntax(TokenSyntax(.importKeyword, presence: .present))).localAncestors()
     #endif
+  }
+
+  func testTokenKind() {
+    XCTAssertEqual(Token.Kind.commentText("...").textFreedom(globalAncestors: []), .arbitrary)
+    XCTAssertEqual(Token.Kind.lineCommentDelimiter.textFreedom(globalAncestors: []), .invariable)
   }
 
   func testTriviaNode() {
