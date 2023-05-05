@@ -199,6 +199,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "Paragraph.",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest("[link](somewhere)")
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "",
+        "***",
+        "",
+        "...",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
