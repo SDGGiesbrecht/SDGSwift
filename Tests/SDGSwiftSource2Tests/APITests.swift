@@ -170,8 +170,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "   \u{2D} second: The second parameter.",
       ].joined(separator: "\n")
     )
-    DocumentationContent.roundTripTest("- ***")
-    DocumentationContent.roundTripTest("- *emphasis*")
+    DocumentationContent.roundTripTest("\u{2D} ***")
+    DocumentationContent.roundTripTest("\u{2D} *emphasis*")
     DocumentationContent.roundTripTest(
       [
         "\u{2D} Parameters:",
