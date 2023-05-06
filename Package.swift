@@ -248,6 +248,7 @@ let package = Package(
     .target(
       name: "SDGSwiftSource2",
       dependencies: [
+        "SDGSwiftLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGMathematics", package: "SDGCornerstone"),
@@ -448,9 +449,12 @@ let package = Package(
       name: "SDGSwiftSource2Tests",
       dependencies: [
         "SDGSwiftSource2",
+        "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(
           name: "SwiftSyntax",
           package: "swift\u{2D}syntax",

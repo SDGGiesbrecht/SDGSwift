@@ -1,5 +1,5 @@
 /*
- CodeContent.swift
+ NumberedHeading.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,9 +14,4 @@
 
 import SDGSwiftSource2
 
-extension CodeContent: RoundTripTestable {
-
-  init(source: String) throws {
-    self.init(source: source, isSwift: nil)
-  }
-}
+extension NumberedHeading: RoundTripTestable {}

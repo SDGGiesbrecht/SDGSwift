@@ -1,5 +1,5 @@
 /*
- CodeContent.swift
+ RoundTripSyntaxScanner.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,9 +14,20 @@
 
 import SDGSwiftSource2
 
-extension CodeContent: RoundTripTestable {
+struct RoundTripSyntaxScanner: SyntaxScanner {
 
-  init(source: String) throws {
-    self.init(source: source, isSwift: nil)
+  // MARK: - Properties
+
+  var result = ""
+
+  // MARK: - SyntaxScanner
+
+  mutating func visit(_ node: SyntaxNode, context: ScanContext) -> Bool {
+    if let token = node as? Token {
+      result.append(contentsOf: token.text)
+    }
+    return true
   }
+
+  var cache = ParserCache()
 }

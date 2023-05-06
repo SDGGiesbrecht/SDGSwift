@@ -27,8 +27,11 @@ import SDGPersistence
 
 import SDGSwiftSource2
 
+import SDGSwiftLocalizations
+
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGSwiftTestUtilities
 
 class APITests: SDGSwiftTestUtilities.TestCase {
@@ -69,6 +72,44 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
+  func testCallout() {
+    for localization in InterfaceLocalization.allCases {
+      let specification = Callout.allCases
+        .map({ $0.localizedText(localization.code) })
+        .joined(separator: "\n")
+      compare(
+        String(specification),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Localization/Callouts/\(localization.icon!).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
+    XCTAssertNotNil(Callout("Returns"))
+    XCTAssertNil(Callout("no‐such‐callout"))
+    XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
+  }
+
+  func testCodeBlockNode() {
+    CodeBlockNode.roundTripTest(
+      [
+        "```swift",
+        "print(\u{22}Hello, world!\u{22})",
+        "```",
+      ].joined(separator: "\n")
+    )
+    XCTAssertNil(CodeBlockNode(source: "Not code."))
+    XCTAssertNil(CodeBlockNode(source: "```...```"))
+    XCTAssertNil(
+      CodeBlockNode(
+        source: [
+          "```",
+          "Unterminated...",
+        ].joined(separator: "\n")
+      )
+    )
+  }
+
   func testCodeContent() {
     CodeContent.roundTripTest("print(\u{22}Hello, world!\u{22})")
     let other = CodeContent(source: "This is not Swift.", isSwift: false)
@@ -102,6 +143,72 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "...",
       ].joined(separator: "\n")
     )
+    DocumentationContent.roundTripTest("# Heading")
+    DocumentationContent.roundTripTest(
+      [
+        "Heading",
+        "=======",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest(
+      [
+        "\u{2D} First list entry.",
+        "\u{2D} Second list entry.",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest(
+      [
+        "Line  ",
+        "Break",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("\u{2D} Warning: Watch out!")
+    DocumentationContent.roundTripTest(
+      [
+        "\u{2D} Parameters:",
+        "   \u{2D} first: The first parameter.",
+        "   \u{2D} second: The second parameter.",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("\u{2D} ***")
+    DocumentationContent.roundTripTest("\u{2D} *emphasis*")
+    DocumentationContent.roundTripTest(
+      [
+        "\u{2D} Parameters:",
+        "   \u{2D} This is actually a list.",
+        "   \u{2D} ***",
+        "   \u{2D} *emphasis*",
+        "   \u{2D} colonless",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("\u{2D} parameter aParameter: Description.")
+    DocumentationContent.roundTripTest(
+      [
+        "```not‐swift",
+        "```",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("![image](somewhere)")
+    DocumentationContent.roundTripTest("> Quotation.")
+    DocumentationContent.roundTripTest("**Strong**.")
+    DocumentationContent.roundTripTest(
+      [
+        "Heading",
+        "=======",
+        "",
+        "Paragraph.",
+      ].joined(separator: "\n")
+    )
+    DocumentationContent.roundTripTest("[link](somewhere)")
+    DocumentationContent.roundTripTest(
+      [
+        "...",
+        "",
+        "***",
+        "",
+        "...",
+      ].joined(separator: "\n")
+    )
   }
 
   func testFragment() {
@@ -131,6 +238,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(LineDocumentation(source: "..."))
   }
 
+  func testNumberedHeading() {
+    NumberedHeading.roundTripTest("# Heading")
+    NumberedHeading.roundTripTest("#Heading")
+    XCTAssertNil(NumberedHeading(source: "Not a Heading"))
+  }
+
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       var first = true
@@ -141,8 +254,52 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           _ = try SwiftSyntaxNode(file: url)
         }
         SwiftSyntaxNode.roundTripTest(try String(from: url))
+
+        let parsed = try SwiftSyntaxNode(file: url)
+
+        var unknown = UnknownHighlighter()
+        try unknown.assertHighlightsNothing(in: parsed, "Unknown tokens detected in “\(url.path)”")
+
+        var arbitrary = TextFreedomHighlighter(targetTestFreedom: .arbitrary)
+        try arbitrary.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Arbitrary Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        var aliasable = TextFreedomHighlighter(targetTestFreedom: .aliasable)
+        try aliasable.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Aliasable Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        var invariable = TextFreedomHighlighter(targetTestFreedom: .invariable)
+        try invariable.compare(
+          syntax: parsed,
+          parsedFrom: url,
+          againstSpecification: "Invariable Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
       }
     #endif
+  }
+
+  func testStringLiteral() {
+    StringLiteral.roundTripTest("\u{22}...\u{22}")
+    XCTAssertNil(StringLiteral(source: "...\u{22}"))
+    XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  }
+
+  func testSwiftSyntaxNode() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      _ = SwiftSyntaxNode(Syntax(TokenSyntax(.importKeyword, presence: .present))).localAncestors()
+    #endif
+  }
+
+  func testTokenKind() {
+    XCTAssertEqual(Token.Kind.commentText("...").textFreedom(globalAncestors: []), .arbitrary)
+    XCTAssertEqual(Token.Kind.lineCommentDelimiter.textFreedom(globalAncestors: []), .invariable)
   }
 
   func testTriviaNode() {
@@ -151,9 +308,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
-  func testStringLiteral() {
-    StringLiteral.roundTripTest("\u{22}...\u{22}")
-    XCTAssertNil(StringLiteral(source: "...\u{22}"))
-    XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  func testUnderlinedHeading() {
+    XCTAssertNil(UnderlinedHeading(source: "Not a heading"))
+    UnderlinedHeading.roundTripTest(
+      [
+        "Heading",
+        "\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}",
+      ].joined(separator: "\n")
+    )
+    XCTAssertNil(
+      UnderlinedHeading(
+        source: [
+          "Not a",
+          "heading",
+        ].joined(separator: "\n")
+      )
+    )
   }
 }

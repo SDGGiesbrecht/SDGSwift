@@ -85,7 +85,7 @@ public struct TriviaPieceNode: SyntaxNode {
             ?? Token.unknown(text)  // @exempt(from: tests)
         ]
       case .unexpectedText:  // @exempt(from: tests)
-        return [Token(kind: .source(text))]
+        return [Token.unknown(text)]
       case .shebang:
         return [Token(kind: .shebang(text))]
       }

@@ -51,19 +51,21 @@ public struct TriviaNode: SyntaxNode {
         switch piece {
         case .spaces, .tabs:
           continue
-        case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds(_):
+        case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
           interveningLineBreaks += 1
         case .lineComment, .blockComment, .docBlockComment, .unexpectedText, .shebang:
           interrupted = true
         case .docLineComment(let line):
+          defer {
+            interveningLineBreaks = 0
+            interrupted = false
+          }
           var sourceFragment = line.scalars.dropFirst(3)
           if sourceFragment.first == " " {
             sourceFragment.removeFirst()
           }
           if result.isEmpty ∨ interveningLineBreaks > 1 ∨ interrupted {
             result.append([])
-            interveningLineBreaks = 0
-            interrupted = false
           }
           result[result.indices.last!].append(String(sourceFragment))
         }

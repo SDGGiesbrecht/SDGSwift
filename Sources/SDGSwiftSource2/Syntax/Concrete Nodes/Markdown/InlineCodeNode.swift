@@ -19,12 +19,7 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
 
   /// Parses an inline code node.
   public init?(source: String) {
-    let delimiter: Token
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      delimiter = .unknown("`")
-    #else
-      delimiter = Token(kind: .swiftSyntax(.backtick))
-    #endif
+    let delimiter = Token(kind: .codeDelimiter("`"))
     let delimiterText = delimiter.text.unicodeScalars
     let delimiterLength = delimiterText.count
 
@@ -43,7 +38,7 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
 
     self.source = CodeContent(
       source: string,
-      isSwift: true  // Inline code cannot declare its language, so treat it as probably Swift.
+      isSwift: nil
     )
   }
 

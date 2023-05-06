@@ -1,5 +1,5 @@
 /*
- RoundTripSyntaxScanner.swift
+ TextFreedomHighlighter.swift
 
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
@@ -14,20 +14,21 @@
 
 import SDGSwiftSource2
 
-struct RoundTripSyntaxScanner: SyntaxScanner {
+struct TextFreedomHighlighter: Highlighter {
 
   // MARK: - Properties
 
-  var result = ""
+  let targetTestFreedom: TextFreedom
+
+  // MARK: - Highlighter
+
+  func shouldHighlight(_ token: Token, context: ScanContext) -> Bool {
+    return token.kind.textFreedom(globalAncestors: context.globalAncestors) == targetTestFreedom
+  }
+
+  var highlighted: String = ""
 
   // MARK: - SyntaxScanner
-
-  mutating func visit(_ node: SyntaxNode) -> Bool {
-    if let token = node as? Token {
-      result.append(contentsOf: token.text)
-    }
-    return true
-  }
 
   var cache = ParserCache()
 }
