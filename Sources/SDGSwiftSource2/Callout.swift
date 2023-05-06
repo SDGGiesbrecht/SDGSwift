@@ -16,6 +16,8 @@ import SDGText
 
 import SDGSwiftLocalizations
 
+// #workaround(Can docc handle this?)
+
 /// A documentation callout.
 public enum Callout: String, CaseIterable, Sendable {
 

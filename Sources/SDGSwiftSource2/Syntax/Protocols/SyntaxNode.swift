@@ -24,10 +24,25 @@ public protocol SyntaxNode: TextOutputStreamable {
 
 extension SyntaxNode {
 
+  // MARK: - Source
+
   /// The node’s source text.
   public var text: String {
     var result = ""
     write(to: &result)
     return result
+  }
+
+  // MARK: - Scanning
+
+  /// Scans the syntax tree by passing each node through a closure.
+  ///
+  /// This method is a streamlined use of the protocol `SyntaxScanner` for simpler use cases where a custom scanner type is not necessary. The provided closure will be called in the manner of `SyntaxScanner`’s `visit(_:context:)`. See that protocol for more details.
+  ///
+  /// - Parameters:
+  ///     - visitNode: A closure which visits a syntax node.
+  public func scanSyntaxTree(_ visitNode: @escaping (SyntaxNode, ScanContext) -> Bool) {
+    var scanner = ClosureSyntaxScanner(visitNode)
+    scanner.scan(self)
   }
 }

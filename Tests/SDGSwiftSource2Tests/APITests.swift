@@ -90,6 +90,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
   }
 
+  func testClosureSyntaxScanner() {
+    Token(kind: .whitespace(" "))
+      .scanSyntaxTree({ node, context in
+        return true
+      })
+  }
+
   func testCodeBlockNode() {
     CodeBlockNode.roundTripTest(
       [
