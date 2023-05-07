@@ -656,5 +656,3 @@ let testOneIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSourc
 let testOne = package.targets.remove(at: testOneIndex)
 let testTwoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2Tests" })!
 let testTwo = package.targets.remove(at: testTwoIndex)
-package.targets.append(.target(name: testOne.name, dependencies: testTwo.dependencies, path: "Tests/SDGSwiftSource2Tests", resources: testTwo.resources))
-package.targets.append(.target(name: testTwo.name, dependencies: testOne.dependencies, path: "Tests/SDGSwiftSourceTests", resources: testOne.resources))
