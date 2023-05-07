@@ -650,3 +650,11 @@ let twoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2" 
 let two = package.targets.remove(at: twoIndex)
 package.targets.append(.target(name: one.name, dependencies: two.dependencies, path: "Sources/SDGSwiftSource2", resources: two.resources))
 package.targets.append(.target(name: two.name, dependencies: one.dependencies, path: "Sources/SDGSwiftSource", resources: one.resources))
+
+// #warning(Temporary to minimize diff.)
+let testOneIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSourceTests" })!
+let testOne = package.targets.remove(at: testOneIndex)
+let testTwoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2Tests" })!
+let testTwo = package.targets.remove(at: testTwoIndex)
+package.targets.append(.target(name: testOne.name, dependencies: testTwo.dependencies, path: "Tests/SDGSwiftSource2Tests", resources: testTwo.resources))
+package.targets.append(.target(name: testTwo.name, dependencies: testOne.dependencies, path: "Tests/SDGSwiftSourceTests", resources: testOne.resources))
