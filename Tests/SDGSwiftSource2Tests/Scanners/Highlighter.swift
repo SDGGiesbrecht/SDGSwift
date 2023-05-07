@@ -94,7 +94,7 @@ extension Highlighter {
 
   mutating func visit(_ node: SyntaxNode, context: ScanContext) -> Bool {
     if let token = node as? Token {
-      highlighted += shouldHighlight(token, context: context) ? highlight(token.text) : token.text
+      highlighted += shouldHighlight(token, context: context) ? highlight(token.text()) : token.text()
     }
     return true
   }
