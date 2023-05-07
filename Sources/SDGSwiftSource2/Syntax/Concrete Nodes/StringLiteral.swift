@@ -25,7 +25,7 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
     #else
       quotationMark = Token(kind: .swiftSyntax(.stringQuote))
     #endif
-    let quotationMarkText = quotationMark.text.unicodeScalars
+    let quotationMarkText = quotationMark.text().unicodeScalars
     let quotationMarkLength = quotationMarkText.count
 
     var string = source

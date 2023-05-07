@@ -40,7 +40,7 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
         return nil
       }
 
-      let text = textNode.text
+      let text = textNode.text()
       guard let colon = text.scalars.firstIndex(of: ":") else {
         return nil
       }

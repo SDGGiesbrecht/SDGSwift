@@ -261,7 +261,7 @@ extension Token {
                 // Import statement.
                 return .invariable
               }
-              if syntaxNode.isInLocalIfConfigurationCondition() {
+              if token.isInIfConfigurationCondition() {
                 return .invariable
               }
 

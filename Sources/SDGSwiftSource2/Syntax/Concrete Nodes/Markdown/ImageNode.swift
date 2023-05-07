@@ -25,7 +25,7 @@ public struct ImageNode: StreamedViaChildren, SyntaxNode {
     }
     remainder.removeFirst()
 
-    var leadingDelimitersRemainder = leadingDelimiters.text[...]
+    var leadingDelimitersRemainder = leadingDelimiters.text()[...]
 
     guard leadingDelimitersRemainder.first == "!" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.

@@ -34,9 +34,9 @@ extension String {
       return columnUTF8.scalar(in: scalars)
     }
 
-    internal func scalarRange(of sourceRange: Range<SourceLocation>) -> Range<
-      String.UnicodeScalarView.Index
-    > {
+    internal func scalarRange(
+      of sourceRange: Range<SourceLocation>
+    ) -> Range<String.UnicodeScalarView.Index> {
       return scalarIndex(of: sourceRange.lowerBound)..<scalarIndex(of: sourceRange.upperBound)
     }
   #endif

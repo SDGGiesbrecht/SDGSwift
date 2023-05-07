@@ -58,36 +58,36 @@ public struct TriviaPieceNode: SyntaxNode {
     #else
       switch piece {
       case .spaces, .tabs:
-        return [Token(kind: .whitespace(text))]
+        return [Token(kind: .whitespace(text()))]
       case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
-        return [Token(kind: .lineBreaks(text))]
+        return [Token(kind: .lineBreaks(text()))]
       case .lineComment:
         return [
-          LineComment(source: text)
-            ?? Token.unknown(text)  // @exempt(from: tests)
+          LineComment(source: text())
+            ?? Token.unknown(text())  // @exempt(from: tests)
         ]
       case .blockComment:
         return [
-          BlockComment(source: text)
-            ?? Token.unknown(text)  // @exempt(from: tests)
+          BlockComment(source: text())
+            ?? Token.unknown(text())  // @exempt(from: tests)
         ]
       case .docLineComment:
         return [
           LineDocumentation(
-            source: text,
+            source: text(),
             precedingContentContext: precedingDocumentationContext,
             followingContentContext: followingDocumentationContext
-          ) ?? Token.unknown(text)  // @exempt(from: tests)
+          ) ?? Token.unknown(text())  // @exempt(from: tests)
         ]
       case .docBlockComment:
         return [
-          BlockDocumentation(source: text)
-            ?? Token.unknown(text)  // @exempt(from: tests)
+          BlockDocumentation(source: text())
+            ?? Token.unknown(text())  // @exempt(from: tests)
         ]
       case .unexpectedText:  // @exempt(from: tests)
-        return [Token.unknown(text)]
+        return [Token.unknown(text())]
       case .shebang:
-        return [Token(kind: .shebang(text))]
+        return [Token(kind: .shebang(text()))]
       }
     #endif
   }

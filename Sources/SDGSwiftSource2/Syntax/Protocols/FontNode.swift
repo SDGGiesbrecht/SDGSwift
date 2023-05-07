@@ -43,13 +43,13 @@ extension FontNodeWithInternals {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
     remainder.removeFirst()
-    let openingDelimiter = Token(kind: Self.makeDelimiterKind(opening.text))
+    let openingDelimiter = Token(kind: Self.makeDelimiterKind(opening.text()))
 
     guard let closing = remainder.last as? Token else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
     remainder.removeLast()
-    let closingDelimiter = Token(kind: Self.makeDelimiterKind(closing.text))
+    let closingDelimiter = Token(kind: Self.makeDelimiterKind(closing.text()))
 
     self.init(
       openingDelimiter: openingDelimiter,

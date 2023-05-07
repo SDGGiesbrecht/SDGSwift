@@ -21,7 +21,7 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
     var remainder = components[...]
 
     guard let opening = remainder.first as? Token,
-      opening.text == "["
+      opening.text() == "["
     else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
@@ -33,7 +33,7 @@ public struct LinkNode: StreamedViaChildren, SyntaxNode {
     }
     remainder.removeLast()
 
-    var targetRemainder = unprocessedTarget.text[...]
+    var targetRemainder = unprocessedTarget.text()[...]
 
     guard targetRemainder.first == "]" else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
