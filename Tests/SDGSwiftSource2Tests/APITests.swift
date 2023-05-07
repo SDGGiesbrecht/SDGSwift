@@ -298,9 +298,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(StringLiteral(source: "\u{22}..."))
   }
 
-  func testSwiftSyntaxNode() {
+  func testSyntaxProtocol() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      _ = TokenSyntax(.importKeyword, presence: .present).ancestors
+      let declaration = ImportDeclSyntax(
+        path: AccessPathSyntax([AccessPathSyntax.Element(name: .identifier("Foundation"))])
+      )
+      XCTAssert(Array(declaration.ancestors).isEmpty)
+      XCTAssertEqual(declaration.firstToken()?.ancestors.map({ $0 }).isEmpty, false)
+      XCTAssertNotNil(declaration.firstToken())
+      XCTAssertNotNil(declaration.lastToken())
+      XCTAssert(declaration.text().hasSuffix("Foundation"))
     #endif
   }
 
