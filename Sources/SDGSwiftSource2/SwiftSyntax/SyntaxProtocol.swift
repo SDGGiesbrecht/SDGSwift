@@ -1,3 +1,16 @@
+/*
+ SyntaxProtocol.swift
+
+ This source file is part of the SDGSwift open source project.
+ https://sdggiesbrecht.github.io/SDGSwift
+
+ Copyright ©2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
@@ -8,7 +21,7 @@ extension SyntaxProtocol {
   // MARK: - Source
 
   // #documentation(SyntaxNode.text())
-  /// Returns the source code of this syntax node.
+  /// Returns the node’s source text.
   public func text() -> String {
     var result = ""
     write(to: &result)
@@ -38,5 +51,30 @@ extension SyntaxProtocol {
       }
     }
     return false
+  }
+
+  // MARK: - Tokens
+
+  // @documentation(SDGSwiftSource.Syntax.firstToken())
+  /// Return the first token of the node.
+  public func firstToken() -> TokenSyntax? {
+    if let token = Syntax(self).as(TokenSyntax.self),
+      token.presence == .present
+    {
+      return token
+    }
+    return children(viewMode: .sourceAccurate).lazy.compactMap({ $0.firstToken() }).first
+  }
+
+  // @documentation(SDGSwiftSource.Syntax.lastToken())
+  /// Returns the last token of the node.
+  public func lastToken() -> TokenSyntax? {
+    if let token = Syntax(self).as(TokenSyntax.self),
+      token.presence == .present
+    {
+      return token
+    }
+    return children(viewMode: .sourceAccurate).reversed()
+      .lazy.compactMap({ $0.lastToken() }).first
   }
 }
