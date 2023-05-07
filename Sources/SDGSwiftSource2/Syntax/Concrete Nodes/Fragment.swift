@@ -42,7 +42,7 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
     var cropped: [SyntaxNode] = []
     var index = 0
     for child in context.children(cache: &cache) {
-      let childText = child.text
+      let childText = child.text()
       let childLength = childText.scalars.count
       let start = index
       let end = start + childLength
@@ -82,9 +82,9 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
   // MARK: - TextOutputStreamable
 
   public func write<Target>(to target: inout Target) where Target: TextOutputStream {
-    let scalars = context.text.scalars.dropFirst(scalarOffsets.lowerBound).prefix(
-      scalarOffsets.count
-    )
+    let scalars = context.text().scalars
+      .dropFirst(scalarOffsets.lowerBound)
+      .prefix(scalarOffsets.count)
     String(String.UnicodeScalarView(scalars)).write(to: &target)
   }
 }

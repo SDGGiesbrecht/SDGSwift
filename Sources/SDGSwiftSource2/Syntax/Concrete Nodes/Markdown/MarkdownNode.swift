@@ -76,18 +76,18 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         return Quotation(components: components).map({ [$0] })
           ?? components  // @exempt(from: tests)
       case is CodeBlock:
-        return CodeBlockNode(source: text).map({ [$0] })
+        return CodeBlockNode(source: text()).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
       case is Emphasis:
         let components = fallbackChildren()
         return EmphasisNode(components: components).map({ [$0] })
           ?? components  // @exempt(from: tests)
       case is InlineCode:
-        return InlineCodeNode(source: text).map({ [$0] })
+        return InlineCodeNode(source: text()).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
       case is Heading:
-        return NumberedHeading(source: text).map({ [$0] })
-          ?? UnderlinedHeading(source: text).map({ [$0] })
+        return NumberedHeading(source: text()).map({ [$0] })
+          ?? UnderlinedHeading(source: text()).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
       case is Image:
         let components = fallbackChildren()
@@ -106,17 +106,17 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         }
         return [CalloutNode(listItem: list, cache: &cache) ?? list]
       case is SoftBreak:
-        return [Token(kind: .lineBreaks(text))]
+        return [Token(kind: .lineBreaks(text()))]
       case is Strong:
         let components = fallbackChildren()
         return StrongNode(components: components).map({ [$0] })
           ?? components  // @exempt(from: tests)
       case is Text:
-        return [Token(kind: .documentationText(text))]
+        return [Token(kind: .documentationText(text()))]
       case is ThematicBreak:
         var children: [SyntaxNode] = []
-        var components = text
-        if text.scalars.last ∈ MarkdownNode.lineBreakScalars {
+        var components = text()
+        if text().scalars.last ∈ MarkdownNode.lineBreakScalars {
           children.append(Token(kind: .lineBreaks(String(components.removeLast()))))
         }
         return children.prepending(Token(kind: .asterism(components)))
@@ -188,7 +188,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         if (result[index...].dropFirst().first as? MarkdownNode)?.markdown is LineBreak,
           let textMarkdown = result[index] as? MarkdownNode,
           textMarkdown.markdown is Text,
-          textMarkdown.text.hasSuffix("  ")
+          textMarkdown.text().hasSuffix("  ")
         {
           return true
         } else {

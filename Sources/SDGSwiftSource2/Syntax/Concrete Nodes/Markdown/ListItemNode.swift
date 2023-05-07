@@ -23,7 +23,7 @@ public struct ListItemNode: StreamedViaChildren, SyntaxNode {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }
     remainder.removeFirst()
-    self.bullet = Token(kind: .bullet(bullet.text))
+    self.bullet = Token(kind: .bullet(bullet.text()))
 
     guard let indent = remainder.first as? Token,
       case .whitespace = indent.kind
