@@ -240,6 +240,8 @@ let package = Package(
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ],
+      // #warning(Temporary to minimize diff.)
+      path: "Sources/SDGSwiftSource2",
       resources: [
         .copy("Syntax Highlighting.css")
       ]
@@ -271,7 +273,9 @@ let package = Package(
           // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
-      ]
+      ],
+      // #warning(Temporary to minimize diff.)
+      path: "Sources/SDGSwiftSource"
     ),
 
     // #documentation(SDGSwiftDocumentation)
