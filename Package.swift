@@ -240,8 +240,6 @@ let package = Package(
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ],
-      // #warning(Temporary to minimize diff.)
-      path: "Sources/SDGSwiftSource2",
       resources: [
         .copy("Syntax Highlighting.css")
       ]
@@ -273,9 +271,7 @@ let package = Package(
           // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
-      ],
-      // #warning(Temporary to minimize diff.)
-      path: "Sources/SDGSwiftSource"
+      ]
     ),
 
     // #documentation(SDGSwiftDocumentation)
@@ -646,3 +642,11 @@ for target in package.targets {
     }
   })
 }
+
+// #warning(Temporary to minimize diff.)
+let oneIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource" })!
+let one = package.targets.remove(at: oneIndex)
+let twoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2" })!
+let two = package.targets.remove(at: twoIndex)
+package.targets.append(.target(name: one.name, dependencies: two.dependencies, path: "Sources/SDGSwiftSource2", resources: two.resources))
+package.targets.append(.target(name: two.name, dependencies: one.dependencies, path: "Sources/SDGSwiftSource", resources: one.resources))
