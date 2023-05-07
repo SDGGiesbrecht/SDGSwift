@@ -18,7 +18,7 @@ extension SyntaxProtocol {
   // MARK: - Ancestry
 
   /// All the node’s ancestors in order from its immediate parent to the root node.
-  public func ancestors() -> AnySequence<Syntax> {
+  public var ancestors: AnySequence<Syntax> {
     if let parent = self.parent {
       return AnySequence(sequence(first: parent, next: { $0.parent }))
     } else {
@@ -28,7 +28,7 @@ extension SyntaxProtocol {
 
   internal func isInIfConfigurationCondition() -> Bool {
     var previousAncestor: Syntax = Syntax(self)
-    for ancestor in ancestors() {
+    for ancestor in ancestors {
       defer { previousAncestor = ancestor }
       if let ifConfigurationClause = ancestor.as(IfConfigClauseSyntax.self),
         let condition = Syntax(ifConfigurationClause.condition),
