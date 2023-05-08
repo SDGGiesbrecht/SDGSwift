@@ -20,7 +20,7 @@ public struct Quotation: StreamedViaChildren, SyntaxNode {
   internal init?(components: [SyntaxNode]) {
     var remainder = components[...]
     guard let delimiter = remainder.first as? Token,
-      delimiter.text == ">"
+      delimiter.text() == ">"
     else {
       return nil  // @exempt(from: tests) Believed to be unreachable.
     }

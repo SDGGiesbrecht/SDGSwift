@@ -39,10 +39,10 @@ extension LineCommentProtocol {
     let delimiter = Token(kind: Self.delimiter)
 
     var line = source
-    guard line.scalars.hasPrefix(delimiter.text.scalars) else {
+    guard line.scalars.hasPrefix(delimiter.text().scalars) else {
       return nil
     }
-    line.scalars.removeFirst(delimiter.text.scalars.count)
+    line.scalars.removeFirst(delimiter.text().scalars.count)
 
     let indent: Token?
     if line.scalars.first == " " {

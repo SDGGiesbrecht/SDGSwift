@@ -20,7 +20,7 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
   /// Parses an inline code node.
   public init?(source: String) {
     let delimiter = Token(kind: .codeDelimiter("`"))
-    let delimiterText = delimiter.text.unicodeScalars
+    let delimiterText = delimiter.text().unicodeScalars
     let delimiterLength = delimiterText.count
 
     var string = source

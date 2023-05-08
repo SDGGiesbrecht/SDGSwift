@@ -45,15 +45,15 @@ extension BlockCommentProtocol {
     let closingDelimiter = Token(kind: Self.closingDelimiter)
 
     var block = source
-    guard block.scalars.hasPrefix(openingDelimiter.text.scalars) else {
+    guard block.scalars.hasPrefix(openingDelimiter.text().scalars) else {
       return nil
     }
-    block.scalars.removeFirst(openingDelimiter.text.scalars.count)
+    block.scalars.removeFirst(openingDelimiter.text().scalars.count)
 
-    guard block.scalars.hasSuffix(closingDelimiter.text.scalars) else {
+    guard block.scalars.hasSuffix(closingDelimiter.text().scalars) else {
       return nil
     }
-    block.scalars.removeLast(closingDelimiter.text.scalars.count)
+    block.scalars.removeLast(closingDelimiter.text().scalars.count)
 
     let closingDelimiterIndentation: Token?
     var closingDelimiterIndentationString = ""

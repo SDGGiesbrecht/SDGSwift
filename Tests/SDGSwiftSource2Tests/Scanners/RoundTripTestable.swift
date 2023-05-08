@@ -28,7 +28,7 @@ extension RoundTripTestable {
       return
     }
     XCTAssertEqual(
-      parsed.text,
+      parsed.text(),
       source,
       "Syntax tree source differs from parsed source.",
       file: file,

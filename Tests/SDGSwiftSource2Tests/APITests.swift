@@ -37,7 +37,7 @@ import SDGSwiftTestUtilities
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testAnySyntaxNode() {
-    XCTAssertEqual(AnySyntaxNode(LineComment(source: "// ...")!).text, "// ...")
+    XCTAssertEqual(AnySyntaxNode(LineComment(source: "// ...")!).text(), "// ...")
   }
 
   func testBlockComment() {
@@ -221,7 +221,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testFragment() {
     let fragment = Fragment(scalarOffsets: 1..<5, in: LineComment(source: "// ...\n")!)
     let fragmentSource = "/ .."
-    XCTAssertEqual(fragment.text, fragmentSource)
+    XCTAssertEqual(fragment.text(), fragmentSource)
     var scanner = RoundTripSyntaxScanner()
     scanner.scan(fragment)
     XCTAssertEqual(scanner.result, fragmentSource)
@@ -298,9 +298,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(StringLiteral(source: "\u{22}..."))
   }
 
-  func testSwiftSyntaxNode() {
+  func testSyntaxProtocol() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      _ = SwiftSyntaxNode(Syntax(TokenSyntax(.importKeyword, presence: .present))).localAncestors()
+      let declaration = ImportDeclSyntax(
+        path: AccessPathSyntax([AccessPathSyntax.Element(name: .identifier("Foundation"))])
+      )
+      XCTAssert(Array(declaration.ancestors).isEmpty)
+      XCTAssertEqual(declaration.firstToken()?.ancestors.map({ $0 }).isEmpty, false)
+      XCTAssertNotNil(declaration.firstToken())
+      XCTAssertNotNil(declaration.lastToken())
+      XCTAssert(declaration.text().hasSuffix("Foundation"))
     #endif
   }
 
@@ -311,7 +318,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testTriviaNode() {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text, "")
+      XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text(), "")
     #endif
   }
 

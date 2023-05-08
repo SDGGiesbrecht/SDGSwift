@@ -63,36 +63,6 @@ public struct SwiftSyntaxNode: SyntaxNode {
     public let swiftSyntaxNode: Syntax
   #endif
 
-  // MARK: - Local Context
-
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    // @documentation(SDGSwiftSource.Syntax.localAncestors())
-    /// All the node’s ancestors in order from its immediate parent to the root node of the local syntax context.
-    ///
-    /// The local syntax context is the contiguous syntax tree accessible without escaping through fragmentation into parent contexts. That is, the root node of code in a documentation comment is the unified code block itself, not the source file containing the documentation comment, and any intervening documentation delimiters or indentation beloninging to them do not participate in the local tree.
-    public func localAncestors() -> AnySequence<Syntax> {
-      if let parent = swiftSyntaxNode.parent {
-        return AnySequence(sequence(first: parent, next: { $0.parent }))
-      } else {
-        return AnySequence([])
-      }
-    }
-
-    internal func isInLocalIfConfigurationCondition() -> Bool {
-      var previousAncestor: Syntax = Syntax(swiftSyntaxNode)
-      for ancestor in localAncestors() {
-        defer { previousAncestor = ancestor }
-        if let ifConfigurationClause = ancestor.as(IfConfigClauseSyntax.self),
-          let condition = Syntax(ifConfigurationClause.condition),
-          condition == previousAncestor
-        {
-          return true
-        }
-      }
-      return false
-    }
-  #endif
-
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {  // @exempt(from: tests)
