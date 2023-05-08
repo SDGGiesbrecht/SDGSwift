@@ -68,7 +68,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
     #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
-      return [Token.unknown(text)]
+      return [Token.unknown(text())]
     #else
       switch markdown {
       case is BlockQuote:

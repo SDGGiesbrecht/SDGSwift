@@ -67,7 +67,7 @@ struct UnknownHighlighter: Highlighter {
           .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
           return false
         case .unknown:
-          return token.text ∉ UnknownHighlighter.expectedParserRejections
+          return token.text() ∉ UnknownHighlighter.expectedParserRejections
         }
     #endif
     case .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,
@@ -81,7 +81,7 @@ struct UnknownHighlighter: Highlighter {
       .markdownLineBreak, .shebang:
       return false
     case .source:
-      return token.text ∉ UnknownHighlighter.expectedSource
+      return token.text() ∉ UnknownHighlighter.expectedSource
     case .fragment:
       return true
     }
