@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import SDGSwift
 
 /// The context of a node to be visited by a syntax scanner.
@@ -35,6 +37,6 @@ public struct ScanContext {
   ///
   /// Nodes within trivia are not compiled. Most notably, this method can be used to differentiate Swift code that is part of the main file (which is compiled) and Swift code provided as an example inside a documentation comment (which is not compiled).
   public func isCompiled() -> Bool {
-    return globalAncestors.contains(where: { $0 is TriviaNode })
+    return ¬globalAncestors.contains(where: { $0 is TriviaNode })
   }
 }
