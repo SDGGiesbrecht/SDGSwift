@@ -293,15 +293,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testScanContext() {
-    var foundDelimiter = false
-    TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
-      if node.text() == "//" {
-        foundDelimiter = true
-        XCTAssert(¬context.isCompiled())
-      }
-      return true
-    })
-    XCTAssert(foundDelimiter)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      var foundDelimiter = false
+      TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
+        if node.text() == "//" {
+          foundDelimiter = true
+          XCTAssert(¬context.isCompiled())
+        }
+        return true
+      })
+      XCTAssert(foundDelimiter)
+    #endif
   }
 
   func testStringLiteral() {
