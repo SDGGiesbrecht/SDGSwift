@@ -292,6 +292,29 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testScanContext() {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+      var foundDelimiter = false
+      TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
+        if node.text() == "//" {
+          foundDelimiter = true
+          XCTAssert(¬context.isCompiled())
+        }
+        return true
+      })
+      XCTAssert(foundDelimiter)
+    #endif
+    var foundElipsis = false
+    StringLiteral(source: "\u{22}...\u{22}")?.scanSyntaxTree({ (node, context) in
+      if node.text() == "..." {
+        foundElipsis = true
+        XCTAssert(context.isCompiled())
+      }
+      return true
+    })
+    XCTAssert(foundElipsis)
+  }
+
   func testStringLiteral() {
     StringLiteral.roundTripTest("\u{22}...\u{22}")
     XCTAssertNil(StringLiteral(source: "...\u{22}"))
