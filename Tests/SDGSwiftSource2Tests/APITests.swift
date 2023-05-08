@@ -292,6 +292,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #endif
   }
 
+  func testScanContext() {
+    var foundDelimiter = false
+    TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
+      if node.text() == "//" {
+        foundDelimiter = true
+        XCTAssert(¬context.isCompiled())
+      }
+      return true
+    })
+    XCTAssert(foundDelimiter)
+  }
+
   func testStringLiteral() {
     StringLiteral.roundTripTest("\u{22}...\u{22}")
     XCTAssertNil(StringLiteral(source: "...\u{22}"))
