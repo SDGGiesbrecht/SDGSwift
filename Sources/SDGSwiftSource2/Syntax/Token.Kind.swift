@@ -21,7 +21,7 @@ import SDGLogic
 extension Token {
 
   /// Enumerates the kinds of tokens.
-  public enum Kind {
+  public enum Kind: Equatable {
 
     // MARK: - Cases
 
