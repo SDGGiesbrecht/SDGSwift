@@ -304,6 +304,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       })
       XCTAssert(foundDelimiter)
     #endif
+    var foundElipsis = false
+    StringLiteral(source: "\u{22}...\u{22}")?.scanSyntaxTree({ (node, context) in
+      if node.text() == "..." {
+        foundElipsis = true
+        XCTAssert(context.isCompiled())
+      }
+      return true
+    })
+    XCTAssert(foundElipsis)
   }
 
   func testStringLiteral() {
