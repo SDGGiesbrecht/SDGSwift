@@ -12,10 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGSwift
+
 /// The context of a node to be visited by a syntax scanner.
 public struct ScanContext {
 
   // MARK: - Stored Properties
+
+  /// The location of the node within the scan, as a Unicode scalar offset.
+  ///
+  /// This is an offset into whatever node is at the root of the scan. It will only correspond to an offset into a file if the scan was started from a file node.
+  public let location: Range<String.ScalarOffset>
 
   /// The node’s ancestors in the global syntax context.
   ///

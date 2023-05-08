@@ -12,6 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGMathematics
+
+import SDGSwift
+
 /// A scanner for read‐only handling of a syntax tree.
 public protocol SyntaxScanner {
 
@@ -39,13 +43,29 @@ extension SyntaxScanner {
   /// - Parameters:
   ///     - node: The node to scan.
   public mutating func scan(_ node: SyntaxNode) {
-    scan(node, context: ScanContext(globalAncestors: []))
+    let source = node.text()
+    scan(
+      node,
+      context: ScanContext(
+        location: source.offsets(of: source.unicodeScalars.bounds),
+        globalAncestors: []
+      )
+    )
   }
 
   private mutating func scan(_ node: SyntaxNode, context: ScanContext) {
     if visit(node, context: context) {
+      var start = context.location.lowerBound
       for child in node.children(cache: &cache) {
-        scan(child, context: ScanContext(globalAncestors: context.globalAncestors.appending(node)))
+        let end = start + child.text().unicodeScalars.count
+        defer { start = end }
+        scan(
+          child,
+          context: ScanContext(
+            location: start..<end,
+            globalAncestors: context.globalAncestors.appending(node)
+          )
+        )
       }
     }
   }
