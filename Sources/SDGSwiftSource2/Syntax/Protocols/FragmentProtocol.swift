@@ -1,5 +1,7 @@
-
 internal protocol FragmentProtocol {
 
-  var localAncestors: [SyntaxNode] { get }
+  func localAncestorsOfChild(
+    at index: Int,
+    cache: inout ParserCache
+  ) -> [ParentRelationship]
 }

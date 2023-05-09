@@ -29,17 +29,17 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
   public init(scalarOffsets: CountableRange<Int>, in context: Context) {
     self.context = context
     self.scalarOffsets = scalarOffsets
-    self.localAncestors = [context]
+    self.inheritedLocalAncestors = []
   }
 
   private init(
     scalarOffsets: CountableRange<Int>,
     in context: Context,
-    inheritedLocalAncestors: [SyntaxNode]
+    inheritedLocalAncestors: [ParentRelationship]
   ) {
     self.context = context
     self.scalarOffsets = scalarOffsets
-    self.localAncestors = inheritedLocalAncestors.appending(context)
+    self.inheritedLocalAncestors = inheritedLocalAncestors
   }
 
   // MARK: - Properties
@@ -47,19 +47,35 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
   internal let context: Context
   internal let scalarOffsets: CountableRange<Int>
 
-  internal let localAncestors: [SyntaxNode]
+  // MARK: - FragmentProtocol
+
+  private let inheritedLocalAncestors: [ParentRelationship]
+  internal func localAncestorsOfChild(
+    at index: Int,
+    cache: inout ParserCache
+  ) -> [ParentRelationship] {
+    return inheritedLocalAncestors.appending(
+      ParentRelationship(node: context, childIndex: indexedChildren(cache: &cache)[index].index)
+    )
+  }
 
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
+    return indexedChildren(cache: &cache).map { $0.child }
+  }
+  private func indexedChildren(cache: inout ParserCache) -> [(index: Int, child: SyntaxNode)] {
     var cropped: [SyntaxNode] = []
-    var index = 0
-    for child in context.children(cache: &cache) {
+    let children = context.children(cache: &cache)
+    var scalarIndex = 0
+    for childIndex in children.indices {
+      let child = children[childIndex]
+
       let childText = child.text()
       let childLength = childText.scalars.count
-      let start = index
+      let start = scalarIndex
       let end = start + childLength
-      defer { index = end }
+      defer { scalarIndex = end }
 
       if scalarOffsets ⊇ start..<end {
         cropped.append(child)
@@ -82,7 +98,9 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
             Fragment<AnySyntaxNode>(
               scalarOffsets: childOffsets,
               in: AnySyntaxNode(child),
-              inheritedLocalAncestors: localAncestors
+              inheritedLocalAncestors: localAncestors.appending(
+                ParentRelationship(node: context, childIndex: childIndex)
+              )
             )
           )
         }

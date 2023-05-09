@@ -57,22 +57,25 @@ extension SyntaxScanner {
   private mutating func scan(_ node: SyntaxNode, context: ScanContext) {
     if visit(node, context: context) {
       var start = context.location.lowerBound
-      for child in node.children(cache: &cache) {
+      let children = node.children(cache: &cache)
+      for index in children.indices {
+        let relationship = ParentRelationship(node: node, childIndex: index)
+        let child = children[index]
         let end = start + child.text().unicodeScalars.count
         defer { start = end }
 
-        let localAncestors: [SyntaxNode]
+        let localAncestors: [ParentRelationship]
         if let fragment = node as? FragmentProtocol {
-          localAncestors = fragment.localAncestors
+          localAncestors = fragment.localAncestorsOfChild(at: index, cache: &cache)
         } else {
-          localAncestors = context.localAncestors.appending(node)
+          localAncestors = context.localAncestors.appending(relationship)
         }
 
         scan(
           child,
           context: ScanContext(
             location: start..<end,
-            globalAncestors: context.globalAncestors.appending(node),
+            globalAncestors: context.globalAncestors.appending(relationship),
             localAncestors: localAncestors
           )
         )
