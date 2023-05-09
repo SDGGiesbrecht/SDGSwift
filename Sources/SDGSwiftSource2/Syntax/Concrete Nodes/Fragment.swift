@@ -17,7 +17,7 @@ import SDGCollections
 import SDGText
 
 /// A smaller fragment of a larger syntax node.
-public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
+public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: SyntaxNode {
 
   // MARK: - Initialization
 
@@ -29,12 +29,25 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
   public init(scalarOffsets: CountableRange<Int>, in context: Context) {
     self.context = context
     self.scalarOffsets = scalarOffsets
+    self.localAncestors = [context]
+  }
+
+  private init(
+    scalarOffsets: CountableRange<Int>,
+    in context: Context,
+    inheritedLocalAncestors: [SyntaxNode]
+  ) {
+    self.context = context
+    self.scalarOffsets = scalarOffsets
+    self.localAncestors = inheritedLocalAncestors.appending(context)
   }
 
   // MARK: - Properties
 
   internal let context: Context
   internal let scalarOffsets: CountableRange<Int>
+
+  internal let localAncestors: [SyntaxNode]
 
   // MARK: - SyntaxNode
 
@@ -68,7 +81,8 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
           cropped.append(
             Fragment<AnySyntaxNode>(
               scalarOffsets: childOffsets,
-              in: AnySyntaxNode(child)
+              in: AnySyntaxNode(child),
+              inheritedLocalAncestors: localAncestors
             )
           )
         }

@@ -48,7 +48,8 @@ extension SyntaxScanner {
       node,
       context: ScanContext(
         location: source.offsets(of: source.unicodeScalars.bounds),
-        globalAncestors: []
+        globalAncestors: [],
+        localAncestors: []
       )
     )
   }
@@ -59,11 +60,20 @@ extension SyntaxScanner {
       for child in node.children(cache: &cache) {
         let end = start + child.text().unicodeScalars.count
         defer { start = end }
+
+        let localAncestors: [SyntaxNode]
+        if let fragment = node as? FragmentProtocol {
+          localAncestors = fragment.localAncestors
+        } else {
+          localAncestors = context.localAncestors.appending(node)
+        }
+
         scan(
           child,
           context: ScanContext(
             location: start..<end,
-            globalAncestors: context.globalAncestors.appending(node)
+            globalAncestors: context.globalAncestors.appending(node),
+            localAncestors: localAncestors
           )
         )
       }
