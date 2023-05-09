@@ -2,8 +2,8 @@
 public struct ParentRelationship {
 
   /// The parent node.
-  let node: SyntaxNode
+  public let node: SyntaxNode
 
   /// The index of the child among the parent’s children.
-  let childIndex: Int
+  public let childIndex: Int
 }
