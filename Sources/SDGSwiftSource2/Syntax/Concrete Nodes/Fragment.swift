@@ -65,7 +65,7 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
     return indexedChildren(cache: &cache).map { $0.child }
   }
   private func indexedChildren(cache: inout ParserCache) -> [(index: Int, child: SyntaxNode)] {
-    var cropped: [SyntaxNode] = []
+    var cropped: [(index: Int, child: SyntaxNode)] = []
     let children = context.children(cache: &cache)
     var scalarIndex = 0
     for childIndex in children.indices {
@@ -78,7 +78,7 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
       defer { scalarIndex = end }
 
       if scalarOffsets ⊇ start..<end {
-        cropped.append(child)
+        cropped.append((index: childIndex, child: child))
       } else if scalarOffsets.overlaps(start..<end) {
         var lower = scalarOffsets.lowerBound − start
         var upper = scalarOffsets.upperBound − start
@@ -92,15 +92,19 @@ public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: Syn
             childText.truncate(at: childText.scalars.index(childText.startIndex, offsetBy: upper))
           }
           childText.removeFirst(lower)
-          cropped.append(Token(kind: .fragment(childText)))
+          cropped.append((index: childIndex, child: Token(kind: .fragment(childText))))
         } else {
           cropped.append(
-            Fragment<AnySyntaxNode>(
-              scalarOffsets: childOffsets,
-              in: AnySyntaxNode(child),
-              inheritedLocalAncestors: localAncestors.appending(
-                ParentRelationship(node: context, childIndex: childIndex)
-              )
+            (
+              index: childIndex,
+              child:
+                Fragment<AnySyntaxNode>(
+                  scalarOffsets: childOffsets,
+                  in: AnySyntaxNode(child),
+                  inheritedLocalAncestors: inheritedLocalAncestors.appending(
+                    ParentRelationship(node: context, childIndex: childIndex)
+                  )
+                )
             )
           )
         }
