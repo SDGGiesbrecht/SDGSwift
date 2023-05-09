@@ -335,8 +335,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenKind() {
-    XCTAssertEqual(Token.Kind.commentText("...").textFreedom(globalAncestors: []), .arbitrary)
-    XCTAssertEqual(Token.Kind.lineCommentDelimiter.textFreedom(globalAncestors: []), .invariable)
+    XCTAssertEqual(Token.Kind.commentText("...").textFreedom(localAncestors: []), .arbitrary)
+    XCTAssertEqual(Token.Kind.lineCommentDelimiter.textFreedom(localAncestors: []), .invariable)
   }
 
   func testTriviaNode() {
