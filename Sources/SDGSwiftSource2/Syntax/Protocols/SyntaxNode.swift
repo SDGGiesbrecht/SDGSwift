@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGSwift
+
 /// A syntax node.
 public protocol SyntaxNode: TextOutputStreamable {
 

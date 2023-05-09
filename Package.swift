@@ -248,6 +248,7 @@ let package = Package(
     .target(
       name: "SDGSwiftSource2",
       dependencies: [
+        "SDGSwift",
         "SDGSwiftLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
