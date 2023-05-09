@@ -17,7 +17,7 @@ import SDGCollections
 import SDGText
 
 /// A smaller fragment of a larger syntax node.
-public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
+public struct Fragment<Context>: FragmentProtocol, SyntaxNode where Context: SyntaxNode {
 
   // MARK: - Initialization
 
@@ -29,6 +29,17 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
   public init(scalarOffsets: CountableRange<Int>, in context: Context) {
     self.context = context
     self.scalarOffsets = scalarOffsets
+    self.inheritedLocalAncestors = []
+  }
+
+  private init(
+    scalarOffsets: CountableRange<Int>,
+    in context: Context,
+    inheritedLocalAncestors: [ParentRelationship]
+  ) {
+    self.context = context
+    self.scalarOffsets = scalarOffsets
+    self.inheritedLocalAncestors = inheritedLocalAncestors
   }
 
   // MARK: - Properties
@@ -36,20 +47,38 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
   internal let context: Context
   internal let scalarOffsets: CountableRange<Int>
 
+  // MARK: - FragmentProtocol
+
+  private let inheritedLocalAncestors: [ParentRelationship]
+  internal func localAncestorsOfChild(
+    at index: Int,
+    cache: inout ParserCache
+  ) -> [ParentRelationship] {
+    return inheritedLocalAncestors.appending(
+      ParentRelationship(node: context, childIndex: indexedChildren(cache: &cache)[index].index)
+    )
+  }
+
   // MARK: - SyntaxNode
 
   public func children(cache: inout ParserCache) -> [SyntaxNode] {
-    var cropped: [SyntaxNode] = []
-    var index = 0
-    for child in context.children(cache: &cache) {
+    return indexedChildren(cache: &cache).map { $0.child }
+  }
+  private func indexedChildren(cache: inout ParserCache) -> [(index: Int, child: SyntaxNode)] {
+    var cropped: [(index: Int, child: SyntaxNode)] = []
+    let children = context.children(cache: &cache)
+    var scalarIndex = 0
+    for childIndex in children.indices {
+      let child = children[childIndex]
+
       let childText = child.text()
       let childLength = childText.scalars.count
-      let start = index
+      let start = scalarIndex
       let end = start + childLength
-      defer { index = end }
+      defer { scalarIndex = end }
 
       if scalarOffsets ⊇ start..<end {
-        cropped.append(child)
+        cropped.append((index: childIndex, child: child))
       } else if scalarOffsets.overlaps(start..<end) {
         var lower = scalarOffsets.lowerBound − start
         var upper = scalarOffsets.upperBound − start
@@ -63,12 +92,19 @@ public struct Fragment<Context>: SyntaxNode where Context: SyntaxNode {
             childText.truncate(at: childText.scalars.index(childText.startIndex, offsetBy: upper))
           }
           childText.removeFirst(lower)
-          cropped.append(Token(kind: .fragment(childText)))
+          cropped.append((index: childIndex, child: Token(kind: .fragment(childText))))
         } else {
           cropped.append(
-            Fragment<AnySyntaxNode>(
-              scalarOffsets: childOffsets,
-              in: AnySyntaxNode(child)
+            (
+              index: childIndex,
+              child:
+                Fragment<AnySyntaxNode>(
+                  scalarOffsets: childOffsets,
+                  in: AnySyntaxNode(child),
+                  inheritedLocalAncestors: inheritedLocalAncestors.appending(
+                    ParentRelationship(node: context, childIndex: childIndex)
+                  )
+                )
             )
           )
         }

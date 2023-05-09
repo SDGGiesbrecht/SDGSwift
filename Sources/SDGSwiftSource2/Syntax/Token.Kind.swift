@@ -186,7 +186,7 @@ extension Token {
 
     // @documentation(SDGSwiftSource.TokenSyntax.textFreedom)
     /// The amount of freedom avialable to the token’s text.
-    public func textFreedom(globalAncestors: [SyntaxNode]) -> TextFreedom {
+    public func textFreedom(localAncestors: [ParentRelationship]) -> TextFreedom {
       switch self {
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         case .swiftSyntax(let kind):
@@ -221,7 +221,7 @@ extension Token {
             return .arbitrary
           case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator,
             .prefixOperator:
-            if let syntaxNode = globalAncestors.last as? SwiftSyntaxNode,
+            if let syntaxNode = localAncestors.last?.node as? SwiftSyntaxNode,
               let token = syntaxNode.swiftSyntaxNode.as(TokenSyntax.self),
               let parent = token.parent
             {
