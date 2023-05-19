@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGMathematics
 
+import SDGSwift
+
 /// A syntax node.
 ///
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
