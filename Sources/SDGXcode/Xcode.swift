@@ -68,6 +68,7 @@ public enum Xcode: VersionedExternalProcess {
     "cd",
     "chmod",
     "clang",
+    "clang\u{2D}stat\u{2D}cache",
     "codesign",
     "directory",
     "ditto",
@@ -84,6 +85,7 @@ public enum Xcode: VersionedExternalProcess {
     "write\u{2D}file",
   ]
   private static let abbreviableCommands: [String] = [
+    "ClangStatCache",
     "CodeSign",
     "Codesigning",
     "CompileC",
