@@ -299,6 +299,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
         coverageDataFile = file
       }
       if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
+        // @exempt(from: tests) Not reachable with Swift 5.8 toolchain.
         return .success(nil)
       }
 

@@ -427,6 +427,7 @@ public enum Xcode: VersionedExternalProcess {
         command += ["\u{2D}scheme", scheme]
       }
 
+      // @exempt(from: tests) Unreachable on Linux.
       command += ["\u{2D}enableCodeCoverage", "YES"]
 
       let resultBundlesAvailable = Version(11, 0, 0)
@@ -680,6 +681,7 @@ public enum Xcode: VersionedExternalProcess {
       case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
         information = output
       }
+      // @exempt(from: tests) Unreachable on Linux.
 
       // Drop any logs.
       information.drop(upTo: "{")
