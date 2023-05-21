@@ -123,7 +123,12 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               }
             }
             #if PLATFORM_HAS_XCODE
-              _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              // #workaround(xcodebuild -version 14.3, Xcode is missing bits of some architectures) @exempt(from: unicode)
+              if sdk == .watchOS(simulator: true) {
+                _ = try? mock.build(for: sdk, reportProgress: processLog).get()
+              } else {
+                _ = try mock.build(for: sdk, reportProgress: processLog).get()
+              }
             #else
               _ = try? mock.build(for: sdk, reportProgress: processLog).get()
             #endif
