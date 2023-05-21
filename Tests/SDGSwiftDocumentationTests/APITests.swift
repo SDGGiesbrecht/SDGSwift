@@ -410,7 +410,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testSymbolGraph() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
-      let packageName = package.location.lastPathComponent
       #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         _ = package.symbolGraphs(filteringUnreachable: false)
         let api = try package.api().get()
