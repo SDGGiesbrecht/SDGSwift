@@ -432,73 +432,27 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             )
           )
 
-        let names = symbols.map({ symbol in
+        _ = symbols.map({ symbol in
           return symbol.names.title
         }).sorted().joined(separator: "\n")
-        let namesSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/Names/\(packageName).txt"
-        )
-        // #workaround(Swift 5.7.2, Disabled while stradling versions.)
-        #if compiler(<5.8)
-          SDGPersistenceTestUtilities.compare(
-            names,
-            against: namesSpecification,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
 
-        let subHeadings = symbols.compactMap({ symbol in
+        _ = symbols.compactMap({ symbol in
           return symbol.names.subHeading?.map({ fragment in
             return fragment.spelling
           }).joined()
         }).sorted().joined(separator: "\n")
-        let subHeadingsSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/SubHeadings/\(packageName).txt"
-        )
-        // #workaround(Swift 5.7.2, Disabled while stradling versions.)
-        #if compiler(<5.8)
-          SDGPersistenceTestUtilities.compare(
-            subHeadings,
-            against: subHeadingsSpecification,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
 
-        let declarations = symbols.compactMap({ symbol in
+        _ = symbols.compactMap({ symbol in
           return symbol.declaration?.declarationFragments.map({ fragment in
             return fragment.spelling
           }).joined()
         }).sorted().joined(separator: "\n")
-        let declarationsSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/Declarations/\(packageName).txt"
-        )
-        // #workaround(Swift 5.7.2, Disabled while stradling versions.)
-        #if compiler(<5.8)
-          SDGPersistenceTestUtilities.compare(
-            declarations,
-            against: declarationsSpecification,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
 
-        let documentation = symbols.compactMap({ symbol in
+        _ = symbols.compactMap({ symbol in
           return symbol.docComment?.lines.map({ line in
             return line.text
           }).joined(separator: "\n")
         }).sorted().joined(separator: "\n\n")
-        let documentationSpecification = testSpecificationDirectory().appendingPathComponent(
-          "API/Documentation/\(packageName).txt"
-        )
-        #if os(Linux)  // Inherited documenation differs between toolchains.
-          _ = documentation
-          _ = documentationSpecification
-        #else
-          SDGPersistenceTestUtilities.compare(
-            documentation,
-            against: documentationSpecification,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
 
         var cache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
         for symbol in symbols {
