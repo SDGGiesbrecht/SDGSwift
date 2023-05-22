@@ -283,6 +283,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.hasPrefix("MergeSwiftModule ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("PBXCp ") })
             filtered = filtered.filter({ ¬$0.hasPrefix("note: Building targets in") })
+            // Inconsistent identifiers:
+            filtered = filtered.filter({ ¬$0.contains("sdkstatcache") })
+            filtered = filtered.filter({ ¬$0.contains("was built for newer watchOS") })
             #if PLATFORM_HAS_XCODE
               compare(
                 filtered.sorted().joined(separator: "\n"),

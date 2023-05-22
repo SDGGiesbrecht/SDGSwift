@@ -239,6 +239,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             lines.removeAll(where: { $0.contains("[logging] misuse at line") })
             lines.removeAll(where: { $0.contains("Fetching") })
             lines.removeAll(where: { $0.contains("Emitting module SwiftSyntaxParser") })
+            lines.removeAll(where: { $0.contains("/Applications/") })
+            lines.removeAll(where: { $0.contains("SwiftSyntaxParser.build") })
+            lines.removeAll(where: { $0.contains("SwiftDiagnostics.build") })
             log = lines.joined(separator: "\n")
             let digits = ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.decimalDigits })
             let durationPatternOne = "(".scalars + RepetitionPattern(digits) + ".".scalars

@@ -1,9 +1,7 @@
   Mock: /tmp/Mock
-$ xcodebuild test -destination platform=tvOS Simulator,name=Apple TV K (nd generation) -scheme Mock -enableCodeCoverage YES -resultBundlePath
+$ xcodebuild test -destination platform=tvOS Simulator,name=Apple TV K (rd generation) -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/MockTests.xctest
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 ExtractAppIntentsMetadata (in target 'MockTests' from project 'Mock')
