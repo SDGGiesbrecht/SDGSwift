@@ -173,14 +173,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             filtered = filtered.filter({ ¬$0.contains("sdkstatcache") })
             // #workaround(Swift 5.7.2, Disabled while stradling versions.)
             #if PLATFORM_HAS_XCODE && compiler(>=5.8)
-              compare(
-                filtered.sorted().joined(separator: "\n"),
-                against: testSpecificationDirectory()
-                  .appendingPathComponent("Xcode")
-                  .appendingPathComponent("Build")
-                  .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
-                overwriteSpecificationInsteadOfFailing: false
-              )
+              // #workaround(xcodebuild -version 14.3, Xcode is missing bits of some architectures) @exempt(from: unicode)
+              if sdk ≠ .watchOS(simulator: true) {
+                compare(
+                  filtered.sorted().joined(separator: "\n"),
+                  against: testSpecificationDirectory()
+                    .appendingPathComponent("Xcode")
+                    .appendingPathComponent("Build")
+                    .appendingPathComponent(sdk.commandLineSDKName + ".txt"),
+                  overwriteSpecificationInsteadOfFailing: false
+                )
+              }
             #endif
           }
 
