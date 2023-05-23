@@ -288,7 +288,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             // Inconsistent identifiers:
             filtered = filtered.filter({ ¬$0.contains("sdkstatcache") })
             filtered = filtered.filter({ ¬$0.contains("was built for newer watchOS") })
-            #if PLATFORM_HAS_XCODE
+            // #workaround(Swift 5.7.2, Disabled while stradling versions.)
+            #if PLATFORM_HAS_XCODE && compiler(>=5.8)
               compare(
                 filtered.sorted().joined(separator: "\n"),
                 against: testSpecificationDirectory()
