@@ -116,7 +116,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                     ∨ abbreviated.contains("warning:")
                     ∨ abbreviated.contains("error:")
                     ∨ abbreviated.contains("note:")
-                    ∨ abbreviated.hasPrefix("$ "),
+                    ∨ abbreviated.hasPrefix("$ ")
+                    // #workaround(xcodebuild -version 14.3, Xcode is missing bits of some architectures) @exempt(from: unicode)
+                    ∨ abbreviated.hasPrefix("\tLd "),
                   "Output is too long: " + abbreviated
                 )
                 log.insert(abbreviated)
