@@ -33,5 +33,6 @@ jobs:
       shell: bash
       run: |
         set -x
+        xcodebuild -resolvePackageDependencies
         xcodebuild build -destination 'generic/platform=iOS' -scheme SDGSwift-Package
         xcodebuild test -destination 'platform=iOS Simulator,name=iPhone 14' -scheme SDGSwift-Package

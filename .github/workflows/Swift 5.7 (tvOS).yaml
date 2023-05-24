@@ -33,5 +33,6 @@ jobs:
       shell: bash
       run: |
         set -x
+        xcodebuild -resolvePackageDependencies
         xcodebuild build -destination 'generic/platform=tvOS' -scheme SDGSwift-Package
         xcodebuild test -destination 'platform=tvOS Simulator,name=Apple TV 4K (2nd generation)' -scheme SDGSwift-Package

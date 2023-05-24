@@ -33,5 +33,6 @@ jobs:
       shell: bash
       run: |
         set -x
+        xcodebuild -resolvePackageDependencies
         xcodebuild build -destination 'generic/platform=watchOS' -scheme SDGSwift-Package
         xcodebuild test -destination 'platform=watchOS Simulator,name=Apple Watch Series 8 (41mm)' -scheme SDGSwift-Package
