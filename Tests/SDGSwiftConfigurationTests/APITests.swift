@@ -258,7 +258,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             remove(logEntry: "[[...]/[...]] Archiving")
 
             // #workaround(Swift 5.7, Log differs by platform due to SwiftSyntax.)
-            #if !os(Linux)
+           // #workaround(Swift 5.7.2, Disabled while stradling versions.)
+            #if !os(Linux) && compiler(>=5.8)
               compare(
                 log,
                 against: testSpecificationDirectory().appendingPathComponent(
