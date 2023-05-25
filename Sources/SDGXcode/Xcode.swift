@@ -685,6 +685,9 @@ public enum Xcode: VersionedExternalProcess {
       }
       // @exempt(from: tests) Unreachable on Linux.
 
+      // #warning("Debugging...")
+      let full = information
+
       // Drop any logs.
       information.drop(upTo: "{")
 
@@ -693,7 +696,7 @@ public enum Xcode: VersionedExternalProcess {
         json = try JSONSerialization.jsonObject(with: information.file)
       } catch {  // @exempt(from: tests)
         // #warning("Debugging...")
-        print(information)
+        print(full)
         return .failure(.foundationError(error))
       }
 
