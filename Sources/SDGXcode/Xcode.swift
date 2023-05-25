@@ -692,7 +692,7 @@ public enum Xcode: VersionedExternalProcess {
       do {
         json = try JSONSerialization.jsonObject(with: information.file)
       } catch {  // @exempt(from: tests)
-        #warning("Debugging...")
+        // #warning("Debugging...")
         print(information)
         return .failure(.foundationError(error))
       }
