@@ -685,18 +685,19 @@ public enum Xcode: VersionedExternalProcess {
       }
       // @exempt(from: tests) Unreachable on Linux.
 
-      // #warning("Debugging...")
-      let full = information
-
       // Drop any logs.
       information.drop(upTo: "{")
+
+      if information.contains("https://feedbackassistant.apple.com") {
+        // The first braces were warning information from the log.
+        information.removeFirst()
+        information.drop(upTo: "{")
+      }
 
       let json: Any
       do {
         json = try JSONSerialization.jsonObject(with: information.file)
       } catch {  // @exempt(from: tests)
-        // #warning("Debugging...")
-        print(full)
         return .failure(.foundationError(error))
       }
 
