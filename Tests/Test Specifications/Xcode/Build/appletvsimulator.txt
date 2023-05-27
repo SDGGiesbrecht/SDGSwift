@@ -2,12 +2,9 @@
 $ xcodebuild build -destination generic/platform=tvOS Simulator -scheme Mock
 ** BUILD SUCCEEDED **
 CodeSign [...]/MockTests.xctest
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-appletvsimulator
-CreateBuildDirectory [...]/EagerLinkingTBDs
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products

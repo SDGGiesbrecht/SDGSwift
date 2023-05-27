@@ -2,8 +2,6 @@
 $ xcodebuild test -destination platform=macOS -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 --- xcodebuild: WARNING: Using the first of multiple matching destinations:
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 ExtractAppIntentsMetadata (in target 'MockTests' from project 'Mock')

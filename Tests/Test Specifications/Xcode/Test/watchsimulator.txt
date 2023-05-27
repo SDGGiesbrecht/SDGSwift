@@ -2,8 +2,6 @@
 $ xcodebuild test -destination platform=watchOS Simulator,name=Apple Watch Series  (mm) -scheme Mock -enableCodeCoverage YES -resultBundlePath
 ** TEST SUCCEEDED **
 CodeSign [...]/MockTests.xctest
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 ExtractAppIntentsMetadata (in target 'MockTests' from project 'Mock')

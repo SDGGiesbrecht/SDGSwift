@@ -16,6 +16,7 @@ import Foundation
 
 import SDGLogic
 import SDGCollections
+import SDGText
 
 /// A region with the same contiguous coverage status.
 public struct CoverageRegion<Index> where Index: Comparable {
