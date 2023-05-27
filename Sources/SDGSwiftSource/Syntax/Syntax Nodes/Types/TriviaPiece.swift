@@ -18,6 +18,8 @@
 
   import SwiftSyntax
 
+  import SDGSwift
+
   import SDGSwiftLocalizations
 
   extension TriviaPiece {

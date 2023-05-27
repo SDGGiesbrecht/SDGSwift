@@ -68,6 +68,7 @@ public enum Xcode: VersionedExternalProcess {
     "cd",
     "chmod",
     "clang",
+    "clang\u{2D}stat\u{2D}cache",
     "codesign",
     "directory",
     "ditto",
@@ -84,6 +85,7 @@ public enum Xcode: VersionedExternalProcess {
     "write\u{2D}file",
   ]
   private static let abbreviableCommands: [String] = [
+    "ClangStatCache",
     "CodeSign",
     "Codesigning",
     "CompileC",
@@ -427,6 +429,7 @@ public enum Xcode: VersionedExternalProcess {
         command += ["\u{2D}scheme", scheme]
       }
 
+      // @exempt(from: tests) Unreachable on Linux.
       command += ["\u{2D}enableCodeCoverage", "YES"]
 
       let resultBundlesAvailable = Version(11, 0, 0)
@@ -680,9 +683,16 @@ public enum Xcode: VersionedExternalProcess {
       case .success(let output):  // @exempt(from: tests) Unreachable on Linux.
         information = output
       }
+      // @exempt(from: tests) Unreachable on Linux.
 
       // Drop any logs.
       information.drop(upTo: "{")
+
+      if information.contains("https://feedbackassistant.apple.com") {
+        // The first braces were warning information from the log.
+        information.removeFirst()
+        information.drop(upTo: "{")
+      }
 
       let json: Any
       do {

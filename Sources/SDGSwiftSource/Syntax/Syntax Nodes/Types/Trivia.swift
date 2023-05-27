@@ -15,6 +15,8 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
+  import SDGSwift
+
   extension Trivia {
 
     // MARK: - Properties

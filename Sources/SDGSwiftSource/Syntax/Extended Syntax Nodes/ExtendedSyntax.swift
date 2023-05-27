@@ -15,6 +15,8 @@
 import SDGLogic
 import SDGMathematics
 
+import SDGSwift
+
 /// A syntax node.
 ///
 /// This type is comparable to `Syntax`, but represents syntax not handled by the `SwiftSyntax` module.
@@ -65,7 +67,7 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
   /// The parent node.
   public internal(set) weak var parent: ExtendedSyntax?
   /// The index of the node in its parent.
-  public internal(set) var indexInParent: Int = 0
+  public internal(set) var indexInParent: Int = 0  // @exempt(from: tests)
   internal func setTreeRelationships() {  // @exempt(from: tests)  Unreachable from tvOS.
     for index in children.indices {
       let child = children[index]

@@ -1,12 +1,9 @@
   Mock: /tmp/Mock
 $ xcodebuild build -destination generic/platform=tvOS -scheme Mock
 ** BUILD SUCCEEDED **
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-appletvos
-CreateBuildDirectory [...]/EagerLinkingTBDs
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products

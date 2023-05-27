@@ -1,12 +1,9 @@
   Mock: /tmp/Mock
 $ xcodebuild build -destination generic/platform=watchOS -scheme Mock
 ** BUILD SUCCEEDED **
-CompileSwift [...]/Mock.swift
-CompileSwift [...]/MockTests.swift
 Computing target dependency graph and provisioning inputs
 CopySwiftLibs [...]/MockTests.xctest
 CreateBuildDirectory [...]/Debug-watchos
-CreateBuildDirectory [...]/EagerLinkingTBDs
 CreateBuildDirectory [...]/Intermediates.noindex
 CreateBuildDirectory [...]/PackageFrameworks
 CreateBuildDirectory [...]/Products
