@@ -1,0 +1,35 @@
+# Web.yaml
+#
+# This source file is part of the SDGSwift open source project.
+# https://sdggiesbrecht.github.io/SDGSwift
+#
+# Copyright ©2021–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: Swift 5.7 (Web)
+
+on: [push, pull_request]
+
+jobs:
+  Swift_5_7_Web:
+    name: Swift 5.7 (Web)
+    runs-on: ubuntu-20.04
+    container: ghcr.io/swiftwasm/carton:0.18.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Cache Workspace
+      uses: actions/cache@v2
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        carton test
