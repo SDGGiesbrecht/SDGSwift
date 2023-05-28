@@ -590,60 +590,6 @@ for target in package.targets {
   ])
 }
 
-import Foundation
-
-var impossibleDependencyPackages: [String] = []
-var impossibleDependencyProducts: [String] = []
-
-// #workaround(Swift 5.7, Conditional dependencies fail to skip for Windows and Android.)
-if ["WINDOWS", "ANDROID"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
-{
-  impossibleDependencyProducts.append("SwiftSyntaxParser")
-}
-
-// #workaround(Swift 5.7, Web toolchain rejects manifest due to dynamic library.)
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  impossibleDependencyPackages.append(contentsOf: [
-    "swift\u{2D}package\u{2D}manager",
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
-  ])
-}
-
-// #workaround(xcodebuild -version 14.0.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
-if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
-{
-  impossibleDependencyProducts.append("SwiftSyntaxParser")
-}
-
-package.dependencies.removeAll(where: { dependency in
-  return impossibleDependencyPackages.contains(where: { impossible in
-    switch dependency.kind {
-    case .sourceControl(name: _, let location, requirement: _):
-      return (location).contains(impossible)
-    default:
-      return false
-    }
-  })
-})
-for target in package.targets {
-  target.dependencies.removeAll(where: { dependency in
-    switch dependency {
-    case .productItem(let name, let package, moduleAliases: _, condition: _):
-      if let package = package,
-        impossibleDependencyPackages.contains(package)
-      {
-        return true
-      } else {
-        return impossibleDependencyProducts.contains(name)
-      }
-    default:
-      return false
-    }
-  })
-}
-
 // #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))
 #if compiler(<5.8) && !os(macOS)
   #error("Swift 5.7 is only supported on macOS, tvOS, iOS and watchOS; elsewhere, please use Swift 5.8 or select an older version of SDGSwift.")
