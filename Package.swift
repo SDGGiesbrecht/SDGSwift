@@ -474,10 +474,10 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.7, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
-    // #workaround(Swift 5.7, SwiftPM does not compile on Windows.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.8.0, swift‐markdown does not compile for web.)
+    // #workaround(Swift 5.8.0, SwiftPM does not compile on Windows.)
     // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
@@ -509,14 +509,14 @@ for target in package.targets {
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
       switch name {
-      // #warning(Swift 5.7, swift‐markdown does not compile for web.)
-      /*case "Markdown":
+      // #warning(Swift 5.8.0, swift‐markdown does not compile for web.)
+      case "Markdown":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        )*/
+        )
       // #workaround(SwiftPM 0.50800.0, Does not support Windows yet.)
       case "SwiftPMDataModel\u{2D}auto":
         return .productItem(
@@ -525,14 +525,14 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #workaround(External parser is gone, does this work everywhere now?)
-      case "SwiftSyntax":
+      // #warning(External parser is gone, does this work everywhere now?)
+      /*case "SwiftSyntax":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux])
-        )
+        )*/
       // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
       case "SwiftSyntaxParser":
         return .productItem(
