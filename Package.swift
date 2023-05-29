@@ -190,9 +190,9 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          package: "swift\u{2D}package\u{2D}manager"/*,
+          // #warning(SwiftPM 0.50700.2, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])*/
         ),
         .product(
           name: "SwiftToolsSupport\u{2D}auto",
