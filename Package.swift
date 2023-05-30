@@ -509,7 +509,7 @@ for target in package.targets {
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
       switch name {
-      // #warning(Swift 5.8.0, swift‐markdown does not compile for web.)
+      // #workaround(Swift 5.8.0, swift‐markdown does not compile for web.)
       case "Markdown":
         return .productItem(
           name: name,
@@ -525,22 +525,14 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #warning(External parser is gone, does this work everywhere now?)
-      /*case "SwiftSyntax":
-        return .productItem(
-          name: name,
-          package: package,
-          moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        )*/
-      // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-      case "SwiftSyntaxParser":
+      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+      /*case "SwiftSyntaxParser":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
-        )
+        )*/
       // #workaround(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
       case "SwiftToolsSupport\u{2D}auto":
         return .productItem(
