@@ -509,7 +509,7 @@ for target in package.targets {
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
       switch name {
-      // #workaround(Swift 5.8.0, swift‐markdown does not compile for web.)
+      // #workaround(Swift 5.8.0, Does not compile for web.)
       case "Markdown":
         return .productItem(
           name: name,
@@ -517,7 +517,7 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
-      // #workaround(SwiftPM 0.50800.0, Does not support Windows yet.)
+      // #workaround(SwiftPM 0.50800.0, Does not compile for many platforms.)
       case "SwiftPMDataModel\u{2D}auto":
         return .productItem(
           name: name,
@@ -525,22 +525,22 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-      /*case "SwiftSyntaxParser":
+      // #warning(SwiftSyntax 0.50700.0, Does not compile for web.)
+      case "SwiftSyntaxParser":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .linux])
-        )*/
-      // #workaround(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      /*// #warning(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
       case "SwiftToolsSupport\u{2D}auto":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
-        )
+        )*/
       default:
         return dependency
       }
