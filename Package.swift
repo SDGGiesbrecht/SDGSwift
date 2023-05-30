@@ -525,7 +525,7 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #warning(SwiftSyntax 0.50700.0, Does not compile for web.)
+      // #warning(SwiftSyntax 0.50800.0, Does not compile for web.)
       case "SwiftSyntaxParser":
         return .productItem(
           name: name,
