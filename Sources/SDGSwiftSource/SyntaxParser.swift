@@ -17,6 +17,7 @@ import Foundation
   import SDGPersistence
 
   import SwiftSyntax
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 
   extension SyntaxParser {
@@ -34,3 +35,4 @@ import Foundation
       return try parse(url)  // @exempt(from: tests)
     }
   }
+#endif
