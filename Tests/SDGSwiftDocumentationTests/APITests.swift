@@ -501,12 +501,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     var modified = symbol
     modified.docComment = SymbolGraph.LineList.init([])
     _ = modified.parseDocumentation(cache: &cache, module: nil)
+    #if !os(Windows) // #workaround(SymbolKit 0.50800.0, Crashes checking URI.)
     modified.location = SymbolGraph.Symbol.Location(
       uri: "some file.swift",
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
     #if !os(Linux)  // #workaround(Swift 5.7, Foundation crashes instead of throwing.)
       _ = modified.parseDocumentation(cache: &cache, module: nil)
+    #endif
     #endif
   }
 
