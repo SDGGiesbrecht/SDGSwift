@@ -476,9 +476,7 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
     // #workaround(Swift 5.8.0, Web lacks Foundation.FileManager.)
     // #workaround(Swift 5.8.0, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.8.0, swift‐markdown does not compile for web.)
     // #workaround(Swift 5.8.0, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -491,12 +489,8 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
-      .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
-    .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+      .when(platforms: [.wasi])
     ),
     // @endExample
 
@@ -509,7 +503,7 @@ for target in package.targets {
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
       switch name {
-      // #workaround(Swift 5.8.0, Does not compile for web.)
+      // #workaround(swift-markdown 0.50800.0, Does not compile for web.) @exempt(from: unicode)
       case "Markdown":
         return .productItem(
           name: name,
@@ -533,14 +527,14 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
-      /*// #warning(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
+      // #warning(swift-tools-support-core 0.5.2, Does not compile for web or Android.) @exempt(from: unicode)
       case "SwiftToolsSupport\u{2D}auto":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .linux])
-        )*/
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .watchOS])
+        )
       default:
         return dependency
       }

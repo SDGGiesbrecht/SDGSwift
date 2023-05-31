@@ -20,9 +20,7 @@ import SDGSwift
 import SDGSwiftDocumentation
 
 import SymbolKit
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 import SDGSwiftLocalizations
 
@@ -57,7 +55,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     _ = module.names.subHeading
     _ = module.docComment
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         ModuleAPI(
           name: "MyModule",
@@ -70,7 +67,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         ).docComment
       )
-    #endif
   }
 
   func testLibraryAPI() {
@@ -81,7 +77,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       modules: ["MyModule"]
     )
     _ = library.names.subHeading
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       _ = LibraryAPI(
         name: "MyLibrary",
         modules: ["MyModule"],
@@ -91,7 +86,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           eofToken: TokenSyntax(.eof)
         )
       )
-    #endif
   }
 
   func testOperator() {
@@ -223,7 +217,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     _ = package.symbolGraphs()
     _ = package.names.subHeading
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         PackageAPI(
           name: "MyPackage",
@@ -247,7 +240,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           moduleSources: [:]
         ).docComment
       )
-    #endif
   }
 
   func testPrecedenceGroup() {

@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SDGSwiftSource
 
   extension DocumentationSyntax {
@@ -42,4 +41,3 @@
       return specification
     }
   }
-#endif

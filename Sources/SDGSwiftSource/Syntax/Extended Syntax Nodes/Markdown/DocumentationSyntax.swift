@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SDGControlFlow
   import SDGMathematics
 
@@ -103,4 +102,3 @@
     /// The “Returns’ callout.
     public private(set) var returnsCallout: CalloutSyntax?
   }
-#endif

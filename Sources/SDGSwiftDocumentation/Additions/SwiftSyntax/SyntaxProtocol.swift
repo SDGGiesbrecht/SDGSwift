@@ -19,12 +19,9 @@ import SDGMathematics
 import SDGCollections
 
 import SDGSwiftSource
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
   import SymbolKit
-#endif
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SyntaxProtocol {
 
     internal func smallest<Node>(
@@ -243,4 +240,3 @@ import SDGSwiftSource
       )
     }
   }
-#endif

@@ -14,9 +14,7 @@
 
 import SDGLocalization
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 @testable import SDGSwiftSource
 
@@ -31,15 +29,12 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testBlockDocumentationSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let documentationComment = BlockDocumentationSyntax(source: "/** ... */")
       let documentation = documentationComment.documentation
       XCTAssertEqual(documentation.text, "...")
-    #endif
   }
 
   func testCodeBlockSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let documentationComment = BlockDocumentationSyntax(
         source: [
           "/**",
@@ -57,11 +52,9 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           _ = code.syntaxHighlightedHTML(inline: false)
         }
       }
-    #endif
   }
 
   func testExtendedSyntaxContext() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let contextSource = ""
       let context = ExtendedSyntaxContext._token(
         TokenSyntax(.comma),
@@ -82,6 +75,5 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           context: context,
           offset: 0
         )
-    #endif
   }
 }

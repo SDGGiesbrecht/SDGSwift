@@ -16,9 +16,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -231,7 +229,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let highlighted = VariableDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -247,11 +244,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         highlighted.contains("VariableDeclSyntax"),
         highlighted
       )
-    #endif
   }
 
   func testDocumentationSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let unified = DocumentationSyntax.parse(
         source: [
           "Some documentation.",
@@ -463,7 +458,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h4>"))
       XCTAssert(rendered.contains("<h5>"))
       XCTAssert(rendered.contains("<h6>"))
-    #endif
   }
 
   func testExtendedTokenKind() {
@@ -659,7 +653,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let missing = TokenSyntax(.infixQuestionMark, presence: .missing)
       _ = InitializerDeclSyntax(
         attributes: nil,
@@ -689,7 +682,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           rightBrace: TokenSyntax.rightBraceToken()
         )
       )
-    #endif
   }
 
   func testTree() throws {
@@ -776,9 +768,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTriviaPiece() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertTrue(TriviaPiece.newlines(1).isNewline)
       XCTAssertFalse(TriviaPiece.spaces(1).isNewline)
-    #endif
   }
 }

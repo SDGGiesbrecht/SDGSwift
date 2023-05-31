@@ -18,9 +18,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGPersistence
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -293,7 +291,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testScanContext() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       var foundDelimiter = false
       TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
         if node.text() == "//" {
@@ -303,7 +300,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return true
       })
       XCTAssert(foundDelimiter)
-    #endif
     var foundElipsis = false
     StringLiteral(source: "\u{22}...\u{22}")?.scanSyntaxTree({ (node, context) in
       if node.text() == "..." {
@@ -322,7 +318,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSyntaxProtocol() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let declaration = ImportDeclSyntax(
         path: AccessPathSyntax([AccessPathSyntax.Element(name: .identifier("Foundation"))])
       )
@@ -331,7 +326,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(declaration.firstToken())
       XCTAssertNotNil(declaration.lastToken())
       XCTAssert(declaration.text().hasSuffix("Foundation"))
-    #endif
   }
 
   func testTokenKind() {
@@ -340,9 +334,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTriviaNode() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text(), "")
-    #endif
   }
 
   func testUnderlinedHeading() {

@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
   /// The context of an extended syntax node.
@@ -24,4 +23,3 @@
     case _token(TokenSyntax, context: SyntaxContext)
     case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
   }
-#endif

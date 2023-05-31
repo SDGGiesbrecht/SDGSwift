@@ -18,11 +18,8 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SourceRange: SetDefinition {
 
     public typealias Element = SourceLocation  // @exempt(from: accessControl)
@@ -35,4 +32,3 @@ import SDGCollections
         > followingValue.offset
     }
   }
-#endif

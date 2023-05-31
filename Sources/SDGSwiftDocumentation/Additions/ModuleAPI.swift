@@ -16,9 +16,7 @@ import Foundation
 
 import SDGControlFlow
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -77,7 +75,6 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
     ]
   }
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     internal static func lookUpDeclaration(
       for name: String,
       in manifestSource: SourceFileSyntax
@@ -117,7 +114,6 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
         sources: sources
       )
     }
-  #endif
 
   /// Creates a module API.
   ///

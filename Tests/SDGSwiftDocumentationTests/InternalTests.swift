@@ -15,9 +15,7 @@
 import SDGSwiftSource
 @testable import SDGSwiftDocumentation
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 import XCTest
 
@@ -26,14 +24,11 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testSourceLocation() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let location = SourceLocation(offset: 0, converter: nil)
       XCTAssertNil(location.symbolKitPosition)
-    #endif
   }
 
   func testSyntaxProtocol() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let nestedFunction = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -162,6 +157,5 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
         "Additional documentation comment framed by Windows line breaks."
       )
-    #endif
   }
 }

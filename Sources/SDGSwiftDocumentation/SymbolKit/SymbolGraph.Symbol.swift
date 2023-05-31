@@ -18,9 +18,7 @@ import SDGCollections
 
 import SymbolKit
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -42,15 +40,9 @@ extension SymbolGraph.Symbol: SymbolLike {
     }
   }
 
-  #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    // #documenation(SymbolLike.CachedSource)
-    /// A parsed file.
-    public typealias CachedSource = Any
-  #else
     // @documenation(SymbolLike.CachedSource)
     /// A parsed file.
     public typealias CachedSource = SourceFileSyntax
-  #endif
   public func parseDocumentation(
     cache: inout [URL: CachedSource],
     module: String?

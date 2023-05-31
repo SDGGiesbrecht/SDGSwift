@@ -14,9 +14,7 @@
 
 import Foundation
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -26,7 +24,6 @@ public struct SwiftSyntaxNode: SyntaxNode {
 
   // MARK: - Initialization
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Creates a node from a `Syntax` instance.
     ///
     /// - Parameters:
@@ -34,7 +31,6 @@ public struct SwiftSyntaxNode: SyntaxNode {
     public init(_ swiftSyntaxNode: Syntax) {
       self.swiftSyntaxNode = swiftSyntaxNode
     }
-  #endif
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
     /// Creates a node by parsing source.
@@ -58,18 +54,12 @@ public struct SwiftSyntaxNode: SyntaxNode {
 
   // MARK: - Properties
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// The SwiftSyntax node.
     public let swiftSyntaxNode: Syntax
-  #endif
 
   // MARK: - SyntaxNode
 
-  public func children(cache: inout ParserCache) -> [SyntaxNode] {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      return []
-    #else
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
       if let token = swiftSyntaxNode.as(TokenSyntax.self) {
         var children: [SyntaxNode] = [TriviaNode(token.leadingTrivia)]
         if case .stringLiteral(let source) = token.tokenKind,
@@ -86,17 +76,13 @@ public struct SwiftSyntaxNode: SyntaxNode {
           return SwiftSyntaxNode(node)
         }
       }
-    #endif  // @exempt(from: tests)
   }
 
   // MARK: - TextOutputStreamable
 
   public func write<Target>(
     to target: inout Target
-  ) where Target: TextOutputStream {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  ) where Target: TextOutputStream {
       swiftSyntaxNode.write(to: &target)
-    #endif
   }
 }

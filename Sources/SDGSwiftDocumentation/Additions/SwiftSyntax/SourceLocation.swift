@@ -15,8 +15,6 @@
 import SDGMathematics
 
 import SymbolKit
-
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
   extension SourceLocation {
@@ -37,4 +35,3 @@ import SymbolKit
       return SymbolGraph.LineList.SourceRange.Position(line: line − 1, character: column − 1)
     }
   }
-#endif

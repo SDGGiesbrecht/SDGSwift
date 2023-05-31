@@ -14,16 +14,13 @@
 
 import SDGLogic
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 /// A trivia node from the SwiftSyntax library.
 public struct TriviaNode: SyntaxNode {
 
   // MARK: - Initialization
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Creates a node from a `Trivia` instance.
     ///
     /// - Parameters:
@@ -31,18 +28,14 @@ public struct TriviaNode: SyntaxNode {
     public init(_ trivia: Trivia) {
       self.trivia = trivia
     }
-  #endif
 
   // MARK: - Properties
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// The trivia.
     public let trivia: Trivia
-  #endif
 
   // MARK: - Parsing
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private func lineDocumentationSourceGroups() -> [[String]] {
       var result: [[String]] = []
       var interveningLineBreaks = 0
@@ -72,15 +65,10 @@ public struct TriviaNode: SyntaxNode {
       }
       return result
     }
-  #endif
 
   // MARK: - SyntaxNode
 
-  public func children(cache: inout ParserCache) -> [SyntaxNode] {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      return []
-    #else
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
       var handledDocumentation: [[String]] = [[]]
       var pendingDocumentation: [[String]] = lineDocumentationSourceGroups()
       return trivia.pieces.map { piece in
@@ -112,17 +100,13 @@ public struct TriviaNode: SyntaxNode {
           )
         )
       }
-    #endif
   }
 
   // MARK: - TextOutputStreamable
 
   public func write<Target>(
     to target: inout Target
-  ) where Target: TextOutputStream {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  ) where Target: TextOutputStream {
       trivia.write(to: &target)
-    #endif
   }
 }

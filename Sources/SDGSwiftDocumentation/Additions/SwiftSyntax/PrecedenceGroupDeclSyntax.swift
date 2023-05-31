@@ -13,8 +13,6 @@
  */
 
 import SymbolKit
-
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
   extension PrecedenceGroupDeclSyntax {
@@ -50,4 +48,3 @@ import SymbolKit
       )
     }
   }
-#endif

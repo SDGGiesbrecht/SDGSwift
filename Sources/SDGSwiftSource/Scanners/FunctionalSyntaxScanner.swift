@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
   /// A syntax scanner that can be used by providing closures instead of subclassing.
@@ -90,4 +89,3 @@
       return shouldExtendFragment(node)
     }
   }
-#endif
