@@ -318,6 +318,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSyntaxProtocol() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let declaration = ImportDeclSyntax(
         path: AccessPathSyntax([AccessPathSyntax.Element(name: .identifier("Foundation"))])
       )
@@ -326,6 +328,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertNotNil(declaration.firstToken())
       XCTAssertNotNil(declaration.lastToken())
       XCTAssert(declaration.text().hasSuffix("Foundation"))
+    #endif
   }
 
   func testTokenKind() {
