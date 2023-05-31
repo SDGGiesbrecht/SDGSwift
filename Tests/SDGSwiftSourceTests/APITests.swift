@@ -229,6 +229,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let highlighted = VariableDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -244,6 +246,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         highlighted.contains("VariableDeclSyntax"),
         highlighted
       )
+    #endif
   }
 
   func testDocumentationSyntax() {
