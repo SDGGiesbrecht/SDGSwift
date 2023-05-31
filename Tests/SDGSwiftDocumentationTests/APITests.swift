@@ -70,6 +70,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testLibraryAPI() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     let library = LibraryAPI(
       name: "MyLibrary",
       documentation: [],
@@ -86,6 +88,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           eofToken: TokenSyntax(.eof)
         )
       )
+    #endif
   }
 
   func testOperator() {
