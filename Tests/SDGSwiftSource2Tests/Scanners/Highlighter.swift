@@ -56,6 +56,10 @@ extension Highlighter {
       .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
       .appendingPathExtension("txt")
 
+    #if os(Windows)
+      result.unicodeScalars.replaceMatches(for: "\r\n".scalars, with: "\n".scalars)
+    #endif
+
     // #workaround(For compatibility of specifications with legacy tests.)
     result.replaceMatches(for: "__s̲", with: "**s̲")
     result.replaceMatches(for: "__s", with: "**s")
