@@ -497,7 +497,7 @@ for target in package.targets {
 
   target.dependencies = target.dependencies.map { dependency in
     switch dependency {
-    case .productItem(name: let name, let package, let moduleAliases, condition: _):
+    case .productItem(name: let name, let package, let moduleAliases, _):
       switch name {
       // #workaround(swift-markdown 0.50800.0, Does not compile for web.) @exempt(from: unicode)
       case "Markdown":
@@ -515,7 +515,7 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #warning(SwiftSyntax 0.50800.0, Does not compile for web.)
+      // #workaround(SwiftSyntax 0.50800.0, Does not compile for web.)
       case "SwiftSyntaxParser":
         return .productItem(
           name: name,
@@ -523,7 +523,7 @@ for target in package.targets {
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
-      // #warning(swift-tools-support-core 0.5.2, Does not compile for web or Android.) @exempt(from: unicode)
+      // #workaround(swift-tools-support-core 0.5.2, Does not compile for web or Android.) @exempt(from: unicode)
       case "SwiftToolsSupport\u{2D}auto":
         return .productItem(
           name: name,
