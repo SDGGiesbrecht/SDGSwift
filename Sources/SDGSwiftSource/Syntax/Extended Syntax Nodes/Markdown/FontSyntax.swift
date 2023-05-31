@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import cmark_gfm
+import cmark_gfm
 
   /// A section of documentation text with font modifications.
   ///

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SwiftSyntax
+import SwiftSyntax
 
   /// The context of a trivia piece.
   public indirect enum TriviaPieceContext {

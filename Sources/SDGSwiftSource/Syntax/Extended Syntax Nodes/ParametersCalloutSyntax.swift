@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  /// A grouped “Paramaters” callout.
+/// A grouped “Paramaters” callout.
   public final class ParametersCalloutSyntax: CalloutSyntax {
 
     internal required init(

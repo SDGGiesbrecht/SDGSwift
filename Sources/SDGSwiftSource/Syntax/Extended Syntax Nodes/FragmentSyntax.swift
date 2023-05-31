@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SDGMathematics
+import SDGMathematics
   import SDGCollections
 
   /// A smaller fragment of a larger syntax node.

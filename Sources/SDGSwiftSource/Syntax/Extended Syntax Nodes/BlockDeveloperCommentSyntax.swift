@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  /// A block developer comment.
+/// A block developer comment.
   public final class BlockDeveloperCommentSyntax: BlockCommentSyntax {
 
     // MARK: - Class Properties

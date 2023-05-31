@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SwiftSyntax
+import SwiftSyntax
 
   /// A scanner for read‐only handling of a syntax tree.
   public protocol SyntaxScanner {
