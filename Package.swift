@@ -497,7 +497,7 @@ for target in package.targets {
 
   target.dependencies = target.dependencies.map { dependency in
     switch dependency {
-    case .productItem(name: let name, let package, let moduleAliases, _):
+    case .productItem(let name, let package, let moduleAliases, _):
       switch name {
       // #workaround(swift-markdown 0.50800.0, Does not compile for web.) @exempt(from: unicode)
       case "Markdown":
