@@ -67,6 +67,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         ).docComment
       )
+    let moduleDirectory = mocksDirectory
+      .appendingPathComponent("PackageToDocument")
+      .appendingPathComponent("Sources")
+      .appendingPathComponent("PrimaryModule")
+    _ = ModuleAPI(
+      name: "MyModule",
+      documentation: [],
+      location: nil,
+      symbolGraphs: [],
+      sources: [
+        moduleDirectory.appendingPathComponent("Operator.swift"),
+        moduleDirectory.appendingPathComponent("Precedence.swift")
+      ]
+    )
   }
 
   func testLibraryAPI() {
