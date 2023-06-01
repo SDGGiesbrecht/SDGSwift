@@ -115,6 +115,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         module: nil
       ) ?? []
     }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static func documentation(
       name: String,
       manifestURL: String,
@@ -126,6 +127,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         manifestSource: manifestSource
       )
     }
+  #endif
     /// Creates a package API.
     ///
     /// - Parameters:

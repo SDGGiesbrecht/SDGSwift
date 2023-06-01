@@ -243,6 +243,65 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           moduleSources: [:]
         ).docComment
       )
+      _ = PackageAPI(
+        name: "MyPackage",
+        manifestURL: "somewhere.swift",
+        manifestSource: SourceFileSyntax(
+          statements: CodeBlockItemListSyntax([
+            CodeBlockItemSyntax(
+              item: .decl(DeclSyntax(VariableDeclSyntax(
+                attributes: nil,
+                modifiers: nil,
+                letOrVarKeyword: .letKeyword(trailingTrivia: .space),
+                bindings: PatternBindingListSyntax([
+                  PatternBindingSyntax(
+                    pattern: PatternSyntax(IdentifierPatternSyntax(
+                      identifier: .identifier("package")
+                    )),
+                    typeAnnotation: nil,
+                    initializer: InitializerClauseSyntax(
+                      equal: .equalToken(leadingTrivia: .space, trailingTrivia: .space),
+                      value: FunctionCallExprSyntax(
+                        calledExpression: IdentifierExprSyntax(
+                          identifier: .identifier("Package"),
+                          declNameArguments: nil
+                        ),
+                        leftParen: .leftParenToken(),
+                        argumentList: TupleExprElementListSyntax([
+                          TupleExprElementSyntax(
+                            label: .identifier("name"),
+                            colon: .colonToken(trailingTrivia: .space),
+                            expression: StringLiteralExprSyntax(
+                              openQuote: .stringQuoteToken(),
+                              segments: StringLiteralSegmentsSyntax([
+                                .stringSegment(StringSegmentSyntax(
+                                  content: .stringSegment("MyPackage")
+                                ))
+                              ]),
+                              closeQuote: .stringQuoteToken()
+                            ),
+                            trailingComma: nil)
+                        ]),
+                        rightParen: .rightParenToken(),
+                        trailingClosure: nil,
+                        additionalTrailingClosures: nil
+                      )
+                    ),
+                    accessor: nil,
+                    trailingComma: nil
+                  )
+                ])
+              ))),
+              semicolon: nil,
+              errorTokens: nil
+            )
+          ]),
+          eofToken: TokenSyntax(.eof)
+        ),
+        libraries: [],
+        symbolGraphs: [],
+        moduleSources: [:]
+      )
   }
 
   func testPrecedenceGroup() {
