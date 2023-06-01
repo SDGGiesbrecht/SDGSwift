@@ -49,6 +49,10 @@
         url.deletingPathExtension().lastPathComponent
       ).appendingPathExtension("txt")
 
+      #if os(Windows)
+        result.unicodeScalars.replaceMatches(for: "\r\n".scalars, with: "\n".scalars)
+      #endif
+
       SDGPersistenceTestUtilities.compare(
         result,
         against: specification,
