@@ -656,6 +656,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenSyntax() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let missing = TokenSyntax(.infixQuestionMark, presence: .missing)
       _ = InitializerDeclSyntax(
         attributes: nil,
@@ -685,6 +687,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           rightBrace: TokenSyntax.rightBraceToken()
         )
       )
+    #endif
   }
 
   func testTree() throws {
