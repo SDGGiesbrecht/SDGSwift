@@ -29,6 +29,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSyntaxProtocol() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let nestedFunction = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -157,5 +159,6 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         documentation.first?.documentationComment.lines.map({ $0.text }).joined(separator: "\n"),
         "Additional documentation comment framed by Windows line breaks."
       )
+    #endif
   }
 }
