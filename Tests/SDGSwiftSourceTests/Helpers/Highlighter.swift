@@ -50,7 +50,7 @@
       ).appendingPathExtension("txt")
 
       #if os(Windows)
-        result.unicodeScalars.replaceMatches(for: "\r\n".scalars, with: "\n".scalars)
+        result.unicodeScalars.replaceMatches(for: "\r".scalars, with: "".scalars)
       #endif
 
       SDGPersistenceTestUtilities.compare(
