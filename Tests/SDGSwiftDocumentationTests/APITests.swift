@@ -588,6 +588,43 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     #if !os(Linux)  // #workaround(Swift 5.7, Foundation crashes instead of throwing.)
       _ = modified.parseDocumentation(cache: &cache, module: nil)
     #endif
+    for kind in [
+      .associatedtype,
+      .class,
+      .deinit,
+      .enum,
+      .case,
+      .func,
+      .`init`,
+      .ivar,
+      .property,
+      .protocol,
+      .property,
+      .struct,
+      .subscript,
+      .typealias
+    ] as [SymbolGraph.Symbol.KindIdentifier] {
+      _ = SymbolGraph.Symbol(
+        identifier: SymbolGraph.Symbol.Identifier(precise: "identifier", interfaceLanguage: "swift"),
+        names: SymbolGraph.Symbol.Names(title: "title", navigator: nil, subHeading: nil, prose: nil),
+        pathComponents: [],
+        docComment: SymbolGraph.LineList(
+          [
+            SymbolGraph.LineList.Line(
+              text: "...",
+              range: SymbolGraph.LineList.SourceRange(
+                start: SymbolGraph.LineList.SourceRange.Position(line: 1, character: 1),
+                end: SymbolGraph.LineList.SourceRange.Position(line: 1, character: 1)
+              )
+            )
+          ],
+          uri: URL(fileURLWithPath: #filePath).absoluteString
+        ),
+        accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "internal"),
+        kind: SymbolGraph.Symbol.Kind(parsedIdentifier: kind, displayName: "class"),
+        mixins: [:]
+      ).parseDocumentation(cache: &cache, module: nil)
+    }
     #endif
   }
 

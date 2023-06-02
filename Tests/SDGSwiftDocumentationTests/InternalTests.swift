@@ -26,6 +26,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
   func testSourceLocation() {
       let location = SourceLocation(offset: 0, converter: nil)
       XCTAssertNil(location.symbolKitPosition)
+    _ = SourceLocation.convertLine(fromSymbolGraph: 10)
+    _ = SourceLocation.convertColumn(fromSymbolGraphCharacter: 10)
   }
 
   func testSyntaxProtocol() {
@@ -104,15 +106,21 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         structKeyword: TokenSyntax(
           .structKeyword,
           leadingTrivia: Trivia(pieces: [
+            .spaces(2),
             .docBlockComment(
-              "/**\r\n Additional documentation comment framed by Windows line breaks.\r\n */"
+              "/**\r\n   Additional documentation comment framed by Windows line breaks.\r\n   */"
             ),
             .newlines(1),
+            .spaces(2),
             .lineComment("// Developer comment."),
             .newlines(1),
+            .spaces(2),
             .docLineComment("/// Documentation"),
             .carriageReturnLineFeeds(1),
+            .spaces(2),
             .docLineComment("/// which continues after a Windows line break."),
+            .newlines(1),
+            .spaces(2),
           ]),
           trailingTrivia: .spaces(1)
         ),
