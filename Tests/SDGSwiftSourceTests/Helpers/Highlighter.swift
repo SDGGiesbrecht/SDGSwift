@@ -50,6 +50,7 @@
       ).appendingPathExtension("txt")
 
       #if os(Windows)
+        result.unicodeScalars.replaceMatches(for: "\r".scalars + "\u{332}", with: "".scalars)
         result.unicodeScalars.replaceMatches(for: "\r".scalars, with: "".scalars)
       #endif
 
