@@ -43,6 +43,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testModuleAPI() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     let module = ModuleAPI(
       name: "MyModule",
       documentation: [],
@@ -67,8 +69,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         ).docComment
       )
-    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
-    #if !os(WASI)
     let moduleDirectory = mocksDirectory
       .appendingPathComponent("PackageToDocument")
       .appendingPathComponent("Sources")

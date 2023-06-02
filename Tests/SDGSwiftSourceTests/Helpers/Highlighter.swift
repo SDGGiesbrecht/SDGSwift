@@ -43,7 +43,7 @@
       file: StaticString = #filePath,
       line: UInt = #line
     ) throws -> String {
-      let result = try highlight(syntax)
+      var result = try highlight(syntax)
 
       let specification = afterDirectory.appendingPathComponent(name).appendingPathComponent(
         url.deletingPathExtension().lastPathComponent
