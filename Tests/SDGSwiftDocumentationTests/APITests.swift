@@ -200,6 +200,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     let package = PackageAPI(
       name: "MyPackage",
       documentation: [],
@@ -319,6 +321,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         symbolGraphs: [],
         moduleSources: [:]
       )
+    #endif
   }
 
   func testPrecedenceGroup() {
