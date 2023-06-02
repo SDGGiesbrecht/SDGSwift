@@ -288,7 +288,7 @@ import SDGLogic
         return "text"
 
       case .stringLiteral, .regexLiteral:  // @exempt(from: tests) Disected elsewhere.
-        return nil
+        return nil  // @exempt(from: tests)
       }
     }
   }

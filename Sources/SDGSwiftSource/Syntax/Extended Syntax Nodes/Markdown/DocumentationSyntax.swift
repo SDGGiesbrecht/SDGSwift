@@ -87,7 +87,7 @@ import SDGControlFlow
             name: entry.parameterName
               // Never nil in valid source.
               ?? ExtendedTokenSyntax(  // @exempt(from: tests)
-                text: "",
+                text: "",  // @exempt(from: tests)
                 kind: .parameter
               ),
             description: entry.contents

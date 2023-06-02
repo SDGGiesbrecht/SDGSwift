@@ -135,7 +135,7 @@ import SDGLogic
         } else {
           switch trivia {
           case .spaces,  // @exempt(from: tests)
-            .tabs,
+            .tabs,  // @exempt(from: tests)
             .verticalTabs,
             .formfeeds,
             .newlines,

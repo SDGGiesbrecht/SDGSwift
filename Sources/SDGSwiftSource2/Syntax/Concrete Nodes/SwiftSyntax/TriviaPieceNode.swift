@@ -54,12 +54,12 @@ public struct TriviaPieceNode: SyntaxNode {
       case .lineComment:
         return [
           LineComment(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
       case .blockComment:
         return [
           BlockComment(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
       case .docLineComment:
         return [
@@ -67,14 +67,14 @@ public struct TriviaPieceNode: SyntaxNode {
             source: text(),
             precedingContentContext: precedingDocumentationContext,
             followingContentContext: followingDocumentationContext
-          ) ?? Token.unknown(text())  // @exempt(from: tests)
+          ) ?? Token.unknown(text())
         ]
       case .docBlockComment:
         return [
           BlockDocumentation(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
-      case .unexpectedText:  // @exempt(from: tests)
+      case .unexpectedText:
         return [Token.unknown(text())]
       case .shebang:
         return [Token(kind: .shebang(text()))]

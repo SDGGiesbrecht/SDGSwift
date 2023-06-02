@@ -340,6 +340,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text(), "")
   }
 
+  func testTriviaPieceNode() {
+    var cache = ParserCache()
+    for piece in [
+      .unexpectedText("?!?"),
+      .lineComment("?!?"),
+      .blockComment("?!?"),
+      .docLineComment("?!?"),
+      .docBlockComment("?!?")
+    ] as [TriviaPiece] {
+      _ = TriviaPieceNode(piece, precedingDocumentationContext: nil, followingDocumentationContext: nil)
+        .children(cache: &cache)
+    }
+  }
+
   func testUnderlinedHeading() {
     XCTAssertNil(UnderlinedHeading(source: "Not a heading"))
     UnderlinedHeading.roundTripTest(
