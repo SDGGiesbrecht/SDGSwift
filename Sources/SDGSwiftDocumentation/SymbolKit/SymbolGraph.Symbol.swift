@@ -136,7 +136,7 @@ extension SymbolGraph.Symbol: SymbolLike {
           ?? scan(for: AssociatedtypeDeclSyntax.self)
           ?? []
       default:  // @exempt(from: tests)
-        #if DEBUG
+        #if DEBUG  // @exempt(from: tests)
           print("Unidentified symbol graph node: \(kind.identifier) (\(#fileID), \(#function))")
         #endif
         return []
