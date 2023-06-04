@@ -64,6 +64,8 @@ struct UnknownHighlighter: Highlighter {
           .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield:
           return false
         case .unknown:
+          // #warning(Debugging...)
+          print("unkown(\(token.text().scalars.map({ $0.hexadecimalCode }).joined(separator: " "))")
           return token.text() ∉ UnknownHighlighter.expectedParserRejections
         }
     case .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,
@@ -79,6 +81,8 @@ struct UnknownHighlighter: Highlighter {
     case .source:
       return token.text() ∉ UnknownHighlighter.expectedSource
     case .fragment:
+      // #warning(Debugging...)
+      print("fragment(\(token.text().scalars.map({ $0.hexadecimalCode }).joined(separator: " "))")
       return true
     }
   }
