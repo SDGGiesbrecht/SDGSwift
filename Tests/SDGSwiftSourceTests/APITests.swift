@@ -622,6 +622,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           internalIdentifiers: [],
           symbolLinks: ["doSomething": "domain.tld"]
         )
+        #if !os(Windows)
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
             content: highlighted,
@@ -633,6 +634,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .appendingPathExtension("html"),
           overwriteSpecificationInsteadOfFailing: false
         )
+        #endif
       }
     #endif
   }
