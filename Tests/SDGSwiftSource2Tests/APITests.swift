@@ -52,6 +52,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         " */",
       ].joined(separator: "\n")
     )
+    BlockComment.roundTripTest(
+      [
+        "/*",
+        " ...",
+        " ...",
+        "...",  // Missing indent.
+        " */",
+      ].joined(separator: "\r\n")
+    )
     XCTAssertNil(BlockComment(source: "..."))
     XCTAssertNil(BlockComment(source: "/* ..."))
   }
