@@ -541,7 +541,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testLineDocumentationCommentSyntax() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-    #if !os(Android)
       let syntax = try SyntaxParser.parse(source: "//\u{2F} Documentation.")
       class DocumentationScanner: SyntaxScanner {
         func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
@@ -552,7 +551,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
       }
       try DocumentationScanner().scan(syntax)
-    #endif
     #endif
   }
 
