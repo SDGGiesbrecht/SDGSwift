@@ -160,6 +160,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
             {
               group.scalars.append(source.removeFirst())
             }
+            // #warning(Debugging...)
+            print("Container:", type(of: markdown))
             kinds.append(Token.unknown(group).kind)
           }
         }
