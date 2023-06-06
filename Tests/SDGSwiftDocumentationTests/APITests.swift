@@ -34,8 +34,6 @@ import SDGSwiftTestUtilities
 import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
-  // #warning(Debugging...)
-  #if !os(Android)
 
   func testSymbolDocumentation() {
     _ = SDGSwiftDocumentation.SymbolDocumentation(
@@ -457,6 +455,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
   }
 
+  // #warning(Debugging...)
+  #if !os(Android)
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
