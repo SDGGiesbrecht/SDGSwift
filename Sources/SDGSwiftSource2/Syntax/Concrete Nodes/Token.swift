@@ -15,8 +15,7 @@
 /// A syntax node representing a single token.
 public struct Token: SyntaxNode {
 
-  internal static func unknown(_ source: String, function: StaticString = #function) -> Token {  // ← #warning(Debugging...)
-    print(source, function)
+  internal static func unknown(_ source: String) -> Token {
     return Token(kind: .swiftSyntax(.unknown(source)))
   }
 
