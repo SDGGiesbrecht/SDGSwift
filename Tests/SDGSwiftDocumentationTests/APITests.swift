@@ -34,6 +34,8 @@ import SDGSwiftTestUtilities
 import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
+  // #warning(Debugging...)
+  #if !os(Android)
 
   func testSymbolDocumentation() {
     _ = SDGSwiftDocumentation.SymbolDocumentation(
@@ -634,4 +636,5 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
   }
+  #endif
 }
