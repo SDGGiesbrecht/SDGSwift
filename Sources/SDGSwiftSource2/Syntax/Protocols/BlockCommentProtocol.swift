@@ -107,10 +107,6 @@ extension BlockCommentProtocol {
       newlines.append(String(line.newline))
     }
     let contentsString = contents.joined(separator: "\n")
-    // #warning(Debugging...)
-    if contentsString.contains("A library.") {
-      print("Contents: “\(contentsString.scalars.map({ $0.hexadecimalCode }).joined(separator: " "))”")
-    }
     let parsed = Content(source: contentsString)
 
     var content: [LineFragment<Fragment<Content>>] = []
