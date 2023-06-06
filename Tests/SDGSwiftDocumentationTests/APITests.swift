@@ -455,8 +455,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
   }
 
-  // #warning(Debugging...)
-  #if !os(Android)
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
@@ -546,6 +544,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     }
   }
 
+  // #warning(Debugging...)
+  #if !os(Android)
   func testSymbolGraphLineList() {
     _ = SymbolGraph.LineList([
       SymbolGraph.LineList.Line(text: "...", range: nil),
