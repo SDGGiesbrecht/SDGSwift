@@ -557,8 +557,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSymbolGraphSymbol() {
-    // #warning(Debugging...)
-    #if !os(Android)
     let symbol = SymbolGraph.Symbol(
       identifier: SymbolGraph.Symbol.Identifier(precise: "symbol", interfaceLanguage: "Swift"),
       names: SymbolGraph.Symbol.Names(
@@ -581,6 +579,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     var modified = symbol
     modified.docComment = SymbolGraph.LineList.init([])
     _ = modified.parseDocumentation(cache: &cache, module: nil)
+    #if !os(Android)  // #warning(Debugging...)
     #if !os(Windows) // #workaround(SymbolKit 0.50800.0, Crashes checking URI.)
     modified.location = SymbolGraph.Symbol.Location(
       uri: "some file.swift",
