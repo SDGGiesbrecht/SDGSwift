@@ -543,9 +543,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     }
   }
-
-  // #warning(Debugging...)
-  #if !os(Android)
   func testSymbolGraphLineList() {
     _ = SymbolGraph.LineList([
       SymbolGraph.LineList.Line(text: "...", range: nil),
@@ -560,6 +557,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSymbolGraphSymbol() {
+    // #warning(Debugging...)
+    #if !os(Android)
     let symbol = SymbolGraph.Symbol(
       identifier: SymbolGraph.Symbol.Identifier(precise: "symbol", interfaceLanguage: "Swift"),
       names: SymbolGraph.Symbol.Names(
@@ -628,6 +627,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       ).parseDocumentation(cache: &cache, module: nil)
     }
     #endif
+    #endif
   }
 
   func testSymbolGraphSymbolLocation() {
@@ -636,5 +636,4 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
   }
-  #endif
 }
