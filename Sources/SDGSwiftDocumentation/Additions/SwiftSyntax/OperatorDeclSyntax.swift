@@ -13,8 +13,6 @@
  */
 
 import SymbolKit
-
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 
   extension OperatorDeclSyntax {
@@ -67,4 +65,3 @@ import SymbolKit
       )
     }
   }
-#endif

@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import cmark_gfm
+import cmark_gfm
 
   /// Inline code use in documentation.
   public final class InlineCodeSyntax: MarkdownSyntax {
@@ -67,4 +66,3 @@
       )
     }
   }
-#endif

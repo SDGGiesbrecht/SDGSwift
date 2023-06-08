@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SDGLogic
+import SDGLogic
   import SDGMathematics
   import SDGCollections
 
@@ -289,8 +288,7 @@
         return "text"
 
       case .stringLiteral, .regexLiteral:  // @exempt(from: tests) Disected elsewhere.
-        return nil
+        return nil  // @exempt(from: tests)
       }
     }
   }
-#endif

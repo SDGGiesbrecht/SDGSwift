@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  /// A block documentation comment.
+/// A block documentation comment.
   public final class BlockDocumentationSyntax: BlockCommentSyntax {
 
     // MARK: - Class Properties
@@ -33,4 +32,3 @@
       return internalSyntax as! DocumentationSyntax
     }
   }
-#endif

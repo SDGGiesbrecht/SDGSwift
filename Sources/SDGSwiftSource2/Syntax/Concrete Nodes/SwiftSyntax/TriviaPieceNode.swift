@@ -12,16 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SwiftSyntax
-#endif
+import SwiftSyntax
 
 /// A trivia piece from the SwiftSyntax library.
 public struct TriviaPieceNode: SyntaxNode {
 
   // MARK: - Initialization
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Creates a node from a `TriviaPiece` instance.
     ///
     /// - Parameters:
@@ -37,25 +34,18 @@ public struct TriviaPieceNode: SyntaxNode {
       self.precedingDocumentationContext = precedingDocumentationContext
       self.followingDocumentationContext = followingDocumentationContext
     }
-  #endif
 
   // MARK: - Properties
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// The trivia piece.
     public let piece: TriviaPiece
-  #endif
 
   internal let precedingDocumentationContext: String?
   internal let followingDocumentationContext: String?
 
   // MARK: - SyntaxNode
 
-  public func children(cache: inout ParserCache) -> [SyntaxNode] {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      return []
-    #else
+  public func children(cache: inout ParserCache) -> [SyntaxNode] {
       switch piece {
       case .spaces, .tabs:
         return [Token(kind: .whitespace(text()))]
@@ -64,12 +54,12 @@ public struct TriviaPieceNode: SyntaxNode {
       case .lineComment:
         return [
           LineComment(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
       case .blockComment:
         return [
           BlockComment(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
       case .docLineComment:
         return [
@@ -77,29 +67,25 @@ public struct TriviaPieceNode: SyntaxNode {
             source: text(),
             precedingContentContext: precedingDocumentationContext,
             followingContentContext: followingDocumentationContext
-          ) ?? Token.unknown(text())  // @exempt(from: tests)
+          ) ?? Token.unknown(text())
         ]
       case .docBlockComment:
         return [
           BlockDocumentation(source: text())
-            ?? Token.unknown(text())  // @exempt(from: tests)
+            ?? Token.unknown(text())
         ]
-      case .unexpectedText:  // @exempt(from: tests)
+      case .unexpectedText:
         return [Token.unknown(text())]
       case .shebang:
         return [Token(kind: .shebang(text()))]
       }
-    #endif
   }
 
   // MARK: - TextOutputStreamable
 
   public func write<Target>(
     to target: inout Target
-  ) where Target: TextOutputStream {  // @exempt(from: tests)
-    // Unreachable without SwiftSyntax because initialization is impossible.
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  ) where Target: TextOutputStream {
       piece.write(to: &target)
-    #endif
   }
 }

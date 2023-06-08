@@ -19,12 +19,9 @@ import SDGMathematics
 import SDGCollections
 
 import SDGSwiftSource
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
   import SymbolKit
-#endif
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SyntaxProtocol {
 
     internal func smallest<Node>(
@@ -231,7 +228,8 @@ import SDGSwiftSource
       guard let url = start.file,
         let line = start.line,
         let character = start.column
-      else {  // @exempt(from: tests) Presumably unreachable.
+      else {
+        // @exempt(from: tests) Presumably unreachable.
         return nil
       }
       return SymbolGraph.Symbol.Location(
@@ -243,4 +241,3 @@ import SDGSwiftSource
       )
     }
   }
-#endif

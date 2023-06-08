@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SwiftSyntax
+import SwiftSyntax
 
   /// The context of a trivia piece.
   public indirect enum TriviaPieceContext {
@@ -23,4 +22,3 @@
     case _trivia(Trivia, index: Trivia.Index, parent: TriviaContext)
     case _fragment(CodeFragmentSyntax, context: ExtendedSyntaxContext, offset: Int)
   }
-#endif

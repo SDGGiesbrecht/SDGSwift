@@ -43,11 +43,16 @@
       file: StaticString = #filePath,
       line: UInt = #line
     ) throws -> String {
-      let result = try highlight(syntax)
+      var result = try highlight(syntax)
 
       let specification = afterDirectory.appendingPathComponent(name).appendingPathComponent(
         url.deletingPathExtension().lastPathComponent
       ).appendingPathExtension("txt")
+
+      #if os(Windows)
+        result.unicodeScalars.replaceMatches(for: "\r\u{332}".scalars, with: "".scalars)
+        result.unicodeScalars.replaceMatches(for: "\r".scalars, with: "".scalars)
+      #endif
 
       SDGPersistenceTestUtilities.compare(
         result,

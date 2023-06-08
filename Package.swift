@@ -54,12 +54,8 @@ import PackageDescription
 ///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
 /// ),
 /// .define(
-///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
-///   .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
-/// ),
-/// .define(
 ///   "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER",
-///   .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+///   .when(platforms: [.wasi])
 /// ),
 /// ```
 let package = Package(
@@ -188,18 +184,8 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftToolsSupport\u{2D}auto",
-          package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-          // #workaround(swift-tools-support-core 0.2.7, Does not support Windows yet.) @exempt(from: unicode)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
+        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core"),
       ]
     ),
 
@@ -220,24 +206,10 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
         .product(name: "cmark\u{2D}gfm", package: "swift\u{2D}cmark"),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
         .product(name: "SDGHTML", package: "SDGWeb"),
       ],
       resources: [
@@ -255,23 +227,9 @@ let package = Package(
         .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "Markdown",
-          package: "swift\u{2D}markdown",
-          // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
+        .product(name: "Markdown", package: "swift\u{2D}markdown"),
       ]
     ),
 
@@ -293,23 +251,9 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "OrderedCollections", package: "swift\u{2D}collections"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
       ]
     ),
 
@@ -433,17 +377,8 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
       ]
     ),
     .testTarget(
@@ -456,17 +391,8 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
       ]
     ),
     .testTarget(
@@ -486,23 +412,9 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
       ]
     ),
@@ -558,11 +470,9 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
-    // #workaround(Swift 5.7, Web lacks Foundation.Process.)
-    // #workaround(Swift 5.7, swift‐markdown does not compile for web.)
-    // #workaround(Swift 5.7, SwiftPM does not compile on Windows.)
-    // #workaround(Swift 5.7, SwiftSyntaxParser does not compile on Windows.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.8.0, SwiftPM does not compile on Windows.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
@@ -575,12 +485,8 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
-      .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
-    .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+      .when(platforms: [.wasi])
     ),
     // @endExample
 
@@ -588,4 +494,48 @@ for target in package.targets {
     .define("PLATFORM_HAS_XCODE", .when(platforms: [.macOS])),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])
+
+  target.dependencies = target.dependencies.map { dependency in
+    switch dependency {
+    case .productItem(let name, let package, let moduleAliases, _):
+      switch name {
+      // #workaround(swift-markdown 0.50800.0, Does not compile for web.) @exempt(from: unicode)
+      case "Markdown":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      // #workaround(SwiftPM 0.50800.0, Does not compile for many platforms.)
+      case "SwiftPMDataModel\u{2D}auto":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+      // #workaround(SwiftSyntax 0.50800.0, Does not compile for web.)
+      case "SwiftSyntaxParser":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      // #workaround(swift-tools-support-core 0.5.2, Does not compile for web or Android.) @exempt(from: unicode)
+      case "SwiftToolsSupport\u{2D}auto":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .watchOS])
+        )
+      default:
+        return dependency
+      }
+    default:
+      return dependency
+    }
+  }
 }

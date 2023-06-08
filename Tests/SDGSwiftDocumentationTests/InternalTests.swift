@@ -15,9 +15,7 @@
 import SDGSwiftSource
 @testable import SDGSwiftDocumentation
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 import XCTest
 
@@ -26,14 +24,15 @@ import SDGSwiftTestUtilities
 class InternalTests: SDGSwiftTestUtilities.TestCase {
 
   func testSourceLocation() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let location = SourceLocation(offset: 0, converter: nil)
       XCTAssertNil(location.symbolKitPosition)
-    #endif
+    _ = SourceLocation.convertLine(fromSymbolGraph: 10)
+    _ = SourceLocation.convertColumn(fromSymbolGraphCharacter: 10)
   }
 
   func testSyntaxProtocol() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let nestedFunction = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -107,15 +106,21 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
         structKeyword: TokenSyntax(
           .structKeyword,
           leadingTrivia: Trivia(pieces: [
+            .spaces(2),
             .docBlockComment(
-              "/**\r\n Additional documentation comment framed by Windows line breaks.\r\n */"
+              "/**\r\n   Additional documentation comment framed by Windows line breaks.\r\n   */"
             ),
             .newlines(1),
+            .spaces(2),
             .lineComment("// Developer comment."),
             .newlines(1),
+            .spaces(2),
             .docLineComment("/// Documentation"),
             .carriageReturnLineFeeds(1),
+            .spaces(2),
             .docLineComment("/// which continues after a Windows line break."),
+            .newlines(1),
+            .spaces(2),
           ]),
           trailingTrivia: .spaces(1)
         ),

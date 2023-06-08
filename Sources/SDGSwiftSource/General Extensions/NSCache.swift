@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import Foundation
+import Foundation
 
   internal class ParsedDocumentationCache: NSCache<NSString, DocumentationSyntax> {
 
@@ -34,10 +33,10 @@
         let bridged = NSString(string: key)
         if let new = newValue {
           setObject(new, forKey: bridged, cost: bridged.length)
-        } else {  // @exempt(from: tests) Unused.
+        } else {
+          // @exempt(from: tests) Unused.
           removeObject(forKey: bridged)
         }
       }
     }
   }
-#endif

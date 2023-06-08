@@ -19,13 +19,10 @@ import OrderedCollections
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
 
   extension Manifest {
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal func publicLibraries(manifestURL: String, manifest: SourceFileSyntax) -> [LibraryAPI]
       {
         return products.compactMap { product in
@@ -45,7 +42,6 @@ import OrderedCollections
           }
         }
       }
-    #endif
 
     internal func publicModules() -> OrderedSet<String> {
       return OrderedSet(

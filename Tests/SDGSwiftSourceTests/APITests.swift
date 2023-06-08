@@ -16,9 +16,7 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -231,7 +229,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testCSS() {
     XCTAssert(¬SyntaxHighlighter.css.contains("Apache"))
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let highlighted = VariableDeclSyntax(
         attributes: nil,
         modifiers: nil,
@@ -251,7 +250,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testDocumentationSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let unified = DocumentationSyntax.parse(
         source: [
           "Some documentation.",
@@ -463,7 +461,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h4>"))
       XCTAssert(rendered.contains("<h5>"))
       XCTAssert(rendered.contains("<h6>"))
-    #endif
   }
 
   func testExtendedTokenKind() {
@@ -586,6 +583,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testParsing() throws {
+    #if !os(Windows)
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       for url in try FileManager.default.deepFileEnumeration(in: beforeDirectory)
       where url.lastPathComponent ≠ ".DS_Store" {
@@ -625,6 +623,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           internalIdentifiers: [],
           symbolLinks: ["doSomething": "domain.tld"]
         )
+        #if !os(Windows)
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
             content: highlighted,
@@ -636,7 +635,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
             .appendingPathExtension("html"),
           overwriteSpecificationInsteadOfFailing: false
         )
+        #endif
       }
+    #endif
     #endif
   }
 
@@ -659,7 +660,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTokenSyntax() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let missing = TokenSyntax(.infixQuestionMark, presence: .missing)
       _ = InitializerDeclSyntax(
         attributes: nil,
@@ -776,9 +778,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTriviaPiece() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertTrue(TriviaPiece.newlines(1).isNewline)
       XCTAssertFalse(TriviaPiece.spaces(1).isNewline)
-    #endif
   }
 }

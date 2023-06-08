@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  /// An explicit line separator in documentation.
+/// An explicit line separator in documentation.
   public final class LineSeparatorSyntax: MarkdownSyntax {
 
     internal init() {
@@ -23,4 +22,3 @@
       ])
     }
   }
-#endif

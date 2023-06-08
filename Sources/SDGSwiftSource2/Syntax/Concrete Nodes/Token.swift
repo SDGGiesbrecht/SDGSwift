@@ -16,13 +16,7 @@
 public struct Token: SyntaxNode {
 
   internal static func unknown(_ source: String) -> Token {
-    let kind: Token.Kind
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      kind = .source(source)
-    #else
-      kind = .swiftSyntax(.unknown(source))
-    #endif
-    return Token(kind: kind)
+    return Token(kind: .swiftSyntax(.unknown(source)))
   }
 
   // MARK: - Initialization

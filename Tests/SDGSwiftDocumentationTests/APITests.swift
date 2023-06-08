@@ -20,9 +20,7 @@ import SDGSwift
 import SDGSwiftDocumentation
 
 import SymbolKit
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 import SDGSwiftLocalizations
 
@@ -45,6 +43,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testModuleAPI() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     let module = ModuleAPI(
       name: "MyModule",
       documentation: [],
@@ -57,7 +57,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     _ = module.names.subHeading
     _ = module.docComment
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         ModuleAPI(
           name: "MyModule",
@@ -70,6 +69,20 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           )
         ).docComment
       )
+    let moduleDirectory = mocksDirectory
+      .appendingPathComponent("PackageToDocument")
+      .appendingPathComponent("Sources")
+      .appendingPathComponent("PrimaryModule")
+    _ = ModuleAPI(
+      name: "MyModule",
+      documentation: [],
+      location: nil,
+      symbolGraphs: [],
+      sources: [
+        moduleDirectory.appendingPathComponent("Operator.swift"),
+        moduleDirectory.appendingPathComponent("Precedence.swift")
+      ]
+    )
     #endif
   }
 
@@ -81,7 +94,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       modules: ["MyModule"]
     )
     _ = library.names.subHeading
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       _ = LibraryAPI(
         name: "MyLibrary",
         modules: ["MyModule"],
@@ -186,6 +200,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testPackageAPI() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     let package = PackageAPI(
       name: "MyPackage",
       documentation: [],
@@ -223,7 +239,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     _ = package.symbolGraphs()
     _ = package.names.subHeading
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertNil(
         PackageAPI(
           name: "MyPackage",
@@ -246,6 +261,65 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           symbolGraphs: [],
           moduleSources: [:]
         ).docComment
+      )
+      _ = PackageAPI(
+        name: "MyPackage",
+        manifestURL: "somewhere.swift",
+        manifestSource: SourceFileSyntax(
+          statements: CodeBlockItemListSyntax([
+            CodeBlockItemSyntax(
+              item: .decl(DeclSyntax(VariableDeclSyntax(
+                attributes: nil,
+                modifiers: nil,
+                letOrVarKeyword: .letKeyword(trailingTrivia: .space),
+                bindings: PatternBindingListSyntax([
+                  PatternBindingSyntax(
+                    pattern: PatternSyntax(IdentifierPatternSyntax(
+                      identifier: .identifier("package")
+                    )),
+                    typeAnnotation: nil,
+                    initializer: InitializerClauseSyntax(
+                      equal: .equalToken(leadingTrivia: .space, trailingTrivia: .space),
+                      value: FunctionCallExprSyntax(
+                        calledExpression: IdentifierExprSyntax(
+                          identifier: .identifier("Package"),
+                          declNameArguments: nil
+                        ),
+                        leftParen: .leftParenToken(),
+                        argumentList: TupleExprElementListSyntax([
+                          TupleExprElementSyntax(
+                            label: .identifier("name"),
+                            colon: .colonToken(trailingTrivia: .space),
+                            expression: StringLiteralExprSyntax(
+                              openQuote: .stringQuoteToken(),
+                              segments: StringLiteralSegmentsSyntax([
+                                .stringSegment(StringSegmentSyntax(
+                                  content: .stringSegment("MyPackage")
+                                ))
+                              ]),
+                              closeQuote: .stringQuoteToken()
+                            ),
+                            trailingComma: nil)
+                        ]),
+                        rightParen: .rightParenToken(),
+                        trailingClosure: nil,
+                        additionalTrailingClosures: nil
+                      )
+                    ),
+                    accessor: nil,
+                    trailingComma: nil
+                  )
+                ])
+              ))),
+              semicolon: nil,
+              errorTokens: nil
+            )
+          ]),
+          eofToken: TokenSyntax(.eof)
+        ),
+        libraries: [],
+        symbolGraphs: [],
+        moduleSources: [:]
       )
     #endif
   }
@@ -469,7 +543,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       #endif
     }
   }
-
   func testSymbolGraphLineList() {
     _ = SymbolGraph.LineList([
       SymbolGraph.LineList.Line(text: "...", range: nil),
@@ -510,9 +583,47 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       uri: "some file.swift",
       position: SymbolGraph.LineList.SourceRange.Position(line: 0, character: 0)
     )
-    #if !os(Linux)  // #workaround(Swift 5.7, Foundation crashes instead of throwing.)
+    // #workaround(Swift 5.8, Foundation crashes instead of throwing.)
+    #if !os(Windows) && !os(Linux) && !os(Android)
       _ = modified.parseDocumentation(cache: &cache, module: nil)
     #endif
+    for kind in [
+      .associatedtype,
+      .class,
+      .deinit,
+      .enum,
+      .case,
+      .func,
+      .`init`,
+      .ivar,
+      .property,
+      .protocol,
+      .property,
+      .struct,
+      .subscript,
+      .typealias
+    ] as [SymbolGraph.Symbol.KindIdentifier] {
+      _ = SymbolGraph.Symbol(
+        identifier: SymbolGraph.Symbol.Identifier(precise: "identifier", interfaceLanguage: "swift"),
+        names: SymbolGraph.Symbol.Names(title: "title", navigator: nil, subHeading: nil, prose: nil),
+        pathComponents: [],
+        docComment: SymbolGraph.LineList(
+          [
+            SymbolGraph.LineList.Line(
+              text: "...",
+              range: SymbolGraph.LineList.SourceRange(
+                start: SymbolGraph.LineList.SourceRange.Position(line: 1, character: 1),
+                end: SymbolGraph.LineList.SourceRange.Position(line: 1, character: 1)
+              )
+            )
+          ],
+          uri: URL(fileURLWithPath: #filePath).absoluteString
+        ),
+        accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "internal"),
+        kind: SymbolGraph.Symbol.Kind(parsedIdentifier: kind, displayName: "class"),
+        mixins: [:]
+      ).parseDocumentation(cache: &cache, module: nil)
+    }
   }
 
   func testSymbolGraphSymbolLocation() {
