@@ -86,7 +86,6 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
 
   // MARK: - Location
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Returns the lower bound of the node.
     ///
     /// - Parameters:
@@ -130,7 +129,6 @@ public class ExtendedSyntax: TextOutputStreamable {  // @exempt(from: classFinal
     public func range(in context: ExtendedSyntaxContext) -> Range<String.ScalarOffset> {
       return lowerBound(in: context)..<upperBound(in: context)
     }
-  #endif
 
   // MARK: - Syntax Tree
 

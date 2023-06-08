@@ -14,9 +14,7 @@
 
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 import SDGSwiftSource2
 
@@ -37,7 +35,6 @@ struct UnknownHighlighter: Highlighter {
 
   func shouldHighlight(_ token: Token, context: ScanContext) -> Bool {
     switch token.kind {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       case .swiftSyntax(let swiftSyntax):
         switch swiftSyntax {
         case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
@@ -69,7 +66,6 @@ struct UnknownHighlighter: Highlighter {
         case .unknown:
           return token.text() ∉ UnknownHighlighter.expectedParserRejections
         }
-    #endif
     case .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter,
       .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText,
       .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,

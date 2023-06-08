@@ -19,12 +19,7 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
 
   /// Parses a string literal.
   public init?(source: String) {
-    let quotationMark: Token
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      quotationMark = .unknown("\u{22}")
-    #else
-      quotationMark = Token(kind: .swiftSyntax(.stringQuote))
-    #endif
+    let quotationMark = Token(kind: .swiftSyntax(.stringQuote))
     let quotationMarkText = quotationMark.text().unicodeScalars
     let quotationMarkLength = quotationMarkText.count
 
@@ -41,11 +36,7 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
     string.unicodeScalars.removeLast(quotationMarkLength)
     self.closingQuotationMark = quotationMark
 
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      self.string = Token.unknown(string)
-    #else
       self.string = Token(kind: .swiftSyntax(.stringSegment(string)))
-    #endif
   }
 
   // MARK: - Properties

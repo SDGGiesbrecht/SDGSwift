@@ -18,9 +18,7 @@ import SDGCollections
 
 import SymbolKit
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -42,15 +40,9 @@ extension SymbolGraph.Symbol: SymbolLike {
     }
   }
 
-  #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    // #documenation(SymbolLike.CachedSource)
-    /// A parsed file.
-    public typealias CachedSource = Any
-  #else
     // @documenation(SymbolLike.CachedSource)
     /// A parsed file.
     public typealias CachedSource = SourceFileSyntax
-  #endif
   public func parseDocumentation(
     cache: inout [URL: CachedSource],
     module: String?
@@ -107,44 +99,44 @@ extension SymbolGraph.Symbol: SymbolLike {
       switch kind.identifier {
       case .associatedtype:
         return scan(for: AssociatedtypeDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .class:
         return scan(for: ClassDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
-      case .deinit:  // @exempt(from: tests) Do not seem to actually be in graph.
+          ?? []
+      case .deinit:
         return scan(for: DeinitializerDeclSyntax.self) ?? []
       case .enum:
         return scan(for: EnumDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .`case`:
         return scan(for: EnumCaseDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .func, .operator, .method, .typeMethod:
         return scan(for: FunctionDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .`init`:
         return scan(for: InitializerDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .ivar, .macro, .module, .snippet, .snippetGroup:
-        return []  // @exempt(from: tests) Theoretically unreachable.
+        return []
       case .property, .typeProperty, .var:
         return scan(for: VariableDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .protocol:
         return scan(for: ProtocolDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .struct:
         return scan(for: StructDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .subscript, .typeSubscript:
         return scan(for: SubscriptDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       case .typealias:
         return scan(for: TypealiasDeclSyntax.self)
           ?? scan(for: AssociatedtypeDeclSyntax.self)
-          ?? []  // @exempt(from: tests) Theoretically unreachable.
+          ?? []
       default:  // @exempt(from: tests)
-        #if DEBUG
+        #if DEBUG  // @exempt(from: tests)
           print("Unidentified symbol graph node: \(kind.identifier) (\(#fileID), \(#function))")
         #endif
         return []

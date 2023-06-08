@@ -67,7 +67,10 @@ extension BlockCommentProtocol {
     }
 
     let openingVerticalMargin: Token?
-    if block.scalars.first == "\n" {
+    if block.scalars.hasPrefix("\r\n".scalars) {
+      block.scalars.removeFirst(2)
+      openingVerticalMargin = Token(kind: .lineBreaks("\r\n"))
+    } else if block.scalars.first == "\n" {
       block.scalars.removeFirst()
       openingVerticalMargin = Token(kind: .lineBreaks("\n"))
     } else {
@@ -75,7 +78,10 @@ extension BlockCommentProtocol {
     }
 
     let closingVerticalMargin: Token?
-    if block.scalars.last == "\n" {
+    if block.scalars.hasSuffix("\r\n".scalars) {
+      block.scalars.removeLast(2)
+      closingVerticalMargin = Token(kind: .lineBreaks("\r\n"))
+    } else if block.scalars.last == "\n" {
       block.scalars.removeLast()
       closingVerticalMargin = Token(kind: .lineBreaks("\n"))
     } else {

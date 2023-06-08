@@ -19,9 +19,7 @@ import SDGCollections
 import SymbolKit
 
 import SDGSwiftSource
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -73,7 +71,6 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
     ]
   }
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     internal static func find<Node>(
       _ declaration: [SymbolGraph.Symbol.DeclarationFragments.Fragment],
       in manifest: SourceFileSyntax,
@@ -94,11 +91,9 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
           return node.as(Node.self)
         }).first
     }
-  #endif
 
   // MARK: - Initialization
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private static func declaration(
       name: String,
       manifestSource: SourceFileSyntax
@@ -120,6 +115,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         module: nil
       ) ?? []
     }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static func documentation(
       name: String,
       manifestURL: String,
@@ -131,6 +127,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         manifestSource: manifestSource
       )
     }
+  #endif
     /// Creates a package API.
     ///
     /// - Parameters:
@@ -170,7 +167,6 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         }
       )
     }
-  #endif
 
   /// Creates a package API.
   ///

@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SwiftSyntax
+import SwiftSyntax
 
   /// A fragment of a larger syntax tree.
   public enum SyntaxFragment {
@@ -67,4 +66,3 @@
       }
     }
   }
-#endif

@@ -18,9 +18,7 @@ import SDGControlFlow
 import SDGLogic
 import SDGPersistence
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
   import SwiftSyntaxParser
 #endif
@@ -53,6 +51,15 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "...",  // Missing indent.
         " */",
       ].joined(separator: "\n")
+    )
+    BlockComment.roundTripTest(
+      [
+        "/*",
+        " ...",
+        " ...",
+        "...",  // Missing indent.
+        " */",
+      ].joined(separator: "\r\n")
     )
     XCTAssertNil(BlockComment(source: "..."))
     XCTAssertNil(BlockComment(source: "/* ..."))
@@ -293,7 +300,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testScanContext() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       var foundDelimiter = false
       TriviaNode(.lineComment("// ...")).scanSyntaxTree({ (node, context) in
         if node.text() == "//" {
@@ -303,7 +309,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         return true
       })
       XCTAssert(foundDelimiter)
-    #endif
     var foundElipsis = false
     StringLiteral(source: "\u{22}...\u{22}")?.scanSyntaxTree({ (node, context) in
       if node.text() == "..." {
@@ -322,7 +327,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSyntaxProtocol() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
       let declaration = ImportDeclSyntax(
         path: AccessPathSyntax([AccessPathSyntax.Element(name: .identifier("Foundation"))])
       )
@@ -340,9 +346,21 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testTriviaNode() {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       XCTAssertEqual(TriviaNode(Trivia(pieces: [])).text(), "")
-    #endif
+  }
+
+  func testTriviaPieceNode() {
+    var cache = ParserCache()
+    for piece in [
+      .unexpectedText("?!?"),
+      .lineComment("?!?"),
+      .blockComment("?!?"),
+      .docLineComment("?!?"),
+      .docBlockComment("?!?")
+    ] as [TriviaPiece] {
+      _ = TriviaPieceNode(piece, precedingDocumentationContext: nil, followingDocumentationContext: nil)
+        .children(cache: &cache)
+    }
   }
 
   func testUnderlinedHeading() {

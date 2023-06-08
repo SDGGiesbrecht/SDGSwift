@@ -15,10 +15,7 @@
 import Foundation
 
 import SymbolKit
-
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
 /// The API of a library.
 public struct LibraryAPI: StoredDocumentation, SymbolLike {
@@ -72,7 +69,6 @@ public struct LibraryAPI: StoredDocumentation, SymbolLike {
     ]
   }
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     /// Creates a library API.
     ///
     /// - Parameters:
@@ -94,7 +90,6 @@ public struct LibraryAPI: StoredDocumentation, SymbolLike {
         modules: modules
       )
     }
-  #endif
 
   /// Creates a library API.
   ///

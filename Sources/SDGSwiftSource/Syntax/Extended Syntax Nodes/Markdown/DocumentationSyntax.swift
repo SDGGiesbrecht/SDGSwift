@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SDGControlFlow
+import SDGControlFlow
   import SDGMathematics
 
   import cmark_gfm
@@ -88,7 +87,7 @@
             name: entry.parameterName
               // Never nil in valid source.
               ?? ExtendedTokenSyntax(  // @exempt(from: tests)
-                text: "",
+                text: "",  // @exempt(from: tests)
                 kind: .parameter
               ),
             description: entry.contents
@@ -103,4 +102,3 @@
     /// The “Returns’ callout.
     public private(set) var returnsCallout: CalloutSyntax?
   }
-#endif

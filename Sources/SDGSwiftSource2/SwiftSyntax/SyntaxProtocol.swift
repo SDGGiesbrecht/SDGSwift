@@ -12,8 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-  import SwiftSyntax
+import SwiftSyntax
 
   extension SyntaxProtocol {
 
@@ -77,4 +76,3 @@
         .lazy.compactMap({ $0.lastToken() }).first
     }
   }
-#endif

@@ -16,11 +16,8 @@
 
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension Syntax {
 
     func smallest<SyntaxNode>(
@@ -42,4 +39,3 @@ import SDGCollections
       return nil
     }
   }
-#endif
