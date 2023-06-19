@@ -279,7 +279,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try? SwiftCompiler.build(package).get()
         _ = try? SwiftCompiler.run("no such target", from: package).get()
         _ = try SwiftCompiler.test(package).get()
-        _ = try SwiftCompiler.codeCoverageReport(for: package).get()
+        _ = try SwiftCompiler.testAndLoadCoverageReport(for: package).get()
         _ = try? SwiftCompiler.resolve(package).get()
       }
     #endif

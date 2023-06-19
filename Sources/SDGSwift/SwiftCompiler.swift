@@ -172,7 +172,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
       )
     }
     private static let minimumTestCoverageVersion = Version(5, 0, 0)
-    private static let minimumUnifiedCoveragePathReporting = Version(5, 8, 0)
+    private static let minimumUnifiedCoveragePathReportingVersion = Version(5, 8, 0)
     private static func testOutput(
       _ package: PackageRepository,
       minimumSwiftVersion: Version,
@@ -216,9 +216,9 @@ public enum SwiftCompiler: VersionedExternalProcess {
       if let resolved = version(
         forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
       ),
-        resolved ≥ minimumUnifiedCoveragePathReporting
+        resolved ≥ minimumUnifiedCoveragePathReportingVersion
       {
-        earliest.increase(to: minimumUnifiedCoveragePathReporting)
+        earliest.increase(to: minimumUnifiedCoveragePathReportingVersion)
         arguments.append("\u{2D}\u{2D}show\u{2D}codecov\u{2D}path")
       }
 
@@ -275,31 +275,18 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
     // MARK: - Test Coverage
 
+    private static let minimumTestCoveragePathVersion = Version(5, 2, 0)
     private static func codeCoverageDataFile(
       for package: PackageRepository
     ) -> Swift.Result<Foundation.URL, VersionedExternalProcessExecutionError<Self>> {
-      var earliest = Version(5, 2, 0)
-      var arguments = ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"]
-
-      // #workaround(Swift 5.7.2, This seems to actually trigger a test run in 5.8, should it be refactored?)
-      let requiresEnablingCodeCoverage = Version(5, 8, 0)
-      if let resolved = version(
-        forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
-      ),
-        resolved ≥ requiresEnablingCodeCoverage
-      {
-        earliest.increase(to: requiresEnablingCodeCoverage)  // @exempt(from: tests)
-        arguments.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
-      }
-
       return runCustomSubcommand(
-        arguments,
+        ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"],
         in: package.location,
-        versionConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+        versionConstraints: minimumTestCoveragePathVersion..<Version(5, 8, 0)
       ).map { URL(parsingOutput: $0) }
     }
 
-    /// Returns the code coverage report for the package.
+    /// Tests the package and returns the code coverage report.
     ///
     /// - Parameters:
     ///     - package: The package to test.
@@ -307,19 +294,42 @@ public enum SwiftCompiler: VersionedExternalProcess {
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public static func codeCoverageReport(
+    public static func testAndLoadCoverageReport(
       for package: PackageRepository,
       ignoreCoveredRegions: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Swift.Result<TestCoverageReport?, CoverageReportingError> {
 
       let coverageDataFile: Foundation.URL
-      switch codeCoverageDataFile(for: package) {
-      case .failure(let error):
-        return .failure(.swiftError(error))
-      case .success(let file):
-        coverageDataFile = file
+      if let resolved = version(
+        forConstraints: minimumTestCoveragePathVersion..<currentMajor.compatibleVersions.upperBound
+      ),
+         resolved < minimumUnifiedCoveragePathReportingVersion
+      {
+        switch test(package, reportProgress: reportProgress) {
+        case .failure(let error):
+          return .failure(.swiftError(error))
+        case .success:
+          break
+        }
+        switch codeCoverageDataFile(for: package) {
+        case .failure(let error):
+          return .failure(.swiftError(error))
+        case .success(let file):
+          coverageDataFile = file
+        }
+      } else {
+        switch testOutput(
+          package,
+          minimumSwiftVersion: minimumUnifiedCoveragePathReportingVersion,
+          reportProgress: reportProgress) {
+        case .failure(let error):
+          return .failure(.swiftError(error))
+        case .success(let output):
+          coverageDataFile = URL(parsingOutput: output)
+        }
       }
+
       if ¬FileManager.default.fileExists(atPath: coverageDataFile.path) {
         // @exempt(from: tests) Not reachable with Swift 5.8 toolchain.
         return .success(nil)

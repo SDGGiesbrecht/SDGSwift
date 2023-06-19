@@ -154,15 +154,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
         for localization in InterfaceLocalization.allCases {
           try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-            if localization == InterfaceLocalization.allCases.first {
-              // #workaround(Swift 5.7.2, Disabled while stradling versions.)
-              #if compiler(<5.8)
-                XCTAssertNil(try? mock.codeCoverageReport().get())  // Not generated yet.
-              #endif
-            }
             _ = try mock.test().get()
             guard
-              let coverageReport = try mock.codeCoverageReport(ignoreCoveredRegions: true).get()
+              let coverageReport = try mock.testAndLoadCoverageReport(ignoreCoveredRegions: true).get()
             else {
               XCTFail("No test coverage report found.")
               return

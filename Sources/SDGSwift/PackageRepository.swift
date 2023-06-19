@@ -144,18 +144,18 @@ public struct PackageRepository: TransparentWrapper {
       ].map { location.appendingPathComponent($0) }
     }
 
-    /// Returns the code coverage report for the package.
+    /// Tests the package and returns the code coverage report.
     ///
     /// - Parameters:
     ///     - ignoreCoveredRegions: Optional. Set to `true` if only coverage gaps are significant. When `true`, covered regions will be left out of the report, resulting in faster parsing.
     ///     - reportProgress: Optional. A closure to execute for each line of output.
     ///
     /// - Returns: The report, or `nil` if there is no code coverage information.
-    public func codeCoverageReport(
+    public func testAndLoadCoverageReport(
       ignoreCoveredRegions: Bool = false,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Swift.Result<TestCoverageReport?, SwiftCompiler.CoverageReportingError> {
-      return SwiftCompiler.codeCoverageReport(
+      return SwiftCompiler.testAndLoadCoverageReport(
         for: self,
         ignoreCoveredRegions: ignoreCoveredRegions,
         reportProgress: reportProgress
