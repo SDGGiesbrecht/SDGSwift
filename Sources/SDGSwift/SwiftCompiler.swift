@@ -212,7 +212,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
           arguments.append("\u{2D}\u{2D}enable\u{2D}test\u{2D}discovery")
         }
       }
-  
+
       if let resolved = version(
         forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
       ),
