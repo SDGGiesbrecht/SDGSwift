@@ -165,13 +165,26 @@ public enum SwiftCompiler: VersionedExternalProcess {
       _ package: PackageRepository,
       reportProgress: (_ progressReport: String) -> Void = { _ in }
     ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+      return testOutput(
+        package,
+        minimumSwiftVersion: Version(3, 0, 0),
+        reportProgress: reportProgress
+      )
+    }
+    private static let minimumTestCoverageVersion = Version(5, 0, 0)
+    private static let minimumUnifiedCoveragePathReporting = Version(5, 8, 0)
+    private static func testOutput(
+      _ package: PackageRepository,
+      minimumSwiftVersion: Version,
+      reportProgress: (_ progressReport: String) -> Void
+    ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
 
-      var earliest = Version(3, 0, 0)
+      var earliest = minimumSwiftVersion
       var arguments = [
         "test"
       ]
 
-      let codeCoverageAvailable = Version(5, 0, 0)
+      let codeCoverageAvailable = minimumTestCoverageVersion
       if let resolved = version(
         forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
       ),
@@ -198,6 +211,15 @@ public enum SwiftCompiler: VersionedExternalProcess {
         } else {
           arguments.append("\u{2D}\u{2D}enable\u{2D}test\u{2D}discovery")
         }
+      }
+  
+      if let resolved = version(
+        forConstraints: earliest..<currentMajor.compatibleVersions.upperBound
+      ),
+        resolved ≥ minimumUnifiedCoveragePathReporting
+      {
+        earliest.increase(to: minimumUnifiedCoveragePathReporting)
+        arguments.append("\u{2D}\u{2D}show\u{2D}codecov\u{2D}path")
       }
 
       return runCustomSubcommand(
