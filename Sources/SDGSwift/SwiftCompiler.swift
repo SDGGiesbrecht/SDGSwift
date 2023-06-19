@@ -279,10 +279,10 @@ public enum SwiftCompiler: VersionedExternalProcess {
     private static func codeCoverageDataFile(
       for package: PackageRepository
     ) -> Swift.Result<Foundation.URL, VersionedExternalProcessExecutionError<Self>> {
-      return runCustomSubcommand(
+      return runCustomSubcommand(  // @exempt(from: tests) Unreachable with current toolchain.
         ["test", "\u{2D}\u{2D}show\u{2D}codecov\u{2D}path"],
         in: package.location,
-        versionConstraints: minimumTestCoveragePathVersion..<Version(5, 8, 0)
+        versionConstraints: minimumTestCoveragePathVersion..<minimumUnifiedCoveragePathReportingVersion
       ).map { URL(parsingOutput: $0) }
     }
 
