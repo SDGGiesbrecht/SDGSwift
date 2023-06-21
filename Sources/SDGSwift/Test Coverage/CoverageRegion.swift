@@ -153,8 +153,10 @@ extension CoverageRegion where Index == String.ScalarView.Index {
 
     // Remove false positives
     regions = regions.filter { region in
+      let regionSource = source.scalars[region.region]
 
-      if ¬source.scalars[region.region].contains(where: { $0 ∉ charactersIrrelevantToCoverage }) {
+      if ¬regionSource.contains(where: { $0 ∉ charactersIrrelevantToCoverage })
+        ∨ regionSource.elementsEqual("...".scalars) {
         // Region has no effect.
         return false
       }
