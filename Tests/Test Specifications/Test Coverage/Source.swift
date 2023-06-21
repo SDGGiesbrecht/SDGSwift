@@ -60,6 +60,6 @@ func ifElseStatement() -> Bool {
 }
 
 func useCompleteRangeOperator() {
-  let array = []
+  let array: [Bool] = []
   _ = array[...]
 }
