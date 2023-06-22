@@ -16,9 +16,7 @@
 
 import SDGLogic
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
-  import Markdown
-#endif
+import SDGHTML
 
 extension SyntaxNode {
 
@@ -62,5 +60,157 @@ extension SyntaxNode {
       result.append(contentsOf: "</" + element + ">")
     }
     return result
+  }
+}
+
+extension Token {
+  public func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String {
+    switch kind {
+    case .swiftSyntax, .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
+      return ""
+    case .documentationText:
+      var escaped = HTML.escapeTextForCharacterData(text())
+      // Prevent escaping escapes.
+      escaped.replaceMatches(for: "&#x0026;", with: "&")
+      return escaped
+    case .callout:
+      let text = self.text()
+      return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>"
+        + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization)))
+        + "</p>"
+    case .markdownLineBreak:
+      return "<br>"
+    }
+  }
+}
+
+extension CalloutNode {
+  public var _renderedHtmlElement: String? {
+    return "div"
+  }
+  public var _renderedHTMLAttributes: [String: String] {
+    return ["class": "callout \(name.text().lowercased())"]
+  }
+}
+
+extension CodeBlockNode {
+  #warning("Syntax Highlighting not implemented yet.")
+  /*public func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String {
+    return source.syntaxHighlightedHTML(
+      inline: false,
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks
+    )
+  }*/
+}
+
+extension FontNode {
+  public var _renderedHtmlElement: String? {
+    if openingDelimiter.text().count == 2 {
+      return "strong"
+    } else {
+      return "em"
+    }
+  }
+}
+
+extension ImageNode {
+  public func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String {
+    let alternate = HTML.escapeTextForCharacterData(link.content.contents.map({ $0.text() }).joined())
+    return "<img alt=\u{22}" + alternate + "\u{22} src=\u{22}"
+      + HTML.escapeTextForAttribute(link.target.target.text()) + "\u{22}>"
+  }
+}
+
+extension InlineCodeNode {
+  #warning("Syntax highlighting not implemented yet.")
+  /*public func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String {
+    return source.syntaxHighlightedHTML(
+      inline: true,
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks
+    )
+  }*/
+}
+
+extension LinkNode {
+  public var _renderedHtmlElement: String? {
+    return "a"
+  }
+  public var _renderedHTMLAttributes: [String: String] {
+    return [
+      "href": HTML.escapeTextForAttribute(target.target.text())
+    ]
+  }
+}
+
+#warning("Lists not parsed yet?")
+/*extension ListNode {
+  public var _renderedHtmlElement: String? {
+    return "ul"
+  }
+}*/
+extension ListItemNode {
+  public var _renderedHtmlElement: String? {
+    return "li"
+  }
+}
+
+extension MarkdownHeading {
+  public var _renderedHtmlElement: String? {
+    switch level {
+    case ...1:
+      return "h1"
+    case 2:
+      return "h2"
+    case 3:
+      return "h3"
+    case 4:
+      return "h4"
+    case 5:
+      return "h5"
+    default:
+      return "h6"
+    }
+  }
+}
+
+#warning("Paragraphs not parsed yet?")
+/*extension ParagraphNode {
+  public var _renderedHtmlElement: String? {
+    return "p"
+  }
+  public var _renderedHTMLAttributes: [String: String] {
+    var result = super.renderedHTMLAttributes
+    if isCitation {
+      result["class"] = "citation"
+    }
+    return result
+  }
+}*/
+
+extension Quotation {
+  public var _renderedHtmlElement: String? {
+    return "blockquote"
   }
 }

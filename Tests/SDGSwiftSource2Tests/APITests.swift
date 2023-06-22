@@ -428,7 +428,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "\u{2D} List ending with a multibyte character: ✓",
       ].joined(separator: "\n")
     )
-    let rendered = documentation.renderedHTML(localization: "en")
+    var parserCache = ParserCache()
+    let rendered = documentation.renderedHTML(
+      localization: "en",
+      internalIdentifiers: [],
+      symbolLinks: [:],
+      parserCache: &parserCache
+    )
     XCTAssert(rendered.contains("<em>"))
     XCTAssert(rendered.contains("<strong>"))
     XCTAssert(rendered.contains("<h1>"))
