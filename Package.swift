@@ -232,6 +232,9 @@ let package = Package(
         .product(name: "Markdown", package: "swift\u{2D}markdown"),
         // #workaround(Possibly dead once docc takes over Markdown rendering.)
         .product(name: "SDGHTML", package: "SDGWeb"),
+      ],
+      resources: [
+        .copy("Syntax Highlighting.css")
       ]
     ),
 
