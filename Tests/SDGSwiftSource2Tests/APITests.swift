@@ -443,6 +443,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssert(rendered.contains("<h4>"))
     XCTAssert(rendered.contains("<h5>"))
     XCTAssert(rendered.contains("<h6>"))
+    XCTAssert(rendered.contains("<hr>"))
   }
 
   func testNumberedHeading() {

@@ -105,6 +105,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           return components  // @exempt(from: tests)
         }
         return [CalloutNode(listItem: list, cache: &cache) ?? list]
+      case is OrderedList:
+        return [ListNode(components: fallbackChildren(), isOrdered: true)]
+      case is Paragraph:
+        return [ParagraphNode(components: fallbackChildren())]
       case is SoftBreak:
         return [Token(kind: .lineBreaks(text()))]
       case is Strong:
@@ -120,6 +124,8 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
           children.append(Token(kind: .lineBreaks(String(components.removeLast()))))
         }
         return children.prepending(Token(kind: .asterism(components)))
+      case is UnorderedList:
+        return [ListNode(components: fallbackChildren(), isOrdered: false)]
       default:
         return fallbackChildren()
       }

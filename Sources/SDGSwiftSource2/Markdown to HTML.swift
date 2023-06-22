@@ -71,8 +71,10 @@ extension Token {
     parserCache: inout ParserCache
   ) -> String {
     switch kind {
-    case .swiftSyntax, .whitespace, .lineBreaks, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
+    case .swiftSyntax, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
       return ""
+    case .whitespace, .lineBreaks:
+      return " "
     case .documentationText:
       var escaped = HTML.escapeTextForCharacterData(text())
       // Prevent escaping escapes.
@@ -99,19 +101,20 @@ extension CalloutNode {
 }
 
 extension CodeBlockNode {
-  #warning("Syntax Highlighting not implemented yet.")
-  /*public func renderedHTML(
+  public func renderedHTML(
     localization: String,
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
     parserCache: inout ParserCache
   ) -> String {
-    return source.syntaxHighlightedHTML(
+    #warning("Syntax Highlighting not implemented yet.")
+    return text()
+    /*return source.syntaxHighlightedHTML(
       inline: false,
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks
-    )
-  }*/
+    )*/
+  }
 }
 
 extension FontNode {
@@ -138,19 +141,20 @@ extension ImageNode {
 }
 
 extension InlineCodeNode {
-  #warning("Syntax highlighting not implemented yet.")
-  /*public func renderedHTML(
+  public func renderedHTML(
     localization: String,
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
     parserCache: inout ParserCache
   ) -> String {
-    return source.syntaxHighlightedHTML(
+    #warning("Syntax highlighting not implemented yet.")
+    return text()
+    /*return source.syntaxHighlightedHTML(
       inline: true,
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks
-    )
-  }*/
+    )*/
+  }
 }
 
 extension LinkNode {
@@ -164,12 +168,11 @@ extension LinkNode {
   }
 }
 
-#warning("Lists not parsed yet?")
-/*extension ListNode {
+extension ListNode {
   public var _renderedHtmlElement: String? {
-    return "ul"
+    return isOrdered ? "ol" : "ul"
   }
-}*/
+}
 extension ListItemNode {
   public var _renderedHtmlElement: String? {
     return "li"
@@ -195,19 +198,14 @@ extension MarkdownHeading {
   }
 }
 
-#warning("Paragraphs not parsed yet?")
-/*extension ParagraphNode {
+extension ParagraphNode {
   public var _renderedHtmlElement: String? {
     return "p"
   }
   public var _renderedHTMLAttributes: [String: String] {
-    var result = super.renderedHTMLAttributes
-    if isCitation {
-      result["class"] = "citation"
-    }
-    return result
+    return text().unicodeScalars.first == "―" ? ["class": "citation"] : [:]
   }
-}*/
+}
 
 extension Quotation {
   public var _renderedHtmlElement: String? {
