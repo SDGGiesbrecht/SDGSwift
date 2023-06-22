@@ -30,6 +30,8 @@ final class MockTests: XCTestCase {
     _ = withSupplementalPlaneCharacters()
 
     _ = ifElseStatement()
+
+    _ = useCompleteRangeOperator()
   }
 
   static var allTests = [

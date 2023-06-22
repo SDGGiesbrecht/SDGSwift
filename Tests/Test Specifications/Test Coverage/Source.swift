@@ -58,3 +58,8 @@ func ifElseStatement() -> Bool {
     return false
   }
 }
+
+func useCompleteRangeOperator() {
+  let array: [Bool] = []
+  _ = array[...]
+}
