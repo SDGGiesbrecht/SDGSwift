@@ -107,13 +107,11 @@ extension CodeBlockNode {
     symbolLinks: [String: String],
     parserCache: inout ParserCache
   ) -> String {
-    #warning("Syntax Highlighting not implemented yet.")
-    return text()
-    /*return source.syntaxHighlightedHTML(
+    return source.syntaxHighlightedHTML(
       inline: false,
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks
-    )*/
+    )
   }
 }
 
@@ -147,13 +145,11 @@ extension InlineCodeNode {
     symbolLinks: [String: String],
     parserCache: inout ParserCache
   ) -> String {
-    #warning("Syntax highlighting not implemented yet.")
-    return text()
-    /*return source.syntaxHighlightedHTML(
+    return source.syntaxHighlightedHTML(
       inline: true,
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks
-    )*/
+    )
   }
 }
 
