@@ -28,7 +28,7 @@ public enum SyntaxHighlighter {
   internal static func frame(
     highlightedSyntax: String,
     inline: Bool
-  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
+  ) -> String {
     var result = "<code class=\u{22}swift"
     if ¬inline {
       result += " blockquote"
@@ -55,13 +55,29 @@ extension SyntaxNode {
     inline: Bool,
     internalIdentifiers: Set<String> = [],
     symbolLinks: [String: String] = [:]
-  ) -> String {  // @exempt(from: tests)  Unreachable from tvOS.
+  ) -> String {
+    var cache = ParserCache()
     return SyntaxHighlighter.frame(
-      highlightedSyntax: nestedSyntaxHighlightedHTML(
+      highlightedSyntax: _nestedSyntaxHighlightedHTML(
         internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
+        symbolLinks: symbolLinks,
+        parserCache: &cache
       ),
       inline: inline
     )
+  }
+
+  public func _nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String {
+    return children(cache: &parserCache).map({ child in
+      child._nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks,
+        parserCache: &parserCache
+      )
+    }).joined()
   }
 }

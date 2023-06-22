@@ -24,6 +24,12 @@ public protocol SyntaxNode: TextOutputStreamable {
   /// Returns the node’s source text.
   func text() -> String
 
+  func _nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String
+
   /// Returns the HTML result of documentation rendering.
   ///
   /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.
