@@ -230,7 +230,7 @@ extension Token {
   }
 }
 
-extension BlockComment {
+extension BlockCommentProtocol {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
@@ -331,7 +331,7 @@ extension IdentifierPatternSyntax {
   }
 }
 
-extension LineComment {
+extension LineCommentProtocol {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
