@@ -64,21 +64,32 @@ extension SyntaxNode {
       highlightedSyntax: _nestedSyntaxHighlightedHTML(
         internalIdentifiers: internalIdentifiers,
         symbolLinks: symbolLinks,
+        localAncestors: [],
         parserCache: &cache
       ),
       inline: inline
     )
   }
 
+  public func _localAncestorsOfChild(
+    at index: Int,
+    nodeLocalAncestors: [ParentRelationship],
+    cache: inout ParserCache
+  ) -> [ParentRelationship] {
+    return nodeLocalAncestors.appending(ParentRelationship(node: self, childIndex: index))
+  }
+
   internal func genericNestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
-    return children(cache: &parserCache).map({ child in
+    return children(cache: &parserCache).enumerated().map({ index, child in
       child._nestedSyntaxHighlightedHTML(
         internalIdentifiers: internalIdentifiers,
         symbolLinks: symbolLinks,
+        localAncestors: _localAncestorsOfChild(at: index, nodeLocalAncestors: localAncestors, cache: &parserCache),
         parserCache: &parserCache
       )
     }).joined()
@@ -87,11 +98,13 @@ extension SyntaxNode {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     return genericNestedSyntaxHighlightedHTML(
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
       parserCache: &parserCache
     )
   }
@@ -101,6 +114,7 @@ extension Token {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     switch kind {
@@ -109,14 +123,20 @@ extension Token {
         "<a href=\u{22}\(HTML.escapeTextForAttribute(text()))\u{22} class=\u{22}url\u{22}>\(text())</a>"
     default:
       var source = HTML.escapeTextForCharacterData(text())
-      if let `class` = syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
+      if let `class` = syntaxHighlightingClass(
+        internalIdentifiers: internalIdentifiers,
+        localAncestors: localAncestors
+      ) {
         source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
         source.append(contentsOf: "</span>")
       }
       return source
     }
   }
-  private func syntaxHighlightingClass(internalIdentifiers: Set<String>) -> String? {
+  private func syntaxHighlightingClass(
+    internalIdentifiers: Set<String>,
+    localAncestors: [ParentRelationship]
+  ) -> String? {
     switch kind {
     case .swiftSyntax(let syntax):
       switch syntax {
@@ -130,10 +150,13 @@ extension Token {
         return "punctuation"
       case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
 
-        #warning("Not implemented yet.")
-        /*if isInIfConfigurationCondition() {
-          return "compilation‐condition"
-        }*/
+        if let swiftSyntax = localAncestors.lazy.compactMap({ $0.node as? SwiftSyntaxNode }).last {
+
+          if swiftSyntax.swiftSyntaxNode.isInIfConfigurationCondition() {
+            return "compilation‐condition"
+          }
+
+        }
 
         #warning("Not implemented yet.")
         /*if let attribute = parent?.as(AttributeSyntax.self),
@@ -189,11 +212,13 @@ extension BlockComment {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     var source = genericNestedSyntaxHighlightedHTML(
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
       parserCache: &parserCache
     )
     source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
@@ -202,11 +227,18 @@ extension BlockComment {
   }
 }
 
-#warning("Is this relevant?")
-/*extension Fragment {
-  public func _nestedSyntaxHighlightedHTML(
+extension Fragment {
+  public func _localAncestorsOfChild(
+    at index: Int,
+    nodeLocalAncestors: [ParentRelationship],
+    cache: inout ParserCache) -> [ParentRelationship] {
+    return localAncestorsOfChild(at: index, cache: &cache)
+  }
+  #warning("Is this relevant?")
+  /*public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     // CodeFragment
@@ -241,6 +273,7 @@ extension BlockComment {
   internal func nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     switch self {
@@ -260,18 +293,20 @@ extension BlockComment {
         symbolLinks: symbolLinks
       )
     }
-  }
-}*/
+  }*/
+}
 
 extension LineComment {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     var source = genericNestedSyntaxHighlightedHTML(
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
       parserCache: &parserCache
     )
     source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
@@ -284,11 +319,13 @@ extension StringLiteral {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     var source = genericNestedSyntaxHighlightedHTML(
       internalIdentifiers: internalIdentifiers,
       symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
       parserCache: &parserCache
     )
     source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
@@ -301,10 +338,16 @@ extension SwiftSyntaxNode {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     #warning("Not implemented yet.")
-    return genericNestedSyntaxHighlightedHTML(internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks, parserCache: &parserCache)
+    return genericNestedSyntaxHighlightedHTML(
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
+      parserCache: &parserCache
+    )
     /*let existential = resolvedExistential()
     let existentialName = "\(type(of: existential))"
     switch existential {
@@ -434,6 +477,7 @@ extension SwiftSyntaxNode {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
     var result = ""

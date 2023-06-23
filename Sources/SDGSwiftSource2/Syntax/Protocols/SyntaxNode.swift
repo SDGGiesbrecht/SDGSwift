@@ -24,9 +24,15 @@ public protocol SyntaxNode: TextOutputStreamable {
   /// Returns the node’s source text.
   func text() -> String
 
+  func _localAncestorsOfChild(
+    at index: Int,
+    nodeLocalAncestors: [ParentRelationship],
+    cache: inout ParserCache
+  ) -> [ParentRelationship]
   func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
     symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String
 
