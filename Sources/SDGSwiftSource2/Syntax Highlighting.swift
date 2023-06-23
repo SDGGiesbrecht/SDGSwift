@@ -18,6 +18,8 @@ import SDGLogic
 import SDGCollections
 import SDGText
 
+import SwiftSyntax
+
 import SDGHTML
 
 /// A namespace for syntax highlighting.
@@ -150,28 +152,31 @@ extension Token {
         return "punctuation"
       case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
 
-        if let swiftSyntax = localAncestors.lazy.compactMap({ $0.node as? SwiftSyntaxNode }).last {
+        if let swiftSyntaxToken = localAncestors
+          .lazy
+          .compactMap({ ($0.node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self) })
+          .last {
 
-          if swiftSyntax.swiftSyntaxNode.isInIfConfigurationCondition() {
+          if swiftSyntaxToken.isInIfConfigurationCondition() {
             return "compilation‐condition"
           }
 
+          if let parent = swiftSyntaxToken.parent {
+
+            if let attribute = parent.as(AttributeSyntax.self),
+               attribute.attributeName == swiftSyntaxToken
+            {
+              // @available, @objc, etc.
+              return "keyword"
+            }
+
+            if let parameter = parent.as(FunctionParameterSyntax.self),
+               parameter.firstName == swiftSyntaxToken
+            {
+              return "internal identifier"
+            }
+          }
         }
-
-        #warning("Not implemented yet.")
-        /*if let attribute = parent?.as(AttributeSyntax.self),
-          attribute.attributeName == self
-        {
-          // @available, @objc, etc.
-          return "keyword"
-        }*/
-
-        #warning("Not implemented yet.")
-        /*if let parameter = parent?.as(FunctionParameterSyntax.self),
-          parameter.firstName == self
-        {
-          return "internal identifier"
-        }*/
 
         if name ∈ internalIdentifiers {
           return "internal identifier"
