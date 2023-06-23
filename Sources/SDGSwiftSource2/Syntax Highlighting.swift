@@ -119,19 +119,36 @@ extension Token {
     localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
+    var source = HTML.escapeTextForCharacterData(text())
     switch kind {
     case .commentURL, .linkURL:
-      return
-        "<a href=\u{22}\(HTML.escapeTextForAttribute(text()))\u{22} class=\u{22}url\u{22}>\(text())</a>"
+      let target = HTML.escapeTextForAttribute(text())
+      return "<a href=\u{22}\(target)\u{22} class=\u{22}url\u{22}>\(source)</a>"
     default:
-      var source = HTML.escapeTextForCharacterData(text())
+      var classes: [String] = []
+      if case .swiftSyntax(let syntaxKind) = kind {
+        // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
+        classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
+      }
       if let `class` = syntaxHighlightingClass(
         internalIdentifiers: internalIdentifiers,
         localAncestors: localAncestors
       ) {
-        source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
+        classes.prepend(`class`)
+      }
+      if ¬classes.isEmpty {
+        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
         source.append(contentsOf: "</span>")
       }
+
+      if case .swiftSyntax(let syntaxKind) = kind,
+        syntaxKind.shouldBeCrossLinked,
+        let url = symbolLinks[text()]
+      {
+        source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
+        source.append(contentsOf: "</a>")
+      }
+
       return source
     }
   }
@@ -375,7 +392,7 @@ extension SwiftSyntaxNode {
   ) -> String {
 
     #warning("Tokens are treated differently just to match legacy specifications.")
-    if let token = swiftSyntaxNode.as(TokenSyntax.self) {
+    /*if let token = swiftSyntaxNode.as(TokenSyntax.self) {
       let children = self.children(cache: &parserCache)
       var result: String = ""
       if let leading = children.first?._nestedSyntaxHighlightedHTML(
@@ -425,7 +442,7 @@ extension SwiftSyntaxNode {
       }
       return result
 
-    } else {
+    } else {*/
 
       var identifiers = internalIdentifiers
 
@@ -490,15 +507,18 @@ extension SwiftSyntaxNode {
         localAncestors: localAncestors,
         parserCache: &parserCache
       )
+    if ¬swiftSyntaxNode.is(TokenSyntax.self) {
+      // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
       var classes = ["\(swiftSyntaxNode.syntaxNodeType)"]
       if swiftSyntaxNode.is(StringLiteralExprSyntax.self) {
         classes.prepend("string")
       }
       result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
       result.append(contentsOf: "</span>")
+    }
       return result
     }
-  }
+  //}
 }
 
 extension SwiftSyntax.TokenKind {
