@@ -232,6 +232,12 @@ extension BlockComment {
   }
 }
 
+extension EnumCaseDeclSyntax {
+  fileprivate func identifierList() -> Set<String> {
+    return Set(elements.lazy.map({ $0.identifier.text }))
+  }
+}
+
 extension Fragment {
   public func _localAncestorsOfChild(
     at index: Int,
@@ -301,6 +307,13 @@ extension Fragment {
   }*/
 }
 
+extension IdentifierPatternSyntax {
+  fileprivate var isHidden: Bool {
+    let text = identifier.text
+    return text.hasPrefix("_") == true
+  }
+}
+
 extension LineComment {
   public func _nestedSyntaxHighlightedHTML(
     internalIdentifiers: Set<String>,
@@ -317,6 +330,20 @@ extension LineComment {
     source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
     source.append(contentsOf: "</span>")
     return source
+  }
+}
+
+extension PatternSyntax {
+  fileprivate func flattenedForAPI() -> [IdentifierPatternSyntax] {
+    var list: [IdentifierPatternSyntax] = []
+    if let identifier = self.as(IdentifierPatternSyntax.self) {
+      list.append(identifier)
+    } else if let tuple = self.as(TuplePatternSyntax.self) {
+      for element in tuple.elements {
+        list.append(contentsOf: element.pattern.flattenedForAPI())
+      }
+    }
+    return list.filter({ ¬$0.isHidden })
   }
 }
 
@@ -346,134 +373,77 @@ extension SwiftSyntaxNode {
     localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
-    #warning("Not implemented yet.")
-    return genericNestedSyntaxHighlightedHTML(
-      internalIdentifiers: internalIdentifiers,
+
+    var identifiers = internalIdentifiers
+
+    var identifier: SwiftSyntax.TokenSyntax?
+    var variableBindings: Set<String>?
+    var parameterClause: ParameterClauseSyntax?
+    var genericParameterClause: GenericParameterClauseSyntax?
+    if let structure = swiftSyntaxNode.as(StructDeclSyntax.self) {
+      identifier = structure.identifier
+      genericParameterClause = structure.genericParameterClause
+    } else if let `class` = swiftSyntaxNode.as(ClassDeclSyntax.self) {
+      identifier = `class`.identifier
+      genericParameterClause = `class`.genericParameterClause
+    } else if let enumeration = swiftSyntaxNode.as(EnumDeclSyntax.self) {
+      identifier = enumeration.identifier
+      genericParameterClause = enumeration.genericParameters
+    } else if let `protocol` = swiftSyntaxNode.as(ProtocolDeclSyntax.self) {
+      identifier = `protocol`.identifier
+    } else if let alias = swiftSyntaxNode.as(TypealiasDeclSyntax.self) {
+      identifier = alias.identifier
+      genericParameterClause = alias.genericParameterClause
+    } else if let associated = swiftSyntaxNode.as(AssociatedtypeDeclSyntax.self) {
+      identifier = associated.identifier
+      genericParameterClause = nil
+    } else if let initializer = swiftSyntaxNode.as(InitializerDeclSyntax.self) {
+      parameterClause = initializer.signature.input
+      genericParameterClause = initializer.genericParameterClause
+    } else if let variable = swiftSyntaxNode.as(VariableDeclSyntax.self) {
+      variableBindings = variable.identifierList()
+    } else if let `case` = swiftSyntaxNode.as(EnumCaseDeclSyntax.self) {
+      variableBindings = `case`.identifierList()
+    } else if let `subscript` = swiftSyntaxNode.as(SubscriptDeclSyntax.self) {
+      parameterClause = `subscript`.indices
+      genericParameterClause = `subscript`.genericParameterClause
+    } else if let function = swiftSyntaxNode.as(FunctionDeclSyntax.self) {
+      identifier = function.identifier
+      parameterClause = function.signature.input
+      genericParameterClause = function.genericParameterClause
+    } else if let `operator` = swiftSyntaxNode.as( OperatorDeclSyntax.self) {
+      identifier = `operator`.identifier
+    } else if let precedence = swiftSyntaxNode.as(PrecedenceGroupDeclSyntax.self) {
+      identifier = precedence.identifier
+    }
+    if let identifier = identifier {
+      identifiers.insert(identifier.text)
+    }
+    if let bindings = variableBindings {
+      identifiers ∪= bindings
+    }
+    if let clause = parameterClause {
+      let parameters = clause.parameterList.lazy.compactMap({ $0.internalName?.text })
+      identifiers ∪= Set(parameters)
+    }
+    if let clause = genericParameterClause {
+      let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
+      identifiers ∪= Set(parameters)
+    }
+
+    var result = genericNestedSyntaxHighlightedHTML(
+      internalIdentifiers: identifiers,
       symbolLinks: symbolLinks,
       localAncestors: localAncestors,
       parserCache: &parserCache
     )
-    /*let existential = resolvedExistential()
-    let existentialName = "\(type(of: existential))"
-    switch existential {
-    case let token as TokenSyntax:
-      var result = token.leadingTrivia.nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-
-      if let extended = token.extended {
-        result = extended.nestedSyntaxHighlightedHTML(
-          internalIdentifiers: internalIdentifiers,
-          symbolLinks: symbolLinks
-        )
-        result.prepend(
-          contentsOf:
-            "<span class=\u{22}\(existentialName) \(token.tokenKind.cssName)\u{22}>"
-        )
-        result.append(contentsOf: "</span>")
-      } else {
-        var source = HTML.escapeTextForCharacterData(token.text)
-
-        var classes = [
-          existentialName, token.tokenKind.cssName,
-        ]
-        if let `class` = token.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
-          classes.prepend(`class`)
-        }
-        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
-        source.append(contentsOf: "</span>")
-
-        if token.tokenKind.shouldBeCrossLinked,
-          let url = symbolLinks[token.text]
-        {
-          source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
-          source.append(contentsOf: "</a>")
-        }
-        result += source
-      }
-
-      result += token.trailingTrivia.nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-      return result
-    default:
-      var identifiers = internalIdentifiers
-
-      var identifier: TokenSyntax?
-      var variableBindings: Set<String>?
-      var parameterClause: ParameterClauseSyntax?
-      var genericParameterClause: GenericParameterClauseSyntax?
-      switch existential {
-      case let structure as StructDeclSyntax:
-        identifier = structure.identifier
-        genericParameterClause = structure.genericParameterClause
-      case let `class` as ClassDeclSyntax:
-        identifier = `class`.identifier
-        genericParameterClause = `class`.genericParameterClause
-      case let enumeration as EnumDeclSyntax:
-        identifier = enumeration.identifier
-        genericParameterClause = enumeration.genericParameters
-      case let `protocol` as ProtocolDeclSyntax:
-        identifier = `protocol`.identifier
-      case let alias as TypealiasDeclSyntax:
-        identifier = alias.identifier
-        genericParameterClause = alias.genericParameterClause
-      case let associated as AssociatedtypeDeclSyntax:
-        identifier = associated.identifier
-        genericParameterClause = nil
-      case let initializer as InitializerDeclSyntax:
-        parameterClause = initializer.signature.input
-        genericParameterClause = initializer.genericParameterClause
-      case let variable as VariableDeclSyntax:
-        variableBindings = variable.identifierList()
-      case let `case` as EnumCaseDeclSyntax:
-        variableBindings = `case`.identifierList()
-      case let `subscript` as SubscriptDeclSyntax:
-        parameterClause = `subscript`.indices
-        genericParameterClause = `subscript`.genericParameterClause
-      case let function as FunctionDeclSyntax:
-        identifier = function.identifier
-        parameterClause = function.signature.input
-        genericParameterClause = function.genericParameterClause
-      case let `operator` as OperatorDeclSyntax:
-        identifier = `operator`.identifier
-      case let precedence as PrecedenceGroupDeclSyntax:
-        identifier = precedence.identifier
-      default:
-        break
-      }
-      if let identifier = identifier {
-        identifiers.insert(identifier.text)
-      }
-      if let bindings = variableBindings {
-        identifiers ∪= bindings
-      }
-      if let clause = parameterClause {
-        let parameters = clause.parameterList.lazy.map({ $0.internalName?.text }).compactMap({
-          $0
-        })
-        identifiers ∪= Set(parameters)
-      }
-      if let clause = genericParameterClause {
-        let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
-        identifiers ∪= Set(parameters)
-      }
-
-      var result = children(viewMode: .sourceAccurate).map({
-        $0.nestedSyntaxHighlightedHTML(internalIdentifiers: identifiers, symbolLinks: symbolLinks)
-      }).joined()
-      var classes = [
-        existentialName
-      ]
-      if existential is StringLiteralExprSyntax {
-        classes.prepend("string")
-      }
-      result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
-      result.append(contentsOf: "</span>")
-      return result
-    }*/
+    var classes = ["\(swiftSyntaxNode.syntaxNodeType)"]
+    if swiftSyntaxNode.is(StringLiteralExprSyntax.self) {
+      classes.prepend("string")
+    }
+    result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+    result.append(contentsOf: "</span>")
+    return result
   }
 }
 
@@ -498,3 +468,14 @@ extension SwiftSyntaxNode {
     return result
   }
 }*/
+
+extension VariableDeclSyntax {
+  fileprivate func identifierList() -> Set<String> {
+    let identifiers = bindings.lazy.map { binding in
+      return binding.pattern.flattenedForAPI().lazy.map { flattened in
+        return flattened.identifier.text
+      }
+    }
+    return Set(identifiers.joined())
+  }
+}
