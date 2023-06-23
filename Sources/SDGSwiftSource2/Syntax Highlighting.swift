@@ -374,7 +374,7 @@ extension SwiftSyntaxNode {
     parserCache: inout ParserCache
   ) -> String {
 
-    // #workaround(Tokens are treated differently just to match legacy specifications.)
+    #warning("Tokens are treated differently just to match legacy specifications.")
     if let token = swiftSyntaxNode.as(TokenSyntax.self) {
       let children = self.children(cache: &parserCache)
       var result: String = ""
