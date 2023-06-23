@@ -135,7 +135,7 @@ extension Token {
       return source
     }
   }
-  private func syntaxHighlightingClass(
+  fileprivate func syntaxHighlightingClass(
     internalIdentifiers: Set<String>,
     localAncestors: [ParentRelationship]
   ) -> String? {
@@ -374,76 +374,144 @@ extension SwiftSyntaxNode {
     parserCache: inout ParserCache
   ) -> String {
 
-    var identifiers = internalIdentifiers
+    // #workaround(Tokens are treated differently just to match legacy specifications.)
+    if let token = swiftSyntaxNode.as(TokenSyntax.self) {
+      let children = self.children(cache: &parserCache)
+      var result: String = ""
+      if let leading = children.first?._nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks,
+        localAncestors: localAncestors,
+        parserCache: &parserCache
+      ) {
+        result += leading
+      }
+      if let simple = children.dropFirst().first as? Token {
+        var source = HTML.escapeTextForCharacterData(token.text)
+        var classes = ["\(swiftSyntaxNode.syntaxNodeType)", token.tokenKind.cssName]
+        if let `class` = simple.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers, localAncestors: localAncestors) {
+          classes.prepend(`class`)
+        }
+        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+        source.append(contentsOf: "</span>")
 
-    var identifier: SwiftSyntax.TokenSyntax?
-    var variableBindings: Set<String>?
-    var parameterClause: ParameterClauseSyntax?
-    var genericParameterClause: GenericParameterClauseSyntax?
-    if let structure = swiftSyntaxNode.as(StructDeclSyntax.self) {
-      identifier = structure.identifier
-      genericParameterClause = structure.genericParameterClause
-    } else if let `class` = swiftSyntaxNode.as(ClassDeclSyntax.self) {
-      identifier = `class`.identifier
-      genericParameterClause = `class`.genericParameterClause
-    } else if let enumeration = swiftSyntaxNode.as(EnumDeclSyntax.self) {
-      identifier = enumeration.identifier
-      genericParameterClause = enumeration.genericParameters
-    } else if let `protocol` = swiftSyntaxNode.as(ProtocolDeclSyntax.self) {
-      identifier = `protocol`.identifier
-    } else if let alias = swiftSyntaxNode.as(TypealiasDeclSyntax.self) {
-      identifier = alias.identifier
-      genericParameterClause = alias.genericParameterClause
-    } else if let associated = swiftSyntaxNode.as(AssociatedtypeDeclSyntax.self) {
-      identifier = associated.identifier
-      genericParameterClause = nil
-    } else if let initializer = swiftSyntaxNode.as(InitializerDeclSyntax.self) {
-      parameterClause = initializer.signature.input
-      genericParameterClause = initializer.genericParameterClause
-    } else if let variable = swiftSyntaxNode.as(VariableDeclSyntax.self) {
-      variableBindings = variable.identifierList()
-    } else if let `case` = swiftSyntaxNode.as(EnumCaseDeclSyntax.self) {
-      variableBindings = `case`.identifierList()
-    } else if let `subscript` = swiftSyntaxNode.as(SubscriptDeclSyntax.self) {
-      parameterClause = `subscript`.indices
-      genericParameterClause = `subscript`.genericParameterClause
-    } else if let function = swiftSyntaxNode.as(FunctionDeclSyntax.self) {
-      identifier = function.identifier
-      parameterClause = function.signature.input
-      genericParameterClause = function.genericParameterClause
-    } else if let `operator` = swiftSyntaxNode.as( OperatorDeclSyntax.self) {
-      identifier = `operator`.identifier
-    } else if let precedence = swiftSyntaxNode.as(PrecedenceGroupDeclSyntax.self) {
-      identifier = precedence.identifier
-    }
-    if let identifier = identifier {
-      identifiers.insert(identifier.text)
-    }
-    if let bindings = variableBindings {
-      identifiers ∪= bindings
-    }
-    if let clause = parameterClause {
-      let parameters = clause.parameterList.lazy.compactMap({ $0.internalName?.text })
-      identifiers ∪= Set(parameters)
-    }
-    if let clause = genericParameterClause {
-      let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
-      identifiers ∪= Set(parameters)
-    }
+        if token.tokenKind.shouldBeCrossLinked,
+          let url = symbolLinks[token.text]
+        {
+          source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
+          source.append(contentsOf: "</a>")
+        }
+        result += source
+      } else {
+        var contents: String = ""
+        for child in children.dropFirst().dropLast() {
+          contents.append(contentsOf: child._nestedSyntaxHighlightedHTML(
+            internalIdentifiers: internalIdentifiers,
+            symbolLinks: symbolLinks,
+            localAncestors: localAncestors,
+            parserCache: &parserCache))
+        }
+        contents.prepend(contentsOf: "<span class=\u{22}\(swiftSyntaxNode.syntaxNodeType) \(token.tokenKind.cssName)\u{22}>")
+        contents.append(contentsOf: "</span>")
+        result += contents
+      }
+      if let trailing = children.last?._nestedSyntaxHighlightedHTML(
+        internalIdentifiers: internalIdentifiers,
+        symbolLinks: symbolLinks,
+        localAncestors: localAncestors,
+        parserCache: &parserCache
+      ) {
+        result += trailing
+      }
+      return result
 
-    var result = genericNestedSyntaxHighlightedHTML(
-      internalIdentifiers: identifiers,
-      symbolLinks: symbolLinks,
-      localAncestors: localAncestors,
-      parserCache: &parserCache
-    )
-    var classes = ["\(swiftSyntaxNode.syntaxNodeType)"]
-    if swiftSyntaxNode.is(StringLiteralExprSyntax.self) {
-      classes.prepend("string")
+    } else {
+
+      var identifiers = internalIdentifiers
+
+      var identifier: SwiftSyntax.TokenSyntax?
+      var variableBindings: Set<String>?
+      var parameterClause: ParameterClauseSyntax?
+      var genericParameterClause: GenericParameterClauseSyntax?
+      if let structure = swiftSyntaxNode.as(StructDeclSyntax.self) {
+        identifier = structure.identifier
+        genericParameterClause = structure.genericParameterClause
+      } else if let `class` = swiftSyntaxNode.as(ClassDeclSyntax.self) {
+        identifier = `class`.identifier
+        genericParameterClause = `class`.genericParameterClause
+      } else if let enumeration = swiftSyntaxNode.as(EnumDeclSyntax.self) {
+        identifier = enumeration.identifier
+        genericParameterClause = enumeration.genericParameters
+      } else if let `protocol` = swiftSyntaxNode.as(ProtocolDeclSyntax.self) {
+        identifier = `protocol`.identifier
+      } else if let alias = swiftSyntaxNode.as(TypealiasDeclSyntax.self) {
+        identifier = alias.identifier
+        genericParameterClause = alias.genericParameterClause
+      } else if let associated = swiftSyntaxNode.as(AssociatedtypeDeclSyntax.self) {
+        identifier = associated.identifier
+        genericParameterClause = nil
+      } else if let initializer = swiftSyntaxNode.as(InitializerDeclSyntax.self) {
+        parameterClause = initializer.signature.input
+        genericParameterClause = initializer.genericParameterClause
+      } else if let variable = swiftSyntaxNode.as(VariableDeclSyntax.self) {
+        variableBindings = variable.identifierList()
+      } else if let `case` = swiftSyntaxNode.as(EnumCaseDeclSyntax.self) {
+        variableBindings = `case`.identifierList()
+      } else if let `subscript` = swiftSyntaxNode.as(SubscriptDeclSyntax.self) {
+        parameterClause = `subscript`.indices
+        genericParameterClause = `subscript`.genericParameterClause
+      } else if let function = swiftSyntaxNode.as(FunctionDeclSyntax.self) {
+        identifier = function.identifier
+        parameterClause = function.signature.input
+        genericParameterClause = function.genericParameterClause
+      } else if let `operator` = swiftSyntaxNode.as( OperatorDeclSyntax.self) {
+        identifier = `operator`.identifier
+      } else if let precedence = swiftSyntaxNode.as(PrecedenceGroupDeclSyntax.self) {
+        identifier = precedence.identifier
+      }
+      if let identifier = identifier {
+        identifiers.insert(identifier.text)
+      }
+      if let bindings = variableBindings {
+        identifiers ∪= bindings
+      }
+      if let clause = parameterClause {
+        let parameters = clause.parameterList.lazy.compactMap({ $0.internalName?.text })
+        identifiers ∪= Set(parameters)
+      }
+      if let clause = genericParameterClause {
+        let parameters = clause.genericParameterList.lazy.map({ $0.name.text })
+        identifiers ∪= Set(parameters)
+      }
+
+      var result = genericNestedSyntaxHighlightedHTML(
+        internalIdentifiers: identifiers,
+        symbolLinks: symbolLinks,
+        localAncestors: localAncestors,
+        parserCache: &parserCache
+      )
+      var classes = ["\(swiftSyntaxNode.syntaxNodeType)"]
+      if swiftSyntaxNode.is(StringLiteralExprSyntax.self) {
+        classes.prepend("string")
+      }
+      result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
+      result.append(contentsOf: "</span>")
+      return result
     }
-    result.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
-    result.append(contentsOf: "</span>")
-    return result
+  }
+}
+
+extension SwiftSyntax.TokenKind {
+  fileprivate var shouldBeCrossLinked: Bool {
+    switch self {
+    case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword, .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword, .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .ellipsis, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick, .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote, .singleQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword, .poundSelectorKeyword, .poundFileKeyword, .poundFilePathKeyword, .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword, .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword, .poundElseKeyword, .poundElseifKeyword, .poundEndifKeyword, .poundAvailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword, .integerLiteral, .floatingLiteral, .stringLiteral, .unknown, .dollarIdentifier, .contextualKeyword, .rawStringDelimiter, .stringSegment, .stringInterpolationAnchor, .yield, .poundFileIDKeyword, .poundUnavailableKeyword, .regexLiteral, .poundHasSymbolKeyword:
+      return false
+    case .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator:
+      return true
+    }
+  }
+  fileprivate var cssName: String {
+    return "\(self)".truncated(before: "(")
   }
 }
 
