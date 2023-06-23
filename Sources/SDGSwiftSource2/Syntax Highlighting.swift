@@ -15,6 +15,7 @@
 // #workaround(Can docc do this? See also CSS resource.)
 
 import SDGLogic
+import SDGCollections
 import SDGText
 
 import SDGHTML
@@ -108,12 +109,78 @@ extension Token {
         "<a href=\u{22}\(HTML.escapeTextForAttribute(text()))\u{22} class=\u{22}url\u{22}>\(text())</a>"
     default:
       var source = HTML.escapeTextForCharacterData(text())
-      #warning("syntaxHighlightingClass not implemented yet.")
-      /*if let `class` = syntaxHighlightingClass() {
+      if let `class` = syntaxHighlightingClass(internalIdentifiers: internalIdentifiers) {
         source.prepend(contentsOf: "<span class=\u{22}\(`class`)\u{22}>")
         source.append(contentsOf: "</span>")
-      }*/
+      }
       return source
+    }
+  }
+  private func syntaxHighlightingClass(internalIdentifiers: Set<String>) -> String? {
+    switch kind {
+    case .swiftSyntax(let syntax):
+      switch syntax {
+      case .eof, .unknown:
+        return nil
+      case .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword, .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword, .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .throwKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .wildcardKeyword, .poundAvailableKeyword, .poundSourceLocationKeyword, .poundFileKeyword, .poundFilePathKeyword, .poundLineKeyword, .poundColumnKeyword, .poundDsohandleKeyword, .poundFunctionKeyword, .poundSelectorKeyword, .poundKeyPathKeyword, .poundColorLiteralKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .atSign, .contextualKeyword, .poundAssertKeyword, .yield, .poundFileIDKeyword, .poundUnavailableKeyword, .poundHasSymbolKeyword:
+        return "keyword"
+      case .poundEndifKeyword, .poundElseKeyword, .poundElseifKeyword, .poundIfKeyword, .pound, .poundWarningKeyword, .poundErrorKeyword:
+        return "compilation‐condition"
+      case .arrow, .colon, .semicolon, .comma, .period, .equal, .prefixPeriod, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .prefixAmpersand, .postfixQuestionMark, .infixQuestionMark, .exclamationMark, .backslash, .stringInterpolationAnchor, .dollarIdentifier, .backtick, .ellipsis:
+        return "punctuation"
+      case .identifier(let name), .unspacedBinaryOperator(let name), .spacedBinaryOperator(let name), .prefixOperator(let name), .postfixOperator(let name):
+
+        #warning("Not implemented yet.")
+        /*if isInIfConfigurationCondition() {
+          return "compilation‐condition"
+        }*/
+
+        #warning("Not implemented yet.")
+        /*if let attribute = parent?.as(AttributeSyntax.self),
+          attribute.attributeName == self
+        {
+          // @available, @objc, etc.
+          return "keyword"
+        }*/
+
+        #warning("Not implemented yet.")
+        /*if let parameter = parent?.as(FunctionParameterSyntax.self),
+          parameter.firstName == self
+        {
+          return "internal identifier"
+        }*/
+
+        if name ∈ internalIdentifiers {
+          return "internal identifier"
+        } else {
+          return "external identifier"
+        }
+
+      case .integerLiteral, .floatingLiteral:
+        return "number"
+      case .stringQuote, .multilineStringQuote, .singleQuote, .rawStringDelimiter:
+        return "string‐punctuation"
+      case .stringSegment:
+        return "text"
+      case .stringLiteral, .regexLiteral:  // @exempt(from: tests) Disected elsewhere.
+        return nil  // @exempt(from: tests)
+      }
+    case .whitespace:
+      return nil  // Ignored.
+    case .lineBreaks, .commentURL, .source, .linkURL, .markdownLineBreak, .fragment:
+      return nil  // Handled elsewhere.
+    case .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .headingDelimiter, .asterism, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .imageDelimiter, .quotationDelimiter, .calloutColon:
+      return "comment‐punctuation"
+    case .commentText, .documentationText:
+      return "text"
+    case .mark, .callout, .shebang:
+      return "comment‐keyword"
+    case .sourceHeadingText:
+      return "source‐heading"
+    case .language:
+      return "comment‐keyword"
+    case .calloutParameter:
+      return "internal identifier"
     }
   }
 }
