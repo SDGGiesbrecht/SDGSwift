@@ -128,7 +128,13 @@ extension Token {
       var classes: [String] = []
       if case .swiftSyntax(let syntaxKind) = kind {
         // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
-        classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
+        switch syntaxKind {
+        // ↓ #workaround(Skipping for compatibility with legacy specifications.)
+        case .stringQuote, .stringSegment:
+          break
+        default:
+          classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
+        }
       }
       if let `class` = syntaxHighlightingClass(
         internalIdentifiers: internalIdentifiers,
