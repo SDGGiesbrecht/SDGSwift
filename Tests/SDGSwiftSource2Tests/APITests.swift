@@ -471,8 +471,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
 
         #if os(Windows)
           _ = try SwiftSyntaxNode(file: url)
-          var source = try String(file: url)
-          source.unicodeScalars.replaceMatches(for: "\r", with: "")
+          var source = try String(from: url)
+          source.unicodeScalars.replaceMatches(for: "\r".scalars, with: "".scalars)
           let parsed = try SwiftSyntaxNode(source: source)
         #else
           let parsed = try SwiftSyntaxNode(file: url)
