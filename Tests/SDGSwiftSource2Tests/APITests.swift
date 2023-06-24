@@ -547,6 +547,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testSyntaxHighlighting() throws {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
     let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
 
     let syntax = try SwiftSyntaxNode(source: source)
@@ -557,6 +558,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     )
     XCTAssert(selector.contains("internal identifier"))
     XCTAssert(selector.contains("domain.tld"))
+    #endif
 
     let variable = SwiftSyntaxNode(
       Syntax(VariableDeclSyntax(
