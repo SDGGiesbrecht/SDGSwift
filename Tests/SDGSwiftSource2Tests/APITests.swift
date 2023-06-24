@@ -136,6 +136,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     CommentContent.roundTripTest("...\n...")
   }
 
+  func testCSS() {
+    _ = SyntaxHighlighter.css
+  }
+
   func testDocumentationContent() {
     DocumentationContent.roundTripTest(
       [
@@ -252,6 +256,202 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(LineDocumentation(source: "..."))
   }
 
+  func testMarkdownToHTML() {
+    let documentation = MarkdownNode(
+      source: [
+        "Performs an action using the specified parameters.",
+        "",
+        "This is a second paragraph.",
+        "",
+        "# Primary Heading",
+        "",
+        "## Secondary Heading",
+        "",
+        "### Tertiary Heading",
+        "",
+        "#### Level 4 Heading",
+        "",
+        "##### Level 5 Heading",
+        "",
+        "###### Level 6 Heading",
+        "",
+        "Another Primary Heading",
+        "=======================",
+        "",
+        "Another Secondary Heading",
+        "\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}",
+        "",
+        "Asterisms:",
+        "",
+        "***",
+        "",
+        "* * *",
+        "",
+        "\u{2D}\u{2D}\u{2D}",
+        "",
+        "___",
+        "",
+        "This is a list:",
+        "\u{2D} First entry.",
+        "\u{2D} Second entry.",
+        "",
+        "This is also list:",
+        "* First entry.",
+        "* Second entry.",
+        "",
+        "And this is a list too:",
+        "+ First entry.",
+        "+ Second entry.",
+        "",
+        "And this is an ordered List:",
+        "1. First entry.",
+        "2. Second entry.",
+        "",
+        "There is something significant about `parameterOne`.",
+        "",
+        "And `let x = 1` contains a keyword.",
+        "",
+        "```swift",
+        "// This is an example.",
+        "if try performAction(on: \u{22}1\u{22}, with: \u{22}2\u{22}) {",
+        "    print(\u{22}It worked.\u{22})",
+        "}",
+        "```",
+        "",
+        "```",
+        "let unmarked = true",
+        "```",
+        "",
+        "```other",
+        "This is unidentified.",
+        "```",
+        "",
+        "And empty:",
+        "",
+        "```swift",
+        "```",
+        "",
+        "Here are **strong** and *emphasized*. (Or __strong__ and _emphasized_.)",
+        "",
+        "There are also [links](somewhere.com).",
+        "",
+        "And ![images](somewhere.com/image).",
+        "",
+        "> And someone said this.",
+        "",
+        "> ―Someone.",
+        "",
+        "Paragraphs",
+        "may",
+        "be",
+        "broken",
+        "up",
+        ".",
+        "",
+        "Lines  ",
+        "may be split.",
+        "",
+        "\u{2D} Warning: There is something to watch out for.",
+        "",
+        "\u{2D} Attention: ...",
+        "",
+        "\u{2D} Author: ...",
+        "",
+        "\u{2D} Authors: ...",
+        "",
+        "\u{2D} Bug: ...",
+        "",
+        "\u{2D} Complexity: ...",
+        "",
+        "\u{2D} Copyright: ...",
+        "",
+        "\u{2D} Date: ...",
+        "",
+        "\u{2D} Experiment: ...",
+        "",
+        "\u{2D} Important: ...",
+        "",
+        "\u{2D} Invariant: ...",
+        "",
+        "\u{2D} LocalizationKey: ...",
+        "",
+        "\u{2D} MutatingVariant: ...",
+        "",
+        "\u{2D} NonmutatingVariant: ...",
+        "",
+        "\u{2D} Note: ...",
+        "",
+        "\u{2D} Postcondition: ...",
+        "",
+        "\u{2D} Precondition: ...",
+        "",
+        "\u{2D} Remark: ...",
+        "",
+        "\u{2D} Remarks: ...",
+        "",
+        "\u{2D} Requires: ...",
+        "",
+        "\u{2D} SeeAlso: ...",
+        "",
+        "\u{2D} Since: ...",
+        "",
+        "\u{2D} Tag: ...",
+        "",
+        "\u{2D} ToDo: ...",
+        "",
+        "\u{2D} Version: ...",
+        "",
+        "\u{2D} Keyword: ...",
+        "",
+        "\u{2D} Recommended: ...",
+        "",
+        "\u{2D} RecommendedOver: ...",
+        "",
+        "\u{2D} Parameters:",
+        "    \u{2D} parameterOne: The first parameter.",
+        "    \u{2D} parameterTwo: The second parameter.",
+        "",
+        "\u{2D} Returns: A Boolean value.",
+        "",
+        "\u{2D} Throws: An error.",
+        "",
+        "\u{2D} List item.",
+        "\u{2D} Warning: Undefined callout in the middle of a list.",
+        "\u{2D} List item.",
+        "",
+        "```swift",
+        "/*",
+        " This",
+        " nested",
+        " element",
+        " is",
+        " fragmented.",
+        " */",
+        "```",
+        "",
+        "\u{2D} List ending with a multibyte character: ✓",
+      ].joined(separator: "\n")
+    )
+    var parserCache = ParserCache()
+    let rendered = documentation.renderedHTML(
+      localization: "en",
+      internalIdentifiers: [],
+      symbolLinks: [:],
+      parserCache: &parserCache
+    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      XCTAssert(rendered.contains("<em>"))
+      XCTAssert(rendered.contains("<strong>"))
+      XCTAssert(rendered.contains("<h1>"))
+      XCTAssert(rendered.contains("<h2>"))
+      XCTAssert(rendered.contains("<h3>"))
+      XCTAssert(rendered.contains("<h4>"))
+      XCTAssert(rendered.contains("<h5>"))
+      XCTAssert(rendered.contains("<h6>"))
+      XCTAssert(rendered.contains("<hr>"))
+    #endif
+  }
+
   func testNumberedHeading() {
     NumberedHeading.roundTripTest("# Heading")
     NumberedHeading.roundTripTest("#Heading")
@@ -269,7 +469,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
         SwiftSyntaxNode.roundTripTest(try String(from: url))
 
-        let parsed = try SwiftSyntaxNode(file: url)
+        #if os(Windows)
+          _ = try SwiftSyntaxNode(file: url)
+          var source = try String(from: url)
+          source.unicodeScalars.replaceMatches(for: "\r".scalars, with: "".scalars)
+          let parsed = try SwiftSyntaxNode(source: source)
+        #else
+          let parsed = try SwiftSyntaxNode(file: url)
+        #endif
 
         var unknown = UnknownHighlighter()
         try unknown.assertHighlightsNothing(in: parsed, "Unknown tokens detected in “\(url.path)”")
@@ -293,6 +500,32 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           syntax: parsed,
           parsedFrom: url,
           againstSpecification: "Invariable Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+
+        var highlighted = parsed.syntaxHighlightedHTML(
+          inline: false,
+          internalIdentifiers: [],
+          symbolLinks: ["doSomething": "domain.tld"]
+        )
+
+        // #workaround(For compatibility of specifications with legacy tests.)
+        highlighted.replaceMatches(for: "<span class=\u{22}SourceFileSyntax\u{22}><span class=\u{22}CodeBlockItemListSyntax\u{22}></span></span>", with: "")
+        highlighted.replaceMatches(for: "<span class=\u{22}CodeBlockItemListSyntax\u{22}></span><span class=\u{22}comment‐punctuation\u{22}>/*</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>/*</span>")
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>_</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>*</span>")
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>__</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>**</span>")
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>]</span><span class=\u{22}comment‐punctuation\u{22}>(</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>](</span>")
+
+        SDGPersistenceTestUtilities.compare(
+          HTMLPage(
+            content: highlighted,
+            cssPath: "../../../../../Sources/SDGSwiftSource/Syntax%20Highlighting.css"
+          ),
+          against: sourceDirectory
+            .appendingPathComponent("After")
+            .appendingPathComponent("Syntax Highlighting")
+            .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
+            .appendingPathExtension("html"),
           overwriteSpecificationInsteadOfFailing: false
         )
       }
@@ -324,6 +557,41 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     StringLiteral.roundTripTest("\u{22}...\u{22}")
     XCTAssertNil(StringLiteral(source: "...\u{22}"))
     XCTAssertNil(StringLiteral(source: "\u{22}..."))
+  }
+
+  func testSyntaxHighlighting() throws {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
+    let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
+
+    let syntax = try SwiftSyntaxNode(source: source)
+    let selector = syntax.syntaxHighlightedHTML(
+      inline: true,
+      internalIdentifiers: ["selector(style:notation:)"],
+      symbolLinks: ["selector(style:notation:)": "domain.tld"]
+    )
+    XCTAssert(selector.contains("internal identifier"))
+    XCTAssert(selector.contains("domain.tld"))
+    #endif
+
+    // #workaround(Swift 5.8.1, Standard library crashes.)
+    #if !os(WASI)
+      let variable = SwiftSyntaxNode(
+        Syntax(VariableDeclSyntax(
+          attributes: nil,
+          modifiers: nil,
+          letOrVarKeyword: TokenSyntax(.letKeyword, presence: .present),
+          bindings: PatternBindingListSyntax([])
+        ))
+      ).syntaxHighlightedHTML(inline: true)
+      XCTAssert(
+        variable.contains("TokenSyntax letKeyword"),
+        variable
+      )
+      XCTAssert(
+        variable.contains("VariableDeclSyntax"),
+        variable
+      )
+    #endif
   }
 
   func testSyntaxProtocol() {

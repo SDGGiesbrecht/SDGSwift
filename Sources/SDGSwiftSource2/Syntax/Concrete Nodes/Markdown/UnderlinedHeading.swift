@@ -19,7 +19,7 @@ import SDGLogic
 #endif
 
 /// A heading in documentation using underline notation.
-public struct UnderlinedHeading: StreamedViaChildren, SyntaxNode {
+public struct UnderlinedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
 
@@ -69,6 +69,14 @@ public struct UnderlinedHeading: StreamedViaChildren, SyntaxNode {
 
   /// The line break after the underline.
   public let trailingLineBreak: Token?
+
+  public var level: Int {
+    if underline.text().unicodeScalars.first == "=" {
+      return 1
+    } else {
+      return 2
+    }
+  }
 
   // MARK: - StreamedViaChildren
 

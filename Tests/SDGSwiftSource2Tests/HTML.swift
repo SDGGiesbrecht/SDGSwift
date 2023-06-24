@@ -27,5 +27,4 @@ func HTMLPage(content: String, cssPath: String) -> String {
     " </body>",
     "</html>",
   ].joined(separator: "\n")
-    .replacingMatches(for: "<span class=\u{22}TokenSyntax eof\u{22}></span>", with: "")
 }

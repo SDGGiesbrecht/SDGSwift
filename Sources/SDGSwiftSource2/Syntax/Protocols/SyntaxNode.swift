@@ -23,6 +23,36 @@ public protocol SyntaxNode: TextOutputStreamable {
   // @documentation(SyntaxNode.text())
   /// Returns the node’s source text.
   func text() -> String
+
+  func _localAncestorsOfChild(
+    at index: Int,
+    nodeLocalAncestors: [ParentRelationship],
+    cache: inout ParserCache
+  ) -> [ParentRelationship]
+  func _nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
+    parserCache: inout ParserCache
+  ) -> String
+
+  /// Returns the HTML result of documentation rendering.
+  ///
+  /// The resulting HTML depends on the CSS provided by `SyntaxHighlighter.css`.
+  ///
+  /// - Parameters:
+  ///     - localization: The localization to use for generated content such as callout headings.
+  ///     - internalIdentifiers: Optional. A set of identifiers to consider as belonging to the module.
+  ///     - symbolLinks: Optional. A dictionary of target links for cross‐linking symbols. The values will be inserted as‐is in `href` attributes. URLs must already be properly encoded for this context before passing them.
+  ///     - parserCache: A parser cache.
+  func renderedHTML(
+    localization: String,
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    parserCache: inout ParserCache
+  ) -> String
+  var _renderedHtmlElement: String? { get }
+  var _renderedHTMLAttributes: [String: String] { get }
 }
 
 extension SyntaxNode {
