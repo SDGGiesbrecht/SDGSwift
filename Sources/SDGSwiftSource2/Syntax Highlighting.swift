@@ -296,66 +296,6 @@ extension Fragment {
     cache: inout ParserCache) -> [ParentRelationship] {
     return localAncestorsOfChild(at: index, cache: &cache)
   }
-  #warning("Is this relevant?")
-  /*public func _nestedSyntaxHighlightedHTML(
-    internalIdentifiers: Set<String>,
-    symbolLinks: [String: String],
-    localAncestors: [ParentRelationship],
-    parserCache: inout ParserCache
-  ) -> String {
-    // CodeFragment
-    if context == self.source.text,  // Not part of something bigger.
-      symbolLinks[context] ≠ nil
-    {
-      return unknownSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    }
-
-    if let syntax = try? self.syntax(),
-      syntax.map({ $0.source() }).joined() == text
-    {
-      return String(
-        syntax.map({
-          $0.nestedSyntaxHighlightedHTML(
-            internalIdentifiers: internalIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        }).joined()
-      )
-    } else {
-      return unknownSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    }
-  }
-  // SyntaxFragment
-  internal func nestedSyntaxHighlightedHTML(
-    internalIdentifiers: Set<String>,
-    symbolLinks: [String: String],
-    localAncestors: [ParentRelationship],
-    parserCache: inout ParserCache
-  ) -> String {
-    switch self {
-    case .syntax(let syntaxNode):
-      return syntaxNode.nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    case .extendedSyntax(let syntaxNode):
-      return syntaxNode.nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    case .trivia(let piece, let group, let index):
-      return piece.syntax(siblings: group, index: index).nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    }
-  }*/
 }
 
 extension IdentifierPatternSyntax {
@@ -427,59 +367,6 @@ extension SwiftSyntaxNode {
     localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
-
-    #warning("Tokens are treated differently just to match legacy specifications.")
-    /*if let token = swiftSyntaxNode.as(TokenSyntax.self) {
-      let children = self.children(cache: &parserCache)
-      var result: String = ""
-      if let leading = children.first?._nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks,
-        localAncestors: localAncestors,
-        parserCache: &parserCache
-      ) {
-        result += leading
-      }
-      if let simple = children.dropFirst().first as? Token {
-        var source = HTML.escapeTextForCharacterData(token.text)
-        var classes = ["\(swiftSyntaxNode.syntaxNodeType)", token.tokenKind.cssName]
-        if let `class` = simple.syntaxHighlightingClass(internalIdentifiers: internalIdentifiers, localAncestors: localAncestors) {
-          classes.prepend(`class`)
-        }
-        source.prepend(contentsOf: "<span class=\u{22}\(classes.joined(separator: " "))\u{22}>")
-        source.append(contentsOf: "</span>")
-
-        if token.tokenKind.shouldBeCrossLinked,
-          let url = symbolLinks[token.text]
-        {
-          source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
-          source.append(contentsOf: "</a>")
-        }
-        result += source
-      } else {
-        var contents: String = ""
-        for child in children.dropFirst().dropLast() {
-          contents.append(contentsOf: child._nestedSyntaxHighlightedHTML(
-            internalIdentifiers: internalIdentifiers,
-            symbolLinks: symbolLinks,
-            localAncestors: localAncestors,
-            parserCache: &parserCache))
-        }
-        contents.prepend(contentsOf: "<span class=\u{22}\(swiftSyntaxNode.syntaxNodeType) \(token.tokenKind.cssName)\u{22}>")
-        contents.append(contentsOf: "</span>")
-        result += contents
-      }
-      if let trailing = children.last?._nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks,
-        localAncestors: localAncestors,
-        parserCache: &parserCache
-      ) {
-        result += trailing
-      }
-      return result
-
-    } else {*/
 
       var identifiers = internalIdentifiers
 
@@ -555,7 +442,6 @@ extension SwiftSyntaxNode {
     }
       return result
     }
-  //}
 }
 
 extension SwiftSyntax.TokenKind {
@@ -571,28 +457,6 @@ extension SwiftSyntax.TokenKind {
     return "\(self)".truncated(before: "(")
   }
 }
-
-#warning("Is this still relevant?")
-/*extension TriviaNode {
-  public func _nestedSyntaxHighlightedHTML(
-    internalIdentifiers: Set<String>,
-    symbolLinks: [String: String],
-    localAncestors: [ParentRelationship],
-    parserCache: inout ParserCache
-  ) -> String {
-    var result = ""
-    for index in indices {
-      let piece = self[index]
-
-      let extended = piece.syntax(siblings: self, index: index)
-      result += extended.nestedSyntaxHighlightedHTML(
-        internalIdentifiers: internalIdentifiers,
-        symbolLinks: symbolLinks
-      )
-    }
-    return result
-  }
-}*/
 
 extension VariableDeclSyntax {
   fileprivate func identifierList() -> Set<String> {
