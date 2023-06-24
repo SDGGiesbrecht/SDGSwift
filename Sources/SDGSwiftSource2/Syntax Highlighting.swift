@@ -126,15 +126,10 @@ extension Token {
       return "<a href=\u{22}\(target)\u{22} class=\u{22}url\u{22}>\(source)</a>"
     default:
       var classes: [String] = []
-      if case .swiftSyntax(let syntaxKind) = kind {
+      if case .swiftSyntax(let syntaxKind) = kind,
+        (localAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.is(TokenSyntax.self) == true {
         // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
-        switch syntaxKind {
-        // ↓ #workaround(Skipping for compatibility with legacy specifications.)
-        case .stringQuote, .stringSegment:
-          break
-        default:
-          classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
-        }
+        classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
       }
       if let `class` = syntaxHighlightingClass(
         internalIdentifiers: internalIdentifiers,
