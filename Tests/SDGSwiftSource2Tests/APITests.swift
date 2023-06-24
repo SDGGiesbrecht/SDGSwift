@@ -499,6 +499,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         // #workaround(For compatibility of specifications with legacy tests.)
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>_</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>*</span>")
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>__</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>**</span>")
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>]</span><span class=\u{22}comment‐punctuation\u{22}>(</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>](</span>")
 
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
