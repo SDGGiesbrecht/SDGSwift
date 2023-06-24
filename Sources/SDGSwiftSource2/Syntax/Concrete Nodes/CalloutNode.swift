@@ -78,8 +78,9 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
         self.contents = simpleContents
       } else {
         self.contents = simpleContents.flatMap { content in
-          guard let unordered = content as? MarkdownNode,
-            unordered.markdown is UnorderedList
+          guard let markdownUnordered = content as? MarkdownNode,
+            markdownUnordered.markdown is UnorderedList,
+            let unordered = markdownUnordered.children(cache: &cache).first as? ListNode
           else {
             return [content]
           }

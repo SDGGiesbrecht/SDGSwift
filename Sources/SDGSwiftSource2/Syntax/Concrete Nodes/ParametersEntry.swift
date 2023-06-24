@@ -28,8 +28,9 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
     #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
       return nil
     #else
-      guard let paragraph = listItem.contents.first as? MarkdownNode,
-        paragraph.markdown is Paragraph
+      guard let markdownParagraph = listItem.contents.first as? MarkdownNode,
+        markdownParagraph.markdown is Paragraph,
+        let paragraph = markdownParagraph.children(cache: &cache).first as? ParagraphNode
       else {
         return nil
       }
@@ -49,8 +50,9 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
       self.colon = Token(kind: .calloutColon)
 
       let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
-      self.contents = [adjustedText]
-        .appending(contentsOf: paragraphChildren.dropFirst())
+      let reconstructedParagraph = ParagraphNode(components: [adjustedText]
+        .appending(contentsOf: paragraphChildren.dropFirst()))
+      self.contents = [reconstructedParagraph]
         .appending(contentsOf: listItem.contents.dropFirst())
     #endif
   }
