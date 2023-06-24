@@ -469,7 +469,14 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         }
         SwiftSyntaxNode.roundTripTest(try String(from: url))
 
-        let parsed = try SwiftSyntaxNode(file: url)
+        #if os(Windows)
+          _ = try SwiftSyntaxNode(file: url)
+          var source = try String(file: url)
+          source.unicodeScalars.replaceMatches(for: "\r", with: "")
+          let parsed = try SwiftSyntaxNode(source: source)
+        #else
+          let parsed = try SwiftSyntaxNode(file: url)
+        #endif
 
         var unknown = UnknownHighlighter()
         try unknown.assertHighlightsNothing(in: parsed, "Unknown tokens detected in “\(url.path)”")
