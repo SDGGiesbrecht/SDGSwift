@@ -49,7 +49,14 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
       self.parameterName = Token(kind: .calloutParameter(name))
       self.colon = Token(kind: .calloutColon)
 
-      let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
+      var remainder = String(text[colon...].dropFirst())
+      var indentString = ""
+      while remainder.first == " " {
+        indentString.append(remainder.removeFirst())
+      }
+      self.contentIndent = Token(kind: .whitespace(indentString))
+
+      let adjustedText = Token(kind: .documentationText(remainder))
       let reconstructedParagraph = ParagraphNode(components: [adjustedText]
         .appending(contentsOf: paragraphChildren.dropFirst()))
       self.contents = [reconstructedParagraph]
@@ -71,13 +78,16 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
   /// The colon after the name.
   public let colon: Token
 
+  /// The  indent between the colon and the content.
+  public let contentIndent: Token
+
   /// The contents of the entry.
   public let contents: [SyntaxNode]
 
   // MARK: - StreamedViaChildren
 
   internal var storedChildren: [SyntaxNode] {
-    var children: [SyntaxNode] = [bullet, indent, parameterName, colon]
+    var children: [SyntaxNode] = [bullet, indent, parameterName, colon, contentIndent]
     children.append(contentsOf: contents)
     return children
   }
