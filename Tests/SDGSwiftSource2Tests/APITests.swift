@@ -136,6 +136,10 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     CommentContent.roundTripTest("...\n...")
   }
 
+  func testCSS() {
+    _ = SyntaxHighlighter.css
+  }
+
   func testDocumentationContent() {
     DocumentationContent.roundTripTest(
       [
