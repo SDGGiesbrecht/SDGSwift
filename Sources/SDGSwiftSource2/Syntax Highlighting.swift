@@ -379,6 +379,9 @@ extension StringLiteral {
     )
     source.prepend(contentsOf: "<span class=\u{22}string\u{22}>")
     source.append(contentsOf: "</span>")
+    // ↓ The tagging for TokenSyntax is applied to the here instead in order not to include the trivia.
+    source.prepend(contentsOf: "<span class=\u{22}TokenSyntax stringLiteral\u{22}>")
+    source.append(contentsOf: "</span>")
     return source
   }
 }
@@ -508,7 +511,7 @@ extension SwiftSyntaxNode {
         parserCache: &parserCache
       )
     if ¬swiftSyntaxNode.is(TokenSyntax.self) {
-      // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
+      // ↑ The tagging for TokenSyntax is applied to the Token or StringLiteral instead in order not to include the trivia.
       var classes = ["\(swiftSyntaxNode.syntaxNodeType)"]
       if swiftSyntaxNode.is(StringLiteralExprSyntax.self) {
         classes.prepend("string")
