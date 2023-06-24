@@ -126,31 +126,6 @@ extension Token {
       let target = HTML.escapeTextForAttribute(text)
       return "<a href=\u{22}\(target)\u{22} class=\u{22}url\u{22}>\(source)</a>"
     case .source:
-      if localAncestors.first == nil,  // Not part of something bigger.
-        let selectorLink = symbolLinks[text]
-      {
-
-        func mark(_ searchTerm: String, as class: String) {
-          source.replaceMatches(
-            for: searchTerm,
-            with:
-              "</span><span class=\u{22}\(`class`)\u{22}>\(searchTerm)</span><span class=\u{22}internal identifier\u{22}>"
-          )
-        }
-        mark("(", as: "punctuation")
-        mark(")", as: "punctuation")
-        mark(":", as: "punctuation")
-        mark("_", as: "keyword")
-
-        source.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
-        source.append(contentsOf: "</span>")
-
-        source.prepend(
-          contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(selectorLink))\u{22}>"
-        )
-        source.append(contentsOf: "</a>")
-      }
-
       source.prepend(contentsOf: "<span class=\u{22}code\u{22}>")
       source.append(contentsOf: "</span>")
       return source
@@ -281,6 +256,29 @@ extension BlockCommentProtocol {
     )
     source.prepend(contentsOf: "<span class=\u{22}comment\u{22}>")
     source.append(contentsOf: "</span>")
+    return source
+  }
+}
+
+extension CodeContent {
+  public func _nestedSyntaxHighlightedHTML(
+    internalIdentifiers: Set<String>,
+    symbolLinks: [String: String],
+    localAncestors: [ParentRelationship],
+    parserCache: inout ParserCache
+  ) -> String {
+    var source = genericNestedSyntaxHighlightedHTML(
+      internalIdentifiers: internalIdentifiers,
+      symbolLinks: symbolLinks,
+      localAncestors: localAncestors,
+      parserCache: &parserCache
+    )
+    if let selectorLink = symbolLinks[text()] {
+      source.prepend(
+        contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(selectorLink))\u{22}>"
+      )
+      source.append(contentsOf: "</a>")
+    }
     return source
   }
 }
