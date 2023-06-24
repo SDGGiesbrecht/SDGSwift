@@ -127,6 +127,7 @@ extension Token {
     default:
       var classes: [String] = []
       if case .swiftSyntax(let syntaxKind) = kind,
+        syntaxKind ≠ .eof,
         (localAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.is(TokenSyntax.self) == true {
         // ↑ The tagging for TokenSyntax is applied to the Token instead in order not to include the trivia.
         classes.append(contentsOf: ["TokenSyntax", syntaxKind.cssName])
