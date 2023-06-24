@@ -119,11 +119,41 @@ extension Token {
     localAncestors: [ParentRelationship],
     parserCache: inout ParserCache
   ) -> String {
-    var source = HTML.escapeTextForCharacterData(text())
+    let text = self.text()
+    var source = HTML.escapeTextForCharacterData(text)
     switch kind {
     case .commentURL, .linkURL:
-      let target = HTML.escapeTextForAttribute(text())
+      let target = HTML.escapeTextForAttribute(text)
       return "<a href=\u{22}\(target)\u{22} class=\u{22}url\u{22}>\(source)</a>"
+    case .source:
+      if localAncestors.first == nil,  // Not part of something bigger.
+        let selectorLink = symbolLinks[text]
+      {
+
+        func mark(_ searchTerm: String, as class: String) {
+          source.replaceMatches(
+            for: searchTerm,
+            with:
+              "</span><span class=\u{22}\(`class`)\u{22}>\(searchTerm)</span><span class=\u{22}internal identifier\u{22}>"
+          )
+        }
+        mark("(", as: "punctuation")
+        mark(")", as: "punctuation")
+        mark(":", as: "punctuation")
+        mark("_", as: "keyword")
+
+        source.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
+        source.append(contentsOf: "</span>")
+
+        source.prepend(
+          contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(selectorLink))\u{22}>"
+        )
+        source.append(contentsOf: "</a>")
+      }
+
+      source.prepend(contentsOf: "<span class=\u{22}code\u{22}>")
+      source.append(contentsOf: "</span>")
+      return source
     default:
       var classes: [String] = []
       if case .swiftSyntax(let syntaxKind) = kind,
@@ -145,7 +175,7 @@ extension Token {
 
       if case .swiftSyntax(let syntaxKind) = kind,
         syntaxKind.shouldBeCrossLinked,
-        let url = symbolLinks[text()]
+        let url = symbolLinks[text]
       {
         source.prepend(contentsOf: "<a href=\u{22}\(HTML.escapeTextForAttribute(url))\u{22}>")
         source.append(contentsOf: "</a>")
