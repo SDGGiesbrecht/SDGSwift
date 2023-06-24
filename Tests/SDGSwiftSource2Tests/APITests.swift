@@ -439,15 +439,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       symbolLinks: [:],
       parserCache: &parserCache
     )
-    XCTAssert(rendered.contains("<em>"))
-    XCTAssert(rendered.contains("<strong>"))
-    XCTAssert(rendered.contains("<h1>"))
-    XCTAssert(rendered.contains("<h2>"))
-    XCTAssert(rendered.contains("<h3>"))
-    XCTAssert(rendered.contains("<h4>"))
-    XCTAssert(rendered.contains("<h5>"))
-    XCTAssert(rendered.contains("<h6>"))
-    XCTAssert(rendered.contains("<hr>"))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      XCTAssert(rendered.contains("<em>"))
+      XCTAssert(rendered.contains("<strong>"))
+      XCTAssert(rendered.contains("<h1>"))
+      XCTAssert(rendered.contains("<h2>"))
+      XCTAssert(rendered.contains("<h3>"))
+      XCTAssert(rendered.contains("<h4>"))
+      XCTAssert(rendered.contains("<h5>"))
+      XCTAssert(rendered.contains("<h6>"))
+      XCTAssert(rendered.contains("<hr>"))
+    #endif
   }
 
   func testNumberedHeading() {
@@ -564,22 +566,25 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssert(selector.contains("domain.tld"))
     #endif
 
-    let variable = SwiftSyntaxNode(
-      Syntax(VariableDeclSyntax(
-        attributes: nil,
-        modifiers: nil,
-        letOrVarKeyword: TokenSyntax(.letKeyword, presence: .present),
-        bindings: PatternBindingListSyntax([])
-      ))
-    ).syntaxHighlightedHTML(inline: true)
-    XCTAssert(
-      variable.contains("TokenSyntax letKeyword"),
-      variable
-    )
-    XCTAssert(
-      variable.contains("VariableDeclSyntax"),
-      variable
-    )
+    // #workaround(Swift 5.8.1, Standard library crashes.)
+    #if !os(WASI)
+      let variable = SwiftSyntaxNode(
+        Syntax(VariableDeclSyntax(
+          attributes: nil,
+          modifiers: nil,
+          letOrVarKeyword: TokenSyntax(.letKeyword, presence: .present),
+          bindings: PatternBindingListSyntax([])
+        ))
+      ).syntaxHighlightedHTML(inline: true)
+      XCTAssert(
+        variable.contains("TokenSyntax letKeyword"),
+        variable
+      )
+      XCTAssert(
+        variable.contains("VariableDeclSyntax"),
+        variable
+      )
+    #endif
   }
 
   func testSyntaxProtocol() {
