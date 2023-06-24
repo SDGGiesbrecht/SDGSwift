@@ -71,7 +71,7 @@ extension Token {
     parserCache: inout ParserCache
   ) -> String {
     switch kind {
-    case .swiftSyntax, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .asterism, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
+    case .swiftSyntax, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
       return ""
     case .whitespace, .lineBreaks:
       return " "
@@ -80,6 +80,8 @@ extension Token {
       // Prevent escaping escapes.
       escaped.replaceMatches(for: "&#x0026;", with: "&")
       return escaped
+    case .asterism:
+      return "<hr>"
     case .callout:
       let text = self.text()
       return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>"
