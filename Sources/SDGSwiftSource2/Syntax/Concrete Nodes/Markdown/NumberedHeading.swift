@@ -19,7 +19,7 @@ import SDGLogic
 #endif
 
 /// A heading in documentation using number sign notation.
-public struct NumberedHeading: StreamedViaChildren, SyntaxNode {
+public struct NumberedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode {
 
   // MARK: - Initialization
 
@@ -58,6 +58,10 @@ public struct NumberedHeading: StreamedViaChildren, SyntaxNode {
 
   /// The heading text.
   public let heading: Token
+
+  public var level: Int {
+    return delimiter.text().unicodeScalars.count
+  }
 
   // MARK: - StreamedViaChildren
 

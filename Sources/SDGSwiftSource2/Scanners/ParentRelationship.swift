@@ -15,6 +15,19 @@
 /// A relationship between a parent node and one of its child nodes.
 public struct ParentRelationship {
 
+  // MARK: - Initialization
+
+  internal init(node: SyntaxNode, childIndex: Int) {
+    if let any = node as? AnySyntaxNode {
+      self.node = any.wrapped
+    } else {
+      self.node = node
+    }
+    self.childIndex = childIndex
+  }
+
+  // MARK: - Properties
+
   /// The parent node.
   public let node: SyntaxNode
 

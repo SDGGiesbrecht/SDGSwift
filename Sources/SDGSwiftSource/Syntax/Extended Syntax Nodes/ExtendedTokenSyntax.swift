@@ -100,7 +100,7 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
       .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL,
       .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter,
       .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source,
-      .headingDelimiter, .asterism, .fontModificationDelimiter, .linkDelimiter, .linkURL,
+      .headingDelimiter, .fontModificationDelimiter, .linkDelimiter, .linkURL,
       .imageDelimiter, .quotationDelimiter, .parameter, .colon:
       return ""
     case .documentationText:
@@ -108,6 +108,8 @@ public final class ExtendedTokenSyntax: ExtendedSyntax {
       // Prevent escaping escapes.
       escaped.replaceMatches(for: "&#x0026;", with: "&")
       return escaped
+    case .asterism:
+      return "<hr>"
     case .callout:
       return "<p class=\u{22}callout‐label \(text.lowercased())\u{22}>"
         + HTML.escapeTextForCharacterData(String(Callout(text)!.localizedText(localization)))

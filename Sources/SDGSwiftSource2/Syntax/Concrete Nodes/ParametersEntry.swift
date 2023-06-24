@@ -28,8 +28,9 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
     #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
       return nil
     #else
-      guard let paragraph = listItem.contents.first as? MarkdownNode,
-        paragraph.markdown is Paragraph
+      guard let markdownParagraph = listItem.contents.first as? MarkdownNode,
+        markdownParagraph.markdown is Paragraph,
+        let paragraph = markdownParagraph.children(cache: &cache).first as? ParagraphNode
       else {
         return nil
       }
@@ -48,9 +49,17 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
       self.parameterName = Token(kind: .calloutParameter(name))
       self.colon = Token(kind: .calloutColon)
 
-      let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
-      self.contents = [adjustedText]
-        .appending(contentsOf: paragraphChildren.dropFirst())
+      var remainder = String(text[colon...].dropFirst())
+      var indentString = ""
+      while remainder.first == " " {
+        indentString.append(remainder.removeFirst())
+      }
+      self.contentIndent = Token(kind: .whitespace(indentString))
+
+      let adjustedText = Token(kind: .documentationText(remainder))
+      let reconstructedParagraph = ParagraphNode(components: [adjustedText]
+        .appending(contentsOf: paragraphChildren.dropFirst()))
+      self.contents = [reconstructedParagraph]
         .appending(contentsOf: listItem.contents.dropFirst())
     #endif
   }
@@ -69,13 +78,16 @@ public struct ParametersEntry: StreamedViaChildren, SyntaxNode {
   /// The colon after the name.
   public let colon: Token
 
+  /// The  indent between the colon and the content.
+  public let contentIndent: Token
+
   /// The contents of the entry.
   public let contents: [SyntaxNode]
 
   // MARK: - StreamedViaChildren
 
   internal var storedChildren: [SyntaxNode] {
-    var children: [SyntaxNode] = [bullet, indent, parameterName, colon]
+    var children: [SyntaxNode] = [bullet, indent, parameterName, colon, contentIndent]
     children.append(contentsOf: contents)
     return children
   }
