@@ -490,11 +490,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
 
-        let highlighted = parsed.syntaxHighlightedHTML(
+        var highlighted = parsed.syntaxHighlightedHTML(
           inline: false,
           internalIdentifiers: [],
           symbolLinks: ["doSomething": "domain.tld"]
         )
+
+        // #workaround(For compatibility of specifications with legacy tests.)
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>_</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>*</span>")
+        highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>__</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>**</span>")
+
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
             content: highlighted,
