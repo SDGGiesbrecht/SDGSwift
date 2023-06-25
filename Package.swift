@@ -555,7 +555,8 @@ package.targets.append(
     name: one.name,
     dependencies: two.dependencies,
     path: "Sources/SDGSwiftSource2",
-    resources: two.resources
+    resources: two.resources,
+    swiftSettings: two.swiftSettings
   )
 )
 package.targets.append(
@@ -563,7 +564,8 @@ package.targets.append(
     name: two.name,
     dependencies: one.dependencies,
     path: "Sources/SDGSwiftSource",
-    resources: one.resources
+    resources: one.resources,
+    swiftSettings: one.swiftSettings
   )
 )
 
