@@ -26,6 +26,34 @@ public struct DocumentationContent: BlockCommentContentProtocol, LineCommentCont
   /// The source of the documentation content.
   public let source: String
 
+  /// Finds and returns the description section.
+  public func descriptionSection(cache: inout ParserCache) -> ParagraphNode? {
+    var cache = ParserCache()
+    return
+      // MarkdownNode(Document)
+      children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // MarkdownNode(Paragraph)
+      .children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // ParagraphNode
+      .children(cache: &cache).first as? ParagraphNode
+  }
+
+  /// Finds and returns the discussion section.
+  public func discussionSections(cache: inout ParserCache) -> [SyntaxNode] {
+    var cache = ParserCache()
+    if let result =
+      // MarkdownNode(Document)
+      children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // Paragraphs
+      .children(cache: &cache)
+      // Drop first paragraph and paragraph break.
+      .dropFirst(2) {
+      return Array(result)
+    } else {
+      return []
+    }
+  }
+
   // MARK: - LineCommentContentProtocol
 
   public init(source: String) {

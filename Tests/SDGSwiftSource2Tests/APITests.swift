@@ -227,6 +227,16 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "...",
       ].joined(separator: "\n")
     )
+    var cache = ParserCache()
+    let sections = DocumentationContent(source: [
+      "A",
+      "",
+      "B",
+      "",
+      "C"
+    ].joined(separator: "\n"))
+    XCTAssertEqual(sections.descriptionSection(cache: &cache)?.text(), "A")
+    XCTAssertEqual(sections.discussionSections(cache: &cache).map({ $0.text() }).joined(), "B\n\nC")
   }
 
   func testFragment() {
