@@ -450,6 +450,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h6>"))
       XCTAssert(rendered.contains("<hr>"))
       XCTAssert(rendered.contains("<p>Performs an action using the specified parameters.</p>\n\n"))
+      XCTAssert(rendered.contains("<h1>Primary Heading</h1>"))
+      XCTAssert(rendered.contains("<h1>Another Primary Heading</h1>"))
+      XCTAssert(rendered.contains("<li><p>First entry.</p></li>"))
     #endif
   }
 
