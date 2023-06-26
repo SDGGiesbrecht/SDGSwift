@@ -449,6 +449,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h5>"))
       XCTAssert(rendered.contains("<h6>"))
       XCTAssert(rendered.contains("<hr>"))
+      XCTAssert(rendered.contains("<p>Performs an action using the specified parameters.</p>\n\n"))
     #endif
   }
 

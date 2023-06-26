@@ -73,8 +73,8 @@ extension Token {
     switch kind {
     case .swiftSyntax, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
       return ""
-    case .whitespace, .lineBreaks:
-      return " "
+    case .whitespace(let text), .lineBreaks(let text):
+      return text
     case .documentationText:
       var escaped = HTML.escapeTextForCharacterData(text())
       // Prevent escaping escapes.
