@@ -519,6 +519,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>_</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>*</span>")
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>__</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>**</span>")
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>]</span><span class=\u{22}comment‐punctuation\u{22}>(</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>](</span>")
+        highlighted.replaceMatches(for: ":</span> <span class=\u{22}text\u{22}>", with: ":</span><span class=\u{22}text\u{22}> ")
+        highlighted.replaceMatches(for: "-</span> <span class=\u{22}internal identifier\u{22}>parameterOne</span><span class=\u{22}comment‐punctuation\u{22}>:</span><span class=\u{22}text\u{22}> ", with: "-</span> <span class=\u{22}internal identifier\u{22}>parameterOne</span><span class=\u{22}comment‐punctuation\u{22}>:</span> <span class=\u{22}text\u{22}>")
+        highlighted.replaceMatches(for: "-</span> <span class=\u{22}internal identifier\u{22}>parameterTwo</span><span class=\u{22}comment‐punctuation\u{22}>:</span><span class=\u{22}text\u{22}> ", with: "-</span> <span class=\u{22}internal identifier\u{22}>parameterTwo</span><span class=\u{22}comment‐punctuation\u{22}>:</span> <span class=\u{22}text\u{22}>")
 
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
