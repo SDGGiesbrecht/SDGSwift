@@ -120,7 +120,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       symbolLinks: [:],
       parserCache: &cache
     )
-    print(rendered)
     XCTAssertFalse(rendered.contains("ul"))
   }
 
