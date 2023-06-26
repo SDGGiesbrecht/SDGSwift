@@ -97,6 +97,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
   }
 
+  func testCalloutNode() {
+    let documentation = DocumentationContent(
+      source: [
+        "A description.",
+        "",
+        "- Warning: A warning.",
+      ].joined(separator: "\n")
+    )
+    var found = false
+    documentation.scanSyntaxTree({ node, _ in
+      if node is CalloutNode {
+        found = true
+      }
+      return ¬found
+    })
+    XCTAssert(found)
+    var cache = ParserCache()
+    let rendered = documentation.renderedHTML(
+      localization: "en",
+      internalIdentifiers: [],
+      symbolLinks: [:],
+      parserCache: &cache
+    )
+    print(rendered)
+    XCTAssertFalse(rendered.contains("ul"))
+  }
+
   func testClosureSyntaxScanner() {
     Token(kind: .whitespace(" "))
       .scanSyntaxTree({ node, context in
