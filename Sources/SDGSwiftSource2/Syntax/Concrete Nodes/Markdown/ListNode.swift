@@ -31,7 +31,7 @@ public struct ListNode: StreamedViaChildren, SyntaxNode {
         leading.append(listUnderConstruction.removeFirst())
       }
       result.append(contentsOf: leading)
-      
+
       var trailing: [SyntaxNode] = []
       while ¬listUnderConstruction.isEmpty,
         ¬(listUnderConstruction.last is ListItemNode) {
