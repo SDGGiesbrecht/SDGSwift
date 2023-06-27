@@ -69,7 +69,14 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
       self.name = Token(kind: .callout(name))
       self.colon = Token(kind: .calloutColon)
 
-      let adjustedText = Token(kind: .documentationText(String(text[colon...].dropFirst())))
+      var remainder = String(text[colon...].dropFirst())
+      var indentString = ""
+      while remainder.first == " " {
+        indentString.append(remainder.removeFirst())
+      }
+      self.contentIndent = Token(kind: .whitespace(indentString))
+
+      let adjustedText = Token(kind: .documentationText(remainder))
       let reconstructedParagraph = ParagraphNode(components: [adjustedText]
         .appending(contentsOf: paragraphChildren.dropFirst()))
       let simpleContents = [reconstructedParagraph]
@@ -130,6 +137,9 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
   /// The colon after the name.
   public let colon: Token
 
+  /// The  indent between the colon and the content.
+  public let contentIndent: Token
+
   /// The contents of the callout.
   public let contents: [SyntaxNode]
 
@@ -143,7 +153,7 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
     if let parameterName = parameterName {
       children.append(parameterName)
     }
-    children.append(colon)
+    children.append(contentsOf: [colon, contentIndent])
     children.append(contentsOf: contents)
     return children
   }
