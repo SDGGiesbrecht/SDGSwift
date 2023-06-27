@@ -105,6 +105,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         "\u{2D} Warning: A warning.",
       ].joined(separator: "\n")
     )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
     var found = false
     documentation.scanSyntaxTree({ node, _ in
       if node is CalloutNode {
@@ -113,6 +114,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       return ¬found
     })
     XCTAssert(found)
+    #endif
     var cache = ParserCache()
     let rendered = documentation.renderedHTML(
       localization: "en",
