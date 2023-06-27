@@ -14,47 +14,62 @@
 
 import SDGLogic
 
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  import Markdown
+#endif
+
 /// A list in documentation.
 public struct ListNode: StreamedViaChildren, SyntaxNode {
 
   // MARK: - Static Methods
 
-  internal static func filterCallouts(fromUnorderedList components: [SyntaxNode]) -> [SyntaxNode] {
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+  internal static func filterCallouts(
+    fromUnorderedList components: [SyntaxNode],
+    cache: inout ParserCache
+  ) -> [SyntaxNode] {
     var result: [SyntaxNode] = []
     var listUnderConstruction: [SyntaxNode] = []
     var remainder = components[...]
     func registerList() {
-
       var leading: [SyntaxNode] = []
       while ¬listUnderConstruction.isEmpty,
-        ¬(listUnderConstruction.first is ListItemNode) {
+        ¬((listUnderConstruction.first as? MarkdownNode)?.markdown is ListItem) {
         leading.append(listUnderConstruction.removeFirst())
       }
       result.append(contentsOf: leading)
 
       var trailing: [SyntaxNode] = []
       while ¬listUnderConstruction.isEmpty,
-        ¬(listUnderConstruction.last is ListItemNode) {
+        ¬((listUnderConstruction.first as? MarkdownNode)?.markdown is ListItem) {
+        // @exempt(from: tests) Reachability unknown.
         trailing.prepend(listUnderConstruction.removeLast())
       }
       defer { result.append(contentsOf: trailing) }
 
       if ¬listUnderConstruction.isEmpty {
         result.append(ListNode(components: listUnderConstruction, isOrdered: false))
+        listUnderConstruction = []
       }
     }
     while ¬remainder.isEmpty {
       let next = remainder.removeFirst()
-      if next is CalloutNode {
-        registerList()
-        result.append(next)
-      } else {
-        listUnderConstruction.append(next)
+      if let markdown = next as? MarkdownNode,
+        markdown.markdown is ListItem {
+        let listItemChildren = markdown.children(cache: &cache)
+        if listItemChildren.count == 1,
+          let callout = listItemChildren.first as? CalloutNode {
+          registerList()
+          result.append(callout)
+          continue
+        }
       }
+      listUnderConstruction.append(next)
     }
     registerList()
     return result
   }
+  #endif
 
   // MARK: - Initialization
 
