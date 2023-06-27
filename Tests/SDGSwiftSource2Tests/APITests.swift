@@ -102,7 +102,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       source: [
         "A description.",
         "",
-        "- Warning: A warning.",
+        "\u{2D} Warning: A warning.",
       ].joined(separator: "\n")
     )
     var found = false
