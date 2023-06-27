@@ -85,7 +85,7 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
           }
           return unordered.children(cache: &cache).flatMap { unorderedChild in
             guard let list = unorderedChild as? ListNode  else {
-              return [unorderedChild]
+              return [unorderedChild]  // @exempt(from: tests) Theoretically unreachable.
             }
             return list.children(cache: &cache).map { listChild -> SyntaxNode in
               guard let item = listChild as? MarkdownNode,
