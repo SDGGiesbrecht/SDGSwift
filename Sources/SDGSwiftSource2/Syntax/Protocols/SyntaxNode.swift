@@ -53,6 +53,7 @@ public protocol SyntaxNode: TextOutputStreamable {
   ) -> String
   var _renderedHtmlElement: String? { get }
   var _renderedHTMLAttributes: [String: String] { get }
+  func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode]
 }
 
 extension SyntaxNode {
