@@ -97,6 +97,34 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
   }
 
+  func testCalloutNode() {
+    let documentation = DocumentationContent(
+      source: [
+        "A description.",
+        "",
+        "\u{2D} Warning: A warning.",
+      ].joined(separator: "\n")
+    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+    var found = false
+    documentation.scanSyntaxTree({ node, _ in
+      if node is CalloutNode {
+        found = true
+      }
+      return ¬found
+    })
+    XCTAssert(found)
+    #endif
+    var cache = ParserCache()
+    let rendered = documentation.renderedHTML(
+      localization: "en",
+      internalIdentifiers: [],
+      symbolLinks: [:],
+      parserCache: &cache
+    )
+    XCTAssertFalse(rendered.contains("ul"))
+  }
+
   func testClosureSyntaxScanner() {
     Token(kind: .whitespace(" "))
       .scanSyntaxTree({ node, context in
@@ -449,6 +477,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h5>"))
       XCTAssert(rendered.contains("<h6>"))
       XCTAssert(rendered.contains("<hr>"))
+      XCTAssert(rendered.contains("<ul>"))
+      XCTAssert(rendered.contains("<p>Performs an action using the specified parameters.</p>\n\n"))
+      XCTAssert(rendered.contains("<h1>Primary Heading</h1>"))
+      XCTAssert(rendered.contains("<h1>Another Primary Heading</h1>"))
+      XCTAssert(rendered.contains("<li><p>First entry.</p></li>"))
     #endif
   }
 
@@ -515,6 +548,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>_</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>*</span>")
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>__</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>**</span>")
         highlighted.replaceMatches(for: "<span class=\u{22}comment‐punctuation\u{22}>]</span><span class=\u{22}comment‐punctuation\u{22}>(</span>", with: "<span class=\u{22}comment‐punctuation\u{22}>](</span>")
+        highlighted.replaceMatches(for: ":</span> <span class=\u{22}text\u{22}>", with: ":</span><span class=\u{22}text\u{22}> ")
+        highlighted.replaceMatches(for: "\u{2D}</span> <span class=\u{22}internal identifier\u{22}>parameterOne</span><span class=\u{22}comment‐punctuation\u{22}>:</span><span class=\u{22}text\u{22}> ", with: "\u{2D}</span> <span class=\u{22}internal identifier\u{22}>parameterOne</span><span class=\u{22}comment‐punctuation\u{22}>:</span> <span class=\u{22}text\u{22}>")
+        highlighted.replaceMatches(for: "\u{2D}</span> <span class=\u{22}internal identifier\u{22}>parameterTwo</span><span class=\u{22}comment‐punctuation\u{22}>:</span><span class=\u{22}text\u{22}> ", with: "\u{2D}</span> <span class=\u{22}internal identifier\u{22}>parameterTwo</span><span class=\u{22}comment‐punctuation\u{22}>:</span> <span class=\u{22}text\u{22}>")
 
         SDGPersistenceTestUtilities.compare(
           HTMLPage(

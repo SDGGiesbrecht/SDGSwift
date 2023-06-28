@@ -14,6 +14,10 @@
 
 /// A Markdown heading.
 public protocol MarkdownHeading: SyntaxNode {
+
+  /// The heading text.
+  var heading: Token { get }
+
   /// The heading level.
   var level: Int { get }
 }

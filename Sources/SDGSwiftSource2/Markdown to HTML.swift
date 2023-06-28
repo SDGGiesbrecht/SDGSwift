@@ -28,6 +28,10 @@ extension SyntaxNode {
     return [:]
   }
 
+  public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
+    return children(cache: &cache)
+  }
+
   public func renderedHTML(
     localization: String,
     internalIdentifiers: Set<String>,
@@ -46,7 +50,7 @@ extension SyntaxNode {
       }
       result.append(contentsOf: ">")
     }
-    for child in children(cache: &parserCache) {
+    for child in _renderedChildren(cache: &parserCache) {
       result.append(
         contentsOf: child.renderedHTML(
           localization: localization,
@@ -73,8 +77,8 @@ extension Token {
     switch kind {
     case .swiftSyntax, .lineCommentDelimiter, .openingBlockCommentDelimiter, .closingBlockCommentDelimiter, .commentText, .commentURL, .mark, .sourceHeadingText, .lineDocumentationDelimiter, .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet, .codeDelimiter, .language, .source, .headingDelimiter, .emphasisDelimiter, .strengthDelimiter, .openingLinkContentDelimiter, .closingLinkContentDelimiter, .openingLinkTargetDelimiter, .closingLinkTargetDelimiter, .linkURL, .imageDelimiter, .quotationDelimiter, .calloutParameter, .calloutColon, .fragment, .shebang:
       return ""
-    case .whitespace, .lineBreaks:
-      return " "
+    case .whitespace(let text), .lineBreaks(let text):
+      return text
     case .documentationText:
       var escaped = HTML.escapeTextForCharacterData(text())
       // Prevent escaping escapes.
@@ -99,6 +103,9 @@ extension CalloutNode {
   }
   public var _renderedHTMLAttributes: [String: String] {
     return ["class": "callout \(name.text().lowercased())"]
+  }
+  public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
+    return [name] + contents
   }
 }
 
@@ -175,6 +182,9 @@ extension ListItemNode {
   public var _renderedHtmlElement: String? {
     return "li"
   }
+  public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
+    return contents
+  }
 }
 
 extension MarkdownHeading {
@@ -196,6 +206,12 @@ extension MarkdownHeading {
   }
 }
 
+extension MarkdownHeading {
+  public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
+    return [heading]
+  }
+}
+
 extension ParagraphNode {
   public var _renderedHtmlElement: String? {
     return "p"
@@ -208,5 +224,8 @@ extension ParagraphNode {
 extension Quotation {
   public var _renderedHtmlElement: String? {
     return "blockquote"
+  }
+  public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
+    return contents
   }
 }
