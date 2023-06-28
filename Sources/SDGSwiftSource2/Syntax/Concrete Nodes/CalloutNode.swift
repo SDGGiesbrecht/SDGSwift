@@ -85,25 +85,29 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
         self.contents = simpleContents
       } else {
         self.contents = simpleContents.flatMap { content in
-          guard let markdownUnordered = content as? MarkdownNode,
-            markdownUnordered.markdown is UnorderedList,
-            let unordered = markdownUnordered.children(cache: &cache).first as? ListNode
+          guard let unordered = content as? MarkdownNode,
+            unordered.markdown is UnorderedList
           else {
             return [content]
           }
-          return unordered.children(cache: &cache).map { unorderedChild in
-            guard let item = unorderedChild as? MarkdownNode,
-              item.markdown is ListItem
-            else {
-              return unorderedChild
+          return unordered.children(cache: &cache).flatMap { unorderedChild in
+            guard let list = unorderedChild as? ListNode  else {
+              return [unorderedChild]  // @exempt(from: tests) Theoretically unreachable.
             }
-            let itemChildren = item.children(cache: &cache)
-            guard let parsed = itemChildren.first as? ListItemNode,
-              itemChildren.count == 1
-            else {
-              return item  // @exempt(from: tests) Theoretically unreachable.
+            return list.children(cache: &cache).map { listChild -> SyntaxNode in
+              guard let item = listChild as? MarkdownNode,
+                 item.markdown is ListItem
+              else {
+                return listChild
+              }
+              let itemChildren = item.children(cache: &cache)
+              guard let parsed = itemChildren.first as? ListItemNode,
+                itemChildren.count == 1
+              else {
+                return item  // @exempt(from: tests) Theoretically unreachable.
+              }
+              return ParametersEntry(listItem: parsed, cache: &cache) ?? item
             }
-            return ParametersEntry(listItem: parsed, cache: &cache) ?? item
           }
         }
       }

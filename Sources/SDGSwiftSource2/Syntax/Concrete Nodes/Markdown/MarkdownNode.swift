@@ -125,7 +125,7 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         }
         return children.prepending(Token(kind: .asterism(components)))
       case is UnorderedList:
-        return [ListNode(components: fallbackChildren(), isOrdered: false)]
+        return ListNode.filterCallouts(fromUnorderedList: fallbackChildren(), cache: &cache)
       default:
         return fallbackChildren()
       }
