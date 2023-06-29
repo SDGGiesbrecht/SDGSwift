@@ -16,7 +16,7 @@
 public protocol MarkdownHeading: SyntaxNode {
 
   /// The heading text.
-  var heading: Token { get }
+  var heading: [SyntaxNode] { get }
 
   /// The heading level.
   var level: Int { get }

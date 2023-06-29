@@ -23,29 +23,25 @@ public struct NumberedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode 
 
   // MARK: - Initialization
 
-  /// Parses a numbered heading.
-  ///
-  /// - Parameters:
-  ///   - source: The source.
-  public init?(source: String) {
-    var remainder = source[...]
+  internal init?(components: [SyntaxNode]) {
+    var remainder = components[...]
 
-    var delimiter = ""
-    while remainder.unicodeScalars.first == "#" {
-      delimiter.append(remainder.removeFirst())
-    }
-    guard ¬delimiter.isEmpty else {
+    guard let delimiterToken = remainder.first as? Token,
+          delimiterToken.text().unicodeScalars.allSatisfy({ $0 == "#" }) else {
       return nil
     }
-    self.delimiter = Token(kind: .headingDelimiter(delimiter))
+    remainder.removeFirst()
+    self.delimiter = Token(kind: .headingDelimiter(delimiterToken.text()))
 
-    if remainder.first == " " {
-      self.indent = Token(kind: .whitespace(String(remainder.removeFirst())))
+    if let indent = remainder.first as? Token,
+      case .whitespace = indent.kind {
+      remainder.removeFirst()
+      self.indent = indent
     } else {
-      self.indent = nil
+      self.indent = nil  // @exempt(from: tests) Seems unreachable.
     }
 
-    heading = Token(kind: .documentationText(String(remainder)))
+    self.heading = Array(remainder)
   }
 
   // MARK: - Properties
@@ -57,7 +53,7 @@ public struct NumberedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode 
   public let indent: Token?
 
   /// The heading text.
-  public let heading: Token
+  public let heading: [SyntaxNode]
 
   public var level: Int {
     return delimiter.text().unicodeScalars.count
@@ -70,7 +66,7 @@ public struct NumberedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode 
     if let indent = indent {
       children.append(indent)
     }
-    children.append(heading)
+    children.append(contentsOf: heading)
     return children
   }
 }
