@@ -483,12 +483,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       XCTAssert(rendered.contains("<h1>Another Primary Heading</h1>"))
       XCTAssert(rendered.contains("<li><p>First entry.</p></li>"))
     #endif
-  }
 
-  func testNumberedHeading() {
-    NumberedHeading.roundTripTest("# Heading")
-    NumberedHeading.roundTripTest("#Heading")
-    XCTAssertNil(NumberedHeading(source: "Not a Heading"))
+    let linkedHeading = MarkdownNode(source: "### [Heading](example.com)")
+    let renderedHeading = linkedHeading.renderedHTML(
+      localization: "en",
+      internalIdentifiers: [],
+      symbolLinks: [:],
+      parserCache: &parserCache
+    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      XCTAssert(renderedHeading.contains("<a"))
+    #endif
   }
 
   func testParsing() throws {
@@ -665,23 +670,5 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       _ = TriviaPieceNode(piece, precedingDocumentationContext: nil, followingDocumentationContext: nil)
         .children(cache: &cache)
     }
-  }
-
-  func testUnderlinedHeading() {
-    XCTAssertNil(UnderlinedHeading(source: "Not a heading"))
-    UnderlinedHeading.roundTripTest(
-      [
-        "Heading",
-        "\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}\u{2D}",
-      ].joined(separator: "\n")
-    )
-    XCTAssertNil(
-      UnderlinedHeading(
-        source: [
-          "Not a",
-          "heading",
-        ].joined(separator: "\n")
-      )
-    )
   }
 }

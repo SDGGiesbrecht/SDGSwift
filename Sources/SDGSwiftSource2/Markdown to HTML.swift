@@ -208,7 +208,7 @@ extension MarkdownHeading {
 
 extension MarkdownHeading {
   public func _renderedChildren(cache: inout ParserCache) -> [SyntaxNode] {
-    return [heading]
+    return heading
   }
 }
 
