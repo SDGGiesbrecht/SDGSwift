@@ -38,7 +38,7 @@ public struct UnderlinedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNod
 
     guard let lineBreakToken = (remainder.first as? Token),
       case .lineBreaks = lineBreakToken.kind else {
-      return nil
+      return nil  // @exempt(from: tests) Seems unreachable.
     }
     self.medialLineBreak = lineBreakToken
     remainder.removeFirst()
@@ -56,7 +56,7 @@ public struct UnderlinedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNod
         underlineToken.text().unicodeScalars.allSatisfy({ $0 == "=" })
           ∨ underlineToken.text().unicodeScalars.allSatisfy({ $0 == "\u{2D}" })
     else {
-      return nil
+      return nil  // @exempt(from: tests) Seems unreachable.
     }
     self.underline = Token(kind: .headingDelimiter(underlineToken.text()))
   }

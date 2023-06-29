@@ -38,7 +38,7 @@ public struct NumberedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNode 
       remainder.removeFirst()
       self.indent = indent
     } else {
-      self.indent = nil
+      self.indent = nil  // @exempt(from: tests) Seems unreachable.
     }
 
     self.heading = Array(remainder)
