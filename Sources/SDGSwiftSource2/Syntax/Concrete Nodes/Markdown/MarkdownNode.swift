@@ -86,9 +86,10 @@ public struct MarkdownNode: SyntaxNode, TextOutputStreamable {
         return InlineCodeNode(source: text()).map({ [$0] })
           ?? fallbackChildren()  // @exempt(from: tests)
       case is Heading:
-        return NumberedHeading(source: text()).map({ [$0] })
-          ?? UnderlinedHeading(source: text()).map({ [$0] })
-          ?? fallbackChildren()  // @exempt(from: tests)
+        let components = fallbackChildren()
+        return NumberedHeading(components: components).map({ [$0] })
+          ?? UnderlinedHeading(components: components).map({ [$0] })
+          ?? components  // @exempt(from: tests)
       case is Image:
         let components = fallbackChildren()
         return ImageNode(components: components).map({ [$0] })

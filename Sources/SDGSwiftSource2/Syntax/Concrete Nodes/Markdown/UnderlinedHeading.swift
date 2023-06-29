@@ -23,43 +23,48 @@ public struct UnderlinedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNod
 
   // MARK: - Initialization
 
-  /// Parses an underlined heading.
-  ///
-  /// - Parameters:
-  ///   - source: The source.
-  public init?(source: String) {
-    var remainder = source[...]
+  internal init?(components: [SyntaxNode]) {
+    var remainder = components[...]
 
-    var heading = ""
-    while remainder.first?.isNewline == false {
-      heading.append(remainder.removeFirst())
+    var heading: [SyntaxNode] = []
+    lineBreakScan: while let first = remainder.first {
+      if case .lineBreaks = (first as? Token)?.kind {
+        break lineBreakScan
+      } else {
+        heading.append(remainder.removeFirst())
+      }
     }
-    self.heading = Token(kind: .documentationText(heading))
+    self.heading = heading
 
-    guard remainder.first?.isNewline == true else {
+    guard let lineBreakToken = (remainder.first as? Token),
+      case .lineBreaks = lineBreakToken.kind else {
       return nil
     }
-    self.medialLineBreak = Token(kind: .lineBreaks(String(remainder.removeFirst())))
+    self.medialLineBreak = lineBreakToken
+    remainder.removeFirst()
 
-    if remainder.last?.isNewline == true {
-      self.trailingLineBreak = Token(kind: .lineBreaks(String(remainder.removeLast())))
+    if let trailingLineBreakToken = remainder.last as? Token,
+      case .lineBreaks = trailingLineBreakToken.kind {
+      self.trailingLineBreak = trailingLineBreakToken
+      remainder.removeLast()
     } else {
       self.trailingLineBreak = nil
     }
 
-    guard
-      remainder.allSatisfy({ $0 == "=" })
-        ∨ remainder.allSatisfy({ $0 == "\u{2D}" })
+    guard remainder.count == 1,
+      let underlineToken = remainder.first as? Token,
+        underlineToken.text().unicodeScalars.allSatisfy({ $0 == "=" })
+          ∨ underlineToken.text().unicodeScalars.allSatisfy({ $0 == "\u{2D}" })
     else {
       return nil
     }
-    self.underline = Token(kind: .headingDelimiter(String(remainder)))
+    self.underline = Token(kind: .headingDelimiter(underlineToken.text()))
   }
 
   // MARK: - Properties
 
   /// The heading text.
-  public let heading: Token
+  public let heading: [SyntaxNode]
 
   /// The line break between the heading and its underline.
   public let medialLineBreak: Token
@@ -81,7 +86,7 @@ public struct UnderlinedHeading: MarkdownHeading, StreamedViaChildren, SyntaxNod
   // MARK: - StreamedViaChildren
 
   internal var storedChildren: [SyntaxNode] {
-    var children: [SyntaxNode] = [heading, medialLineBreak, underline]
+    var children: [SyntaxNode] = heading.appending(contentsOf: [medialLineBreak, underline])
     if let trailing = trailingLineBreak {
       children.append(trailing)
     }
