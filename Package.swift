@@ -197,30 +197,6 @@ let package = Package(
       name: "SDGSwiftSource",
       dependencies: [
         "SDGSwift",
-        "SDGSwiftPackageManager",
-        "SDGSwiftLocalizations",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
-        .product(name: "cmark\u{2D}gfm", package: "swift\u{2D}cmark"),
-        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
-        .product(name: "SDGHTML", package: "SDGWeb"),
-      ],
-      resources: [
-        .copy("Syntax Highlighting.css")
-      ]
-    ),
-    // #workaround(Until complete.)
-    .target(
-      name: "SDGSwiftSource2",
-      dependencies: [
-        "SDGSwift",
         "SDGSwiftLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -371,25 +347,7 @@ let package = Package(
     .testTarget(
       name: "SDGSwiftSourceTests",
       dependencies: [
-        "SDGSwift",
-        "SDGSwiftLocalizations",
         "SDGSwiftSource",
-        "SDGSwiftTestUtilities",
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
-      ]
-    ),
-    .testTarget(
-      name: "SDGSwiftSource2Tests",
-      dependencies: [
-        "SDGSwiftSource2",
         "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -544,33 +502,3 @@ for target in package.targets {
     }
   }
 }
-
-// #warning(Temporary to minimize diff.)
-let oneIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource" })!
-let one = package.targets.remove(at: oneIndex)
-let twoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2" })!
-let two = package.targets.remove(at: twoIndex)
-package.targets.append(
-  .target(
-    name: one.name,
-    dependencies: two.dependencies,
-    path: "Sources/SDGSwiftSource2",
-    resources: two.resources,
-    swiftSettings: two.swiftSettings
-  )
-)
-package.targets.append(
-  .target(
-    name: two.name,
-    dependencies: one.dependencies,
-    path: "Sources/SDGSwiftSource",
-    resources: one.resources,
-    swiftSettings: one.swiftSettings
-  )
-)
-
-// #warning(Temporary to minimize diff.)
-let testOneIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSourceTests" })!
-let testOne = package.targets.remove(at: testOneIndex)
-let testTwoIndex = package.targets.firstIndex(where: { $0.name == "SDGSwiftSource2Tests" })!
-let testTwo = package.targets.remove(at: testTwoIndex)

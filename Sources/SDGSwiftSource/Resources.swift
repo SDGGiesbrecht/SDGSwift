@@ -4,7 +4,7 @@
  This source file is part of the SDGSwift open source project.
  https://sdggiesbrecht.github.io/SDGSwift
 
- Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+ Copyright ©2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
 
  Soli Deo gloria.
 
@@ -21,7 +21,7 @@ extension Resources {
   #if !os(WASI)
     internal static let moduleBundle: Bundle = {
       let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
-      let module = main?.appendingPathComponent("SDGSwift_SDGSwiftSource2.bundle")
+      let module = main?.appendingPathComponent("SDGSwift_SDGSwiftSource.bundle")
       return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
     }()
   #endif
