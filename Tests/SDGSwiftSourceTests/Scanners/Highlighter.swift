@@ -49,7 +49,7 @@ extension Highlighter {
     file: StaticString = #filePath,
     line: UInt = #line
   ) throws -> String {
-    var result = try highlight(syntax)
+    let result = try highlight(syntax)
     let specification =
       afterDirectory
       .appendingPathComponent(name)

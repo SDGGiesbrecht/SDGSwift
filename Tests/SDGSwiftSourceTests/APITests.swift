@@ -541,12 +541,11 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
 
-        var highlighted = parsed.syntaxHighlightedHTML(
+        let highlighted = parsed.syntaxHighlightedHTML(
           inline: false,
           internalIdentifiers: [],
           symbolLinks: ["doSomething": "domain.tld"]
         )
-
         SDGPersistenceTestUtilities.compare(
           HTMLPage(
             content: highlighted,

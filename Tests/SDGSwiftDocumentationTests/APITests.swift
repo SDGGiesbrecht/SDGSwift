@@ -65,7 +65,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           manifestURL: "somewhere.swift",
           manifestSource: SourceFileSyntax(
             statements: CodeBlockItemListSyntax([]),
-            eofToken: TokenSyntax(.eof)
+            eofToken: TokenSyntax(.eof, presence: .present)
           )
         ).docComment
       )
@@ -102,7 +102,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         manifestURL: "Package.swift",
         manifest: SourceFileSyntax(
           statements: CodeBlockItemListSyntax([]),
-          eofToken: TokenSyntax(.eof)
+          eofToken: TokenSyntax(.eof, presence: .present)
         )
       )
     #endif
@@ -245,7 +245,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           manifestURL: "somewhere.swift",
           manifestSource: SourceFileSyntax(
             statements: CodeBlockItemListSyntax([]),
-            eofToken: TokenSyntax(.eof)
+            eofToken: TokenSyntax(.eof, presence: .present)
           ),
           libraries: [
             LibraryAPI(
@@ -254,7 +254,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               manifestURL: "Package.swift",
               manifest: SourceFileSyntax(
                 statements: CodeBlockItemListSyntax([]),
-                eofToken: TokenSyntax(.eof)
+                eofToken: TokenSyntax(.eof, presence: .present)
               )
             )
           ],
@@ -315,7 +315,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
               errorTokens: nil
             )
           ]),
-          eofToken: TokenSyntax(.eof)
+          eofToken: TokenSyntax(.eof, presence: .present)
         ),
         libraries: [],
         symbolGraphs: [],
