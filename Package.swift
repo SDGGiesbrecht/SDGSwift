@@ -136,11 +136,6 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
       exact: Version(0, 50800, 0)
     ),
-    // #workaround(Possibly dead after markdown refactor?)
-    .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      exact: Version(0, 50800, 0)
-    ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
       from: Version(6, 1, 0)

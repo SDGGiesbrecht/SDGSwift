@@ -225,10 +225,6 @@ extension Token {
     case .commentText, .documentationText:
       return "text"
     case .mark, .callout, .shebang:
-      // #workaround(Skipping just for compatibility with legacy specifications.)
-      if case .shebang = kind {
-        return nil
-      }
       return "comment‐keyword"
     case .sourceHeadingText:
       return "source‐heading"

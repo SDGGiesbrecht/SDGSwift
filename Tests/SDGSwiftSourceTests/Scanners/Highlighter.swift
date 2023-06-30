@@ -56,20 +56,6 @@ extension Highlighter {
       .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
       .appendingPathExtension("txt")
 
-    // #workaround(For compatibility of specifications with legacy tests.)
-    result.replaceMatches(for: "__s̲", with: "**s̲")
-    result.replaceMatches(for: "__s", with: "**s")
-    result.replaceMatches(for: "_̲_̲s", with: "*̲*̲s")
-    result.replaceMatches(for: "g̲__", with: "g̲**")
-    result.replaceMatches(for: "g__", with: "g**")
-    result.replaceMatches(for: "g_̲_̲", with: "g*̲*̲")
-    result.replaceMatches(for: "_e̲", with: "*e̲")
-    result.replaceMatches(for: "_e", with: "*e")
-    result.replaceMatches(for: "_̲e", with: "*̲e")
-    result.replaceMatches(for: "d̲_", with: "d̲*")
-    result.replaceMatches(for: "d_", with: "d*")
-    result.replaceMatches(for: "d_̲", with: "d*̲")
-
     SDGPersistenceTestUtilities.compare(
       result,
       against: specification,
