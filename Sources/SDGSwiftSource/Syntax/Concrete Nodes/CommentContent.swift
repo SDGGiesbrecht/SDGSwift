@@ -24,6 +24,9 @@ public struct CommentContent: BlockCommentContentProtocol, StreamedViaChildren, 
   // MARK: - Initialization
 
   /// Creates a comment content syntax note by parsing its source.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   public init(source: String) {
     var children: [SyntaxNode] = []
     for lineInfo in source.lines {

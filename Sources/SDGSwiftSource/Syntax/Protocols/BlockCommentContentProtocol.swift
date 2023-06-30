@@ -16,5 +16,8 @@
 internal protocol BlockCommentContentProtocol: SyntaxNode {
 
   /// Parses block comment content from source.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   init(source: String)
 }

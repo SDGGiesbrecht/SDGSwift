@@ -18,6 +18,9 @@ public struct StringLiteral: StreamedViaChildren, SyntaxNode {
   // MARK: - Initialization
 
   /// Parses a string literal.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   public init?(source: String) {
     let quotationMark = Token(kind: .swiftSyntax(.stringQuote))
     let quotationMarkText = quotationMark.text().unicodeScalars

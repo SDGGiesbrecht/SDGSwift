@@ -18,6 +18,9 @@ public struct InlineCodeNode: StreamedViaChildren, SyntaxNode {
   // MARK: - Initialization
 
   /// Parses an inline code node.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   public init?(source: String) {
     let delimiter = Token(kind: .codeDelimiter("`"))
     let delimiterText = delimiter.text().unicodeScalars

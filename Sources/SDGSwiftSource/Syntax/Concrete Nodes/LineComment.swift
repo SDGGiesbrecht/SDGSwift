@@ -18,6 +18,9 @@ public struct LineComment: LineCommentProtocol, SyntaxNode {
   // MARK: - Initialization
 
   /// Parses a line comment.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   public init?(source: String) {
     guard
       let parsed = Self.parse(
