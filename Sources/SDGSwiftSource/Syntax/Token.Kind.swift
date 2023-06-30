@@ -180,6 +180,9 @@ extension Token {
 
     // @documentation(SDGSwiftSource.TokenSyntax.textFreedom)
     /// The amount of freedom avialable to the token’s text.
+    ///
+    /// - Parameters:
+    ///   - localAncestors: The token’s local ancestors. See `ScanContext.localAncestors` for more details.
     public func textFreedom(localAncestors: [ParentRelationship]) -> TextFreedom {
       switch self {
         case .swiftSyntax(let kind):

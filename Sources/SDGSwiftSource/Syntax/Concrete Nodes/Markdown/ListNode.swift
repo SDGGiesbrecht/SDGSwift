@@ -83,6 +83,7 @@ public struct ListNode: StreamedViaChildren, SyntaxNode {
   /// The contents of the list.
   public let contents: [SyntaxNode]
 
+  /// Whether the list represents an ordered list or an unordered list.
   public let isOrdered: Bool
 
   // MARK: - StreamedViaChildren

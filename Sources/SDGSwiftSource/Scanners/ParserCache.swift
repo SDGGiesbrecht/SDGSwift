@@ -18,6 +18,7 @@ import SDGControlFlow
   import Markdown
 #endif
 
+/// A cache in which a parser can store the results of repetitive operations.
 public struct ParserCache {
 
   // MARK: - Initialization
@@ -27,7 +28,9 @@ public struct ParserCache {
 
   // MARK: - Properties
 
+  /// A store of Swift syntax trees produced by different Swift documents.
   public var parsedSwift: [String: SwiftSyntaxNode?] = [:]
+  /// A store of Markdown syntax trees produced by different Markdown documents.
   public var parsedMarkdown: [String: MarkdownNode] = [:]
 
   // MARK: - Parsing

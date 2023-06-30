@@ -27,6 +27,7 @@ public struct AnySyntaxNode: SyntaxNode {
 
   // MARK: - Properties
 
+  /// The wrapped syntax node.
   public let wrapped: SyntaxNode
 
   // MARK: - SyntaxNode

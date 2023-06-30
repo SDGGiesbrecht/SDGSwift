@@ -20,6 +20,10 @@ public struct CodeContent: SyntaxNode {
   // MARK: - Initialization
 
   /// Parses code.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
+  ///   - isSwift: `true` if the source is known to be Swift, `false` if it is known not to be Swift, or `nil` if the language is unknown.
   public init(source: String, isSwift: Bool?) {
     self.source = source
     self.isSwift = isSwift

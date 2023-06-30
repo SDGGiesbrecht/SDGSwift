@@ -18,6 +18,11 @@ public struct LineDocumentation: SyntaxNode, LineCommentProtocol {
   // MARK: - Initialization
 
   /// Parses a line documentation comment.
+  ///
+  /// - Parameters:
+  ///   - source: The source within the line itself.
+  ///   - precedingContentContext: Any source that precedes the line, but which is part of the same documentation.
+  ///   - followingContentContext: Any source that follows the line, but which is part of the same documentation.
   public init?(
     source: String,
     precedingContentContext: String? = nil,

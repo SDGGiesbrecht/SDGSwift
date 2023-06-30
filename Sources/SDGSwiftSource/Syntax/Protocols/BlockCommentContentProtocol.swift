@@ -14,5 +14,7 @@
 
 /// Functionality shared by line comment content and documentation comment content.
 internal protocol BlockCommentContentProtocol: SyntaxNode {
+
+  /// Parses block comment content from source.
   init(source: String)
 }

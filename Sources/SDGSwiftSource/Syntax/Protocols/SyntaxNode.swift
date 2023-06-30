@@ -18,6 +18,9 @@ import SDGSwift
 public protocol SyntaxNode: TextOutputStreamable {
 
   /// Returns the children of the node, parsing into more detail if necessary.
+  ///
+  /// - Parameters:
+  ///   - cache: A cache for the parser to use.
   func children(cache: inout ParserCache) -> [SyntaxNode]
 
   // @documentation(SyntaxNode.text())
