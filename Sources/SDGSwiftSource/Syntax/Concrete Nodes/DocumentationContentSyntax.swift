@@ -24,9 +24,6 @@ public struct DocumentationContent: BlockCommentContentProtocol, LineCommentCont
   // MARK: - Properties
 
   /// The source of the documentation content.
-  ///
-  /// - Parameters:
-  ///   - source: The source.
   public let source: String
 
   // MARK: - LineCommentContentProtocol

@@ -18,6 +18,9 @@ public struct BlockComment: BlockCommentProtocol, SyntaxNode {
   // MARK: - Initialization
 
   /// Parses a block comment.
+  ///
+  /// - Parameters:
+  ///   - source: The source.
   public init?(source: String) {
     guard let parsed = Self.parse(source: source) else {
       return nil
