@@ -136,11 +136,6 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
       exact: Version(0, 50800, 0)
     ),
-    // #workaround(Possibly dead after markdown refactor?)
-    .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      exact: Version(0, 50800, 0)
-    ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
       from: Version(6, 1, 0)
@@ -195,30 +190,6 @@ let package = Package(
     /// This module is built on SwiftSyntax and provides utilities such as syntax colouring and API parsing.
     .target(
       name: "SDGSwiftSource",
-      dependencies: [
-        "SDGSwift",
-        "SDGSwiftPackageManager",
-        "SDGSwiftLocalizations",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
-        .product(name: "cmark\u{2D}gfm", package: "swift\u{2D}cmark"),
-        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
-        .product(name: "SDGHTML", package: "SDGWeb"),
-      ],
-      resources: [
-        .copy("Syntax Highlighting.css")
-      ]
-    ),
-    // #workaround(Until complete.)
-    .target(
-      name: "SDGSwiftSource2",
       dependencies: [
         "SDGSwift",
         "SDGSwiftLocalizations",
@@ -371,25 +342,7 @@ let package = Package(
     .testTarget(
       name: "SDGSwiftSourceTests",
       dependencies: [
-        "SDGSwift",
-        "SDGSwiftLocalizations",
         "SDGSwiftSource",
-        "SDGSwiftTestUtilities",
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGLogicTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
-        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
-      ]
-    ),
-    .testTarget(
-      name: "SDGSwiftSource2Tests",
-      dependencies: [
-        "SDGSwiftSource2",
         "SDGSwiftLocalizations",
         "SDGSwiftTestUtilities",
         .product(name: "SDGLogic", package: "SDGCornerstone"),

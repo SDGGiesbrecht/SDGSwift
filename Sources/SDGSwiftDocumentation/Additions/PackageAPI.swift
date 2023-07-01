@@ -87,7 +87,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
         return nil
       }
       return foundNode.as(Node.self)
-        ?? foundNode.ancestors().lazy.compactMap({ node in
+        ?? foundNode.ancestors.lazy.compactMap({ node in
           return node.as(Node.self)
         }).first
     }

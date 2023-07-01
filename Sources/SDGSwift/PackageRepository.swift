@@ -177,7 +177,7 @@ public struct PackageRepository: TransparentWrapper {
     /// - Parameters:
     ///     - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
     public func exportSymbolGraph(
-      reportProgress: (_ progressReport: String) -> Void = { _ in }
+      reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
     ) -> Result<URL, VersionedExternalProcessExecutionError<SwiftCompiler>> {
       return SwiftCompiler.exportSymbolGraph(self, reportProgress: reportProgress)
     }

@@ -36,14 +36,14 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
       let nestedFunction = FunctionDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1)),
-        identifier: TokenSyntax(.identifier("outer")),
+        funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1), presence: .present),
+        identifier: TokenSyntax(.identifier("outer"), presence: .present),
         genericParameterClause: nil,
         signature: FunctionSignatureSyntax(
           input: ParameterClauseSyntax(
-            leftParen: TokenSyntax(.leftParen),
+            leftParen: TokenSyntax(.leftParen, presence: .present),
             parameterList: FunctionParameterListSyntax([]),
-            rightParen: TokenSyntax(.rightParen)
+            rightParen: TokenSyntax(.rightParen, presence: .present)
           ),
           asyncOrReasyncKeyword: nil,
           throwsOrRethrowsKeyword: nil,
@@ -54,7 +54,8 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           leftBrace: TokenSyntax(
             .leftBrace,
             leadingTrivia: .spaces(1),
-            trailingTrivia: .newlines(1)
+            trailingTrivia: .newlines(1),
+            presence: .present
           ),
           statements: CodeBlockItemListSyntax([
             CodeBlockItemSyntax(
@@ -62,14 +63,14 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
                 FunctionDeclSyntax(
                   attributes: nil,
                   modifiers: nil,
-                  funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1)),
-                  identifier: TokenSyntax(.identifier("inner")),
+                  funcKeyword: TokenSyntax(.funcKeyword, trailingTrivia: .spaces(1), presence: .present),
+                  identifier: TokenSyntax(.identifier("inner"), presence: .present),
                   genericParameterClause: nil,
                   signature: FunctionSignatureSyntax(
                     input: ParameterClauseSyntax(
-                      leftParen: TokenSyntax(.leftParen),
+                      leftParen: TokenSyntax(.leftParen, presence: .present),
                       parameterList: FunctionParameterListSyntax([]),
-                      rightParen: TokenSyntax(.rightParen)
+                      rightParen: TokenSyntax(.rightParen, presence: .present)
                     ),
                     asyncOrReasyncKeyword: nil,
                     throwsOrRethrowsKeyword: nil,
@@ -80,10 +81,11 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
                     leftBrace: TokenSyntax(
                       .leftBrace,
                       leadingTrivia: .spaces(1),
-                      trailingTrivia: .newlines(1)
+                      trailingTrivia: .newlines(1),
+                      presence: .present
                     ),
                     statements: CodeBlockItemListSyntax([]),
-                    rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1))
+                    rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1), presence: .present)
                   )
                 )
               ),
@@ -91,7 +93,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
               errorTokens: nil
             )
           ]),
-          rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1))
+          rightBrace: TokenSyntax(.rightBrace, leadingTrivia: .newlines(1), presence: .present)
         )
       )
       let found = nestedFunction.smallest(
@@ -122,9 +124,10 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
             .newlines(1),
             .spaces(2),
           ]),
-          trailingTrivia: .spaces(1)
+          trailingTrivia: .spaces(1),
+          presence: .present
         ),
-        identifier: TokenSyntax(.identifier("Structure")),
+        identifier: TokenSyntax(.identifier("Structure"), presence: .present),
         genericParameterClause: nil,
         inheritanceClause: nil,
         genericWhereClause: nil,
@@ -132,12 +135,14 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
           leftBrace: TokenSyntax(
             .leftBrace,
             leadingTrivia: .spaces(1),
-            trailingTrivia: .spaces(1)
+            trailingTrivia: .spaces(1),
+            presence: .present
           ),
           members: MemberDeclListSyntax([]),
           rightBrace: TokenSyntax(
             .leftBrace,
-            leadingTrivia: .spaces(1)
+            leadingTrivia: .spaces(1),
+            presence: .present
           )
         )
       )
@@ -151,7 +156,7 @@ class InternalTests: SDGSwiftTestUtilities.TestCase {
               errorTokens: nil
             )
           ]),
-          eofToken: TokenSyntax(.eof)
+          eofToken: TokenSyntax(.eof, presence: .present)
         ),
         module: nil
       )

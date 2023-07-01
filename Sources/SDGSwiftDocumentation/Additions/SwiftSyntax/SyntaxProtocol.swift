@@ -44,7 +44,7 @@ import SDGSwiftSource
 
     internal func smallestSubnode<P>(containing searchTerm: P) -> Syntax?
     where P: SDGCollections.Pattern, P.Searchable == String.ScalarView {
-      guard source().scalars.contains(searchTerm) else {
+      guard text().scalars.contains(searchTerm) else {
         return nil
       }
       for child in children(viewMode: .sourceAccurate) {
