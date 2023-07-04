@@ -35,11 +35,19 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testSymbolDocumentation() {
-    _ = SDGSwiftDocumentation.SymbolDocumentation(
-      developerComments: SymbolGraph.LineList([]),
-      documentationComment: SymbolGraph.LineList([])
-    )
+  func testDocumentationGeneration() throws {
+    for packageURL in documentationTestPackages {
+      let package = PackageRepository(at: packageURL)
+      #warning("Temporarily disabled.")
+      //try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        let outputDirectory = package.location.appendingPathComponent("docs")
+        _ = try SwiftCompiler.assembleDocumentation(
+          in: outputDirectory,
+          name: package.location.lastPathComponent,
+          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get()
+        ).get()
+      //}
+    }
   }
 
   func testModuleAPI() {
@@ -453,6 +461,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         documentation: [],
         location: nil
       )
+  }
+
+  func testSymbolDocumentation() {
+    _ = SDGSwiftDocumentation.SymbolDocumentation(
+      developerComments: SymbolGraph.LineList([]),
+      documentationComment: SymbolGraph.LineList([])
+    )
   }
 
   func testSymbolGraphError() {
