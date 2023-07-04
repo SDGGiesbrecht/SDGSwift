@@ -38,8 +38,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   func testDocumentationAssembly() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
-      #warning("Temporarily disabled.")
-      //try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         let outputDirectory = package.location.appendingPathComponent("docs")
         _ = try SwiftCompiler.assembleDocumentation(
           in: outputDirectory,
@@ -47,7 +46,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get(),
           hostingBasePath: "base/path"
         ).get()
-      //}
+      }
     }
   }
 
