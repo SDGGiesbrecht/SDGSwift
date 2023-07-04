@@ -303,6 +303,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     in outputDirectory: URL,
     name: String,
     symbolGraphs: [URL],
+    hostingBasePath: String,
     reportProgress: (_ progressReport: String) -> Void = { _ in }
   ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
     try? FileManager.default.createDirectory(at: outputDirectory)
@@ -316,7 +317,8 @@ public enum SwiftCompiler: VersionedExternalProcess {
     arguments.append(contentsOf: [
       "\u{2D}\u{2D}fallback\u{2D}display\u{2D}name", name,
       "\u{2D}\u{2D}fallback\u{2D}bundle\u{2D}identifier", name,
-      "\u{2D}\u{2D}transform\u{2D}for\u{2D}static\u{2D}hosting"
+      "\u{2D}\u{2D}transform\u{2D}for\u{2D}static\u{2D}hosting",
+      "\u{2D}\u{2D}hosting\u{2D}base\u{2D}path", hostingBasePath,
     ])
 
     return runCustomDocCSubcommand(

@@ -35,7 +35,7 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testDocumentationGeneration() throws {
+  func testDocumentationAssembly() throws {
     for packageURL in documentationTestPackages {
       let package = PackageRepository(at: packageURL)
       #warning("Temporarily disabled.")
@@ -44,7 +44,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try SwiftCompiler.assembleDocumentation(
           in: outputDirectory,
           name: package.location.lastPathComponent,
-          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get()
+          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get(),
+          hostingBasePath: "base/path"
         ).get()
       //}
     }
