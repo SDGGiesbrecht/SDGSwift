@@ -43,7 +43,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         _ = try SwiftCompiler.assembleDocumentation(
           in: outputDirectory,
           name: package.location.lastPathComponent,
-          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get(),
+          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get().map({ $0.origin }),
           hostingBasePath: "base/path"
         ).get()
       }
@@ -223,7 +223,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       ],
       symbolGraphs: [
-        SymbolGraph(
+        LoadedSymbolGraph(graph: SymbolGraph(
           metadata: SymbolGraph.Metadata(
             formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
             generator: "My Generator"
@@ -239,7 +239,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ),
           symbols: [],
           relationships: []
-        )
+        ), origin: URL(fileURLWithPath: #filePath))
       ],
       moduleSources: [:],
       moduleDocumentationCommentLookup: { _ in return [] },
@@ -511,7 +511,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 return [module]
                   .appending(
                     contentsOf: module.symbolGraphs.flatMap({ graph in
-                      return graph.symbols.values
+                      return graph.graph.symbols.values
                     })
                   )
                   .appending(contentsOf: module.operators)

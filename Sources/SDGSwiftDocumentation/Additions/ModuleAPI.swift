@@ -96,7 +96,7 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
     ///   - manifestSource: The source of the package manifest.
     public init(
       name: String,
-      symbolGraphs: [SymbolGraph],
+      symbolGraphs: [LoadedSymbolGraph],
       sources: [URL],
       manifestURL: String,
       manifestSource: SourceFileSyntax
@@ -127,7 +127,7 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
     name: String,
     documentation: [SymbolDocumentation],
     location: SymbolGraph.Symbol.Location?,
-    symbolGraphs: [SymbolGraph],
+    symbolGraphs: [LoadedSymbolGraph],
     sources: [URL]
   ) {
     let declaration = ModuleAPI.declaration(for: name)
@@ -165,7 +165,7 @@ public struct ModuleAPI: StoredDocumentation, SymbolLike {
   // MARK: - Properties
 
   /// The module’s symbol graphs.
-  public var symbolGraphs: [SymbolGraph]
+  public var symbolGraphs: [LoadedSymbolGraph]
 
   /// The module’s operators.
   public var operators: [Operator]

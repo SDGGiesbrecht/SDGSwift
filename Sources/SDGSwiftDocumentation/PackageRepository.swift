@@ -37,15 +37,15 @@ extension PackageRepository {
       filteringUnreachable: Bool = true,
       manifest: Manifest?,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-    ) -> Result<[SymbolGraph], SymbolGraph.LoadingError> {
+    ) -> Result<[LoadedSymbolGraph], SymbolGraph.LoadingError> {
       switch exportSymbolGraph(reportProgress: reportProgress) {
       case .failure(let error):
         return .failure(.exportError(error))
       case .success(let exports):
-        var graphs: [SymbolGraph]
+        var graphs: [LoadedSymbolGraph]
         do {
           graphs = try FileManager.default.contents(ofDirectory: exports).sorted().map({ file in
-            return try SymbolGraph(from: file)
+            return LoadedSymbolGraph(graph: try SymbolGraph(from: file), origin: file)
           })
         } catch {
           return .failure(.loadingError(error))
@@ -55,16 +55,16 @@ extension PackageRepository {
           let reachable = manifest?.publicModules()
         {
           graphs.removeAll(where: { graph in
-            return graph.module.name ∉ reachable
+            return graph.graph.module.name ∉ reachable
           })
           graphs = graphs.enumerated().sorted(by: { first, second in
             return (
-              reachable.firstIndex(of: first.element.module.name)
+              reachable.firstIndex(of: first.element.graph.module.name)
                 ?? reachable.endIndex,  // @exempt(from: tests)
               first.offset
             )
               < (
-                reachable.firstIndex(of: second.element.module.name)
+                reachable.firstIndex(of: second.element.graph.module.name)
                   ?? reachable.endIndex,  // @exempt(from: tests)
                 second.offset
               )
@@ -84,7 +84,7 @@ extension PackageRepository {
     public func symbolGraphs(
       filteringUnreachable: Bool = true,
       reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
-    ) -> Result<[SymbolGraph], SymbolGraph.LoadingError> {
+    ) -> Result<[LoadedSymbolGraph], SymbolGraph.LoadingError> {
       let loadedManifest: Manifest?
       if filteringUnreachable {
         switch manifest() {
