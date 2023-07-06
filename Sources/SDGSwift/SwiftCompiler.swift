@@ -296,12 +296,14 @@ public enum SwiftCompiler: VersionedExternalProcess {
   ///
   /// - Parameters:
   ///   - outputDirectory: The directory in which to generate the site.
-  ///   - name: A name for the DocC bundle.
+  ///   - name: A name for the generated documentation bundle.
+  ///   - bundle: The location of the DocC bundle to include.
   ///   - symbolGraphs: The URLs of the symbol graph files (`.symbol.json`) to include.
   ///   - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   public static func assembleDocumentation(
     in outputDirectory: URL,
     name: String,
+    bundle: URL,
     symbolGraphs: [URL],
     hostingBasePath: String,
     reportProgress: (_ progressReport: String) -> Void = { _ in }
@@ -310,6 +312,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
     var arguments = [
       "convert",
+      bundle.path,
       "\u{2D}\u{2D}output\u{2D}path", outputDirectory.path,
     ]
     arguments.append("\u{2D}\u{2D}additional\u{2D}symbol\u{2D}graph\u{2D}files")
