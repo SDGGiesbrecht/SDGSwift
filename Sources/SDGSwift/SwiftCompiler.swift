@@ -315,8 +315,10 @@ public enum SwiftCompiler: VersionedExternalProcess {
       bundle.path,
       "\u{2D}\u{2D}output\u{2D}path", outputDirectory.path,
     ]
-    arguments.append("\u{2D}\u{2D}additional\u{2D}symbol\u{2D}graph\u{2D}files")
-    arguments.append(contentsOf: symbolGraphs.lazy.map({ $0.path }))
+    if ¬symbolGraphs.isEmpty {
+      arguments.append("\u{2D}\u{2D}additional\u{2D}symbol\u{2D}graph\u{2D}files")
+      arguments.append(contentsOf: symbolGraphs.lazy.map({ $0.path }))
+    }
     arguments.append(contentsOf: [
       "\u{2D}\u{2D}fallback\u{2D}display\u{2D}name", name,
       "\u{2D}\u{2D}fallback\u{2D}bundle\u{2D}identifier", name,
