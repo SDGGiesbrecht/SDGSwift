@@ -36,21 +36,23 @@ import SDGSwiftSource
 class APITests: SDGSwiftTestUtilities.TestCase {
 
   func testDocumentationAssembly() throws {
-    for packageURL in documentationTestPackages {
-      let package = PackageRepository(at: packageURL)
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-        let bundle = directory.appendingPathComponent("Bundle.docc")
-        try? FileManager.default.createDirectory(at: bundle)
-        let outputDirectory = package.location.appendingPathComponent("docs")
-        _ = try SwiftCompiler.assembleDocumentation(
-          in: outputDirectory,
-          name: package.location.lastPathComponent,
-          bundle: bundle,
-          symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get().map({ $0.origin }),
-          hostingBasePath: "base/path"
-        ).get()
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      for packageURL in documentationTestPackages {
+        let package = PackageRepository(at: packageURL)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+          let bundle = directory.appendingPathComponent("Bundle.docc")
+          try? FileManager.default.createDirectory(at: bundle)
+          let outputDirectory = package.location.appendingPathComponent("docs")
+          _ = try SwiftCompiler.assembleDocumentation(
+            in: outputDirectory,
+            name: package.location.lastPathComponent,
+            bundle: bundle,
+            symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get().map({ $0.origin }),
+            hostingBasePath: "base/path"
+          ).get()
+        }
       }
-    }
+    #endif
   }
 
   func testModuleAPI() {
