@@ -299,6 +299,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
   ///   - name: A name for the generated documentation bundle.
   ///   - bundle: The location of the DocC bundle to include.
   ///   - symbolGraphs: The URLs of the symbol graph files (`.symbol.json`) to include.
+  ///   - hostingBasePath: The path where the documentation is intended to reside on its host server.
   ///   - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
   public static func assembleDocumentation(
     in outputDirectory: URL,
