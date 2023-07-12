@@ -347,7 +347,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
     in workingDirectory: URL? = nil,
     with environment: [String: String]? = nil,
     versionConstraints: Constraints,
-    reportProgress: (_ progressReport: String) -> Void = { _ in }
+    reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
   ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>>
   where Constraints: RangeFamily, Constraints.Bound == Version {
 
