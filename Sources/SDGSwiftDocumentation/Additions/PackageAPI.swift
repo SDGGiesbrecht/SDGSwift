@@ -142,7 +142,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
       manifestURL: String,
       manifestSource: SourceFileSyntax,
       libraries: [LibraryAPI],
-      symbolGraphs: [SymbolGraph],
+      symbolGraphs: [LoadedSymbolGraph],
       moduleSources: [String: [URL]]
     ) {
       let declaration = PackageAPI.declaration(name: name, manifestSource: manifestSource)
@@ -184,7 +184,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
     documentation: [SymbolDocumentation],
     location: SymbolGraph.Symbol.Location?,
     libraries: [LibraryAPI],
-    symbolGraphs: [SymbolGraph],
+    symbolGraphs: [LoadedSymbolGraph],
     moduleSources: [String: [URL]],
     moduleDocumentationCommentLookup: (_ toDocument: String) -> [SymbolDocumentation],
     moduleDeclarationLocationLookup: (_ toFind: String) -> SymbolGraph.Symbol.Location?
@@ -210,7 +210,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
           name: name,
           documentation: moduleDocumentationCommentLookup(name),
           location: moduleDeclarationLocationLookup(name),
-          symbolGraphs: symbolGraphs.filter({ $0.module.name == name }),
+          symbolGraphs: symbolGraphs.filter({ $0.graph.module.name == name }),
           sources: moduleSources[name] ?? []
         )
       })
@@ -225,7 +225,7 @@ public struct PackageAPI: StoredDocumentation, SymbolLike {
   public var modules: [ModuleAPI]
 
   /// The package’s symbol graphs.
-  public func symbolGraphs() -> [SymbolGraph] {
+  public func symbolGraphs() -> [LoadedSymbolGraph] {
     return modules.flatMap { $0.symbolGraphs }
   }
 

@@ -32,7 +32,26 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   private static let currentMajor = Version(5)
 
+  // MARK: - Locating
+
   #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+  private static func docC<Constraints>(
+    versionConstraints: Constraints
+  ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>>
+  where
+    Constraints: RangeFamily,
+    Constraints.Bound == Version
+  {
+    return location(versionConstraints: versionConstraints)
+      .map { swift in
+        return ExternalProcess(
+          at: swift
+            .deletingLastPathComponent()
+            .appendingPathComponent("docc")
+        )
+      }
+  }
+
     // MARK: - Usage
 
     /// Builds the package.
@@ -272,6 +291,85 @@ public enum SwiftCompiler: VersionedExternalProcess {
         return URL(fileURLWithPath: String(String.UnicodeScalarView(path)))
       }
     }
+
+  /// Assembles documentation components into a completed documentation site.
+  ///
+  /// - Parameters:
+  ///   - outputDirectory: The directory in which to generate the site.
+  ///   - name: A name for the generated documentation bundle.
+  ///   - bundle: The location of the DocC bundle to include.
+  ///   - symbolGraphs: The URLs of the symbol graph files (`.symbol.json`) to include.
+  ///   - hostingBasePath: The path where the documentation is intended to reside on its host server.
+  ///   - reportProgress: Optional. A closure to execute for each line of the compiler’s output.
+  public static func assembleDocumentation(
+    in outputDirectory: URL,
+    name: String,
+    bundle: URL,
+    symbolGraphs: [URL],
+    hostingBasePath: String,
+    reportProgress: (_ progressReport: String) -> Void = { _ in }
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>> {
+    try? FileManager.default.createDirectory(at: outputDirectory)
+
+    var arguments = [
+      "convert",
+      bundle.path,
+      "\u{2D}\u{2D}output\u{2D}path", outputDirectory.path,
+    ]
+    if ¬symbolGraphs.isEmpty {
+      arguments.append("\u{2D}\u{2D}additional\u{2D}symbol\u{2D}graph\u{2D}files")
+      arguments.append(contentsOf: symbolGraphs.lazy.map({ $0.path }))
+    }
+    arguments.append(contentsOf: [
+      "\u{2D}\u{2D}fallback\u{2D}display\u{2D}name", name,
+      "\u{2D}\u{2D}fallback\u{2D}bundle\u{2D}identifier", name,
+      "\u{2D}\u{2D}transform\u{2D}for\u{2D}static\u{2D}hosting",
+      "\u{2D}\u{2D}hosting\u{2D}base\u{2D}path", hostingBasePath,
+    ])
+
+    return runCustomDocCSubcommand(
+      arguments,
+      versionConstraints: Version(5, 6) ..< currentMajor.compatibleVersions.upperBound,
+      reportProgress: reportProgress
+    )
+  }
+
+  /// Runs a custom subcommand of docc.
+  ///
+  /// - Parameters:
+  ///   - arguments: The arguments (leave “docc” off the beginning).
+  ///   - workingDirectory: Optional. A different working directory.
+  ///   - environment: Optional. A different set of environment variables.
+  ///   - versionConstraints: The acceptable range of versions.
+  ///   - reportProgress: Optional. A closure to execute for each line of output.
+  @discardableResult public static func runCustomDocCSubcommand<Constraints>(
+    _ arguments: [String],
+    in workingDirectory: URL? = nil,
+    with environment: [String: String]? = nil,
+    versionConstraints: Constraints,
+    reportProgress: (_ progressReport: String) -> Void = { _ in }  // @exempt(from: tests)
+  ) -> Result<String, VersionedExternalProcessExecutionError<SwiftCompiler>>
+  where Constraints: RangeFamily, Constraints.Bound == Version {
+
+    reportProgress("$ docc " + arguments.joined(separator: " "))
+
+    switch self.docC(versionConstraints: versionConstraints) {
+    case .failure(let error):
+      return .failure(.locationError(error))
+    case .success(let docC):
+      switch docC.run(
+        arguments,
+        in: workingDirectory,
+        with: environment,
+        reportProgress: reportProgress
+      ) {
+      case .failure(let error):
+        return .failure(.executionError(error))
+      case .success(let output):
+        return .success(output)
+      }
+    }
+  }
 
     // MARK: - Test Coverage
 

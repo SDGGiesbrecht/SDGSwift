@@ -35,11 +35,24 @@ import SDGSwiftSource
 
 class APITests: SDGSwiftTestUtilities.TestCase {
 
-  func testSymbolDocumentation() {
-    _ = SDGSwiftDocumentation.SymbolDocumentation(
-      developerComments: SymbolGraph.LineList([]),
-      documentationComment: SymbolGraph.LineList([])
-    )
+  func testDocumentationAssembly() throws {
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      for packageURL in documentationTestPackages {
+        let package = PackageRepository(at: packageURL)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+          let bundle = directory.appendingPathComponent("Bundle.docc")
+          try? FileManager.default.createDirectory(at: bundle)
+          let outputDirectory = directory.appendingPathComponent("docs")
+          _ = try SwiftCompiler.assembleDocumentation(
+            in: outputDirectory,
+            name: package.location.lastPathComponent,
+            bundle: bundle,
+            symbolGraphs: try package.symbolGraphs(filteringUnreachable: true).get().map({ $0.origin }),
+            hostingBasePath: "base/path"
+          ).get()
+        }
+      }
+    #endif
   }
 
   func testModuleAPI() {
@@ -215,7 +228,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
         )
       ],
       symbolGraphs: [
-        SymbolGraph(
+        LoadedSymbolGraph(graph: SymbolGraph(
           metadata: SymbolGraph.Metadata(
             formatVersion: SymbolGraph.SemanticVersion(major: 1, minor: 0, patch: 0),
             generator: "My Generator"
@@ -231,7 +244,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           ),
           symbols: [],
           relationships: []
-        )
+        ), origin: URL(fileURLWithPath: #filePath))
       ],
       moduleSources: [:],
       moduleDocumentationCommentLookup: { _ in return [] },
@@ -455,6 +468,13 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       )
   }
 
+  func testSymbolDocumentation() {
+    _ = SDGSwiftDocumentation.SymbolDocumentation(
+      developerComments: SymbolGraph.LineList([]),
+      documentationComment: SymbolGraph.LineList([])
+    )
+  }
+
   func testSymbolGraphError() {
     struct Elipsis: PresentableError {
       func presentableDescription() -> StrictString { "..." }
@@ -496,7 +516,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
                 return [module]
                   .appending(
                     contentsOf: module.symbolGraphs.flatMap({ graph in
-                      return graph.symbols.values
+                      return graph.graph.symbols.values
                     })
                   )
                   .appending(contentsOf: module.operators)

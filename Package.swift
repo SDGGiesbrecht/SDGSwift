@@ -129,11 +129,11 @@ let package = Package(
       exact: Version(0, 50800, 0)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
       exact: Version(0, 50800, 0)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
       exact: Version(0, 50800, 0)
     ),
     .package(
