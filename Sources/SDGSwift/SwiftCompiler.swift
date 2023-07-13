@@ -34,6 +34,7 @@ public enum SwiftCompiler: VersionedExternalProcess {
 
   // MARK: - Locating
 
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
   private static func docC<Constraints>(
     versionConstraints: Constraints
   ) -> Result<ExternalProcess, VersionedExternalProcessLocationError<SwiftCompiler>>
@@ -51,7 +52,6 @@ public enum SwiftCompiler: VersionedExternalProcess {
       }
   }
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     // MARK: - Usage
 
     /// Builds the package.
