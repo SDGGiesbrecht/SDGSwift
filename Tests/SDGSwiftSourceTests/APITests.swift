@@ -236,6 +236,17 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertEqual(scanner.result, fragmentSource)
   }
 
+  func testFunctionParameterSyntax() {
+    XCTAssertEqual(FunctionParameterSyntax(
+      firstName: TokenSyntax(.identifier("first"), presence: .present),
+      secondName: TokenSyntax(.identifier("second"), leadingTrivia: .space, presence: .present)
+    ).internalName?.text, "second")
+    XCTAssertEqual(FunctionParameterSyntax(
+      firstName: TokenSyntax(.identifier("first"), presence: .present),
+      secondName: nil
+    ).internalName?.text, "first")
+  }
+
   func testInlineCodeNode() {
     XCTAssertNil(InlineCodeNode(source: "..."))
     XCTAssertNil(InlineCodeNode(source: "`..."))
