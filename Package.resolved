@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "sdgweb",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDGGiesbrecht/SDGWeb",
-      "state" : {
-        "revision" : "73576316d62fc5ef38dbf30b5e232c59fa2ce832",
-        "version" : "6.1.0"
-      }
-    },
-    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",

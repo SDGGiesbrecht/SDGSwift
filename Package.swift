@@ -136,10 +136,6 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
       exact: Version(0, 50800, 0)
     ),
-    .package(
-      url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(6, 1, 0)
-    ),
   ],
   targets: [
 
@@ -201,11 +197,6 @@ let package = Package(
         .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
         .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
         .product(name: "Markdown", package: "swift\u{2D}markdown"),
-        // #workaround(Possibly dead once docc takes over Markdown rendering.)
-        .product(name: "SDGHTML", package: "SDGWeb"),
-      ],
-      resources: [
-        .copy("Syntax Highlighting.css")
       ]
     ),
 

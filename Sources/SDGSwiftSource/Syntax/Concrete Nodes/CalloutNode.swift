@@ -19,8 +19,6 @@ import SDGText
   import Markdown
 #endif
 
-// #workaround(Can docc handle this?)
-
 /// A documentation callout.
 public struct CalloutNode: StreamedViaChildren, SyntaxNode {
 
@@ -65,7 +63,6 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
       guard let callout = Callout(name) else {
         return nil
       }
-      self.callout = callout
       self.name = Token(kind: .callout(name))
       self.colon = Token(kind: .calloutColon)
 
@@ -115,9 +112,6 @@ public struct CalloutNode: StreamedViaChildren, SyntaxNode {
   }
 
   // MARK: - Properties
-
-  /// The callout.
-  public let callout: Callout
 
   /// The delimiter.
   public let bullet: Token
