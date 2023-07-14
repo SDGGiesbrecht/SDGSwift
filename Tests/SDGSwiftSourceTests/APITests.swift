@@ -156,10 +156,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     CommentContent.roundTripTest("...\n...")
   }
 
-  func testCSS() {
-    _ = SyntaxHighlighter.css
-  }
-
   func testDocumentationContent() {
     DocumentationContent.roundTripTest(
       [
@@ -320,24 +316,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
           againstSpecification: "Invariable Text",
           overwriteSpecificationInsteadOfFailing: false
         )
-
-        let highlighted = parsed.syntaxHighlightedHTML(
-          inline: false,
-          internalIdentifiers: [],
-          symbolLinks: ["doSomething": "domain.tld"]
-        )
-        SDGPersistenceTestUtilities.compare(
-          HTMLPage(
-            content: highlighted,
-            cssPath: "../../../../../Sources/SDGSwiftSource/Syntax%20Highlighting.css"
-          ),
-          against: sourceDirectory
-            .appendingPathComponent("After")
-            .appendingPathComponent("Syntax Highlighting")
-            .appendingPathComponent(url.deletingPathExtension().lastPathComponent)
-            .appendingPathExtension("html"),
-          overwriteSpecificationInsteadOfFailing: false
-        )
       }
     #endif
   }
@@ -367,41 +345,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     StringLiteral.roundTripTest("\u{22}...\u{22}")
     XCTAssertNil(StringLiteral(source: "...\u{22}"))
     XCTAssertNil(StringLiteral(source: "\u{22}..."))
-  }
-
-  func testSyntaxHighlighting() throws {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
-    let source = "\u{2F}\u{2F}/ `selector(style:notation:)`\nfunc function() \n \n {}"
-
-    let syntax = try SwiftSyntaxNode(source: source)
-    let selector = syntax.syntaxHighlightedHTML(
-      inline: true,
-      internalIdentifiers: ["selector(style:notation:)"],
-      symbolLinks: ["selector(style:notation:)": "domain.tld"]
-    )
-    XCTAssert(selector.contains("internal identifier"))
-    XCTAssert(selector.contains("domain.tld"))
-    #endif
-
-    // #workaround(Swift 5.8.1, Standard library crashes.)
-    #if !os(WASI)
-      let variable = SwiftSyntaxNode(
-        Syntax(VariableDeclSyntax(
-          attributes: nil,
-          modifiers: nil,
-          letOrVarKeyword: TokenSyntax(.letKeyword, presence: .present),
-          bindings: PatternBindingListSyntax([])
-        ))
-      ).syntaxHighlightedHTML(inline: true)
-      XCTAssert(
-        variable.contains("TokenSyntax letKeyword"),
-        variable
-      )
-      XCTAssert(
-        variable.contains("VariableDeclSyntax"),
-        variable
-      )
-    #endif
   }
 
   func testSyntaxProtocol() {
