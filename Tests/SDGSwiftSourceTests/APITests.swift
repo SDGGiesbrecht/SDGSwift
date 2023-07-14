@@ -263,7 +263,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       }
       return true
     }
-    XCTAssert(found)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      XCTAssert(found)
+    #endif
   }
 
   func testParsing() throws {
@@ -402,7 +404,9 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       }
       return true
     }
-    XCTAssert(foundOne)
-    XCTAssert(foundTwo)
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_MARKDOWN
+      XCTAssert(foundOne)
+      XCTAssert(foundTwo)
+    #endif
   }
 }
