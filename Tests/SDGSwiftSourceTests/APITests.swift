@@ -254,6 +254,18 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(LineDocumentation(source: "..."))
   }
 
+  func testNumberedHeading() {
+    var found = false
+    DocumentationContent(source: "#### Heading").scanSyntaxTree { node, _ in
+      if let heading = node as? NumberedHeading {
+        found = true
+        XCTAssertEqual(heading.level, 4)
+      }
+      return true
+    }
+    XCTAssert(found)
+  }
+
   func testParsing() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX_PARSER
       var first = true
@@ -364,5 +376,33 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       _ = TriviaPieceNode(piece, precedingDocumentationContext: nil, followingDocumentationContext: nil)
         .children(cache: &cache)
     }
+  }
+
+  func testUnderlinedHeading() {
+    var foundOne = false
+    var foundTwo = false
+    DocumentationContent(source: [
+      "One",
+      "===",
+      "",
+      "Two",
+      "\u{2D}\u{2D}\u{2D}",
+      "",
+      "..."
+    ].joined(separator: "\n")).scanSyntaxTree { node, _ in
+      if let heading = node as? UnderlinedHeading {
+        switch heading.level {
+        case 1:
+          foundOne = true
+        case 2:
+          foundTwo = true
+        default:
+          break
+        }
+      }
+      return true
+    }
+    XCTAssert(foundOne)
+    XCTAssert(foundTwo)
   }
 }
