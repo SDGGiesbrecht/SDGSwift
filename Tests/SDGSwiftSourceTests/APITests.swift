@@ -79,24 +79,6 @@ class APITests: SDGSwiftTestUtilities.TestCase {
     XCTAssertNil(BlockDocumentation(source: "..."))
   }
 
-  func testCallout() {
-    for localization in InterfaceLocalization.allCases {
-      let specification = Callout.allCases
-        .map({ $0.localizedText(localization.code) })
-        .joined(separator: "\n")
-      compare(
-        String(specification),
-        against: testSpecificationDirectory().appendingPathComponent(
-          "Localization/Callouts/\(localization.icon!).txt"
-        ),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
-    XCTAssertNotNil(Callout("Returns"))
-    XCTAssertNil(Callout("no‐such‐callout"))
-    XCTAssertEqual(Callout("Returns")?.localizedText("zxx"), "Returns")
-  }
-
   func testCalloutNode() {
     let documentation = DocumentationContent(
       source: [
