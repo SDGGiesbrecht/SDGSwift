@@ -237,6 +237,8 @@ class APITests: SDGSwiftTestUtilities.TestCase {
   }
 
   func testFunctionParameterSyntax() {
+    // #workaround(Swift 5.8.0, Web compiler bug leads to out of bounds memory access.)
+    #if !os(WASI)
     XCTAssertEqual(FunctionParameterSyntax(
       firstName: TokenSyntax(.identifier("first"), presence: .present),
       secondName: TokenSyntax(.identifier("second"), leadingTrivia: .space, presence: .present)
@@ -245,6 +247,7 @@ class APITests: SDGSwiftTestUtilities.TestCase {
       firstName: TokenSyntax(.identifier("first"), presence: .present),
       secondName: nil
     ).internalName?.text, "first")
+    #endif
   }
 
   func testInlineCodeNode() {
