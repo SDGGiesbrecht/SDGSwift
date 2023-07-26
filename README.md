@@ -62,7 +62,7 @@ Some platforms lack certain features. The compilation conditions which appear th
 
 ## Importing
 
-SDGSwift provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDGSwift provides libraries for use with the Swift Package Manager.
 
 Simply add SDGSwift as a dependency in `Package.swift` and specify which of the libraries to use:
 
@@ -71,7 +71,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "SDGSwift",
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
       from: Version(14, 0, 0)
     ),
