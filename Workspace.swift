@@ -37,6 +37,3 @@ configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Test Specifications/Source")
 configuration.testing.exemptPaths.insert("Sources/SampleConfiguration")
-
-// #workaround(workspace version 0.43.0, Test coverage erroneously flags entire range subscripts.)
-configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("[...]", scope: .sameLine))
