@@ -28,6 +28,7 @@ public final class SampleConfiguration: Configuration, Equatable {
     case option
   }
 
+  /// Encodes the sample configuration.
   public override func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(option, forKey: .option)
@@ -35,6 +36,7 @@ public final class SampleConfiguration: Configuration, Equatable {
     try super.encode(to: container.superEncoder())
   }
 
+  /// Decodes a sample configuration.
   public required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     try super.init(from: container.superDecoder())
