@@ -3,7 +3,7 @@
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
 #
-# Copyright ©2021–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+# Copyright ©2021–2024 Jeremy David Giesbrecht and the SDGSwift project contributors.
 #
 # Soli Deo gloria.
 #
@@ -19,6 +19,8 @@ jobs:
     name: Swift 5.7 (Amazon Linux)
     runs-on: ubuntu-20.04
     container: swift:5.7.3-amazonlinux2
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Check out
       uses: actions/checkout@v2
