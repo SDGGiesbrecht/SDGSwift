@@ -3,7 +3,7 @@
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
 #
-# Copyright ©2021–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+# Copyright ©2021–2024 Jeremy David Giesbrecht and the SDGSwift project contributors.
 #
 # Soli Deo gloria.
 #
@@ -19,11 +19,13 @@ jobs:
     name: Amazon Linux
     runs-on: ubuntu-20.04
     container: swift:5.8.0-amazonlinux2
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Cache Workspace
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -51,15 +53,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
-            workspace version •language '🇨🇦EN' •use‐version 0.44.0
+            workspace version •language '🇨🇦EN' •use‐version 0.44.1
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Using repository cache of Workspace..."
-            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.44.0
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.44.1
         else
             echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.44.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.1 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN' •use‐version 0.44.1
         fi
     - name: Refresh
       shell: bash
@@ -67,15 +69,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
-            workspace refresh •language '🇨🇦EN' •use‐version 0.44.0
+            workspace refresh •language '🇨🇦EN' •use‐version 0.44.1
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Using repository cache of Workspace..."
-            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.44.0
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.44.1
         else
             echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.44.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.1 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN' •use‐version 0.44.1
         fi
     - name: Validate
       shell: bash
@@ -83,15 +85,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Using system install of Workspace..."
-            workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.0
+            workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.1
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Using repository cache of Workspace..."
-            .build/SDG/Workspace/workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.0
+            .build/SDG/Workspace/workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.1
         else
             echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.44.1 "" workspace
+            .build/SDG/Workspace/workspace validate •job amazon‐linux •language '🇨🇦EN' •use‐version 0.44.1
         fi
     - name: Grant permission to cache
       shell: bash

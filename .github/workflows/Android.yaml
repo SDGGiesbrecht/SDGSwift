@@ -3,7 +3,7 @@
 # This source file is part of the SDGSwift open source project.
 # https://sdggiesbrecht.github.io/SDGSwift
 #
-# Copyright ©2021–2023 Jeremy David Giesbrecht and the SDGSwift project contributors.
+# Copyright ©2021–2024 Jeremy David Giesbrecht and the SDGSwift project contributors.
 #
 # Soli Deo gloria.
 #
@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Cache Workspace
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -97,7 +97,7 @@ jobs:
         mkdir -p .build/x86_64-unknown-linux-android24/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64-linux-android/*.so .build/x86_64-unknown-linux-android24/debug
     - name: Upload tests
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug
@@ -107,9 +107,9 @@ jobs:
     needs: Android
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Download tests
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug
